@@ -69,20 +69,24 @@ define([
         name: self.resource.labels.TRD,
         items: [summary.TRDAmount],
         color: "#14BA92"
-      }, {
-        name: self.resource.labels.RD,
+      }
+/* 	  , {
+        name: self.resource.labels.RD,					//remove RD from networth graph Mansoor
         items: [summary.RDAmount],
         color: "#FF669E"
-      });
+      } */
+	  );
       self.pieSeriesValueForDebit.push({
         name: self.resource.labels.CSAOD,
         items: [summary.CSAODAmount],
         color: "#FCB300"
-      }, {
-        name: self.resource.labels.LON,
-        items: [summary.LOANAmount],
-        color: "#5fefef"
-      });
+      }
+	  // , {
+        // name: self.resource.labels.LON,				//remove RD from networth graph Mansoor
+        // items: [summary.LOANAmount],
+        // color: "#5fefef"
+      // }
+	  );
 
       if (self.pieSeriesValueForCredit().length !== 0) {
         self.showIHaveGraph(true);

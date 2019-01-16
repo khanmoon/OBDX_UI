@@ -24,7 +24,7 @@ define([
         self.accountTypeList = ko.observableArray([
             "CSA",
             "TRD",
-            "LON"
+        //    "LON"
         ]);
         self.refreshAccounts = ko.observable(false);
         self.type = ko.observable();
@@ -33,12 +33,12 @@ define([
         var typeMap = {
             CSA: "demandDeposit",
             TRD: "deposit",
-            LON: "loan"
+        //    LON: "loan"
         };
         var moduleTypeMap = {
             CSA: "demand-deposits",
             TRD: "term-deposits",
-            LON: "loans"
+        ////    LON: "loans"
         };
 
         rootParams.baseModel.registerElement("account-input");
