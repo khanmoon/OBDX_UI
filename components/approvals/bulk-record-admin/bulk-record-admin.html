@@ -1,0 +1,28 @@
+<div id="pagingControlDemo" class="full-width">
+  <!-- ko if : transactionListLoaded -->
+  <oj-table id="bulkRecordAdminTable" columns="[[[{headerText:$component.Nls.generic.common.date,template:'date-time',field:'creationDate'},
+  {headerText:$component.Nls.bulkRecordAdmin.labels.fileIdentifier,field:'fileIdentifier'},
+  {headerText:$component.Nls.bulkRecordAdmin.labels.fileName,field:'fileName'},
+  {headerText:$component.Nls.bulkRecordAdmin.labels.initiatedBy,field:'createdBy'},
+  {headerText:$component.Nls.bulkRecordAdmin.labels.referenceNo,field:'transactionId',template:'approval_link_pending'},
+  {headerText:$component.Nls.bulkRecordAdmin.labels.status,template:'approvalStatus',field:'status'}]]]" data="[[arrayDataSource]]">
+    <caption class="hide-label" data-bind="text: $component.Nls.bulkRecordAdmin.labels.details"></caption>
+    <template slot="approval_link_pending">
+
+                     <a href="javascript:void(0)" data-bind="text:$current.row.transactionId,click:$dashboard.loadComponent.bind($data,'transaction-detail', $current.row , $parent)"></a>
+
+             </template>
+
+    <template slot="date-time">
+
+                     <div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "date-time", params:{rootModel: $component,date:$current.row.creationDate}}'></div>
+
+             </template>
+    <template slot="approvalStatus">
+                      <div data-bind="template : {name : 'approvals/status', data : {status :$current.row.processingDetails.status ,noOfApprovalSteps: $current.row.approvalDetails.stepNo, nls : $component.Nls.bulkRecordAdmin.status}}"></div>
+             </template>
+  </oj-table>
+  <!-- /ko -->
+  <oj-paging-control class="oj-flex-item" slot="bottom" :id="[[$component.Nls.bulkRecordAdmin.labels.details + ($baseModel.currentIdCount())]]" :page-size="[[10]]" data="[[$component.arrayDataSource]]"></oj-paging-control>
+
+</div>

@@ -1,0 +1,126 @@
+<div class="search-section">
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <action-header params="baseModel : $baseModel, rootModel : $component, heading:$component.Nls.recordList">
+            <a href="" class="icon icon-search pull-right" data-bind="click: $component.searchEnable ,  attr: { alt: $component.Nls.searchEnableText, title: $component.Nls.searchEnable }"></a>
+        </action-header>
+    </page-section>
+    <div id="search" class="search-container hide">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <div class="oj-flex oj-flex-items-pad">
+                <!-- ********************** DropDown For Record Status ********************** -->
+                <!-- ko if:isRStatusListLoaded() -->
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="rStatus" data-bind="text: $component.Nls.rStatus"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-select-one id="rStatus" :placeholder="[[$component.Nls.selectRStatus]]" on-value-changed="[[rStatusValueChangeHandler]]" value="{{$component.searchData.rStatus}}">
+                        <!-- ko foreach:$component.rStatusList -->
+                        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+                <!-- /ko -->
+                <!-- ********************** DropDown For Payee Type ********************** -->
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="payeeType" data-bind="text: $component.Nls.payeeType"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-select-one id="payeeType" :placeholder="[[$component.Nls.selectPayeeType]]" on-value-changed="[[payeeTypeValueChangeHandler]]" value="{{$component.searchData.payeeType}}">
+                        <!-- ko foreach:$component.payeeTypeList -->
+                        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="accountType" data-bind="text: $component.Nls.accountType"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-select-one id="accountType" :placeholder="[[$component.Nls.selectAccountType]]" on-value-changed="[[accountTypeValueChangeHandler]]" value="{{$component.searchData.accountType}}">
+                        <!-- ko foreach:$component.accountTypeList -->
+                        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="payeeName" data-bind="text: $component.Nls.payeeName"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-input-text id="payeeName" type="text" value="{{$component.searchData.payeeName}}"></oj-input-text>
+                </div>
+            </div>
+        </page-section>
+        <!-- **************************** Search Button **************************** -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+         <oj-button class="action-button-primary" id="search1" on-click="[[searchRecord]]">
+      <span data-bind="text:$component.Nls.search"></span>
+</oj-button>
+            <oj-button class="action-button-secondary" id="button" on-click="[[closeSearch]]">
+      <span data-bind="text:$component.Nls.cancel"></span>
+</oj-button>
+            <oj-button class="action-button-secondary" id="clear" on-click="[[refreshSearch]]">
+      <span data-bind="text:$component.Nls.clear"></span>
+</oj-button>
+           
+        </div>
+    </div>
+</div>
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <!-- ko if:$baseModel.large() -->
+    <div class="widget-table">
+        <oj-table id="table" :aria-label="[[$component.Nls.details]]" columns="[[[{
+                                   headerText:$component.Nls.payeeType,field:'payeeType'},{
+                                  headerText:$component.Nls.accountType,field:'accountType'},{
+                                  headerText:$component.Nls.accountName,field:'accountName'},{
+                                  headerText:$component.Nls.payeeName,field:'payeeName'},{
+                                  headerText:$component.Nls.rStatus,field:'statusDesc'}]]]" selection-mode="[[{row:'single',column:'single'}]]" on-value-changed="[[onUserSelected]]" translations="[[{msgNoData:$component.Nls.noData}]]" data="[[$component.datasource()]]">
+            <caption class="hide-label" data-bind="text:$component.Nls.details"></caption>
+        </oj-table>
+    </div>
+    <oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[datasource()]]">
+    </oj-paging-control>
+    <!-- /ko -->
+    <!-- ko ifnot:$baseModel.large() -->
+    <div class="grid-main-container">
+        <oj-list-view id="listview" selection-mode="[[{row:'single',column:'single'}]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('record_template',true)}]]" data="[[datasource()]]">
+        </oj-list-view>
+    </div>
+    <script type="text/html" id="record_template">
+        <a href="" data-bind="click:$component.onUserListSelected.bind($data) , attr: { alt: $component.Nls.viewlistText, title: $component.Nls.viewlist} ">
+            <li>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-md-6 oj-sm-12">
+                        <label data-bind="text: $component.Nls.payeeType"></label>
+                        <span data-bind="text: payeeType"></span>
+                    </div>
+                    <div class="oj-flex-item oj-md-6 oj-sm-12">
+                        <label data-bind="text: $component.Nls.accountType"></label>
+                        <span data-bind="text: accountType"></span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-md-6 oj-sm-12">
+                        <label data-bind="text: $component.Nls.payeeName"></label>
+                        <span data-bind="text: payeeName"></span>
+                    </div>
+                    <div class="oj-flex-item oj-md-6 oj-sm-12">
+                        <label data-bind="text: $component.Nls.accountName"></label>
+                        <span data-bind="text: accountName"></span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-md-6 oj-sm-12">
+                        <label data-bind="text: $component.Nls.rStatus"></label>
+                        <span data-bind="text: statusDesc"></span>
+                    </div>
+                </div>
+            </li>
+        </a>
+    </script>
+    <div class="center">
+        <oj-paging-control id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[datasource()]]">
+        </oj-paging-control>
+    </div>
+    <!-- /ko -->
+</page-section>

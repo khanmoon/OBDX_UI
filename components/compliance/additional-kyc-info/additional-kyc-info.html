@@ -1,0 +1,47 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+  <div class="oj-flex-item oj-sm-12">
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+      <!-- ko if: $component.kycDataLoaded -->
+      <oj-validation-group id="kycInfoTracker">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for="occupation"><span data-bind="text:$component.resource.additionalkycInfo.occupation"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+            <oj-select-one id="occupation" required value="{{$component.fatcaComplianceData.kycInfo.occupationDetails}}" translations="[[{'required':{messageDetail:$component.resource.messages.occupation}}]]" on-value-changed="[[$component.titleChanged]]" :placeholder="">
+              <!-- ko foreach: $component.occupations -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for="grossAnnualIncome"><span data-bind="text:$component.resource.additionalkycInfo.grossAnnualIncome"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+            <oj-input-text id="grossAnnualIncome" required maxlength="35" translations="[[{'required':{messageDetail:$component.resource.messages.grossAnnualIncome}}]]" value="{{$component.fatcaComplianceData.kycInfo.grossAnnualIncome}}" name="salary"></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for="pepStatus" id="pepStatusLabel"><span data-bind="text:$component.resource.additionalkycInfo.pepStatus"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-lg-12 oj-md-12">
+            <oj-radioset class="oj-choice-direction-row" id="pepStatus" aria-labelledby="pepStatusLabel" translations="[[{'required':{messageDetail:$component.resource.messages.pepStatus}}]]" value="{{$component.fatcaComplianceData.kycInfo.pepStatus}}">
+              <oj-option id="pep" value="PEP"><span data-bind="text:$component.resource.additionalkycInfo.pepStatus1"></span></oj-option>
+              <oj-option id="pepRelated" value="REP"><span data-bind="text:$component.resource.additionalkycInfo.pepStatus2"></span></oj-option>
+              <oj-option id="pepNa" value="NA"><span data-bind="text:$component.resource.additionalkycInfo.pepStatus3"></span></oj-option>
+            </oj-radioset>
+          </div>
+        </div>
+      </oj-validation-group>
+      <!-- /ko -->
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="continueKYCInfo" class="action-button-primary" on-click="[[continueKYCInfo]]">
+        <span data-bind="text:$component.resource.continue"></span>
+      </oj-button>
+    </div>
+  </div>
+</div>

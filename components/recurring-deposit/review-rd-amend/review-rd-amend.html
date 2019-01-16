@@ -1,0 +1,32 @@
+<div class="form-main-container">
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.generic.common.review , reviewHeader : $component.resource.header.reviewHeader}}"></div>
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.accountNumber, value : $component.selectedAccountDisplayValue"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.maturityInstruction, value : $component.resource.rollOverType[$component.amendModel.rollOverType()]"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.payTo, value :$component.resource.payoutType[amendModel.payoutInstructions()[0].type()]"></row>
+            <!-- ko if:amendModel.payoutInstructions()[0].type() ==='O' -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.creditAccountNum, value :[$component.amendModel.payoutInstructions()[0].accountId.displayValue,$component.amendModel.payoutInstructions()[0].beneficiaryName,$component.amendModel.payoutInstructions()[0].bankName,$component.amendModel.payoutInstructions()[0].address.line1,$component.amendModel.payoutInstructions()[0].address.line2,$component.amendModel.payoutInstructions()[0].address.city,$component.amendModel.payoutInstructions()[0].address.country]"></row>
+            <!-- /ko -->
+            <!-- ko if:amendModel.payoutInstructions()[0].type() ==='I' -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.creditAccountNum, value :[$component.amendModel.payoutInstructions()[0].account()]"></row>
+            <!-- /ko -->
+            <!-- ko if:amendModel.payoutInstructions()[0].type() ==='E' -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.creditAccountNum, value :[$component.amendModel.payoutInstructions()[0].account(),$component.amendModel.payoutInstructions()[0].beneficiaryName,$component.amendModel.payoutInstructions()[0].bankName,$component.amendModel.payoutInstructions()[0].address.line1,$component.amendModel.payoutInstructions()[0].address.line2,$component.amendModel.payoutInstructions()[0].address.city,$component.amendModel.payoutInstructions()[0].address.country]"></row>
+            <!-- /ko -->
+        </div>
+    </page-section>
+    <div class="oj-flex-item button-container">
+        <oj-button id="redeemButton" class="action-button-primary " on-click="[[$component.confirmAmendRD.bind($data,true)]]"><span slot="startIcon" class="icons icon-confirm"></span>
+            <span data-bind="text:$component.resource.generic.common.confirm"></span>
+        </oj-button>
+         <!-- ko ifnot: $baseModel.small() -->
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]"><span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.resource.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.resource.generic.common.back"></span>
+        </oj-button>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="form-main-container">
+  <!-- ko if: $component.params.mode === 'review' -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+  <!-- /ko -->
+  <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+
+
+    <!-- ko if:$component.additionalDetails && $component.additionalDetails().account-->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.stopUnblockCheque.accountNumber , value : $component.additionalDetails().account.id.displayValue"></row>
+    <!-- /ko -->
+
+
+    <!-- ko if: $component.params.data.accountId-->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.stopUnblockCheque.accountNumber , value :$component.params.data.accountId.displayValue()"></row>
+    <!-- /ko -->
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.stopUnblockCheque.actionOnly , value : $component.params.data.chequeInstructionType"></row>
+
+    <!-- ko if:$component.params.data.reason -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.common.reason , value :$component.params.data.reason"></row>
+    <!-- /ko -->
+
+    <!-- ko if:'endChequeNumber' in $component.params.data -->
+    <!-- ko if:$component.params.data.endChequeNumber() === null-->
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.chequeDetails.chequeNumber , value :$component.params.data.startChequeNumber()"></row>
+
+    <!-- /ko -->
+
+
+    <!-- ko if: $component.params.data.endChequeNumber() !== null -->
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.common.from , value :$component.params.data.startChequeNumber()"></row>
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.common.to , value :$component.params.data.endChequeNumber()"></row>
+    <!-- /ko -->
+
+    <!-- /ko -->
+
+    <!-- ko ifnot:'endChequeNumber'  in $component.params.data -->
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.chequeDetails.chequeNumber , value :$component.params.data.startChequeNumber()"></row>
+
+    <!-- /ko -->
+  </page-section>
+  <!-- ko if:$component.params.mode ==='review'-->
+  <div class="button-container">
+    <oj-button id="dialogtopupButton" class="action-button-primary " on-click="[[$component.submit]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.resource.generic.common.confirm"></span>
+</oj-button>
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+</oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.resource.generic.common.back"></span>
+</oj-button>
+
+  </div>
+  <!-- /ko -->
+</div>

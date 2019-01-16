@@ -1,0 +1,26 @@
+<div class="form-main-container">
+    <!-- ko if:$component.reviewMode -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.payments.generic.common.review , reviewHeader : $baseModel.format($component.payments.common.reviewHeaderMsg, {txnName : $component.payments.adhoc})}}"></div>
+    <!-- /ko -->
+    <!-- ko if:$component.dataLoaded() -->
+    <page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading : $component.reviewMode?'':$component.corpPSheader">
+        <div data-bind="template: { name: 'payee/'+$component.payeeTemplate()}"></div>
+        <div data-bind="template: { name: 'payments/'+$component.paymentTemplate()}"></div>
+    </page-section>
+    <!-- /ko -->
+    <!-- ko if:$component.reviewMode -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" id="confirm" on-click="[[confirmPayment]]"><span slot="startIcon" class="icons icon-confirm"></span>
+            <span data-bind="text:$component.payments.common.confirm"></span>
+        </oj-button>
+        <!-- ko if:!$baseModel.small() -->
+        <oj-button class="action-button-secondary" id="cancel" on-click="[[$dashboard.openDashBoard.bind($component.payments.common.cancelConfirm)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.payments.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary" id="back" on-click="[[cancelDeletePayment]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.payments.generic.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+</div>

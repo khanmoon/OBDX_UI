@@ -1,0 +1,78 @@
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-sm-12 oj-md-12 oj-lg-11 oj-md-11 oj-flex-item label oj-lg-offset-1 oj-md-offset-1">
+        <oj-label><span data-bind="text:$component.resource.customizeCard"></span></oj-label>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad" id="cc-header">
+    <div class="oj-sm-12 oj-md-12 oj-lg-11 oj-md-11 oj-flex-item oj-lg-offset-1 oj-md-offset-1">
+        <span data-bind="text:$component.resource.cardTypePrimary"></span>
+    </div>
+</div>
+<!-- ko if: $component.cardHolderPreferencesLoaded() -->
+<div class="">
+    <div class="">
+        <div data-bind="component: { name: 'card-holder-preferences', params: { rootModel: $component,cardPreferences:$component.primaryCardHolder()}}"></div>
+    </div>
+</div>
+<!-- ko if: $component.addOnHolders().length>0 -->
+<div class="oj-flex oj-flex-items-pad" id="cc-header">
+    <div class="oj-sm-12 oj-md-12 oj-lg-11 oj-md-11 oj-flex-item oj-lg-offset-1 oj-md-offset-1">
+        <span data-bind="text:$component.resource.addOn"></span>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-sm-12 oj-md-12 oj-lg-11 oj-md-11 oj-flex-item label oj-lg-offset-1 oj-md-offset-1">
+        <oj-label><span data-bind="text:$component.resource.selectAddOn"></span></oj-label>
+    </div>
+</div>
+<!-- ko foreach: $component.addOnHolders() -->
+<div class="form-heading-strip oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top">
+        <a href="javascript:void(0)" class="link oj-sm-12 oj-md-12 oj-lg-11 oj-md-11 oj-flex-item oj-lg-offset-1 oj-md-offset-1 " data-bind="click : $component.expandAddOnSection.bind($data,$index()) ,attr:{alt: $component.resource.addOnClick, title: $component.resource.addOnClickTitle}">
+
+          <!-- ko ifnot : $data.personalInfo.suffixName -->
+          <!-- ko ifnot : $data.personalInfo.middleName -->
+          <span data-bind="text: $baseModel.format($component.resource.salFirstLast,{salutation:$data.personalInfo.prefixPrimaryName,firstName:$data.personalInfo.firstName,lastName:$data.personalInfo.lastName})"></span>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if : $data.personalInfo.suffixName  -->
+          <!-- ko ifnot : $data.personalInfo.middleName -->
+          <span data-bind="text: $baseModel.format($component.resource.salFirstLastSuffix,{salutation:$data.personalInfo.prefixPrimaryName,firstName:$data.personalInfo.firstName,lastName:$data.personalInfo.lastName,suffix:$data.personalInfo.suffixName})"></span>
+          <!-- /ko -->
+          <!-- ko if : $data.personalInfo.middleName -->
+          <span data-bind="text: $baseModel.format($component.resource.salFirstMiddleLastSuffix,{salutation:$data.personalInfo.prefixPrimaryName,firstName:$data.personalInfo.firstName,middleName:$data.personalInfo.middleName,lastName:$data.personalInfo.lastName,suffix:$data.personalInfo.suffixName})"></span>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if : $data.personalInfo.middleName  -->
+          <!-- ko ifnot : $data.personalInfo.suffixName -->
+          <span data-bind="text: $baseModel.format($component.resource.salFirstMiddleLast,{salutation:$data.personalInfo.prefixPrimaryName,firstName:$data.personalInfo.firstName,middleName:$data.personalInfo.middleName,lastName:$data.personalInfo.lastName})"></span>
+          <!-- /ko -->
+          <!-- /ko -->
+        </a>
+    </div>
+    <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2 employments-financial-info">
+        <!-- ko if:  $data.holderPreferences.cardHolderPreferences.selectedValues().temp_isSaved() -->
+        <div class="success-icon pull-right"><img data-bind="loadImage:'origination/app-tracker/tick.png'" alt="" src="/images/origination/app-tracker/tick.png"></div>
+        <!-- /ko -->
+        <!-- ko if:  $data.showAddOnPreferences() -->
+        <a href="javascript:void(0)" class="pull-right icon-delete" data-bind="click : $component.deleteHolderPreferences.bind($data, $index()) ,attr:{alt: $component.resource.deleteAddOnPref, title: $component.resource.deleteAddOnPref}"></a>
+        <!-- /ko -->
+    </div>
+</div>
+<!-- ko if : $data.showAddOnPreferences() -->
+<div class="">
+    <div class="">
+        <div data-bind="component: { name: 'card-holder-preferences', params: { rootModel:$component,cardPreferences:$component.addOnHolders()[($index())]}}"></div>
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item right oj-lg-10 oj-md-10">
+        <oj-button class="form-button-secondary" on-click="[[updateCardPreferences]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+</oj-button>
+    </div>
+</div>

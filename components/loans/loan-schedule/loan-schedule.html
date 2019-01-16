@@ -1,0 +1,236 @@
+<!-- ko if:$baseModel.large() -->
+<div class="form-main-container loan-schedule">
+	<div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+			<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+				<div class="row-group">
+					<account-input params="baseModel : $baseModel, rootModel: $data, label : $component.locale.schedule.selectAccount,
+					account : $component.accountNumberSelected,
+					additionalDetails : $component.additionalDetails,
+					 customURL : 'loan',
+					validator:$component.validationTracker,
+					readOnly: !!$component.params.id,
+					taskCode:'LN_I_SI'">
+					</account-input>
+					<!-- ko if:$component.detailsFetched()-->
+					<row data-id="firstInstallmentdate" params="baseModel : $baseModel, label : $component.locale.schedule.firstInstallment , value :$baseModel.formatDate($parent.fromDateValue)"></row>
+					<row data-id="lastInstallmentDate" params="baseModel : $baseModel, label : $component.locale.schedule.lastInstallment , value :$baseModel.formatDate($parent.toDateValue)"></row>
+					<row data-id="totalInstallments" params="baseModel : $baseModel, label : $component.locale.schedule.noOfInst , value :$parent.installmentcount"></row>
+					<row data-id="paidInstallments" params="baseModel : $baseModel, label : $component.locale.schedule.installmentsPaid , value :$parent.installmentsPaid"></row>
+					<!-- ko if: loanViewDetails().module === "ISL" -->
+					<row params="baseModel : $baseModel, label : $component.locale.schedule.approvedAmount , value :$parent.approvedAmount"></row>
+					<!-- /ko -->
+					<row data-id="amountPaid" params="baseModel : $baseModel, label : $component.locale.schedule.amountPaidTillDate , value :$parent.amountPaidTillDate"></row>
+					<!-- /ko -->
+				</div>
+			</page-section>
+		</div>
+
+		<!-- ko if:$component.detailsFetched()-->
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+			<div class="loan-schedule-chart-boundary" data-bind="component: {name: 'loan-schedule-chart', params:{rootModel: $parent , data:$data, loanScheduleData:$component.scheduleData().loanScheduleItemDTO}}">
+			</div>
+		</div>
+		<!-- /ko -->
+	</div>
+
+
+	<!-- ko if:$component.detailsFetched()-->
+	<!-- <page-section params="rootModel : $data, heading : ''">
+		<div class="loan-schedule-chart-boundary" data-bind="component: {name: 'loan-schedule-chart', params:{rootModel: $parent , data:$data, loanScheduleData:$component.scheduleData().loanScheduleItemDTO}}">
+		</div>
+	</page-section> -->
+	<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+		<div class="grid-main-container">
+			<div class="oj-flex oj-flex-items-pad form-row-highlighted">
+				<div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2" data-bind="text:$component.locale.schedule.dateRange"></div>
+				<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+					<label class="hide-label" for="fromDate" data-bind="text:$component.locale.schedule.fromDate"></label>
+					<oj-input-date id="fromDate" converter="[[$baseModel.dateConverter]]" max="[[$component.toDateValue]]" min="[[$component.firstinstallmentdate]]" value="{{$component.fromDateValue}}"></oj-input-date>
+				</div>
+				<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+					<label class="hide-label" for="toDate" data-bind="text:$component.locale.schedule.toDate"></label>
+					<oj-input-date id="toDate" converter="[[$baseModel.dateConverter]]" max="[[$component.lastinstallmentdate]]" min="[[$component.fromDateValue]]" value="{{$component.toDateValue}}"></oj-input-date>
+				</div>
+				<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label right">
+					<a href="#" data-bind="attr:{'title':$component.locale.schedule.pdfClickTitle , 'alt':$component.locale.schedule.pdfClick , 'aria-label':$component.locale.schedule.pdfClick}, click:$component.download">
+						<span class="icons icon-download"></span>
+						<span class="" data-bind="text:$component.locale.schedule.pdfClickTitle"></span>
+					</a>
+				</div>
+			</div>
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item no-pad-cols">
+					<!-- ko if: loanViewDetails().module === "CON" -->
+					<oj-table id="schedule" :aria-label="[[$component.locale.schedule.tableLabel]]" columns="[[[{headerText:$component.locale.schedule.srNo,field:'no',style:'width: 5%'},{headerText:$component.locale.schedule.date,field:'date',style:'width: 5%',template:'date'},{headerText:$component.locale.schedule.principal,field:'principal',headerClassName:'right',style:'width: 18%;text-align:right;'},{headerText:$component.locale.schedule.int,field:'interest',headerClassName:'right',style:'width: 18%;text-align:right;'},{headerText:$component.locale.schedule.charge,field:'charge',headerClassName:'right',style:'width: 18%;text-align:right;'},{headerText:$component.locale.schedule.instAmt,field:'installmentAmount',headerClassName:'right',style:'width: 18%;text-align:right;'},{headerText:$component.locale.schedule.updInsAmt,field:'unpaidInstallmentAmount',headerClassName:'right',style:'width: 18%;text-align:right;'}]]]" columns-default="[[{sortable:'none'}]]" data="[[pagingDataSource]]">
+						<caption class="hide-label" data-bind="text:$component.locale.schedule.tableLabel"></caption>
+					</oj-table>
+					<!-- /ko -->
+					<!-- ko if: loanViewDetails().module === "ISL" -->
+					<oj-table id="schedule" columns="[[[{headerText:$component.locale.schedule.srNo,field:'no',style:'width: 5%'},{headerText:$component.locale.schedule.date,field:'date',style:'width: 5%',template:'date'},{headerText:$component.locale.schedule.principal,field:'principal',headerClassName:'right',style:'width: 18%;text-align:right;'},{headerText:$component.locale.schedule.profit,field:'interest',headerClassName:'right',style:'width: 18%;text-align:right;'},{headerText:$component.locale.schedule.charge,field:'charge',headerClassName:'right',style:'width: 18%;text-align:right;'},{headerText:$component.locale.schedule.instAmt,field:'installmentAmount',headerClassName:'right',style:'width: 18%;text-align:right;'},{headerText:$component.locale.schedule.updInsAmt,field:'unpaidInstallmentAmount',headerClassName:'right',style:'width: 18%;text-align:right;'}]]]" columns-default="[[{sortable:'none'}]]" data="[[pagingDataSource]]">
+						<caption class="hide-label" data-bind="text:$component.locale.schedule.tableLabel"></caption>
+					</oj-table>
+					<!-- /ko -->
+					<oj-paging-control slot="bottom" :page-size="[[10]]" data="[[pagingDataSource]]">
+					</oj-paging-control>
+					<script type="text/html" id="date">
+						<td>
+							<div class="" data-bind='component: { name: "date-box", params: {date: date}}'></div>
+						</td>
+					</script>
+				</div>
+
+			</div>
+		</div>
+
+
+	</page-section>
+	<!-- /ko -->
+
+</div>
+<!-- /ko -->
+<!-- ko ifnot:$baseModel.large() -->
+<div class="form-main-container">
+
+		<account-input params="baseModel : $baseModel, rootModel: $data, label : $component.locale.schedule.selectAccount,
+		account : $component.accountNumberSelected,
+		additionalDetails : $component.additionalDetails,
+		customURL : 'loan',
+		validator:$component.validationTracker,
+		readOnly: !!$component.params.id,
+		taskCode:'LN_I_SI'">
+		</account-input>
+
+	<!-- ko if:$component.detailsFetched()-->
+	<div class="oj-flex oj-flex-items-pad loan-schedule__content">
+		<div class="oj-flex-item oj-sm-12 oj-md-2">
+			<oj-label class=""><span data-bind="text:$component.locale.schedule.firstInstallment"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-2">
+			<span data-bind="text:$baseModel.formatDate($component.firstinstallmentdate)">
+			</span>
+		</div>
+	</div>
+	<div class="oj-flex oj-flex-items-pad loan-schedule__content">
+		<div class="oj-flex-item oj-sm-12 oj-md-2">
+			<oj-label class=""><span data-bind="text:$component.locale.schedule.lastInstallment"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-2">
+			<span data-bind="text:$baseModel.formatDate($component.lastinstallmentdate)">
+			</span>
+		</div>
+	</div>
+	<div class="oj-flex oj-flex-items-pad loan-schedule__content">
+		<div class="oj-flex-item oj-sm-12 oj-md-2">
+			<oj-label class=""><span data-bind="text:$component.locale.schedule.noOfInst"></span></oj-label>
+		</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-2">
+			<span data-bind="text:$component.installmentcount">
+			</span>
+		</div>
+	</div>
+	<div class="oj-flex oj-flex-items-pad loan-schedule__content">
+		<div class="oj-flex-item oj-sm-12 oj-md-2">
+			<oj-label class=""><span data-bind="text:$component.locale.schedule.installmentsPaid"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-2">
+			<span data-bind="text:$component.installmentsPaid">
+			</span>
+		</div>
+	</div>
+	<div class="oj-flex oj-flex-items-pad loan-schedule__content">
+		<div class="oj-flex-item oj-sm-12 oj-md-2">
+			<oj-label class=""><span data-bind="text:$component.locale.schedule.approvedAmount"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-2">
+			<span data-bind="text:$component.approvedAmount">
+			</span>
+		</div>
+	</div>
+	<div class="oj-flex oj-flex-items-pad loan-schedule__content">
+		<div class="oj-flex-item oj-sm-12 oj-md-2">
+			<oj-label class=""><span data-bind="text:$component.locale.schedule.amountPaidTillDate"></span></oj-label>
+		</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-2">
+				<span data-bind="text:$component.amountPaidTillDate">
+				</span>
+			</div>
+		</div>
+		<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 right">
+			<!-- ko if:detailsFetched()-->
+			<a href="#" data-bind="attr:{'title':$component.locale.schedule.pdfClickTitle , 'alt':$component.locale.schedule.pdfClick , 'aria-label':$component.locale.schedule.pdfClick},click:$component.download"><span class="icons icon-file-pdf icon-lg"></span></a>
+
+			<!-- /ko -->
+		</div>
+	</div>
+	<!-- /ko -->
+	<!-- ko if:detailsFetched()-->
+	<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+		<div class="grid-main-container" params="rootModel : $data, heading : ''">
+			<oj-list-view class="data-list" id="listview" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('data-template',true)}]]" data="[[pagingDataSource]]">
+			</oj-list-view>
+
+			<div class="center">
+				<oj-paging-control id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[pagingDataSource]]">
+				</oj-paging-control>
+			</div>
+			<script type="text/html" id="data-template">
+				<li data-bind="attr: {id: 'no'}">
+					<div class="oj-flex oj-flex-items-pad">
+						<div class="oj-flex-item oj-sm-only-hide oj-md-only-hide">
+							<span data-bind="text:$component.locale.schedule.date"></span>
+						</div>
+						<div class=" oj-flex-item oj-sm-8 oj-md-6">
+							<span data-bind="text:$baseModel.formatDate(date)"></span>
+						</div>
+					</div>
+
+					<div class="oj-flex oj-flex-items-pad">
+						<div class=" oj-flex-item oj-sm-8 oj-md-6">
+							<label data-bind="text:$component.locale.schedule.principal"></label>
+						</div>
+						<div class=" oj-flex-item oj-sm-4 oj-md-6 right">
+							<span data-bind="text:principal"></span>
+						</div>
+					</div>
+
+					<div class="oj-flex oj-flex-items-pad">
+						<div class=" oj-flex-item oj-sm-8 oj-md-6">
+							<label data-bind="text:$component.locale.schedule.int"></label>
+						</div>
+						<div class=" oj-flex-item oj-sm-4 oj-md-6 right">
+							<span data-bind="text:interest"></span></div>
+					</div>
+
+					<div class="oj-flex oj-flex-items-pad">
+						<div class=" oj-flex-item oj-sm-8 oj-md-6">
+							<label data-bind="text:$component.locale.schedule.charge"></label>
+						</div>
+						<div class=" oj-flex-item oj-sm-4 oj-md-6 right">
+							<span data-bind="text:charge"></span>
+						</div>
+					</div>
+
+					<div class="oj-flex oj-flex-items-pad">
+						<div class=" oj-flex-item oj-sm-8 oj-md-6">
+							<label data-bind="text:$component.locale.schedule.instAmt"></label>
+						</div>
+						<div class=" oj-flex-item oj-sm-4 oj-md-6 right">
+							<span data-bind="text:installmentAmount"></span></div>
+					</div>
+
+					<div class="oj-flex oj-flex-items-pad">
+						<div class=" oj-flex-item oj-sm-8 oj-md-6">
+							<label data-bind="text:$component.locale.schedule.updInsAmt"></label>
+						</div>
+						<div class=" oj-flex-item oj-sm-4 oj-md-6 right">
+							<span data-bind="text:unpaidInstallmentAmount"></span></div>
+					</div>
+				</li>
+			</script>
+		</div>
+	</page-section>
+	<!-- /ko -->
+</div>
+<!-- /ko -->

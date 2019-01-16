@@ -1,0 +1,27 @@
+<div class="oj-panel pending-action">
+  <div class="oj-flex oj-flex-items-pad">
+    <h3 class="hide-label" data-bind="text:$component.nls.pendingActionMailDetails.labels.msgText"></h3>
+    <div class="oj-flex-item oj-sm-9 pending-action__heading">
+      <!-- ko if: dataLoaded() -->
+      <span class="pending-action__count" data-bind="text: $component.totalCount"></span>
+      <div class="pending-action__header" data-bind="text:$component.nls.pendingActionMailDetails.labels.msgText"></div>
+      <!-- ko ifnot: hasAccess()  -->
+      <div class="pending-action__header" data-bind="text:$component.nls.pendingActionMailDetails.labels.noAccess"></div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+
+    <div class="oj-flex-item oj-sm-3 right pending-action__image pending-action-image">
+      <img class="pending-action-image__img" data-bind="attr:{'title':$component.nls.pendingActionMailDetails.labels.msgText,alt:''},loadImage: $component.loadImage">
+    </div>
+  </div>
+  <!-- ko if: hasAccess()  -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 right">
+      <a href="#" data-bind="attr:{'alt':$component.nls.pendingActionMailDetails.labels.msFooterText},click:$component.switchRole.bind($data,$root)">
+        <span class="msg-text FR" data-bind="text:$component.nls.pendingActionMailDetails.labels.msFooterText"></span>
+      </a>
+    </div>
+  </div>
+  <!-- /ko -->
+</div>

@@ -1,0 +1,146 @@
+<div class="status-history oj-flex-item">
+
+    <div class="status-history-card ">
+
+
+
+
+
+        <!-- ko if:$component.productClassName() === 'LOANS' -->
+        <div class="oj-flex oj-flex-items-pad card-row">
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 padding-left ">
+                <!-- ko if: ($component.appDetails().coApplicants && $component.appDetails().coApplicants.length>0) -->
+
+                <div data-bind="with:$component.appDetails" class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                        <oj-label></oj-label>
+
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7  ">
+                        <!-- ko foreach : coApplicants -->
+                        <div class="oj-flex-items-pad">
+                            <!-- ko if : applicantRelationshipType === 'APPLICANT' || applicantRelationshipType === 'CO_APPLICANT'-->
+                            <!-- ko ifnot : $data.personalInfo.suffixName -->
+                            <!-- ko ifnot : $data.personalInfo.middleName -->
+                            <span class="value-text" data-bind="text: $baseModel.format($component.resource.salFirstLast,{salutation:$data.personalInfo.prefixPrimaryName,firstName:$data.personalInfo.firstName,lastName:$data.personalInfo.lastName})"></span>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- ko if : $data.personalInfo.suffixName  -->
+                            <!-- ko ifnot : $data.personalInfo.middleName -->
+                            <span class="value-text" data-bind="text: $baseModel.format($component.resource.salFirstLastSuffix,{salutation:$data.personalInfo.prefixPrimaryName,firstName:$data.personalInfo.firstName,lastName:$data.personalInfo.lastName,suffix:$data.personalInfo.suffixName})"></span>
+                            <!-- /ko -->
+                            <!-- ko if : $data.personalInfo.middleName -->
+                            <span class="value-text" data-bind="text: $baseModel.format($component.resource.salFirstMiddleLastSuffix,{salutation:$data.personalInfo.prefixPrimaryName,firstName:$data.personalInfo.firstName,middleName:$data.personalInfo.middleName,lastName:$data.personalInfo.lastName,suffix:$data.personalInfo.suffixName})"></span>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- ko if : $data.personalInfo.middleName  -->
+                            <!-- ko ifnot : $data.personalInfo.suffixName -->
+                            <span class="value-text" data-bind="text: $baseModel.format($component.resource.salFirstMiddleLast,{salutation:$data.personalInfo.prefixPrimaryName,firstName:$data.personalInfo.firstName,middleName:$data.personalInfo.middleName,lastName:$data.personalInfo.lastName})"></span>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+
+                <!-- /ko -->
+
+                <!-- ko if:$component.appDetails().loanSummaryResponse -->
+                <!-- ko if:$component.appDetails().loanSummaryResponse.purposeType -->
+                <div class="oj-flex oj-flex-items-pad  ">
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5  ">
+                        <oj-label></oj-label>
+
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7  ">
+                        <span class="value-text" data-bind="text: $component.appDetails().loanSummaryResponse.purposeType"></span>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:$component.appDetails().loanSummaryResponse.requestedAmount -->
+                <div class="oj-flex oj-flex-items-pad  ">
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5  ">
+                        <oj-label></oj-label>
+
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7  ">
+                        <span class="value-text" data-bind="text:$baseModel.formatCurrency($component.appDetails().loanSummaryResponse.requestedAmount.amount,$component.appDetails().loanSummaryResponse.requestedAmount.currency)"></span>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:$component.appDetails().loanSummaryResponse.approvedAmount -->
+                <div class="oj-flex oj-flex-items-pad  ">
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 ">
+                        <oj-label></oj-label>
+
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7  ">
+                        <span class="value-text" data-bind="text:$baseModel.formatCurrency($component.appDetails().loanSummaryResponse.approvedAmount.amount,$component.appDetails().loanSummaryResponse.approvedAmount.currency)"></span>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:$component.appDetails().loanSummaryResponse.requestedTenure -->
+                <div class="oj-flex oj-flex-items-pad  ">
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 ">
+                        <oj-label></oj-label>
+
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7  ">
+                        <span class="value-text" data-bind="text:$baseModel.format($component.resource.tenureWithDays, {years: $component.appDetails().loanSummaryResponse.requestedTenure.years, months: $component.appDetails().loanSummaryResponse.requestedTenure.months})"></span>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+            </div>
+            <!-- ko if:$component.appDetails().loanSummaryResponse && $component.appDetails().loanSummaryResponse.loanApplicationDate -->
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6  ">
+
+                <div class="oj-flex oj-flex-items-pad  ">
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                        <oj-label></oj-label>
+
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7  ">
+                        <span class="value-text" data-bind="text:$baseModel.format($component.appDetails().loanSummaryResponse.loanApplicationDate)"></span>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /ko -->
+
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if:$component.productClassName() === 'LOANS' -->
+        <div class="oj-flex oj-flex-items-pad card-row">
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 padding-left">
+              <div class=" oj-flex oj-flex-items-pad application-summary-content">
+                  <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                      <span class="label-text" data-bind="text:$component.resource.applicantFullName"></span>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                      <span class="value-text" data-bind="text:$component.applicationInfo().remarks"></span>
+                  </div>
+
+              </div>
+
+
+
+              <div class="oj-flex oj-flex-items-pad application-summary-content">
+                  <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                      <span class="label-text" data-bind="text:$component.appResource.status"></span>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                      <span class="value-text" data-bind="text:$component.appResource.submissionStatus[$component.applicationInfo().currentSubmissionStatus()]"></span>
+                  </div>
+              </div>
+            </div>
+        </div>
+        <!-- /ko -->
+
+
+
+    </div>
+
+</div>

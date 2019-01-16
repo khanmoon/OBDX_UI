@@ -1,0 +1,37 @@
+<div class="">
+
+	<div class="oj-flex oj-flex-items-pad payee-card">
+
+		<div class="oj-flex oj-flex-items-pad center margin-bottom-20">
+			<h1><span class="payee-card-title" data-bind="text:$component.subPayerName()"></span></h1>
+		</div>
+
+
+		<div class="oj-flex oj-flex-items-pad payee-sub-list">
+			<div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item" id="choiseOpener">
+				<a href="#" data-bind="attr:{},click:loadComponent.bind($data,'add-new-relationship',$component,$data)">
+					<div class="oj-panel add-panel">
+						<div class="oj-flex oj-flex-items-pad add-new">
+							<div class="oj-flex-item center add-new-icon">
+								<span class="icons icon-add add-new-icon--large"></span>
+							</div>
+							<div class="oj-flex-item center" data-bind="text:$component.debtors.addnewRelationShip">
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+			<!-- ko if:isSubPayerLoaded() -->
+			<!-- ko foreach:subPayers-->
+			<a href="#" data-bind="attr:{'alt':$component.debtors.addnewRelationShip,'title':$component.debtors.addnewRelationShipTitle},click:$dashboard.loadComponent.bind($data,'debtor-details',$component,$data)">
+				<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+					<payee-data-card params="baseModel : $baseModel, rootModel:$component,data:$data"></payee-data-card>
+				</div>
+			</a>
+			<!-- /ko  -->
+			<!-- /ko -->
+		</div>
+
+
+	</div>
+</div>

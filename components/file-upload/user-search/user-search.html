@@ -1,0 +1,116 @@
+<div class="oj-flex">
+    <div class="oj-flex design-dashboard">
+        <div class="oj-flex-item oj-sm-9">
+            <div class="form-main-container container-record">
+                <div data-bind="component: {
+         name: 'party-validate',
+         params:{
+         rootModel: $component,
+         partyDetails:$component.partyDetails,
+         additionalDetails:$component.additionalDetails}}"></div>
+                <!-- ko if:isUsersLoaded() -->
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.Nls.userList">
+                    <!-- ko if:$baseModel.large() -->
+                    <oj-table id="table" class="record" :aria-label="[[$component.Nls.userList]]" columns="[[[{
+            headerText:$component.Nls.initials,
+            renderer:$oj.KnockoutTemplateUtils.getRenderer('initials', true),
+            sortable:'none'},
+            {
+                headerText:$component.Nls.userDetails,renderer:$oj.KnockoutTemplateUtils.getRenderer('userDetail',true)
+        },
+        {
+            headerText:$component.Nls.number,
+         renderer:$oj.KnockoutTemplateUtils.getRenderer('contactDetails', true)
+        },
+        {
+            headerText:$component.Nls.mapping,
+            renderer:$oj.KnockoutTemplateUtils.getRenderer('mapping', true)}]]]" selection-mode="[[{row:'single',column:'single'}]]" on-selection-changed="[[onUserSelectedInTable]]" translations="[[{msgNoData:$component.Nls.noData}]]" data="[[$component.datasource()]]">
+                        <caption class="hide-label" data-bind="text:$component.Nls.userList"></caption>
+                    </oj-table>
+                    <script type="text/html" id="initials">
+                        <td>
+                            <div class="user-initials" data-bind="text:$component.placeInitials($context.row.firstName,$context.row.lastName)"></div>
+                        </td>
+                    </script>
+                    <script type="text/html" id="contactDetails">
+                        <td><span data-bind="text:$context.row.emailId"></span>
+                            <br>
+                            <span data-bind="text:$context.row.mobileNumber"></span>
+                        </td>
+                    </script>
+                    <script type="text/html" id="userDetail">
+                        <td>
+                            <div data-bind="text: $baseModel.format($component.Nls.user,{firstName:$context.row.firstName,lastName:$context.row.lastName})"></div>
+                            <div data-bind="text: $context.row.username"></div>
+                        </td>
+                    </script>
+                    <script type="text/html" id="mapping">
+                        <td>
+                            <!-- ko if:$context.row.isMapped -->
+                            <span class="icons icon-success"></span>
+                            <!-- <img class="confirmation" data-bind="loadImage:'admin/common/confirmation.png'" /> -->
+                            <!-- /ko -->
+                            <!-- ko ifnot:$context.row.isMapped -->
+                            <span class="icons icon-maintenance"></span>
+                            <!-- <img class="maintenance" data-bind="loadImage:'admin/common/maintenance.svg'" height="60" width="60" /> -->
+                            <!-- /ko -->
+                        </td>
+                    </script>
+                    <!-- /ko -->
+                    <!-- ko if:$baseModel.small() -->
+                    <div class="grid-main-container">
+                        <oj-list-view class="container-record" id="listview" selection-mode="[[{row:'single',column:'single'}]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('user_list',true)}]]" data="[[datasource()]]">
+                        </oj-list-view>
+                        <script type="text/html" id="user_list">
+                            <a href="" data-bind="click:$component.onUserSelected.bind($data) , attr: { alt: $component.Nls.viewlist, title: $component.Nls.viewlist}">
+                                <li class="record hand-cursor">
+                                    <div class="grid-row-group oj-flex oj-flex-items-pad">
+                                        <div class="oj-flex-item oj-lg-2">
+                                            <div class="user-initials" data-bind="text:$component.placeInitials(firstName,lastName)"></div>
+                                        </div>
+                                        <div class="oj-flex-item oj-lg-5">
+                                            <div class="oj-flex oj-flex-items-pad">
+                                                <span class="break-word" data-bind="text: $baseModel.format($component.Nls.user,{firstName:firstName,lastName:lastName})"></span>
+                                            </div>
+                                            <div class="oj-flex oj-flex-items-pad">
+                                                <span id="username" data-bind="text: username"></span>
+                                            </div>
+                                        </div>
+                                        <div class="oj-flex-item oj-lg-3">
+                                            <div class="oj-flex oj-flex-items-pad">
+                                                <span id="mobileNumber" data-bind="text: mobileNumber"></span>
+                                            </div>
+                                        </div>
+                                        <div class="oj-flex-item oj-lg-2">
+                                            <!-- ko if:isMapped -->
+                                            <span class="icons icon-success"> </span>
+                                            <!-- /ko -->
+                                            <!-- ko ifnot:isMapped -->
+                                            <span class="icons icon-maintenance"></span>
+                                            <!-- /ko -->
+                                        </div>
+                                    </div>
+                                </li>
+                            </a>
+                        </script>
+                    </div>
+                    <!-- /ko -->
+                </page-section>
+                <div class="button-container">
+                    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.Nls.cancelTransaction)]]">
+                        <span data-bind="text:$component.Nls.cancel"></span>
+                    </oj-button>
+                    <!-- ko if:isBankAdmin() -->
+                    <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+                        <span data-bind="text:$component.Nls.back"></span>
+                    </oj-button>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="oj-flex-item oj-sm-3 help-panel">
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'user-search'"></help>
+        </div>
+    </div>
+</div>

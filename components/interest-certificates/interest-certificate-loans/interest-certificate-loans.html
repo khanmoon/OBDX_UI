@@ -1,0 +1,175 @@
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+  <div data-bind="css:'oj-flex-item oj-sm-12 oj-md-8 oj-lg-8'">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <oj-validation-group id="tracker">
+          <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-md-6 oj-lg-12 ">
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-12 ">
+              <oj-label for="numberOfAccount">
+                <!-- ko text: $component.resource.selectFor -->
+                <!-- /ko -->
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-12 ">
+              <oj-buttonset-one :id="[['numberOfAccount']]" value="{{numberOfAccounts}}" aria-hidden="true" on-value-changed="[[numberOfAccountsHandler]]">
+                <oj-option value="{{'single'}}" :id="[['single']]" :name="[['numberOfAccounts']]"><span data-bind="attr: {for: 'YES'}, text:$component.resource.specificDeposit"></span></oj-option>
+                <oj-option value="{{'all'}}" :id="[['all']]" :name="[['numberOfAccounts']]"><span data-bind="attr: {for: 'NO'}, text:$component.resource.allDeposits"></span></oj-option>
+              </oj-buttonset-one>
+            </div>
+            <!-- ko if: $component.numberOfAccounts() === "single" -->
+              <account-input params="baseModel : $baseModel, rootModel: $data, customURL: $component.type,
+                readOnly:fromFavourites(), account : customPayeeId ,additionalDetails : additionalDetails,validator:$component.validationTracker, taskCode:'LN_I_IC'"></account-input>
+            <!-- /ko -->
+            <oj-label class="hide oj-label oj-component oj-complete" :for="durationType"></oj-label>
+            <div class="oj-flex-item oj-flex-items-pad">
+              <oj-radioset class="oj-choice-direction-row" id="durationType" value="{{duration}}" on-value-changed="{{$component.optionChanged}}">
+                <oj-option id="financialYear" value="financialYear"><span data-bind="text:$component.resource.financialYear"></span></oj-option>
+                <oj-option id="duration" value="duration"><span data-bind="text:$component.resource.duration"></span></oj-option>
+              </oj-radioset>
+            </div>
+            <!-- ko if:$component.yearsLoaded -->
+            <oj-label class="hide oj-label oj-component oj-complete" :for="year"></oj-label>
+            <div class="oj-flex-item oj-flex-items-pad">
+              <!-- ko ifnot:$component.year -->
+              <oj-select-one id="year" value="{{$component.years}}" placeholder="{{$component.resource.pleaseSelect}}" data-bind="attr:{'aria-label':$component.resource.labels.selectFinancialYear}" required>
+                <!-- ko foreach:$component.financialYears -->
+                <oj-option value="[[value]]"><span data-bind="text: text"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+              <!-- /ko -->
+              <!-- ko if:$component.year -->
+              <div class="oj-flex oj-flex-items-pad">
+                <div class=" oj-flex-item oj-sm-12 label ">
+                  <oj-label for="fromDate">
+                    <!-- ko text: $component.resource.fromDate -->
+                    <!-- /ko -->
+                  </oj-label>
+                </div>
+                <div class="oj-sm-12 oj-flex-item">
+                  <oj-input-date id="fromDate" converter="[[$baseModel.dateConverter]]" value="{{fromDate}}" max="[[maxFromDate]]" min="[[minFromDate]]" required> </oj-input-date>
+                </div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad">
+                <div class=" oj-flex-item oj-sm-12 label ">
+                  <oj-label for="toDate">
+                    <!-- ko text: $component.resource.toDate -->
+                    <!-- /ko -->
+                  </oj-label>
+                </div>
+                <div class="oj-sm-12 oj-flex-item">
+                  <oj-input-date id="toDate" converter="[[$baseModel.dateConverter]]" value="{{toDate}}" max="[[maxToDate]]" min="[[fromDate]]" required> </oj-input-date>
+                </div>
+              </div>
+              <!-- /ko -->
+            </div>
+            <!-- /ko -->
+          </div>
+        </oj-validation-group>
+      </page-section>
+      <div class="button-container">
+        <oj-button on-click="[[view]]" , class="action-button-primary" id="view">
+          <span slot="startIcon" class="icons icon-view-statement"></span>
+          <span data-bind="text:$component.resource.view"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="back" on-click="[[$dashboard.hideDetails]]">
+          <span slot="startIcon" class="icons icon-back-arrow"></span>
+          <span data-bind="text:$component.resource.back"></span>
+        </oj-button>
+      </div>
+    </div>
+    <!-- ko if:$component.interestsLoaded -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+        <span data-bind="text:$component.resource.interestHeading"></span>
+      </div>
+      <!-- ko ifnot: $baseModel.small()-->
+      <!-- ko if: $component.showDownload -->
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 right">
+        <a href="javascript:void(0)" class="padding-tb pull-right" data-bind="click:$component.download">
+          <span class="icons icon-download icon-2x icon-padding-right"></span>
+          <span data-bind="text:$component.resource.download"></span>
+        </a>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+    <!-- ko ifnot: $baseModel.small()-->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <oj-table id='table' :aria-label=[[$component.resource.interestCertificateTable]] data='[[pagingTableDataSource]]' columns='[[columnData]]'>
+        <caption class="hide-label" data-bind="text:$component.resource.interestCertificateTable"></caption>
+        <oj-paging-control id="paging" data='[[pagingTableDataSource]]' page-size='10' slot='bottom'>
+        </oj-paging-control>
+        </oj-table>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $baseModel.small()-->
+        <oj-list-view id="listview_InterestTable" data="[[pagingTableDataSource]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('interestTable_template', true)]]" selection-mode="single">
+        </oj-list-view>
+        <oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[pagingTableDataSource]]">
+        </oj-paging-control>
+    <script type="text/html" id="interestTable_template">
+      <li data-bind="attr: {id:accountId}">
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+            <label class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.tableHeading.accountNo"></label>
+            <div class="oj-flex-item oj-sm-12" data-bind="text:accountId"> </div>
+          </div>
+          </br>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+            <label class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.tableHeading.productType"></label>
+            <div class="oj-flex-item oj-sm-12" data-bind="text:productName"> </div>
+          </div>
+          </br>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+           <label class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.tableHeading.date"></label>
+           <div class="oj-flex-item oj-sm-12" data-bind="text:date"> </div>
+           </div>
+          </br>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+            <label class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.tableHeading.interestCredited"></label>
+            <div class="oj-flex-item oj-sm-12" data-bind="text:interestAmount"> </div>
+          </div>
+        </div>
+      </li>
+    </script>
+    <!-- ko if: $component.showDownload -->
+   <div class="button-container">
+   <div class="oj-flex-item oj-sm-12 oj-md-2">
+     <oj-button class="action-button-primary" id="download" on-click="[[$component.download]]">
+       <span data-bind="text:$component.resource.download"></span>
+     </oj-button>
+   </div>
+  </div>
+   <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+  <!-- ko ifnot: $baseModel.small()-->
+  <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'interest-certificate'"></help>
+  </div>
+  <!-- /ko -->
+ <modal-window params="baseModel : $baseModel, rootModel : $data, id:'passwordDialog', header : $component.resource.passwordNotification">
+        <div class="form-main-container">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item">
+                    <span data-bind="text: $component.resource.passCombination"></span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item">
+                    <span data-bind="text: $component.resource.passwordExample"></span>
+                </div>
+            </div>
+            <div class="oj-flex button-container">
+                <oj-button id="ok" class="action-button-primary" on-click="[[$component.ok]]">
+                    <span data-bind="text:$component.resource.ok"></span>
+                </oj-button>
+            </div>
+        </div>
+    </modal-window>
+</div>
+</div>
+</div>

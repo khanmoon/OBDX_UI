@@ -1,0 +1,29 @@
+<div class="credit-line oj-panel">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <h3 class="credit-line__heading" data-bind="text:$component.nls.creditLineHeader"></h3>
+    </div>
+  </div>
+  <!-- ko if : $component.creditCardLineLimitLoaded() -->
+  <div class="chart" params="rootModel: $data,controls:$component.controls,onDashboard:$dashboard.isDashboard()">
+    <oj-chart class="creditLineChart" type="bar" series="[[series]]" groups="[[lines]]" stack="[[stackValue]]" animation-on-data-change="auto" tooltip="[[tooltip]]" orientation="horizontal" style-defaults="[[styleDefaults]]" legend.position="bottom">
+    </oj-chart>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 view-all right">
+      <a href="#" data-bind="attr:{'title': $component.nls.viewDetails},click: $dashboard.loadComponent.bind($data, 'search-credit-line')">
+        <div data-bind=" text: $component.nls.viewDetails"></div>
+      </a>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot : $component.creditCardLineLimitLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 noData">
+     <img class="noData__image" data-bind="attr:{'alt': $component.nls.creditLineHeader},loadImage:'dashboard/credit-line.svg'">
+     <div class="noData__text" data-bind="text:$component.nls.noData"></div>
+    </div>
+  </div>
+  <!-- /ko -->
+</div>

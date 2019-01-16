@@ -1,0 +1,33 @@
+<!-- ko if: $component.constants.userSegment === 'RETAIL' -->
+<!-- ko if:$component.showMultipleStatusLink() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item confirm-screen-header-text__message confirm-screen-header-text">
+
+        <span data-bind="text:$component.confirmScreenResources.confirm.sweepInTransactionStatus"></span>
+        <a href="#" data-bind="text: $component.confirmScreenResources.confirm.clickHere, click: $component.viewSweepInInstructionStatus  , attr:{alt: $component.confirmScreenResources.confirm.sweepInTransactionStatus, title: $component.confirmScreenResources.confirm.sweepInTransactionTitle}"></a>
+
+     </div>
+  </div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item" data-bind="text:$component.confirmScreenResources.confirm.actions.nextAction">
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad ">
+  <ul class="confirm-screen__list">
+    <li>
+      <a href="#" data-bind="click:$dashboard.openDashBoard">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToDashboard},loadImage:'dashboard/quick-access/dashboard.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToDashboard"></div>
+        </a>
+    </li>
+    <li>
+      <a href="#" data-bind="click:$component.openTransaction.bind($data,'sweep-in-instruction', 'demand-deposits', 'demandDeposit')">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.ManageAnotherAccount}),'title':$component.confirmScreenResources.confirm.actions.ManageAnotherAccount},loadImage:'index/icons/savings.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.ManageAnotherAccount"></div>
+        </a>
+    </li>
+  </ul>
+</div>
+
+<!-- /ko -->

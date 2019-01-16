@@ -1,0 +1,60 @@
+<!-- ko if: $component.parentAccessLevel()==="PARTY" -->
+
+<action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.nls.headers.newAccounts">
+</action-header>
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <label class="pull-left" data-bind="text: $component.nls.fieldname.mapAccts"></label>
+        <span class="icons icon-help tool-tip">
+             <div class="tooltip-content" data-bind=" html:$baseModel.format($component.nls.messages.tooltip.autoManualMessage,{accountType:$component.transactionNames.casa,accountType1:$component.transactionNames.casa})">
+            </div>
+      </span>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-9">
+        <oj-buttonset-one disabled="[[$component.showEditableForm()]]" on-value-changed="[[$component.casaDefaultPolicyChangeHandler]]" value="{{$component.selectedCasaPolicy}}"><oj-option name="casaPolicy" value="{{'casaAuto'}}" :id="[['casaAuto']]"><span data-bind="attr: {for: 'casaAuto'},text:$component.nls.common.auto"></span></oj-option><oj-option name="casaPolicy" value="{{'casaManual'}}" :id="[['casaManual']]"><span data-bind="attr: {for: 'casaManual'},text:$component.nls.common.manual"></span></oj-option></oj-buttonset-one>
+    </div>
+</div>
+<action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.nls.headers.existingAccounts">
+</action-header>
+<!-- /ko -->
+
+<!-- ko if: $component.parentAccessLevel()==="USER" -->
+
+<div class=" oj-flex oj-flex-items-pad">
+    <oj-checkboxset class="oj-flex-item" disabled="[[$component.showEditableForm()]]" value="{{$component.selectedCasaPolicyChecked}}" on-value-changed="[[$component.casaDefaultPolicyChangeHandler]]"><oj-option value="casaAuto" id="apply_changes_checkbox"><span data-bind="text: $component.nls.common.ApplyChanges" for="apply_changes_checkbox">
+            </span></oj-option></oj-checkboxset>
+</div>
+
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad">
+    <oj-checkboxset class="oj-flex-item" value="{{$component.mapAllCasaAccounts}}" on-click="[[$component.toggleAllCheckbox]]" disabled="[[$component.showEditableForm()]]">
+      <oj-option id="casa_all" value="{{'ALL'}}">
+        <span for="casa_all" data-bind="text: $component.nls.fieldname.mapallAccts">
+        </span></oj-option></oj-checkboxset>
+</div>
+
+<!-- ko if:$component.loadCasaTemplate -->
+<div class="oj-flex oj-flex-items-pad table-data">
+    <oj-table id="casaAccountsTable" :aria-label="[[$component.nls.headers.casaAccounts]]"
+    columns="[[[{headerText:'',field:'accountType','renderer': $oj.KnockoutTemplateUtils.getRenderer('casaCheckbox', true)},
+    {headerText:$component.nls.headers.AccountNumber,field:'ID'},
+    {headerText:$component.nls.headers.currency,field:'currency'},
+    {headerText:$component.nls.headers.displayName,field:'displayName'},
+    {headerText:$component.nls.headers.accountStatus,field:'accountStatus'}]]]"
+     columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'multiple',column:'multiple'}]]" data="[[$component.casaAccountdataSource]]">
+        <caption class="hide-label" data-bind="text:$component.nls.headers.casaAccounts"></caption>
+    </oj-table>
+    <script type="text/html" id="casaCheckbox">
+        <td>
+          <input type="checkbox"
+          data-bind="attr:{'aria-label': $component.nls.headers.casacheckbox+$context.row.accountNumber.value ,
+           id : $component.nls.headers.casacheckbox+ $context.row.accountNumber.value,
+           'class' : $component.selectedCasaAccounts.indexOf($context.row.accountNumber.value) > -1 ? 'oj-selected' :  ''},
+           value:$context.row.accountNumber.value ,disable:$component.showEditableForm(), checked:$component.selectedCasaAccounts">
+          <label class="oj-checkbox-label" data-bind="attr:{for : $component.nls.headers.casacheckbox  + $context.row.accountNumber.value}"></label>
+   </td>
+    </script>
+</div>
+<!-- /ko -->

@@ -1,0 +1,81 @@
+<div class="form-main-container confirm-screen">
+  <!--Common Section for all modules-->
+  <div class="oj-flex">
+    <!-- ko foreach: $component.headerMessages -->
+    <!-- ko if: $data.summaryMessage -->
+    <div class="oj-flex-item oj-sm-12 confirm-screen__header confirm-screen-header" data-bind="css: $data.headerStyle">
+      <div class="oj-flex confirm-screen-header__text confirm-screen-header-text">
+        <img class="confirm-screen-header-text__image" data-bind="loadImage : $data.icon"></img>
+        <span class="confirm-screen-header-text__message" data-bind="text: $data.headerMessage"></span>
+      </div>
+      <div class="confirm-screen-header__successMessage" data-id="success-message" data-bind="text: $data.summaryMessage"></div>
+      <!-- ko if: $component.enableEReceipt() -->
+      <a href="#" id="eReceipt" class="confirm-screen__eReceipt-top" data-bind="attr:{'alt':$component.confirmScreenResources.confirm.downloadEreceipt ,'title':$component.confirmScreenResources.confirm.downloadEreceiptAlt,'aria-label':$component.confirmScreenResources.confirm.downloadEreceipt },click: $component.downloadEreceipt">
+        <span class="confirm-screen__eReceipt-top-icon icons icon-claim-money"></span>
+        <span class="confirm-screen__eReceipt-top-text" data-bind="text:$component.confirmScreenResources.confirm.eReceipt"></span>
+      </a>
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+  <div class="oj-flex oj-flex-items-pad confirm-screen__messageContainer confirm-screen-messageContainer">
+    <div class="oj-flex-item confirm-screen-messageContainer__message">
+      <!-- ko if:$component.transactionID -->
+      <row params="baseModel : $baseModel, dataClass: 'oj-sm-12', rootModel : $parent, label : $component.confirmScreenResources.confirm.referenceNo , value: $component.transactionID  , dataId : 'referenceNo'"></row>
+      <!-- /ko -->
+      <!-- ko if:$component.hostReferenceNumber -->
+      <row params="baseModel : $baseModel, dataClass: 'oj-sm-12', rootModel : $parent, label : $component.confirmScreenResources.confirm.hostReferenceID , value: $component.hostReferenceNumber, dataId : 'hostReferenceNo'"></row>
+      <!-- /ko -->
+      <!-- ko if:$component.srNo -->
+      <row params="baseModel : $baseModel, dataClass: 'oj-sm-12', rootModel : $parent, label : $component.confirmScreenResources.confirm.serviceRequestNumber , value: $component.srNo, dataId : 'srNo'"></row>
+      <!-- /ko -->
+      <!-- ko if: $component.confirmScreenType === 'v2' -->
+      <row params="baseModel : $baseModel,  dataClass: 'oj-sm-12', rootModel : $parent, label : $component.confirmScreenResources.confirm.statusWord , value: $component.getStatusMessage($component.params.jqXHR), dataId : 'status'"></row>
+      <!-- /ko -->
+      <!-- ko if:$component.reason() -->
+      <row params="baseModel : $baseModel, dataClass: 'oj-sm-12', rootModel : $parent, label : $component.confirmScreenResources.confirm.reason , value: $component.reason(), dataId : 'reason'"></row>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- ko ifnot: $component.confirmScreenExtensions -->
+  <div data-bind="template: { name: 'buttonTemplate'}"></div>
+  <!-- /ko -->
+  <!-- ko if: $component.confirmScreenExtensions -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <!-- ko if: $component.confirmScreenExtensions.resourceBundle -->
+      <div data-bind="template:{name: $component.confirmScreenExtensions.template , data : $component.confirmScreenExtensions}"></div>
+      <div data-bind="template: { name: 'buttonTemplate'}"></div>
+      <!-- /ko -->
+      <!-- ko ifnot: $component.confirmScreenExtensions.resourceBundle -->
+      <div data-bind="template:{name: $component.confirmScreenExtensions.template , data : $component.confirmScreenExtensions.data}"></div>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.feedbackTemplateDTO -->
+  <oj-button class="action-button-secondary" on-click="[[$component.showFeedbackOverlay]]">
+    <span data-bind="text:$component.confirmScreenResources.confirm.feedback"></span>
+  </oj-button>
+  <!-- /ko -->
+</div>
+
+<script type="text/html" id="buttonTemplate">
+  <!-- ko ifnot: $component.buttonTemplate -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[$component.handleOk]]">
+      <span data-bind="text:$component.confirmScreenResources.generic.common.ok"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+  <!-- ko if: $component.buttonTemplate -->
+  <div class="oj-flex-item">
+    <div data-bind="template:{name: $component.buttonTemplate}"></div>
+  </div>
+  <!-- /ko -->
+</script>
+<!-- ko if: $component.renderFeedbackModule -->
+<div data-bind="component:{name: 'feedback-capture', params:{taskCode: $component.confirmScreenExtensions.taskCode, feedback: $component.feedbackTemplateDTO()}}"></div>
+<!-- /ko -->

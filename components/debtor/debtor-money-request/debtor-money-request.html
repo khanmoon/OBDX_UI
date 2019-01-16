@@ -1,0 +1,118 @@
+<oj-validation-group id="requestMoneyTracker">
+<div class="form-main-container  oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+<!-- ko if:stageOne() && isDateLoaded() -->
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+     <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label ">
+                    <oj-label for="transferto"> <span data-bind="text:$component.debtors.requstFrom"></span></oj-label>
+                </div>
+                 <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 ">
+                    <!-- ko if: (debtorListExpandAll().length>0 && !$component.customDebtorName()) || isDebtorListEmpty() -->
+                                <oj-select-one id="transferto" required on-value-changed="[[debtorChanged]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.common.pleaseSelect]]" value="{{selectedDebtor}}">
+                    <!-- ko foreach:debtorListExpandAll() -->
+                    <oj-option value="{{debtorGroupName}}"><span data-bind="text:debtorGroupName"></span></oj-option>
+                    <!-- /ko -->
+                                </oj-select-one>
+                    <!-- /ko -->
+                  <!-- ko if:dropDownActive() -->
+                  <div class="dualdropdown">
+                    <div class="dropDownActive">
+                      <div data-bind="text:selectedDebtorName"></div>
+                        <!-- ko if:debtorSubList().length>0 -->
+                        <ul>
+                          <!-- ko foreach:debtorSubList() -->
+                          <a href="#" data-bind="attr:{'alt':$component.debtors.refresh,'title':$component.debtors.refreshTitle},click:$component.setDebtor.bind($data)">
+                             <li data-bind="text:nickName,
+                             value:debtorId"></li></a>
+                          <!-- /ko -->
+                        </ul>
+                        <!-- /ko -->
+                    </div>
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if:$component.customDebtorName() -->
+                  <oj-input-text id="customizeddebtor" value="{{$component.customDebtorName()}}" readonly="{{true}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+                      <span><a href="#" data-bind="attr:{'alt':$component.debtors.refresh,'title':$component.debtors.refreshTitle},click:$component.refreshDropDown">
+                      <span class="icon icon-cancel dropdowncancel"></span>
+                      </a></span>
+                  <!-- /ko -->
+                </div>
+      </div>
+
+      <!-- ko if:showError() -->
+      <div class="oj-flex oj-flex-items-pad center ">
+                <span data-bind="text: $component.debtors.selectDebtorNumber"></span>
+      </div>
+      <!-- /ko -->
+
+
+
+     <!-- ko if:currencyLoaded() -->
+      <div data-bind="component: {
+      name: 'amount-input', params: {
+      amount :RequestMoneyModel.amount.amount,
+      label : $component.debtors.amount,
+      currency: currency(),
+      converter:$baseModel.formatCurrency,
+      validator:$component.validationTracker,
+      isMandatory:true,
+      maxlength:15,
+      rootId:'dd-amount',
+      rootClass:'form-input',
+      currencyListRequired:false,
+      formattedAmount: ko.observable()
+        }
+      }"></div>
+      <!-- /ko -->
+
+
+      <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.debtors.requestIn,
+      type : 'balance' ,taskCode : 'PC_F_CITF',
+      account : RequestMoneyModel.sepaDomestic.nominatedAccount.value ,
+      additionalDetails : additionalDetails,
+      type:'balance' ">
+      </account-input>
+
+      <!-- ko if:$component.formattedTomorrow() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label ">
+          <oj-label for="transferondate"> <span data-bind="text:$component.debtors.receivedOn"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+          <oj-input-date id="transferondate" value="{{receivedDate}}" min="[[$oj.IntlConverterUtils.dateToLocalIso($component.formattedTomorrow())]]" converter="[[$baseModel.dateConverter]]" required></oj-input-date>
+            </div>
+      </div>
+      <!-- /ko -->
+      <div data-bind="component:{name: 'comment-box',
+          params:{
+          rootModel: $root,
+          maxlength:40,
+          label:$component.debtors.noteOpt,
+          rootId:'payComment',
+          rootClass:'form-input',
+          required:false,
+          validator:$component.validationTracker,
+          comment:RequestMoneyModel.remarks}}">
+      </div>
+    </page-section>
+      <div class="oj-flex oj-flex-items-pad button-container ">
+        <oj-button class="action-button-primary" id="button-request" on-click="[[verifyRequest]]">
+          <span slot="startIcon" class="icons icon-request"></span>
+          <span data-bind="text:$component.debtors.request"></span>
+        </oj-button>
+
+        <oj-button class="action-button-secondary" id="button-cancel" on-click="[[cancel]]">
+          <span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.common.cancel"></span>
+        </oj-button>
+      </div>
+  </div>
+      <!-- ko if: $baseModel.large() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'debtor-money-request'"></help>
+        </div>
+        <!-- /ko -->
+ <!-- /ko -->
+</div>
+</oj-validation-group>

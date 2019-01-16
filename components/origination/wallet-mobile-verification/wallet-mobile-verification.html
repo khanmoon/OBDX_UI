@@ -1,0 +1,27 @@
+<div class=" wallets_container">
+  <div class=" oj-panel form-main-container card-action-container">
+    <div class="header">
+        <div class="title_primary" data-bind="text:$component.resource.wallet.newtobank"></div>
+        <div class="title_secondary" data-bind="text:$component.resource.wallet.receivecodemsg"></div>
+    </div>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="section">
+            <div class="oj-row customizedinput">
+                <div class="wallets-action-label">
+                  <oj-label for="mobile-number"><span data-bind="text:$component.resource.wallet.mobilenumber"></span></oj-label>
+                </div>
+
+                <div>
+                  <oj-input-text id="mobile-number" maxlength="10" required autofocus type="text" translations="[[{'required':{messageDetail:$component.resource.messages.walletOrigination.mobileNumber}}]]" validators="[[$baseModel.getValidator('MOBILE_NO')]]" value="{{details.mobileNumber}}"></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-row button-container">
+              <oj-button id="button" class="action-button-primary" on-click="[[save]]">
+      <span data-bind="text:$component.resource.wallet.receivecodetext"></span>
+</oj-button>
+            <img data-bind="loadImage:'wallet/wallet-farward-white.png'">
+            </div>
+        </div>
+  </page-section>
+  </div>
+</div>

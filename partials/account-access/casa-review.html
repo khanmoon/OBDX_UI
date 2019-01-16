@@ -1,0 +1,106 @@
+<!-- ko if: $component.parentAccessLevel() ==="PARTY" -->
+
+<action-header params="baseModel : $baseModel, rootModel : $data, heading :nls.headers.newAccounts">
+</action-header>
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <label class="pull-left" data-bind="text: nls.fieldname.mapAccts"></label>
+        <span class="icons icon-help tool-tip">
+        <div class="talign-left tooltip-content"
+        data-bind=" html:$baseModel.format($component.nls.messages.tooltip.autoManualMessage,
+        {accountType:$component.transactionNames.casa,
+          accountType1:$component.transactionNames.casa})">
+        </div>
+      </span>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-9">
+        <oj-buttonset-one disabled="[[showEditableForm]]" value="{{$component.selectedCasaPolicy}}"
+        on-value-changed="[[$component.casaDefaultPolicyChangeHandler]]">
+        <oj-option name="casaPolicy" value="{{'casaAuto'}}" :id="[['casaAuto']]">
+          <span data-bind="attr: {for: 'casaAuto'},text:$component.nls.common.auto">
+          </span></oj-option>
+          <oj-option name="casaPolicy" value="{{'casaManual'}}" :id="[['casaManual']]">
+            <span data-bind="attr: {for: 'casaManual'},text:$component.nls.common.manual"></span></oj-option>
+          </oj-buttonset-one>
+    </div>
+</div>
+
+
+<action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.headers.existingAccounts">
+</action-header>
+<!-- /ko -->
+
+<!-- ko if: $component.parentAccessLevel()==="USER" -->
+
+
+<oj-checkboxset class=" oj-flex oj-flex-items-pad " disabled="[[$parent.showEditableForm]]"
+value="{{$component.selectedCasaPolicyChecked}}" on-value-changed="[[$component.casaDefaultPolicyChangeHandler]]">
+<oj-option value="casaAuto" id="casa_review">
+  <span for="casa_review" data-bind="text:$component.nls.common.ApplyChanges">
+                        </span></oj-option></oj-checkboxset>
+
+
+
+<!-- /ko -->
+<oj-checkboxset class=" oj-flex oj-flex-items-pad " disabled="[[showEditableForm]]"
+value="{{$component.mapAllTransactionsCasaFlag}}">
+<oj-option id="casa_review_map_all" value="{{'MAP_ALL'}}">
+  <span for="casa_review_map_all" data-bind="text:nls.headings.mapAllTransactionToAllAccnts"></span>
+</oj-option></oj-checkboxset>
+
+<!-- ko if: reloadCasaTable() -->
+<oj-table id="casaReviewtable" :aria-label="[[$component.nls.headers.casaAccounts]]"
+columns="[[[{headerText:nls.headers.AccountNumber,field:'accountID'},
+{headerText:nls.headers.currency,field:'currency'},
+{headerText:nls.headers.displayName,field:'displayName'},
+{headerText:nls.headers.accountStatus,field:'accountStatus'}]]]"
+row-renderer='[[$oj.KnockoutTemplateUtils.getRenderer("casa_template", true)]]'
+data="[[$parent.casaReviewDatasource]]">
+    <caption class="hide-label" data-bind="text:$component.nls.headers.casaAccounts"></caption>
+</oj-table>
+<!-- /ko -->
+
+<script type="text/html" id="casa_template">
+    <tr>
+        <!-- ko if: $context.rowContext.depth===1 -->
+        <td>
+            <!-- ko if: ($component.selectedCasaAccounts()).indexOf(accountNumber.value) > -1 -->
+              <oj-row-expander context="[[$context.rowContext]]"></oj-row-expander>
+            <!-- /ko -->
+            <input type="checkbox"
+            data-bind="attr:{'aria-label':$component.nls.headers.casacheckbox+id,
+            id: $component.nls.headers.casacheckbox+id } ,
+            checked: $parent.selectedCasaAccounts,
+            disable:($parent.showEditableForm && $parent.disableAccountSelection),
+             value : accountNumber.value">
+            <span data-bind="attr:{'for':$component.nls.headers.casacheckbox+id},  text: accountNumber.displayValue"></span>
+        </td>
+        <td>
+            <span data-bind="text:currency"></span>
+        </td>
+        <td>
+            <span data-bind="text:displayName"></span>
+        </td>
+        <td>
+            <span data-bind="text:accountStatus"></span>
+        </td>
+        <!-- /ko -->
+        <!-- ko if: $context.rowContext.depth===2 -->
+        <!-- ko if: ($component.selectedCasaAccounts()).indexOf(accountNumber.value) > -1 -->
+        <td colspan="4">
+            <div data-bind="component:{name: 'transaction-selection',
+             params:{rootModel: $parent,key:'casa', data: $data,
+              resoureTaskList : $parent.resourceListCasa, selectedResourceTaskList : $data.selectedTask ,
+              showReviewComponent: $component.showReviewComponent,
+               mapAllTransactionsToAllAccounts:$component.mapAllTransactionsToAllAccountCasa,
+               indicatorArray:$component.casaMapAllTransactionIndicatorArray,
+               tempTaskArray:$component.tmpTransactionCodeArray}}">
+            </div>
+        </td>
+
+
+        <!-- /ko -->
+        <!-- /ko -->
+    </tr>
+</script>

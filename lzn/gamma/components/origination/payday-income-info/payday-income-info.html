@@ -1,0 +1,100 @@
+<div class="employments-financial-info">
+
+  <!-- ko if: $component.existingIncomesLoaded() -->
+  <page-section params="baseModel : $baseModel, rootModel : $data">
+    <oj-validation-group id="payday-income-tracker"  valid="{{groupValid}}">
+      <!-- ko foreach : $component.applicantObject().incomeInfo.incomeList -->
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2 ">
+          <oj-label for="incomeType" :for="[['incomeType'+(++$component.idCount)]]"><span data-bind="text:$component.resource.incomeType"></span></oj-label>
+        </div>
+        <!-- ko if: $component.incomeOptionsLoaded() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 label">
+          <oj-select-one id="incomeType" required :id="[['incomeType'+($component.idCount)]]" translations="[[{'required':{messageDetail:$component.resource.messages.incomeType}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="" value="{{type}}">
+            <!-- ko foreach: $component.incomeOptions -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+        <!-- /ko -->
+      </div>
+
+      <div data-bind="component: {
+                            name: 'amount-input', params: {
+                                amount :grossAmount.amount,
+                                placeholder: $component.dollar,
+                                label:$component.resource.incomeEarned,
+                                currency: grossAmount.currency,
+                                labelClasses : 'oj-lg-3 oj-md-4 oj-lg-offset-2 oj-md-offset-1',
+                               valueClasses : 'oj-lg-6 oj-md-7 grossIncome',
+                                converter:$root.formatCurrency,
+                                isMandatory:true,
+                                maxlength:15,
+                                rootId:'grossIncome' + ($index()),
+                                  id:'grossIncome' + ($index()),
+                                rootClass:'form-input',
+                                inline:true,
+                                formattedAmount: ko.observable()
+                            }
+                        }"></div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2 ">
+          <oj-label for="incomeType" :for="[['howOften'+(++$component.idCount)]]"><span data-bind="text:$component.resource.howOften"></span></oj-label>
+        </div>
+        <!-- ko if: $component.frequencyOptionsLoaded() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 label">
+          <oj-select-one id="incomeType" required :id="[['howOften'+($component.idCount)]]" translations="[[{'required':{messageDetail:$component.resource.messages.invalidFrequency}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder=""
+            value="{{frequency}}">
+            <!-- ko foreach: $component.frequencyOptions -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+        <!-- /ko -->
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2">
+          <oj-label :for="[['nextPayDate']]"><span data-bind="text:$component.resource.nextPayDate"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-input-date required autocomplete="off" spellcheck="false" :id="[['nextPayDate']]" translations="[[{'required':{messageDetail:$component.resource.messages.nextPayDate}}]]" converter="[[$component.dateConverter]]" on-value-changed="[[$component.nextPayDayChange]]"
+            value="{{nextPayDate}}" datepicker="[[{yearRange:'c:c+100'}]]"></oj-input-date>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2">
+          <oj-label :for="[['secondPayDate']]"><span data-bind="text:$component.resource.secondPayDate"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-input-date required autocomplete="off" spellcheck="false" :id="[['secondPayDate']]" translations="[[{'required':{messageDetail:$component.resource.messages.secondPayDate}}]]" converter="[[$component.dateConverter]]" validators="[[[$component.comparePayDates]]]"
+            value="{{secondPayDate}}" datepicker="[[{yearRange:'c:c+100'}]]"></oj-input-date>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2 ">
+          <oj-label for="incomeType" :for="[['ifPaydayHoliday'+(++$component.idCount)]]"><span data-bind="text:$component.resource.ifPaydayHoliday"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 label">
+          <oj-select-one id="incomeType" required :id="[['ifPaydayHoliday'+($component.idCount)]]" translations="[[{'required':{messageDetail:$component.resource.messages.alternatePayDay}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder=""
+            value="{{alternatePayDay}}">
+            <!-- ko foreach: $component.alternateOptions -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+
+      <!-- /ko -->
+    </oj-validation-group>
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item  oj-lg-10 oj-md-10">
+      <oj-button id="submitIncome" class="form-button-secondary" on-click="[[$component.submitIncomeInfo]]"><span data-bind="text:$component.resource.generic.common.continue"></span></oj-button>
+    </div>
+  </div>
+  <!-- /ko -->
+
+
+</div>

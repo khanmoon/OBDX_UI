@@ -1,0 +1,60 @@
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label :for="{{'country' + $data.type}}"><span data-bind="text: resource.country"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+<oj-select-one :id="{{'country' + $data.type}}" required value="{{$data.addressData.country}}" translations="[[{'required':{messageDetail:resource.messages.country}}]]"
+  on-value-changed="[[$component.countryChanged.bind($data, $data.countriesLoaded)]]" :placeholder="">
+      <!-- ko foreach: $component.countries -->
+      <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+      <!-- /ko -->
+    </oj-select-one>
+  </div>
+</div>
+<!-- ko if: $data.countriesLoaded -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label :for="{{'state' + $data.type}}"><span data-bind="text: resource.state"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+    <oj-select-one :id="{{'state' + $data.type}}" required value="{{$data.addressData.state}}" translations="[[{'required':{messageDetail:resource.messages.state}}]]" on-value-changed="[[$component.stateChanged]]" :placeholder="">
+      <!-- ko foreach: $component.states -->
+      <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+      <!-- /ko -->
+    </oj-select-one>
+  </div>
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label :for="{{'city' + $data.type}}"><span data-bind="text: resource.city"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+    <oj-input-text :id="{{'city' + $data.type}}" required maxlength="35" value="{{$data.addressData.city}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL', resource.messages.city,{
+                   type:'length',options:{min:1,max:35}})]]" translations="[[{'required':{messageDetail:resource.messages.city}}]]" name="city"></oj-input-text>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad oj-lg-12">
+    <oj-label :for="{{'customerAddress' + $data.type}}" class="oj-flex-item oj-lg-12 oj-sm-12">
+        <span data-bind="text: resource.address"></span>
+    </oj-label>
+    <div class="oj-flex-item oj-lg-12">
+        <oj-input-text :id="{{'customerAddress' + $data.type}}" maxlength="50" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{$data.addressData.line1}}" translations="[[{'required':{messageDetail:resource.messages.line1}}]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL', resource.messages.line1,{
+                       type:'length',options:{min:1,max:50}})]]" required>
+        </oj-input-text>
+    </div>
+    <div class="oj-flex-item oj-lg-12">
+        <oj-input-text :id="{{'customerAddress2' + $data.type}}" maxlength="50" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{$data.addressData.line2}}" :aria-label="[[resource.address]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL', resource.messages.line2,{
+                       type:'length',options:{min:0,max:50}})]]">
+        </oj-input-text>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label :for="{{'zipcode' + $data.type}}"><span data-bind="text: resource.zip"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+    <oj-input-text :id="{{'zipcode' + $data.type}}" required maxlength="9" value="{{$data.addressData.zipCode}}" validators="[[$baseModel.getValidator('ALPHANUMERIC', resource.messages.zipcode,{
+                   type:'length',options:{min:1,max:9}})]]" translations="[[{'required':{messageDetail:resource.messages.zipcode}}]]" name="zip"></oj-input-text>
+  </div>
+</div>

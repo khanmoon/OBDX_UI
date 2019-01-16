@@ -1,0 +1,21 @@
+<div id="pagingControlDemo" class="full-width">
+    <oj-table id="adminMaintenanceTable" columns="[[[{headerRenderer:renderHeadCheckBox,renderer:renderCheckBox,sortable:'none'},{headerText:$component.Nls.generic.common.date,template:'date-time',field:'creationDate'},{headerText:$component.Nls.pendingApprovalsDetails.labels.description,field:'type'},{headerText:$component.Nls.pendingApprovalsDetails.labels.initiatedBy,field:'initiatedBy'},{headerText:$component.Nls.pendingApprovalsDetails.labels.referenceNo,field:'transactionId',template:'approval_link_pending'},{headerText:$component.Nls.pendingApprovalsDetails.labels.status,template:'approvalStatus',field:'status'}]]]" data="[[arrayDataSource]]">
+             <caption class="hide-label" data-bind="text: $component.Nls.pendingApprovalsDetails.labels.details"></caption>
+             <template slot="approval_link_pending">
+
+                     <a href="javascript:void(0)" data-bind="attr:{title: $baseModel.format($component.Nls.pendingApprovalsDetails.labels.linkDetails,{transactionId:$current.row.transactionId})},text:$current.row.transactionId,click:$dashboard.loadComponent.bind($data,'transaction-detail', $current.row , $parent)"></a>
+
+             </template>
+
+             <template slot="date-time">
+
+                     <div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "date-time", params:{rootModel: $component,date:$current.row.creationDate}}'></div>
+
+             </template>
+             <template slot="approvalStatus">
+                      <div data-bind="template : {name : 'approvals/status', data : {status :$current.row.processingStatus ,noOfApprovalSteps: $current.row.noOfApprovalSteps, nls : $component.Nls.pendingApprovalsDetails.status}}"></div>
+             </template>
+    </oj-table>
+
+    <oj-paging-control class="oj-flex-item" slot="bottom" :id="[[$component.Nls.pendingApprovalsDetails.labels.details + ($baseModel.currentIdCount())]]" :page-size="[[10]]" data="[[arrayDataSource]]"></oj-paging-control>
+</div>

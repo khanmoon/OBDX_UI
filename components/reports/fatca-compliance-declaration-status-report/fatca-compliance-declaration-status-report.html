@@ -1,0 +1,49 @@
+<form>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex oj-flex-item oj-lg-2">
+      <oj-label id="generateRadioset" class="oj-label-inline"><span data-bind="text:$component.resource.fatca.generate"></span></oj-label>
+    </div>
+    <div class="oj-flex oj-flex-item">
+    <oj-radioset class="oj-choice-direction-row" id="radiosetForGenerate" labelled-by="generateRadioset" value="{{currentSelection}}" on-value-changed="[[$component.generateByValueChanged]]">
+      <oj-option id="partyIdSel" value="partyIdSelected"><span data-bind="text:$component.resource.fatca.partyId"></span></oj-option>
+      <oj-option id="statusSel" value="statusSelected"><span data-bind="text:$component.resource.fatca.status"></span></oj-option>
+    </oj-radioset>
+  </div>
+  </div>
+  <!-- ko if: $component.showPartyDetails() === true -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex oj-flex-item oj-lg-2">
+      <oj-label id="enterPartyId" class="oj-label-inline"><span data-bind="text:$component.resource.fatca.partyIdSelect"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+      <oj-input-text id="partyId" value={{selectedPartyId}} placeholder="[[$component.resource.fatca.partyId]]" :aria-label="[[$component.resource.fatca.partyId]]">
+      </oj-input-text>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if: $component.showStatusDetails() === true && $component.loadStatus() === true -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+      <oj-label id="status" class="oj-label-inline" for="selectStatus"><span data-bind="text:$component.resource.fatca.selectStatus"></span></oj-label>
+    </div>
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+      <oj-select-one id="selectStatus" placeholder="[[$component.resource.fatca.statusSelect]]" :aria-label="[[$component.resource.fatca.statusSelect]]">
+        <!-- ko foreach: statusTypes -->
+        <oj-option value="[[value]]"><span data-bind="text:label"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+      <oj-label id="duration" class="oj-label-inline"><span data-bind="text:$component.resource.fatca.duration"></span></oj-label>
+    </div>
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+      <oj-input-date required id="fromDate" placeholder="[[$component.resource.fatca.fromDate]]" :aria-label="[[$component.resource.fatca.fromDate]]" name="fromDate" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+    </div>
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+      <oj-input-date required id="toDate" placeholder="[[$component.resource.fatca.toDate]]" :aria-label="[[$component.resource.fatca.toDate]]" name="toDate" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+    </div>
+  </div>
+  <!-- /ko -->
+</form>

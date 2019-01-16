@@ -1,0 +1,259 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <oj-validation-group id="contactInfoTracker">
+    <!-- ko if: $component.addressDataLoaded() -->
+    <div class="oj-flex oj-flex-items-pad application-form-text">
+      <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <h4 class="form-heading" data-bind="text:$component.resource.email"></h4>
+      </div>
+    </div>
+    <!-- ko if:$component.existingContactLoaded() -->
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class=" tooltip-section oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+        <oj-label class="span-label" :for="[['email'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.email"></span>
+          <!-- ko if: $baseModel.large() -->
+          <div class="tooltip message-text" id="emailRequiremnt_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.emailRequirementText,toolTipId:'emailRequiremnt_tooltip'}}">
+          </div>
+          <span class="icon-help" id="tool-tip-holder_email" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'emailRequiremnt_tooltip','tool-tip-holder_email'), mouseout: $component.hideToolTip.bind($data,'emailRequiremnt_tooltip') }"></span>
+          <!-- /ko -->
+          <!-- ko ifnot: $baseModel.large() -->
+          <a href="javascript:void(0)" class="icon-help" aria-hidden="true" data-bind="click: function(){$('#emailRequiremnt').show().trigger('openModal')} ,attr:{alt: $component.resource.emailRequirements, title: $component.resource.emailRequirementsInfo}"></a>
+          <!-- /ko -->
+        </oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <oj-input-text oncopy="return false" autocomplete="off" spellcheck="false" ondragstart="return false" onselectstart="return false" onpaste="return false" onmousedrop="return false" required maxlength="100" on-change="[[$component.onEmailChange]]"
+          :id="[['email'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.email}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('EMAIL')]]" value="{{$component.applicantObject().contactInfo.email}}"
+          disabled="[[$component.applicantObject().contactInfo.disableInputs()]]"></oj-input-text>
+      </div>
+
+    </div>
+
+    <!-- ko if:(($component.applicantObject().applicantType() !== "customer" && !$component.productDetails().isRegistered) || $component.emailChanged())-->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+        <oj-label for="confirmEmail"><span data-bind="text:$component.resource.confirmEmail"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <oj-input-text required id="confirmEmail" oncopy="return false" autocomplete="off" spellcheck="false" ondragstart="return false" onselectstart="return false" onpaste="return false" onmousedrop="return false" maxlength="100" translations="[[{'required':{messageDetail:$component.resource.messages.email}}]]"
+          validators="[[[$component.equalToEmail]]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.confirmEmail}}"></oj-input-text>
+      </div>
+    </div>
+    <!-- /ko -->
+
+
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad application-form-text">
+      <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <h4 class="form-heading" data-bind="text:$component.resource.contactNumber"></h4>
+      </div>
+    </div>
+    <!-- ko if:$component.existingContactLoaded() -->
+    <!-- ko if:$component.phoneTypeListLoaded() -->
+
+
+    <div class=" oj-md-labels-inline" data-bind="with:applicantObject().contactInfo">
+      <div data-bind="with:contactInfo">
+        <div data-bind="template:{name:'origination/phone-number',  data:{contacts:contacts[0],id:1,phoneTypeList:$component.phonetypeOne()}}"></div>
+        <!-- ko if:$component.isAlternatePhoneNumber() || !$component.applicantObject().contactInfo.disableInputs()-->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <div class="">
+              <oj-label :for="[['alternateNumber'+($component.coApplicant?'_coapp':'')]]"><span data-bind="text:$component.resource.alternateNumber"></span></oj-label>
+            </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+            <oj-buttonset-one :id="[['alternateNumber'+($component.coApplicant?'_coapp':'')]]" :aria-label="[[$component.resource.alternateNumber]]" on-value-changed="[[$component.saveAlternateNumber]]" value="{{$component.alternateNumber}}" disabled="[[$component.applicantObject().contactInfo.disableInputs()]]">
+              <oj-option class="undefined" value="{{'OPTION_YES'}}" :id="[['alternateNumberYes'+($component.coApplicant?'_coapp':'')]]" :name="[['alternateNumber'+($component.coApplicant?'_coapp':'')]]"><span :for="[['alternateNumberYes'+($component.coApplicant?'_coapp':'')]]" ,="" data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+              <oj-option class="undefined" value="{{'OPTION_NO'}}" :id="[['alternateNumberNo'+($component.coApplicant?'_coapp':'')]]" :name="[['alternateNumber'+($component.coApplicant?'_coapp':'')]]"><span :for="[['alternateNumberNo'+($component.coApplicant?'_coapp':'')]]" ,="" data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+            </oj-buttonset-one>
+          </div>
+        </div>
+        <!-- /ko  -->
+        <!-- ko if:$component.isAlternatePhoneNumber() -->
+        <div data-bind="template:{name:'origination/phone-number', data:{contacts:contacts[1],id:2,phoneTypeList:$component.phonetypeTwo()}}"></div>
+        <!-- /ko  -->
+      </div>
+    </div>
+
+    <!-- /ko  -->
+
+    <div class="oj-flex oj-flex-items-pad application-form-text application-form-info">
+
+      <div class="oj-flex-item oj-lg-10 oj-md-10 oj-lg-offset-1 oj-md-offset-1">
+        <div data-bind="text:$component.resource.contactInformation" class="text"></div>
+      </div>
+
+    </div>
+    <!-- /ko  -->
+
+
+    <div class="oj-flex oj-flex-items-pad application-form-text cust-label margin-top-20">
+      <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <h4 class="form-heading" data-bind="text:$component.resource.resAddr"></h4>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <span class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10 text" data-bind="text:$component.resource.poBoxes"></span>
+    </div>
+
+
+
+    <div class=" oj-md-labels-inline" data-bind="with:applicantObject().contactInfo">
+
+      <div data-bind="with:contactInfo">
+        <!-- ko if:$component.applicantObject().applicantRelationshipType === "CO_APPLICANT"  && $component.enableCopyAddress() -->
+
+        <div class="oj-flex oj-flex-items-pad">
+          <!-- label -->
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label :for="[['copy-address']]"><span data-bind="text:$component.resource.copyAddress"></span></oj-label>
+          </div>
+          <!-- ysno -->
+
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-buttonset-one id="copy-address" on-value-changed="[[$component.toggleCopyAddress]]" value="{{$component.isCopyAddress}}">
+              <oj-option id="MakeACopy" name="copy-address" class="copy-address" value="{{'OPTION_YES'}}"><span for="MakeACopy" ,="" data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+              <oj-option id="NoCopy" name="copy-address" class="copy-address" value="{{'OPTION_NO'}}"><span for="NoCopy" ,="" data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+            </oj-buttonset-one>
+          </div>
+
+        </div>
+        <!-- /ko  -->
+        <div class="oj-flex oj-flex-items-pad">
+
+          <!-- ko if: $component.accommodationDataLoaded() -->
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label :for="[['accomodationType'+($baseModel.incrementIdCount())]]">
+              <span data-bind="text:$component.resource.accomodationType"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-select-one id="accomodationType" :id="[['accomodationType'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.accomodationType}}]]" on-value-changed="[[$component.accomodationtypeChanged]]" value="{{address.accomodationType}}"
+              required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[$component.applicantObject().contactInfo.disableInputs()]]" :placeholder="">
+              <!-- ko foreach: $component.accomodationOptions -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+          <!-- /ko -->
+        </div>
+        <div id="contactInfo">
+          <!-- ko ifnot: $component.isCoAppState() -->
+          <!-- ko if: $component.productDetails().productClassName==='CREDIT_CARD' -->
+          <div data-bind='component: { name: "address-input", params: { rootModel: $component,
+                              id:"2",
+                            addressModel:$data.address.postalAddress,
+                              addressValues:$component.applicantObject().contactInfo.selectedValues(),
+                              template:"templateUS",
+                              disableInputs :$component.applicantObject().contactInfo.disableInputs(),
+                            validator:$component.validationTracker}}'></div>
+          <!-- /ko -->
+          <!-- ko  ifnot: $component.productDetails().productClassName==='CREDIT_CARD'  -->
+          <div data-bind='component: { name: "address-input", params: { rootModel: $component,
+                                              id:"1",
+                                            addressModel:$data.address.postalAddress,
+                                                addressValues:$component.applicantObject().contactInfo.selectedValues(),
+                                            template:"templateUS",
+                                              disableInputs :$component.applicantObject().contactInfo.disableInputs(),
+                                            validator:$component.validationTracker}}'></div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if: $component.isCoAppState() -->
+          <div data-bind='component: { name: "address-input", params: { rootModel: $component,
+                              id:"2",
+                            addressModel:$data.address.postalAddress,
+                              addressValues:$component.applicantObject().contactInfo.selectedValues(),
+                              template:"templateUS",
+                              disableInputs :$component.applicantObject().contactInfo.disableInputs(),
+                            validator:$component.validationTracker}}'></div>
+          <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label :for="[['stayingSince'+($baseModel.incrementIdCount())]]">
+              <span data-bind="text:$component.resource.stayingSince"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-input-date id="stayingSince" autocomplete="off" spellcheck="false" :id="[['stayingSince'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.stayingSince}}]]" converter="[[$component.dateConverter]]"
+              on-value-changed="[[$component.checkStayingSince]]" required="[[true]]" datepicker="[[{yearRange:'c-100:c'}]]" max="[[$component.todayIsoDate]]" value="{{address.stayingSince}}" disabled="[[$component.applicantObject().contactInfo.disableInputs()]]"></oj-input-date>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- ko if:$component.previousAddressRequired() -->
+
+    <!-- ko if : showPreviousAddress() -->
+    <div class=" tooltip-section  oj-flex oj-flex-items-pad application-form-text ">
+      <div class="oj-flex-item oj-sm-11 oj-md-11 oj-lg-11 oj-lg-offset-1 oj-md-offset-1">
+        <span class="form-heading" data-bind="text:$component.resource.prevResAddr"></span>
+        <!-- ko if: $baseModel.large() -->
+        <div class="tooltip message-text" id="previousAddressRequirement_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.previousAddressRequiredText,toolTipId:'previousAddressRequirement_tooltip'}}">
+        </div>
+        <span class="icon-help" id="previousAddressRequirement_holder" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'previousAddressRequirement_tooltip','previousAddressRequirement_holder'), mouseout: $component.hideToolTip.bind($data,'previousAddressRequirement_tooltip') }"></span>
+        <!-- /ko -->
+        <!-- ko ifnot: $baseModel.large() -->
+        <a href="javascript:void(0)" class="icon-help" aria-hidden="true" data-bind="click: function(){$('#previousAddressRequirement').show().trigger('openModal')} ,attr:{alt: $component.resource.pervAddressClick, title: $component.resource.pervAddressClickInfo}"></a>
+        <!-- /ko -->
+      </div>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad text">
+      <span class="oj-flex-item oj-lg-offset-1 oj-md-offset-1" data-bind="text:$component.resource.poBoxes1"></span>
+    </div>
+
+
+
+
+
+    <div class=" oj-md-labels-inline" data-bind="with:applicantObject().previousContactInfo">
+
+      <div data-bind="with:contactInfo">
+        <div class="oj-flex oj-flex-items-pad">
+
+          <!-- ko if: $component.accommodationDataLoaded() -->
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label :for="[['accomodationType'+($baseModel.incrementIdCount())]]">
+              <span data-bind="text:$component.resource.accomodationType"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-select-one id="accomodationType" :id="[['accomodationType'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.accomodationType}}]]" on-value-changed="[[$component.prevaccomodationtypeChanged]]"
+              value="{{address.accomodationType}}" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[$component.applicantObject().contactInfo.disableInputs()]]" :placeholder="">
+              <!-- ko foreach: $component.accomodationOptions -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+          <!-- /ko -->
+        </div>
+        <div id="contactInfo">
+          <div data-bind='component: { name: "address-input", params: { rootModel: $component,
+                            id:"2",
+                            addressModel:$data.address.postalAddress,
+                                addressValues:$component.applicantObject().previousContactInfo.selectedValues(),
+                              disableInputs :$component.applicantObject().contactInfo.disableInputs(),
+                            validator:$component.validationTracker}}'></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+</page-section>
+</oj-validation-group>
+<modal-window class="origination-popup message" params="baseModel : $baseModel, rootModel : $component, id:'stayingSinceError', header:$component.resource.generic.common.error">
+  <div class="message-text scroll" data-bind="text: $component.stayingSinceMessage()"></div>
+  <div class="message-btn button-container">
+    <oj-button id="stayingSinceModalButton" class="toUpperCase form-button-primary" on-click="[[function(){$('#stayingSinceError').trigger('closeModal')}]]"> <span data-bind="text:$component.resource.generic.common.ok"></span></oj-button>
+  </div>
+</modal-window>
+
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item oj-md-10 oj-lg-10">
+    <oj-button id="submitContact" class="form-button-secondary" :aria-label="[[$component.resource.submitContact]]" on-click="[[$component.submitContactInfo]]"><span data-bind="text:$component.resource.generic.common.continue"></span></oj-button>
+  </div>
+</div>

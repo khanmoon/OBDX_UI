@@ -1,0 +1,53 @@
+<div class="select-persona-container">
+    <div class="form-main-container dashboard-design">
+        <page-section params="baseModel : $baseModel,rootModel:$data, heading : ''">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-2">
+                    <oj-label id="mainlabelid" class="oj-label-inline">
+                        <span data-bind="text:nls.selectUser"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-10">
+                    <oj-radioset labelled-by="mainlabelid" class="oj-choice-direction-row" value="{{selectSegment}}" :aria-label="[[$component.nls.selectUser]]">
+                        <oj-option id="admin" value="ADMIN">
+                            <span data-bind="text:nls.segments.admin"></span>
+                        </oj-option>
+                        <oj-option id="retail" value="RETAIL">
+                            <span data-bind="text:nls.segments.retail"></span>
+                        </oj-option>
+                        <oj-option id="corporate" value="CORPORATE">
+                            <span data-bind="text:nls.segments.corporate"></span>
+                        </oj-option>
+                    </oj-radioset>
+                </div>
+            </div>
+            
+        </page-section>       
+        <page-section params="baseModel : $baseModel,rootModel:$data, heading : nls.selectModule">
+            <div class="oj-flex oj-flex-items-pad ">
+                <!-- ko foreach:personaModules() -->
+                <a href="javascript:void(0)" class="persona" data-bind="attr:{ title
+                    :  $baseModel.format($component.nls.generic.common.clickHere,{action : name})},click:$component.createDashboard.bind($data,module);">
+                    <img data-bind="loadImage:'dashboard-design/personas/dashboard.png'" class="oj-sm-12">
+                    <div class="center" data-bind="text:name"></div>
+                </a>
+                <!-- /ko -->
+                <!-- ko foreach:$component.segmentRoles() -->
+                <a href="javascript:void(0)" class="persona" data-bind="attr:{ title
+                    :  $baseModel.format($component.nls.generic.common.clickHere,{action : name})},click:$component.createRoleDashboard.bind($data,applicationRoleName,applicationRoleDisplayName);">
+                    <img data-bind="loadImage:'dashboard-design/personas/dashboard.png'" class="oj-sm-12">
+                    <div class="center" data-bind="text:applicationRoleDisplayName"></div>
+                </a>
+                <!-- /ko -->
+            </div>
+            <div class="oj-flex oj-flex-items-pad ">
+                <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+                    <span data-bind="text:$component.nls.generic.common.cancel"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" on-click="[[$dashboard.hideDetails]]">
+                    <span data-bind="text:$component.nls.generic.common.back"></span>
+                </oj-button>
+            </div>
+        </page-section>        
+    </div>
+</div>

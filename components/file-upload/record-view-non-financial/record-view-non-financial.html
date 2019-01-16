@@ -1,0 +1,39 @@
+<div class="form-main-container">
+    <!-- ko if:recordDetailsLoaded() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div data-bind="with:$component.recordDetails">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                    <oj-label><span data-bind="text:$component.Nls.fileName"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text : (('fileName' in $data)?fileName:'-')"></span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                    <oj-label><span data-bind="text:$component.Nls.recordRefNo"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text : (('recRefId' in $data)?recRefId:'-')"></span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                    <oj-label><span data-bind="text:$component.Nls.rStatus"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text : (('recStatus' in $data)?recStatus:'-')"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div data-bind="template: { name: $component.loadPartialComponentName() ,data:$component.recordDetails}"></div>
+    </page-section>
+    <!-- /ko -->
+    <!-- ko if:$component.showBackButton() -->
+    <div class="button-container">
+        <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+      <span data-bind="text:$component.Nls.back"></span>
+</oj-button>
+    </div>
+    <!-- /ko -->
+</div>

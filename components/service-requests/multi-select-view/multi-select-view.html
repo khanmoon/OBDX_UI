@@ -1,0 +1,18 @@
+<div class="oj-flex">
+  <div class="oj-flex-item">
+    <div class="oj-sm-12 oj-lg-5 oj-md-5 check-box-label">
+      <oj-label class="oj-label-inline"><span data-bind="text: $component.label"></span></oj-label>
+    </div>
+    <div class="oj-flex oj-sm-12">
+      <div class="oj-flex-item oj-sm-12 oj-lg-5 oj-md-5">
+        <!-- ko if: $component.formData -->
+        <oj-select-many id="multiSelect" :aria-label="[[$component.resource.multiSelect]]" value="{{$component.testInput}}" placeholder="{{$component.resource.dropListText}}" disabled="{{$component.isDisabled}}" required="{{$component.isRequired}}" translations="[[{'required':{messageDetail:$component.errorMessage()}}]]">
+          <!-- ko foreach: $component.values -->
+          <oj-option value="{{description}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-many>
+        <!-- /ko -->
+      </div>
+    </div>
+  </div>
+</div>

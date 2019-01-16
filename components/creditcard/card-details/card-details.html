@@ -1,0 +1,502 @@
+<!-- ko if: $component.small -->
+<!-- ko if: $component.moduleURL() -->
+<div class="form-main-container">
+  <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.resource.creditCardDetails.selectedCard,
+    account : $component.creditCardId,
+    type: 'nodeValue',
+    additionalDetails : $component.additionalCardDetails,
+    validator:$component.validationTracker,
+    customURL : $component.moduleURL,
+    accountsParser: $component.creditCardParser,
+    readOnly: !!$component.params.id">
+  </account-input>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if:viewDetailsLoaded -->
+<div data-bind="component:{name: 'account-nickname', params:{rootModel:$data,params:cardDataForNickname(),editable:true,module:'credit-cards'}}">
+</div>
+
+<div class="form-main-container">
+  <!-- ko if: $component.mode() !== 'REVIEW' -->
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $data, id:'internationalTransactions', header :  $component.popupHeader(), closeHandler: $component.closeSwitchDialog">
+    <div class="form-main-container message-text">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <span data-bind="text: $component.popupMsg()"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button id="yesInternationalTransactions" class="action-button-primary " on-click="[[$component.disableInternationalTransaction]]"><span slot="startIcon" class="icons icon-submit"></span>
+          <span data-bind="text:$component.popupBtn()"></span>
+        </oj-button>
+        <oj-button id="cancelInternationalTransactions" class="action-button-secondary " on-click="[[$component.closeSwitchDialog]]"><span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.resource.genericCard.cancel"></span>
+        </oj-button>
+      </div>
+    </div>
+  </modal-window>
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $data, id:'activateCard', header :  $component.resource.creditCardDetails.activateCardHeader, closeHandler:$component.closeHandler">
+    <div class="form-main-container message-text">
+      <div class="row-group">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <span data-bind="text: $component.resource.creditCardDetails.activateCardHeaderMsg"></span>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <!-- ko if:isReasonsLoaded() -->
+          <div class="oj-flex-item oj-sm-12 label ">
+            <oj-label for="addressType" class=""><span data-bind="text:resource.creditCardDetails.selectReason"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 left">
+            <oj-select-one id="addressType" required translations="[[{'required':{messageDetail:resource.creditCardDetails.reason}}]]" :placeholder="[[resource.creditCardDetails.pleaseSelect]]" value="{{$component.selectedReason}}">
+              <!-- ko foreach:$component.reasonsArray() -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+          <!-- /ko -->
+        </div>
+        <div class="oj-sm-10 oj-md-10 oj-lg-10" data-bind="component:{name: 'comment-box',
+                              params:{
+                              rootModel: $root,
+                              maxlength:40,
+                              label:resource.creditCardDetails.comment,
+                              rootId:'payComment',
+                              rootClass:'form-input',
+                              required:false,
+                              validator:$component.validationTracker,
+                              comment:$component.comment}}"></div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button id="yesCommentBox" class="action-button-primary " on-click="[[$component.activateCard]]"><span slot="startIcon" class="icons icon-yes"></span>
+          <span data-bind="text:$component.resource.creditCardDetails.yesA"></span>
+        </oj-button>
+        <oj-button id="cancelCommentBox" class="action-button-secondary " on-click="[[$component.closeHandler]]"><span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.resource.genericCard.cancel"></span>
+        </oj-button>
+      </div>
+    </div>
+  </modal-window>
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'reviewBillCycle', header : $component.resource.creditCardDetails.billcycleheading">
+    <div class="form-main-container message-text">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <span data-bind="text:$component.resource.creditCardDetails.reviewBillCycleMsg"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button id="updateBillCycle" class="action-button-primary " on-click="[[updateBillCycle]]"><span slot="startIcon" class="icons icon-forward-arrow"></span>
+          <span data-bind="text:$component.resource.genericCard.proceed"></span>
+        </oj-button>
+        <oj-button id="cancelReviewBillCycle" class="action-button-secondary " on-click="[[cancel.bind($data, 'reviewBillCycle')]]"><span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.resource.genericCard.cancel"></span>
+        </oj-button>
+      </div>
+    </div>
+  </modal-window>
+  <div class="oj-flex oj-lg-justify-content-space-around oj-md-justify-space-around oj-sm-justify-content-center">
+    <div data-bind="css: $component.cardObject.creditCard.cardType === 'PRIMARY' ? 'oj-flex-item oj-lg-3 oj-md-3 oj-sm-12' : 'oj-flex-item oj-sm-12 oj-md-12 oj-lg-6'">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading :$component.resource.creditCardDetails.addInfo">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="validFrom"><span data-bind="text:$component.resource.creditCardDetails.validFrom"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <span data-bind="text:$baseModel.formatDate($component.cardObject.creditCard.validity.start,'monthYearFormat')"></span>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="validTo"><span data-bind="text:$component.resource.creditCardDetails.validTo"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <span data-bind="text:$baseModel.formatDate($component.cardObject.creditCard.validity.end,'monthYearFormat')"></span>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="InternationalTransactions"><span data-bind="text:$component.resource.creditCardDetails.internationalTransactions"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <div class="oj-flex oj-flex-items-pad">
+            <!-- ko if: $component.cardObject.creditCard.cardStatus === 'ACT' -->
+            <div class="oj-flex-item oj-sm-4">
+            <oj-switch id="InternationalTransactions" value="{{internationalTransactionsValue}}" required on-click="{{$component.onSwitchChange}}"></oj-switch>
+          </div>
+            <!-- /ko -->
+          </div>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="activateCard"><span data-bind="text:$component.resource.creditCardDetails.cardStatus"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <span data-bind="text:resource.creditCardDetails[$component.cardObject.creditCard.cardStatus]"></span>
+            <!-- ko if: $component.cardObject.creditCard.cardStatus === 'IAT' -->
+            <oj-switch id="activateCard" value="{{$component.isCardActivated}}" on-value-changed="[[showSwitchValueActivateCard]]" required></oj-switch>
+            <!-- /ko -->
+          </div>
+        </div>
+      </page-section>
+    </div>
+    <!-- ko if:$component.cardObject.creditCard.cardType === 'PRIMARY' -->
+    <div data-bind="css: $component.cardObject.creditCard.cardType === 'PRIMARY' ? 'oj-flex-item oj-lg-3 oj-md-3 oj-sm-12' : 'oj-flex-item oj-sm-12 oj-md-12 oj-lg-6'">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading :$component.resource.creditCardDetails.billing">
+        <!-- ko if:$component.isPrimary() -->
+        <!-- ko if: $component.cardObject.creditCard.due.billedAmount -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="totalAmountDue"><span data-bind="text:$component.resource.creditCardDetails.totalAmountDue"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <span data-bind="text:$baseModel.formatCurrency(cardObject.creditCard.due.billedAmount.amount, cardObject.creditCard.due.billedAmount.currency)"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if:$component.isPrimary() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="billCycle"><span data-bind="text:$component.resource.creditCardDetails.billCycle"></span></oj-label>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12">
+            <!-- ko ifnot:$component.billCycleListLoaded() -->
+            <span data-bind="text:$baseModel.format($component.resource.creditCardDetails.ofmonth, {billCycle:$component.selectedBillCycle()})"></span>
+            <!-- ko if: $component.cardObject.creditCard.cardStatus === 'ACT' && $component.cardObject.creditCard.cardType === 'PRIMARY' -->
+            <a href="#" class="icons icon-remarks" data-bind="click:fetchBillingsDays,attr:{alt: $component.resource.creditCardDetails.billCycle, title: $component.resource.creditCardDetails.confirmBillCycle}"></a>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if:$component.billCycleListLoaded() -->
+            <span data-bind="text:$component.resource.creditCardDetails.day"></span>
+            <span class="select-bill-cycle">
+              <!-- ko if:$component.billcyclesArray().length>0 -->
+              <oj-select-one id="billCycle" required="[[true]]" :id="[['supple-name'+($baseModel.currentIdCount())]]" :aria-label="[[$component.resource.creditCardDetails.billCycle]]" translations="[[{'required':{messageDetail:$component.resource.creditCardDetails.billcyclemsg}}]]" value="{{$component.selectedBillCycle}}">
+                  <!-- ko foreach:$component.billcyclesArray() -->
+                      <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+            </oj-select-one>
+            <!-- /ko -->
+            </span>
+            <span data-bind="text:$component.resource.creditCardDetails.ofeverymonth"></span>
+            <a href="#" class="icons icon-check" data-bind="click:confirmBillCycle ,attr:{alt: $component.resource.creditCardDetails.billCycle, title: $component.resource.creditCardDetails.confirmBillCycle}"></a>
+            <!-- /ko -->
+          </div>
+        </div>
+
+        <!-- ko if:$component.cardObject.creditCard.due.expectedPaymentDate -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="dueDate"><span data-bind="text:$component.resource.creditCardDetails.dueDate"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <span data-bind="text:$baseModel.formatDate($component.cardObject.creditCard.due.expectedPaymentDate).substr(0,6)">
+          </span>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- /ko -->
+
+      </page-section>
+    </div>
+    <!-- /ko -->
+
+    <div data-bind="css: $component.cardObject.creditCard.cardType === 'PRIMARY' ? 'oj-flex-item oj-lg-3 oj-md-3 oj-sm-12' : 'oj-flex-item oj-sm-12 oj-md-12 oj-lg-6'">
+      <div class="oj-flex">
+        <!-- ko if: $component.isDataLoaded() -->
+        <div class="oj-flex-item">
+          <page-section params="baseModel : $baseModel, rootModel : $component, heading :resource.creditCardDetails.cardLimit.cardLimits">
+            <!-- ko if:($component.mode() === 'VIEW') -->
+            <!-- ko foreach: $component.limitsDetailsObject.data -->
+            <!-- ko if: limitTypeLocal === 'Credit' -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                <oj-label for="availableCredit"><span data-bind="text:$component.resource.creditCardDetails.cardLimit.availableCredit"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$baseModel.formatCurrency(amountType.amount(),amountType.currency())"></span>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                <oj-label for="totalCredit"><span data-bind="text:$component.resource.creditCardDetails.cardLimit.totalCredit"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$baseModel.formatCurrency(total.amount,total.currency)"></span>
+              </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: limitTypeLocal === 'Cash' -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                <oj-label for="availableCash"><span data-bind="text:$component.resource.creditCardDetails.cardLimit.availableCash"></span></oj-label>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$baseModel.formatCurrency(amountType.amount(),amountType.currency())">
+                </span>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                <oj-label for="totalCash"><span data-bind="text:$component.resource.creditCardDetails.cardLimit.totalCash"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$baseModel.formatCurrency(total.amount,total.currency)"></span>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if:$component.mode() === 'EDIT' -->
+            <!-- ko foreach: $component.limitsDetailsObject.data -->
+            <!-- ko if: limitTypeLocal === 'Credit' -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                <oj-label for="availableCredit"><span data-bind="text:$component.resource.creditCardDetails.cardLimit.availableCredit"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12" data-bind="css:'no-pad-cols'">
+                <div class="credit-Input">
+                  <amount-input params="
+                  amount :amountType.amount,
+                  label : $component.resource.creditCardDetails.cardLimit.availableCredit,
+                  isLabelHidden: true,
+                  currency: amountType.currency,
+                  converter:$baseModel.formatCurrency,
+                  currencyListRequired : false,
+                  validator:$component.validationTracker,
+                  isMandatory:true,
+                  rootId:'card-amount'+$baseModel.incrementIdCount(),
+                  currencyURL : '',
+                  currencyParser :'',
+                  rootClass:'form-input'">
+                  </amount-input>
+                </div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                <oj-label for="totalCredit"><span data-bind="text:$component.resource.creditCardDetails.cardLimit.totalCredit"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$baseModel.formatCurrency(total.amount,total.currency)"></span>
+              </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: limitTypeLocal === 'Cash' -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                <oj-label for="availableCash"><span data-bind="text:$component.resource.creditCardDetails.cardLimit.availableCash"></span></oj-label>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12" data-bind="css:'no-pad-cols'">
+                <div class="credit-Input">
+                  <div data-bind="component: {
+               name: 'amount-input', params: {
+               amount :amountType.amount,
+               label : $component.resource.creditCardDetails.cardLimit.availableCash,
+               isLabelHidden: true,
+               currency: amountType.currency,
+               converter:$baseModel.formatCurrency,
+               currencyListRequired : false,
+               validator:$component.validationTracker,
+               isMandatory:true,
+               rootId:'card-amount'+$baseModel.incrementIdCount(),
+               currencyURL : '',
+               currencyParser :'',
+               rootClass:'form-input'
+               }
+               }"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                <oj-label for="totalCash"><span data-bind="text:$component.resource.creditCardDetails.cardLimit.totalCash"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$baseModel.formatCurrency(total.amount,total.currency)"></span>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- /ko -->
+
+            <div class="oj-flex oj-flex-items-pad button-container">
+              <!-- ko if: ($component.mode()==="VIEW")-->
+              <oj-button id="editLimit" class="action-button-secondary " on-click="[[editLimit]]"><span slot="startIcon" class="icons icon-update"></span>
+                <span data-bind="text:$component.resource.creditCardDetails.cardLimit.update"></span>
+              </oj-button>
+              <!-- /ko -->
+              <!-- ko if: ($component.mode()==="EDIT")-->
+              <oj-button id="reviewLimit" class="action-button-primary " on-click="[[reviewLimit]]"><span slot="startIcon" class="icons icon-save"></span>
+                <span data-bind="text:$component.resource.genericCard.save"></span>
+              </oj-button>
+              <oj-button id="cancelLimit" class="action-button-secondary " on-click="[[$component.cancelCard]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resource.genericCard.cancel"></span>
+              </oj-button>
+              <!-- /ko -->
+            </div>
+          </page-section>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+
+    <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'reviewLimits', header : $component.resource.creditCardDetails.cardLimit.transactionName">
+      <div class="form-main-container message-text">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <span data-bind="text:$component.resource.creditCardDetails.cardLimit.reviewLimitMsg"></span>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button id="updateLimit" class="action-button-primary " on-click="[[editLimitConfirm]]"><span slot="startIcon" class="icons icon-forward-arrow"></span>
+            <span data-bind="text:$component.resource.genericCard.proceed"></span>
+          </oj-button>
+          <oj-button id="cancelReviewLimits" class="action-button-secondary " on-click="[[cancel.bind($data, 'reviewLimits')]]"><span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.resource.genericCard.cancel"></span>
+          </oj-button>
+        </div>
+      </div>
+    </modal-window>
+
+    <!-- ko if: $component.cardObject.creditCard.cardType === 'PRIMARY' -->
+    <div data-bind="css: $component.cardObject.creditCard.cardType === 'PRIMARY' ? 'oj-flex-item oj-lg-3 oj-md-3 oj-sm-12 rewards' : 'oj-flex-item oj-sm-12 oj-md-12 oj-lg-6 rewards'">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.creditCardDetails.rewards ">
+        <div class="oj-flex oj-flex-items-pad">
+          <span class="rewards-icon"><img data-bind="loadImage:'info-icon/rewards.svg'" alt=""></span>
+          <span class="rewards-count" for="totalDue" data-bind="text: $baseModel.format($component.resource.creditCardDetails.rewardPoint, {rewardPoints: $component.cardObject.creditCard.rewardPoints})"></span>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <span data-bind="text:$component.resource.creditCardDetails.rewardsMsg"></span>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-button id="redeemPoints" class="action-button-secondary" on-click="[[function(){$('#redeemRewardPoints').trigger('openModal');}]]"><span slot="startIcon" class="icons icon-redeem"></span>
+              <span data-bind="text:resource.creditCardDetails.redeemPoints"></span>
+            </oj-button>
+          </div>
+        </div>
+      </page-section>
+    </div>
+    <!-- /ko -->
+  </div>
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'redeemRewardPoints',  header : $component.resource.creditCardDetails.redeemPoints">
+    <div class="form-main-container message-text">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <span class=""></span>
+          <span data-bind="text:$component.resource.creditCardDetails.logOffMsg"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button id="logOffOk" class="action-button-primary " on-click="[[redeem]]"><span slot="startIcon" class="icons icon-ok"></span>
+          <span data-bind="text:$component.resource.genericCard.ok"></span>
+        </oj-button>
+        <oj-button id="logOffCancel" class="action-button-secondary " on-click="[[function(){$('#redeemRewardPoints').hide();}]]"><span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.resource.genericCard.cancel"></span>
+        </oj-button>
+      </div>
+    </div>
+  </modal-window>
+
+  <!-- ko if: $baseModel.small() -->
+  <a href="#" data-bind="click: $component.showFloatingPanel">
+    <div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+  </a>
+  <floating-panel params="baseModel : $baseModel, panelId: 'panelCreditCard', rootModel: $component">
+    <ul>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'card-statement',creditCardObject,$data)">
+          <span class="icons icon-view-statement"></span>
+          <span data-bind="text: $component.resource.cardLinks.viewStatement"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'card-pay',creditCardObject,$data)">
+          <span class="icons icon-limit"></span>
+          <span data-bind="text: $component.resource.cardLinks.cardPayment"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'request-pin',creditCardObject,$data)">
+          <span class="icons icon-request-pin"></span>
+          <span data-bind="text: $component.resource.cardLinks.requestPin"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'block-card',creditCardObject,$data)">
+          <span class="icons icon-cancel-card"></span>
+          <span data-bind="text: $component.resource.cardLinks.blockCard"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'auto-pay',creditCardObject,$data)">
+          <span class="icons icon-pay"></span>
+          <span data-bind="text: $component.resource.cardLinks.autoPay"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reset-pin',creditCardObject,$data)">
+          <span class="icons icon-refresh"></span>
+          <span data-bind="text: $component.resource.cardLinks.resetPin"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'add-on-card',creditCardObject,$data)">
+          <span class="icons icon-card-preference"></span>
+          <span data-bind="text: $component.resource.cardLinks.addOnCard"></span></a>
+      </li>
+    </ul>
+  </floating-panel>
+  <!-- /ko -->
+
+
+  <!-- /ko -->
+
+
+</div>
+<!-- /ko -->
+<modal-window class="message form-main-container" params="baseModel : $baseModel, rootModel : $component,id:'intTransactionActiveAlert', header:$component.resource.creditCardDetails.activateDeactivateHeader">
+<div class="form-main-container">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <span data-bind="text: $component.resource.massage.activateMassege"></span>
+    </div>
+  </div>
+	<div class="oj-flex button-container">
+		<oj-button :id="[['blockDebitCardStatusAlertYesButton']]" class="action-button-primary" on-click="[[$component.closeintTransactionActiveAlertYes]]">
+			<span data-bind="text:$component.resource.genericCard.yes"></span>
+		</oj-button>
+		<oj-button :id="[['blockDebitCardStatusAlertNoButton']]" class="action-button-secondary" on-click="[[$component.closeintTransactionActiveAlert]]">
+			<span data-bind="text:$component.resource.genericCard.no"></span>
+		</oj-button>
+	</div>
+  	</div>
+</modal-window>
+<modal-window class="message form-main-container" params="baseModel : $baseModel, rootModel : $component,id:'intTransactionDeActiveAlert', header:$component.resource.creditCardDetails.activateDeactivateHeader">
+<div class="form-main-container">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <span data-bind="text: $component.resource.massage.deActivateMassege"></span>
+      </div>
+    </div>
+    <div class="oj-flex button-container">
+		<oj-button :id="[['blockDebitCardStatusAlertYesButton']]" class="action-button-primary" on-click="[[$component.closeintTransactionDeActiveAlertYes]]">
+			<span data-bind="text:$component.resource.genericCard.yes"></span>
+		</oj-button>
+		<oj-button :id="[['blockDebitCardStatusAlertNoButton']]" class="action-button-secondary" on-click="[[$component.closeintTransactionDeActiveAlert]]">
+			<span data-bind="text:$component.resource.genericCard.no"></span>
+		</oj-button>
+    </div>
+</div>
+</modal-window>

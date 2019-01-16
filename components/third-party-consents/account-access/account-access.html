@@ -1,0 +1,100 @@
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <!-- ko if : $baseModel.small() -->
+    <div class="oj-flex oj-flex-items-pad third-party-consents__accesspoint-container">
+        <div class="oj-flex-item oj-sm-5 oj-md-4 oj-lg-2 ">
+            <span data-bind="text:selectedAccessPointName"></span>
+        </div>
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad third-party-consents__access-status">
+        <div class="oj-flex-item oj-sm-5 oj-md-4 oj-lg-2 oj-label">
+            <oj-label for="applicationAccess">
+                <span data-bind="text:$component.nls.labels.applicationAccess"></span>
+            </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-3 oj-md-4 oj-lg-1">
+            <oj-switch id="applicationAccess" value="{{applicationAccess}}" disabled="[[disabled()]]" :aria-label="[[nls.labels.applicationAccess]]" required></oj-switch>
+        </div>
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-2">
+            <oj-label id="applicationAccessStatus">
+                <span data-bind="text:applicationAccessStatus()"></span>
+            </oj-label>
+        </div>
+    </div>
+    <!-- ko if : applicationAccess() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12  third-party-consents__accounts-tab-container">
+            <div class="tabbarcontainer">
+                <oj-tab-bar id="accountTabGroups" class="oj-sm-condense" drill-mode="none" selection="{{selectedAccountTab}}" on-selection-changed="[[$component.accountChangeHandler]]" edge="top" :aria-label="[[nls.labels.accountTypes]]">
+                    <ul class="tab-list">
+                        <!-- ko foreach: accountTab() -->
+                        <li data-bind="attr:{ id: id}" class="third-party-consents__accounts-tab-container__tab">
+                            <span data-bind="text : name"></span>
+                        </li>
+                        <!-- /ko -->
+                    </ul>
+                </oj-tab-bar>
+            </div>
+        </div>
+        <!-- ko if : transactionLoaded() -->
+        <div class="oj-flex oj-flex-items-pad third-party-consents__account-list">
+            <!-- ko if : currentDatasource().length>0 -->
+            <!-- ko foreach: currentDatasource() -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 third-party-consents__account-list__account">
+                <oj-checkboxset :id="[[accountNumber.displayValue+'account']]" value="{{checked}}" on-value-changed="[[deselectAccount]]" disabled="[[$component.disabled()]]">
+                    <oj-option :id="[[displayId]]" value="checked"><span data-bind="text :accountDisplayName"></span></oj-option>
+                </oj-checkboxset>
+                <!-- ko if : checked().length>0 -->
+                <div data-bind="template: { name: 'third-party-consents/transaction-list'}"></div>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot : currentDatasource().length>0 -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 third-party-consents__account-list__message">
+                <span data-bind="text:$component.nls.labels.noAccountsMessage"></span>
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad">
+        <!-- ko ifnot : disabled() -->
+        <div class="oj-flex-item  button-container">
+            <oj-button class="action-button-primary" on-click="[[saveAccountAccess]]">
+                <span data-bind="text:$component.nls.generic.common.save"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[back]]">
+                <span data-bind="text:$component.nls.generic.common.back"></span>
+            </oj-button>
+            <oj-button class="action-button-tertiary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                <span data-bind="text:$component.nls.generic.common.cancel"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if : disabled() && !confirmScreen()-->
+        <div class="oj-flex-item  button-container">
+            <oj-button class="action-button-primary" on-click="[[editAccountAccess]]">
+                <span data-bind="text:$component.nls.generic.common.edit"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                <span data-bind="text:$component.nls.generic.common.cancel"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if : confirmScreen() -->
+        <div class="oj-flex-item  button-container">
+            <oj-button class="action-button-primary" on-click="[[confirm]]">
+                <span data-bind="text:$component.nls.generic.common.confirm"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[editAccountAccess]]">
+                <span data-bind="text:$component.nls.generic.common.back"></span>
+            </oj-button>
+            <oj-button class="action-button-tertiary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                <span data-bind="text:$component.nls.generic.common.cancel"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+    </div>
+</page-section>

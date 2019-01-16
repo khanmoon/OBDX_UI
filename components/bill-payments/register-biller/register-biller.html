@@ -1,0 +1,308 @@
+<!-- ko if:currentStage() === 'CREATE' -->
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between bill-payments">
+    <!-- ko if:dataLoaded() -->
+    <div class="form-main-container oj-flex-item oj-sm-12 oj-md-12 oj-lg-7">
+    <oj-validation-group id="tracker" valid="{{billerValid}}">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+      <!-- ko ifnot:$baseModel.small() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+              <oj-label for="billerCategory">
+                <!-- ko text: $component.resourceBundle.labels.billerCategory -->
+                <!-- /ko -->
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                <oj-select-one id="billerCategory" value="{{$component.registerBillerDetails.category.id}}" placeholder="{{$component.resourceBundle.generic.common.select}}" required>
+                    <!-- ko foreach:categoryList() -->
+                    <oj-option value="[[id]]"><span data-bind="text: name"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if:$baseModel.small() && $component.showCategoryAvatars() -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+              <oj-label for="billerCategory">
+                <!-- ko text: $component.resourceBundle.labels.selectCategory -->
+                <!-- /ko -->
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <div class="oj-flex oj-flex-items-pad category-list">
+                <!-- ko foreach:categoryList() -->
+                <a href="#" class="oj-flex-item oj-sm-4" data-bind="click: $component.setCategory">
+                  <div class="oj-flex-item oj-sm-12 center">
+                      <oj-avatar role="img" size="xs" initials='[[$data.initials]]'
+                        data-bind="attr:{'aria-label': $data.name}"
+                        src="[[$data.logoImg()]]" class="oj-avatar-image">
+                      </oj-avatar>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 center category-name">
+                      <span data-bind="text: $data.name"></span>
+                    </div>
+                  </a>
+                  <!-- /ko -->
+                </div>
+            </div>
+          </div>
+        <!-- /ko -->
+
+        <!-- ko if:$component.locationList().length > 0 && !$component.showCategoryAvatars() -->
+
+        <!-- ko if:$baseModel.small() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+            <label for="billerCategory" data-bind="text: $component.resourceBundle.labels.billerCategory"></label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+            <span class="edit-category__text" id="billerCategory" data-bind="text:$component.dropdownLabels.category()"></span>
+            <a href="#" data-bind="click: $component.editCategory">
+              <span class="icons icon-remarks edit-category__icon"></span>
+            </a>
+          </div>
+          <!-- <div class="oj-flex-item oj-sm-4">
+
+          </div> -->
+        </div>
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+              <oj-label for="billerLocation">
+                <!-- ko text: $component.resourceBundle.labels.billerLocation  -->
+                <!-- /ko -->
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                <oj-select-one id="billerLocation" options="[[locationList]]" required value="{{$component.registerBillerDetails.location.id}}" placeholder="{{$component.resourceBundle.generic.common.select}}">
+                </oj-select-one>
+            </div>
+        </div>
+
+        <!-- ko if:$component.billerList().length > 0 -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+              <oj-label for="billerName">
+                <!-- ko text: $component.resourceBundle.labels.billerName  -->
+                <!-- /ko -->
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <oj-select-one id="billerName" required options="[[billerList]]" option-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('biller_template')]]" value="{{$component.registerBillerDetails.billerId}}" placeholder="{{$component.resourceBundle.generic.common.select}}">
+              </oj-select-one>
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if:$component.registerBillerDetails.billerId() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+              <label for="billerType" data-bind="text: $component.resourceBundle.labels.billerType"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <span id="billerType" data-bind="text: $component.resourceBundle.billerType[$component.registerBillerDetails.billerType()]"></span>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+              <oj-label for="billerNickname">
+                <span data-bind="text: $component.resourceBundle.labels.billerNickname"></span>
+                <span class="info-text-small" data-bind="text: $component.resourceBundle.labels.billerNicknameInfo"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <oj-input-text id="billerNickname" required value="{{$component.registerBillerDetails.billerNickName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.registerBillerError.validationErrors.invalidNickname,{
+                 type:'length',options:{
+                     min:1,max:20}})]]"></oj-input-text>
+            </div>
+        </div>
+
+
+        <!-- ko foreach:$component.relationshipDetails() -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                  <oj-label :for="[[$data.compId]]">
+                    <!-- ko text: label  -->
+                    <!-- /ko -->
+                  </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                  <!-- ko ifnot:$data.datatype === 'DATE' -->
+                  <oj-input-text value="{{$data.value}}" :id="[[$data.compId]]" :required="[[$data.required]]" validators="[[$data.validator]]"></oj-input-text>
+                  <!-- /ko -->
+                  <!-- ko if:$data.datatype === 'DATE' -->
+                  <oj-input-date value="{{$data.value}}" :id="[[$data.compId]]" :required="[[$data.required]]" converter="[[$baseModel.dateConverter]]" :placeholder="[[$component.resourceBundle.labels.selectDate]]"></oj-input-date>
+                  <!-- /ko -->
+                </div>
+                <!-- ko if:$index() === 0 && $component.sampleBillExist() -->
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+                  <a href="#" class="form-button-link" data-bind="attr:{'alt':$component.resourceBundle.labels.viewSampleBill,'title':$component.resourceBundle.labels.sampleBillImage},
+                      text:$component.resourceBundle.labels.sampleBill,click:$component.viewSampleBill">
+                    </a>
+                </div>
+                <!-- /ko -->
+            </div>
+
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+              <oj-label for="customerName">
+                <span data-bind="text: $component.resourceBundle.labels.customerName"></span>
+                <span class="info-text-small" data-bind="text: $component.resourceBundle.labels.customerNameInfo"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <oj-input-text id="customerName" value="{{$component.registerBillerDetails.customerName}}" required validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.registerBillerError.validationErrors.invalidCustName,{
+                 type:'length',options:{
+                     min:1,max:35}})]]"></oj-input-text>
+            </div>
+        </div>
+
+        <!-- ko if: $component.registerBillerDetails.billerType() === 'PRESENTMENT' || $component.registerBillerDetails.billerType() === 'PRESENTMENT_PAYMENT' -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+            <oj-label id="autoPayLabelId">
+              <!-- ko text: $component.resourceBundle.labels.autoPay  -->
+              <!-- /ko -->
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+            <oj-radioset class="oj-choice-direction-row" id="autoPay" labelled-by="autoPayLabelId" value="{{$component.registerBillerDetails.autopay}}">
+                <oj-option id="yes" value="true"><span data-bind="text:  $component.resourceBundle.labels.yes"></span></oj-option>
+                <oj-option id="no" value="false"><span data-bind="text:  $component.resourceBundle.labels.no"></span></oj-option>
+            </oj-radioset>
+          </div>
+        </div>
+
+        <!-- ko if: $component.registerBillerDetails.autopay() === 'true'-->
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <span class="info-text-small">
+                <!-- ko text: $baseModel.format($component.resourceBundle.messages.paymentSupported, {"paymentTypes": $component.supportedAccountsLocale().join(', ')})  -->
+                <!-- /ko -->
+              </span>
+            </div>
+          </div>
+
+          <!-- ko if: $component.supportedAccounts().length > 1 -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12">
+                    <label class="oj-label" for="accType" data-bind="text: $component.resourceBundle.labels.paymentMethod"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-12">
+                    <oj-buttonset-one id="accType" value="{{$component.currentAccountType}}" on-value-changed="[[accountTypeChanged]]">
+                      <!-- ko foreach:$component.supportedAccounts() -->
+                      <oj-option value="{{$data}}">
+                        <span data-bind="text:$component.resourceBundle.labels[$data]"></span>
+                      </oj-option>
+                      <!-- /ko -->
+                    </oj-buttonset-one>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: $component.accountsLoaded() === 'true' -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 no-pad-cols" data-bind="component:{name: 'account-input', params:{baseModel : $baseModel, rootModel: $data ,label :$component.resourceBundle.labels.billerAccount,
+                  account : $component.registerBillerDetails.autopayInstructions.debitAccount.value ,additionalDetails : additionalDetails,
+                  type : 'nodeValue',
+                  accountsParser: $component.currentAccountType() === 'CREDITCARD' ? ko.utils.unwrapObservable($component.creditCardParser) : $component.currentAccountType() === 'DEBITCARD' ? ko.utils.unwrapObservable($component.debitCardParser) : null,
+                  customURL: ko.utils.unwrapObservable($component.customURL),
+                  no_data_message: $component.currentAccountType() === 'CREDITCARD' ? $component.resourceBundle.labels.creditMessage: $component.currentAccountType() === 'DEBITCARD' ? $component.resourceBundle.labels.debitMessage : null,
+                  validator:$component.invalidTracker}}">
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                <oj-label id="payLabelId">
+                  <!-- ko text: $component.resourceBundle.labels.pay  -->
+                  <!-- /ko -->
+                </oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-radioset class="oj-choice-direction-row" id="pay" labelled-by="payLabelId" value="{{$component.autoPayLimit}}">
+                    <oj-option id="billAmount" value="billAmount"><span data-bind="text:  $component.resourceBundle.labels.billAmount"></span></oj-option>
+                    <oj-option id="limitAmount" value="limitAmount"><span data-bind="text:  $component.resourceBundle.labels.limitAmount"></span></oj-option>
+                </oj-radioset>
+              </div>
+              <!-- ko if: $component.autoPayLimit() === 'billAmount' -->
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <span class="info-text-small" data-bind="text: $component.resourceBundle.labels.billAmountRemark"></span>
+              </div>
+              <!-- /ko -->
+              <!-- ko if: $component.autoPayLimit() === 'limitAmount' -->
+              <div class="oj-flex-item oj-sm-6 oj-md-3 oj-lg-3">
+                <oj-label for="amount" class="hide-label">
+                  <!-- ko text: $component.resourceBundle.labels.amount  -->
+                  <!-- /ko -->
+                </oj-label>
+                <oj-input-text id="amount" maxlength="16" value="{{$component.registerBillerDetails.autopayInstructions.limitAmount.amount}}" converter="{{$component.currenyConverter()}}" validators="{{$component.validateAmount}}" required></oj-input-text>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <span class="info-text-small" data-bind="text: $component.resourceBundle.labels.limitAmountRemark"></span>
+              </div>
+              <!-- /ko -->
+            </div>
+
+            <!-- /ko -->
+
+            <!-- /ko -->
+
+      <!-- /ko -->
+    </page-section>
+    </oj-validation-group>
+
+    <!-- ko if: !$baseModel.small() || (!$component.showCategoryAvatars() && $component.locationList().length > 0) -->
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[$component.save]]">
+          <span slot="startIcon" class="icons icon-confirm"></span>
+          <span data-bind="text:$component.resourceBundle.generic.common.submit"></span>
+        </oj-button>
+        <oj-button id="cancelbutton" class="action-button-tertiary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.messages.cancelOperation)]]">
+          <span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+        </oj-button>
+      </div>
+      <!-- /ko -->
+
+    </div>
+
+        <!-- ko if: $baseModel.large() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'register-biller'"></help>
+        </div>
+        <!-- /ko -->
+    <!-- /ko -->
+
+</div>
+
+<!-- /ko -->
+<!-- ko if:currentStage() === 'REVIEW' -->
+<div data-bind="component:{name: 'review-register-biller', params:{rootModel: $component,registerBillerDetails:ko.mapping.toJS($component.registerBillerDetails),mode:'REVIEW'}}"></div>
+<!-- /ko -->
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'sampleBillWindow', header:$component.resourceBundle.labels.sampleBill">
+  <div class="oj-flex oj-flex-items-pad grid-row-group">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+      <!-- ko if:$component.sampleBillExist() -->
+      <img id="sampleBill" class="sample-bill" data-bind="attr:{'src': $component.previewSampleBill(), 'alt': $component.resourceBundle.labels.sampleBillImage, 'title': $component.resourceBundle.labels.sampleBill}">
+      <!-- /ko -->
+    </div>
+  </div>
+</modal-window>
+
+<script type="text/html" id="biller_template">
+  <oj-avatar role="img" size="xs" initials="[[$data.initials]]" data-bind="attr:{'aria-label': label}"
+    src="[[$data.billerLogo]]" class="oj-avatar-image">
+  </oj-avatar>
+  <span data-bind="text: label"></span>
+</script>

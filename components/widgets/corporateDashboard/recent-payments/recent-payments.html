@@ -1,0 +1,76 @@
+<div class="full-width oj-panel recent-payments">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <h3 class="recent-payments__heading" data-bind="text: $component.Nls.labels.paymentHeader"></h3>
+    </div>
+  </div>
+  <!-- ko if:transactionListLoaded() -->
+  <oj-list-view class="recent-payments__listView recent-payments-listView" id="searchRuleListView" :aria-label="[[$component.Nls.labels.paymentHeader]]" data="[[arrayDataSource]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('data-template1',true)}]]" selection-mode="[['single']]">
+  </oj-list-view>
+<!-- /ko -->
+<!-- ko ifnot: transactionListLoaded()-->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 recent-payments__noData">
+    <img data-bind="loadImage:'dashboard/payments1.svg'">
+  </div>
+  <div class="oj-flex-item oj-sm-12 recent-payments__text" data-bind="text:$component.Nls.labels.noData"></div>
+   <div class="oj-flex-item oj-sm-12 recent-payments__subText info-text-small" data-bind="text:$component.Nls.labels.subData"></div>
+</div>
+<!-- /ko -->
+  <script type="text/html" id="data-template1">
+    <li class="recent-payments-listView__listItem">
+      <!-- ko ifnot: $baseModel.small() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+        <div class="date" data-bind='component:{name: "date-time", params:{rootModel: $component,date:creationDate}}'></div>
+       </div>
+
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8 right" data-bind="text:type"></div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 transactionStatus" data-bind="template : {name : 'approvalStatus'}"></div>
+        <div class="oj-flex-item oj-sm-4 oj-md-6 oj-lg-6 amount right" data-bind="text:amount"></div>
+
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $baseModel.small() -->
+        <div class="oj-flex">
+          <div class="date" data-bind='component:{name: "date-time", params:{rootModel: $component,date:creationDate}}'></div>
+          <div class="oj-flex-item oj-sm-12" data-bind="text:type"></div>
+          <div class="oj-flex-item oj-sm-12 amount" data-bind="text:amount"></div>
+          <div class="oj-flex-item oj-sm-12 transactionStatus" data-bind="template : {name : 'approvalStatus'}"></div>
+        </div>
+      <!-- /ko -->
+    </li>
+
+  </script>
+
+</div>
+<!-- <script type="text/html">
+    <div data-bind="template : {name : 'approvals/status', data : {status :processingStatus ,noOfApprovalSteps: noOfApprovalSteps, nls : $component.Nls.status}}"></div>
+</script> -->
+<script type="text/html" id="payeeAccountDetails">
+    <div data-bind="template : {name : 'approvals/payee-account-details', data : {beneficiaryName :beneficiaryName ,beneficiaryAccountNumber: beneficiaryAccountNumber}}"></div>
+</script>
+
+<script type="text/html" id="approvalStatus">
+<div class="status" data-bind="css: status==='Rejected' ? 'rejected':  status==='Processed' ? 'processed' : status === 'Expired' ? 'expired' : 'in-progress' ">
+    <!-- ko if:processingStatus==="P" -->
+    <span class="icons icon-pre-processed"></span>
+    <span data-bind="text:$component.Nls.status.PENDING_APPROVAL"></span>
+    <!-- /ko -->
+
+    <!-- ko if:processingStatus==="S" -->
+    <span class="icons icon-success "></span>
+    <span data-bind="text:$component.Nls.status.COMPLETED "></span>
+    <!-- /ko -->
+
+    <!-- ko if:processingStatus==="F" -->
+    <span class="icons icon-reject "></span><span data-bind="text:$component.Nls.status.REJECTED "></span>
+    <!-- /ko -->
+    <!-- ko if:processingStatus==="E" -->
+    <span class="icons icon-alert "></span><span data-bind="text:$component.Nls.status.EXPIRED"></span>
+    <!-- /ko -->
+</div>
+
+</script>

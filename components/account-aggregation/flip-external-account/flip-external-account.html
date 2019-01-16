@@ -1,0 +1,77 @@
+<div class="flip-account" data-bind="css: $component.type()">
+
+  <div class="top-pannel">
+    <div class="oj-flex">
+      <!-- ko if: $component.type() -->
+      <div class="oj-flex-item oj-sm-11">
+        <h3 class="sub-heading" tabindex="-1" id="flipAccountHeading" data-bind="text:$component.resource.heading[$component.type()]"></h3>
+        <span class="total-account" data-bind="text:$baseModel.format($component.resource.subHeading ,{count:$component.totalAccount()})"></span>
+      </div>
+      <!-- /ko -->
+
+      <div class="oj-flex-item oj-sm-1">
+        <a href="#" data-bind="attr:{'aria-label':$component.resource.turnCard,'title':$component.resource.turnCard},click: $component.turnCard">
+          <div class="icons icon-close pull-right"></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ul class="flip-account__list flip-account-list">
+  <!-- ko if : $component.loadAccounts -->
+  <!-- ko foreach : Object.keys($component.parentObject) -->
+
+  <div class="oj-flex account-details">
+    <div class="oj-flex-item oj-sm-12 flip-account-list-listItem__title flip-account-list-listItem-title">
+      <div class="flip-account-list-listItem-title__account-name" data-bind="text:$data"></div>
+      <hr>
+    </div>
+  </div>
+  <!-- ko foreach: $component.parentObject[$data] -->
+  <!-- logic for accounts -->
+  <li class="flip-account-list__listItem flip-account-list-listItem">
+    <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item  oj-sm-9">
+      <!-- ko if: $component.type()  ==='CSA' || $component.type()  ==='LON'  -->
+      <div class="account-type" data-bind="text:$baseModel.format($component.resource.ddSubText,{product : productDTO.description , accountType:$component.resource.accountType[module]})"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.type() ==='TRD' -->
+      <div class="account-type" data-bind="text:$baseModel.format($component.resource.tdSubText,{maturityDate : $baseModel.formatDate($data.maturityDate) ,accountType:$component.resource.accountType[module]})"></div>
+      <!-- /ko -->
+    </div>
+
+    <div class="oj-flex-item oj-sm-3 right">
+      <!-- ko if: $component.type()  ==='LON' -->
+      <div class="balance-amount" data-bind="text:$baseModel.formatCurrency($data.outstandingAmount.amount,$data.outstandingAmount.currency)"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.type()  ==='CSA' -->
+      <div class="balance-amount" data-bind="text:$baseModel.formatCurrency($data.availableBalance.amount,$data.availableBalance.currency)"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.type()  ==='TRD'  -->
+      <div class="balance-amount" data-bind="text:$baseModel.formatCurrency($data.availableBalance.amount,$data.availableBalance.currency)"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.type()  ==='RD' &&  $data.status  ==='ACTIVE' -->
+      <div class="balance-amount" data-bind="text:$baseModel.formatCurrency($data.availableBalance.amount,$data.availableBalance.currency)"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.type()  ==='CCA' -->
+      <div class="balance-amount" data-bind="text:$baseModel.formatCurrency($data.due.billedAmount.amount,$data.due.billedAmount.currency)"></div>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex-item oj-sm-12">
+      <div class="account-no">
+        <!-- ko if : $data.accountNickname -->
+        <span data-bind="text: $baseModel.format($component.resource.accountNumberWithNickName, {accountNumber: ($component.type() ==='CCA')  ?  $data.creditCard.displayValue : id.displayValue, status : $component.resource.status[status || cardStatus], nickName :accountNickname })"></span>
+        <!-- /ko -->
+        <!-- ko if : !$data.accountNickname -->
+        <span data-bind="text: id.displayValue"></span>
+        <!-- /ko -->
+      </div>
+    </div>
+  </div>
+  </li>
+  <!-- /ko -->
+
+  <!-- /ko -->
+  <!-- /ko -->
+</ul>

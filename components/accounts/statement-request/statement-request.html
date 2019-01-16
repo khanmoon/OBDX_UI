@@ -1,0 +1,49 @@
+<div class="form-main-container">
+  <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.locale.statementRequest.selectAccount,
+                      account : $component.selectedAccount,
+                      type: 'balance',
+                      moduleName: $dashboard.application(),
+                      customURL:accountURL?accountURL:customURL,
+                      additionalDetails : $component.additionalDetails,
+                      readOnly: !!$component.accountPassed,
+                      validator:$component.validationTracker,
+                      taskCode:$component.taskCode">
+        </account-input>
+        <oj-validation-group id="dateTracker" valid="{{dateValid}}">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="fromDate"><span data-bind="text:$component.locale.statementRequest.fromDate"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+            <oj-input-date id="fromDate" required converter="[[$baseModel.dateConverter]]" max="[[maxDate]]" value="{{$component.rootModelInstance.payLoadData.fromDate}}"></oj-input-date>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="toDate"><span data-bind="text:$component.locale.statementRequest.toDate"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+            <oj-input-date id="toDate" required converter="[[$baseModel.dateConverter]]" max="[[maxDate]]" min="[[$component.rootModelInstance.payLoadData.fromDate]]" value="{{$component.rootModelInstance.payLoadData.toDate}}"></oj-input-date>
+          </div>
+        </div>
+      </oj-validation-group>
+      </page-section>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" on-click="[[$component.submit]]"><span slot="startIcon" class="icons icon-submit"></span>
+      <span data-bind="text:$component.locale.generic.common.submit"></span>
+</oj-button>
+        <oj-button class="action-button-secondary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.locale.generic.common.back"></span>
+</oj-button>
+      </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'statement-request'"></help>
+    </div>
+    <!-- /ko -->
+  </div>
+</div>

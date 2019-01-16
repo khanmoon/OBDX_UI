@@ -1,0 +1,76 @@
+<div class="oj-flex oj-sm-flex-items-initial">
+<div class="oj-flex-item oj-sm-9">
+<div class="form-main-container">
+   <!-- ko if : tasksLoaded() -->
+   <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <oj-validation-group id="productTracker">
+      <div class="oj-flex oj-flex-items-pad">
+            <oj-label class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 label" for="productMapping">
+              <span data-bind=" text:$component.resource.productMapping.productModule"></span>
+            </oj-label>
+        <div class="oj-flex-item oj-lg-4 oj-md-8 oj-sm-12">
+            <oj-select-one required id="productMapping" :placeholder="[[$component.resource.common.select]]" value="{{$component.selectedProductCode}}">
+                          <!-- ko foreach: $component.productCodes -->
+                            <oj-option value="{{id}}"><span data-bind="text:label"></span></oj-option>
+                          <!-- /ko -->
+            </oj-select-one>
+        </div>
+      </div>
+    </oj-validation-group>
+   </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container ">
+        <oj-button id="button-search" class="action-button-primary" on-click="[[$component.search]]">
+            <span data-bind="text:$component.resource.common.search"></span>
+        </oj-button>
+    </div>
+
+<!-- ko if:$component.stageOne() -->
+<paga-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <div class="oj-flex-item oj-lg-12 oj-md-8 oj-sm-12">
+    <div class="oj-flex oj-flex-items-pad">
+            <oj-table id="table" :aria-label="[[$component.resource.productMapping.segmentTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('rowTemplate', true)]]" columns="[[[{headerText:$component.resource.tableHeader.userSegments,sortable:'disabled'},{headerText:$component.resource.tableHeader.products,sortable:'disabled'},{headerText:$component.resource.tableHeader.buttomColumn,sortable:'disabled'}]]]" data="[[$component.datasource]]">
+              <caption class="hide-label" data-bind="text:$component.resource.productMapping.segmentTable"></caption>
+            </oj-table>
+      </div>
+     </div>
+     <script type="text/html" id="rowTemplate">
+       <tr>
+            <!-- ko if: productCount -->
+            <td>
+              <a href="javascript:void(0)" data-bind="text:$context.row.enterpriseRoleName, click:$component.viewMappedProducts.bind(enterpriseRoleId)"></a>
+            </td>
+            <!-- /ko -->
+
+            <!-- ko ifnot: productCount -->
+            <td data-bind="text:enterpriseRoleName"></td>
+            <!-- /ko -->
+
+            <td data-bind="text:productMappedLocal"></td>
+
+            <!-- ko ifnot:productCount -->
+            <td>
+              <oj-button class="help-button" on-click="[[$component.createMap.bind($data,$context.row)]]">
+                <span data-bind="text:$component.resource.button.mapProducts"></span>
+              </oj-button>
+            </td>
+            <!-- /ko -->
+        </tr>
+     </script>
+</paga-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="button-cancel" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind()]]">
+        <span data-bind="text:$component.resource.generic.common.cancel"></span>
+      </oj-button>
+    </div>
+<!-- /ko -->
+<!-- /ko -->
+</div>
+</div>
+
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'product-mapping-maintenance'"></help>
+    </div>
+    <!-- /ko -->
+
+</div>

@@ -1,0 +1,146 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-9">
+        <div class="form-main-container">
+            <div class="oj-flex-item oj-lg-7">
+                <page-section params="baseModel : $baseModel, rootModel : $component, dashboard : $dashboard, heading : $component.resource.viewForexDealSettings.label1">
+                    <oj-validation-group id="tracker" valid="{{groupValid}}">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <!-- ko if:$component.isCurrLoaded() -->
+                            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                                <oj-label :for="[['curr2'+ $baseModel.incrementIdCount()]]">
+                                    <span data-bind="text: $component.resource.viewForexDealSettings.currCombo"></span>
+                                </oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-4">
+                                <oj-select-one :id="[['curr2'+ $baseModel.currentIdCount()]]" value="{{$component.selectedCurrency}}" placeholder="{{$component.resource.viewForexDealSettings.select}}" required>
+                                    <!-- ko foreach: $component.currComboArray() -->
+                                    <oj-option data-bind="attr:{id: $baseModel.incrementIdCount(), 'aria-label':value}" value="[[value]]"><span data-bind="text: text"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                        <!-- ko if:$component.forexDealTimerFlag() -->
+                        <div class="oj-flex oj-flex-items-pad oj-lg-9">
+                            <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-9">
+                                <oj-input-text id="mins" value="{{$component.minsValue}}" class="oj-lg-2" placeholder="{{$component.resource.viewForexDealSettings.mm}}" required validators="[[$baseModel.getValidator('NUMBERS',$component.resource.viewForexDealSettings.errorMessage.minorError,{type: 'numberRange',options: {min: 0, max: 59}})]]"></oj-input-text>
+                                <oj-label for="mins" class="oj-label-inline">
+                                    <span data-bind="text: $component.resource.viewForexDealSettings.mins"></span>
+                                </oj-label>
+                                <oj-input-text id="secs" value="{{$component.secsValue}}" class="oj-lg-2" placeholder="{{$component.resource.viewForexDealSettings.ss}}" required validators="[[$baseModel.getValidator('NUMBERS',$component.resource.viewForexDealSettings.errorMessage.minorError,{type: 'numberRange',options: {min: 0, max: 59}})]]"></oj-input-text>
+                                <oj-label for="secs" class="oj-label-inline">
+                                    <span data-bind="text: $component.resource.viewForexDealSettings.secs"></span>
+                                </oj-label>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                    </oj-validation-group>
+                    <div class="button-container">
+                        <oj-button id="addPair" class="help-button" on-click="[[addPair]]">
+                            <span data-bind="text:$component.resource.viewForexDealSettings.addPair"></span>
+                        </oj-button>
+                    </div>
+                </page-section>
+                <!-- ko if:$component.stageTwo() && $component.currPairArray().length !== 0-->
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.viewForexDealSettings.label2">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div data-bind="css: $component.forexDealTimerFlag() ? 'oj-lg-12' : 'oj-lg-4'">
+                            <oj-table id='table' data='[[pairsdataSource]]' :aria-label="[[$component.resource.viewForexDealSettings.dealsListTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('rowtemplate', true)]]" columns="[[$component.forexDealTimerFlag() ? [{headerText:$component.resource.viewForexDealSettings.currCombo},{headerText:$component.resource.viewForexDealSettings.refreshTimeFrame},{headerText:$component.resource.viewForexDealSettings.deleteAction}] : [{headerText:$component.resource.viewForexDealSettings.currCombo},{headerText:$component.resource.viewForexDealSettings.deleteAction}]]]">
+                            </oj-table>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12">
+                            <oj-paging-control id="paging" data='[[pairsdataSource]]' page-size='10' slot='bottom'>
+                            </oj-paging-control>
+                        </div>
+                    </div>
+                </page-section>
+                <script type="text/html" id="rowtemplate">
+                    <!-- ko ifnot:action -->
+                    <tr class="oj-flex-item oj-sm-12 oj-lg-12">
+                        <td data-bind="css : $component.forexDealTimerFlag() ? 'oj-lg-3' : 'oj-lg-8'">
+                            <div class="oj-label-inline">
+                                <span data-bind="text: pair"></span>
+                            </div>
+                        </td>
+                        <!-- ko if:$component.forexDealTimerFlag() -->
+                        <td class="oj-lg-6">
+                            <div class="oj-label-inline">
+                                <span data-bind="text: timeFrame"></span>
+                            </div>
+                        </td>
+                        <!-- /ko -->
+                        <td data-bind="css: $component.forexDealTimerFlag() ? 'oj-lg-3' : 'oj-lg-4'">
+                            <div class="oj-flex oj-flex-items-pad view-forex-deal oj-label-inline">
+                                <!-- ko if:$component.forexDealTimerFlag() -->
+                                <div class="oj-flex-item oj-lg-6 edit">
+                                    <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.viewForexDealSettings.editMsg,'title':$component.resource.viewForexDealSettings.editMsgTitle}, click:$component.editPair.bind($data)">
+                        <span class="icons icon-remarks"></span></a>
+                                </div>
+                                <!-- /ko -->
+                                <div class="oj-flex-item oj-lg-6 right">
+                                    <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.viewForexDealSettings.deletemsg,'title':$component.resource.viewForexDealSettings.deleteIconTitle}, click:$component.deletePair.bind($data)">
+                        <span class="icons icon-delete"></span></a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                    <!-- ko if:action -->
+                    <tr class="oj-flex-item oj-sm-12 oj-lg-11">
+                        <td class="oj-lg-3">
+                            <div class="oj-label-inline">
+                                <span data-bind="text: pair"></span>
+                            </div>
+                        </td>
+                        <td class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-lg-4">
+                                <oj-input-text id="mins1" value="{{mins}}" placeholder="{{$component.resource.viewForexDealSettings.mm}}" validators="[[$baseModel.getValidator('NUMBERS',$component.resource.viewForexDealSettings.errorMessage.minorError,{type: 'numberRange',options: {min: 0, max: 59}})]]"></oj-input-text>
+                            </div>
+                            <div class="oj-flex-item oj-lg-2">
+                                <oj-label :for="[['mins1'+ $baseModel.incrementIdCount()]]" class="oj-label-inline"> <span data-bind="text:$component.resource.viewForexDealSettings.mins"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-lg-4">
+                                <oj-input-text id="secs1" value="{{secs}}" placeholder="{{$component.resource.viewForexDealSettings.ss}}" validators="[[$baseModel.getValidator('NUMBERS',$component.resource.viewForexDealSettings.errorMessage.minorError,{type: 'numberRange',options: {min: 0, max: 59}})]]"></oj-input-text>
+                            </div>
+                            <div class="oj-flex-item oj-lg-2">
+                                <oj-label :for="[['secs1'+ $baseModel.incrementIdCount()]]" class="oj-label-inline"> <span data-bind="text:$component.resource.viewForexDealSettings.secs"></span></oj-label>
+                            </div>
+                        </td>
+                        <td class="oj-lg-3">
+                            <div class="oj-flex oj-flex-items-pad view-forex-deal oj-label-inline">
+                                <div class="oj-flex-item oj-lg-6 edit">
+                                    <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.viewForexDealSettings.saveMsg,'title':$component.resource.viewForexDealSettings.saveMsgTitle}, click:$component.saveEdited.bind($data)">
+                                    <span class="icons icon-save">
+                                    </span>
+                        </a>
+                                </div>
+                                <div class="oj-flex-item oj-lg-6 right">
+                                    <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.viewForexDealSettings.deletemsg,'title':$component.resource.viewForexDealSettings.deleteIconTitle}, click:$component.deletePair.bind($data,$context)">
+                            <span class="icons icon-delete"></span>
+                            </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                </script>
+                <!-- ko if:$component.currPairArray().length !== 0 -->
+                <div class="oj-flex oj-flex-items-pad button-container">
+                    <oj-button id="save" class="action-button-primary" on-click="[[save]]">
+                        <span data-bind="text:$component.resource.viewForexDealSettings.save"></span>
+                    </oj-button>
+                    <oj-button id="cancel" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind()]]">
+                        <span data-bind="text:$component.resource.viewForexDealSettings.cancel"></span>
+                    </oj-button>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'view-forex-deal-settings'"></help>
+    </div>
+    <!-- /ko -->
+</div>

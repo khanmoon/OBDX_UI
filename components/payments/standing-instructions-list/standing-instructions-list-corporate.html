@@ -1,0 +1,96 @@
+<div class="form-main-container">
+    <!-- ko if:isSIListLoaded() && stageOne() -->
+    <!-- <div class="form-main-container"> -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="oj-flex oj-flex-items-pad oj-md-12 oj-lg-12">
+            <div class="oj-flex-item oj-lg-8 oj-sm-12 oj-md-9" data-bind="component: {
+                    name:'search-box',
+                    params:{
+                    searchFields : ['payeeNickName'],
+                      data:SIListDataSource(),
+                      searchBy:resource.beneficiaryName
+                      }}">
+            </div>
+            <!-- ko if:$baseModel.large() -->
+            <div class=" oj-flex-item oj-lg-4 oj-md-3 right">
+                <oj-button class="action-button-primary" on-click="[[$component.createSI]]">
+                    <span data-bind="text:resource.create"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- ko if:!$baseModel.large() -->
+        <a href="#" data-bind="click: $component.createSI">
+            <div class="floating-button"><span class="icons icon-plus"></span></div>
+        </a>
+        <!-- /ko -->
+        <!-- ko if:$baseModel.large() -->
+        <div class="oj-flex-item oj-sm-12 oj-lg-12">
+            <oj-table id="table" :aria-label="[[$component.resource.tableheader]]" columns="[[[{headerText:resource.beneficiaryName,template:'beneficiary_name_link'},
+                          {headerText:resource.accountType,field:'transactionType'},
+                          {headerText:resource.accNumber,field:'acno'},
+                          {headerText:resource.frequency,field:'frequency'},
+                          {headerText:resource.startDate,field:'startDate'},
+                          {headerText:resource.endDate,field:'endDate'}]]]" data="[[SIListDataSource()]]">
+                <caption class="hide-label" data-bind="text:$component.resource.tableheader"></caption>
+                <template slot="beneficiary_name_link">
+                    <td>
+                        <a href="javascript:void(0)" data-bind="click:$component.loadDetailsComponent.bind($data,$current.row), text:$current.row.payeeNickName">
+                </a>
+                    </td>
+                </template>
+            </oj-table>
+        </div>
+        <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[15]]" data="[[SIListDataSource()]]"></oj-paging-control>
+        <!-- /ko -->
+        <!-- ko if:!$baseModel.large() -->
+        <oj-list-view class="payments" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('repeatPayment_template',true)}]]" data="[[SIListDataSource()]]">
+        </oj-list-view>
+        <script type="text/html" id="repeatPayment_template">
+            <li class="payments-list__listItem" data-bind="attr: {id: $data['payeeNickName']}">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item">
+                        <label data-bind="text:$component.resource.beneficiaryName"></label>
+                        <div><a href="#" data-bind="text:payeeNickName ,click:$component.loadDetailsComponent"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.accountType"></label>
+                        <div data-bind="text: paymentType"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.accNumber"></label>
+                        <div class="acc-no" data-bind="text:acno"></div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item">
+                        <label data-bind="text:$component.resource.frequency"></label>
+                        <div data-bind="text: frequency"></div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.startDate"></label>
+                        <div class="date" data-bind="text: startDate"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.endDate"></label>
+                        <div class="date" data-bind="text: endDate"></div>
+                    </div>
+                </div>
+            </li>
+        </script>
+        <oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[SIListDataSource()]]"></oj-paging-control>
+        <!-- /ko  -->
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-secondary" id="button" on-click="[[$dashboard.openDashBoard]]">
+            <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resource.cancel"></span>
+        </oj-button>
+    </div>
+    <!-- </div> -->
+    <!-- /ko -->
+</div>

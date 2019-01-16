@@ -1,0 +1,137 @@
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 label ">
+        <oj-label class="oj-label" for="paymentType"><span data-bind="text:$component.payments.payee.paymenttype"></span></oj-label>
+    </div>
+    <!-- ko if:isPaymentTypesLoaded() -->
+    <div class="oj-flex-item oj-sm-12 ">
+        <oj-radioset id="transferto" on-value-changed="[[$component.networkTypeChanged]]" value="{{$component.sepaType}}" class="oj-choice-direction-row">
+            <!-- ko foreach: paymentTypes -->
+            <oj-option name="transferto" value="{{value}}" :id="[[value]]">
+                <span data-bind="attr: {for: value},text: $component.payments.payee.domestic.sepa[value]"></span>
+            </oj-option>
+            <!-- /ko -->
+        </oj-radioset>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- ko if:$component.sepaType()==="CAT" || $component.sepaType()==="CRT" -->
+<div class="oj-flex oj-flex-items-pad" data-bind="template: { name: 'payee/account-info' }"></div>
+<!-- Lookup code -->
+<div class="oj-flex oj-flex-items-pad">
+    <!-- ko if:$component.sepaType()==="CRT" -->
+    <div class="oj-flex-item oj-sm-12  label ">
+        <oj-label for="bankCode"><span data-bind="text:$component.payments.payee.domestic.sepa.bankcodebic"></span></oj-label>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:$component.sepaType()==="CAT" -->
+    <div class="oj-flex-item oj-sm-12  label ">
+        <oj-label for="bankCode"><span data-bind="text:$component.payments.payee.domestic.sepa.bankcodebic"></span></oj-label>
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex-item oj-sm-12">
+        <!-- ko if:$component.additionalBankDetails()===null -->
+        <div class="oj-flex oj-flex-items-pad  bottom-margin-small">
+            <div class="oj-flex-item oj-sm-6 ">
+                <oj-validation-group id="verify-bankCode-tracker" valid="{{groupValid}}">
+                    <oj-input-text id="bankCode" required validators="[[validateCode]]" value="{{$component.bankDetailsCode}}"></oj-input-text>
+                </oj-validation-group>
+            </div>
+            <div class="oj-flex-item oj-sm-6">
+                <oj-button class="form-button-secondary" on-click="[[verifyCode]]">
+                    <span data-bind="text:$component.payments.common.verify"></span>
+                </oj-button>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad bottom-margin-small">
+            <div class="oj-flex-item " data-bind="text:$component.payments.payee.domestic.or">
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad bottom-margin-small">
+            <div class="oj-flex-item">
+                <a href="#" class="form-button-link" data-bind="text:$component.payments.payee.domestic.sepa.lookupbankcode,click:openLookup"></a>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.additionalBankDetails()!==null -->
+        <div class="oj-flex oj-flex-items-pad" data-bind="with:$component.additionalBankDetails">
+            <div class="oj-flex-item">
+                <div data-bind="text:$component.bankDetailsCode()"></div>
+                <div data-bind="text:('name' in $data)?name:''"></div>
+                <div data-bind="text:('line1' in branchAddress)?branchAddress.line1:''"></div>
+                <div data-bind="text:('city' in branchAddress)?branchAddress.city:''"></div>
+                <div data-bind="text:('country' in branchAddress)?branchAddress.country:''"></div>
+                <div class="">
+                    <oj-button class="form-button-secondary" on-click="[[$component.resetCode]]">
+                        <span data-bind="text:$component.payments.common.reset"></span>
+                    </oj-button>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>
+<div data-bind="component: {name: 'bank-look-up', params:{rootModel: $component,
+                    clearingCodeType:$component.clearingCodeType,
+                    accountType:'Domestic',
+                    region:$component.region(),
+                    networkCode:$component.bankDetailsCode,
+                    additionalBankDetails:$component.additionalBankDetails}}"></div>
+<!-- /ko -->
+<!-- ko if:$component.sepaType()==="DIR" -->
+<!-- Debtor Id -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12  label ">
+        <oj-label for="debtorId"><span data-bind="text:$component.payments.payee.domestic.sepa.debtorid"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12  ">
+        <oj-input-text id="debtorId" required :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('IBAN')]]"></oj-input-text>
+    </div>
+</div>
+<!-- debtor Name -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12  label ">
+        <oj-label for="debtorName"><span data-bind="text:$component.payments.payee.domestic.sepa.debtorname"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 ">
+        <oj-input-text id="debtorName" required :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('NAME')]]"></oj-input-text>
+    </div>
+</div>
+<!-- debtor Acc Number -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12  label ">
+        <oj-label for="debtorAccNumber"><span data-bind="text:$component.payments.payee.domestic.sepa.debtoraccnumber"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12  ">
+        <oj-input-text id="debtorAccNumber" required :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ACCOUNT')]]"></oj-input-text>
+    </div>
+</div>
+<!-- Lookup code -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12  label ">
+        <oj-label for="bankCode"><span data-bind="text:$component.payments.payee.domestic.sepa.bankcodebic"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12  ">
+        <div class="oj-flex oj-flex-items-pad bottom-margin-small">
+            <div class="oj-flex-item oj-sm-6 ">
+                <oj-input-text id="bankCode" required :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('BANK_CODE')]]"></oj-input-text>
+            </div>
+            <div class="oj-flex-item oj-sm-6 ">
+                <oj-button class="btn -addpayee_btn_border">
+                    <span data-bind="text:$component.payments.common.submit"></span>
+                </oj-button>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad bottom-margin-small">
+            <div class="oj-flex-item " data-bind="text:$component.payments.payee.domestic.or">
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad bottom-margin-small">
+            <div class="oj-flex-item">
+                <oj-button class="action-button-secondary">
+                    <span data-bind="text:$component.payments.payee.domestic.sepa.lookupbankcode"></span>
+                </oj-button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /ko -->

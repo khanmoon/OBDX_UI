@@ -1,0 +1,95 @@
+<div class="eStatement">
+  <!-- ko if: $component.eStatementSubsciptionDetails() -->
+  <!-- ko ifnot: $component.confirmSubscription() -->
+  <div class="oj-flex oj-flex-items-pad eStatement__content eStatement-content">
+    <div class="eStatement-content__icon">
+      <span class="icon icon-subscription"></span>
+    </div>
+
+    <div class="oj-flex-item oj-sm-10">
+      <!-- ko if: $component.eStatementSubsciptionDetails().status === 'S' -->
+      <div class="eStatement-content__text" data-bind="text: $component.resource.eStatement.estatementUnsub"></div>
+      <div data-bind="text : $baseModel.format($component.resource.eStatement.unsubscribeCCText, {cardId : $component.eStatementSubsciptionDetails().creditCard.displayValue, emailID : $component.eStatementSubsciptionDetails().primaryEmailId})"></div>
+
+      <!-- /ko -->
+
+      <!-- ko if: $component.eStatementSubsciptionDetails().status === 'U'  -->
+      <div class="eStatement-content__text" data-bind="text: $component.resource.eStatement.estatement"></div>
+      <div data-bind="text : $baseModel.format($component.resource.eStatement.subscribeCCText, {cardId : $component.eStatementSubsciptionDetails().creditCard.displayValue, emailID : $component.eStatementSubsciptionDetails().primaryEmailId})"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.eStatementSubsciptionDetails().status === 'S' -->
+
+      <div class="oj-flex-item oj-sm-12 eStatement-content__subscribeStatus eStatement-content-subscribeStatus">
+        <div class="oj-flex-item oj-sm-6 eStatement-content-subscribeStatus__subscribe eStatement-content-subscribeStatus-subscribe">
+          <span class="icons icon-success eStatement-content-subscribeStatus-subscribe__icon"></span>
+          <span data-bind="text:$component.resource.eStatement.subscribedText"></span>
+        </div>
+
+        <div class="oj-flex-item oj-sm-6 eStatement-content__unSubscribeText right">
+          <a href="#" data-bind="click:proceedSubscriptionForStatement">
+            <span data-bind="text:$component.resource.eStatement.unsubscribe"></span>
+          </a>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+
+    <!-- ko if: $component.eStatementSubsciptionDetails().status === 'U' -->
+    <div class="button-container">
+      <oj-button class="action-button-primary " on-click="[[proceedSubscriptionForStatement]]"><span slot="startIcon" class="icons icon-subscribe"></span>
+        <span data-bind="text:$component.resource.eStatement.subscribe"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.confirmSubscription() -->
+  <div class="oj-flex oj-flex-items-pad eStatement__content eStatement-content">
+    <div class="eStatement-content__icon">
+      <span class="icon icon-subscription"></span>
+    </div>
+    <!-- ko if: $component.eStatementSubsciptionDetails().status === 'S' -->
+    <div class="oj-flex-item oj-sm-10">
+      <div data-bind="text : $baseModel.format($component.resource.eStatement.unsubscribeCCConfirmText, {cardId : $component.eStatementSubsciptionDetails().creditCard.displayValue, emailID : $component.eStatementSubsciptionDetails().primaryEmailId})"></div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $component.eStatementSubsciptionDetails().status === 'U'  -->
+    <div class="oj-flex-item oj-sm-10">
+      <div data-bind="text : $baseModel.format($component.resource.eStatement.subscribeCCConfirmText, {cardId : $component.eStatementSubsciptionDetails().creditCard.displayValue, emailID : $component.eStatementSubsciptionDetails().primaryEmailId})"></div>
+    </div>
+    <!-- /ko -->
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <!-- ko if: $component.eStatementSubsciptionDetails().status === 'S' -->
+    <oj-button class="form-button-primary " on-click="[[updateSubscriptionForStatement]]"><span slot="startIcon" class="icons icon-forward-arrow"></span>
+      <span data-bind="text:$component.resource.eStatement.prodceedEstatement"></span>
+    </oj-button>
+    <oj-button class="form-button-secondary " on-click="[[$component.cancelEstatement]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.eStatement.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if: $component.eStatementSubsciptionDetails().status === 'U' -->
+    <oj-button class="form-button-primary " on-click="[[updateSubscriptionForStatement]]"><span slot="startIcon" class="icons icon-forward-arrow"></span>
+      <span data-bind="text:$component.resource.eStatement.prodceedEstatement"></span>
+    </oj-button>
+    <oj-button class="form-button-secondary " on-click="[[$component.cancelEstatement]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.eStatement.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- ko ifnot: $component.eStatementSubsciptionDetails() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <div class="" data-bind="text: $component.resource.eStatement.noSubscriptionData"></div>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[$component.cancelEstatement]]">
+      <span data-bind="text:$component.resource.eStatement.ok"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+</div>

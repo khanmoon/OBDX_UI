@@ -1,0 +1,75 @@
+<!-- ko ifnot:createTemplate -->
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-9">
+    <div class="form-main-container">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+          <label for="groupCode" data-bind="text:$component.nls.fieldname.transactionGroupCode"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4">
+
+          <oj-input-text :aria-label="[[$component.nls.fieldname.transactionGroupCode]]" id="groupCode" value="{{$component.transactionGroupCode}}"></oj-input-text>
+
+        </div>
+
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+          <label for="groupDescription" data-bind="text:$component.nls.fieldname.transactionGroupDesc"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-6">
+
+          <oj-input-text :aria-label="[[$component.nls.fieldname.transactionGroupDesc]]" id="groupDescription" value="{{$component.transactionGroupDesc}}"></oj-input-text>
+
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item  button-container">
+          <oj-button class="action-button-primary" on-click="[[$component.search]]">
+            <span data-bind="text:$component.nls.common.search"></span>
+          </oj-button>
+          <!-- ko ifnot:dataLoaded() -->
+          <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.nls.common.cancel"></span>
+          </oj-button>
+          <!-- /ko -->
+
+          <oj-button class="action-button-tertiary" on-click="[[clearValues]]">
+            <span data-bind="text:$component.nls.common.clear"></span>
+          </oj-button>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <!-- ko if:dataLoaded() -->
+        <oj-table id="table" :aria-label="[[$component.nls.fieldname.transactionGroupList]]" data="[[$component.datasource]]" columns="[[columnArray]]" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'single',column:'single'}]]">
+          <caption class="hide-label" data-bind="text:$component.nls.fieldname.transactionGroupList"></caption>
+        </oj-table>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item  button-container">
+            <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+              <span data-bind="text:$component.nls.common.cancel"></span>
+            </oj-button>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <script type="text/html" id="viewDetails">
+          <td>
+            <a href="javascript:void(0)" data-bind="text:$context.row.code,click:$component.viewTransactionGroup.bind($data,$context.row)"></a>
+          </td>
+        </script>
+
+      </div>
+    </page-section>
+  </div>
+  </div>
+  <div class="oj-flex-item oj-sm-3 help-panel">
+  <help params="baseModel : $baseModel, rootModel : $component, transaction: 'transaction-group-search'"></help>
+</div>
+
+</div>
+<!-- /ko -->

@@ -1,0 +1,52 @@
+<div class="trade-finance">
+
+  <div class="oj-flex oj-flex-items-pad trade-finance-nav-bar">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.large() }">
+      <div class="oj-flex oj-flex-items-pad">
+        <!-- ko ifnot:$baseModel.small() -->
+        <div class="oj-flex-item oj-sm-10 oj-md-8 oj-lg-6" data-bind='component:{name: "nav-bar", params:{rootModel: $data,menuOptions: menuOptions, uiOptions:uiOptions,navBarDescription:$component.resourceBundle.navLabels.navBarDescription}}'></div>
+
+        <div class="oj-flex-item oj-sm-2 oj-md-4 oj-lg-6 right padding-tb">
+          <oj-button id="createButton" class="action-button-primary" on-click="[[create]]">
+            <span slot="startIcon" class="icons icon-add"></span>
+      <span data-bind="text:$component.resourceBundle.navLabels.initiateLC"></span>
+</oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$baseModel.small() -->
+        <div class="oj-flex oj-sm-12">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="initiate-radioset"><span data-bind="text:$component.resourceBundle.navLabels.initiateUsing"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+            <oj-radioset class="oj-choice-direction-row" id="initiate-radioset" required value="{{$component.menuSelection}}">
+              <oj-option value="TEMPLATES" id="templateRadioset" name="templateRadioset">
+                <span for="templateRadioset" data-bind="text:$component.resourceBundle.navLabels.template"></span>
+              </oj-option>
+              <oj-option value="DRAFTS" id="draftRadioset" name="templateRadioset">
+                <span for="draftRadioset" data-bind="text:$component.resourceBundle.navLabels.drafts"></span>
+              </oj-option>
+            </oj-radioset>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+  </div>
+
+  <div class="form-main-container" data-bind="component:{name : compName, params:{rootModel:$component}}"></div>
+  <!-- ko ifnot: $baseModel.small() -->
+  <div class="button-container">
+  <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+    <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+</oj-button>
+  </div>
+  <!-- /ko -->
+  <!-- ko if: $baseModel.small() -->
+  <a href="#" data-bind="click: $component.create">
+    <div class="floating-button"><span class="icons icon-plus"></span></div>
+  </a>
+  <!-- /ko -->
+
+</div>

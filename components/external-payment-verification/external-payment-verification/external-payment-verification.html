@@ -1,0 +1,46 @@
+<div class="oj-flex oj-flex-items-pad" data-bind="component: {name:'header' , params:{rootModel:$data , compName:$component.resource.epiVerificationHeader}}"></div>
+<div class="form-main-container container">
+    <!-- ko if:stageOne() -->
+
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div data-bind="with:epiVerificationModel">
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                  <oj-label for="aliasValue"><span data-bind="text:$component.resource.epi.externalReferenceId"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                  <oj-input-text id="aliasValue" maxlength="40" required value="{{externalReferenceId}}"></oj-input-text>
+              </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                  <oj-label for="securityCode"><span data-bind="text:$component.resource.epi.amount"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                  <oj-input-text id="securityCode" maxlength="10" required value="{{txnAmount.amount}}"></oj-input-text>
+              </div>
+          </div>
+      </div>
+    </page-section>
+
+    <div class="button-container">
+        <oj-button class="action-button-primary " id="button" on-click="[[initiatePayment]]"><span slot="startIcon" class="icons icon-verify"></span>
+      <span data-bind="text:$component.resource.common.verify"></span>
+</oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:stageTwo() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+         <!-- ko if:isSuccess() -->
+            <div class="oj-flex-item center">
+                  <div data-bind="text:$component.resource.epi.verification.success"></div>
+            </div>
+         <!-- /ko -->
+         <!-- ko ifnot:isSuccess() -->
+              <div class="oj-flex-item center">
+                  <div data-bind="text:$component.resource.epi.verification.failure"></div>
+            </div>
+         <!-- /ko -->
+    </page-section>
+    <!-- /ko -->
+</div>

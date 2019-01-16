@@ -1,0 +1,26 @@
+<!-- <div class="oj-flex oj-flex-items-pad">
+<div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "nav-bar", params:{rootModel: $data,menuOptions: menuOptions, uiOptions:uiOptions}}'></div>
+</div> -->
+
+<!-- ko if:(isAdmin()) -->
+<modal-window params="baseModel : $baseModel, rootModel : $data,id:'choicePopup',closeHandler:closeHandler, header : $component.nls.navLabels.userSelection">
+    <div class="form-main-container">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-12" data-bind="text: $component.nls.navLabels.chooseUserType"></div>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12 vertical-ruler">
+            <oj-radioset id="ruleType" :aria-label="[[$component.nls.navLabels.ruleType]]" value="{{$component.ruleType}}" on-value-changed="[[$component.ruleTypeSelected]]" class="oj-choice-direction-row">
+                <oj-option :id="[[$component.nls.navLabels.adminUser]]" value="[[$component.nls.navLabels.adminUser]]">     
+                    <span data-bind="text:$component.nls.navLabels.adminUser"></span>
+                </oj-option>
+                <oj-option :id="[[$component.nls.navLabels.corporateUser]]" value="[[$component.nls.navLabels.corporateUser]]">
+                    <span data-bind="text:$component.nls.navLabels.corporateUser"></span>
+                </oj-option>  
+            </oj-radioset>
+        </div>
+    </div>
+    <div data-bind="template : {afterRender : $component.showModal}"></div>
+</modal-window>
+<!-- /ko -->

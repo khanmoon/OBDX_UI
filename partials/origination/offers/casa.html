@@ -1,0 +1,52 @@
+<div class="oj-flex oj-flex-items-pad padding-bottom-20">
+	<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-7 no-pad-cols">
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-7 oj-md-6 oj-lg-6 left-col no-pad-cols">
+				<!-- ko if: offerDetailsDTO.currencySpecificParameterDTOList[0].minimumInitialDepositAmount -->
+				<oj-label class="details-text"><span data-bind="text:$component.resource.casa.minimumInitialDepositAmount"></span></oj-label>
+				<!-- /ko  -->
+				<!-- ko if: offerDetailsDTO.currencySpecificParameterDTOList[0].minimumBalanceAmount -->
+				<oj-label class="details-text"><span data-bind="text:$component.resource.casa.minimumBalanceAmount"></span></oj-label>
+				<!-- /ko  -->
+				<oj-label class="details-text"><span data-bind="text:$component.resource.casa.atmAccess"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-5 oj-md-4 oj-lg-4 no-pad-cols">
+				<!-- ko if: offerDetailsDTO.currencySpecificParameterDTOList[0].minimumInitialDepositAmount -->
+				<span class="details-text-value" data-bind="text: offerDetailsDTO.currencySpecificParameterDTOList[0].minimumInitialDepositAmount.amount"></span>
+				<!-- /ko  -->
+				<!-- ko if: offerDetailsDTO.currencySpecificParameterDTOList[0].minimumBalanceAmount -->
+				<span class="details-text-value" data-bind="text: offerDetailsDTO.currencySpecificParameterDTOList[0].minimumBalanceAmount.amount"></span>
+				<!-- /ko  -->
+				<!-- ko if: offerDetailsDTO.ddaAllowedAccessChannelDTO.atmallowed -->
+				<span class="details-text-value" data-bind="text:$component.resource.casa.allowed"></span>
+				<!-- /ko  -->
+				<!-- ko ifnot: offerDetailsDTO.ddaAllowedAccessChannelDTO.atmallowed -->
+				<span class="details-text-value" data-bind="text:$component.resource.casa.notAllowed"></span>
+				<!-- /ko  -->
+			</div>
+		</div>
+	</div>
+
+
+	<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5 no-pad-cols facilities">
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-7 oj-md-6 oj-lg-12 no-pad-cols facilities-text">
+				<div class="details-text" data-bind="text:$component.resource.casa.facilities"></div>
+			</div>
+			<ul class="oj-flex-item oj-sm-5 oj-md-6 oj-lg-12 no-pad-cols facilities-values">
+				<!-- ko if:offerDetailsDTO.facilityDTO.chequeBookAllowed -->
+				<li class="details-text-value" data-bind="text:$component.resource.casa.checkBookAllowed"></li>
+				<!-- /ko  -->
+				<!-- ko if: offerDetailsDTO.ddaAllowedAccessChannelDTO.atmallowed -->
+				<li class="details-text-value" data-bind="text:$component.resource.casa.atmAccess"></li>
+				<!-- /ko  -->
+				<!-- ko if:offerDetailsDTO.facilityDTO.overdraftAllowed -->
+				<li class="details-text-value" data-bind="text:$component.resource.casa.overdraftAllowed"></li>
+				<!-- /ko  -->
+				<!-- ko if:offerDetailsDTO.facilityDTO.principalOffsetAllowed -->
+				<li class="details-text-value" data-bind="text:$component.resource.casa.principalOffsetAllowed"></li>
+				<!-- /ko  -->
+			</ul>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,202 @@
+$feedback-analytics-color: #66a209;
+$analytics-rating-border-color: #006400;
+$analytics-rating-pipe-color: #D3D3D3;
+$tab-bar-border-color: #e5e6e6;
+$analytics-color-collection: (
+  #33C5CF,
+  #14BA92,
+  #FAC85A,
+  #FF669E,
+  #A65496
+);
+$analytics-color-collection-count: length($analytics-color-collection);
+
+#tabbardemo {
+  & .oj-navigationlist-item.oj-selected {
+    border-color: var(--nav-selected-text);
+
+    & .oj-navigationlist-item-label {
+      color: var(--nav-selected-text);
+    }
+  }
+
+  .oj-navigationlist-item {
+    &.oj-hover:not(.oj-selected) {
+      border-color: var(--nav-hover-border);
+      background-color: var(--nav-hover-background);
+
+      & .oj-navigationlist-item-label {
+        color: var(--nav-hover-text);
+      }
+    }
+  }
+}
+
+.feedback-analytics {
+  padding: 0.6rem;
+
+  &__chart {
+    width: 23.125rem;
+  }
+
+  &__chartForSubmit {
+    width: 16.25rem;
+  }
+
+  &__content {
+    @include single-border(left,0.05rem solid var(--base-border-default));
+  }
+
+  &-content {
+    &__avgRating {
+      text-align: center;
+      margin: 2rem;
+    }
+
+    &__avgRatingForPie {
+      text-align: center;
+      margin: 3.4375rem 0;
+    }
+
+    &-avgRating {
+      &__value {
+        font-size: 1.8rem;
+      }
+    }
+
+    &__totalRating {
+      border-top: 0.05rem solid var(--base-border-default);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    &-totalRating {
+      &__value {
+        font-size: 1.8rem;
+      }
+    }
+  }
+}
+
+.progress-bar-property {
+  width: 50%;
+  height: 0.625rem;
+  margin: 0.625rem;
+}
+
+.description-align {
+  @include single-padding(left, 1.25rem);
+}
+
+.search-align {
+  @include single-padding(left, 1.3125rem);
+}
+
+.rating-container {
+  .customer-response-container {
+    & #tabs-container-select {
+      @include single-margin(bottom, 1rem);
+
+      & #tabGroups-select {
+        overflow-x: visible;
+
+        & .oj-tabbar-listview-container {
+          overflow-x: visible;
+
+          & ul li {
+            @include single-border(right, 0.0625rem solid $analytics-rating-pipe-color);
+            min-height: 0.0625rem;
+
+            &.oj-active,
+            &.oj-selected {
+              border-bottom-color: $analytics-rating-border-color;
+            }
+
+            &:last-child {
+              @include single-border(right, none);
+            }
+
+            a {
+              .oj-tabbar-item-label {
+                overflow-y: hidden;
+              }
+            }
+          }
+        }
+      }
+
+      .oj-tabbar-horizontal:not(.oj-tabbar-icon-only) .oj-tabbar-item-content {
+        padding: 0.3125rem;
+      }
+
+      .oj-tabbar-horizontal:not(.oj-tabbar-icon-only) .oj-tabbar-item .oj-selected {
+        border-color: $analytics-rating-border-color;
+      }
+
+      .oj-ratinggauge {
+        width: 4rem;
+        height: 1.25rem;
+      }
+    }
+
+    .comments-container {
+      @include single-padding(left, 0.625rem);
+      @include single-padding(right, 0.625rem);
+      max-height: 20.625rem;
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      & ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+          @include single-border(bottom, 0.0625rem solid $analytics-rating-pipe-color);
+          list-style-type: none;
+          padding-top: 0.625rem;
+
+          h5 {
+            word-wrap: break-word;
+            width: 24.375rem;
+          }
+
+          &:last-child {
+            @include single-border(bottom, none);
+          }
+        }
+      }
+    }
+  }
+}
+
+.customer-response-section {
+  .admin-card__description {
+    padding: 0.625rem;
+  }
+
+  oj-rating-gauge {
+    border-bottom: 0.0625rem solid $analytics-rating-pipe-color;
+    margin: 0 auto;
+    padding: 0.9375rem;
+  }
+
+  .rating-response-section .individual-section {
+    @include single-border(right, 0.0625rem solid $analytics-rating-pipe-color);
+
+    .oj-progress-bar-value {
+      @for $i from 1 through $analytics-color-collection-count {
+        &:nth-of-type(#{$i}) {
+          background-color: nth($analytics-color-collection, $i);
+        }
+      }
+    }
+  }
+}
+
+.tab-bar-container {
+  @include single-border(bottom, 0.0625rem solid $tab-bar-border-color);
+}
+
+.feedback-analytics-content {
+  @include single-padding(top, 1.25rem);
+}

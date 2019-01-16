@@ -1,0 +1,126 @@
+<div class="oj-flex oj-flex-items-pad  margin-top-20">
+  <div class="section-heading oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-md-10 oj-lg-10" data-bind="text:$component.resource.contactInfo.email"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+    <oj-label><span data-bind="text:$component.resource.contactInfo.email"></span></oj-label>
+  </div>
+  <div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item  label">
+    <span data-bind="text : data.email()"></span>
+  </div>
+</div>
+
+<!-- ko if: typeof data.contactInfo.contacts !== 'undefined' -->
+<div class="oj-flex oj-flex-items-pad  margin-top-20">
+  <div class="section-heading oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-md-10 oj-lg-10" data-bind="text:$component.resource.contactInfo.contactNumber"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+    <oj-label><span data-bind="text:$component.resource.contactInfo.mobilePhoneNumber"></span></oj-label>
+  </div>
+  <div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item  label">
+    <span data-bind="text: data.contactInfo.contacts[0].phone.number"></span>
+  </div>
+</div>
+<!-- ko if: data.contactInfo.contacts[1].contactType !== '' -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+    <oj-label><span data-bind="text:$component.resource.contactInfo.homePhoneNumber"></span></oj-label>
+  </div>
+  <div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item label ">
+    <span data-bind="text: data.contactInfo.contacts[1].phone.number"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad  margin-top-20">
+  <div class="section-heading oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-md-10 oj-lg-10" data-bind="text:$component.resource.contactInfo.resAddr"></div>
+</div>
+
+<!-- ko if : typeof data.contactInfo.address.postalAddress !== 'undefined' -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+    <oj-label><span data-bind="text:resource.address"></span></oj-label>
+  </div>
+  <div data-bind="with:data.contactInfo.address.postalAddress" class="oj-flex-item oj-md-6 oj-sm-12  oj-lg-4 label">
+    <!-- ko if: $data['line2'] -->
+    <!-- ko if: $data.line2 -->
+    <span data-bind="text:$baseModel.format($component.resource.contactInfo.reviewAddress, {line1: line1, line2: line2, city: city,state: $component.selectedStateText(), zip: postalCode})"></span>
+    <!-- /ko -->
+    <!-- ko ifnot: $data.line2 -->
+    <span data-bind="text:$baseModel.format($component.resource.contactInfo.reviewAddress2, {line1: line1, city: city,state: $component.selectedStateText(), zip: postalCode})"></span>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko ifnot: $data['line2'] -->
+    <span data-bind="text:$baseModel.format($component.resource.contactInfo.reviewAddress2, {line1: line1, city: city,state: $component.selectedStateText(), zip: postalCode})"></span>
+    <!-- /ko -->
+  </div>
+</div>
+<!-- /ko -->
+
+<!-- ko if: typeof data.selectedValues !== 'undefined' -->
+<!-- ko if: typeof data.selectedValues().accomodationType !== 'undefined' -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+    <oj-label><span data-bind="text:resource.accomodationType"></span></oj-label>
+  </div>
+  <div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item  label">
+    <span data-bind="text: data.selectedValues().accomodationType"></span>
+  </div>
+</div>
+<!-- ko if: data.contactInfo.address.accomodationType === 'OWN' && data.monthlyMortgage.amount() !== 0 -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+    <oj-label><span data-bind="text:resource.monthlyMortgage"></span></oj-label>
+  </div>
+  <div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item label ">
+    <span data-bind="text: $baseModel.formatCurrency(data.monthlyMortgage.amount(), data.monthlyMortgage.currency)"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: data.contactInfo.address.accomodationType === 'RENT' -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+    <oj-label><span data-bind="text:resource.monthlyRent"></span></oj-label>
+  </div>
+  <div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item  label">
+    <span data-bind="text: $baseModel.formatCurrency(data.monthlyRent.amount(), data.monthlyRent.currency)"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+    <oj-label><span data-bind="text:resource.samePostalAddress"></span></oj-label>
+  </div>
+  <div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item label">
+    <span data-bind="text: data.contactInfo.mailingAddress.sameAsCurrent ? resource.generic.common.yes : resource.generic.common.no"></span>
+  </div>
+</div>
+<!-- ko ifnot: data.contactInfo.mailingAddress.sameAsCurrent -->
+<div class="oj-flex oj-flex-items-pad  margin-top-20">
+  <div class="section-heading oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-md-10 oj-lg-10" data-bind="text: resource.mailingAddress"></div>
+</div>
+<!-- ko if : typeof data.contactInfo.mailingAddress.postalAddress !== 'undefined' -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+    <oj-label><span data-bind="text:resource.address"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-md-6 oj-sm-12 oj-lg-4 label">
+    <!-- ko if: data.contactInfo.mailingAddress.postalAddress['line2'] -->
+    <!-- ko if: data.contactInfo.mailingAddress.postalAddress.line2 -->
+    <span data-bind="text:$baseModel.format($component.resource.contactInfo.reviewAddress, {line1: data.contactInfo.mailingAddress.postalAddress.line1, line2: data.contactInfo.mailingAddress.postalAddress.line2, city: data.contactInfo.mailingAddress.postalAddress.city,state: data.selectedValues().mailingAddress.state, zip: data.contactInfo.mailingAddress.postalAddress.postalCode})"></span>
+    <!-- /ko -->
+    <!-- ko ifnot: data.contactInfo.mailingAddress.postalAddress.line2 -->
+    <span data-bind="text:$baseModel.format($component.resource.contactInfo.reviewAddress2, {line1: data.contactInfo.mailingAddress.postalAddress.line1, city: data.contactInfo.mailingAddress.postalAddress.city,state:data.selectedValues().mailingAddress.state, zip: data.contactInfo.mailingAddress.postalAddress.postalCode})"></span>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko ifnot: data.contactInfo.mailingAddress.postalAddress['line2'] -->
+    <span data-bind="text:$baseModel.format($component.resource.contactInfo.reviewAddress2, {line1: data.contactInfo.mailingAddress.postalAddress.line1, city: data.contactInfo.mailingAddress.postalAddress.city,state: data.selectedValues().mailingAddress.state, zip: data.contactInfo.mailingAddress.postalAddress.postalCode})"></span>
+    <!-- /ko -->
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->

@@ -1,0 +1,28 @@
+<div class="page-section-content">
+  <oj-validation-group id="instructionsValidationTracker" valid="{{instructionsGroupValid}}">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="remarks" class="align-left"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.remarks"></span></oj-label>
+          </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-text-area id="remarks" type="text" maxlength="780" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.instructionDetails.invalidInstructions,{type:'length',options:{
+                                        min:0,max:780}})]]" value="{{$component.collectionDetails.remarks}}"></oj-text-area>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ko if : $component.mode() === 'CREATE' -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <oj-button id="continueButton" class="action-button-secondary" on-click="[[continueFunc]]">
+        <span slot="startIcon" class="icons icon-submit"></span>
+      <span data-bind="text:$component.resourceBundle.common.labels.continue"></span>
+</oj-button>
+    </div>
+  </div>
+  <!-- /ko -->
+</oj-validation-group>
+</div>

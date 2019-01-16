@@ -1,0 +1,38 @@
+<div class="oj-flex oj-flex-items-pad">
+
+	<!-- ko if:cardDetailsFetched()-->
+
+	<!-- ko foreach: $component.accounts() -->
+    <!-- ko if: status === 'CLOSED' -->
+
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4" data-bind="attr:{'id':'cards_'+$index()}">
+
+		<div class="" data-bind="css:'productCard'+$index(),component: {name: 'card', params:{rootModel: $parent, data:{
+			'topLeftPanel':
+			{
+		'title':$data.partyName,
+		'description': $data.productDTO.name,
+		 'features': [$data.id.displayValue,$baseModel.format($component.resource.cardDetails.interestRate,{rate: $baseModel.formatNumber($data.interestRate/100,'percent'),maturityDate:$baseModel.formatDate(($data.maturityDate))})],
+		 'image' : $data.holdingPattern==='SINGLE' ? '' : 'term-deposits/joint-account.svg'
+
+ },
+
+		'bottomRightPanel': {
+			 'label':$component.resource.cardDetails.currentBalance,
+			 'value':$baseModel.formatCurrency($data.availableBalance.amount, $data.availableBalance.currency)
+		 },
+		 clickHandler : $component.loadDetails.bind($data,$parent,'td-details',$data)
+				}
+			}},attr:{'id':'card_'+id.value}">
+			<oj-label><span data-bind="text:name"></span></oj-label>
+
+		</div>
+
+	</div>
+	<!-- /ko -->
+	<!-- /ko -->
+
+
+	<!-- /ko -->
+
+</div>

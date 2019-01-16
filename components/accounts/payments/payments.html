@@ -1,0 +1,46 @@
+
+<!-- ko if:dataFetched() -->
+<div class="overview-payments">
+  <!-- ko if: !$baseModel.small() -->
+<div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10 overview-payments__paymentHeader overview-payments-header" data-bind="css: $baseModel.large() ? '' : 'no-pad-cols'">
+        <span class="overview-payments-header__label" data-bind="text:$component.locale.payments.description"></span>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 overview-payments__moreInfo overview-payments-moreInfo center" data-bind="css: $baseModel.large() ? '' : 'no-pad-cols'">
+        <a class="" href="#" data-bind="attr:{'alt':$component.locale.payments.moreInfoText ,'title':$component.locale.payments.moreInfo},click:$dashboard.switchModule.bind($data,$component.module)">
+          <div class="overview-payments-moreInfo__link" data-bind="text:$component.locale.payments.moreInfo"></div>
+          <div class="overview-payments-moreInfo__icons icon-forward-arrow"></div>
+        </a>
+    </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10 quick-link" data-bind="css: $baseModel.large() ? '' : 'no-pad-cols'">
+       <div data-bind="component:{name: 'quick-links',params:{rootModel:$data,data:$data,type: $component.module}} "></div>
+    </div>
+</div>
+<!-- /ko -->
+
+<!-- ko if: $baseModel.small() -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 overview-payments__paymentHeader overview-payments-header" data-bind="css: $baseModel.large() ? '' : 'no-pad-cols'">
+      <span class="overview-payments-header__label" data-bind="text:$component.locale.payments.description"></span>
+  </div>
+
+  <div class="oj-flex oj-sm-12 oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10 quick-link" data-bind="css: $baseModel.large() ? '' : 'no-pad-cols'">
+         <div data-bind="component:{name: 'quick-links',params:{rootModel:$data,data:$data,type: $component.module}} "></div>
+      </div>
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 overview-payments__moreInfo overview-payments-moreInfo center" data-bind="css: $baseModel.large() ? '' : 'no-pad-cols'">
+    <a class="" href="#" data-bind="attr:{'alt':$component.locale.payments.moreInfoText ,'title':$component.locale.payments.moreInfo},click:$dashboard.switchModule.bind($data,$component.module)">
+      <div class="overview-payments-moreInfo__link" data-bind="text:$component.locale.payments.moreInfo"></div>
+      <div class="overview-payments-moreInfo__icons icon-forward-arrow"></div>
+    </a>
+  </div>
+</div>
+<!-- /ko -->
+</div>
+<!-- /ko -->

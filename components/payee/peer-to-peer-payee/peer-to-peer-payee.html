@@ -1,0 +1,73 @@
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+      <!-- ko if:stageOne() -->
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label">
+                    <oj-label for="p2ppayeename"><span data-bind="text:$component.payments.payee.peertopeer.payeename"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-input-text required id="p2ppayeename" disabled="[[!isNew()]]" value="{{p2pPayeeModel.name}}"></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label">
+                    <oj-label for="p2pvalue"><span data-bind="text:$component.payments.payee.peertopeer.payeevalue"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-input-text required id="p2pvalue" disabled="[[true]]" value="{{p2pPayeeModel.transferValue}}"></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label">
+                    <oj-label for="p2pnickname"><span data-bind="text:$component.payments.payee.peertopeer.payeenickname"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-input-text required id="p2pnickname" value="{{p2pPayeeModel.nickName}}"></oj-input-text>
+                </div>
+            </div>
+    </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary" id="button-add" on-click="[[createPayeeGroup]]"><span slot="startIcon" class="icons icon-add"></span>
+                <span data-bind="text:$component.common.add"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" id="button-cancel" on-click="[[cancel]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.common.cancel"></span>
+            </oj-button>
+        </div>
+    <!-- /ko -->
+    </div>
+
+    <!-- ko if:stageTwo() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.common.review , reviewHeader : $component.payments.payee.reviewHeaderMsg}}"></div>
+    <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+       <div class="row-group" data-bind="with:p2pData">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.peertopeer.payeename , value :name"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.peertopeer.payeevalue ,
+                         value :transferValue,dataClass :'highlight-text'"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.peertopeer.payeenickname ,
+                         value :nickName"></row>
+        </div>
+    </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary " id="button-confirm" on-click="[[verifyPayee]]"><span slot="startIcon" class="icons icon-confirm"></span>
+                <span data-bind="text:$component.common.confirm"></span>
+            </oj-button>
+
+            <oj-button class="action-button-secondary" id="button-cancell" on-click="[[$dashboard.openDashBoard.bind()]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.common.cancel"></span>
+            </oj-button>
+
+            <oj-button class="action-button-tertiary" id="button-back" on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+                <span data-bind="text:$component.common.back"></span>
+            </oj-button>
+        </div>
+    </div>
+    <!-- /ko -->
+        <!-- ko if: $baseModel.large() && stageOne() -->
+        <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'peer-to-peer-payee'"></help>
+        </div>
+        <!-- /ko -->
+</div>

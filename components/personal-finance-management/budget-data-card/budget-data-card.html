@@ -1,0 +1,48 @@
+<div class="budget-data-card" data-bind="with:$component.cardData()">
+  <div class="oj-flex oj-flex-items-pad budget-data-card__list-budget list-budget-description">
+    <div class="oj-flex-item oj-sm-10 list-budget-description__budgetDescription budgetDescription">
+      <div class="budgetDescription__img"></div>
+      <div class="budgetDescription__name" data-bind="text:categoryName"></div>
+    </div>
+  <div class="oj-flex-item oj-sm-2 list-budget-description__viewDetailsLauncher viewDetailsLauncher">
+      <a href="#" openprofile="true" data-bind="attr:{id : 'budgetmenulauncher_' + data.budgetId ,'alt':$component.resource.budget.imgalt ,'title':$component.resource.budget.imgTitle},click: $component.openMenu">
+          <span class="icons icon-more-vertical"></span>
+      </a>
+      <oj-menu :id="[['budgetmenulauncher_' + data.budgetId + '-container']]" 
+      on-oj-action="[[$component.menuItemSelect.bind($data,$data)]]" 
+      open-options.launcher="[['budgetmenulauncher_' + data.budgetId]]" 
+      open-options.display="dropDown">
+                        <!-- ko foreach: $component.menuItems -->
+                        <oj-option :id="[[id]]" :value="[[id]]">
+                            <span data-bind="text : label"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-menu>
+  </div>
+</div>
+
+
+<div class="oj-flex oj-flex-items-pad budget-data-card__budgetAmount amount">
+   <div class="oj-flex-item oj-sm-12">
+   <span class=" amount__budget" data-bind="text :$baseModel.format($component.resource.budget.budgetset, {amount : $baseModel.formatCurrency(amount.amount,amount.currency)}) "></span>
+    </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad" data-bind="component:{
+                                name:'percentage-graph',
+                                params:{
+                                  rootModel: $component,
+                                  data : {
+                                        label:(consumed>100)?$baseModel.format($component.resource.budget.exceeded,{percentage : (consumed-100)}):$baseModel.format($component.resource.budget.consumed,{percentage : consumed}),
+                                        showLabel:true,
+                                        uniqueId:'budget-data-card-label-'+data.budgetId,
+                                        max:data.amount.amount,
+                                        thresholdValues:thresholdValues,
+                                        value:consumedAmount,
+                                        toolTipCallBack:$component.budgetTooltipCallback
+                                    }
+                                }
+
+                          }">
+                          </div>
+</div>

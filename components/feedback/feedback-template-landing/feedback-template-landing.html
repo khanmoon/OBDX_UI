@@ -1,0 +1,123 @@
+<!-- ko if:feedbackUserRoleLoaded -->
+<div class="oj-flex design-feedback form-main-container">
+  <div class="oj-flex-item oj-sm-9">
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <oj-validation-group id="tracker" valid="{{$component.groupValid}}">
+          <div class="oj-flex">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="templateId" :id="[['templateId']]"><span data-bind="text:$component.resource.templateIdLabel"></span></oj-label>
+            </div>
+            <div class="oj-flex-item  oj-lg-5 label">
+              <!-- ko ifnot:$component.reviewTemplate -->
+              <oj-input-text id="textInputReadOnlyIdentifier" :aria-label="[[$component.resource.templateIdPlaceholder]]" value="{{inputTemplateIdentifier}}" placeholder="{{$component.resource.templateIdPlaceholder}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+                             type: 'length',
+                             options: {
+                                 min: 0,
+                                 max: 20
+                             }})]]" required>
+              </oj-input-text>
+              <!-- /ko -->
+              <!-- ko if:$component.reviewTemplate -->
+              <oj-label id="textInputReadOnlyIdentifier" :aria-label="[[$component.resource.templateIdPlaceholder]]"><span data-bind="text:$component.inputTemplateIdentifier"></span></oj-label>
+              <!-- /ko -->
+            </div>
+          </div>
+          <div class="oj-flex">
+            <div class="oj-flex-item  oj-lg-4 label">
+              <oj-label for="templateName" :id="[['templateName']]"><span data-bind="text:$component.resource.templateNameLabel"></span></oj-label>
+            </div>
+            <div class="oj-flex-item  oj-lg-5 label">
+              <!-- ko ifnot:$component.reviewTemplate -->
+              <oj-input-text id="text-input-readonly-name" :aria-label="[[$component.resource.templateNamePlaceholder]]" value="{{inputTemplateName}}" placeholder="{{$component.resource.templateNamePlaceholder}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+                             type: 'length',
+                             options: {
+                                 min: 0,
+                                 max: 80
+                             }})]]" required>
+              </oj-input-text>
+              <!-- /ko -->
+              <!-- ko if:$component.reviewTemplate -->
+              <oj-label id="text-input-readonly-name" :aria-label="[[$component.resource.templateNamePlaceholder]]"><span data-bind="text:$component.inputTemplateName"></span></oj-label>
+              <!-- /ko -->
+            </div>
+          </div>
+          <div class="oj-flex">
+            <div class="oj-flex-items oj-lg-4 label">
+              <oj-label for="applicableRoleLabel" :for="[['checkboxSetAgreeIdForUserRole']]"><span data-bind="text:$component.resource.applicableRoleLabel"></span></oj-label>
+            </div>
+            <!-- ko ifnot:hideButtons() -->
+            <div class="oj-flex-items oj-lg-4">
+              <oj-checkboxset id="checkboxSetAgreeIdForUserRole" :aria-label="[[$component.resource.cancel]]" value="{{$component.defaultRole}}" required>
+                <!-- ko foreach: $component.feedbackUserRole -->
+                <oj-option value="[[enterpriseRoleId]]"><span data-bind="text: enterpriseRoleName"></span></oj-option>
+                <!-- /ko -->
+              </oj-checkboxset>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:hideButtons() -->
+            <div class="oj-flex-item  oj-lg-4 label">
+              <oj-label id="text-input-readonly"><span data-bind="text:$component.applicableRoles"></span></oj-label>
+            </div>
+            <!-- /ko -->
+          </div>
+          <div class="oj-flex">
+            <div class="oj-flex-item  oj-lg-4 label">
+              <oj-label :id="[['overallQuestion']]"><span data-bind="text:$component.resource.questionLabel"></span></oj-label>
+            </div>
+            <div class="oj-flex-item  oj-lg-5 label">
+              <!-- ko ifnot:$component.reviewTemplate -->
+              <oj-input-text id="text-input-readonly-question" :aria-label="[[$component.resource.overallQuestion]]" value="{{overallQuestion}}" required placeholder="{{$component.resource.overallQuestion}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+                             type: 'length',
+                             options: {
+                                 min: 0,
+                                 max: 80
+                             }})]]">
+              </oj-input-text>
+              <!-- /ko -->
+              <!-- ko if:$component.reviewTemplate -->
+              <oj-label id="text-input-readonly-question" :aria-label="[[$component.resource.overallQuestion]]"><span data-bind="text:$component.overallQuestion"></span></oj-label>
+              <!-- /ko -->
+            </div>
+          </div>
+          <!-- ko if:$component.reviewTemplate -->
+          <div class="section-separate"></div>
+          <!-- /ko -->
+        </oj-validation-group>
+        <!-- ko ifnot:hideButtons() -->
+        <!-- ko ifnot:onEdit() -->
+        <div class="oj-flex button-container">
+          <oj-button class="action-button-primary" id="saveButtonId" type="submit" on-click="[[$component.showGlobalscreenNext]]">
+            <span data-bind="text:$component.resource.next"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" id="cancelButtonId" type="submit" on-click="[[$dashboard.openDashBoard]]">
+            <span data-bind="text:$component.resource.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" id="backButtonId" type="submit" on-click="[[$component.back]]">
+            <span data-bind="text:$component.resource.back"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:onEdit() -->
+        <div class="oj-flex button-container">
+          <oj-button class="action-button-primary" id="saveButtonId" type="submit" on-click="[[$component.showGlobalscreenSave]]">
+            <span data-bind="text:$component.resource.save"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" id="cancelButtonId" type="submit" on-click="[[$dashboard.openDashBoard]]">
+            <span data-bind="text:$component.resource.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" id="nextButtonId" type="submit" on-click="[[$component.showGlobalscreenNext]]">
+            <span data-bind="text:$component.resource.next"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+      </page-section>
+  </div>
+  <!-- ko ifnot:hideButtons() -->
+  <div class="oj-flex-item oj-sm-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'feedback-template-landing'"></help>
+  </div>
+  <!-- /ko -->
+</div>
+</div>
+<!-- /ko -->

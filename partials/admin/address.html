@@ -1,0 +1,103 @@
+<!-- ko ifnot: $component.isDisabled -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+		<oj-label class="" for="addressLine1"><span data-bind="text:$component.nls.fieldname.address1"></span></oj-label>
+	</div>
+
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+		<oj-input-text :aria-label="[[$component.nls.fieldname.address1]]" id="addressLine1" required maxlength="70" validators="[[$baseModel.getValidator('ADDRESS')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.userFullData().address.line1}}"></oj-input-text>
+	</div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+		<oj-label class="" for="addressLine2"><span data-bind="text:$component.nls.fieldname.address2"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+		<oj-input-text :aria-label="[[$component.nls.fieldname.address2]]" id="addressLine2" maxlength="70" validators="[[$baseModel.getValidator('ADDRESS')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.userFullData().address.line2}}"></oj-input-text>
+	</div>
+
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+		<oj-label class="" for="addressLine3"><span data-bind="text:$component.nls.fieldname.address3"></span></oj-label>
+	</div>
+
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+		<oj-input-text :aria-label="[[$component.nls.fieldname.address3]]" id="addressLine3" maxlength="70" validators="[[$baseModel.getValidator('ADDRESS')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.userFullData().address.line3}}"></oj-input-text>
+	</div>
+
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+
+
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+		<oj-label class="" for="addressLine4"><span data-bind="text:$component.nls.fieldname.address4"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+		<oj-input-text :aria-label="[[$component.nls.fieldname.address4]]" id="addressLine4" maxlength="70" validators="[[$baseModel.getValidator('ADDRESS')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.userFullData().address.line4}}"></oj-input-text>
+	</div>
+
+</div>
+
+
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+		<oj-label class="" for="country"><span data-bind="text:$component.nls.fieldname.country"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+		<!-- ko if: $component.isCountryFetched() -->
+		<oj-select-one id="country" required="[[true]]" :placeholder="[[$component.nls.fieldname.selectCountry]]" on-value-changed="[[$component.countryChangeHandler]]" value="{{$component.userFullData().address.country}}">
+
+			<!-- ko foreach: $component.countries -->
+			<oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+			<!-- /ko -->
+		</oj-select-one>
+		<!-- /ko -->
+	</div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+		<oj-label class="" for="city"><span data-bind="text:$component.nls.fieldname.city"></span></oj-label>
+	</div>
+
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+		<oj-input-text :aria-label="[[$component.nls.fieldname.city]]" id="city" maxlength="70" validators="[[$baseModel.getValidator('ADDRESS')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.userFullData().address.city}}"></oj-input-text>
+	</div>
+
+</div>
+
+
+<div class="oj-flex oj-flex-items-pad">
+
+
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+		<oj-label class="" for="pinCode"><span data-bind="text:$component.nls.fieldname.pincode"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2">
+
+		<oj-input-text :aria-label="[[$component.nls.fieldname.pincode]]" id="pinCode" maxlength="20" validators="[[$baseModel.getValidator('POSTAL_CODE')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.userFullData().address.zipCode}}"></oj-input-text>
+	</div>
+
+
+</div>
+
+<!-- /ko -->
+
+
+
+
+<!-- ko if: $component.isDisabled -->
+<row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.address1 , value :$component.userFullData().address.line1"></row>
+<row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.address2 , value :$component.userFullData().address.line2"></row>
+<row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.address3 , value :$component.userFullData().address.line3"></row>
+<row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.address4 , value :$component.userFullData().address.line4"></row>
+<row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.country , value :$component.countryName"></row>
+<row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.city , value :$component.userFullData().address.city"></row>
+<row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.pincode , value :$component.userFullData().address.zipCode"></row>
+<!-- /ko -->

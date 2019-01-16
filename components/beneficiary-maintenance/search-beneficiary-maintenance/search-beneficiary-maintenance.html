@@ -1,0 +1,149 @@
+<div class="form-main-container trade-finance">
+    <page-section params="baseModel : $baseModel, rootModel : $data ">
+
+      <!-- ko ifnot:$baseModel.small() -->
+      <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-md-12 oj-lg-12 trade-finance-nav-bar">
+        <div class="oj-flex-item">
+          <oj-button id="openCreatePanel" class="action-button-primary pull-right" on-click="[[create]]">
+            <span class="icons icon-add" slot="startIcon"></span>
+      <span data-bind="text:$component.resourceBundle.button.create"></span>
+</oj-button>
+        </div>
+      </div>
+        <!-- /ko -->
+
+      <!-- ko if: dataSourceCreated() -->
+
+          <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-md-12 oj-lg-12">
+              <div class="oj-flex-item  template-search " data-bind="component: {
+                 name: 'search-box',
+                 params: {rootModel:$component,
+                        data:dataSource(),
+                        searchFields : ['name','nickName'],
+                        searchBy:$component.resourceBundle.labels.beneficiarySearchName}}, css: { 'no-pad-cols': $baseModel.medium() }">
+              </div>
+          </div>
+
+            <!-- ko if:$baseModel.large() -->
+
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-table id="table" :aria-label="[[$component.resourceBundle.labels.listofTemplates]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('template_row', true)]]" columns="[[[{headerText:$component.resourceBundle.labels.beneficiaryName,sortProperty:'template_name',style:'width: 20%'},{headerText:$component.resourceBundle.labels.swiftId,style:'width: 15%'},{headerText:$component.resourceBundle.labels.nickName,style:'width: 20%'},{headerText:$component.resourceBundle.labels.accessType,style:'width: 20%'},{headerText:$component.resourceBundle.labels.applicability,style:'width: 25%'}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[dataSource]]">
+                        <caption class="hide-label" data-bind="text:$component.resourceBundle.labels.templateName"></caption>
+                    </oj-table>
+                </div>
+                <oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSource]]">
+                </oj-paging-control>
+            </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$baseModel.large() -->
+        <div class="oj-flex grid-main-container">
+          <div class="oj-flex-item oj-sm-12">
+              <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('template_list_card',true)}]]" selection-mode="[['single']]" data="[[dataSource]]">
+              </oj-list-view>
+              <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.dataSource]]">
+              </oj-paging-control>
+          </div>
+        </div>
+
+
+        <!-- ko if:$baseModel.small() -->
+        <a href="#" data-bind="click: $component.create">
+          <div class="floating-button"><span class="icons icon-plus"></span></div>
+        </a>
+        <!-- /ko -->
+
+        <!-- /ko -->
+        <!-- /ko -->
+              </page-section>
+
+              <div class="button-container">
+              <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+                <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+</oj-button>
+              </div>
+
+                  </div>
+
+            <script type="text/html" id="template_row">
+                <tr>
+                    <td>
+                        <a href="#" data-bind="text:name, click:$component.onBeneficiarySelected.bind($data)"></a>
+                    </td>
+                    <td>
+                        <span data-bind="text:swiftId"></span>
+                    </td>
+                    <td>
+                        <span data-bind="text:nickName"></span>
+                    </td>
+                    <td>
+                        <span data-bind="text:visibility"></span>
+                    </td>
+                    <td>
+                        <span data-bind="text:transactionTypeMap"></span>
+
+                    </td>
+                </tr>
+            </script>
+
+            <script type="text/html" id="template_list_card">
+              <li data-bind="attr: {id: $data.id}">
+                <div class="oj-flex oj-flex-items-pad">
+
+                  <div class="oj-flex-item oj-md-12 oj-sm-12">
+                      <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-9 description" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+                          <a href="#" data-bind="attr:{ title:  $data.name, alt : $data.name },text:$data.name,
+                          click:$component.onBeneficiarySelected.bind($data)"></a>
+                        </div>
+
+                        <!-- ko if:$baseModel.small() -->
+                        <div class="oj-flex-item oj-sm-3 right" data-bind="text: $data.visibility">
+                        </div>
+                        <!-- /ko -->
+                      </div>
+                  </div>
+
+                  <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+                    <div class="oj-flex oj-flex-items-pad">
+                      <div class="oj-flex-item">
+                        <label data-bind="text: $component.resourceBundle.labels.nickName"></label>
+                        <div data-bind="text: $data.nickName"></div>
+                      </div>
+                    </div>
+                    </div>
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+                    <div class="oj-flex oj-flex-items-pad">
+                      <div class="oj-flex-item">
+                        <label data-bind="text: $component.resourceBundle.labels.swiftId"></label>
+                        <div data-bind="text: $data.swiftId"></div>
+                      </div>
+                    </div>
+                      </div>
+
+                      <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+                    <div class="oj-flex oj-flex-items-pad">
+                      <div class="oj-flex-item">
+                        <label data-bind="text: $component.resourceBundle.labels.applicability"></label>
+                        <div data-bind="text: $data.transactionTypeMap"></div>
+                      </div>
+                    </div>
+                    </div>
+
+                    <!-- ko if:$baseModel.medium() -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+                      <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item">
+                          <label data-bind="text: $component.resourceBundle.labels.accessType"></label>
+                          <div data-bind="text: $data.visibility"></div>
+                        </div>
+                      </div>
+                      </div>
+                    <!-- /ko -->
+
+                  </div>
+
+              </li>
+            </script>

@@ -1,0 +1,84 @@
+<div class="form-main-container">
+  <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+      <oj-validation-group id="topuptd" valid="{{$component.validationTracker}}">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.locale.topUp.selectAccount,
+           account : $component.rootModelInstance.account.value,
+           type: 'balance',
+           additionalDetails : $component.additionalTdDetails,
+           customURL : 'deposit',
+           validator:$component.validationTracker,
+           taskCode:'TD_F_TTD',
+           readOnly: !!$component.params.id,
+           accountsParser:$component.accountsParser">
+        </account-input>
+        <!-- ko if: tdAccountDetailsFetched() -->
+        <div class="row-group">
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.locale.topUp.currentBalance, value :$baseModel.formatCurrency($component.tdDetails().availableBalance.amount, $component.tdDetails().availableBalance.currency)"></row>
+          <div data-bind="component: {
+                  name: 'amount-input', params: {
+                  amount :$component.rootModelInstance.amount.amount,
+                  label :$component.locale.topUp.topUpAmount,
+                  currency: $component.rootModelInstance.amount.currency,
+                  validator:$component.validationTracker,
+                  isMandatory:true,
+                  rootId:'topup-amount',
+                  rootClass:'form-input'
+              }
+            }">
+            <!-- ko if:$parent.topUplimit().min -->
+            <div class="info-text-small" data-bind="text:$baseModel.format($parent.locale.topUp.unitMessage,{unit:$baseModel.formatCurrency($parent.topUplimit().min,$parent.topUplimit().currency)})"></div>
+            <!-- /ko -->
+
+            <!-- ko if:$parent.topUplimit().max -->
+            <div class="info-text-small" data-bind="text:$baseModel.format($parent.locale.topUp.limitMessage,{max:($baseModel.formatCurrency(($parent.topUplimit().max - $parent.tdDetails().availableBalance.amount),$parent.topUplimit().currency))})"></div>
+            <!-- /ko -->
+          </div>
+
+          <!-- ko if:calculateMaturityLoaded() -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.locale.topUp.revisedPrincipal, value :$baseModel.formatCurrency(topUpDetailsConfirm().topUpDetail.revisedPricipal.amount, topUpDetailsConfirm().topUpDetail.amount.currency)"></row>
+
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.locale.topUp.revisedMaturity, value :$baseModel.formatCurrency(topUpDetailsConfirm().topUpDetail.revisedMaturity.amount, topUpDetailsConfirm().topUpDetail.amount.currency)"></row>
+
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.locale.topUp.revisedInterestRate, value :$baseModel.formatNumber(($component.topUpDetailsConfirm().topUpDetail.revisedInterestRate)/100, 'percent')"></row>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-button class="form-button-secondary" on-click="[[resetHandler]]">
+      <span data-bind="text:$component.locale.topUp.reset"></span>
+</oj-button>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if:!calculateMaturityLoaded() -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <a href="#" class="form-button-link" data-bind="text:$component.locale.maturityInstructions.calculateMaturity ,click:calculateMaturityAmount"></a>
+            </div>
+          </div>
+          <!-- /ko -->
+          <account-input params="baseModel : $baseModel, rootModel: $data ,
+          label : $component.locale.topUp.sourceAccount,
+          type : 'balance' ,
+          account : $component.rootModelInstance.sourceAccountId.value ,
+          additionalDetails : $component.additionalSourceDetails,
+          validator:$component.validationTracker,
+            taskCode:'TD_F_TTD'"></account-input>
+        </div>
+        <!-- /ko -->
+      </page-section>
+    </oj-validation-group>
+      <div class="button-container">
+        <oj-button id="dialogtopupButton" class="action-button-primary " on-click="[[toggleTopup]]"><span slot="startIcon" class="icons icon-top-up"></span>
+      <span data-bind="text:$component.locale.topUp.topUp"></span>
+</oj-button>
+        <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.locale.generic.common.back"></span>
+</oj-button>
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'td-topup'"></help>
+    </div>
+  </div>
+</div>

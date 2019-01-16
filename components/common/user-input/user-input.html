@@ -1,0 +1,89 @@
+<div class="user-input">
+
+  <!--Case when both the dropdowns of users and userGroups with radiobutton i.e default case-->
+  <!-- ko if: $component.useCase()==="DEFAULT" -->
+
+  <!--AFTER USER LIST & USERGROUP LIST is fetched-->
+  <!-- ko if: $component.userListLoaded() && $component.userGroupLoaded()  -->
+
+  <!--    case when  customised label is required for the label -->
+  <!-- ko if: $component.customLabel() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+      <oj-label :for="[['radioSet_'+$component.nodeId()]]"><span data-bind="text:$component.labelDisplay()"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 ">
+      <oj-buttonset-one :id="[['radioSet_'+$component.nodeId()]]" disabled="[[$component.userInputModel.disableButtonSet?$component.userInputModel.disableButtonSet:false]]" value="{{$component.buttonSet}}">
+        <oj-option value="{{'USER'}}" :id="[['USER_ID_'+$component.nodeId()]]" :name="[['name_'+$component.nodeId()]]"><span data-bind="text: $component.Nls.userInput.user"></span>
+        </oj-option>
+        <oj-option value="{{'USERGROUP'}}" :id="[['USERGROUP_'+$component.nodeId()]]" :name="[['name_'+$component.nodeId()]]"><span data-bind="text: $component.Nls.userInput.userGroup"></span></oj-option>
+            </oj-buttonset-one>
+
+        </div>
+    </div>
+    <!--If user selected, load userList dropdown-->
+    <!-- ko if: $component.buttonSet()==='USER' -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label class="hide-label" :for="[['userList_'+$component.nodeId()]]"><span data-bind="text:$component.Nls.userInput.user"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <oj-select-one :aria-label="[[$component.Nls.common.placeholder.pleaseSelect]]" :id="[['userList_'+$component.nodeId()]]" translations="[[{'required':{messageDetail:$component.Nls.common.placeholder.pleaseSelect}}]]" :placeholder="[[$component.Nls.common.placeholder.pleaseSelect]]" disabled="[[$component.userInputModel.disableSelection?$component.userInputModel.disableSelection:false]]" required="[[true]]" value="{{selectedUser}}">
+                <!-- ko foreach: userList -->
+                  <oj-option value="{{username}}"><span data-bind="text:$baseModel.format($component.Nls.userInput.userName,{firstName:firstName,lastName:lastName,userName:username})"></span></oj-option>
+                <!-- /ko -->
+            </oj-select-one>
+            <oj-label :for="[['userList_'+$component.nodeId()]]"><span data-bind="text:$component.Nls.userInput.user"></span></oj-label>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!--If UserGroup selected, load userGroup dropdown-->
+    <!-- ko if: $component.buttonSet()==='USERGROUP' -->
+    <!--   Maker/UserGroup List-->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+             
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <oj-select-one :aria-label="[[$component.Nls.common.placeholder.pleaseSelect]]" :id="[['userList_'+$component.nodeId()]]" translations="[[{'required':{messageDetail:$component.Nls.common.placeholder.pleaseSelect}}]]" disabled="[[$component.userInputModel.disableSelection?$component.userInputModel.disableSelection:false]]" required="[[true]]" :placeholder="[[$component.Nls.common.placeholder.pleaseSelect]]" value="{{selectedUserGroup}}">
+                <!-- ko foreach: userGroupList -->
+                <oj-option value="{{id}}"><span data-bind="text:name"></span></oj-option>
+                <!-- /ko -->
+            </oj-select-one>
+            <oj-label :for="[['userGroupList_'+$component.nodeId()]]"><span data-bind="text:$component.Nls.userInput.userGroup"></span></oj-label>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: !($component.customLabel()) -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+
+
+
+    <!-- ko if: $component.useCase()==="SU" -->
+    <!-- ko if: $component.userListLoaded() -->
+    <!-- ko if: $component.customLabel() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+            <oj-label :for="[['userList1_'+$component.nodeId()]]"><span data-bind="text:$component.labelDisplay()"></span></oj-label>
+
+        </div>
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-8">
+            <oj-select-one :aria-label="[[$component.Nls.common.placeholder.pleaseSelect]]" :id="[['userList1_'+$component.nodeId()]]" translations="[[{'required':{messageDetail:$component.Nls.common.placeholder.pleaseSelect}}]]" :placeholder="[[$component.Nls.common.placeholder.pleaseSelect]]" required="[[true]]" value="{{selectedUser}}">
+                <!-- ko foreach: userList -->
+                <oj-option value="{{username}}"><span data-bind="text:$baseModel.format($component.Nls.userInput.userName,{firstName:firstName,lastName:lastName,userName:username})"></span></oj-option>
+                <!-- /ko -->
+            </oj-select-one>
+        </div>
+    </div>
+
+    <!-- /ko -->
+    <!-- ko if: !($component.customLabel()) -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: $component.useCase()==="UG" -->
+    <!-- /ko -->
+</div>

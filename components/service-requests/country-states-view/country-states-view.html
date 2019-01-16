@@ -1,0 +1,44 @@
+<div class="single-select-view-container">
+  <div class="oj-flex">
+    <div class="oj-flex-item oj-sm-5">
+      <oj-label class="oj-label-inline"><span data-bind="text: $component.label"></span></oj-label>
+    </div>
+  </div>
+  <div class="oj-flex oj-sm-12">
+    <div class="oj-flex-item oj-sm-5">
+      <oj-label for="country" class="oj-flex-item oj-lg-12">
+        <span data-bind="text:$component.resource.countryLabel"></span>
+      </oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-1">
+    </div>
+    <div class="oj-flex-item oj-sm-5">
+      <oj-label for="selectState" class="oj-flex-item oj-lg-12">
+        <span data-bind="text:$component.resource.stateLabel"></span>
+      </oj-label>
+    </div>
+  </div>
+  <div class="oj-flex oj-sm-12">
+    <div class="oj-flex-item oj-sm-5">
+      <!-- ko if: $component.formData -->
+      <oj-select-one id="country" :aria-label="[[$component.resource.selectCountry]]" value="{{$component.testInput()[0]}}" on-value-changed="[[countryChangeHandler]]" placeholder="{{$component.resource.selectCountry}}" disabled="{{$component.isDisabled}}"
+        required="{{$component.isRequired}}" render-mode="[['native']]" translations="[[{'required':{messageDetail:$component.errorMessage()}}]]">
+        <!-- ko foreach: $component.countryList -->
+        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex-item oj-sm-1">
+    </div>
+    <div class="oj-flex-item oj-sm-5">
+      <!-- ko if: $component.stateData -->
+      <oj-select-one id="selectState" :aria-label="[[$component.resource.selectState]]" render-mode="[['native']]" value="{{$component.testInput()[1]}}" placeholder="{{$component.resource.selectState}}" disabled="{{$component.isDisabled}}" on-value-changed="[[debitChange]]" required="{{$component.isRequired}}" translations="[[{'required':{messageDetail:$component.errorMessage()}}]]">
+        <!-- ko foreach: $component.stateList -->
+        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>

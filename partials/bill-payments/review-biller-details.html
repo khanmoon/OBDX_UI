@@ -1,0 +1,57 @@
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+      <label for="billerCategory" data-bind="text: $component.resourceBundle.labels.billerCategory"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+      <div id="billerCategory" data-bind="text:$component.dropdownLabels.category"></div>
+    </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+      <label for="billerLocation" data-bind="text: $component.resourceBundle.labels.billerLocation"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+      <div id="billerLocation" data-bind="text:$component.dropdownLabels.location"></div>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+      <label for="billerName" data-bind="text: $component.resourceBundle.labels.billerName"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+      <div id="billerName" data-bind="text: $component.dropdownLabels.biller"></div>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+    <label for="billerType" data-bind="text: $component.resourceBundle.labels.billerType"></label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+    <span id="billerType" data-bind="text: $component.resourceBundle.billerType[$component.registerBillerDetails.billerType]"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+    <label for="billerNickname" data-bind="text: $component.resourceBundle.labels.billerNickname"></label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+    <div id="billerNickname" data-bind="text: $component.registerBillerDetails.billerNickName"></div>
+    </div>
+</div>
+
+<!-- ko foreach:$component.relationshipDetails() -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+      <label for="billerRelationship" data-bind="text: label, attr : {'for' :'billerLabel_' + $index()}"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+      <!-- ko ifnot: $data.dataType === 'DATE' -->
+      <div data-bind="text: ko.utils.unwrapObservable(value), attr : {'id' :'billerLabel_' + $index()}"></div>
+      <!-- /ko -->
+      <!-- ko if: $data.dataType === 'DATE' -->
+      <div data-bind="text: $baseModel.formatDate(ko.utils.unwrapObservable(value)), attr : {'id' :'billerLabel_' + $index()}"></div>
+      <!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->

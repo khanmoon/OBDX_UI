@@ -1,0 +1,31 @@
+<!-- ko if:verifyAddOn() -->
+<div class="form-main-container">
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+  <page-section class="review" ="" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 label ">
+        <oj-label for="cardNumber" class=""><span data-bind="text:resource.requestPin.cardNumber"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <span data-bind="text:$component.creditCardIdDisplay"></span>
+      </div>
+    </div>
+
+    <div data-bind="template: { name: 'common/review/address',data:$component.addressDetails }"></div>
+  </page-section>
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="requestPinConfirm" class="action-button-primary " on-click="[[requestPinConfirm]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.resource.requestPin.confirm"></span>
+    </oj-button>
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button id="requestPinCancel" class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.requestPin.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button id="requestPinBack" class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:resource.requestPin.back"></span>
+    </oj-button>
+  </div>
+</div>
+<!-- /ko -->

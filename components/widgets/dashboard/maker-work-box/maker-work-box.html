@@ -1,0 +1,17 @@
+<!-- ko if:dataLoaded() -->
+<div class="work-box">
+    <action-widget params="baseModel : $baseModel, rootModel:$data,
+                                  header: heading,
+                                  onDashboard: $dashboard.isDashboard()">
+        <div class="oj-flex txn-type">
+            <oj-buttonset-one class="oj-flex-item" :aria-label="[[$component.nls.chooseTxnType]]" value="{{$component.currentSelection}}"><oj-option id="financialTxn_workbox" name="typetxn" value="{{'financialTxn'}}"><span for="financialTxn_workbox" data-bind="text : $component.nls.financialTxn"></span></oj-option><oj-option id="nonfinancialTxn_workbox" name="typetxn" value="{{'nonfinancialTxn'}}"><span for="nonfinancialTxn_workbox" data-bind="text : $component.nls.nonFinancialTxn"></span></oj-option></oj-buttonset-one>
+        </div>
+        <ul class="oj-flex oj-flex-items-pad work-box__flex-container work-box-flex-container oj-sm-flex-wrap-nowrap">
+            <!-- ko foreach:workBoxData -->
+            <li class="oj-flex-item work-box-flex-container__flex-item" data-bind="component:{name:'work-box',params:{rootModel:$parent,header:header,workCount:status}}"></li>
+            <!-- /ko -->
+
+        </ul>
+    </action-widget>
+</div>
+<!-- /ko -->

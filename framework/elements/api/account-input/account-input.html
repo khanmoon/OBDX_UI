@@ -1,0 +1,26 @@
+<div class="oj-flex oj-flex-items-pad account-input">
+    <!-- ko if: accountFetched() -->
+    <div class="oj-flex-item oj-sm-12 label">
+        <oj-label :for="[[$component.id]]"><span data-bind="text:$component.label"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12">
+        <oj-select-one required :id="[[$component.id]]" :data-id="[['selectedAccount']]" :disabled="[[readOnly]]" :class="[[$component.class]]" value="{{account}}" options="[[displayAccountList]]">
+        </oj-select-one>
+        <!-- ko if:$component.type === 'address' && $component.adtnlFetched()-->
+        <div class="account-input__info-text-small">
+            <div data-bind="text:$component.customerName"></div>
+            <div data-bind="text:$component.additionalDetails().address.branchName"></div>
+            <div data-bind="text:$component.additionalDetails().address.branchAddress.postalAddress.line1"></div>
+            <div data-bind="text:$component.additionalDetails().address.branchAddress.postalAddress.line2"></div>
+            <div data-bind="text:$component.additionalDetails().address.branchAddress.postalAddress.city"></div>
+            <div data-bind="text:$component.additionalDetails().address.branchAddress.postalAddress.country"></div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.type === 'balance' && $component.adtnlFetched() && $component.dataURL !== 'loan' -->
+        <div class="account-input__info-text-small">
+            <span data-bind="text:$baseModel.format($component.locale.balanceNholding , {'balance' : $baseModel.formatCurrency($component.additionalDetails().account.availableBalance.amount,$component.additionalDetails().account.availableBalance.currency)})"></span>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+</div>

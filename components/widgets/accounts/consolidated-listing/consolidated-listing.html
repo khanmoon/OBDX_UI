@@ -1,0 +1,96 @@
+<!-- ko if:$component.dataFetched()&&$component.doneCredit()-->
+
+
+        <!-- ko foreach: $component.loansCards -->
+
+<div class="overview summary">
+      <!-- ko if: !$baseModel.small() -->
+        <div class="oj-flex oj-flex-items-pad account-listing">
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10 account-listing__account-header account-listing-account-header">
+            <div class="account-listing-account-header__title account-listing-account-header-title">
+              <div class="account-listing-account-header-title__highlightCount" data-bind="text:count">
+                <!-- <div class=""></div> -->
+              </div>
+              <span class="account-listing-account-header-title__label" data-bind="text:url==='loans' && $component.islamicLoanAccountsPresent()? $component.locale[url]['islamic_description']:$component.locale[url]['primary_description']"></span>
+            </div>
+            <div class="account-listing-account-header__balance account-listing-account-header-balance">
+                <span class="account-listing-account-header-balance__label" data-bind="text:$component.locale[url]['balance_heading_main']"></span>
+                <div class="account-listing-account-header-balance__amount" data-bind="text:$baseModel.formatCurrency(amount, currency)"></div>
+           </div>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 account-listing__moreInfo account-listing-moreInfo center">
+            <a class="" href="#" data-bind="attr:{'alt':$component.locale[url]['more_info'] ,'title':$component.locale[url]['title']},click:$dashboard.switchModule.bind($data,url)">
+            <div class="account-listing-moreInfo__link" data-bind="text:$component.locale[url]['more_info']"></div>
+            <div class="account-listing-moreInfo__icons icon-forward-arrow"></div>
+            </a>
+          </div>
+        </div>
+        <!-- ko if:$data.count -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10 account-listing__consolidated-accounts">
+              <div data-bind="component:{name: 'consolidated-accounts-list',params:{rootModel:$component,data:$data,type: $data.url}} "></div>
+             <!-- <div data-bind="template: { name: 'accounts/consolidated-listing',data:$data,type: $data.url}"></div> -->
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: $baseModel.small() -->
+        <div class="oj-flex oj-flex-items-pad account-listing">
+        <div class="oj-flex-item oj-sm-12 account-listing__account-header account-listing-account-header">
+          <div class="account-listing-account-header__title account-listing-account-header-title">
+            <div class="account-listing-account-header-title__highlightCount" data-bind="text:count">
+            </div>
+            <oj-label class="account-listing-account-header-title__label"><span data-bind="text:url==='loans'&& $component.islamicLoanAccountsPresent()? $component.locale[url]['islamic_description']:$component.locale[url]['primary_description']"></span></oj-label>
+          </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-8 account-listing-account-header__balance account-listing-account-header-balance">
+              <oj-label class="account-listing-account-header-balance__label"><span data-bind="text:$component.locale[url]['balance_heading_main']"></span></oj-label>
+              <div class="account-listing-account-header-balance__amount" data-bind="text:$baseModel.formatCurrency(amount, currency)"></div>
+         </div>
+
+      </div>
+      <!-- ko if:$data.count -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 account-listing__consolidated-accounts">
+            <div data-bind="component:{name: 'consolidated-accounts-list',params:{rootModel:$component,data:$data,type: $data.url}} "></div>
+           <!-- <div data-bind="template: { name: 'accounts/consolidated-listing',data:$data,type: $data.url}"></div> -->
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 account-listing__moreInfo account-listing-moreInfo center">
+          <a class="" href="#" data-bind="attr:{'alt':$component.locale[url]['more_info'] ,'title':$component.locale[url]['title']},click:$dashboard.switchModule.bind($data,url)">
+          <div class="account-listing-moreInfo__link" data-bind="text:$component.locale[url]['more_info']"></div>
+          <div class="account-listing-moreInfo__icons icon-forward-arrow"></div>
+          </a>
+        </div>
+      </div>
+
+        <!-- /ko -->
+</div>
+        <!-- /ko -->
+
+
+<!-- /ko -->
+
+<!-- <div class="oj-flex-item oj-lg-6" data-bind="css:url,component: {name: 'dashboard-card', params:{rootModel: $parent,
+data:{
+  'topLeftPanel':
+  {
+'title': count,
+'description': url==='loans' && $component.islamicLoanAccountsPresent()? $component.locale[url]['islamic_description']:$component.locale[url]['primary_description'],
+'image': 'dashboard/' + url + '.svg'
+ },
+'bottomRightPanel': {
+   'label':$component.locale[url]['balance_heading_main'] ,
+   'value': $baseModel.formatCurrency(totalBalance.amount, totalBalance.currency)
+ },
+ 'failSafeString': $component.locale[url]['fail_safe_string'],
+ clickHandler: clickable ? $parent.loadModule.bind($data,url):''
+    }
+}
+}">
+</div> -->

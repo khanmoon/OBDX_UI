@@ -1,0 +1,43 @@
+<div class="form-main-container">
+    <div data-bind="component:{name: 'file-history', params:{rootModel: $root, data:[$component.selectedFile,$component.fileStatuses,$component.allowAccess]}}">
+    </div>
+    <!-- ko if:isComponentFetched() && allowAccess() -->
+    <!--  ko if:($component.selectedFile().fileStatus!=='UPLOADED' && $component.selectedFile().fileStatus!=='ERROR') || ($component.selectedFile().fileStatus==='ERROR' && $component.selectedFile().fileHistory.length > 3) -->
+    <div data-bind="component: { name:$component.loadComponentName() ,params:{rootModel:$component,data:[$component.selectedFile]}}"></div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!--  ko if:$component.selectedFile().fileStatus==='UPLOADED' -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <span data-bind="text:$component.Nls.recordsNotAvailable"></span>
+    </page-section>
+    <!-- /ko -->
+    <!--  ko if:$component.selectedFile().fileStatus==='ERROR' && $component.selectedFile().fileHistory.length < 4-->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <span data-bind="text:$component.Nls.recordsUnAvailable"></span>
+    </page-section>
+    <!-- /ko -->
+    <!-- ko if:$component.showBackButton() -->
+    <div class="button-container">
+        <!-- ko if:isComponentFetched() && allowAccess() -->
+        <oj-menu-button class="action-button-primary" id="menuButton">
+            <span data-bind="text:$component.Nls.downloadDetails"></span>
+            <oj-menu id="myMenu" slot="menu" on-oj-action="[[$component.downloadDetails]]">
+                <!-- ko foreach: $component.menuItems -->
+                <oj-option data-bind="attr: {id: value, value: value}">
+                    <span data-bind="text: text"></span>
+                </oj-option>
+                <!-- /ko -->
+            </oj-menu>
+        </oj-menu-button>
+        <!-- ko if:!$component.selectedFile().readOnly && $component.selectedFile().isFinancial -->
+        <oj-button class="action-button-secondary" id="delete" on-click="[[$component.showModalWindow.bind($data)]]">
+            <span data-bind="text:$component.Nls.delete"></span>
+        </oj-button>
+        <!-- /ko -->
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+            <span data-bind="text:$component.Nls.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+</div>

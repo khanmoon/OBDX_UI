@@ -1,0 +1,35 @@
+<div class="oj-flex oj-flex-items-pad image-upload uploadImage">
+    <!-- ko ifnot: $component.template -->
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+      <!-- ko if:$component.label -->
+        <oj-label><span data-bind="text:$component.label"></span></oj-label>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex-item oj-sm-9 oj-md-10 oj-lg-9">
+        <div class="oj-flex oj-flex-items-pad">
+            <!-- ko if:$component.imageUpload() -->
+            <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+                <div class="oj-flex oj-flex-items-pad uploadImage__fileUpload uploadImage-fileUpload" data-bind="attr:{'id':'dropzone_'+($component.input())}">
+                    <div class="oj-flex-item oj-md-4 oj-lg-4 uploadImage-fileUpload__file" data-bind="text:$component.nls.drag"></div>
+                    <div class="oj-flex-item oj-md-1 oj-lg-1" data-bind="text:$component.nls.or"></div>
+                    <div class="oj-flex-item oj-md-7 oj-lg-7">
+                        <input type="file" name="files[]" data-bind="attr:{'id': $component.input(), 'aria-label':$component.nls.goalImage}" multiple>
+                    </div>
+                   <div class="oj-flex-item oj-md-12 oj-lg-12 uploadImage-fileUpload__note" data-bind="text:$baseModel.format($component.nls.maxFileSize,{fileSize:$component.maxFileSize()})"></div>
+              </div>
+            </div>
+            <div data-bind="template: {afterRender: $component.afterRender}"></div>
+             <!-- /ko -->
+             <!-- ko ifnot:$component.imageUpload() -->
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5 uploadImage-fileUpload__maxwidth">
+                <img alt="" data-bind="attr:{'id': $component.target(), 'alt':$component.nls.goalImage,'title':$component.nls.goalImageTitle, 'src': $component.previewImage()}">
+                <a href="#" class="form-button-link" data-bind="attr:{'alt':$component.nls.removeImage,'title':$component.nls.removeImageTitle},click:removePreviewImage, text:$component.nls.remove"></a>
+            </div>
+             <!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $component.template -->
+        <div data-bind="template:{name: $component.template() , data : $data}"></div>
+    <!-- /ko -->
+</div>

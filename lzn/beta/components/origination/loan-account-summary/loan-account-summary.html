@@ -1,0 +1,33 @@
+<!-- ko if: $component.accountSummaryInfoLoaded() -->
+<!-- ko if: $component.isIOIPresent() -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <div class="form-heading" data-bind="text: $component.resource.interestOnlyTitle"></div>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko foreach: $component.productDetails().loanAccountSummaryInfo.loanAccountSummary.stageDetails -->
+<!-- ko if: stageName() === "INTEREST" -->
+<div data-bind="template:{name:'origination/loan-account-summary', data:{accountSummaryData: $component.productDetails().loanAccountSummaryInfo.loanAccountSummary.stageDetails[$index()], resource: $component.resource}}"></div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if: $component.isEPIPresent() -->
+<div class="oj-flex oj-flex-items-pad margin-top-20">
+    <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <div class="form-heading" data-bind="text:$component.resource.principleOnlyTitle"></div>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko foreach: $component.productDetails().loanAccountSummaryInfo.loanAccountSummary.stageDetails -->
+<!-- ko if: stageName() === "PRINCIPAL" -->
+<div data-bind="template:{name:'origination/loan-account-summary', data:{accountSummaryData: $component.productDetails().loanAccountSummaryInfo.loanAccountSummary.stageDetails[$index()], resource: $component.resource}}"></div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item oj-lg-10 oj-md-10">
+        <oj-button id="accountSummaryContinue" class="form-button-secondary" on-click="[[$component.accountSummaryContinue]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+</oj-button>
+    </div>
+</div>

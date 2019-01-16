@@ -1,0 +1,51 @@
+<div class="form-main-container">
+  <!-- ko if:dataLoaded()-->
+  <div class="offer-container">
+    <!-- ko foreach: $component.offers -->
+    <div class="oj-flex oj-flex-items-pad offer-panel">
+      <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+        <img id="image" longdesc="" class="card-icon offers-strip-image" data-bind="attr:{'id':'image_'+$index(),'alt':$baseModel.format($component.resource.alt.offerImageAlt,{offer:offerName})},loadImage:'origination/offers/'+$component.productGroupData().productTypeConstants+'/offer'+$index()%4+'.jpg'">
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 offer-data">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item offer-details">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-lg-5">
+                <h3 class="details-header-front" data-bind="text: offerName ? offerName : offerCode"></h3>
+              </div>            
+            </div>
+            <div class="oj-flex-items-pad">
+              <div class="offer-panel__link">
+                <span>
+                  <a href="javascript:void(0)" data-bind="click:$component.showMoreDetails.bind($data,$data,$index()),
+                  attr:{'id':'moreDetails_'+$index(),'title':$component.offers()[$index()].showOffers}, text:$component.offers()[$index()].showOffers">
+                </a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ko if:isOfferDetails -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12 offer-details" data-bind="attr:{'id':$index()}, template: { name: 'origination/fcubs/offers/'+$component.productClass(), data: $component.offerAdditionalDetails[offerCode] }"></div>
+        <!-- /ko -->
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-lg-2 oj-md-2 center">
+        <!-- ko ifnot:$baseModel.small() -->
+        <div class="offers-button">
+          <oj-button class="form-button-primary" id="applyBtn" :id="[['applyBtn_'+$index()]]" :aria-label="[[$baseModel.format($component.resource.applyForLoan,{offer:offerName})]]" on-click="[[$component.submitOffer.bind($data,$index(),$data)]]">
+            <span data-bind="text:$component.resource.generic.common.apply"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$baseModel.small() -->
+        <div class="center offers-button">
+          <oj-button class="form-button-primary" id="applyBtn" :id="[['applyBtn_'+$index()]]" :aria-label="[[$baseModel.format($component.resource.applyForLoan,{offer:offerName})]]" on-click="[[$component.submitOffer.bind($data,$index(),$data)]]">
+            <span data-bind="text:$component.resource.generic.common.apply"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+</div>

@@ -1,0 +1,24 @@
+<!-- ko ifnot: updateConfirmFlag -->
+<div class=" form-main-container">
+<!-- ko ifnot:updateReviewFlag -->
+  <div data-bind="template: { name: 'transaction-group/update-panel'}">
+  </div>
+<!-- /ko -->
+<!-- ko if:updateReviewFlag -->
+<div data-bind="component: {name:'review-transaction-group-update' , params:{rootModel:$component}}">
+</div>
+<div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button class="action-button-primary" on-click="[[updateTransactionGroup]]">
+    <span data-bind="text:$component.nls.common.confirm"></span>
+  </oj-button>
+  <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+    <span data-bind="text:$component.nls.common.cancel"></span>
+  </oj-button>
+  <oj-button class="action-button-tertiary" on-click="[[backOnUpdateReview]]">
+    <span data-bind="text:$component.nls.common.back"></span>
+  </oj-button>
+</div>
+
+<!-- /ko -->
+</div>
+<!-- /ko -->

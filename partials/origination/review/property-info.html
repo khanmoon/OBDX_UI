@@ -1,0 +1,57 @@
+<div class="oj-flex oj-flex-items-pad application-form-text cust-label margin-top-20">
+    <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <h4 class="section-heading" data-bind="text:resource.propertyDetails"></h4>
+    </div>
+</div>
+
+    <div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+            <oj-label><span data-bind="text:resource.ownersOfTheProperty"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+        <!-- ko foreach: data.propertyDetails.ownership -->
+            <span data-bind="text :$data.partyName()"></span>
+        <!-- /ko -->
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+            <oj-label><span data-bind="text:resource.typeOfTheProperty"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+            <span data-bind="text : data.selectedValues.propertyTypeName"></span>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+            <oj-label><span data-bind="text:resource.subTypeOfTheProperty"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+            <span data-bind="text :data.selectedValues.propertySubTypeName"></span>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+            <oj-label><span data-bind="text:resource.purchasePrice"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+            <span data-bind="text : $baseModel.formatCurrency(data.propertyDetails.purchasePrice.amount(), data.propertyDetails.purchasePrice.currency)"></span>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+            <oj-label><span data-bind="text:resource.addressOfTheProperty"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-flex-items-pad oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+            <!-- ko if: $component.productDetails().requirements.propertyDetails.address.line2 -->
+            <span class="oj-flex oj-flex-items-pad " data-bind="text:$baseModel.format(resource.reviewAddress, {line1: data.propertyDetails.address.line1, line2: data.propertyDetails.address.line2, city: data.propertyDetails.address.city})"></span>
+            <div class="oj-flex oj-flex-items-pad " data-bind="text:$baseModel.format(resource.reviewAddressCountryZip, {state: data.selectedValues.selectedState, country: data.selectedValues.selectedCountry, zip: data.propertyDetails.address.postalCode})"></div>
+
+            <!-- /ko -->
+            <!-- ko ifnot: $component.productDetails().requirements.propertyDetails.address.line2 -->
+            <span class="oj-flex oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddress2, {line1: data.propertyDetails.address.line1, city: data.propertyDetails.address.city})"></span>
+            <div class="oj-flex oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddressCountryZip, {state: data.selectedValues.selectedState, country:data.selectedValues.selectedCountry, zip: data.propertyDetails.address.postalCode})"></div>
+
+            <!-- /ko -->
+        </div>
+    </div>

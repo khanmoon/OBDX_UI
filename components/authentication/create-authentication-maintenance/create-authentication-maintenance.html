@@ -1,0 +1,68 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class=" oj-flex-item oj-sm-9">
+<div class="form-main-container authentication">
+  <!-- ko if:$component.showMaintenanceData() -->
+  <page-section params="baseModel : $baseModel, rootModel : $data">
+  <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.authentication.labels.userSegments , value :$component.selectedSegmentName"></row>
+    <oj-table id="table" :aria-label="[[$component.nls.authentication.labels.ariaLabel]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('row_tmpl', true)]]" columns="[[[{headerText:$component.nls.authentication.labels.transactionType},{headerText:$component.nls.authentication.labels.level1,style:'width:30%',},{headerText:$component.nls.authentication.labels.level2,style:'width:30%',},{headerText:''}]]]" edit-mode="[['rowEdit']]" data="[[datasource]]">
+      <caption class="hide-label" data-bind="text:$component.nls.authentication.headers.authentication"></caption>
+    </oj-table>
+    <script type="text/html" id="row_tmpl">
+      <tr>
+        <td data-bind="text: transactionName">
+        </td>
+        <!-- ko foreach:authenticationInfoDTOList-->
+        <td>
+          <div class="oj-flex oj-flex-items-pad">
+            <!-- ko if:$component.showDropDown -->
+            <label class="hide-label" data-bind="attr:{for:$parent.task+$index()},text:$baseModel.format($component.nls.authentication.labels.level,{levelNumber:$component.itemNumber.bind($data,$index())})"></label>
+            <div class="oj-flex-item oj-sm-12">
+              <oj-select-one required :id="[[$parent.task+$index()]]" translations="[[{'required':{messageDetail:$component.nls.authentication.messages.pleaseSelect}}]]" on-value-changed="[[$component.optionChangedHandler.bind($data,$context.rowContext.status.rowIndex)]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.nls.common.select]]" value="{{authType.authTypeKey}}">
+            <!-- ko foreach: $component.challengeList()  -->
+            <oj-option value="{{authTypeKey}}"><span data-bind="text:name"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+            </div>
+            <!-- ko if: authType.authTypeKey==='SEC_QUE' -->
+            <div class="oj-flex oj-flex-items-pad paramValue">
+              <div class="oj-flex-item oj-sm-6 ">
+                <span data-bind="text:$component.nls.authentication.labels.NO_OF_SEC_QUES">
+              </span></div>
+              <div class="oj-flex-item oj-sm-6 ">
+                <label class="hide-label" data-bind="attr:{for:$parent.task+'securityQuestion'+$index()},text:$component.nls.authentication.labels.NO_OF_SEC_QUES"></label>
+                <oj-input-text type="text" :id="[[$parent.task+'securityQuestion'+$index()]]" translations="[[{'required':{messageDetail:$component.nls.authentication.messages.required}}]]" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('OTP',$component.nls.authentication.messages.invalidQuestionNumber)]]" value="{{paramVal1}}"></oj-input-text>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+          </div>
+        </td>
+        <!-- /ko -->
+        <td>
+          <!-- ko if:$context.rowContext.status.rowIndex===0 -->
+          <oj-button class="action-button-tertiary pull-right help-button" on-click="[[$component.applyToAll]]">
+      <span data-bind="text:$component.nls.authentication.labels.applyToAll"></span>
+</oj-button>
+          <!-- /ko -->
+        </td>
+      </tr>
+    </script>
+  </page-section>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[save]]">
+      <span data-bind="text:$component.nls.common.save"></span>
+</oj-button>
+<oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.nls.common.cancel"></span>
+</oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[back]]">
+      <span data-bind="text:$component.nls.common.back"></span>
+</oj-button> 
+  </div>
+</div>
+</div>
+<div class="oj-flex-item oj-lg-3 oj-sm-only-hide oj-md-only-hide help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction:'create-authentication-maintenance'"></help>
+    </div>
+    </div>

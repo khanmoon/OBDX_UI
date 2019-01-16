@@ -1,0 +1,50 @@
+<div class="requirements" data-bind="with:productDetails().requirements">
+    <div data-bind="component: {
+                name: 'amount-input', params: {
+                    amount :requestedAmount.amount,
+                    placeholder: $component.dollar,
+                    label : $component.resource.loan.loanAmount,
+                    currency:requestedAmount.currency,
+                    labelClasses : 'oj-lg-3 oj-md-4 oj-lg-offset-1 oj-md-offset-1',
+                    valueClasses : 'oj-lg-5 oj-md-6',
+                    currencyParser : $component.currencyParser,
+                    currencyListRequired : true,
+                    converter:$root.formatCurrency,
+                    validator:$component.validationTracker,
+                    isMandatory:true,
+                    maxlength:15,
+                    rootId:'loan-amount',
+                    rootClass:'form-input',
+                    inline:true,
+                    formattedAmount: ko.observable()
+                }
+            }"></div>
+
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-1">
+            <oj-label :for="[['promoCode'+($baseModel.currentIdCount())]]"><span data-bind="text:$component.resource.promoCode"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+            <oj-input-text maxlength="50" autocomplete="off" spellcheck="false" :id="[['promoCode'+($baseModel.currentIdCount())]]" value="{{promoCode}}"></oj-input-text>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-12 oj-md-12 oj-sm-12">
+            <span class="secondary-heading" data-bind="text:$component.resource.militaryDisclosure"></span>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-12 oj-md-12 oj-sm-12">
+            <span class="text" data-bind="text:$component.resource.militaryDisclosureText"></span>
+        </div>
+    </div>
+    <!-- ko foreach: $component.productDetails().militaryDisclosures-->
+    <div class="militaryDisclosures oj-flex oj-flex-items-pad">
+        <a class="desc oj-flex-item oj-lg-10 oj-md-10 oj-lg-offset-1 oj-md-offset-1" href="javascript:void(0)" data-bind=" click: $component.selectMilitaryDisclosure.bind($data,$index()) ,attr:{'id':'militaryDisclosure'+$index(), alt: $component.resource.selectMilitaryDisclosure, title: $component.resource.selectMilitaryDisclosureTitle}">
+            <span class="icon select-icon"></span>
+            <div class="text" data-bind="html: disclosure">
+            </div>
+        </a>
+    </div>
+    <!-- /ko -->
+</div>

@@ -1,0 +1,71 @@
+<!-- ko ifnot:loadConfirm -->
+<div class="debit-card-pin-request-container" data-bind="template: {name: 'accounts/debit-card-pin-request', data: $component.debitCardDetailsObject}">
+</div>
+<div class="form-main-container">
+	<div class="oj-flex">
+		<div class="oj-flex-item">
+			<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+				<div class="row-group">
+					<div class="oj-flex oj-flex-items-pad">
+						<div class="required oj-flex-item oj-sm-12 label">
+							<oj-label for="DeliveryLocation"><span data-bind="text:$component.locale.common.DeliveryLocation"></span></oj-label>
+						</div>
+
+						<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+							<div id="DeliveryLocation" data-bind="component: {name: 'address', params:{rootModel: $parent, data:$data, validator:$component.validationTracker, address: addressDetails}}"></div>
+						</div>
+					</div>
+				</div>
+			</page-section>
+			<div class="oj-flex oj-flex-items-pad button-container">
+				<oj-button id="button" class="action-button-primary " on-click="[[$component.review]]"><span slot="startIcon" class="icons icon-submit"></span>
+					<span data-bind="text:$component.locale.common.submit"></span>
+				</oj-button>
+				<oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+					<span data-bind="text:$component.locale.generic.common.back"></span>
+				</oj-button>
+
+			</div>
+		</div>
+		<!-- ko if: $baseModel.large() -->
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+			<help params="baseModel : $baseModel, rootModel : $component, transaction: 'request-pin'"></help>
+		</div>
+		<!-- /ko -->
+	</div>
+</div>
+<!-- ko ifnot: $baseModel.large() -->
+<a href="#" data-bind="click: $component.showFloatingPanel">
+	<div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+</a>
+<floating-panel params="baseModel : $baseModel, panelId: 'panelDebitCard4', rootModel: $component">
+	<ul>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reissue-card',cardObject,$data)">
+        <span class="icons icon-limit"></span>
+        <span data-bind="text: $component.locale.buttons.reissueCard"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'upgrade-card',cardObject,$data)">
+        <span class="icons icon-card-preference"></span>
+        <span data-bind="text: $component.locale.buttons.upgradeCard"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'debit-card-hotlisting',cardObject,$data)">
+        <span class="icons icon-cancel-card"></span>
+        <span data-bind="text: $component.locale.buttons.blockCards"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reset-pin',cardObject,$data)">
+        <span class="icons icon-refresh"></span>
+        <span data-bind="text: $component.locale.buttons.resetPin"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'debit-card-pin-request',cardObject,$data)">
+        <span class="icons icon-request-pin"></span>
+        <span data-bind="text: $component.locale.buttons.pinRequest"></span></a>
+		</li>
+	</ul>
+</floating-panel>
+<!-- /ko -->
+<!-- /ko -->

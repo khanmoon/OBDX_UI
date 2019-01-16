@@ -1,0 +1,289 @@
+<!-- ko if:dataLoaded -->
+<div class="form-main-container">
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+        <!-- ko if: $component.userTypeEnumsLoaded()-->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+                <oj-label class="" for="usertype"><span data-bind="text:nls.fieldname.userType"></span></oj-label>
+            </div>
+            <oj-checkboxset id="checkboxSetId" :aria-label="[[$component.nls.fieldname.userType]]" disabled="[[true]]" value="{{$component.userType}}">
+                <!-- ko foreach: userTypeEnums -->
+                <oj-option value="{{enterpriseRoleId}}" :id="[['roles_'+ $index()]]"><span data-bind="text:enterpriseRoleName , attr : {'for' :'roles_' + $index()}"></span></oj-option>
+                <!-- /ko -->
+            </oj-checkboxset>
+        </div>
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <oj-label for="policyName"><span data-bind="text:$component.nls.fieldname.policyName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text disabled id="policyName" maxlength="20" value="{{$component.pwdPolicyName}}" :aria-label="[[$component.nls.fieldname.policyName]]"></oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <oj-label for="policyDesc"><span data-bind="text:$component.nls.fieldname.policyDesc"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text disabled id="policyDesc" maxlength="40" value="{{$component.pwdPolicyDesc}}" :aria-label="[[$component.nls.fieldname.policyDesc]]"></oj-input-text>
+            </div>
+        </div>
+
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.header.pwdValidators">
+        </action-header>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                <oj-label for="passwordLength"><span data-bind="text:$component.nls.fieldname.passwordLength"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 label">
+                <span data-bind="text : minLength"></span>
+                <span data-bind="text:$component.nls.fieldname.min"></span>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 label">
+                <span data-bind="text : maxLength"></span>
+                <span data-bind="text:$component.nls.fieldname.max"></span>
+            </div>
+        </div>
+
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+                <oj-label for="allowedChar">
+                    <span data-bind="text:$component.nls.fieldname.allowedChar"></span>
+                </oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+                <span data-bind="text: $component.nls.fieldname.upperCase"></span>
+            </div>
+
+            <input disabled type="checkbox" id="upperCaseAllowed" data-bind="value:$component.isUpperAlphaAllowed,
+                                checked:$component.isUpperAlphaAllowed">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+
+                    <oj-label for="upperCaseAllowed">
+                        <span data-bind="text:$component.nls.fieldname.allowed"></span>
+                    </oj-label>
+                </div>
+
+
+
+                <input disabled type="checkbox" id="isUpperCaseMandatory" data-bind="value:$component.nbrUpperAlpha,
+                                checked:$component.nbrUpperAlpha">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+
+                        <oj-label for="isUpperCaseMandatory"><span data-bind="text:$component.nls.fieldname.mandatory"></span></oj-label>
+                    </div>
+
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-1">
+                        <oj-label for="numberUpperCaseAllowed"><span data-bind="text:$component.nbrUpperAlpha"></span></oj-label>
+                    </div>
+        </div>
+
+
+
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+                <oj-label for="emptyLabel" class="hide"><span data-bind="text:$component.nls.fieldname.emptyLabel"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+                <span data-bind="text: $component.nls.fieldname.lowerCase"></span>
+            </div>
+
+
+
+            <input disabled type="checkbox" id="lowerCaseAllowed" data-bind="value:$component.isLowerAlphaAllowed,
+                                checked:$component.isLowerAlphaAllowed">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+
+                    <oj-label for="lowerCaseAllowed"><span data-bind="text:$component.nls.fieldname.allowed"></span></oj-label>
+                </div>
+
+
+
+                <input disabled type="checkbox" id="isLowerCaseMandatory" data-bind="value:$component.nbrLowerAlpha,
+                                checked:$component.nbrLowerAlpha">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+
+                        <oj-label for="isLowerCaseMandatory"><span data-bind="text:$component.nls.fieldname.mandatory"></span></oj-label>
+                    </div>
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-1">
+                        <oj-label for="numberLowerCaseAllowed"><span data-bind="text:$component.nbrLowerAlpha"></span></oj-label>
+                    </div>
+        </div>
+
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+                <oj-label for="emptyLabel" class="hide"><span data-bind="text:$component.nls.fieldname.emptyLabel"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+                <span data-bind="text: $component.nls.fieldname.specialChar"></span>
+            </div>
+
+
+
+            <input disabled type="checkbox" id="specialCharAllowed" data-bind="value:$component.isSpecialCharAllowed,
+                          checked:$component.isSpecialCharAllowed">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+
+                    <oj-label for="SpecialCharAllowed"><span data-bind="text:$component.nls.fieldname.allowed"></span></oj-label>
+                </div>
+
+
+
+                <input disabled type="checkbox" id="isSpecialCharMandatory" data-bind="value:$component.nbrSpecialChar,
+                          checked:$component.nbrSpecialChar">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+
+                        <oj-label for="isSpecialCharMandatory"><span data-bind="text:$component.nls.fieldname.mandatory"></span></oj-label>
+                    </div>
+
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-1">
+                        <oj-label for="numberSpecialCharAllowed"><span data-bind="text:$component.nbrSpecialChar"></span></oj-label>
+                    </div>
+        </div>
+
+
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+                <oj-label for="emptyLabel" class="hide"><span data-bind="text:$component.nls.fieldname.emptyLabel"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+                <span data-bind="text: $component.nls.fieldname.number"></span>
+            </div>
+
+
+
+            <input disabled type="checkbox" id="isNumericAllowed" data-bind="value:$component.isNumericAllowed,
+                                checked:$component.isNumericAllowed">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+
+                    <oj-label for="isNumericAllowed"><span data-bind="text:$component.nls.fieldname.allowed"></span></oj-label>
+                </div>
+
+
+
+                <input disabled type="checkbox" id="isNumericMandatory" data-bind="value:$component.nbrNumericAlpha,
+                                checked:$component.nbrNumericAlpha">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+                        <oj-label for="isNumericMandatory"><span data-bind="text:$component.nls.fieldname.mandatory"></span></oj-label>
+                    </div>
+
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-1">
+                        <oj-label for="numberAllowed"><span data-bind="text:$component.nbrNumericAlpha"></span></oj-label>
+                    </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad label">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                <oj-label for="specialCharAllowed"><span data-bind="text:nls.fieldname.specialCharAllowed"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3 label">
+                <div class="oj-flex oj-flex-items-pad label">
+                    <!-- ko foreach: specialCharAllowed -->
+                    <div class="oj-flex-item oj-lg-2">
+                        <span class="" data-bind="text: $data"></span>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+
+        <row params="baseModel : $baseModel, rootModel : $component, label :nls.fieldname.repetitiveChar ,
+                     value : $component.repetitiveChar"></row>
+
+            <row params="baseModel : $baseModel, rootModel : $component, label :nls.fieldname.successiveChar ,
+                              value : $component.successiveChar"></row>
+                <div class="oj-flex oj-flex-items-pad">
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+                        <oj-label for="exclusionDetail"><span data-bind="text:nls.fieldname.exclusionDetail"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <!-- ko foreach:  $component.personalDetExclusion -->
+                            <div class="oj-flex-item">
+                                <span class="" data-bind="text: $data"></span>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="oj-flex oj-flex-items-pad">
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+                        <oj-label for="exclusionDetail"><span data-bind="text:nls.fieldname.restrictedPwd"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <!-- ko foreach:  $component.restrictedPwdDetails -->
+                            <div class="oj-flex-item">
+                                <span class="" data-bind="text: $data"></span>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+
+                <row params="baseModel : $baseModel, rootModel : $component, label :nls.fieldname.successiveInvalid ,
+                      value :successiveInvalid "></row>
+
+                    <row params="baseModel : $baseModel, rootModel : $component, label :nls.fieldname.previousPwdDisallowed ,
+                    value : previousPwdDisallowed"></row>
+
+                        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.header.pwdExpiryParams">
+                        </action-header>
+                        <row params="baseModel : $baseModel, rootModel : $component, label :nls.fieldname.pwdExpiryPeriod ,
+                       value : $baseModel.format(nls.fieldname.expiryDays,{expiryDays : $component.pwdExpiryPeriod()})"></row>
+
+                            <row params="baseModel : $baseModel, rootModel : $component, label :nls.fieldname.pwdExpiryWarning ,
+                                value : $baseModel.format(nls.fieldname.expiryDays,{expiryDays : $component.pwdExpiryWarningPeriod()})"></row>
+
+                                <row params="baseModel : $baseModel, rootModel : $component, label :nls.fieldname.firstPwdExpiry ,
+                              value : $baseModel.format(nls.fieldname.expiryDays,{expiryDays : $component.firstPwdExpiry()})"></row>
+
+
+                                    <div class="oj-flex oj-flex-items-pad">
+                                        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-3">
+                                            <oj-label for="forcePwdChange"><span data-bind="text:$component.nls.fieldname.forcePwdChange"></span></oj-label>
+                                        </div>
+
+                                        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-6">
+                                            <input type="checkbox" disabled id="forcePwdChange" data-bind="value:forcePwdChange,
+                                              checked:forcePwdChange">
+                                        </div>
+                                    </div>
+
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" on-click="[[$component.edit]]">
+            <span data-bind="text:$component.nls.buttons.edit"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.nls.buttons.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+            <span data-bind="text:$component.nls.buttons.back"></span>
+        </oj-button>
+    </div>
+
+</div>
+
+<!-- /ko -->

@@ -1,0 +1,173 @@
+<div class="form-main-container code-generation-container">
+    <!-- ko if : mode() === 'download' -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="review-text-heading oj-flex oj-sm-12 oj-md-12 oj-lg-12">
+            <span class="icons icon-information"></span>
+            <span class="oj-flex-item oj-sm-10" data-bind="text:nls.labels.confirmScreenheader"></span>
+        </div>
+    </div>
+
+    <!-- /ko -->
+    <!-- ko ifnot : mode() === 'download' -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+        <oj-validation-group id="tracker" valid="{{groupValid}}">
+            <action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.labels.view">
+            </action-header>
+
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-label">
+                    <oj-label for="restUrl">
+                        <span data-bind="text:$component.nls.labels.restUrl"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                    <oj-input-text id="restUrl" value="{{restUrl}}" disabled="[[mode()!=='create']]" required></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-label">
+                    <oj-label for="methodType">
+                        <span data-bind="text:$component.nls.labels.methodType"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                    <oj-input-text id="methodType" value="{{methodType}}" disabled="[[mode()!=='create']]" required></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-label">
+                    <oj-label for="restId">
+                        <span data-bind="text:$component.nls.labels.restId"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                    <oj-input-text id="restId" value="{{restId}}" disabled="[[mode()!=='create']]" required></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-label">
+                    <oj-label for="repoId">
+                        <span data-bind="text:$component.nls.labels.repoId"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                    <oj-input-text id="repoId" value="{{repoId}}" disabled="[[mode()!=='create']]" required></oj-input-text>
+                </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-label">
+                    <oj-label for="serviceId">
+                        <span data-bind="text:$component.nls.labels.serviceId"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                    <oj-input-text id="serviceId" value="{{serviceId}}" disabled="[[mode()!=='create']]" required></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-label">
+                    <oj-label for="extension">
+                        <span data-bind="text:$component.nls.labels.extension"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                    <oj-input-text id="extension" value="{{extension}}" disabled="[[mode()!=='create']]" required></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-label">
+                    <oj-label for="domain">
+                        <span data-bind="text:$component.nls.labels.domain"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                    <oj-input-text id="domain" value="{{domain}}" disabled="[[mode()!=='create']]" required></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-label">
+                    <oj-label for="repositoryAdapter">
+                        <span data-bind="text:$component.nls.labels.repositoryAdapter"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                    <oj-input-text id="repositoryAdapter" value="{{repositoryAdapter}}" disabled="[[mode()!=='create']]" required></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-7">
+
+                    <oj-table id='table' data='[[pagingDatasource()]]' columns='{{columnArray}}' columns-default='{"template": "businessPolicy"}' disabled="[[mode()!=='create']]">
+                        <template slot="businessPolicy">
+                                    <oj-bind-text value="[[$current.data]]"></oj-bind-text>
+                                 </template>
+                        <template slot="deleteBusinessPolicy">
+                        <!-- ko if : mode()==="create"  -->
+                                    <a href="javascript:void(0);" class="pull-right linkageDelete" data-bind="click:$component.removeBusinessPolicy.bind($data,$current)" >
+                                                <span class="icons icon-delete"></span>
+                                    </a>
+                        <!-- /ko -->
+                    </template>
+                    </oj-table>
+
+                </div>
+            </div>
+            <!-- ko if :addNewPolicy() &&mode()==='create' -->
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                    <oj-input-text id="newPolicy" value="{{newPolicyName}}" disabled="[[mode()!=='create']]" required></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item  button-container">
+                    <oj-button class="action-button-primary" on-click="[[$component.add]]">
+                        <span data-bind="text:$component.nls.labels.add"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[$component.removeNewPolicy]]">
+                        <span data-bind="text:$component.nls.generic.common.cancel"></span>
+                    </oj-button>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if :! addNewPolicy()  && mode()==="create" -->
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item  button-container">
+                    <oj-button id="newPolicyButton" class="action-button-primary" on-click="[[$component.new]]">
+                        <span data-bind="text:$component.nls.labels.new"></span>
+                    </oj-button>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <div class="oj-flex oj-flex-items-pad code-generation__form-element">
+                <div class="oj-flex-item  button-container">
+                    <!-- ko if : mode()==="view"  -->
+                    <oj-button class="action-button-primary" on-click="[[edit]]">
+                        <span data-bind="text:$component.nls.generic.common.edit"></span>
+                    </oj-button>
+                    <!-- /ko -->
+                    <!-- ko if : mode()==="create"  -->
+                    <oj-button class="action-button-primary" on-click="[[submit]]">
+                        <span data-bind="text:$component.nls.generic.common.submit"></span>
+                    </oj-button>
+                    <!-- /ko -->
+                    <!-- ko if : mode()==="review"  -->
+                    <oj-button class="action-button-primary" on-click="[[confirm]]">
+                        <span data-bind="text:$component.nls.labels.download"></span>
+                        <span class="icons icon-download icon-2x icon-padding-right"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[edit]]">
+                        <span data-bind="text:$component.nls.generic.common.edit"></span>
+                    </oj-button>
+                    <!-- /ko -->
+                    <oj-button class="action-button-tertiary" on-click="[[cancel]]">
+                        <span data-bind="text:$component.nls.generic.common.cancel"></span>
+                    </oj-button>
+                </div>
+            </div>
+        </oj-validation-group>
+    </page-section>
+    <!-- /ko -->
+</div>

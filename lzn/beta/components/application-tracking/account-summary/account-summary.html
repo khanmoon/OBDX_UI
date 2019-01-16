@@ -1,0 +1,87 @@
+<!-- ko if: $component.accountSummaryInfoLoaded() -->
+
+<div class="status-history oj-flex-item">
+	<div class="status-history-card">
+		<div class=" oj-flex oj-flex-items-pad  card-row">
+      <!-- ko if: $component.isIOIPresent() -->
+      <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12 padding-left">
+          <div class="oj-flex oj-flex-items-pad">
+              <h5 class="section-heading" data-bind="text: $component.resource.interestOnlyTitle"></h5>
+          </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko foreach: $component.stageDetails -->
+      <!-- ko if: stageName === "INTEREST" -->
+			<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 padding-left ">
+				<div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.rateType"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text:rateType "></span>
+					</div>
+				</div>
+        <div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.term"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text:$baseModel.format($component.resource.tenure, {years:tenure.years, months: tenure.months}) "></span>
+					</div>
+				</div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6  ">
+        <div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.frequency"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text: $component.resource.frequencyList[frequencies]"></span>
+					</div>
+				</div>
+        <div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.approxRepaymentAmount"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text:$baseModel.formatCurrency(installmentAmount.amount, installmentAmount.currency) "></span>
+					</div>
+				</div>
+			</div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if: $component.isEPIPresent() -->
+      <div class="oj-flex-item  oj-lg-12 oj-md-12 oj-sm-12 padding-left">
+          <div class="oj-flex oj-flex-items-pad">
+              <h5 class="section-heading" data-bind="text: $component.resource.principleOnlyTitle"></h5>
+          </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko foreach: $component.stageDetails -->
+      <!-- ko if: stageName === "PRINCIPAL" -->
+			<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 padding-left ">
+				<div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.rateType"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text:rateType "></span>
+					</div>
+				</div>
+        <div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.term"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text:$baseModel.format($component.resource.tenure, {years:tenure.years, months: tenure.months}) "></span>
+					</div>
+				</div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6  ">
+        <div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.frequency"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text: $component.resource.frequencyList[frequencies] "></span>
+					</div>
+				</div>
+        <div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.approxRepaymentAmount"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text:$baseModel.formatCurrency(installmentAmount.amount, installmentAmount.currency) "></span>
+					</div>
+				</div>
+			</div>
+      <!-- /ko -->
+      <!-- /ko -->
+		</div>
+	</div>
+</div>
+<!-- /ko -->

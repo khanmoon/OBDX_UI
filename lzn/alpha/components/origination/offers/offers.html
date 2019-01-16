@@ -1,0 +1,49 @@
+<!-- ko if:dataLoaded -->
+<div class="loan-offers offers-card" data-bind="with:offers()">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item offer-heading">
+      <oj-label><span data-bind="text:$component.resource.offerHeading"></span></oj-label>
+    </div>
+  </div>
+    <!-- ko foreach: offerDetails-->
+    <div>
+    <a class="desc offers-details oj-flex oj-flex-items-pad" href="javascript:void(0)" data-bind=" click: $component.submitProductOffer.bind($data,$index(),offerId) ,attr:{'id':'offer'+$index(),alt: $baseModel.format($component.resource.alt.selectOffer,{offer:offerName}), title: $baseModel.format($component.resource.selectOffer,{offer:offerName})}">
+        <div class="oj-flex-item oj-sm-10 oj-lg-10 oj-md-10 offers-name" data-bind="text:offerName">
+            <span data-bind="text:offerName"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-2 oj-lg-2 oj-md-2">
+          <span class=" icons success-icon done-icon right"></span>
+        </div>
+        <!-- ko if: $data['features'] -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.features , value :features"></row>
+        <!-- /ko -->
+    </a>
+  </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko if: noOffers -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item label oj-lg-offset-1 oj-md-offset-1 oj-lg-10 oj-md-10">
+    <oj-label><span data-bind="text:$component.resource.noOffers"></span></oj-label>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: $baseModel.large()||$baseModel.medium()-->
+<div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item oj-lg-10 oj-md-10">
+        <oj-button id="submitPrimary" class="form-button-secondary" on-click="[[$component.continue]]" disabled="[[$component.isDisabled]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+</oj-button>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko if: $baseModel.small() -->
+<div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item oj-lg-10 oj-md-10">
+        <oj-button id="submitPrimary" class="form-button-secondary" on-click="[[$component.continue]]" disabled="[[$component.isDisabled]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+</oj-button>
+    </div>
+</div>
+<!-- /ko -->

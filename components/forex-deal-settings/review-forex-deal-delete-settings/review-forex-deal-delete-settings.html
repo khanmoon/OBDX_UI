@@ -1,0 +1,27 @@
+<div class="form-main-container">
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.generic.common.review , reviewHeader : $component.params.iseditable ? $component.resource.viewForexDealSettings.reviewHeaderMsg:$component.resource.viewForexDealSettings.reviewHeaderMsg}}"></div>
+    <page-section params="baseModel : $baseModel, rootModel : $data, dashboard : $dashboard, heading : $component.resource.viewForexDealSettings.label2">
+        <div class="oj-flex oj-flex-items-pad">
+            <!-- ko if:$component.dataSourceLoaded() -->
+            <div data-bind="css: $component.forexDealTimerFlag() ? 'oj-lg-4' : 'oj-lg-2'">
+                <oj-table id='table' data='[[pairsdataSource]]' :aria-label="[[$component.resource.viewForexDealSettings.dealsListTable]]" columns='[[$component.columnArray]]'>
+                </oj-table>
+            </div>
+            <div class="oj-lg-12 oj-flex-item">
+                <oj-paging-control id="paging" data='[[pairsdataSource]]' page-size='10' slot='bottom'>
+                </oj-paging-control>
+            </div>
+            <!-- /ko -->
+        </div>
+    </page-section>
+    <!-- ko if:$component.params.mode !== "approval" && $component.dataSourceLoaded() -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" id="button-submit" on-click="[[submit]]">
+            <span data-bind="text:$component.resource.viewForexDealSettings.submit"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" id="button-back" on-click="[[$dashboard.hideDetails]]">
+            <span data-bind="text: $component.resource.viewForexDealSettings.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+</div>

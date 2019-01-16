@@ -1,0 +1,129 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 label">
+      <oj-label for="usernamesearch"><span data-bind="text:$component.nls.fieldname.username"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4 label">
+      <oj-input-text :aria-label="[[$component.nls.fieldname.username]]" id="usernamesearch" maxlength="80" on-submitifenter="[[submitIfEnter]]" disabled="[[(($component.selectedUserType() === undefined) ? true:false)]]" value="{{username}}"></oj-input-text>
+    </div>
+  </div>
+  <!-- ko if: showOptionRecords -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+      <oj-label for="fnsearch"><span data-bind="text:$component.nls.fieldname.firstname"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 label">
+      <oj-input-text id="fnsearch" maxlength="50" on-submitifenter="[[submitIfEnter]]" value="{{firstName}}"></oj-input-text>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+      <oj-label for="lnsearch"><span data-bind="text:$component.nls.fieldname.lastname"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 label">
+      <oj-input-text id="lnsearch" maxlength="50" on-submitifenter="[[submitIfEnter]]" value="{{lastName}}"></oj-input-text>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+      <oj-label for="emailsearch"><span data-bind="text:$component.nls.fieldname.email"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 label">
+      <oj-input-text id="emailsearch" maxlength="60" on-submitifenter="[[submitIfEnter]]" value="{{emailId}}"></oj-input-text>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+      <oj-label for="mobilesearch"><span data-bind="text:$component.nls.fieldname.mobilenumber"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 label">
+      <oj-input-text id="mobilesearch" maxlength="10" on-submitifenter="[[submitIfEnter]]" value="{{mobileNumber}}"></oj-input-text>
+    </div>
+  </div>
+  <!-- ko ifnot: ($component.selectedUserType() === "corporateuser" && isCorpAdmin) || $component.selectedUserType() === "administrator" -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-2 label">
+      <oj-label for="partyId"><span data-bind="text:$component.nls.fieldname.partyid"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-4">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-input-text maxlength="20" id="partyId" on-submitifenter="[[submitIfEnter]]" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.nls.messages.invalidPartyId,{
+              type:'length',options:{
+                  min:0,max:20}})]]" value="{{partyId}}"></oj-input-text>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <a data-bind="click:$component.showPartySearch" href="javascript:void(0)" disabled="(adminLogin() ? false : true)" class="pull-right">
+            <span class="form-button-link" data-bind="text:$component.nls.fieldname.searchParty"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+</page-section>
+
+<!-- ko ifnot: ($component.selectedUserType() === "corporateuser" && isCorpAdmin) || $component.selectedUserType() === "administrator" -->
+<modal-window params="baseModel : $baseModel, rootModel : $component, id:'partySearch', header: $component.nls.fieldname.searchParty">
+  <div data-bind='component:{name: "party-name-search", params:{rootModel: $data ,searchFor:"user"}}'>
+  </div>
+</modal-window>
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad">
+  <!-- ko ifnot: showOptionRecords -->
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6">
+    <!-- ko if: userTypeSelectionIdle -->
+    <a href="javascript:void(0)">
+                <span class="form-button-link" data-bind="text:$component.nls.fieldname.showMoreOptions">   </span>
+                <span class="oj-button-icon oj-end oj-component-icon oj-button-menu-dropdown-icon">
+            </span>
+            </a>
+    <!-- /ko -->
+    <!-- ko ifnot: userTypeSelectionIdle -->
+    <a href="javascript:void(0)" data-bind="click:$component.showOptions">
+                <span class="form-button-link" data-bind="text:$component.nls.fieldname.showMoreOptions">   </span>
+                <span class="icon icon-arrow-down">
+                </span>
+            </a>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+  <!-- ko if: showOptionRecords -->
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6">
+    <a href="javascript:void(0)" data-bind="click:$component.showLessOptions, attr:{'aria-label': $component.nls.fieldname.showLessOptions}">
+                <span class="form-button-link" data-bind="text:$component.nls.fieldname.showLessOptions"> </span>
+                                  <span class="icon icon-arrow-up">
+            </span>
+            </a>
+  </div>
+  <!-- /ko -->
+</div>
+
+<div class="button-container">
+  <!-- ko if: $component.selectedUserType() === undefined ||  $component.selectedUserType()[0] === undefined -->
+  <oj-button class="action-button-primary" disabled on-click="[[$component.fetchUsers]]">
+    <span data-bind="text:$component.nls.common.search"></span>
+  </oj-button>
+  <!-- /ko -->
+  <!-- ko ifnot: $component.selectedUserType() === undefined  ||  $component.selectedUserType()[0] === undefined  -->
+  <oj-button class="action-button-primary" on-click="[[$component.fetchUsers]]">
+    <span data-bind="text:$component.nls.common.search"></span>
+  </oj-button>
+  <!-- /ko -->
+  <!-- ko if: cancelButtonFlag -->
+  <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+    <span data-bind="text:$component.nls.common.cancel"></span>
+  </oj-button>
+  <!-- /ko -->
+  <!-- ko if: $component.selectedUserType() === undefined ||  $component.selectedUserType()[0] === undefined -->
+  <oj-button class="action-button-secondary" disabled on-click="[[$component.resetForm]]">
+    <span data-bind="text:$component.nls.common.clear"></span>
+  </oj-button>
+  <!-- /ko -->
+  <!-- ko ifnot: $component.selectedUserType() === undefined  ||  $component.selectedUserType()[0] === undefined  -->
+  <oj-button class="action-button-secondary" on-click="[[$component.resetForm]]">
+    <span data-bind="text:$component.nls.common.clear"></span>
+  </oj-button>
+  <!-- /ko -->
+</div>

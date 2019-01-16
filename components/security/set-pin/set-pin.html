@@ -1,0 +1,47 @@
+<div class="form-main-container set-pin">
+  <div class="curtail-width">
+    <div class="main-content">
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for="setPin"><span data-bind="text:$component.resource.setPin"></span></oj-label>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-10 margin-auto">
+            <oj-input-text autofocus class="set-pin-input" value="{{setPin}}" id="setPin" :maxlength="[[$component.maxlength()]]" on-raw-value-changed="[[setPinProceed]]"></oj-input-text>
+          </div>
+      </div>
+      <div class="oj-flex flex-center padding20">
+        <oj-button id="cancelButtonForprocced" class="action-button-secondary " on-click="[[$component.cancelClickHandler]]"><span slot="startIcon" class="icons icon-no"></span>
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+</oj-button>
+      </div>
+      <div class="oj-flex oj-flex-items-pad padding20">
+          <div class="oj-flex-item oj-sm-12">
+            <a href="#" openprofile="true" id="menuLauncher" data-bind="attr:{'aria-label':$component.resource.pinOptions},click: $component.openMenu">
+              <span data-bind="text:$component.resource.pinOptions"></span>
+            </a>
+          </div>
+          <oj-menu class="accounts-overview-launcher" id="menuLauncher-container" on-oj-action="[[menuItemSelect]]" open-options.launcher="menuLauncher">
+              <!-- ko foreach: $component.menuItems -->
+              <oj-option data-bind="attr: {id: value, value: value}">
+                  <a class="" href="#" data-bind="text: label,value: value"></a>
+              </oj-option>
+              <!-- /ko -->
+          </oj-menu>
+        </div>
+    </div>
+  </div>
+</div>
+
+<modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,header:$component.resource.generic.common.ERROR,id:'backWarning'">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12" data-bind="text:$parent.resource.pinDidntMatch">
+    </div>
+  </div>
+  <div class="oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[$parent.hideWarning]]">
+      <span data-bind="text:resource.generic.common.ok"></span>
+</oj-button>
+  </div>
+</modal-window>

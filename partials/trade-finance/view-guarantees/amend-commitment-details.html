@@ -1,0 +1,150 @@
+<div class="page-section-content">
+  <oj-validation-group id="amendCommitmentTracker" valid="{{$component.commitmentValidationTracker}}">
+  <!-- first row -->
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- first row first col -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="beneRefNo"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.beneficiaryRefNo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <div id="beneRefNo" data-bind="text:$component.guaranteeDetails.beneContractReferenceNo"></div>
+        </div>
+      </div>
+    </div>
+    <!-- end of first row first col -->
+    <!-- first row second col -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+
+      <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="guaranteeAmount"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.guaranteeAmount"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-8 oj-md-7 oj-lg-4">
+          <oj-input-text id="guaranteeAmount" type="number" maxlength="16" required :invalidcomponenttracker="[[$component.commitmentValidationTracker]]" validators="[[[$component.validateGuaranteeAmount]]]" converter="[[{type:'number',options:{
+                    style:'currency',currency:typeof ko.utils.unwrapObservable($component.guaranteeDetails.contractAmount.currency) ==='string'? ko.utils.unwrapObservable($component.guaranteeDetails.contractAmount.currency):'',currencyDisplay:'symbol'}}]]" value="{{$component.bgAmendmentDetails.newAmount.amount}}"></oj-input-text>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE'  -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="dateExpiry"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.guaranteeAmount"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+        <span id="dateExpiry" data-bind="text: $baseModel.formatCurrency($component.bgAmendmentDetails.newAmount.amount(),$component.bgAmendmentDetails.newAmount.currency())"></span>
+        <!-- ko ifnot:$component.guaranteeDetails.contractAmount.amount === $component.bgAmendmentDetails.newAmount.amount() -->
+         <span id="dateOfShipment" class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$baseModel.formatCurrency($component.guaranteeDetails.contractAmount.amount,$component.guaranteeDetails.contractAmount.currency)})"></span>
+         <!-- /ko -->
+        </div>
+      </div>
+      <!-- /ko -->
+      </div>
+    <!-- end of first row second col -->
+  </div>
+<!-- end of first row -->
+
+    <!-- second row -->
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- second row first col -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="effectiveDate"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.effectiveDate"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+          <div id="effectiveDate" data-bind="text:$baseModel.formatDate($component.guaranteeDetails.effectiveDate)"></div>
+        </div>
+      </div>
+    </div>
+    <!-- end of second row first col -->
+    <!-- second row second col -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+<!--
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <label for="expiryDate" data-bind="text: $component.resourceBundle.commitmentDetails.labels.expiryDate"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+          <div id="expiryDate" data-bind="text:$baseModel.formatDate($component.guaranteeDetails.expiryDate)"></div>
+        </div>
+      </div>
+-->
+
+      <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="dateofExpiry"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.expiryDate"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-6 oj-md-5 oj-lg-3">
+
+          <oj-input-date id="dateofExpiry" required="[[true]]" converter="[[$baseModel.dateConverter]]" :placeholder="[[$component.resourceBundle.common.labels.selectDate]]" value="{{$component.bgAmendmentDetails.newExpiryDate}}" max="[[($component.guaranteeDetails.closureDate !== null ? $component.closureDateMinusOne:null)]]" min="[[($component.guaranteeDetails.effectiveDate !== null ? $component.effectiveDate1:$component.minExpiryDate)]]"></oj-input-date>
+      </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE'  -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="dateExpiry"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.expiryDate"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+        <span id="dateExpiry" data-bind="text: $baseModel.formatDate($component.bgAmendmentDetails.newExpiryDate())"></span>
+        <!-- ko if: $component.isExpiryDateChanged() -->
+         <span id="dateOfShipment" class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$baseModel.formatDate($component.guaranteeDetails.expiryDate)})"></span>
+         <!-- /ko -->
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+    <!-- end of second row second col -->
+  </div>
+<!-- end of second row -->
+
+    <!-- third row -->
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- third row first col -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+      <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="closureDate"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.closureDate"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-6 oj-md-5 oj-lg-3">
+          <oj-input-date id="closureDate" required="[[true]]" converter="[[$baseModel.dateConverter]]" :placeholder="[[$component.resourceBundle.common.labels.selectDate]]" value="{{$component.bgAmendmentDetails.newClosureDate}}" min="[[($component.guaranteeDetails.expiryDate !== null ? $component.minClosureDate:($component.guaranteeDetails.effectiveDate !== null ? $component.effectiveDate2:$component.minExpiryDate))]]"></oj-input-date>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE'  -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="newClosureDate"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.closureDate"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+        <span id="newClosureDate" data-bind="text: $baseModel.formatDate($component.bgAmendmentDetails.newClosureDate())"></span>
+        <!-- ko if: $component.isClosureDateChanged() -->
+         <span id="dateOfShipment" class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$baseModel.formatDate($component.guaranteeDetails.closureDate)})"></span>
+         <!-- /ko -->
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+    <!-- end of third row first col -->
+    <!-- third row second col -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="expiryPlace"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.expiryPlace"></span></oj-label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+          <span id="expiryPlace" data-bind="text: $component.guaranteeDetails.expiryPlace"></span>
+        </div>
+        </div>
+      </div>
+    <!-- end of third row second col -->
+  </div>
+<!-- end of third row -->
+</oj-validation-group>
+</div>

@@ -1,0 +1,63 @@
+<!-- ko if: $component.existingBalanceTransferLoaded() -->
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label label oj-lg-offset-2 oj-md-offset-1">
+		<oj-label for="issuerName"><span data-bind="text:$component.resource.cardIssuerName"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+		<oj-select-one id="issuerName" required translations="[[{'required':{messageDetail:$component.resource.messages.cardIssuerName}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.transferCards()[$index()].cardIssuerName}}"
+		  :placeholder="''">
+			<!-- ko foreach:$component.cardIssuerNames() -->
+			<oj-option value="{{code}}"><span data-bind="text:code"></span></oj-option>
+			<!-- /ko -->
+		</oj-select-one>
+	</div>
+
+</div>
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label label oj-lg-offset-2 oj-md-offset-1">
+		<oj-label :for="[['payeeName']]"><span data-bind="text:$component.resource.payeeName"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+		<oj-input-text :id="[['payeeName']]" translations="[[{'required':{messageDetail:$component.resource.messages.payeeName}}]]" value="{{$component.transferCards()[$index()].payeeName}}" required="[[true]]" validators="[[$baseModel.getValidator('NAME')]]"></oj-input-text>
+	</div>
+
+</div>
+
+
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label label oj-lg-offset-2 oj-md-offset-1">
+		<oj-label :for="[['cardNumber'+$index()]]"><span data-bind="text:$component.resource.cardNumber"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+		<oj-input-text class="cardNumber" :id="[['cardNumber'+$index()]]" :maxlength="[[$component.cardMaxLength()]]" translations="[[{'required':{messageDetail:$component.resource.messages.cardNumber}}]]" value="{{$component.transferCards()[$index()].temp_maskedCardNumber}}"
+		  required="[[true]]" on-focusout="[[$component.cardNumberFocusOut]]" on-focusin="[[$component.cardNumberFocusIn]]" on-keyup="[[$component.cardNumberKeyup]]" validators="[[$baseModel.getValidator('NUMBERS',$component.resource.messages.cardNumber,{type: 'length',options: {min: 1, max: 16}})]]"></oj-input-text>
+	</div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item no-pad-cols">
+
+		<div data-bind="component: {
+                name: 'amount-input', params: {
+                    amount :  $component.transferCards()[$index()].balanceTransferAmount,
+                    label : $component.resource.transferAmount,
+                    currency: $component.productDetails().offers.offerAdditionalDetails.balanceTransferAttributes[0].balanceTransferAttributeKey.currencyCode,
+										labelClasses : ' oj-sm-12 oj-md-4 oj-lg-2 label label oj-lg-offset-2 oj-md-offset-1',
+										valueClasses :' oj-lg-4 oj-md-4 oj-sm-12 ',
+                    converter:$baseModel.formatCurrency,
+                    validator:$component.validationTracker,
+                    isMandatory:true,
+                    maxlength:15,
+                    rootId:'transferAmount',
+                    rootClass:'form-input',
+										inline:'origination',
+                    formattedAmount: ko.observable()
+                }
+            }"></div>
+
+
+	</div>
+</div>
+<!-- /ko -->

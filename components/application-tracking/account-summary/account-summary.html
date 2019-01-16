@@ -1,0 +1,36 @@
+<!-- ko if: $component.accountSummaryInfoLoaded() -->
+<div class="status-history oj-flex-item">
+	<div class="status-history-card">
+		<div class=" oj-flex oj-flex-items-pad  card-row">
+			<!-- ko foreach: $component.stageDetails -->
+			<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 padding-left ">
+				<div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.frequency"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text: $component.resource.frequencyList[frequencies]"></span>
+					</div>
+				</div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+				<!-- ko if: $data.tenure -->
+        <div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.term"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text:$baseModel.format($component.resource.tenure, {years:tenure.years, months: tenure.months}) "></span>
+					</div>
+				</div>
+				<!-- /ko -->
+				<!-- ko if: $data.rateType -->
+				<div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.rateType"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text">
+						<span class="dark-text " data-bind="text: rateType "></span>
+					</div>
+				</div>
+				<!-- /ko -->
+			</div>
+			<!-- /ko -->
+		</div>
+	</div>
+</div>
+<!-- /ko -->

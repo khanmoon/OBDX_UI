@@ -1,0 +1,71 @@
+<div class="form-main-container">
+      <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.generic.common.review , reviewHeader : $component.resource.header.reviewHeader}}"></div>
+    <div class="oj-flex oj-flex-item">
+        <div class="oj-flex-items-pad oj-sm-12 oj-md-4 oj-lg-4">
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.pageHeader.depositDetails">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.depositDetail.sourceAccount, value : $component.createRDModel.payInInstruction
+()[0].accountId.displayValue()"></row>
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.depositDetail.product, value : createRDModel.productDTO.name()"></row>
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.depositDetail.depositAmount, value :$baseModel.formatCurrency($component.createRDModel.principalAmount.amount(), $component.createRDModel.principalAmount.currency())"></row>
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.depositDetail.rateOfInterest, value : $baseModel.formatNumber($component.createRDModel.interestRate()/100, 'percent')"></row>
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.depositDetail.depositTenure, value :$component.formatTenure()"></row>
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.depositDetail.holdingPattern, value : $component.resource.depositDetail. holdingPatternType[$component.createRDModel.holdingPattern()]"></row>
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.depositDetail.primaryAccountHolder, value :$component.createRDModel.partyName()"></row>
+                    <!-- ko foreach: $component.parties -->
+                    <row params="baseModel : $baseModel, rootModel : $root, label : $baseModel.format($parent.resource.depositDetail.jointAccHolder,{accountHolder:$index()+1}) , value : partyName"></row>
+          <!-- /ko -->
+                </div>
+            </page-section>
+        </div>
+        <div class="oj-flex-items-pad oj-sm-12 oj-md-4 oj-lg-4">
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.pageHeader.maturityDetails">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.maturityDetail.
+           maturityInstruction, value :$component.resource.maturityDetail.rollOverType[$component.createRDModel.rollOverType()]">
+                    </row>
+                     <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.maturityDetail.payTo, value :$component.resource.maturityDetail.payoutType[$component.createRDModel.payoutInstructions()[0].type()]"></row>
+                    <!-- ko if:createRDModel.payoutInstructions()[0].type() ==='O' -->
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.maturityDetail.creditAccountNum, value :[$component.createRDModel.payoutInstructions()[0].accountId.displayValue,$component.createRDModel.payoutInstructions()[0].beneficiaryName,$component.createRDModel.payoutInstructions()[0].bankName,$component.createRDModel.payoutInstructions()[0].address.line1,$component.createRDModel.payoutInstructions()[0].address.line2,$component.createRDModel.payoutInstructions()[0].address.city,$component.createRDModel.payoutInstructions()[0].address.country]"></row>
+                    <!-- /ko -->
+                    <!-- ko if:createRDModel.payoutInstructions()[0].type() ==='I' -->
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.maturityDetail.creditAccountNum, value :[$component.createRDModel.payoutInstructions()[0].account()]"></row>
+                    <!-- /ko -->
+                    <!-- ko if:createRDModel.payoutInstructions()[0].type() ==='E' -->
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.maturityDetail.creditAccountNum, value :[$component.createRDModel.payoutInstructions()[0].account(),$component.createRDModel.payoutInstructions()[0].beneficiaryName,$component.createRDModel.payoutInstructions()[0].bankName,$component.createRDModel.payoutInstructions()[0].address.line1,$component.createRDModel.payoutInstructions()[0].address.line2,$component.createRDModel.payoutInstructions()[0].address.city,$component.createRDModel.payoutInstructions()[0].address.country]"></row>
+                    <!-- /ko -->
+                </div>
+            </page-section>
+        </div>
+        <div class="oj-flex-items-pad oj-sm-12 oj-md-4 oj-lg-4">
+            <!-- ko ifnot:$component.params.addNomineeModel && $component.params.isNomineeRequired && $component.params.isNomineeRequired() && $component.createRDModel.holdingPattern() === 'SINGLE' -->
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.pageHeader.nominationDetails">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.nominationDetails.
+           nomination, value :$component.resource.nominationDetails.nominationStatus.false">
+                </row>
+            </page-section>
+            <!-- /ko -->
+            <!-- ko if:$component.params.addNomineeModel && $component.params.isNomineeRequired && $component.params.isNomineeRequired() && $component.createRDModel.holdingPattern() === 'SINGLE' -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="component:{name:component(),params:{rootModel:{
+                        params:{
+                        addNomineeModel : $component.params.addNomineeModel,
+                        minor : $component.params.minor,
+                        isNomineeRequired : $component.params.isNomineeRequired}}}}">
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+      <div class="button-container">
+            <oj-button id="createButton" class="action-button-primary " on-click="[[$component.params.newRdDeposit.bind($data,true)]]"><span slot="startIcon" class="icons icon-confirm"></span>
+                <span data-bind="text:$component.resource.generic.common.confirm"></span>
+            </oj-button>
+            <!-- ko if: $baseModel.large() -->
+            <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resource.generic.common.cancel"></span>
+            </oj-button>
+            <!-- /ko -->
+            <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+                <span data-bind="text:$component.resource.generic.common.back"></span>
+            </oj-button>
+        </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <!-- ko if: showBillerDetails() && (userSegment === "CORP" || (userSegment === "RETAIL"&& $baseModel.small())) -->
+    <div class="oj-flex-item oj-sm-12 oj-lg-6">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <div class="oj-flex oj-flex-items-pad oj-sm-12 payments">
+                <div class="no-pad-cols oj-flex-item oj-sm-10 oj-lg-10">
+                    <row params="baseModel : $baseModel, rootModel : $component, label : billers.category , value :$component.categoryType">
+                    </row>
+                </div>
+                <div class="oj-flex-item oj-sm-2 oj-lg-2 left">
+                    <!-- ko if:showBillerDetails() && userSegment === "CORP" -->
+                    <a class="action-icon" href="#" data-bind="attr:{'aria-label':$baseModel.format($component.resource.common.title,{reference:$component.resource.common.edit}), 'alt':$component.resource.generic.common.edit,'title':$baseModel.format($component.resource.common.title,{reference:$component.resource.common.edit})}, click:$dashboard.loadComponent.bind($data,'biller-details-edit',{
+                                billerId : $component.selectedBillerId,
+                                categoryType : $component.categoryType,
+                                billerName : $component.subBillerName,
+                                relationshipNumber : $component.relationshipNumber,
+                                consumerNumber: $component.consumerNumber,
+                                accountRelationshipNumber:$component.accountRelationshipNumber,
+                                confirmScreenDetails : $component.confirmScreenDetails()
+                            },$component)">
+                        <div class="icons icon-remarks action-icon"></div>
+                    </a>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div class="oj-lg-12 oj-sm-12">
+                <row params="baseModel : $baseModel, rootModel : $component, label : billers.billerName, value :$component.subBillerName"></row>
+                <row params="baseModel : $baseModel, rootModel : $component, label : billers.relationship1 , value :$component.relationshipNumber"></row>
+                <!-- ko if:$component.consumerNumber -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : billers.relationship2 , value :$component.consumerNumber"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.accountRelationshipNumber -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : billers.relationship3 , value :$component.accountRelationshipNumber"></row>
+                <!-- /ko -->
+            </div>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary" on-click="[[$dashboard.loadComponent.bind($data,'bill-payments',{
+                                      billerId:$component.selectedBillerId,relationshipNumber:$component.relationshipNumber,autopopulate:true},$component)]]">
+                                      <span slot="startIcon" class="icons icon-pay"></span>
+      <span data-bind="text:billers.pay"></span>
+</oj-button>
+            <!-- ko if:userSegment==="CORP" -->
+            <oj-button class="action-button-secondary " on-click="[[deleteBiller]]"><span slot="startIcon" class="icons icon-delete"></span>
+      <span data-bind="text:billers.delete"></span>
+</oj-button>
+            <!-- /ko -->
+            <!-- ko if:userSegment === "RETAIL"&& $baseModel.small() -->
+            <oj-button class="action-button-secondary " on-click="[[$dashboard.loadComponent.bind($data,'biller-details-edit',{billerDetails:$component.transferedData},$component)]]"><span slot="startIcon" class="icons icon-edit"></span>
+      <span data-bind="text:$component.resource.labels.edit"></span>
+</oj-button>
+            <!-- /ko -->
+            <!-- ko if:userSegment==="CORP" && $baseModel.large() -->
+            <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:resource.common.cancel"></span>
+</oj-button>
+            <!-- /ko -->
+            <oj-button class="action-button-tertiary " on-click="[[$component.goBack]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+                <span data-bind="text:billers.back"></span>
+            </oj-button>
+        </div>
+        <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'delete-biller', header : $component.billers.deleteTitle">
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 question-text" data-bind="text:$baseModel.format(billers.verifydeletemessage,{billerName:$component.subBillerName})">
+                    </div>
+                </div>
+            </page-section>
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button id="ConfirmDelete" class="action-button-primary " on-click="[[ConfirmDelete]]"><span slot="startIcon" class="icons icon-delete"></span>
+      <span data-bind="text:billers.deleteBiller"></span>
+</oj-button>
+                <oj-button class="action-button-secondary " id="button" on-click="[[$component.cancelDeleteBiller]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.billers.cancel"></span>
+</oj-button>
+            </div>
+        </modal-window>
+    </div>
+    <!-- ko if: $baseModel.large()-->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'biller-details'"></help>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>

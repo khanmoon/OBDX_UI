@@ -1,0 +1,30 @@
+<div class="oj-panel link-account-container">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <h3 class="link-account__heading" data-bind="text:$component.resource.linkAccountHeading"></h3>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+        <div data-bind="html:$component.resource.info"></div>
+        <div class="button-container">
+        <!-- ko if: $component.enableLink -->
+        <oj-button class="action-button-primary" on-click="[[openLinkAccountDashboard]]">
+            <span data-bind="text:$component.resource.linkAccount"></span>
+        </oj-button>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.enableLink -->
+        <oj-button class="action-button-primary" on-click="[[linkAccount]]">
+            <span data-bind="text:$component.resource.goToLinkAccountDashboard"></span>
+        </oj-button>
+        <!-- /ko -->
+      </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+		<div class="displayImage-showImg__maxwidth">
+			<img  data-bind="attr:{title:$component.resource.title},loadImage:'dashboard/account-aggregator_widget.jpg'"></br>
+		</div>
+	  </div>
+  </div>
+</div>

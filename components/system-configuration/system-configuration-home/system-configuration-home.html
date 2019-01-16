@@ -1,0 +1,179 @@
+<div class="form-main-container system-configuration-home">
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <oj-label :for="[['multiEntity']]" class="oj-label-inline">
+          <span data-bind="text:$component.nls.isMultientity"></span>
+        </oj-label>
+        <a class="oj-label-inline" id="multiEntity-tooltip-holder" href="javascript:void(0)" data-bind="attr:{alt:$component.nls.openDiscPopup,title:$component.nls.openDiscPopupTitle},click:$component.multiEntityPopup.bind($data,true)">
+                    <span class="icons icon-information"></span>
+                </a>
+      </div>
+      <oj-popup id="isMultientity" modality="modeless" tail="simple" position.my.horizontal="start" position.my.vertical="top" position.at.horizontal="right" position.at.vertical="bottom">
+        <div class="system-configuration-home-container">
+          <div class="oj-flex oj-flex-items-pad oj-sm-12 popup-width">
+            <div class="oj-flex-item oj-sm-12" data-bind="text:$component.nls.multiEntityTooltip"></div>
+          </div>
+        </div>
+      </oj-popup>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 ">
+        <oj-buttonset-one disabled="[[disableMultiEntityButtonSet()]]" value="{{$component.isMultyEntity}}" on-value-changed="[[$component.entityChangeHandler]]">
+          <oj-option value="{{'YES'}}" :id="[['multiEntityYES']]" :name="[['multiEntityButton']]"><span data-bind="attr: {for: 'multiEntityYES'},text:$component.nls.generic.common.yes"></span></oj-option>
+          <oj-option value="{{'NO'}}" :id="[['multiEntityNO']]" :name="[['multiEntityButton']]"><span data-bind="attr: {for: 'multiEntityNO'}, text:$component.nls.generic.common.no"></span></oj-option>
+        </oj-buttonset-one>
+      </div>
+    </div>
+    <!-- ko if:$component.entitiesFetched -->
+    <!--  ko if: $component.isMultyEntity() ==="YES"-->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <oj-label :for="[['domainSharing']]"><span data-bind="text:$component.nls.isDomainSharing"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 ">
+        <oj-buttonset-one disabled="[[true]]" value="{{$component.isDomainSharing}}">
+          <oj-option value="{{'YES'}}" :id="[['domainSharingYES']]" :name="[['domainSharing']]"><span data-bind="attr: {for: 'domainSharingYES'},text:$component.nls.generic.common.yes"></span></oj-option>
+          <oj-option value="{{'NO'}}" :id="[['domainSharingNO']]" :name="[['domainSharing']]"><span data-bind="attr: {for: 'domainSharingNO'}, text:$component.nls.generic.common.no"></span></oj-option>
+        </oj-buttonset-one>
+      </div>
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+        <h5 data-bind="text: $component.nls.entityId"></h5>
+      </div>
+      <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+        <h5 data-bind="text: $component.nls.entityName"></h5>
+      </div>
+      <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+        <h5 data-bind="text: $component.nls.timeZone"></h5>
+      </div>
+    </div>
+
+    <div class="oj-header-border">
+    </div>
+
+
+    <!-- ko foreach: $component.entities -->
+
+    <div class="oj-header-border"><br>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+
+          <oj-input-text required maxlength="35" :id="[['businessUnitCode'+$index()]]" :aria-label="[[$component.nls.entityId]]" :name="[['businessUnitCode'+$index()]]" disabled="[[true]]" value="{{businessUnitCode}}"></oj-input-text>
+        </div>
+
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+          <oj-input-text required maxlength="35" :id="[['businessUnitName'+$index()]]" :aria-label="[[$component.nls.entityName]]" :name="[['businessUnitName'+$index()]]" disabled="[[!temp_edit()]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL')]]"
+            :placeholder="[[$component.nls.entityId]]" value="{{businessUnitName}}"></oj-input-text>
+
+        </div>
+        <!--  ko if: $component.showTimeZoneDropDown() && $component.timeZoneLoaded() -->
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-3">
+          <oj-select-one required :id="[['timeZone'+ $index()]]" :name="[['timeZone'+$index()]]" disabled="[[!temp_edit()]]" value="{{temp_timeZone}}">
+            <!-- ko foreach: $component.timezones -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+
+        <!--  ko if: !temp_edit()-->
+
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4 right">
+          <a class="icons icon-remarks" href="javascript:void(0)" data-bind="click : $component.editEntity.bind($data,$index()) ,attr:{alt: $component.nls.editalt, title: $component.nls.editTitle}"></a>
+
+        </div>
+
+        <!--  /ko -->
+
+        <!--  ko if: temp_edit()-->
+
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4 right">
+          <a class="icons icon-save" href="javascript:void(0)" data-bind="click : $component.saveEntity.bind($data,$index()) ,attr:{alt: $component.nls.saveAlt, title: $component.nls.saveTitle}"></a>
+        </div>
+        <!--  /ko -->
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- =============================================================================================================================================== -->
+
+    <!-- ko if: $component.newEntities().length > 0 -->
+    <!-- ko foreach: $component.newEntities -->
+
+    <div class="oj-header-border"><br>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2 left">
+          <oj-input-text required maxlength="35" :id="[['businessUnitCode'+$index()]]" :aria-label="[[$component.nls.entityId]]" :name="[['businessUnitCode'+$index()]]" disabled="[[!temp_add()]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL')]]"
+            :placeholder="[[$component.nls.entityId]]" value="{{businessUnitCode}}"></oj-input-text>
+        </div>
+
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2 center">
+          <oj-input-text required maxlength="35" :id="[['businessUnitName'+$index()]]" :aria-label="[[$component.nls.entityName]]" :name="[['businessUnitName'+$index()]]" disabled="[[!temp_add()]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL')]]"
+            :placeholder="[[$component.nls.entityName]]" value="{{businessUnitName}}"></oj-input-text>
+
+        </div>
+
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-3 right">
+          <oj-select-one required :id="[['timeZone'+ $index()]]" :name="[['timeZone'+$index()]]" disabled="[[!temp_add()]]" value="{{temp_timeZone}}">
+            <!-- ko foreach: $component.timezones -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+
+
+
+        <!--  ko if: !temp_add()-->
+
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4 right">
+          <a class="icons icon-remarks" href="javascript:void(0)" data-bind="click : $component.editNewEntity.bind($data,$index()) ,attr:{alt: $component.nls.editalt, title: $component.nls.editTitle}"></a>
+
+        </div>
+
+        <!--  /ko -->
+
+        <!--  ko if: temp_add()-->
+
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4 right save-button">
+          <a class="icons icon-save" href="javascript:void(0)" data-bind="click : $component.saveNewEntity.bind($data,$index()) ,attr:{alt: $component.nls.saveAlt, title: $component.nls.saveTitle}"></a>
+        </div>
+
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-1 delete-button">
+          <a class="icons icon-delete" href="javascript:void(0)" data-bind="click : $component.deleteEntity.bind($data,$index()) ,attr:{alt: $component.nls.deleteAlt, title: $component.nls.deleteTitle}"></a>
+        </div>
+
+        <!--  /ko -->
+
+      </div>
+    </div>
+
+    <!-- /ko -->
+    <!-- /ko -->
+
+  </page-section>
+
+
+  <!-- =============================================================================================================================================== -->
+
+
+
+  <div class="oj-flex oj-flex-items-pad">
+    <!--  ko if: $component.isMultyEntity() ==="YES"-->
+    <div class="button-container">
+      <oj-button id="addEntity" class="help-button" on-click="[[$component.addEntity]]">
+        <span data-bind="text:$component.nls.buttons.addEntity"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+  </div>
+  <div class="oj-flex oj-flex-item-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[$component.goToSystemConfiguration]]">
+      <span data-bind="text:$component.nls.continue"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" id="cancelButtonId" type="submit" on-click="[[$dashboard.openDashBoard]]">
+      <span data-bind="text:$component.nls.buttons.cancel"></span>
+    </oj-button>
+  </div>
+</div>

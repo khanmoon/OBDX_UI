@@ -1,0 +1,39 @@
+<div class="payments-confirm-template">
+    <!-- ko if: $component.params.confirmScreenExtensions && $component.params.confirmScreenExtensions.confirmScreenDetails && $component.params.confirmScreenExtensions.confirmScreenDetails.length>0 -->
+    <page-section params="baseModel : $baseModel, rootModel : $component,heading : ''">
+        <div class="oj-lg-6">
+            <!-- ko foreach: $component.params.confirmScreenExtensions.confirmScreenDetails -->
+            <div class="oj-flex oj-flex-items-pad">
+                <!-- ko foreach: $data -->
+                <!-- ko if:$data.value -->
+                 <row class="oj-lg-6 oj-md-6" params="baseModel : $baseModel, rootModel : $component, label : $data.label, value : $data.value"></row>
+                 <!-- /ko -->
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+        </div>
+    </page-section>
+    <!-- /ko -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item" data-bind="text:$component.confirmScreenResources.confirm.actions.nextAction">
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+        <ul class="confirm-screen__list">
+            <li>
+                <a href="#" data-bind="click:$dashboard.openDashBoard">
+          <img data-bind="attr:{'title':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'alt':$component.confirmScreenResources.confirm.actions.goToDashboard},loadImage:'dashboard/quick-access/dashboard.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToDashboard"></div>
+        </a>
+            </li>
+            <!-- ko ifnot: $component.params.redeem -->
+             <li>
+                <a href="#" data-bind="click:$component.openTransaction.bind($data,'rd-details', 'recurring-deposit','deposit?module=RD')">
+          <img data-bind="attr:{'title':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'alt':$component.confirmScreenResources.confirm.actions.goToAccountDetails},loadImage:'dashboard/quick-access/account-details.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToAccountDetails"></div>
+        </a>
+            </li>
+            <!-- /ko -->
+        </ul>
+    </div>
+</div>

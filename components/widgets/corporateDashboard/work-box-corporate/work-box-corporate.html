@@ -1,0 +1,18 @@
+<!-- ko if:$baseModel.large() -->
+<a href="#" data-bind="click: $component.loadComponentData.bind($data,$parent)">
+<div class="work-box borderAlign" data-bind="css:$baseModel.format($parent.transactionType.toLowerCase())">
+<div class="work-box__headerCount">
+  <span data-bind="text:workData.header"></span>
+  <span data-bind="text:$baseModel.format($component.resource.count,{totalCount:totalCount})"></span>
+ </div>
+<ul class="work-box__list work-box-list">
+    <!-- ko foreach:workData.workCount -->
+    <li class="oj-flex work-box-list__item work-box-list-item">
+        <div class="oj-flex-item oj-sm-9 work-box-list-item__text" data-bind="attr:{id:'status'},text:status"></div>
+        <div class="oj-flex-item oj-sm-3 work-box-list-item__count" data-bind="attr:{'aria-labelledby':'status'},text:count,css:status"></div>
+    </li>
+    <!-- /ko -->
+</ul>
+</div>
+</a>
+<!-- /ko -->

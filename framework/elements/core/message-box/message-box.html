@@ -1,0 +1,43 @@
+<!-- ko if : messageAvailable() -->
+<modal-window params="rootModel : $data,id:dialogId + 'modalWindow', header : $component.locale.common[messageType()] ,closeHandler: closeDialog">
+	<div class="message-box">
+		<!-- ko if : messageType()==='ERROR' -->
+		<div class="oj-flex oj-flex-items-pad message-box__message message-box__message--error">
+			<!-- ko foreach : messages -->
+			<div class="oj-flex-item oj-sm-12 message-box-message__item" data-bind="html:$data.message"></div>
+			<!-- /ko -->
+		</div>
+		<!-- /ko -->
+		<!-- ko if : messageType()==='INFO' -->
+		<div class="oj-flex oj-flex-items-pad message-box__message message-box-message--info">
+			<!-- ko foreach : messages -->
+			<div class="oj-flex-item oj-sm-12 message-box-message__item" data-bind="html:$data.message"></div>
+			<!-- /ko -->
+		</div>
+		<!-- /ko -->
+		<!-- ko if : messageType()==='SUCCESS' -->
+		<div class="oj-flex oj-flex-items-pad message-box__message message-box-message--success">
+			<!-- ko foreach : messages -->
+			<div class="oj-flex-item oj-sm-12 message-box-message__item" data-bind="html:$data.message"></div>
+			<!-- /ko -->
+		</div>
+
+		<!-- /ko -->
+		<!-- ko if : messageType()==='NOTIFICATION' -->
+		<div class="oj-flex oj-flex-items-pad message-box__message message-box-message--notification">
+			<!-- ko foreach : messages -->
+			<div class="oj-flex-item oj-sm-12 message-box-message__item" data-bind="html:$data.message"></div>
+			<!-- /ko -->
+		</div>
+		<!-- /ko -->
+		<div class="button-container message-box__buttons">
+			<oj-button class="action-button-primary" on-click="[[closeDialog]]" >
+				  <span slot="startIcon" class="icons icon-ok"></span>
+      <span data-bind="text:$component.locale.common.ok"></span>
+</oj-button>
+		</div>
+	</div>
+	<div data-bind="template:{afterRender: showModalWindow}"></div>
+</modal-window>
+
+<!-- /ko -->

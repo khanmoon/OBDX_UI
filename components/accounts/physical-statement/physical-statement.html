@@ -1,0 +1,61 @@
+	<!-- ko if:physicalStatement -->
+	<page-section params="baseModel : $baseModel, rootModel : $data">
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-12">
+				<span data-bind="text: $component.resource.accountActivity.physicalStatementRequest"></span>
+			</div>
+		</div>
+		<oj-validation-group id="dateTracker" valid="{{dateValid}}">
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-12 label ">
+				<oj-label for="fromDate"><span data-bind="text:$component.resource.accountActivity.fromDate"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-md-8 oj-lg-8 oj-sm-12 ">
+				<oj-input-date id="fromDate" required value="{{fromDate}}" max="[[$component.todayDate()]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+			</div>
+		</div>
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-12 label ">
+				<oj-label for="toDate"><span data-bind="text:$component.resource.accountActivity.toDate"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-md-8 oj-lg-8 oj-sm-12">
+				<oj-input-date id="toDate" required="[[true]]" min="[[fromDate]]" max="[[$component.todayDate()]]" value="{{toDate}}" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+			</div>
+		</div>
+		</oj-validation-group>
+	</page-section>
+	<div class="oj-flex oj-flex-items-pad button-container">
+		<oj-button class="action-button-primary " on-click="[[reviewRequest]]"><span slot="startIcon" class="icons icon-request"></span>
+      <span data-bind="text:$component.resource.accountActivity.request"></span>
+</oj-button>
+		<oj-button id="menuButton5" class="action-button-secondary " on-click="[[ok]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.accountActivity.cancel"></span>
+</oj-button>
+	</div>
+
+	<!-- /ko -->
+
+
+	<!-- ko if:reviewPhysicalStatement -->
+
+	<!--div data-bind="template: { name: 'review/physical-statement', data: $component}"></div-->
+
+	<div data-bind="component: { name: 'review-physical-statement',params:{rootModel:$component}}"></div>
+
+
+
+	<!-- /ko -->
+
+	<!-- ko if:submitPhysicalStatement -->
+	<div class="oj-flex oj-flex-items-pad center ">
+
+
+			<div class="oj-flex-item button-container">
+				<oj-button class="action-button-primary " on-click="[[ok]]"><span slot="startIcon" class="icons icon-done"></span>
+      <span data-bind="text:$component.resource.common.done"></span>
+</oj-button>
+			</div>
+
+		</div>
+
+	<!-- /ko -->

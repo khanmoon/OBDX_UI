@@ -1,0 +1,72 @@
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label :for="[['streetAddress'+id]]"><span data-bind="text:$component.resource.streetAddress"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+		<oj-input-text required maxlength="50" autocomplete="off" spellcheck="false" :id="[['streetAddress'+ id]]" translations="[[{'required':{messageDetail:$component.resource.messages.address}}]]" validators="[[$component.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL',$component.resource.messages.address,{
+														                        type:'length',options:{
+														                          min:1,max:50}})]]" value="{{postalAddress.line1}}" disabled="[[$component.disableInputs()]]"></oj-input-text>
+	</div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label :for="[['aptNo'+id]]"><span data-bind="text:$component.resource.aptNo"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+		<oj-input-text maxlength="15" autocomplete="off" spellcheck="false" :id="[['aptNo'+ id]]" translations="[[{'required':{messageDetail:$component.resource.messages.address}}]]" validators="[[$component.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL',$component.resource.messages.address,{
+														                        type:'regExp',options:{
+																                        pattern:$component.resource.aptNoPattern,messageDetail:$component.resource.messages.address}})]]" value="{{postalAddress.line2}}" disabled="[[$component.disableInputs()]]"></oj-input-text>
+	</div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2">
+		<oj-label :for="[['city'+ id]]"><span data-bind="text:$component.resource.city"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+		<oj-input-text maxlength="30" autocomplete="off" spellcheck="false" required :id="[['city'+ id]]" translations="[[{'required':{messageDetail:$component.resource.messages.city}}]]" validators="[[$component.getValidator('ALPHANUMERIC_WITH_SPACE',$component.resource.messages.city,{
+																														 type:'length',options:{
+																															 min:1,max:30}})]]" value="{{postalAddress.city}}" disabled="[[$component.disableInputs()]]"></oj-input-text>
+	</div>
+</div>
+<!-- ko if: $component.id === '1'-->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label class="oj-label" :for="[['states'+ id]]"><span data-bind="text:$component.resource.state"></span></oj-label>
+	</div>
+	<div class="oj-flex-item label oj-sm-12 oj-md-6 oj-lg-4">
+		<!-- ko if: $component.disableInputs()-->
+		<oj-label :for="[['states'+ id]]"><span data-bind="text:$component.selectedStateText()"></span></oj-label>
+		<!-- /ko -->
+		<!-- ko ifnot: $component.disableInputs()-->
+		<span class="state span-text" data-bind="text:$component.selectedStateText(), attr:{'for':'states' + id}
+											 "></span>
+		<!-- /ko -->
+	</div>
+</div>
+<!-- /ko -->
+<!-- ko if: $component.id === '2'-->
+<!-- ko if: $component.statesChanged() -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label :for="[['states'+ id]]"><span data-bind="text:$component.resource.state"></span></oj-label>
+	</div>
+	<div id="" class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+		<oj-select-one required :id="[['states'+ id]]" translations="[[{'required':{messageDetail:$component.resource.messages.state}}]]" :invalidcomponenttracker="[[$component.validator]]" on-value-changed="[[$component.updateState]]" value="{{postalAddress.state}}" disabled="[[$component.disableInputs()]]" :placeholder="">
+			<!-- ko foreach: $component.stateOptions -->
+			<oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+			<!-- /ko -->
+		</oj-select-one>
+	</div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label class="text line-height-2" :for="[['zipCode'+ id]]"> <span data-bind="html:$component.resource.zipCode"></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+		<oj-input-text class="zipCodeUS" required maxlength="10" autocomplete="off" spellcheck="false" :id="[['zipCode'+ id]]" translations="[[{'required':{messageDetail:$component.resource.messages.zipcode}}]]" validators="[[$component.zipCodeforUsValidate]]" value="{{postalAddress.postalCode}}" disabled="[[$component.disableInputs()]]"></oj-input-text>
+	</div>
+</div>

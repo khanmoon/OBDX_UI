@@ -1,0 +1,76 @@
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : '' ">
+    <div class="row-group">
+        <!-- ko if:$component.payeeData.name!==null -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.recipientname, value :$component.payeeData.name"></row>
+        <!-- /ko -->
+        <!-- ko if:!$component.payeeData.demandDraftPayeeType -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.accounttype , value : $component.payeeData.type"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.payeeData.accountName && $component.payeeData.accountName!==null && $component.payeeData.accountName!=='' -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.accountname, value :$component.payeeData.accountName"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.payeeData.accountNumber && $component.payeeData.accountNumber!==null && $component.payeeData.accountNumber!=='' -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.accountnumber , value :$component.payeeData.accountNumber"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.payeeData.network!==null -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.payvia , value :$component.payeeData.network"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.payeeData.bankName -->
+        <!-- ko ifnot:$component.payeeData.payeeType==='INTERNAL' -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.bankdetails , value :[
+            $component.payeeData.branchCode,
+            $component.payeeData.bankName,
+            $component.payeeData.address,
+            $component.payeeData.bankCity,
+            $component.payeeData.bankCountry,
+            ]"></row>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if:!$component.payeeData.demandDraftPayeeType -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.accountnickname, value :$component.payeeData.nickName"></row>
+        <!--  /ko -->
+        <!-- ko if:$component.payeeData.transferMode-->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.transferMode , value :$component.payeeData.transferMode"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.payeeData.transferTo -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.moneytransfer.transferTo , value :$component.payeeData.transferTo"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.payeeData.demandDraftPayeeType -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.drafttype ,
+  value :$component.payments.payee.type[$component.payeeData.demandDraftPayeeType]"></row>
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.draftfavouring , value :$component.payeeData.nickName"></row>
+        <!-- ko if:!$component.payeeData.payAtCountry -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.draftpayableat ,  value :$component.payeeData.payAtCity"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.payeeData.payAtCountry -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.draftpayableat ,  value :$component.payeeData.payAtCity + ', ' + $component.payeeData.payAtCountry"></row>
+        <!-- /ko -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.deliverdraftto ,
+  value :$component.payments.payee.type[$component.payeeData.deliveryMode]"></row>
+        <div data-bind="template: { name: 'common/review/address'}"></div>
+        <!-- /ko -->
+        <!-- ko if:!$component.isEdit() -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.payeeaccesstype , value :payeeData.payeeAccessType"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.isEdit() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 label">
+                <oj-label class="oj-label" for="accessType"><span data-bind="text:payments.payee.payeeaccesstype"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 ">
+                <oj-buttonset-one id="accessType" :aria-label="[[$component.payments.payee.selection]]" value="{{accessType}}"><!-- ko foreach: accessTypes --><oj-option name="accessType" value="{{id}}" :id="[[id]]"><span data-bind="attr: {for: id},text: label"></span></oj-option><!-- /ko --></oj-buttonset-one>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.limitsEffectiveTomorrowFlag() -->
+        <span data-bind="text:$component.payments.payee.changestoday"></span>
+        <a href="#" class="form-button-link" data-bind="attr:{'alt':$component.payments.payee.viewmore,'title':$component.payments.payee.viewmoreTitle},text:$component.payments.payee.viewmore, click:$component.viewEffectiveTomorrow">
+         </a>
+        <!-- ko if:$component.limitsEffectiveTomorrowDetailsFlag() -->
+        <div data-bind="text:$component.payments.payee.effectivetomorrow"></div>
+        <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.dailylimit ,
+         value :$baseModel.formatCurrency($component.limitsEffectiveTomorrow(),$component.tempcurrency())"></row>
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</page-section>

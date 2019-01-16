@@ -1,0 +1,58 @@
+<!-- ko if:isDataLoaded() -->
+<!-- ko if:initiateCancel() -->
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+  <div class="row-group">
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <span class="" data-bind="text:resource.cancelCard.cancelHeadText1"></span>
+      </div>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <span class="" data-bind="text:resource.cancelCard.cancelHeadText2"></span>
+      </div>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 label ">
+        <oj-label for="reason" class=""><span data-bind="text:resource.cancelCard.reason"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 left">
+
+
+        <oj-select-one id="reason" required translations="[[{'required':{messageDetail:resource.cancelCard.reason2}}]]" :placeholder="[[$component.resource.cancelCard.pleaseSelect]]" value="{{$component.selectedReason}}">
+          <!-- ko foreach:$component.reasonsArray() -->
+          <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+
+      </div>
+    </div>
+
+    <div data-bind="component:{name: 'comment-box',
+                                  params:{
+                                  rootModel: $root,
+                                  maxlength:40,
+                                  label:resource.cancelCard.comment,
+                                  rootId:'payComment',
+                                  rootClass:'form-input',
+                                  required:false,
+                                  validator:$component.validationTracker,
+                                  comment:$component.comment}}"></div>
+
+  </div>
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button id="cancelVerifyButton" class="action-button-primary " on-click="[[cancelVerify]]"><span slot="startIcon" class="icons icon-submit"></span>
+    <span data-bind="text:resource.genericCard.submit"></span>
+  </oj-button>
+  <!-- ko if: !$baseModel.small() -->
+  <oj-button id="cancelButton" class="action-button-secondary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-cancel"></span>
+    <span data-bind="text:resource.genericCard.cancel"></span>
+  </oj-button>
+  <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- /ko -->

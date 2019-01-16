@@ -1,0 +1,94 @@
+<!-- ko if: showBalanceInfo -->
+<div data-bind="component:{name: 'wallet-info-panel', params:{rootModel: $parent }}"></div>
+<!-- /ko -->
+<div class=" wallets_container">
+<div class="oj-panel form-main-container card-action-container customizedinput">
+
+    <!-- ko if: !showConfirm() -->
+
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="section">
+      <div class="wallets-action-label">
+        <oj-label for="text-input"><span data-bind="text:$component.wallet.request.request_who"></span></oj-label>
+      </div>
+      <div class="oj-row">
+        <oj-input-text id="text-input" maxlength="50" required="[[true]]" translations="[[{'required':{messageDetail:$component.wallet.request.invalidrecipient}}]]" validators="[[[validateRecepient]]]" :placeholder="[[$component.wallet.request.pay_who_placeholder]]" value="{{requestedParty}}"></oj-input-text>
+      </div>
+
+    <div class="oj-row" data-bind="component: {
+         name: 'amount-input', params: {
+             amount : requestDetails.amount.amount,
+             label : $component.common.amount,
+             currency:walletCurrency(),
+             validator:$component.validationTracker,
+             isMandatory:true,
+             rootId:'transferAmount',
+             rootClass:'form-input'
+         }
+     }"></div>
+
+    <div class="oj-row" data-bind="component:{name: 'comment-box',
+      params:{
+      rootModel: $root,
+      maxlength:40,
+      label:$component.wallet.request.comment,
+      rootId:'requestComment',
+      validator:$component.validationTracker,
+      rootClass:'form-input',
+      required:true,
+      comment:requestDetails.comments}}"></div>
+
+
+
+    <div class="oj-row button-container ">
+        <oj-button id="button" class="action-button-primary" on-click="[[showConfirmScreen]]">
+      <span data-bind="text:$component.wallet.pay.sendrequest"></span>
+</oj-button>
+        <img data-bind="loadImage:'wallet/wallet-farward-white.png'">
+    </div>
+    </div>
+  </page-section>
+    <!-- /ko -->
+
+    <!-- ko if: showConfirm() -->
+
+          <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <div class="section">
+                  <div class="oj-row">
+                    <div class=" wallets-action-label">
+                      <oj-label for="otp"><span data-bind="text:$component.wallet.request.requesting"></span></oj-label>
+                    </div>
+                    <div class=" wallets-review-label">
+                        <oj-label><span data-bind="text:requestedParty"></span></oj-label>
+                    </div>
+                  </div>
+                  <div class="oj-row">
+                    <div class=" wallets-action-label">
+                      <oj-label for="otp"><span data-bind="text:$component.common.amount"></span></oj-label>
+                    </div>
+                    <div class=" wallets-review-label">
+                        <oj-label><span data-bind="text:$baseModel.formatCurrency(requestDetails.amount.amount(),walletCurrency())"></span></oj-label>
+                    </div>
+                  </div>
+                  <div class="oj-row">
+                    <div class=" wallets-action-label">
+                      <oj-label for="otp"><span data-bind="text:$component.wallet.request.comment"></span></oj-label>
+                    </div>
+                    <div class=" wallets-review-label">
+                        <oj-label><span data-bind="text:requestDetails.comments"></span></oj-label>
+                    </div>
+                  </div>
+              <div class="oj-row button-container">
+                <oj-button id="dialogtopupButton" class="action-button-primary" on-click="[[requestFund]]">
+      <span data-bind="text:$component.common.confirm"></span>
+</oj-button>
+                <img data-bind="loadImage:'wallet/wallet-farward-white.png'">
+                  <oj-button class="action-button-secondary" id="button-cancel" on-click="[[cancelTransfer]]">
+      <span data-bind="text:$component.common.cancel"></span>
+</oj-button>
+              </div>
+            </div>
+          </page-section>
+    <!-- /ko -->
+</div>
+</div>

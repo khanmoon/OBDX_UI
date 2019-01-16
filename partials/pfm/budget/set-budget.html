@@ -1,0 +1,120 @@
+<div class="form-main-container">
+    <oj-validation-group id="budgetTracker">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-sm-12">
+                <!-- ko if:!disableFormControls() -->
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-label :for="[['category'+$baseModel.incrementIdCount()]]"><span data-bind="text:disableFormControls()?$component.resource.budget.categoryName:$component.resource.budget.create.choosecategory"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                    <!-- ko if:categoryList().length>0 -->
+                    <oj-select-one required id="category" :id="[['category'+$baseModel.currentIdCount()]]" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[disableFormControls]]" :placeholder="[[$component.resource.budget.create.placeholder]]" value="{{categoryId}}">
+                        <!-- ko foreach:$component.categoryList() -->
+                        <oj-option value="{{categoryId}}"><span data-bind="text:name"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+                <!-- ko if:disableFormControls() -->
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-label><span data-bind="text:disableFormControls()?$component.resource.budget.categoryName:$component.resource.budget.create.choosecategory"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                    <span data-bind="text:$component.categoryName"></span>
+                </div>
+                <!-- /ko -->
+            </div>
+            <div data-bind="component: {
+          name: 'amount-input', params: {
+          amount :$component.amount,
+          label : $component.resource.budget.create.setbudgetamount,
+          currency: $component.localCurrency(),
+          converter:$baseModel.formatCurrency,
+          currencyListRequired : false,
+          validator:$component.validationTracker,
+          isMandatory:true,
+          rootId:'budget-amount'+$baseModel.incrementIdCount(),
+          currencyURL : '',
+          currencyParser :'',
+          rootClass:'form-input'
+          }
+          }"></div>
+            <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-sm-12">
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-label :id="[['periodicity']]">
+                        <span data-bind="text:$component.resource.budget.create.periodicity"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-radioset required :aria-label="[[$component.resource.budget.create.periodicity]]" value="{{$component.periodicity}}" class="oj-choice-direction-row">
+                        <!-- ko foreach: periodicityLabels -->
+                        <oj-option name="periodicity" :id = "[[value]]" value="[[value]]">
+                            <span data-bind="text:label"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-radioset>
+                </div>
+            </div>
+            <!-- ko if:$component.periodicity()==="Custom" && $component.dateLoaded() -->
+            <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-sm-12">
+                <!-- ko ifnot:$baseModel.small() -->
+                <!-- <div class="oj-flex-item oj-lg-3"></div> -->
+                <!-- /ko -->
+                <div class="oj-flex-item oj-sm-12 oj-lg-12">
+                    <oj-label :for="[['fromDateMonth'+$baseModel.incrementIdCount()]]">
+                        <span data-bind="text:$component.resource.budget.create.fromDateMonth"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-6 oj-lg-3">
+                    <oj-label class="hide-label" :for="[['fromDateMonth'+$baseModel.incrementIdCount()]]">
+                        <span data-bind="text:$component.resource.budget.create.fromDateMonth"></span></oj-label>
+                    <oj-select-one :id="[['fromDateMonth'+$baseModel.currentIdCount()]]" :aria-labelledby="[[$component.resource.budget.create.fromDateMonth]]" value="{{$component.fromDateMonth}}" disabled="[[true]]">
+                        <!-- ko foreach:$component.monthNames() -->
+                        <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+                <div class="oj-flex-item oj-sm-6 oj-lg-3">
+                    <oj-label class="hide-label" :for="[['fromDateYear'+$baseModel.incrementIdCount()]]">
+                        <span data-bind="text:$component.resource.budget.create.fromDateYear"></span></oj-label>
+                    <oj-select-one :id="[['fromDateYear'+$baseModel.currentIdCount()]]" :aria-labelledby="[[$component.resource.budget.create.fromDateYear]]" value="{{$component.fromDateYear}}" disabled="[[true]]">
+                        <!-- ko foreach:$component.year() -->
+                        <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-lg-12">
+                    <oj-label :for="[['toDateMonth'+$baseModel.incrementIdCount()]]">
+                        <span data-bind="text:$component.resource.budget.create.toDateMonth"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-6 oj-lg-3">
+                    <oj-label class="hide-label" :for="[['toDateMonth'+$baseModel.incrementIdCount()]]">
+                        <span data-bind="text:$component.resource.budget.create.toDateMonth"></span></oj-label>
+                    <oj-select-one :id="[['toDateMonth'+$baseModel.currentIdCount()]]" :aria-labelledby="[[$component.resource.budget.create.toDateMonth]]" value="{{$component.toDateMonth}}">
+                        <!-- ko foreach:$component.monthNames() -->
+                        <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+                <div class="oj-flex-item oj-sm-6 oj-lg-3">
+                    <oj-label class="hide-label" :for="[['toDateYear'+$baseModel.incrementIdCount()]]">
+                        <span data-bind="text:$component.resource.budget.create.toDateYear"></span></oj-label>
+                    <oj-select-one :id="[['toDateYear'+$baseModel.currentIdCount()]]" :aria-labelledby="[[$component.resource.budget.create.toDateYear]]" value="{{$component.toDateYear}}">
+                        <!-- ko foreach:$component.year() -->
+                        <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-sm-12">
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-label :for="[['frequency'+$baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.budget.create.frequency"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 ">
+                    <span data-bind="attr:{'id': 'frequency'+$baseModel.currentIdCount()},text:$component.resource.budget.create.monthly"></span>
+                </div>
+            </div>
+        </page-section>
+    </oj-validation-group>
+</div>

@@ -1,0 +1,71 @@
+<!-- ko if: $component.verifyAddOn() -->
+<div class="form-main-container">
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+  <page-section class="review" ="" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+    <div class="row-group">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="addressType" class=""><span data-bind="text:resource.addonCard.cardNumber"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$component.creditCardIdDisplay"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="cardfor"><span data-bind="text:resource.addonCard.cardfor"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:resource.addonCard[$component.selectedRelationship()]"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="nameOnCard"><span data-bind="text:resource.addonCard.nameOnCard"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$component.name"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="newCreditLimit"><span data-bind="text:resource.addonCard.newCreditLimit"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$baseModel.formatCurrency(updatecreditLimit(), creditLimitCurrency())"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="newCashLimit"><span data-bind="text:resource.addonCard.newCashLimit"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$baseModel.formatCurrency(updatecashLimit(), cashLimitCurrency())"></span>
+        </div>
+      </div>
+
+      <div class="" data-bind="template: { name: 'common/review/address',data:$component.addressDetails }"></div>
+
+    </div>
+  </page-section>
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="addOnConfirm" class="action-button-primary " on-click="[[addOnConfirm]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:resource.addonCard.confirm"></span>
+    </oj-button>
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button id="addonCardCancel" class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.addonCard.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button id="addonCardBack" class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.resource.addonCard.back"></span>
+    </oj-button>
+  </div>
+</div>
+<!-- /ko -->

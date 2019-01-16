@@ -1,0 +1,51 @@
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item">
+    <h4 class="form-heading" data-bind="text: $component.resource.setSecurityQuestions"></h4>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item">
+    <label class="text" data-bind="text:$component.resource.securityQuestionsText"></label>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-1 label">
+    <div class="oj-label">
+      <oj-label for="skipSecurityQuestionsButtonset"><span data-bind="text:$component.resource.skipSecurityQuestions"></span></oj-label>
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+    <oj-buttonset-one id="skipSecurityQuestionsButtonset" :aria-label="[[$component.resource.skipSecurityQuestions]]" on-value-changed="[[$component.skipSecurityQuestionsChange]]" value="{{$component.skipSecurityQuestions}}" disabled="[[$component.disableSecurityQuestions]]">
+      <oj-option value="{{'OPTION_YES'}}" id="securityQuestionsYes" name="skipSecurityQuestions"><span for="securityQuestionsYes" data-bind="text: $component.resource.generic.common.yes"></span></oj-option>
+      <oj-option value="{{'OPTION_NO'}}" id="securityQuestionsNo" name="skipSecurityQuestions"><span for="securityQuestionsNo" data-bind="text: $component.resource.generic.common.no"></span></oj-option>
+    </oj-buttonset-one>
+  </div>
+</div>
+<!-- ko if: $component.skipSecurityQuestions() === "OPTION_NO" -->
+<!-- ko if: $component.isQuestionListLoaded() -->
+<!-- ko foreach:$component.quesAnsPayload.userSecurityQuestionList -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-1">
+    <oj-label :for="[['question_'+$index()]]"><span data-bind="text:$baseModel.format($component.resource.securityQuestionNumber,{number:$component.questionNumber.bind($data,$index())})"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+    <oj-select-one required :id="[['question_'+$index()]]" :aria-label="[['question_'+$index()]]" translations="[[{'required':{messageDetail:$component.resource.messages.securityQuestion}}]]" on-value-changed="[[$component.valueChangeHandler]]"
+      value="{{questionId}}" disabled="[[$component.disableSecurityQuestions]]" :placeholder="[[$component.resource.messages.selectQuestion]]">
+      <!-- ko foreach: $component.questionList -->
+      <oj-option value="[[questionId]]"><span data-bind="text:question"></span></oj-option>
+      <!-- /ko -->
+    </oj-select-one>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-1">
+    <oj-label :for="[['answer_'+$index()]]"><span data-bind="text:$baseModel.format($component.resource.answerNumber,{number:$component.questionNumber.bind($data,$index())})"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+    <oj-input-text required :id="[['answer_'+$index()]]" translations="[[{'required':{messageDetail:$component.resource.messages.securityQuestionAnswer}}]]"
+            value="{{answer}}" disabled="[[$component.disableSecurityQuestions]]"></oj-input-text>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->

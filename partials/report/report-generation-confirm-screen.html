@@ -1,0 +1,47 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+    <!-- ko if: $component.reportRequestId -->
+    <div class="oj-flex oj-flex-items-pad">
+      
+        <div class="oj-flex-item oj-sm-12">
+        <row params="baseModel : $baseModel, rootModel : $parent,  dataClass:'oj-sm-12',label : $component.Nls.reportRequestId , value :$component.reportRequestId"></row>
+      </div>
+
+
+</div>
+    <!-- /ko -->
+  </page-section>
+
+  <div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item" data-bind="text:$component.confirmScreenResources.confirm.actions.nextAction">
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad ">
+  <div class="oj-flex-item">
+    <ul class="confirm-screen__list">
+          <li>
+        <a href="#" data-bind="click:$component.openTransaction.bind($data,'report-list', 'reports', 'reports')">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToAccountDetails},loadImage:'dashboard/quick-access/account-details.svg'">
+        <div data-bind="text:$component.Nls.viewReport"></div>
+      </a>
+      </li>
+      <li>
+        <a href="#" data-bind="click:$component.openTransaction.bind($data,'report-generation', 'reports', 'reports')">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToAccountDetails},loadImage:'dashboard/quick-access/create-standing-instructions.svg'">
+            <!-- ko  if:$component.reportGenerationPayload.reportFreq()+'' ==='ADHOC' -->
+          <div data-bind="text:$component.Nls.toReportGeneration"></div>
+           <!-- /ko -->
+              <!-- ko  if:$component.reportGenerationPayload.reportFreq()+'' !=='ADHOC' -->
+                <div data-bind="text:$component.Nls.toScheduleReport"></div>
+                <!-- /ko -->  
+
+
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="button-container">
+    <oj-button class="action-button-primary" id="button2" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.Nls.ok"></span>
+</oj-button>
+</div>

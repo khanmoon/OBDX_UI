@@ -1,0 +1,96 @@
+<div class="account-summary" data-bind="css: ($component.dataPassed && $component.dataPassed.accountList) ? '': 'oj-panel'">
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-9">
+      <h3 class="account-summary__header" data-bind="text: nls.accountSummary.accountSummary">
+      </h3>
+    </div>
+    <!-- ko if : conventionalAccountsAvailable() && islamicAccountsAvailable() -->
+    <div class="oj-flex-item oj-sm-3">
+      <oj-select-one value="{{$component.selectedValue}}" required on-value-changed="[[selectedAccountTypeChangedHandler]]" data-bind="attr:{id:$component.nls.accountSummary.myAccountType + $baseModel.currentIdCount(),'aria-label':$component.nls.accountSummary.myAccountType}">
+        <!-- ko foreach: typeOfAccounts -->
+        <oj-option value="[[id]]"><span data-bind="text: label"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+    <!-- /ko -->
+  </div>
+  <!-- ko if:accountDetaislLoaded() -->
+  <!-- ko ifnot:$baseModel.small() -->
+
+  <div id="" class="widget-table">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item no-pad-cols">
+        <oj-table id="DDSummaryTable" :aria-label="[[$component.nls.accountSummary.accountSummary]]" columns="[[[{headerText:nls.accountSummary.partyName,field:'partyName'},{headerText:nls.accountSummary.accountNo,field:('id'+'productName'),template:'accno_link'},{headerText:nls.accountSummary.accountType,field:'ddaAccountType'},{headerText: nls.accountSummary.status,field: 'status'},{headerText:nls.accountSummary.netBalance,headerClassName:'right',className:'right amount',field:'rawAvailableBalance',template:'availableBalance'}]]]"
+          columns-default="[[{sortable:'enabled'}]]" data="[[datasource]]">
+          <caption class="hide-label" data-bind="text:$component.nls.accountSummary.accountSummary"></caption>
+          <template slot="availableBalance">
+
+            <div data-bind="text:$baseModel.formatCurrency($current.row.availableBalance.amount,$current.row.availableBalance.currency)"></div>
+
+          </template>
+          <template slot="accno_link">
+            <td>
+              <div data-bind="text:$current.row.productDTO.description"></div>
+              <a href="#" data-bind="attr:{ title:  $baseModel.format($component.nls.accountSummary.linkDetails,{account : $current.row.id.displayValue}), alt :  $baseModel.format($component.nls.accountSummary.linkDetailsText,{account : $current.row.id.displayValue})},text:$current.row.id.displayValue,click:$component.showAccountDetails.bind($data,$current.row)"></a>
+              <div data-bind="text:$baseModel.format($component.nls.accountSummary.displayContent,{nickname: $current.row.accountNickname ? $current.row.accountNickname : ''})"></div>
+            </td>
+          </template>
+        </oj-table>
+      </div>
+      <oj-paging-control class="oj-flex-item oj-md-8 pagination" id="paging" slot="bottom" :page-size="[[5]]" data="[[datasource]]">
+      </oj-paging-control>
+      <div class="oj-flex-item oj-md-4 download right">
+        <a href="#" data-bind="attr:{ title: nls.accountSummary.downloadText},click:$component.downloadAccounts">
+          <div class="" data-bind="text:nls.accountSummary.download"></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- /ko -->
+  <!-- ko if:$baseModel.small() -->
+  <div class="grid-main-container" params="rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item no-pad-cols">
+        <oj-list-view class="account-summary__list account-summary-list" id="listview" selection-mode="[['none']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('dd-template',true)}]]" data="[[datasource]]">
+        </oj-list-view>
+        <oj-paging-control class="oj-flex-item account-statement-details__pagination" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[datasource]]">
+        </oj-paging-control>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 right">
+        <a href="#" data-bind="attr:{ title: nls.accountSummary.downloadText},click:$component.downloadAccounts">
+          <div class="" data-bind="text:nls.accountSummary.download"></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="text/html" id="dd-template">
+    <li class="account-summary-list__items account-summary-list-items" data-bind="attr: {id: 'id'}">
+                <a href="#" data-bind="attr:{ title:  $baseModel.format($component.nls.accountSummary.linkDetails,{account : id.displayValue}), alt :  $baseModel.format($component.nls.accountSummary.linkDetailsText,{account : id.displayValue})},click:$component.showAccountDetails.bind($data)">
+                    <div class="oj-flex oj-flex-items-pad ">
+                        <div class="oj-flex-item oj-sm-12 account-summary-list-items__description" data-bind="text:productDTO.description"></div>
+                        <div class="oj-flex-item oj-sm-12 account-summary-list-items__party-id" data-bind="text:id.displayValue"></div>
+                        <div class="oj-flex-item oj-sm-12 account-summary-list-items__acc-name" data-bind="text:partyName"></div>
+                        <div class="oj-flex-item oj-sm-6">
+                            <span class="account-summary-list-items__bal-amt-text" data-bind="text:$component.nls.accountSummary.netBalance"></span>
+                        </div>
+                        <div class="oj-flex-item oj-sm-6 right">
+                            <span data-id="availableBalance" class="account-summary-list-items__amount" data-bind="text : $baseModel.formatCurrency(availableBalance.amount,availableBalance.currency)"></span>
+                        </div>
+                        <div class="oj-flex-item oj-sm-6">
+                            <span class="account-summary-list-items__status" data-bind="text:status"></span>
+                        </div>
+                      </div>
+                </a>
+            </li>
+        </script>
+  <!-- /ko -->
+  <!-- /ko -->
+
+</div>

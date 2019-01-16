@@ -1,0 +1,229 @@
+<!-- ko if:stageOne()-->
+  <div class="form-main-container outward-remittance">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6 ">
+                 <!-- ko if:accountFetched() -->
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 ">
+                  <label for="acc-no" data-bind="text:$component.resource.outwardRemittance.selectAccount"></label>
+               </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6  ">
+                <oj-select-one id="acc-no" required value="{{accountId}}">
+                    <!-- ko foreach: accountList -->
+                    <oj-option value="{{id.value}}"><span data-bind="text:id.displayValue"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+              </div>
+            <!-- /ko -->
+
+            <modal-window params="baseModel : $baseModel, rootModel : $component,id:'noaccount'">
+                <div class="center" data-bind="text:$component.resource.outwardRemittance.noCASAAccount"></div>
+                <div class="oj-flex oj-flex-items-pad button-container">
+                  <oj-button class="action-button-primary" id="ok" on-click="[[closeDialog]]">
+                    <span data-bind="text:$component.resource.outwardRemittance.ok"></span>
+                  </oj-button>
+                </div>
+            </modal-window>
+        </div>
+      </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6 ">
+                  <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-4  ">
+                      <label for="fromDate" data-bind="text: $component.resource.outwardRemittance.fromDate"></label>
+                  </div>
+
+                  <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-4 ">
+                      <oj-input-date id="fromDate" value="{{fromDate}}" converter="[[$baseModel.dateConverter]]" max="[[toDate]]"></oj-input-date>
+                  </div>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6">
+                  <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-4  ">
+                      <label for="toDate" data-bind="text: $component.resource.outwardRemittance.toDate"></label>
+                  </div>
+
+                  <!--To Date-->
+                  <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-4 ">
+                      <oj-input-date id="toDate" value="{{toDate}}" converter="[[$baseModel.dateConverter]]" min="[[fromDate]]"></oj-input-date>
+                  </div>
+              </div>
+          </div>
+          <oj-validation-group id="amountTracker">
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6 ">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6  ">
+                      <label for="fromAmount" data-bind="text: $component.resource.outwardRemittance.fromAmount"> </label>
+                  </div>
+
+                  <!--From Amount-->
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5 ">
+                      <oj-input-text id="fromAmount" required validators="[[[validateFromAmount]]]" value="{{fromAmount}}"></oj-input-text>
+                  </div>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6  ">
+                      <label for="toAmount" data-bind="text: $component.resource.outwardRemittance.toAmount"> </label>
+                  </div>
+
+                  <!--To Amount-->
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5 label">
+                      <oj-input-text maxlength="15" id="toAmount" required validators="[[[validateToAmount]]]" value="{{toAmount}}"></oj-input-text>
+                  </div>
+              </div>
+          </div>
+          </oj-validation-group>
+    </page-section>
+
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" id="button-search" on-click="[[searchAccounts]]">
+          <span data-bind="text:$component.resource.outwardRemittance.search"></span>
+        </oj-button>
+
+        <!-- ko ifnot:dataLoaded() -->
+        <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$dashboard.openDashBoard.bind()]]">
+          <span data-bind="text:$component.resource.outwardRemittance.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+
+        <oj-button class="action-button-tertiary" id="button-reset" on-click="[[reset]]">
+          <span data-bind="text:$component.resource.outwardRemittance.reset"></span>
+        </oj-button>
+      </div>
+
+    <!-- ko if:dataLoaded() -->
+
+      <!-- ko if:$baseModel.large() -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+          <div class="oj-flex oj-flex-items-pad">
+            <oj-table id="table" :aria-label="[[$component.resource.outwardRemittance.tableHeader]]" columns="[[[{headerText:$component.resource.outwardRemittance.transDate,field:'transDate',sortable:'auto'},{headerText:$component.resource.outwardRemittance.refNumber,template:'refNumber',sortable:'auto',sortProperty:'refNumber'},{headerText:$component.resource.outwardRemittance.debitAccountDetails,field:'debitAccount',sortable:'auto'},{headerText:$component.resource.outwardRemittance.payeeDetails,field:'payee',sortable:'auto'},{headerText:$component.resource.outwardRemittance.remittedAmount,field:'remittedAmount',sortable:'auto'}]]]" columns-default="[[{sortable:'none'}]]" selection-mode="[[{row:'single',column:'single'}]]" data="[[$component.dataSource]]">
+              <caption class="hide-label" data-bind="text:$component.resource.outwardRemittance.details"></caption>
+              <template slot="refNumber">
+                <td>
+                    <a href="#" data-bind="attr:{ title: $baseModel.format($component.resource.outwardRemittance.linkDetails,{reference: $current.row.refNumber}), alt : $baseModel.format($component.resource.outwardRemittance.linkDescription,{reference:$current.row.refNumber}) },text:$current.row.refNumber ,click:$component.transactionSelected.bind($data, $current.row)"></a>
+                </td>
+              </template>
+            </oj-table>
+
+            <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.dataSource]]">
+            </oj-paging-control>
+          </div>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-secondary" id="button" on-click="[[$dashboard.openDashBoard.bind()]]">
+            <span data-bind="text:$component.resource.outwardRemittance.cancel"></span>
+          </oj-button>
+        </div>
+      <!-- /ko -->
+
+      <!-- ko if:!$baseModel.large() -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+          <div class="form-main-container">
+            <oj-list-view class="payments" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('outwardRemittance_template',true)}]]" data="[[dataSource]]">
+            </oj-list-view>
+            <script type="text/html" id="outwardRemittance_template">
+                <li class="payments-list__listItem" data-bind="attr: {id: $data['refNumber']}">
+
+                  <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.outwardRemittance.transDate"></label>
+                        <div class="date" data-bind="text: transDate"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.outwardRemittance.refNumber"></label>
+                        <div><a href="#" data-bind="attr:{ title: $baseModel.format($component.resource.outwardRemittance.linkDetails,{reference: refNumber}), alt : $baseModel.format($component.resource.outwardRemittance.linkDescription,{reference: refNumber}) },text:refNumber ,click:$component.transactionSelected"></a></div>
+                    </div>
+                  </div>
+
+                  <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.outwardRemittance.debitAccountDetails"></label>
+                        <div data-bind="text: debitAccount"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                      <label data-bind="text:$component.resource.outwardRemittance.payeeDetails"></label>
+                      <div data-bind="text: payee"></div>
+                    </div>
+                  </div>
+
+                  <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.outwardRemittance.remittedAmount"></label>
+                          <div data-bind="text: remittedAmount"></div>
+                    </div>
+                  </div>
+
+                </li>
+            </script>
+
+            <oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[$component.dataSource]]">
+            </oj-paging-control>
+          </div>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-secondary" id="button" on-click="[[$dashboard.openDashBoard.bind()]]">
+            <span data-bind="text:$component.resource.outwardRemittance.cancel"></span>
+          </oj-button>
+        </div>
+      <!-- /ko -->
+    <!-- /ko -->
+  </div>
+<!-- /ko -->
+
+<!-- ko if:stageTwo() -->
+
+  <div class="form-main-container">
+
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.outwardRemittance.remitterDetails">
+
+          <div class="row-group">
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.debitAccountNumber , value :debitAccountNumber,dataClass :''"></row>
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.debitAccountBranch , value :debitAccountBranch,dataClass :''"></row>
+          </div>
+      </page-section>
+
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.outwardRemittance.transactionDetails">
+
+          <div class="row-group">
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.transDate , value :transDate,dataClass :''"></row>
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.refNumber , value :refNumber,dataClass :''"></row>
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.debitAmount , value :debitAmount,dataClass :''"></row>
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.bankCharges , value :bankCharges,dataClass :''"></row>
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.remittedAmount , value :remittedAmount,dataClass :''"></row>
+              <!-- ko if:purposeText -->
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.purpose , value :purposeText,dataClass :''"></row>
+              <!-- /ko -->
+              <!-- ko if:description -->
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.description , value :description,dataClass :''"></row>
+              <!-- /ko -->
+          </div>
+
+      </page-section>
+
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.outwardRemittance.payeeDetails">
+
+          <div class="row-group">
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.payeeName , value :payeeName,dataClass :''"></row>
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.accountNumber , value :accountNumber,dataClass :''"></row>
+              <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.outwardRemittance.bankDetails , value: [
+                 bankName?bankName:'',
+                 bankAddress?bankAddress:''
+              ],dataClass :''"></row>
+          </div>
+      </page-section>
+
+          <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-secondary" id="cancel" on-click="[[back]]">
+              <span data-bind="text:$component.resource.outwardRemittance.cancel"></span>
+          </oj-button>
+              <!-- ko if:isAdviceLoaded()-->
+            <oj-button class="action-button-primary" on-click="[[generatePDF]]">
+              <span data-bind="text:$component.resource.outwardRemittance.advice"></span>
+            </oj-button>
+              <!-- /ko -->
+          </div>
+  </div>
+<!-- /ko -->

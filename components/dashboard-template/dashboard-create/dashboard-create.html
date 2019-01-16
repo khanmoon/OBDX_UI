@@ -1,0 +1,75 @@
+<div class="dashboard-create-container">
+    <div class="form-main-container design-dashboard">
+        <div class="oj-flex oj-flex-items-pad" id="design-steps-container">
+            <div class="oj-sm-12">
+                <div class="design-dashboard__design-step1">
+                    <page-section class="oj-sm-12" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+                        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resourceBundle.labels.userType , value :$component.resourceBundle.labels.segments[$component.dashboardDesign().segment()[0].toLowerCase()]"></row>
+                        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resourceBundle.labels.module , value :$component.moduleNameToDisplay||$component.resourceBundle.moduleList[$component.dashboardDesign().segment()[0]][$component.dashboardDesign().module()[0]]"></row>
+                        <oj-validation-group id="tracker" valid="{{validationTracker}}">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                                <oj-label :for="[['dashboard_name']]"><span data-bind="text:$component.resourceBundle.labels.templateName"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5">
+                                <oj-input-text :aria-label="[[$component.resourceBundle.labels.templateName]]" required :id="[['dashboard_name']]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.resourceBundle.invalidTemplateName,{
+                                    type:'length',options:{
+                                        min:1,max:30}})]]" value="{{$component.dashboardDesign().dashboardName}}"></oj-input-text>
+                            </div>
+                        </div>
+                        <div class="oj-flex oj-flex-items-pad ">
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                                <oj-label :for="[['dashboard_desc']]"><span data-bind="text:$component.resourceBundle.labels.description"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5">
+                                <oj-input-text required :aria-label="[[$component.resourceBundle.labels.description]]" :id="[['dashboard_desc']]" validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" value="{{$component.dashboardDesign().dashboardDesc}}"></oj-input-text>
+                            </div>
+                        </div>
+                    </oj-validation-group>
+                    </page-section>
+                    <!-- ko if:$component.params.mode==='create' -->
+                    <!-- ko if:$component.constants.userSegment!=='ADMIN' -->
+                    <div class="oj-flex oj-flex-items-pad ">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                            <oj-label :for="[['dashboard_module']]"><span data-bind="text:$component.resourceBundle.labels.module"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5">
+                            <oj-input-text required :aria-label="[[$component.resourceBundle.labels.module]]" :id="[['dashboard_module']]" validators="[[$baseModel.getValidator('APPLICATION_NAME')]]" value="{{$component.dashboardDesign().module}}"></oj-input-text>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+				<div id="dndOverlay" class="overlay"></div>
+                <!-- ko if:$component.selected()==='stp1' -->
+
+                <div class="design-dashboard__design-step2" data-bind="component:{name:'desktop-layout',params:{rootModel:$data}}">
+                </div>
+                <!-- /ko -->
+                <!-- ko if:$component.selected()==='stp3' -->
+                <div class="design-dashboard__design-step2" data-bind="component:{name:'tab-layout',params:{rootModel:$data}}"></div>
+                <!-- /ko -->
+                <!-- ko if:$component.selected()==='stp4' -->
+                <div class="design-dashboard__design-step2" data-bind="component:{name:'mobile-layout',params:{rootModel:$data}}"></div>
+                <!-- /ko -->
+                <!-- ko if:$component.selected()==='stp5' -->
+                <oj-button class="action-button-primary " on-click="[[$component.saveDashboardDesign]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.submit"></span>
+                </oj-button>
+                <!-- /ko -->
+                <div class="oj-flex oj-flex-items-pad button-container">
+                    <oj-button class="action-button-primary " on-click="[[$component.previewDashboardDesign]]">
+                        <span data-bind="text:$component.resourceBundle.generic.common.save"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                        <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                    </oj-button>
+                    <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]">
+                        <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+                    </oj-button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

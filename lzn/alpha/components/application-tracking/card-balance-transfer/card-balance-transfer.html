@@ -1,0 +1,111 @@
+<div class="employments-financial-info">
+
+	<!-- ko if:dataLoaded()-->
+
+
+	<div class="oj-flex oj-flex-items-pad line-height-2">
+
+		<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+			<oj-label class="oj-label" :for="[['balanceTransferSwitch']]"><span data-bind="text:$component.resource.availBalanceTransferQ"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2 label">
+			<oj-buttonset-one id="balanceTransferSwitch" on-value-changed="[[$component.tranferPreviousBalance]]" value="{{$component.transferBalance}}">
+				<oj-option name="balanceTransferSwitch" class="balanceTransferSwitch" value="{{'OPTION_YES'}}" :id="[['BalanceTransferYes']]"><span data-bind="attr: {for: 'BalanceTransferYes'}, text: $component.resource.yes"></span></oj-option>
+				<oj-option name="balanceTransferSwitch" class="balanceTransferSwitch" value="{{'OPTION_NO'}}" :id="[['BalanceTransferNo']]"><span data-bind="attr: {for: 'BalanceTransferNo'}, text: $component.resource.no"></span></oj-option>
+			</oj-buttonset-one>
+		</div>
+
+	</div>
+
+
+	<!-- ko if: balanceTransferFlag() -->
+
+	<div class="oj-flex oj-flex-items-pad">
+
+		<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 label oj-lg-offset-2 oj-md-offset-1">
+			<oj-label :for="[['promoCode']]"><span data-bind="text:$component.resource.enterPromoCode"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+			<oj-select-one id="promoCode" required value="{{promoCode}}">
+				<!-- ko foreach:promocodes() -->
+				<oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+				<!-- /ko -->
+			</oj-select-one>
+
+
+		</div>
+
+	</div>
+
+
+	<!-- ko if : redrawCards -->
+	<div class="oj-flex oj-flex-items-pad employments-financial-info">
+		<!-- ko foreach : transferCards -->
+		<div class="form-heading-strip">
+			<div class="oj-flex oj-flex-items-pad" id="cc-header">
+				<div class="oj-sm-9 oj-md-8 oj-lg-8 oj-flex-item oj-lg-offset-1 oj-md-offset-1 padding-top additional-label">
+					<span data-bind="text:($index())?$component.resource.additionalCard: $component.resource.primaryCard"></span>
+				</div>
+				<div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+					<a class="pull-right icon-delete" href="javascript:void(0)" data-bind="click:$component.removeCard.bind($data, $index()) ,attr:{alt: $component.resource.empRemoveCardClick, title: $component.resource.empRemoveCardClickTitle}"></a>
+				</div>
+			</div>
+		</div>
+		<div class="">
+			<div class="">
+				<div data-bind="component: { name: 'card-balance-transfer-input', params: { rootModel: $parent, id: $index() }}"></div>
+
+			</div>
+		</div>
+		<!-- /ko -->
+	</div>
+	<!-- /ko -->
+
+	<!-- /ko  -->
+
+
+
+
+
+
+	<!-- /ko -->
+
+</div>
+<!-- ko ifnot: $baseModel.small() -->
+<!-- ko if: balanceTransferFlag() -->
+<div class="oj-flex oj-flex-items-pad margin-bottom-20 form-heading-strip">
+
+	<!-- ko if: showAdd() -->
+	<oj-label for="addAdditionalCard" class="oj-flex-item label oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 additional-label"><span data-bind="text:$component.resource.addAnotherCard"></span></oj-label>
+	<div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+		<a id="addAdditionalCard" class="icon icon-plus-circle section-icon pull-right" href="javascript:void(0)" data-bind="click: $component.addCard ,attr:{alt: $component.resource.empAddCardClick, title: $component.resource.empAddCardClick}"></a>
+	</div>
+	<!-- /ko -->
+</div>
+<!-- /ko -->
+
+<!-- /ko -->
+<!-- ko if: $baseModel.small() -->
+<!-- ko if: balanceTransferFlag() -->
+<div class="oj-flex oj-flex-items-pad oj-flex-item margin-bottom-20 form-heading-strip">
+
+	<!-- ko if: showAdd() -->
+	<oj-label for="addAdditionalCard" class="oj-flex-item label oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 additional-label"><span data-bind="text:$component.resource.addAnotherCard"></span></oj-label>
+	<div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+		<a id="addAdditionalCard" class="icon icon-plus-circle section-icon pull-right" href="javascript:void(0)" data-bind="click: $component.addCard ,attr:{alt: $component.resource.empAddAnotherCardClick, title: $component.resource.empAddAnotherCardClick}"></a>
+	</div>
+	<!-- /ko -->
+</div>
+<!-- /ko -->
+
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex oj-flex-items-pad button-container">
+
+		<div class="oj-flex-item right oj-lg-10 oj-md-10">
+			<oj-button class="form-button-secondary" on-click="[[submitFunction]]">
+				<span data-bind="text:$component.resource.continue"></span>
+			</oj-button>
+		</div>
+	</div>
+</div>

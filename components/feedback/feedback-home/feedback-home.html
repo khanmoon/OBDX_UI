@@ -1,0 +1,77 @@
+<!-- ko if:globalLoaded -->
+<div class=" form-main-container feedback">
+  <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-lg-8">
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <!-- ko ifnot:hideTemplateInfo -->
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-lg-4 label">
+            <oj-label for="textInputReadOnlyIdentifierScale">
+              <span data-bind="attr:{id:'templateId'}, text: $component.resource.templateIdLabel"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item  oj-lg-4 label">
+            <oj-input-text class="oj-inputtext oj-form-control oj-component oj-read-only oj-complete" id="textInputReadOnlyIdentifierScale" value="{{inputTemplateIdentifier}}" placeholder="{{$component.resource.templateIdPlaceholder}}" disabled>
+            </oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex">
+          <div class="oj-flex-item  oj-lg-4 label">
+            <oj-label for="text-input-readonly-name">
+              <span data-bind="attr:{id:'templateName'}, text: $component.resource.templateNameLabel"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item  oj-lg-4 label">
+            <oj-input-text class="oj-inputtext oj-form-control oj-component oj-read-only oj-complete" id="text-input-readonly-name" value="{{inputTemplateName}}" placeholder="{{$component.resource.templateNamePlaceholder}}" disabled>
+            </oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex">
+          <div class="oj-flex-items oj-lg-4 label">
+            <oj-label for="text-input-readonly-role" class="oj-flex-item oj-lg-12">
+              <span data-bind="attr:{id:'applicableRoleLabelId'}, text: $component.resource.applicableRoleLabel"></span>
+            </oj-label>
+            </div>
+          <div class="oj-flex-item  oj-lg-4 label">
+            <oj-input-text class="oj-inputtext oj-form-control oj-component oj-read-only oj-complete" id="text-input-readonly-role" value="{{applicableRoles}}" disabled>
+            </oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex">
+          <div class="oj-flex-item  oj-lg-4 label">
+            <oj-label for="text-input-readonly-question">
+              <span data-bind="attr:{id:'overallQuestionLabelId'}, text: $component.resource.questionLabel"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item  oj-lg-4 label">
+            <oj-input-text class="oj-inputtext oj-form-control oj-component oj-read-only oj-complete" id="text-input-readonly-question" :aria-label="[[$component.resource.overallQuestion]]" value="{{overallQuestion}}" required placeholder="{{$component.resource.overallQuestion}}" disabled>
+            </oj-input-text>
+          </div>
+        </div>
+        <!-- /ko -->
+      </page-section>
+    </div>
+  </div>
+  <div class="oj-flex">
+    <div class="oj-flex-item oj-lg-8">
+      <div id="train-container">
+        <oj-train id="train" class="oj-train-stretch" selected-step="{{selectedStepValue}}" steps="[[stepArray]]" disabled>
+        </oj-train>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="oj-flex">
+    <div class="oj-flex-item">
+      <div data-bind="component:{name: $component.selectedStepValue(), params:{rootModel: $component}}">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if:$component.fromApproval -->
+<!-- ko foreach: $component.componentsToLoadable-->
+<div class="align-feedback" data-bind="component: {name:id , params:{rootModel:{params:$component}}}">
+</div>
+<!-- /ko -->
+<!-- /ko -->

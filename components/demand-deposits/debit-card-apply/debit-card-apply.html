@@ -1,0 +1,115 @@
+<div class="form-main-container">
+	<!-- ko if: !(enableReview() || loadConfirm()) -->
+	<div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+
+			<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''" data-bind="visible:(!enableReview() && !loadConfirm())">
+				<div class="row-group">
+					<account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.nls.common.accountNumber,
+			account : $component.accountNumber,
+			type: 'balance',
+			additionalDetails:$component.accountInputDetails,
+			validator:$component.validationTracker,
+      readOnly: !!$component.params.id,
+      taskCode:'CH_N_ADC'">
+					</account-input>
+
+					<div class="oj-flex oj-flex-items-pad">
+						<div class="oj-flex-item oj-sm-12 label">
+							<oj-label :for="[['sourceAcount']]"><span data-bind="text:$component.nls.common.reason"></span></oj-label>
+						</div>
+
+						<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+							<!-- ko if:reasonEnumLoaded -->
+							<oj-select-one required="[[true]]" :id="[['sourceAcount']]" :placeholder="[[$component.nls.common.select]]" value="{{$component.applyCardModel.reason}}">
+
+								<!-- ko foreach: reasonEnumList -->
+								<oj-option value="{{code+'-'+description}}"><span data-bind="text:description"></span></oj-option>
+								<!-- /ko -->
+							</oj-select-one>
+							<!-- /ko -->
+						</div>
+					</div>
+					<div class="oj-flex oj-flex-items-pad">
+						<div class="oj-flex-item oj-sm-12 label">
+							<oj-label for="name"><span data-bind="text:$component.nls.compName.embossedName"></span></oj-label>
+						</div>
+						<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+							<oj-input-text id="name" required maxlength="35" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.applyCardModel.name}}"></oj-input-text>
+						</div>
+
+					</div>
+
+
+					<div class="oj-flex oj-flex-items-pad">
+
+						<div class="required oj-flex-item oj-sm-12 label">
+							<oj-label for="DeliveryLocation"><span data-bind="text:$component.nls.common.DeliveryLocation"></span></oj-label>
+						</div>
+						<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+							<div id="DeliveryLocation" data-bind='component : { name: "address", params: { rootModel:$data, validator:$component.validationTracker,
+							address:$component.addressDetails}}'></div>
+						</div>
+
+
+					</div>
+
+				</div>
+			</page-section>
+
+			<div class="oj-flex oj-flex-items-pad button-container">
+
+				<oj-button id="menuButton5" class="action-button-primary " on-click="[[review]]"><span slot="startIcon" class="icons icon-submit"></span>
+      <span data-bind="text:$component.nls.common.submit"></span>
+</oj-button>
+				<oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.nls.generic.common.back"></span>
+</oj-button>
+			</div>
+			<a class="back-link" href="#" data-bind="text: $component.nls.common.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+
+		</div>
+
+		<!-- ko if: $baseModel.large() -->
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+			<help params="baseModel : $baseModel, rootModel : $component, transaction: 'debit-card-apply'"></help>
+		</div>
+		<!-- /ko -->
+	</div>
+	<!-- /ko -->
+	<!-- ko if:enableReview -->
+
+	<div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+	
+	<page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.review.reviewHeading">
+
+		<row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.common.accountNumber , value : $component.accountInputDetails().account.id.displayValue"></row>
+		<row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.common.reason , value : $component.applyCardModel.reason"></row>
+
+		<row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.compName.embossedName , value :$component.applyCardModel.name"></row>
+
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item" data-bind="template: { name: 'common/review/address',data:$component.addressDetails }"></div>
+
+		</div>
+
+		<div class="oj-flex oj-flex-items-pad button-container">
+			<oj-button id="menuButton5" class="action-button-primary " on-click="[[submitDetails]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.nls.common.confirm"></span>
+</oj-button>
+
+			<oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.nls.common.cancel"></span>
+</oj-button>
+			<oj-button class="action-button-tertiary " on-click="[[$component.cancel]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.nls.generic.common.back"></span>
+</oj-button>
+
+
+		</div>
+	</page-section>
+
+	<!-- /ko -->
+
+
+</div>

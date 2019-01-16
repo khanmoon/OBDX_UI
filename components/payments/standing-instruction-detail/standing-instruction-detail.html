@@ -1,0 +1,283 @@
+<div class="form-main-container standing-instruction-detail">
+    <!-- ko if:stageReview() -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.generic.common.review , reviewHeader : $component.resource.stopSIWarning}}"></div>
+    <!-- /ko -->
+    <!-- ko if:$component.detailsLoaded() && !$component.params.isStopClicked() -->
+    <!-- ko ifnot:$baseModel.small() -->
+    <page-section params="baseModel : $baseModel, rootModel :$component, heading:$baseModel.format($component.resource.standinginstruction_header1, {paymentType : $component.pyTypes[$component.params.paymentType()], externalReferenceNumber: $component.externalReferenceId()})">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-6 oj-sm-12">
+                <label class="oj-lg-12 oj-sm-12" data-bind="text:$component.resource.transferTo"></label>
+                <div class="oj-lg-12 oj-sm-12" data-bind="text : $baseModel.format($component.resource.transferToValue, {payeeNickName : $component.viewSIDetailsData().instructionDetails.payeeNickName , creditAccountId : $component.viewSIDetailsData().instructionDetails.creditAccountId.displayValue})"></div>
+            </div>
+            <div class="oj-flex-item oj-lg-6 oj-sm-12">
+                <label class="oj-lg-12 oj-sm-12" data-bind="text:$component.resource.transferFrom"></label>
+                <div class="oj-lg-12 oj-sm-12" data-bind="text :$component.viewSIDetailsData().instructionDetails.debitAccountId.displayValue"></div>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-6 oj-sm-12">
+                <label class="oj-lg-12 oj-sm-12" data-bind="text:$component.resource.nextPayment"></label>
+                <div class="oj-lg-12 oj-sm-12" data-bind="text :$baseModel.formatDate($component.viewSIDetailsData().instructionDetails.nextExecutionDate)"></div>
+            </div>
+            <div class="oj-flex-item oj-lg-6 oj-sm-12">
+                <label class="oj-lg-12 oj-sm-12" data-bind="text:$component.resource.amount"></label>
+                <div class="oj-lg-12 oj-sm-12" data-bind="text :$baseModel.formatCurrency($component.viewSIDetailsData().instructionDetails.amount.amount,$component.viewSIDetailsData().instructionDetails.amount.currency)"></div>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad oj-sm-12">
+            <!-- ko if:$component.purpose() -->
+            <div class="oj-flex-item oj-lg-6 oj-sm-12">
+                <label class="oj-lg-12" data-bind="text:$component.resource.purpose"></label>
+                <div class="oj-lg-12" data-bind="text :$component.purpose() || ''"></div>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex-item oj-lg-6 oj-sm-12">
+                <label class="oj-lg-12" data-bind="text:$component.resource.reference"></label>
+                <div class="oj-lg-12" data-bind="text :$component.viewSIDetailsData().instructionDetails.remarks ||''"></div>
+            </div>
+        </div>
+        <div class="oj-flex-item page-section-header__container  page-section-heading">
+            <h5 class="page-section-heading__text" data-bind="text: $component.resource.standinginstruction_header2"></h5>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-6 oj-sm-12">
+                <label class="oj-lg-12" data-bind="text:$component.resource.startDate"></label>
+                <div class="oj-lg-12" data-bind="text:$baseModel.formatDate($component.viewSIDetailsData().instructionDetails.startDate)"></div>
+            </div>
+            <div class="oj-flex-item oj-lg-6 oj-sm-12">
+                <label class="oj-lg-12" data-bind="text:$component.resource.endDate"></label>
+                <div class="oj-lg-12" data-bind="text :$baseModel.formatDate($component.viewSIDetailsData().instructionDetails.endDate)"></div>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-6 oj-sm-12">
+                <label class="oj-lg-12" data-bind="text:$component.resource.frequency"></label>
+                <div class="oj-lg-12" data-bind="text :$component.params.getRepeatData($component.viewSIDetailsData().instructionDetails)"></div>
+            </div>
+        </div>
+    </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading :$component.resource.standinginstruction_header3">
+        <script type="text/html" id="slNo">
+            <td data-bind="text :$component.renderSlNo()">
+            </td>
+        </script>
+        <script type="text/html" id="executionDate">
+            <td>
+                <div data-bind="text :$baseModel.formatDate(valueDate)"></div>
+            </td>
+        </script>
+        <script type="text/html" id="status">
+            <td>
+                <div data-bind="text :$component.types[status]"></div>
+            </td>
+        </script>
+        <!-- table-->
+        <div class="oj-flex oj-flex-items-pad standing-instruction-detail__pagination">
+            <div class="oj-flex-item oj-sm-12 standing-instruction-detail__table">
+                <oj-table id="table" :aria-label="[[$component.resource.standinginstruction_header3]]" columns="[[[{
+                        headerText:details.slNo,template:'slNo',sortable:'none'},{headerText:details.executionDate,template:'executionDate',sortable:'none'},{headerText:details.status,template:'status',sortable:'none'},{headerText:details.failureReason,field:'failureReason',style:'color:red',sortable:'none'}]]]" selection-mode="[[{row:'none',column:'none'}]]" columns-default="[[{sortable:'disabled'}]]" data="[[$component.SIDetailsDataSource]]">
+                    <caption class="hide-label" data-bind="text:$component.resource.standinginstruction_header3"></caption>
+                </oj-table>
+            </div>
+            <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.SIDetailsDataSource]]">
+            </oj-paging-control>
+        </div>
+    </page-section>
+    <!-- ko if:stageView() -->
+    <!-- Modal window cancel-confirm Buttons -->
+    <div class="oj-flex-item button-container standing-instruction-detail__tail">
+        <oj-button class="action-button-primary" id="button-stop" on-click="[[$component.userSegment ==='CORP'? showWarning:stopRepeat]]">
+            <span class="icons icon-stop-transfer" slot="startIcon"></span>
+            <span data-bind="text:$component.resource.stop"></span>
+        </oj-button>
+        <!-- ko if:$component.userSegment === 'CORP' -->
+        <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$dashboard.openDashBoard.bind()]]">
+            <span class="icons icon-cancel" slot="startIcon"></span>
+            <span data-bind="text:$component.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary" id="button-back" on-click="[[$dashboard.hideDetails]]">
+            <span class="icons icon-back-arrow" slot="startIcon"></span>
+            <span data-bind="text:$component.generic.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:stageReview() && !$baseModel.small() -->
+    <!-- Modal window cancel confirm buttons -->
+    <div class="oj-flex-item button-container standing-instruction-detail__tail">
+        <oj-button class="action-button-primary" id="stop" on-click="[[confirmCancelSI]]">
+            <span class="icons icon-stop-transfer" slot="startIcon"></span>
+            <span data-bind="text:resource.stop"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="cancel" on-click="[[$component.params.closeModal]]">
+            <span class="icon icon-cancel" slot="startIcon"></span>
+            <span data-bind="text:$component.generic.common.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" id="back" on-click="[[$component.viewDetails]]">
+            <span class="icon icon-back-arrow" slot="startIcon"></span>
+            <span data-bind="text:$component.generic.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- Warning pop-up for Corporate Screen -->
+    <!-- ko if:$component.userSegment === 'CORP' -->
+    <modal-window params="baseModel : $baseModel, rootModel : $component, id:'Warning-StopSI', header: $component.resource.stopSIHeader">
+        <div class="oj-flex oj-flex-items-pad confirm-dialog-container__message">
+            <div class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.stopSIWarning"></div>
+        </div>
+        <div class="button-container">
+            <oj-button id="corpbutton-confirm" class="action-button-primary" on-click="[[stopRepeat]]">
+                <span data-bind="text:$component.resource.yes"></span>
+            </oj-button>
+            <oj-button id="corpbutton-cancel" class="action-button-secondary" on-click="[[closeWarning]]">
+                <span data-bind="text:$component.resource.no"></span>
+            </oj-button>
+        </div>
+    </modal-window>
+    <!-- /ko -->
+    <!-- ko if:$baseModel.small() -->
+    <div class="oj-flex oj-flex-items-pad no-pad-cols">
+        <div class="oj-flex-item oj-lg-6">
+            <page-section params="baseModel : $baseModel, rootModel :$component, heading:$baseModel.format($component.resource.standinginstruction_header1, {paymentType : $component.pyTypes[$component.params.paymentType()],externalReferenceNumber: $component.externalReferenceId()})">
+                <div data-bind="with:$component.viewSIDetailsData().instructionDetails">
+                    <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.transferTo,
+                    value:$baseModel.format($component.resource.transferToValue, {payeeNickName : payeeNickName , creditAccountId : creditAccountId.displayValue})">
+                    </row>
+                    <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.transferFrom,
+                    value:debitAccountId.displayValue ">
+                    </row>
+                    <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.nextPayment,
+                    value:$baseModel.formatDate(nextExecutionDate)">
+                    </row>
+                    <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.amount,
+                    value:$baseModel.formatCurrency(amount.amount,amount.currency)">
+                    </row>
+                    <!-- ko if:$component.purpose() -->
+                    <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.purpose,
+                    value:$component.purpose() || ''">
+                    </row>
+                    <!-- /ko -->
+                    <!-- ko if:$component.remarks -->
+                    <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.reference,
+                    value:remarks ||''">
+                    </row>
+                    <!-- /ko -->
+                </div>
+            </page-section>
+        </div>
+        <div class="oj-flex-item oj-lg-6">
+            <page-section params="baseModel : $baseModel, rootModel :$component, heading:$component.resource.standinginstruction_header2">
+                <div data-bind="with:$component.viewSIDetailsData().instructionDetails, css: { 'no-pad-cols': $baseModel.small()">
+                    <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.startDate,
+                    value:$baseModel.formatDate(startDate)">
+                    </row>
+                    <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.endDate ,
+                    value:$baseModel.formatDate(endDate) ">
+                    </row>
+                    <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.frequency,
+                    value:$component.params.getRepeatData($data)">
+                    </row>
+                </div>
+            </page-section>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad" data-bind="css: { 'no-pad-cols': $baseModel.small()}">
+        <div class="oj-flex-item oj-lg-12">
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading :$component.resource.standinginstruction_header3 ">
+                <oj-list-view id="listview_table " selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('listview_template',true)}]]" data="[[$component.SIDetailsDataSource]]"></oj-list-view>
+                <oj-paging-control id="paging-small " slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[$component.SIDetailsDataSource]]"></oj-paging-control>
+                <script type="text/html " id="listview_template ">
+                    <li data-bind="attr: {id: 'SI-payment-element-'+$baseModel.incrementIdCount()} ">
+                        <label for="slNo " class="oj-flex-item oj-sm-12 " data-bind="text : $component.details.slNo "></label>
+                        <div class="oj-flex-item oj-sm-12 " id="slNo " data-bind="text :$component.renderSlNo() "></div>
+                        <label for="execdate " class="oj-flex-item oj-sm-12 " data-bind="text : $component.details.executionDate "></label>
+                        <div class="oj-flex-item oj-sm-12 " id="execdate " data-bind="text : $baseModel.formatDate(valueDate) "></div>
+                        <label for="status " class="oj-flex-item oj-sm-12 " data-bind="text : $component.details.status "></label>
+                        <div class="oj-flex-item oj-sm-12 " id="status " data-bind="text : $component.types[status] "></div>
+                        <!-- ko if:$data.failureReason -->
+                        <label for="failreason " class="oj-flex-item oj-sm-12 " data-bind="text : $component.details.failureReason "></label>
+                        <div class="oj-flex-item oj-sm-12 standing-instruction-detail__failurecolor " id="failreason " data-bind="text : failureReason "></div>
+                        <!-- /ko -->
+                    </li>
+                </script>
+            </page-section>
+            <!-- ko if:stageView() -->
+            <!-- cancel-confirm Buttons -->
+            <div class="oj-flex-item button-container">
+                <oj-button class="action-button-primary" id="view-stop" on-click="[[$component.userSegment==='CORP'? showWarning:stopRepeat]]">
+                    <span class="icons icon-stop-transfer" slot="startIcon"></span>
+                    <span data-bind="text:$component.resource.stop"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="view-back" on-click="[[$component.params.closeModal]]">
+                    <span class="icons icon-back-arrow" slot="startIcon"></span>
+                    <span data-bind="text:$component.generic.common.back"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:stageReview() -->
+            <!-- cancel confirm buttons -->
+            <div class="oj-flex-item button-container">
+                <oj-button class="action-button-primary" id="review-stop" on-click="[[confirmCancelSI]]">
+                    <span class="icons icon-stop-transfer" slot="startIcon"></span>
+                    <span data-bind="text:resource.stop"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="review-back" on-click="[[viewDetails]]">
+                    <span class="icons icon-back-arrow" slot="startIcon"></span>
+                    <span data-bind="text:$component.generic.common.back"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if:$component.detailsLoaded() && $component.params.isStopClicked()-->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : '' ">
+        <div class="row-group " data-bind="with:$component.viewSIDetailsData().instructionDetails, css: { 'no-pad-cols': $baseModel.small() } ">
+            <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.transferTo, value:$baseModel.format($component.resource.transferToValue, {payeeNickName : payeeNickName , creditAccountId : creditAccountId.displayValue}) ">
+            </row>
+            <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.transferFrom, value:debitAccountId.displayValue ">
+            </row>
+            <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.amount, value:$baseModel.formatCurrency(amount.amount,amount.currency) ">
+            </row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.frequency , value :$component.params.getRepeatData($data) "></row>
+            <row params="baseModel : $baseModel, rootModel:$component, label:$component.resource.nextPayment, value:$baseModel.formatDate(nextExecutionDate) ">
+            </row>
+        </div>
+    </page-section>
+    <!-- ko if:$component.stageCancel() -->
+    <!-- cancel confirm buttons -->
+    <div class="oj-flex-item button-container">
+        <oj-button class="action-button-primary" id="stageCancel-stop" on-click="[[stopRepeat]]">
+            <span class="icons icon-stop-transfer" slot="startIcon"></span>
+            <span data-bind="text:$component.resource.stop"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="stageCancel-back" on-click="[[$component.params.closeModal]]">
+            <span class="icons icon-back-arrow" slot="startIcon"></span>
+            <span data-bind="text:$component.generic.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:stageReview() -->
+    <!-- cancel confirm buttons -->
+    <div class="oj-flex-item button-container">
+        <oj-button class="action-button-primary" id="stagereview-stop" on-click="[[confirmCancelSI]]">
+            <span class="icons icon-stop-transfer" slot="startIcon"></span>
+            <span data-bind="text:resource.stop"></span>
+        </oj-button>
+        <!-- ko ifnot:$baseModel.small() -->
+        <oj-button class="action-button-secondary" id="stagereview-cancel" on-click="[[$component.params.closeModal]]">
+            <span class="icons icon-cancel" slot="startIcon"></span>
+            <span data-bind="text:$component.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary" id="stagereview-back" on-click="[[viewDetails]]">
+            <span class="icons icon-back-arrow" slot="startIcon"></span>
+            <span data-bind="text:$component.generic.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>

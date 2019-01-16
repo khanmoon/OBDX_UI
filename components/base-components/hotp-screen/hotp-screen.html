@@ -1,0 +1,81 @@
+<div class="form-main-container hotp">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.pageSectionHeader">
+    <div class="oj-flex oj-flex-items-pad hotp__messagesection">
+      <oj-label class="oj-flex-item"><span data-bind="text:$component.messageSection"></span></oj-label>
+    </div>
+
+    <ul class="hotp__instructions-padding-left">
+      <!-- ko foreach : instructions -->
+      <li class="hotp__instructions-padding"><span data-bind="text:$data"></span></li>
+      <!-- /ko -->
+
+    </ul>
+
+    <div class="hotp__contentpadding">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="otp"><span data-bind="text:$component.locale.verificationcode"></span></oj-label>
+        </div>
+
+
+        <div class="hotp__soft-token-textbox oj-lg-2">
+          <oj-label class="hide-label"><span data-bind="text:$component.locale.numberMsg"></span></oj-label>
+          <oj-input-password type="password" :id="password" on-$component.nexttab="[[$component.nextTab]]" value="{{textboxArray}}"></oj-input-password>
+        </div>
+
+        <div class="totp__soft-token-textbox-icon">
+          <a href="javascript:void(0)" data-bind="attr:{'alt':$component.locale.togglePassword ,'title':$component.locale.togglePasswordTitle,'aria-label':$component.locale.togglePassword },click:togglePassword">
+            <div id="eyecon" class="icon icon-eye-slash"></div>
+          </a>
+        </div>
+
+
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+          <oj-label class="oj-sm-12"><span data-bind="text:$component.locale.authorizationCode"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 hotp__referencenumber">
+          <span class="oj-sm-12" data-bind="text:$component.randomNumber"></span>
+        </div>
+      </div>
+
+
+      <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item oj-sm-12">
+          <oj-label><span data-bind="text:$component.locale.referenceNo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 hotp__referencenumber">
+          <span data-bind="text:$component.referenceNumber"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad ">
+
+        <div class="oj-flex-item oj-sm-12">
+          <oj-label><span data-bind="text:$component.locale.allowedAttempts"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:attemptsLeft"></span>
+        </div>
+
+
+        <div data-bind="template:{afterRender: $component.hotpShown}"></div>
+
+      </div>
+    </div>
+
+
+    <div data-bind="template:{afterRender: showHOTPScreen}"></div>
+  </page-section>
+  <div class="button-container">
+    <oj-button class="action-button-secondary" id="button" on-click="[[cancelHOTP]]">
+      <span data-bind="text:$component.locale.generic.common.cancel"></span>
+    </oj-button>
+
+    <oj-button class="action-button-primary" id="button" on-click="[[completeHOTP]]">
+      <span data-bind="text:$component.locale.generic.common.submit"></span>
+    </oj-button>
+  </div>
+</div>

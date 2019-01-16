@@ -1,0 +1,87 @@
+<div class="requirements" data-bind="with:productDetails().requirements">
+  <div data-bind="component: {
+              name: 'amount-input', params: {
+                  amount: purchasePrice.amount,
+                  placeholder: $component.dollar,
+                  label: $component.resource.loan.purchasePrice,
+                  currency: purchasePrice.currency,
+                  labelClasses : 'oj-lg-3 oj-md-4 oj-lg-offset-2 oj-md-offset-1',
+                  valueClasses : 'oj-lg-5 oj-md-6',
+                  converter: $baseModel.formatCurrency,
+                  validator: $component.validationTracker,
+                  isMandatory: true,
+                  maxlength: 15,
+                  rootId: 'purchase-price',
+                  rootClass:'form-input',
+                  inline:true,
+                  formattedAmount: ko.observable()
+              }
+          }"></div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+      <div class="oj-label ">
+        <oj-label :for="[['downPaymentRequired'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.loan.downPaymentRequired"></span></oj-label>
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+      <oj-buttonset-one :id="[['downPaymentRequired'+($baseModel.currentIdCount())]]" :aria-label="[[$component.resource.loan.downPaymentRequired]]" on-value-changed="[[$component.downPaymentRequiredChange]]" value="{{$component.downPaymentRequired}}">
+        <oj-option class="undefined" value="{{'OPTION_YES'}}" :id="[['downPaymentRequiredYes'+($baseModel.currentIdCount())]]" :name="[['downPaymentRequired']]"><span data-bind="attr: {for: 'downPaymentRequiredYes'+($baseModel.incrementIdCount())},text:$component.resource.generic.common.yes"></span></oj-option>
+        <oj-option class="undefined" value="{{'OPTION_NO'}}" :id="[['downPaymentRequiredNo'+($baseModel.currentIdCount())]]" :name="[['downPaymentRequired']]">
+            <span data-bind="attr: {for: 'downPaymentRequiredNo'+($baseModel.incrementIdCount())},text:$component.resource.generic.common.no"></span>
+          </oj-option>
+      </oj-buttonset-one>
+    </div>
+  </div>
+
+  <!-- ko if: $component.downPaymentRequired() === "OPTION_YES" -->
+  <div data-bind="component: {
+                      name: 'amount-input', params: {
+                          amount: downpaymentAmount.amount,
+                          placeholder: $component.dollar,
+                          label: $component.resource.loan.downPaymentAmount,
+                          currency: downpaymentAmount.currency,
+                          labelClasses: 'oj-lg-3 oj-md-4 oj-lg-offset-2 oj-md-offset-1',
+                          valueClasses: 'oj-lg-5 oj-md-6',
+                          currencyParser: $component.currencyParser,
+                          converter: $baseModel.formatCurrency,
+                          validator: $component.validationTracker,
+                          isMandatory: true,
+                          maxlength: 15,
+                          rootId: 'down-payment-amount',
+                          rootClass: 'form-input',
+                          inline:true,
+                          formattedAmount: ko.observable()
+                      }
+                  }"></div>
+  <!-- /ko -->
+
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+      <oj-label><span data-bind="text:$component.resource.loan.loanAmount"></span></oj-label>
+    </div>
+    <div class="oj-sm-12 oj-md-4 oj-lg-4 oj-flex-item padding-top-5">
+      <span data-bind="text : $baseModel.formatCurrency(requestedAmount.amount(), requestedAmount.currency)"></span>
+    </div>
+  </div>
+
+  <div class="">
+    <div data-bind='component: {
+                              name: "loan-tenure", params: {
+                                  tenureYears: requestedTenure.years,
+                                  tenureMonths: requestedTenure.months,
+                                  maxVal: $component.years,
+                                  label: $component.resource.loan.term,
+                                  labelClasses: "oj-lg-offset-2 oj-md-offset-1",
+                                  validator:$component.validationTracker,
+                                  isMandatory:true,
+                                  rootId:"tenureSelectYears",
+                                  rootClass:"form-input",
+                                  yearsId:"tenure-years",
+                                  monthsId:"tenure-months",
+                              }
+                          }'></div>
+  </div>
+
+
+</div>

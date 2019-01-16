@@ -1,0 +1,14 @@
+<!-- ko if: $component.productDetails -->
+<!-- ko if: $component.productDetails().productType === 'PAYDAY'-->
+<div data-bind="template:{name:'origination/payday-address'}"></div>
+<!-- /ko -->
+<!-- ko if: $component.productDetails().productType === 'AUTOLOANFLL'-->
+<div data-bind="template:{name:'origination/auto-loan-address'}"></div>
+<!-- /ko -->
+<!-- ko ifnot: $component.productDetails().productType === 'PAYDAY' || $component.productDetails().productType === 'AUTOLOANFLL' -->
+<div data-bind="template:{name:'origination/address'}"></div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko ifnot: $component.productDetails -->
+<div data-bind="template:{name:'origination/address'}"></div>
+<!-- /ko -->

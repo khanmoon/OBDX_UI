@@ -1,0 +1,80 @@
+<div class="status-history">
+	<div class="status-history-card">
+		<!-- ko if: $component.dataLoaded() -->
+		<div class="documents-list">
+			<!-- ko foreach: $component.applicantDocuments() -->
+			<!-- ko foreach: $data.documentCategories -->
+			<!-- ko foreach: $data.documents -->
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item oj-sm-9 oj-md-3 oj-lg-3 oj-lg-offset-1 oj-md-offset-1">
+					<oj-label class=""><span data-bind="text:$data.description"></span></oj-label>
+				</div>
+
+				<!-- ko if: $data.documentStatus === 'Rejected' -->
+				<div class="oj-flex-item oj-sm-12 oj-lg-9 oj-md-9">
+					<span data-bind="text : $component.resource.invalidDocument"></span>
+				</div>
+				<!-- /ko -->
+
+				<!-- ko if: $data.documentStatus === 'PENDING' -->
+				<!-- ko if: $baseModel.small() -->
+				<!-- ko if:  isUploaded()  -->
+				<div class="oj-flex-item oj-sm-3">
+					<div class="success-icon"><img data-bind="loadImage:'origination/app-tracker/tick.png'" alt=""></div>
+				</div>
+				<!-- /ko -->
+				<!-- /ko -->
+				<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+					<div class="oj-flex oj-flex-items-pad" data-bind="component:{name:'file-input',params:{rootModel: $component , id: JSON.stringify($parentContext.$parentContext.$index())+JSON.stringify($parentContext.$index())+JSON.stringify($index())+'-document-upload', upload: function(){$component.uploadDocument($index(), $parentContext.$index(), $parentContext.$parentContext.$index())}}}"></div>
+				</div>
+				<!-- ko if: !$baseModel.small() -->
+				<!-- ko if: isUploaded() -->
+				<div class="oj-flex-item oj-md-2 oj-lg-1 ">
+					<div class="success-icon pull-right"><img data-bind="loadImage:'origination/app-tracker/tick.png'" alt=""></div>
+				</div>
+				<!-- /ko -->
+				<!-- /ko -->
+				<!-- /ko -->
+
+				<!-- ko if: $data.documentStatus === "SUCCESSFUL" -->
+				<div class="oj-flex-item oj-sm-3 oj-md-1 oj-lg-1 ">
+					<div class="success-icon"><img data-bind="loadImage:'origination/app-tracker/tick.png'" alt=""></div>
+				</div>
+				<div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2 ">
+					<div class="document-verified" data-bind="text : $component.resource.verified"></div>
+				</div>
+				<!-- /ko -->
+			</div>
+			<!-- ko if: $data.showProcessing() -->
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-lg-offset-4 oj-md-offset-4">
+					<div class=""><img class="processing-image" data-bind="loadImage:'origination/app-tracker/processing.gif'" alt=""></div>
+				</div>
+			</div>
+			<!-- /ko -->
+			<!-- ko foreach: $data.contentDTO -->
+			<!-- ko if: $data['contentId'] && $data.isDocumentName() -->
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item oj-sm-5 oj-md-3 oj-md-offset-4 oj-lg-2 oj-lg-offset-4">
+					<a class="link" href="#" data-bind="click: $component.downloadFile.bind($data, $data.contentId, $parent.applicantId), text: $data.documentName(), attr:{alt: $component.resource.documentDownloadClick, title: $component.resource.documentDownloadClickTitle}"></a>
+				</div>
+
+			</div>
+			<!-- /ko -->
+			<!-- /ko -->
+			<!-- /ko -->
+			<!-- /ko -->
+			<!-- /ko -->
+		</div>
+		<!-- /ko -->
+	</div>
+</div>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'NOFILE', header: $component.resource.generic.common.error">
+	<div class="message-text scroll" data-bind="text:$component.resource.noFile"></div>
+	<div class="message-btn button-container">
+		<oj-button id="hideButton" class="oj-button form-button-primary" on-click="[[function(){$('#NOFILE').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.ok"></span>
+</oj-button>
+	</div>
+</modal-window>

@@ -1,0 +1,85 @@
+<div class="form-main-container">
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-12">
+            <!-- ko if: $component.nomineeDTOLoaded() -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="no-pad-cols oj-flex-item oj-sm-9 oj-lg-3">
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.readNominee.accountNumber, value : $component.params.selectedAccountId.displayValue "></row>
+                </div>
+                <!-- ko if: $component.params.iseditable -->
+                <div class="oj-flex-item oj-sm-3 oj-lg-1 right">
+                    <a class="action-icon" href="#" data-bind="attr:{'aria-label': $component.resource.generic.common.delete,'alt': $baseModel.format($component.resource.readNominee.alt,{reference:$component.resource.generic.common.delete}) ,'title': $baseModel.format($component.resource.readNominee.title,{reference:$component.resource.generic.common.delete})}, click:$component.deleteNominee">
+                        <div class="icons icon-delete action-icon right"></div>
+                    </a>
+                </div>
+                <!-- /ko -->
+            </div>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.readNominee.nomineeName, value : $component.nominee().nomineeDTO.name "></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.readNominee.nomineeDOB, value : $baseModel.formatDate($component.nominee().nomineeDTO.dateOfBirth)"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.readNominee.relationShip, value : $component.relationDescription"></row>
+            <div class="oj-lg-4">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.readNominee.nomineeAddress, value : [($component.nominee().nomineeDTO.address.line1),
+                        ($component.nominee().nomineeDTO.address.line2),
+                        ($component.countryMap[$component.nominee().nomineeDTO.address.country]),
+                        ($component.nominee().nomineeDTO.address.state),
+                        ($component.nominee().nomineeDTO.address.city),
+                        ($component.nominee().nomineeDTO.address.zipCode)
+                    ]"></row>
+            </div>
+            <!-- ko if: $component.nominee().nomineeDTO.guardian -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.readNominee.guardianName, value : $component.nominee().nomineeDTO.guardian.name"></row>
+            <!-- ko if: $component.nominee().nomineeDTO.guardian.address -->
+            <div class="oj-lg-4">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.readNominee.guardianAddress, value : [($component.nominee().nomineeDTO.guardian.address.line1),
+                        ($component.nominee().nomineeDTO.guardian.address.line2),
+                        ($component.countryMap[$component.nominee().nomineeDTO.guardian.address.country]),
+                        ($component.nominee().nomineeDTO.guardian.address.state),
+                        ($component.nominee().nomineeDTO.guardian.address.city),
+                        ($component.nominee().nomineeDTO.guardian.address.zipCode)
+                    ]"></row>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <!-- ko if: $component.nomineeDTOLoaded() -->
+        <modal-window params="baseModel : $baseModel, rootModel : $component, id:'delete-nominee', header: $component.resource.readNominee.nomineeDelete">
+            <div class="confirm-dialog">
+                <div class="confirm-dialog__container confirm-dialog-container">
+                    <div class="oj-flex oj-flex-items-pad confirm-dialog-container__message">
+                        <div class="oj-flex-item oj-sm-12" data-bind="text: $baseModel.format($component.resource.readNominee.deleteNominee, {nomineeName:$component.nominee().nomineeDTO.name})"></div>
+                    </div>
+                    <div class="oj-flex-item confirm-dialog-container__buttons button-container">
+                        <oj-button class="action-button-primary" id="yesButton" on-click="[[confirmDeleteNominee]]">
+                            <span slot="startIcon" class="icons icon-yes"></span>
+                            <span data-bind="text: $component.resource.generic.common.yes"></span>
+                        </oj-button>
+                        <oj-button class="action-button-secondary" id="noButton" on-click="[[closeDeleteNomineeModal]]">
+                            <span slot="startIcon" class="icons icon-no"></span>
+                            <span data-bind="text: $component.resource.generic.common.no"></span>
+                        </oj-button>
+                    </div>
+                </div>
+            </div>
+        </modal-window>
+        <!-- /ko -->
+    </page-section>
+    <div class="oj-flex-item button-container">
+        <!-- ko if: $component.params.iseditable -->
+        <oj-button class="action-button-primary" id="editButton" on-click="[[editNominee]]">
+            <span slot="startIcon" class="icons icon-remarks"></span>
+            <span data-bind="text: $component.resource.generic.common.edit"></span>
+        </oj-button>
+        <!-- /ko -->
+        <!-- ko if: $baseModel.large() -->
+        <oj-button class="action-button-secondary" id="cancelButton" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text: $component.resource.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary" id="backButton" on-click="[[$dashboard.hideDetails]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text: $component.resource.generic.common.back"></span>
+        </oj-button>
+    </div>
+</div>

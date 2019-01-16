@@ -1,0 +1,22 @@
+<!-- ko if:(isAdmin()) -->
+<modal-window params="baseModel : $baseModel, rootModel : $data,id:'choicePopup',closeHandler:closeHandler, header : $component.nls.fileCreate.userSelection">
+  <div class="form-main-container">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-lg-12" data-bind="text: $component.nls.fileCreate.chooseUserType"></div>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12 vertical-ruler">
+      <oj-radioset id="workflowType" :aria-label="[[$component.nls.fileCreate.workflowType]]" value="{{$component.userType}}" on-value-changed="[[$component.userTypeSelected]]" class="oj-choice-direction-row">
+        <oj-option :id="[[$component.nls.fileCreate.adminUser]]" value="[[$component.nls.fileCreate.adminUser]]">
+          <span data-bind="text:$component.nls.fileCreate.adminUser"></span>
+        </oj-option>
+        <oj-option :id="[[$component.nls.fileCreate.corporateUser]]" value="[[$component.nls.fileCreate.corporateUser]]">
+          <span data-bind="text:$component.nls.fileCreate.corporateUser"></span>
+        </oj-option>
+      </oj-radioset>
+    </div>
+  </div>
+  <div data-bind="template : {afterRender : $component.showModal}"></div>
+</modal-window>
+<!-- /ko -->

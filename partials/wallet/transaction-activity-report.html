@@ -1,0 +1,71 @@
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <search-report params='baseModel : $baseModel, rootParams: $component,readOnly:false,report:"transactionActivity"'></search-report>
+</page-section>
+<!-- ko if:stageThree() -->
+    <div class="grid-main-container">
+      <!-- ko if:reportData().length>0 -->
+      <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <!-- <div class="row-group">
+            <div class="oj-flex oj-flex-items-pad">
+               <label class="oj-lg-2 oj-flex-item" data-bind="text:$component.wallet.report.name"></label>
+               <div class="oj-lg-8 oj-flex-item" data-bind="text:'-'"></div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+               <label class="oj-lg-2 oj-flex-item" data-bind="text:$component.wallet.report.emailid"></label>
+               <div class="oj-lg-8 oj-flex-item" data-bind="text:'-'"></div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+               <label class="oj-lg-2 oj-flex-item" data-bind="text:$component.wallet.report.mobilenumber"></label>
+               <div class="oj-lg-8 oj-flex-item" data-bind="text:'-'"></div>
+            </div>
+        </div> -->
+        </page-section>
+        <div class="right">
+           <img title="Download" class="downloadimg" data-bind="loadImage:'wallet/download-statement.svg',click:$component.downloadPDF.bind($data,'transactionActivity')">
+        </div>
+        <div class="oj-flex oj-flex-items-pad oj-flex grid-table-header">
+              <div class="oj-lg-2  oj-flex-item" data-bind="text:$component.wallet.report.date "></div>
+              <div class="oj-lg-4  oj-flex-item" data-bind="text:$component.wallet.report.description "></div>
+              <div class="oj-lg-3  oj-flex-item" data-bind="text: $component.wallet.report.referencenumber"></div>
+              <div class="oj-lg-3  oj-flex-item right" data-bind="text: $component.wallet.report.amount"></div>
+        </div>
+      <!-- /ko -->
+        <oj-list-view selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.datasource()]]">
+        </oj-list-view>
+        <div class="oj-flex oj-flex-items-pad">
+          <oj-paging-control class="oj-lg-11 oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.datasource()]]"></oj-paging-control>
+        </div>
+        <script type="text/html" id="content_template">
+          <li>
+              <div class="oj-flex oj-flex-items-pad oj-flex grid-row-group">
+                    <div class="oj-flex-item oj-lg-2 activity-desc" data-bind="text:$baseModel.formatDate($data.transactionDate)"></div>
+                    <div class="oj-lg-4 oj-md-4 oj-sm-12 oj-flex-item">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item">
+                                <div class="activity-desc" data-bind="text : comments"></div>
+                            </div>
+                            <div class="oj-flex-item">
+                                <div class="activity-desc" data-bind="text : name"></div>
+                            </div>
+                        </div>
+            				</div>
+                    <div class="oj-lg-3 oj-md-3 oj-sm-6 oj-flex-item">
+            							<div class="activity-desc" data-bind="text : $data.txnRefNumber"></div>
+            				</div>
+                    <div class="oj-lg-3 oj-md-3 oj-sm-6 oj-flex-item activity-amt right">
+            					<!-- ko if: $data.transactionType -->
+            							<!-- ko if: transactionType==="D" -->
+            							<span class="debit" data-bind="text : $baseModel.formatCurrency(amount.amount, amount.currency)"></span>
+            							<span class="debit" data-bind="text:$component.wallet.report.dr"></span>
+            							<!-- /ko -->
+            							<!-- ko if: transactionType=== "C" -->
+            							<span class="credit" data-bind="text : $baseModel.formatCurrency(amount.amount, amount.currency)"></span>
+            							<span class="credit" data-bind="text:$component.wallet.report.cr"></span>
+            							<!-- /ko -->
+            					<!-- /ko -->
+            				</div>
+              </div>
+          </li>
+        </script>
+    </div>
+<!-- /ko -->

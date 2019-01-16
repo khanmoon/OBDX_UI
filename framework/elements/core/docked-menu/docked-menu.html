@@ -1,0 +1,17 @@
+<div data-bind="template: {afterRender: $component.getRootContext.bind($root, $root)}"></div>
+<div class="docked-menu oj-applayout-fixed-bottom">
+  <div id="navbar" role="navigation" class="oj-hybrid-applayout-navbar-app">
+    <oj-conveyor-belt>
+      <oj-navigation-list class="oj-navigationlist-stack-icon-label navigation-list" data="[[dataSource]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('docked_template', true)]]" edge="top">
+      </oj-navigation-list>
+    </oj-conveyor-belt>
+    <script type="text/html" id="docked_template">
+      <li data-bind="attr:{id:'dockedMenu'+$data.id}">
+        <a href="#" data-bind="click:$component.changePage,attr:{alt:$baseModel.format($component.resource.clickHere,{details:$component.resource.labels[$data['name']]}),title:$component.resource.labels[$data['name']]}">
+          <div data-bind="css:'center icons ' + $data['iconClass']"></div>
+          <div data-bind="text: $component.resource.labels[$data['name']]"></div>
+        </a>
+      </li>
+    </script>
+  </div>
+</div>

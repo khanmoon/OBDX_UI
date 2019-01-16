@@ -1,0 +1,58 @@
+<!-- ko foreach:$component.configuration.configurationItemDTOs -->
+
+<div class="oj-flex oj-flex-items-pad">
+
+    <!-- ko foreach:$data.inputDTOs -->
+      <!-- ko ifnot :$data.type === 'LISTBOX' -->
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+        <oj-label :for="[[$data.fieldName]]"><span data-bind="text:$data.uiDefinition.title"></span></oj-label>
+    </div>
+    <!-- /ko -->
+    <!-- ko if :$data.type === 'LISTBOX' -->
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+        <oj-label :for="[['field_select_'+ $index()]]"><span data-bind="text:$data.uiDefinition.title"></span></oj-label>
+    </div>
+    <!-- /ko -->
+
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+        <!-- ko if :$data.type === 'RO' -->
+
+        <span data-bind="text:$data.inputValues"></span>
+        <!-- /ko -->
+        <!-- ko if :$data.type === 'DATE' -->
+
+        <oj-input-date required :id="[[$data.fieldName]]" converter="[[$baseModel.dateConverter]]" value="{{$data.inputValues}}"></oj-input-date>
+        <!-- /ko -->
+
+        <!-- ko if :$data.type === 'TXT' -->
+        <oj-input-text :id="[[$data.fieldName]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator,$data.uiDefinition.message,$data.uiDefinition.extension)]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues}}"></oj-input-text>
+        <!-- /ko -->
+
+
+        <!-- ko if :$data.type === 'LISTBOX' -->
+        <oj-select-one :id="[['field_select_'+ $index()]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues}}" :placeholder="[[$component.nls.fieldname.select]]">
+            <!-- ko foreach: $data.tempObj.options -->
+            <oj-option value="{{key}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+        </oj-select-one>
+
+        <!-- /ko -->
+        <!-- ko if :$data.type === 'CHB' -->
+
+        <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" class="oj-choice-direction-row" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" value="{{$data.inputValues}}"><!-- ko foreach: $data.tempObj.options --><oj-option value="{{key}}" :id="[['AcctType'+ $index()]]"><span data-bind="text: description, attr : {'for' :'AcctType' + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+        <!-- /ko -->
+        <br>
+        <br>
+
+    </div>
+
+    <!-- /ko -->
+</div>
+
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-6">
+        <a href="#" data-bind="click: $component.validateHostConnectivity,attr:{alt:$component.nls.buttons.TestHostAlt,title:$component.nls.buttons.TestHost,'aria-label':$component.nls.buttons.TestHost}"><span data-bind="text : $component.nls.buttons.TestHost"></span></a>
+    </div>
+</div>

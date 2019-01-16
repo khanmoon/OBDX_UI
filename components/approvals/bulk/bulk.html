@@ -1,0 +1,126 @@
+<!-- ko if:transactionListLoaded() -->
+<!-- ko if:$baseModel.large() -->
+<div class="full-width">
+  <oj-table :id="[[$component.Nls.labels.bulkFileList +($baseModel.incrementIdCount())]]" :aria-label="[[$component.Nls.labels.bulkFileList]]"
+    columns-default="[[{sortable:'enabled'}]]" columns="[[[{headerText:$component.Nls.labels.date,template:('date-time-bulk_'+ $baseModel.currentIdCount()),style:'width:10%',field:'valueDate'},{headerText:$component.Nls.labels.initiatedBy,field:'initiatedBy',headerClassName:($root.dashboardRole!=='viewer'&& $component.view!=='approved')?'hide':'',className:($root.dashboardRole!=='viewer'&& $component.view!=='approved')?'hide':''},{headerText:$component.Nls.labels.description,field:'description'},{headerText:$component.Nls.labels.transactionType,template:('transactionType_'+$baseModel.currentIdCount())},{headerText:$component.Nls.labels.fileName,field:'fileName'},{headerText:$component.Nls.labels.totalFileAmount,field:'amt',headerClassName:'right',className:'right'},{headerText:$component.Nls.labels.referenceNo,template:'approval_link_bulk',field:'referenceNo'},{headerText:$component.Nls.labels.status,template:'approvalStatusBulkFile',field:'status'}]]]"
+    data="[[paginationDataSource]]">
+    <caption class="hide-label" data-bind="text:$component.Nls.labels.bulkFileList"></caption>
+    <template :slot="[['date-time-bulk_' +$baseModel.currentIdCount()]]">
+        <div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "date-time", params:{rootModel: $component,date:$current.row.valueDate}}'></div>
+    </template>
+    <template :slot="[['transactionType_' +$baseModel.currentIdCount()]]">
+        <div data-bind="text: $current.row.paymentType"></div>
+        <!-- ko if:$current.row.transactionName === 'FU_F_CAN' -->
+        <div class="status" data-bind="css: 'deleted', text: $component.Nls.labels.deleted"></div>
+        <!-- /ko -->
+        <!-- ko ifnot:$current.row.transactionName === 'FU_F_CAN' -->
+        <div class="status" data-bind="css: 'in-progress', text: $component.Nls.labels.uploaded"></div>
+        <!-- /ko -->
+    </template>
+    <template slot="approval_link_bulk">
+        <a href="#" data-bind="attr:{ title:  $baseModel.format($component.Nls.labels.details,{transactionId : $current.row.referenceNo}), alt :  $baseModel.format($component.Nls.labels.detailText,{transactionId : $current.row.referenceNo}) },text:$current.row.referenceNo,click:$dashboard.loadComponent.bind($data,'transaction-detail', $current.row)"></a>
+        <!-- ko if:$current.row.isInGracePeriod -->
+        <div class="pending-approvals__gracePeriod pending-approvals-gracePeriod">
+          <oj-popup class="pending-approvals-gracePeriod__popUp" :id="[['gracePeriodPopup_' + transactionId]]">
+            <span class="pending-approvals-gracePeriod__text" data-bind="text:$baseModel.format($component.Nls.toolTipMesssage,{maxDate:$baseModel.formatDate($current.row.maxApprovalDate)})"></span>
+          </oj-popup>
+          <span class="icons icon-warning pending-approvals-gracePeriod__icon"></span>
+          <span data-bind="text:$component.Nls.labels.gracePeriod,event: { mouseover : $component.gracePeriodPopUpMessage.bind($data,transactionId),mouseout : $component.gracePeriodPopUpCloseMessage.bind($data,transactionId)},
+      attr:{id:'gracePeriodID_' + transactionId}"></span>
+        </div>
+      <!-- /ko -->
+    </template>
+    <template slot="approvalStatusBulkFile">
+        <div data-bind="template : {name : 'approvals/status', data : {status :$current.row.processingStatus ,noOfApprovalSteps: $current.row.noOfApprovalSteps, nls : $component.Nls.status}}"></div>
+    </template>
+  </oj-table>
+  <oj-paging-control class="oj-flex-item" slot="bottom" :id="[[$component.Nls.labels.bulkFileList +($baseModel.currentIdCount())]]"
+    :page-size="[[10]]" data="[[paginationDataSource]]"></oj-paging-control>
+
+</div>
+<!-- /ko -->
+<!-- ko if: !$baseModel.large() -->
+<div class="form-main-container grid-main-container">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <h3 class="heading" data-bind="text:$baseModel.format($component.Nls.labels.BULK_FILE_COUNT, {count:$component.countForHeader})"></h3>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <oj-list-view id="searchRuleListView" data="[[paginationDataSource]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('rulesSearch_template',true)}]]"
+        selection-mode="[['single']]"></oj-list-view>
+      <!-- ko if: $baseModel.small() -->
+      <oj-paging-control class="oj-flex-item center" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[paginationDataSource]]">
+      </oj-paging-control>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- ko if: !$baseModel.small() -->
+  <oj-paging-control class="oj-flex-item" slot="bottom" :page-size="[[10]]" data="[[paginationDataSource]]">
+  </oj-paging-control>
+  <!-- /ko -->
+  <script type="text/html" id="rulesSearch_template">
+    <li>
+      <a href="#" data-bind="attr:{ title:  $baseModel.format($component.Nls.labels.details,{transactionId : referenceNo}), alt :  $baseModel.format($component.Nls.labels.detailText,{transactionId : referenceNo}) },click:$dashboard.loadComponent.bind($data,'transaction-detail', $data)">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.Nls.labels.date"></label>
+            <div class="date" data-bind='component:{name: "date-time", params:{rootModel: $component,date:valueDate}}'></div>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6">
+            <label data-bind="text: $component.Nls.labels.description"></label>
+            <div class="description" data-bind="text: description"></div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6">
+            <label data-bind="text: $component.Nls.labels.transactionType"></label>
+            <div data-bind="text:paymentType"></div>
+            <!-- ko if:transactionName === 'FU_F_CAN' -->
+            <div class="status" data-bind="css: 'deleted', text: $component.Nls.labels.deleted"></div>
+            <!-- /ko -->
+            <!-- ko ifnot:transactionName === 'FU_F_CAN' -->
+            <div class="status" data-bind="css: 'in-progress', text: $component.Nls.labels.uploaded"></div>
+            <!-- /ko -->
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6">
+            <label data-bind="text: $component.Nls.labels.fileName"></label>
+            <div data-bind="text:fileName"></div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6">
+            <label data-bind="text: $component.Nls.labels.totalFileAmount"></label>
+            <div class="amount" data-bind="text:amt"></div>
+          </div>
+        </div>
+        <!-- ko if: ($root.dashboardRole==='viewer')||($component.view==='approved') -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.Nls.labels.initiatedBy"></label>
+            <div data-bind="text:initiatedBy"></div>
+          </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6">
+            <label data-bind="text: $component.Nls.labels.referenceNo"></label>
+            <div class="ref-no-text" data-bind="text:referenceNo"></div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6">
+            <label data-bind="text: $component.Nls.labels.status"></label>
+            <div data-bind="template : {name : 'approvalStatusBulkFile'}"></div>
+          </div>
+        </div>
+      </a>
+    </li>
+  </script>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<script type="text/html" id="approvalStatusBulkFile">
+  <td>
+    <div data-bind="template : {name : 'approvals/status', data : {status :processingStatus ,noOfApprovalSteps: noOfApprovalSteps, nls : $component.Nls.status}}"></div>
+  </td>
+</script>

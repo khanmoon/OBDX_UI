@@ -1,0 +1,41 @@
+<div class="auditLog form-main-container">
+  <page-section params="rootModel : $data">
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-1">
+    <oj-label >
+      <span data-bind="text:$component.nls.header.restUrl"></span>
+    </oj-label>
+     
+  </div>
+  <div class="oj-flex-item oj-sm-4">
+     <span data-bind="text:url"></span>
+    </div>
+  </div>
+    
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-6">
+    <div data-bind="text:$component.nls.header.request"></div>
+    <oj-tree-view id="[['treeview_request'+$baseModel.incrementIdCount()]]" :aria-label="[[$component.nls.header.request]]" data="[[requestData]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('item_template', true)]]">
+    </oj-tree-view>
+  </div>
+   <div class="oj-flex-item oj-sm-6">
+    <div data-bind="text:$component.nls.header.response"></div>
+    <oj-tree-view id="[['treeview_response'+$baseModel.incrementIdCount()]]" :aria-label="[[$component.nls.header.response]]" data="[[responseData]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('item_template', true)]]">
+    </oj-tree-view>
+   </div>
+<script type="text/html" id="item_template">
+    <li>
+        <span data-bind="text: title"></span>
+        <!-- ko if: $data.value -->
+        <span>: </span>
+        <span data-bind="text: $data.value"></span>
+        <!-- /ko -->
+    </li>
+</script>
+</div>
+<div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-tertiary" on-click="[[back]]"><span data-bind="text:$component.nls.common.back"></span></oj-button>
+  </div>
+</page-section>
+
+</div>

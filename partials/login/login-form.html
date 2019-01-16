@@ -1,0 +1,125 @@
+<form>
+  <input id="username" class="hide" name="usernameremembered">
+  <input id="password" class="hide" type="password" name="passwordremembered">
+</form>
+<!-- ko if:$component.showPopup -->
+<div class="loginContainer">
+  <div data-bind="template : {afterRender: $component.afterRender.bind($data,$root)}"></div>
+  <div class="loginFormContainer loginPopUp">
+    <div class="login-logo">
+      <img class="icon-logo" data-bind="loadImage:'corp/common/logo.svg'">
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <!-- ko if: message -->
+      <div class="row oj-flex-item oj-sm-12 danger">
+        <span data-bind="text:message"></span>
+      </div>
+      <!-- /ko -->
+      <div class="row oj-flex-item oj-sm-12">
+        <oj-label for="login_username" class="hide-label"><span data-bind="text:nls.loginForm.labels.username"></span></oj-label>
+        <span class="icons icon-user"></span>
+        <oj-input-text id="login_username" name="username" autocomplete="off" type="text" value="{{username}}" placeholder="[[nls.loginForm.labels.username]]"></oj-input-text>
+        <virtual-keyboard params="{baseModel : $baseModel,value: username, element: 'login_username'}"></virtual-keyboard>
+        <div data-bind="template:{afterRender: $component.afterUserNameRender}"></div>
+      </div>
+
+
+      <div class="row oj-flex-item oj-sm-12">
+        <oj-label for="login_password" class="hide-label"><span data-bind="text:nls.loginForm.labels.password"></span></oj-label>
+        <span class="icons icon-password"></span>
+        <oj-input-password id="login_password" name="password" autocomplete="off" type="password" value="{{password}}" raw-value="{{password}}" placeholder="[[nls.loginForm.labels.password]]"></oj-input-password>
+        <virtual-keyboard params="{baseModel : $baseModel,value: password, element: 'login_password'}"></virtual-keyboard>
+      </div>
+      <input id="successurl" type="hidden" name="successurl" data-bind="value:$component.successurl">
+
+
+      <!-- ko if:$baseModel.cordovaDevice()  && !$component.alternateLogin() -->
+      <div class="oj-flex">
+        <div class="row oj-flex-item">
+          <oj-label for="switch"><span data-bind="text:nls.loginForm.labels.enableAlternateLogin"></span></oj-label>
+        </div>
+        <div class="oj-flex-item">
+          <oj-switch id="switch" value="{{optForAlternateLogin}}"></oj-switch>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div class="button-container center">
+      <oj-button id="login-button" class="submitBtn loginButton action-button-primary" on-click="[[$component.onLogin.bind($data,$root)]]">
+        <span data-bind="text:$component.nls.loginForm.labels.login"></span>
+      </oj-button>
+
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <a href="#" id="forgotUserId" class="forgotPassword" data-bind="text:nls.loginForm.labels.forgotUsername,
+        click:forgotUserId.bind($data,$root) ,attr:{alt: $component.nls.forgotUserIdClick,
+           title: $component.nls.forgotUserIdTitle}"></a>
+        <span data-bind="text:nls.loginForm.labels.verticalSeperation"></span>
+        <a href="#" id="forgotPassword" class="forgotPassword" data-bind="text:nls.loginForm.labels.forgotPassword,click:forgotPass.bind($data,$root) ,attr:{alt: $component.nls.forgotPasswordClick, title: $component.nls.forgotPasswordTitle}"></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- /ko -->
+<!-- ko if:!$component.showPopup || $baseModel.medium() -->
+<div class="login-enclosure form-main-container">
+    <div data-bind="template : {afterRender: $component.afterRender.bind($data,$root)}"></div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <div class="mt20 danger">
+        <span data-bind="text:message"></span>
+      </div>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <oj-label for="login_username"><span data-bind="text:nls.loginForm.labels.username"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12">
+      <oj-input-text id="login_username" type="text" value="{{username}}"></oj-input-text>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <oj-label for="login_password"><span data-bind="text:nls.loginForm.labels.password"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12">
+      <oj-input-password type="password" id="login_password" value="{{password}}"></oj-input-password>
+    </div>
+  </div>
+  <!-- ko ifnot:$component.landingModule -->
+  <!-- ko if:$baseModel.cordovaDevice()  && $component.showAlternativeSwitch() -->
+  <div class="oj-flex oj-flex-items-pad enable-finger-print">
+    <div class="oj-flex-item">
+      <oj-label for="switch"><span data-bind="text:nls.loginForm.labels.enableAlternateLogin"></span></oj-label>
+    </div>
+    <div class="oj-flex-item">
+      <oj-switch id="switch" value="{{optForAlternateLogin}}"></oj-switch>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+
+  <div class="button-container center">
+    <oj-button id="login-button" class="submitBtn loginButton action-button-primary" on-click="[[$component.onLogin.bind($data,$root)]]">
+      <span data-bind="text:$component.nls.loginForm.labels.login"></span>
+    </oj-button>
+  </div>
+  <!-- ko ifnot:$component.landingModule -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 extra-links">
+      <div class="extra-links">
+        <div class="forgot-username-password">
+          <a href="#" class="left-right-margin10" data-bind="text:nls.loginForm.labels.forgotUserId,
+        click:forgotUserId.bind($data,$root) ,attr:{alt: $component.nls.forgotUserIdClick,title: $component.nls.forgotUserIdTitle}"></a>
+          <span data-bind="text:nls.loginForm.labels.verticalSeperation"></span>
+      <a href="#" class="left-right-margin10" data-bind="text:nls.loginForm.labels.forgotPassword,click:forgotPass.bind($data,$root) ,attr:{alt: $component.nls.forgotPasswordClick, title: $component.nls.forgotPasswordTitle}"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+</div>
+<!-- /ko -->

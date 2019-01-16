@@ -1,0 +1,24 @@
+<div class="requirements-form" data-bind="with:productDetails().requirements">
+    <div class="oj-flex oj-flex-items-pad requirements">
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-10 ">
+
+            <h3 class=" primary-heading" data-bind="text:$component.resource.casa.header"></h3>
+
+        </div>
+    </div>
+    <oj-validation-group id="requirementsTracker" valid="{{$component.groupValid}}">
+    <div class="oj-flex oj-flex-items-pad requirements">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1   oj-lg-offset-1">
+            <oj-label class="main-label" for="currency"><span data-bind="text:$component.resource.casa.currencyLabel"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-10 oj-md-3 oj-lg-2 margin-top">
+            <oj-select-one id="currency" required translations="[[{'required':{messageDetail:$component.resource.messages.currency}}]]" :placeholder="" value="{{currency}}">
+                                <!-- ko foreach : $component.productDetails().offerCurrencies -->
+                                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                                <!-- /ko -->
+
+                            </oj-select-one>
+        </div>
+    </div>
+  </oj-validation-group>
+</div>

@@ -1,0 +1,18 @@
+
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <action-header params="baseModel : $baseModel, rootModel : $component, heading:$component.Nls.review"></action-header>
+        <!-- ko if:userDetailsFetched() -->
+        <div data-bind="with:$component.userDetails">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.corporateid , value :partyId.displayValue"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.corporatename , value :(('partyName' in $data)?partyName:'-')"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.username , value :$baseModel.format($component.Nls.user,{firstName:firstName,lastName:lastName})"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.userId , value :username"></row>
+        </div>
+        <!-- /ko -->
+    </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.Nls.mappingSummary">
+        <!-- ko if:isListReady() -->
+        <div data-bind="template: { name: 'file-upload/user-map-details'}"></div>
+        <!-- /ko -->
+    </page-section>
+

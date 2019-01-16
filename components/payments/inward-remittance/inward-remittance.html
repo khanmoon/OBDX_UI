@@ -1,0 +1,233 @@
+<!-- ko if:stageOne()-->
+
+  <div class="form-main-container inward-remittance">
+
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+          <!--Accounts-->
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6 ">
+                <!-- ko if:accountFetched() -->
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 label ">
+                  <label for="acc-no" data-bind="text:$component.resource.inwardRemittance.selectAccount"></label>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 label ">
+                <oj-select-one id="acc-no" required :invalidcomponenttracker="[[validator]]" value="{{accountId}}">
+                    <!-- ko foreach: accountList -->
+                    <oj-option value="{{id.value}}"><span data-bind="text:id.displayValue"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+               </div>
+                <!-- /ko -->
+
+              <modal-window params="baseModel : $baseModel, rootModel : $component,id:'noaccount'">
+                  <div class="center" data-bind="text:$component.resource.inwardRemittance.noCASAAccount"></div>
+                  <div class="oj-flex oj-flex-items-pad button-container">
+                    <oj-button id="ok" class="action-button-primary" on-click="[[closeDialog]]">
+                      <span data-bind="text:$component.resource.inwardRemittance.ok"></span>
+                    </oj-button>
+                  </div>
+              </modal-window>
+              </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6 ">
+                  <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-4">
+                      <label for="fromDate" data-bind="text: $component.resource.inwardRemittance.fromDate"></label>
+                  </div>
+
+                  <!--From Date-->
+                  <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-4">
+                      <oj-input-date id="fromDate" value="{{fromDate}}" converter="[[$baseModel.dateConverter]]" max="[[toDate]]"></oj-input-date>
+                  </div>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6 ">
+                  <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-4">
+                      <label for="toDate" data-bind="text: $component.resource.inwardRemittance.toDate"></label>
+                  </div>
+
+                  <!--To Date-->
+                  <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-4">
+                      <oj-input-date id="toDate" value="{{toDate}}" converter="[[$baseModel.dateConverter]]" min="[[fromDate]]"></oj-input-date>
+                  </div>
+              </div>
+          </div>
+          <oj-validation-group id="amountTracker">
+          <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6 ">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                      <label for="fromAmount" data-bind="text: $component.resource.inwardRemittance.fromAmount"> </label>
+                  </div>
+
+                  <!--From Amount-->
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5">
+                    <oj-input-text required id="fromAmount" validators="[[[validateFromAmount]]]" value="{{fromAmount}}"></oj-input-text>
+                  </div>
+                </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                      <label for="toAmount" data-bind="text: $component.resource.inwardRemittance.toAmount"> </label>
+                  </div>
+
+                  <!--To Amount-->
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5">
+                      <oj-input-text maxlength="15" id="toAmount" required validators="[[[validateToAmount]]]" value="{{toAmount}}"></oj-input-text>
+                  </div>
+              </div>
+          </div>
+          </oj-validation-group>
+      </page-section>
+
+      <div class="oj-flex oj-flex-items-pad button-container">
+
+        <oj-button class="action-button-primary" id="button-search" on-click="[[searchAccounts]]">
+      <span data-bind="text:$component.resource.inwardRemittance.search"></span>
+</oj-button>
+
+        <!-- ko ifnot:dataLoaded() -->
+        <oj-button class="action-button-secondary" id="button-cancel" on-click="[[cancel]]">
+      <span data-bind="text:$component.resource.inwardRemittance.cancel"></span>
+</oj-button>
+        <!-- /ko -->
+
+        <oj-button class="action-button-tertiary" id="button-reset" on-click="[[reset]]">
+      <span data-bind="text:$component.resource.inwardRemittance.reset"></span>
+</oj-button>
+
+      </div>
+
+    <!-- ko if:dataLoaded() -->
+        <!-- ko if:$baseModel.large() -->
+          <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <div class="oj-flex oj-flex-items-pad">
+                <oj-table id="table" :aria-label="[[$component.resource.inwardRemittance.tableHeader]]" columns="[[[{headerText:$component.resource.inwardRemittance.transDate,field:'transDate',sortable:'auto'},{headerText:$component.resource.inwardRemittance.refNumber,template:'refNumber',sortable:'auto',sortProperty:'refNumber'},{headerText:$component.resource.inwardRemittance.remitAmount,field:'remitAmount',sortable:'auto'},{headerText:$component.resource.inwardRemittance.creditAccountDetails,field:'creditAccount',sortable:'auto'},{headerText:$component.resource.inwardRemittance.remitName,field:'remitName',sortable:'auto'}]]]" columns-default="[[{sortable:'none'}]]" selection-mode="[[{row:'single',column:'single'}]]" data="[[dataSource]]">
+                  <caption class="hide-label" data-bind="text:$component.resource.inwardRemittance.details"></caption>
+                  <template  slot="refNumber">
+                    <td>
+                        <a href="#" data-bind="attr:{ title: $baseModel.format($component.resource.inwardRemittance.linkDetails,{reference:$current.row.refNumber}), alt : $baseModel.format($component.resource.inwardRemittance.linkDescription,{reference:$current.row.refNumber})},text:$current.row.refNumber ,click:$component.transactionSelected.bind($data, $current.row)"></a>
+                    </td>
+                  </template>
+                </oj-table>
+
+                <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSource]]">
+                </oj-paging-control>
+            </div>
+          </page-section>
+
+          <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-secondary" id="button" on-click="[[$dashboard.openDashBoard.bind()]]">
+              <span data-bind="text:$component.resource.inwardRemittance.cancel"></span>
+            </oj-button>
+          </div>
+        <!-- /ko -->
+
+        <!-- ko if:!$baseModel.large() -->
+          <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <oj-list-view class="payments" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('inwardRemittance_template',true)}]]" data="[[dataSource]]">
+            </oj-list-view>
+            <script type="text/html" id="inwardRemittance_template">
+              <li class="payments-list__listItem" data-bind="attr: {id: $data['refNumber']}">
+
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-6">
+                    <label data-bind="text:$component.resource.inwardRemittance.transDate"></label>
+                    <div class="date" data-bind="text: transDate"></div>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-6">
+                    <label data-bind="text:$component.resource.inwardRemittance.refNumber"></label>
+                    <div><a href="#" data-bind="attr:{ title: $baseModel.format($component.resource.inwardRemittance.linkDetails,{reference: refNumber}), alt : $baseModel.format($component.resource.inwardRemittance.linkDescription,{reference: refNumber}) }, text:refNumber ,click:$component.transactionSelected"></a>
+                  </div></div>
+                </div>
+
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-6">
+                    <label data-bind="text:$component.resource.inwardRemittance.remitAmount"></label>
+                    <div data-bind="text: remitAmount"></div>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-6">
+                      <label data-bind="text:$component.resource.inwardRemittance.creditAccountDetails"></label>
+                      <div data-bind="text: creditAccount"></div>
+                  </div>
+                </div>
+
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item">
+                    <label data-bind="text:$component.resource.inwardRemittance.remitName"></label>
+                    <div data-bind="text: remitName"></div>
+                  </div>
+                </div>
+
+              </li>
+            </script>
+
+            <oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[dataSource]]">
+            </oj-paging-control>
+
+          </page-section>
+
+          <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$dashboard.openDashBoard.bind()]]">
+              <span data-bind="text:$component.resource.inwardRemittance.cancel"></span>
+            </oj-button>
+          </div>
+        <!-- /ko -->
+    <!-- /ko -->
+
+  </div>
+<!-- /ko -->
+
+<!-- ko if:stageTwo() -->
+  <!--<div data-bind="with:$component.remittanceDetails()">-->
+  <div class="form-main-container">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.inwardRemittance.receiverDetails">
+
+        <div class="row-group">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.creditAccountNumber , value :creditAccountNumber,dataClass :'highlight-text'"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.creditAccountBranch , value :creditAccountBranch,dataClass :'highlight-text'"></row>
+        </div>
+    </page-section>
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.inwardRemittance.transactionDetails">
+
+        <div class="row-group">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.transDate , value :transDate,dataClass :'highlight-text'"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.refNumber , value :refNumber,dataClass :'highlight-text'"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.remitAmount , value :remitAmount,dataClass :'highlight-text'"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.creditedOn , value :creditedOn,dataClass :'highlight-text'"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.creditAmount , value :creditAmount,dataClass :'highlight-text'"></row>
+            <!-- ko if:purposeText -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.purpose , value :purposeText,dataClass :'highlight-text'"></row>
+            <!-- /ko -->
+            <!-- ko if:description -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.description , value :description,dataClass :'highlight-text'"></row>
+            <!-- /ko -->
+        </div>
+    </page-section>
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.inwardRemittance.remitterDetails">
+
+        <div class="row-group">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.remitName , value :remitName,dataClass :'highlight-text'"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.accountNumber , value :accountNumber,dataClass :'highlight-text'"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.inwardRemittance.bankDetails , value :bankDetails,dataClass :'highlight-text'"></row>
+        </div>
+    </page-section>
+
+      <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-secondary" id="cancel" on-click="[[back]]">
+            <span data-bind="text:$component.resource.inwardRemittance.cancel"></span>
+          </oj-button>
+
+          <!-- ko if:isAdviceLoaded()-->
+          <oj-button class="action-button-primary" id="advice" on-click="[[generatePDF]]">
+            <span data-bind="text:$component.resource.inwardRemittance.advice"></span>
+          </oj-button>
+          <!-- /ko -->
+      </div>
+  </div>
+  <!--</div>-->
+<!-- /ko -->

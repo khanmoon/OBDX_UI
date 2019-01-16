@@ -1,0 +1,75 @@
+<div class="user-create">
+  <!-- ko if: entityDetails.entitiesListLoaded -->
+  <div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+      <oj-label class="" :for="[['title'+$index()]]">
+        <span data-bind="text:$component.locale.accessibleEntity.entityName"></span></oj-label>
+    </div>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+      <oj-select-one required id="title" disabled="[[$component.entityDetails.accessibleEntitySet()]]" :placeholder="[[nls.fieldname.select]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{entityDetails.entityId}}">
+
+        <!-- ko foreach: entityDetails.entityList -->
+        <oj-option value="{{entityId}}"><span data-bind="text:entityName"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+
+  <!-- /ko -->
+  <!-- ko if: $component.entityDetails.userType!== "administrator" -->
+  <!-- ko if: $component.entityDetails.entityChange -->
+  <div class="oj-flex-item" data-bind="component: {name: 'party-validate', params:{rootModel: $component,partyDetails:entityDetails.partyInfo,additionalDetails:entityDetails.partyInfo.additionalDetails,targetUnit:$component.entityDetails.entityId()}},attr:{'id':'partyValidate'}"></div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- ko if: $component.entityDetails.userType!== "administrator" -->
+  <!-- ko if: $component.entityDetails.entityUserLimitListLoaded -->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+
+      <div data-bind="component: {name: 'access-point-mapping', params:{rootModel: $component,
+          header :$component.header,
+          listLimitPackageArray:$component.entityDetails.entityUserLimit,
+          selectedLimitPackages:$component.selectedLimitPackagesEditMode,
+          limitPackageDetails:$component.entityDetails.limitPackage,
+          accessPointType:$component.accessPointType}}"></div>
+    </div>
+
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- ko if: showChildRole -->
+  <!-- ko if: isAccessPointFetched-->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+      <oj-label><span data-bind="text:$component.locale.accessibleEntity.selectAccessPoints"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+      <oj-checkboxset :id="[['internal_'+$baseModel.incrementIdCount()]]" aria-labelledby="accessPoint" class="oj-choice-direction-row" value="{{entityDetails.selectedAccessPoints}}">
+        <!-- ko foreach: entityDetails.accessPointList -->
+        <oj-option value="[[value]]">
+          <span data-bind="text:text"></span>
+        </oj-option>
+        <!-- /ko -->
+      </oj-checkboxset>
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+      <oj-label><span data-bind="text:$component.locale.accessibleEntity.role"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9" data-bind="attr:{'aria-label': $component.nls.fieldname.role}">
+      <!-- ko if: childRoleEnumsLoaded -->
+      <oj-checkboxset :id="checkboxSetId" class="oj-choice-direction-row" disabled="[[true]]" value="{{selectedChildRole}}">
+        <!-- ko foreach: childRoleEnums -->
+        <oj-option value="{{applicationRoleName}}"><span data-bind="text:applicationRoleDisplayName"></span></oj-option>
+        <!-- /ko -->
+      </oj-checkboxset>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- /ko -->
+</div>

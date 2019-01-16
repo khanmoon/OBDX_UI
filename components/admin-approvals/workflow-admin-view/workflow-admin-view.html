@@ -1,0 +1,167 @@
+<!-- ko ifnot: $component.mode()==="SUCCESS" -->
+<!-- ko if:workflowDetailsLoaded() -->
+<div class="oj-flex">
+    <div data-bind="css: $component.mode() === 'REVIEW' ? 'oj-flex-item oj-sm-12' : 'oj-flex-item oj-sm-9'">
+        <div class="form-main-container">
+            <oj-validation-group id="tracker" valid="{{groupValid}}">
+            <modal-window class="message" params="baseModel : $baseModel, rootModel : $data, id:'confirmCancellationScreen'">
+                <div class="form-main-container message-text">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item">
+                            <span class="icon icon-warning"></span>
+                            <span data-bind="text:$component.resourceBundle.approvals.common.cancelTransaction"></span>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad button-container">
+                        <oj-button id="deleteYes" class="action-button-primary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                            <span data-bind="text:$component.resourceBundle.generic.common.yes"></span>
+                        </oj-button>
+                        <oj-button id="deleteNo" class="action-button-secondary" on-click="[[function(){$('#confirmCancellationScreen').hide();}]]">
+                            <span data-bind="text:$component.resourceBundle.generic.common.no"></span>
+                        </oj-button>
+                    </div>
+                </div>
+            </modal-window>
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+                <!-- ko if: $component.mode() !=="CREATE" -->
+
+                <!-- ko if: $component.mode() === "REVIEW"-->
+                    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header: $component.resourceBundle.common.review,reviewHeader:$component.resourceBundle.info.reviewMessage}}">
+                    </div>
+                <!-- /ko -->
+
+                <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resourceBundle.workflow.workflowCode , value :$component.workflowCode"></row>
+                <!-- /ko -->
+                <!-- ko if: $component.mode()==="CREATE"-->
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                            <oj-label for="workflowCode">
+                                <span data-bind="text:$component.resourceBundle.workflow.workflowCode"></span>
+                            </oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 label">
+                            <oj-input-text id="workflowCode" type="text" translations="[[{'required':{messageDetail:$component.resourceBundle.approvals.common.Empty}}]]" validators="[[$baseModel.getValidator('APPLICATION_CODE')]]" required="[[true]]" value="{{workflowCode}}"></oj-input-text>
+                        </div>
+                    </div>
+                <!-- /ko -->
+
+                <!-- ko if: ($component.mode()==="CREATE" || $component.mode()==="EDIT")-->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                        <oj-label for="groupDescription"><span data-bind="text:$component.resourceBundle.workflow.workflowDescription"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                        <oj-input-text id="groupDescription" type="text" translations="[[{'required':{messageDetail:$component.resourceBundle.approvals.common.Empty}}]]" required="[[true]]" validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" value="{{workflowDescription}}"></oj-input-text>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko ifnot: ($component.mode()==="CREATE" || $component.mode()==="EDIT") -->
+
+                <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resourceBundle.workflow.workflowDescription, value :$component.workflowDescription"></row>
+                <!-- /ko -->
+            </page-section>
+
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading:$component.resourceBundle.approvals.common.approvalDetails">
+
+            <!-- ko if: ($component.mode()==="VIEW") || ($component.mode()==="REVIEW") || ($component.mode()==="SUCCESS") -->
+
+            <!-- ko foreach:workflowDetails().steps -->
+
+                <!-- ko if: userGroup.unary -->
+
+                <!-- ko foreach:userGroup.users -->
+
+                <row params="baseModel : $baseModel, rootModel : $parent, label : $baseModel.format($component.resourceBundle.workflow.appLevel,{level:$parent.sequenceNo}), value :$baseModel.format($component.resourceBundle.generic.common.userName,{firstName:$data.firstName,lastName:$data.lastName,userName:$data.userId})"></row>
+                <!-- /ko -->
+                <!-- /ko -->
+
+                <!-- ko if: !userGroup.unary -->
+
+                <row params="baseModel : $baseModel, rootModel : $parent, label : $baseModel.format($component.resourceBundle.workflow.appLevel,{level:sequenceNo}), value :$data.userGroup.name"></row>
+                <!-- /ko -->
+
+            <!-- /ko -->
+
+            <!-- /ko -->
+            <!-- ko if: ($component.mode()==="EDIT") || ($component.mode()==="CREATE") -->
+
+            <!-- ko foreach:$component.userInputModel -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-lg-10 oj-md-4 oj-sm-4">
+                      <div data-bind="component: {name: 'user-input', params:{rootModel:$component,userInputModel:$data,nodeId:$index,multipleCall:true,validationTracker:$component.validationTracker}},attr:{'id':'steps_'+$index()}"></div>
+
+                </div>
+                  <!-- ko if: $component.userInputModel().length!==1-->
+                <div class="oj-flex-item oj-lg-2 oj-md-4 oj-sm-4 label">
+                    <a href="javascript:void(0)" class="icon icon-delete delete-icon" data-bind="click:$component.deleteApprovalFromWorkflow.bind($data, $index(), $data)"></a>
+                </div>
+                <!-- /ko -->
+            </div>
+
+            <!-- /ko -->
+            <!-- ko if:$component.userInputModel().length<5 -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+                    <oj-button class="help-button" on-click="[[addApprovalLevel]]">
+                        <span data-bind="text:$component.resourceBundle.approvals.common.add"></span>
+                    </oj-button>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            </page-section>
+            <!-- ko if: $component.mode()==="VIEW" -->
+            <div class="button-container">
+                <oj-button class="action-button-primary" on-click="[[editWorkflow]]">
+                    <span data-bind="text:$component.resourceBundle.common.edit"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                </oj-button>
+                <oj-button class="action-button-tertiary" on-click="[[back]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: ($component.mode()==="EDIT") || ($component.mode()==="CREATE")  -->
+            <div class="button-container">
+                <oj-button class="action-button-primary" on-click="[[save]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.save"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" on-click="[[cancel]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                </oj-button>
+                <oj-button class="action-button-tertiary" on-click="[[back]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+        <!-- ko if: $component.mode()==="REVIEW" -->
+        <div class="button-container">
+            <oj-button class="action-button-primary" on-click="[[confirm]]">
+                <span data-bind="text:$component.resourceBundle.generic.common.confirm"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[cancel]]">
+                <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+            </oj-button>
+            <oj-button class="action-button-tertiary" on-click="[[editReview]]">
+                <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+        </oj-validation-group>
+        </div>
+    </div>
+    <!-- ko if: $component.mode() === "VIEW" -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'workflow-admin-view'"></help>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $component.mode() === "CREATE" || $component.mode()==="EDIT" -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'workflow-admin-create'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- /ko -->

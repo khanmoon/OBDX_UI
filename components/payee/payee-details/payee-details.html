@@ -1,0 +1,101 @@
+<div class="form-main-container">
+    <div class="oj-flex oj-flex-items-pad oj-sm-justify-content-space-between">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+            <div class="oj-flex oj-flex-items-pad oj-sm-12 payments">
+                <div class="no-pad-cols oj-flex-item oj-sm-10 oj-lg-6">
+                    <div data-bind="template: { name: 'payee/details' }"></div>
+                </div>
+                <!-- ko if:($component.payeeData.username===$dashboard.userData.userProfile.userName) && !stageTwo() && !$component.isVerify()-->
+                <div class="oj-flex-item oj-sm-2 oj-lg-2 left">
+                    <a class="action-icon" href="#" data-bind="attr:{'aria-label':$baseModel.format($component.payments.common.title,{reference:$component.payments.common.edit}), 'alt':$component.payments.generic.common.edit,'title':$baseModel.format($component.payments.common.title,{reference:$component.payments.common.edit})}, click:$component.editPayeeDetails">
+                        <div class="icons icon-edit action-icon right"></div>
+                    </a>
+                </div>
+                <!-- /ko -->
+            </div>
+            <!-- ko if:stageOne() -->
+            <!-- ko ifnot:$component.isVerify() -->
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <!-- ko ifnot:$component.payeeData.demandDraftPayeeType -->
+                <oj-button class="action-button-primary " on-click="[[$dashboard.loadComponent.bind($data,'payments-money-transfer',{transferDataPayee:$component.payeeData},null)]]"><span slot="startIcon" class="icons icon-pay"></span>
+                    <span data-bind="text:payments.common.pay"></span>
+                </oj-button>
+                <!-- /ko -->
+                <!-- ko if:$component.payeeData.demandDraftPayeeType -->
+                <oj-button class="action-button-primary " on-click="[[$dashboard.loadComponent.bind($data,'issue-demand-draft',{transferDataPayee:$component.payeeData},null)]]"><span slot="startIcon" class="icons icon-issue"></span>
+                    <span data-bind="text:payments.common.issue"></span>
+                </oj-button>
+                <!-- /ko -->
+                <!-- ko if:$component.payeeData.username===$dashboard.userData.userProfile.userName -->
+                <oj-button class="action-button-secondary " on-click="[[deletePayee]]"><span slot="startIcon" class="icons icon-delete"></span>
+                    <span data-bind="text:payments.common.delete"></span>
+                </oj-button>
+                <!-- /ko -->
+                <!-- ko if:$baseModel.large() -->
+                <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                    <span data-bind="text:payments.common.cancel"></span>
+                </oj-button>
+                <!-- /ko -->
+                <oj-button class="action-button-tertiary " on-click="[[$component.cancel]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+                    <span data-bind="text:payments.generic.common.back"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:$component.isVerify() -->
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button class="action-button-primary " on-click="[[$component.confirmEditPayeeDetails]]"><span slot="startIcon" class="icons icon-confirm"></span>
+                    <span data-bind="text:payments.common.confirm"></span>
+                </oj-button>
+                <!-- ko if:$baseModel.large() -->
+                <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                    <span data-bind="text:payments.common.cancel"></span>
+                </oj-button>
+                <!-- /ko -->
+                <oj-button class="action-button-tertiary " on-click="[[$component.cancelEdit]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+                    <span data-bind="text:payments.generic.common.back"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if:stageTwo() -->
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <!-- ko if:$component.isEdit() -->
+                <oj-button class="action-button-primary " on-click="[[$component.verifyEditPayeeDetails]]"><span slot="startIcon" class="icons icon-save"></span>
+                    <span data-bind="text:payments.common.save"></span>
+                </oj-button>
+                <!-- ko if:$baseModel.large() -->
+                <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                    <span data-bind="text:payments.common.cancel"></span>
+                </oj-button>
+                <!-- /ko -->
+                <oj-button class="action-button-tertiary " on-click="[[$component.cancelEditPayeeDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+                    <span data-bind="text:payments.generic.common.back"></span>
+                </oj-button>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <modal-window params="baseModel : $baseModel, rootModel : $component,id:'delete-payee', header: $component.payments.payeeDelete">
+                <div class="confirm-dialog">
+                    <div class="confirm-dialog__container confirm-dialog-container">
+                        <div class="oj-flex oj-flex-items-pad confirm-dialog-container__message">
+                            <div class="oj-flex-item oj-sm-12" data-bind="text: $baseModel.format($component.payments.payee.deleteaccount, {name:$component.payeeData.name})"></div>
+                        </div>
+                        <div class="confirm-dialog-container__buttons button-container">
+                            <oj-button class="action-button-primary " on-click="[[$component.confirmDeletePayee]]"><span slot="startIcon" class="icons icon-delete"></span>
+                                <span data-bind="text:$component.payments.generic.common.proceed"></span>
+                            </oj-button>
+                            <oj-button class="action-button-secondary " on-click="[[$component.closeModal]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                                <span data-bind="text:$component.payments.generic.common.cancel"></span>
+                            </oj-button>
+                        </div>
+                    </div>
+                </div>
+            </modal-window>
+        </div>
+        <!-- ko if:!$component.isVerify() && $baseModel.large()-->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'payee-details'"></help>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

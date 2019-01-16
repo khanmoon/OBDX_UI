@@ -1,0 +1,32 @@
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+    <oj-input-text required id="subCatgName" :invalidcomponenttracker="[[$component.validationTracker1]]" disabled="[[$component.isRead() ? $index() < $component.currentLength():false]]" validators="[[$baseModel.getValidator('APPLICATION_CODE')]]" :placeholder="[[$component.goal.category.enterCode]]"></oj-input-text>
+    
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+    <oj-input-text required id="subCatgDesc" :invalidcomponenttracker="[[$component.validationTracker1]]" validators="[[$baseModel.getValidator('APPLICATION_NAME')]]" :placeholder="[[$component.goal.category.enterCategory]]"></oj-input-text>
+    
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+    <oj-input-date id="expDate" value="{{$data.expiryDate}}" min="[[$component.minDate()]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+  </div>
+
+  <!-- ko if: $component.isCreate() -->
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-1">
+    <a href="javascript:void(0)" data-bind="click:$component.deleteSub">  
+    <span class="icons icon-delete"></span>
+    </a>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.isRead() && $index()+1 > $component.currentLength() -->
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-1">
+    <a href="javascript:void(0)" data-bind="click:$component.deleteSub">  
+    <span class="icons icon-delete"></span>
+    </a>
+  </div>
+  <!-- /ko -->
+
+</div>

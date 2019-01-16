@@ -1,0 +1,175 @@
+<div class="review-attach-documents">
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : $baseModel.format($component.moduleName(),{lcNumber:$component.moduleId()})">
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+<h5 class="sub-heading" data-bind="text:$component.attachDocResourceBundle.documents.labels.attachedDocuments"></h5>
+<!-- ko ifnot:$baseModel.small() -->
+<div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 doc-table">
+  <oj-table id="attachedDocTable" :aria-label="[[$component.attachDocResourceBundle.documents.labels.attachedDocuments]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('row_tmpl_attach_document', true)]]" columns="[[$component.attachDocTblColumns]]" data="[[$component.datasourceForAttachDocument]]">
+    <caption class="hide-label" data-bind="text:$component.attachDocResourceBundle.documents.labels.attachedDocuments"></caption>
+  </oj-table>
+</div>
+<!-- /ko -->
+<!-- ko if:$baseModel.small() -->
+<div class="oj-flex grid-main-container">
+  <div class="oj-flex-item oj-sm-12">
+      <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('attach_doc_list_card',true)}]]" selection-mode="[['single']]" data="[[$component.datasourceForAttachDocument]]">
+      </oj-list-view>
+  </div>
+</div>
+<!-- /ko -->
+
+</div>
+</div>
+<!-- ko if: $component.modifyContractDetails.deletedDocuments && $component.modifyContractDetails.deletedDocuments().length > 0-->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+<h5 class="sub-heading" data-bind="text:$component.attachDocResourceBundle.documents.labels.deletedDocuments"></h5>
+<!-- ko ifnot:$baseModel.small() -->
+<div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 doc-table">
+  <oj-table id="deletedDocTable" :aria-label="[[$component.attachDocResourceBundle.instructionsDetails.labels.deletedDocTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('row_tmpl_delete_document', true)]]" columns="[[$component.attachDocTblColumns]]" data="[[$component.datasourceForDeletedDocument]]">
+    <caption class="hide-label" data-bind="text:$component.attachDocResourceBundle.documents.labels.deletedDocuments"></caption>
+  </oj-table>
+</div>
+<!-- /ko -->
+<!-- ko if:$baseModel.small() -->
+<div class="oj-flex grid-main-container">
+  <div class="oj-flex-item oj-sm-12">
+      <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('deleted_doc_list_card',true)}]]" selection-mode="[['single']]" data="[[$component.datasourceForDeletedDocument]]">
+      </oj-list-view>
+  </div>
+</div>
+<!-- /ko -->
+</div>
+</div>
+<!-- /ko -->
+</page-section>
+</div>
+
+<script type="text/html" id="row_tmpl_attach_document">
+  <tr>
+    <td>
+      <span class="draft-no" data-bind="text:$component.getRowId($context.rowContext.status.rowIndex)"></span>  
+       <!-- ko if: $data.newDocument -->
+      <span class="trade-badge" data-bind="text:$component.attachDocResourceBundle.common.labels.new"></span>
+      <!-- /ko -->
+    </td>
+    <td>
+      <a href="#" data-bind="attr:{ title: $data.contentId.displayValue},text:$data.contentId.displayValue,click:$component.downloadDocument.bind($data,$data.contentId.value())">
+      </a>
+    </td>
+    <td data-bind="text: $data.category">
+    </td>
+    <td data-bind="text: $data.type">
+    </td>
+    <td class="content" data-bind="text: $data.remarks">
+    </td>
+  </tr>
+</script>
+
+<script type="text/html" id="row_tmpl_delete_document">
+  <tr>
+    <td class="draft-no" data-bind="text: $component.getRowId($rowContext.status.rowIndex)">
+    </td>
+    <td>
+      <a href="#" data-bind="attr:{ title: $data.contentId.displayValue},text:$data.contentId.displayValue,click:$component.downloadDocument.bind($data,$data.contentId.value())">
+      </a>
+    </td>
+    <td data-bind="text: $data.category">
+    </td>
+    <td data-bind="text: $data.type">
+    </td>
+    <td class="content" data-bind="text: $data.remarks">
+    </td>
+  </tr>
+</script>
+
+<script type="text/html" id="attach_doc_list_card">
+  <li data-bind="attr: {id: $data.contentId.value}">
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-9 description">
+              <a href="#" data-bind="attr:{ title: $component.attachDocResourceBundle.documents.labels.docId, alt: $component.attachDocResourceBundle.documents.labels.docId},
+              text:$data.contentId.displayValue,
+              click:$component.downloadDocument.bind($data,$data.contentId.value)">
+              </a>
+              <!-- ko if: $data.newDocument -->
+             <span class="trade-badge" data-bind="text:$component.attachDocResourceBundle.common.labels.new"></span>
+             <!-- /ko -->
+            </div>
+          </div>
+        </div>
+
+      <div class="oj-flex-item oj-sm-12 grid-row-group">
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.attachDocResourceBundle.documents.labels.docCategory"></label>
+            <div data-bind="text: $data.category"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.attachDocResourceBundle.documents.labels.docType"></label>
+            <div data-bind="text: $data.type"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.attachDocResourceBundle.documents.labels.remarks"></label>
+            <div class="content" data-bind="text: $data.remarks"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </li>
+</script>
+
+<script type="text/html" id="deleted_doc_list_card">
+  <li data-bind="attr: {id: $data.contentId.value}">
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-9 description">
+              <a href="#" data-bind="attr:{ title: $component.attachDocResourceBundle.documents.labels.docId, alt: $component.attachDocResourceBundle.documents.labels.docId},
+              text:$data.contentId.displayValue,
+              click:$component.downloadDocument.bind($data,$data.contentId.value)">
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      <div class="oj-flex-item oj-sm-12 grid-row-group">
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.attachDocResourceBundle.documents.labels.docCategory"></label>
+            <div data-bind="text: $data.category"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.attachDocResourceBundle.documents.labels.docType"></label>
+            <div data-bind="text: $data.type"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.attachDocResourceBundle.documents.labels.remarks"></label>
+            <div class="content" data-bind="text: $data.remarks"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </li>
+</script>

@@ -1,0 +1,88 @@
+<div class="compose-mail">
+  <div class="oj-flex">
+    <div class="oj-flex-item oj-sm-12 label">
+      <oj-label for="category">
+        <span data-bind="text:$component.nls.mailbox.labels.category"></span>
+      </oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 compose-mail__dropdown">
+      <oj-select-one id="category" translations="[[{'required':{messageDetail:nls.mailbox.messages.emptySubject}}]]" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{categoryOptionValue}}" on-value-changed="[[categoryOptionChangeHandler]]"
+        options="[[categoryOptionList]]" :placeholder="[[nls.mailbox.labels.select]]">
+      </oj-select-one>
+    </div>
+  </div>
+  <!-- ko if : othersTextFlag -->
+  <div class="oj-flex">
+    <div class="oj-flex-item oj-sm-12 label">
+      <oj-label for="otherRemark">
+        <span data-bind="text:$component.nls.mailbox.labels.otherRemark"></span>
+      </oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 compose-mail__dropdown">
+      <oj-input-text id="otherRemark" value="{{$component.otherRemark}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad">
+    <oj-text-area id="text-area" rows="15" :maxlength="[[maxlength]]" translations="[[{'required':{messageDetail:nls.mailbox.messages.emptyMail}}]]" required="[[true]]" value="{{textvalueVar}}"></oj-text-area>
+    <oj-label for="text-area" class="info-text-small">
+      <span data-bind="text:$baseModel.format($component.nls.mailbox.labels.charactersLeft,{number:(maxlength-(textvalueVar().length))})"></span>
+    </oj-label>
+  </div>
+
+  <!-- ko if : $component.uploadedFiles().length>0 -->
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- ko foreach: $component.uploadedFiles() -->
+    <div class="compose-mail__mailbox-attachments">
+      <span data-bind="text:name"></span>
+      <a href="javascript:void(0)" data-bind="click:$component.removeFile.bind($data,$data) "><span class="oj-panel-remove-icon"></span></a>
+    </div>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <oj-button class="action-button-primary" on-click="[[$component.sendMail]]">
+      <span class="icons icon-mailbox" slot="startIcon"></span>
+      <span data-bind="text:$component.nls.mailbox.labels.send"></span>
+    </oj-button>
+    <oj-file-picker class="oj-filepicker-custom" selection-mode="multiple" selecton="click" on-oj-select="[[fileSelectListener]]" data-bind="attr: {'id': 'document-upload'}">
+      <oj-button slot="trigger" class="action-button-tertiary">
+        <span class="icons icon-attachment" slot="startIcon"></span>
+        <span data-bind="text:$component.nls.mailbox.labels.attachFile"></span>
+      </oj-button>
+    </oj-file-picker>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div>
+      <span class="info-text-small" data-bind="text:$component.nls.mailbox.messages.fileSize"></span>
+    </div>
+    <div>
+      <span class="info-text-small" data-bind="text:$component.nls.mailbox.messages.fileType"></span>
+    </div>
+  </div>
+
+</div>
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'sentMailSuccess',closeHandler:closeHandler,header:$component.nls.mailbox.headers.successHeader">
+  <div class="message-box">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <!-- ko if:interactionId -->
+        <div class="dialog-text">
+          <span data-bind="text: $baseModel.format(nls.mailbox.labels.sentSuccessMessage, {interactionId: $component.interactionId()})"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:interactionId -->
+        <div class="dialog-text">
+          <span data-bind="text: $component.nls.mailbox.labels.sentSuccessMessageLocal"></span>
+        </div>
+        <!-- /ko -->
+      </div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button id="ok" class="action-button-primary" on-click="[[$component.ok]]">
+          <span data-bind="text:$component.nls.mailbox.buttons.ok"></span>
+        </oj-button>
+      </div>
+    </div>
+</modal-window>

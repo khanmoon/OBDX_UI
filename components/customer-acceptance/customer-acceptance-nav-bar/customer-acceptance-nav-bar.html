@@ -1,0 +1,19 @@
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.large() }">
+    <div class="oj-flex oj-flex-items-pad">
+      <!-- ko ifnot:$baseModel.small() -->
+      <div class="oj-flex-item oj-sm-10 oj-md-8 oj-lg-6" data-bind='component:{name: "nav-bar", params:{rootModel: $data,menuOptions: menuOptions, uiOptions:uiOptions,navBarDescription:$component.resourceBundle.navLabels.navBarDescription}}'></div>
+      <!-- /ko -->
+      <!-- ko if:$baseModel.small() -->
+      <div class="oj-flex oj-sm-12 cust-details">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="acceptance-radioset"><span data-bind="text:$component.resourceBundle.navLabels.acceptance"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+          <oj-radioset class="oj-choice-direction-row" id="acceptance-radioset" required value="{{$component.menuSelection}}"><oj-option value="DISCREPANCIES" id="discrepanciesRadioset" name="discrepanciesRadioset"><span for="discrepanciesRadioset" data-bind="text:$component.resourceBundle.navLabels.discrepancies"></span></oj-option><oj-option value="AMENDMENT" id="acceptanceRadioset" name="discrepanciesRadioset"><span for="acceptanceRadioset" data-bind="text:$component.resourceBundle.navLabels.amendment"></span></oj-option></oj-radioset>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>

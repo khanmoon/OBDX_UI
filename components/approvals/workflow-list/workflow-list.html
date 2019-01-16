@@ -1,0 +1,87 @@
+<!-- ko if:partyIdFetched()-->
+<div id="partyValidateSearchWorkflow" class="oj-flex oj-flex-items-pad" data-bind="component: {name: 'party-validate', params:{rootModel: $component,partyDetails:$component.rootModelInstance().approvals,additionalDetails:$component.rootModelInstance().approvals.additionalDetails}}"></div>
+<!-- /ko -->
+<!-- ko if:$component.rootModelInstance().approvals.partyDetailsFetched() -->
+<div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button id="workflow_btnCreate" class="action-button-primary" on-click="[[createNew]]">
+    <span data-bind="text:createNewLabel"></span>
+  </oj-button>
+  <!-- ko if:!$component.partyIdAvailable -->
+  <oj-button class="action-button-secondary" on-click="[[back]]">
+    <span data-bind="text:backLabel"></span>
+  </oj-button>
+  <!-- /ko -->
+  <!-- ko ifnot:dataLoaded() -->
+  <oj-button class="action-button-tertiary" on-click="[[cancelSearch]]">
+    <span data-bind="text:cancel"></span>
+  </oj-button>
+  <!-- /ko -->
+</div>
+
+<!-- ko if:dataLoaded() -->
+
+<!-- ko if:!$baseModel.small() -->
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+  <oj-table id="table" :aria-label="[[$component.nls.workflow.details]]" columns="[[[{headerText:workflowCodeLabel,field:'name',template:'workflow_code'},{headerText:workflowDescriptionLabel,field:'description'},{headerText:workflowApprovalLevels,field:'approvalCount'}]]]"
+    columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'single',column:'single'}]]" on-value-changed="[[onWorkflowSelected]]" data="[[$component.datasource]]">
+    <caption class="hide-label" data-bind="text:$component.nls.workflow.details"></caption>
+    <template slot="workflow_code">
+        <a href="javascript:void(0)" data-bind="text:$current.row.name,click:$component.viewWorkflow.bind($current.row,$current.row.workFlowId)"></a>
+    </template>
+  </oj-table>
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-tertiary" on-click="[[cancelSearch]]">
+      <span data-bind="text:cancel"></span>
+    </oj-button>
+  </div>
+
+
+</page-section>
+<!-- /ko -->
+
+<!-- ko if:$baseModel.small() -->
+
+<div class="grid-main-container">
+  <div class="oj-flex oj-flex-items-pad grid-table-header">
+
+    <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+      <span data-bind="text : workflowCodeLabel"></span>
+    </div>
+
+    <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+      <span data-bind="text : workflowDescriptionLabel"></span>
+    </div>
+
+    <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+      <span data-bind="text : workflowApprovalLevels"></span>
+    </div>
+
+  </div>
+
+  <div class="grid-main-container">
+    <oj-list-view id="searchRuleListView" data="[[datasource]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('rulesSearch_template',true)}]]" selection-mode="[['single']]"></oj-list-view>
+    <script type="text/html" id="rulesSearch_template">
+      <li data-bind="attr: {id: $data['name']}">
+        <div class="oj-flex oj-flex-items-pad grid-row-group">
+          <a href="javascript:void(0)" data-bind="click:$component.onWorkflowSelected.bind($data,workFlowId)">
+            <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+              <span data-bind="text: name"></span>
+            </div>
+            <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+              <span data-bind="text: description"></span>
+            </div>
+
+            <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+              <span data-bind="text:approvalCount"></span>
+            </div>
+
+          </a>
+        </div>
+      </li>
+    </script>
+  </div>
+</div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->

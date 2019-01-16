@@ -1,0 +1,57 @@
+<!-- ko if : $component.existingOccupationsLoaded() -->
+<div class="employments-financial-info" data-bind="with: applicantObject().occupationInfo">
+  <!-- ko foreach: $data.occupations().employmentDTOs -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-6 oj-lg-6 padding-top additional-label">
+      <!-- ko if : $index()===0 -->
+      <h4 class="form-heading additional-label page-section-heading__text" data-bind="text: $component.resource.primaryOccupation"></h4>
+      <!-- /ko -->
+      <!-- ko if : $index()>0 -->
+      <h4 class="form-heading additional-label page-section-heading__text" data-bind="text: $component.resource.previousEmployment"></h4>
+      <!-- /ko -->
+    </div>
+  </div>
+  <oj-validation-group id="occupationInfoTracker" valid="{{$component.groupValid}}">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+        <oj-label :for="[['occupationType'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.occupationType"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+        <!-- ko if: $component.occupationLoaded() -->
+        <oj-select-one id="occupationType" required :id="[['occupationType'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.occupationType}}]]" disabled="[[$component.applicantObject().occupationInfo.disableInputs()]]"
+          :placeholder="" on-value-changed="[[$component.updateStatuses.bind($data,$index())]]" value="{{type}}">
+          <!-- ko foreach: $component.occupations -->
+          <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- ko if: $component.statusLoaded() && $data.temp_isStatusEligible() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+        <oj-label :for="[['employerName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.companyOrEmployerName"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <!-- ko if: $component.namesLoaded() -->
+        <oj-select-one :id="[['employerName'+($baseModel.currentIdCount())]]" translations="[[{'required':{
+            messageDetail:$component.resource.messages.employerName}}]]" disabled="[[$component.applicantObject().occupationInfo.disableInputs()]]" :placeholder="" value="{{employerName}}">
+          <!-- ko foreach: $component.employerNames -->
+          <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- /ko -->
+  </oj-validation-group>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item left oj-sm-12">
+      <oj-button id="doneOccupation" class="form-button-secondary" :aria-label="[[$component.resource.submitOccupation]]" on-click="[[$component.submitOccupationInfo.bind($data,$component.applicantObject().occupationInfo)]]">
+        <span data-bind="text:$component.resource.generic.common.continue"></span>
+      </oj-button>
+    </div>
+  </div>
+</div>
+<!-- /ko -->

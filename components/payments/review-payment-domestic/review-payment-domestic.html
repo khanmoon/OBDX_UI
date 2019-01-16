@@ -1,0 +1,33 @@
+<!-- ko if:$component.stageTwo() -->
+<div data-bind="css:$component.isMultiplePayment?'':'form-main-container'">
+    <!-- ko if:$component.params.transferData && $component.params.transferData.reviewMode -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.payments.generic.common.review , reviewHeader : ($component.isStandingInstruction() && $component.paynowWithSI && $component.paynowWithSI().length > 0) ? $component.payments.common.reviewHeaderMsgPayNowSI : $baseModel.format($component.payments.common.reviewHeaderMsg, {txnName : $component.payments.common.transfers.domestic})}}"></div>
+    <!-- /ko -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : (($component.params.transferData && $component.params.transferData.reviewMode) || $component.isMultiplePayment)?'':$component.payments.moneytransfer.domesticHeader">
+
+        <div data-bind="template: { name: 'payments/review-payment-domestic' }"></div>
+
+    </page-section>
+
+    <!-- ko if:$component.params.transferData && $component.params.transferData.reviewMode -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+
+        <oj-button class="action-button-primary " id="confirm-button" on-click="[[verifyPayment]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.payments.generic.common.confirm"></span>
+</oj-button>
+
+        <!-- ko if:!$baseModel.small() -->
+        <oj-button class="action-button-secondary " id="cancel" on-click="[[$dashboard.openDashBoard.bind($component.payments.common.cancelConfirm)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.payments.generic.common.cancel"></span>
+</oj-button>
+        <!-- /ko -->
+
+        <oj-button data-id="cancelPayment" class="action-button-tertiary " id="cancel-button" on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.payments.generic.common.back"></span>
+</oj-button>
+
+    </div>
+    <!-- /ko -->
+</div>
+
+<!-- /ko -->

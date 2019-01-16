@@ -1,0 +1,284 @@
+<div class="template-list-container">
+  <div class="oj-flex">
+    <div data-bind="css: $component.mode() === 'REVIEW' ? 'oj-flex-item oj-sm-12' : 'oj-flex-item oj-sm-9'">
+      <div class="form-main-container">
+
+        <!-- ko if: $component.mode()!=="SUCCESS" -->
+        <page-section params="baseModel : $baseModel, rootModel : $data">
+
+          <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'deleteAlert',header:$component.nls.alerts.labels.deleteAlert">
+            <div class="form-main-container message-text">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item">
+                  <span data-bind="text:$component.nls.alerts.labels.deleteAlertMsg"></span>
+                </div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button id="deleteYes" class="action-button-primary" on-click="[[deleteAlert]]">
+                  <span data-bind="text:$component.nls.genericAlert.yes"></span>
+                </oj-button>
+                <oj-button id="deleteNo" class="action-button-secondary" on-click="[[closeDialogBox]]">
+                  <span data-bind="text:$component.nls.genericAlert.no"></span>
+                </oj-button>
+
+              </div>
+            </div>
+          </modal-window>
+
+
+          <!-- ko if: $component.mode()==="VIEW" || $component.mode()==="REVIEW" -->
+
+          <!-- ko if: $component.mode()==="REVIEW" && $component.prevReviewMode()==="CREATE" -->
+          <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.genericAlert.review , reviewHeader : $component.nls.alerts.labels.reviewCreateMessage}}"></div>
+
+          <!-- /ko -->
+
+          <!-- ko if: $component.mode()==="REVIEW" && $component.prevReviewMode()==="EDIT" -->
+          <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.genericAlert.review , reviewHeader : $component.nls.alerts.labels.reviewEditMessage}}"></div>
+
+          <!-- /ko -->
+
+          <!-- ko if: alertDetailsLoaded() -->
+
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.alerts.labels.moduleType , value :$component.nls.alerts.moduleType[$component.moduleType()]"></row>
+
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.alerts.labels.eventId , value :$component.eventDescription"></row>
+
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.alerts.labels.alertType , value : $component.nls.alerts.alertType[$component.payload().alertType]"></row>
+          <!-- /ko -->
+          <!-- /ko -->
+
+          <!-- ko if: $component.mode()==="EDIT" -->
+
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.alerts.labels.moduleType , value :$component.nls.alerts.moduleType[$component.moduleType()]"></row>
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.alerts.labels.eventId , value :$component.eventDescription"></row>
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.alerts.labels.alertType , value :$component.nls.alerts.alertType[$component.alertType()]"></row>
+
+          <!-- /ko -->
+
+          <!-- ko if : $component.mode()==="CREATE" && $component.eventActivityDataLoaded -->
+          <!-- ko if:moduleTypeLoaded -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-label for="moduleType"><span data-bind="text:$component.nls.alerts.labels.moduleType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+
+
+              <oj-select-one id="moduleType" required on-value-changed="[[$component.moduleTypeChangeHandler]]" :placeholder="[[$component.nls.genericAlert.select]]" value="{{$component.moduleType}}">
+                <!-- ko foreach : moduleTypeList -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <!-- /ko -->
+
+          <!-- ko if:showDropDown -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-label for="createAlertEventDescription"><span data-bind="text:$component.nls.alerts.labels.eventDescription"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+
+
+              <oj-select-one id="createAlertEventDescription" required on-value-changed="[[$component.optionChangeHandler]]" :placeholder="[[$component.nls.genericAlert.select]]" value="{{$component.eventDescription}}">
+                <!-- ko foreach : eventActivityList -->
+                <oj-option value="[[$data.activityEventDescription]]"><span data-bind="text:activityEventDescription"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if: $component.mode()==="CREATE" -->
+          <!-- ko if: alertTypeLoaded -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-label for="createAlertType"><span data-bind="text:$component.nls.alerts.labels.alertType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+              <oj-select-one id="createAlertType" required :placeholder="[[$component.nls.genericAlert.select]]" value="{{$component.alertType}}">
+                <!-- ko foreach : alertTypeList -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+
+
+          <!-- ko if: $component.mode()==="VIEW" || $component.mode()==="REVIEW" -->
+          <oj-accordion class="oj-lg-7 alerts-accordionPage" :id="[['accordionPage' + $baseModel.incrementIdCount()]]">
+            <!-- ko foreach:messageTemplateList -->
+            <oj-collapsible class="oj-accordion-collapsible" :id="[['collapsibleDiv' + $index()]]">
+
+              <span class="acc-header" slot="header"><div class="acc-recipient" data-bind="text:$component.getRecipientLabel($index(),keyDTO)"><span class="demo-icon-font demo-education-icon-24"></div></span></span>
+
+              <div class="message-templates">
+                <div data-bind="component:{name:'message-template-maintenance',params:{rootModel:$component,index:$index(),messageTemplateModel:$data, validationTracker:$component.validationTracker,mode:$component.mode}}"> </div>
+              </div>
+            </oj-collapsible>
+            <!-- /ko -->
+          </oj-accordion>
+          <!-- /ko -->
+        </page-section>
+        <!-- ko if: $component.mode() === "CREATE" || $component.mode()==="EDIT" -->
+
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.MESSAGESETTINGS ">
+          <!-- ko foreach:messageTemplateList -->
+          <div class="oj-flex oj-flex-items-pad">
+
+            <oj-accordion class="oj-flex-item oj-lg-6 alerts-accordionPage" :id="[['accordionPage' + $baseModel.incrementIdCount()]]">
+
+              <!-- ko if:$component.prevMode() === "REVIEW"-->
+
+              <oj-collapsible class="oj-accordion-collapsible" :id="[['collapsibleDiv' + $index()]]">
+
+                <!-- ko  if : keyDTO.recipientCategory() === null -->
+
+                <span class="acc-header" slot="header"><div class="acc-recipient" data-bind="text:$component.getRecipientLabel($index(),keyDTO)"><span class="demo-icon-font demo-education-icon-24"></div></span></span>
+
+                <!-- /ko -->
+
+                <!-- ko if:keyDTO.recipientCategory() !== null -->
+
+                <!-- ko ifnot: keyDTO.recipient().includes('_') -->
+                <span class="acc-header" slot="header"><div class="acc-recipient"data-bind="text:$component.getRecipientLabel($index(),keyDTO)"><span class="demo-icon-font demo-education-icon-24"></div></span></span>
+                <!-- /ko -->
+
+                <!-- ko if :keyDTO.recipient().includes('_') -->
+                <span class="acc-header" slot="header"><div class="acc-recipient" data-bind="text:$component.getRecipientLabel($index(),keyDTO)"><span class="demo-icon-font demo-education-icon-24"></div></span></span>
+
+                <!-- /ko -->
+
+                <!-- /ko -->
+
+                <div class="message-templates">
+                  <div data-bind="component:{name:'message-template-maintenance',params:{rootModel:$component,index:$index(),messageTemplateModel:$data, validationTracker:$component.validationTracker,mode:$component.mode}}"> </div>
+                </div>
+              </oj-collapsible>
+              <!-- /ko -->
+
+              <!-- ko if:$component.prevMode() !== "REVIEW" -->
+              <oj-collapsible class="oj-accordion-collapsible" :id="[['collapsibleDiv' + $index()]]">
+                <!-- ko if:keyDTO.recipientCategory() === null -->
+                <span class="acc-header" slot="header"><div class="acc-recipient"data-bind="text:$component.getRecipientLabel($index(),keyDTO)"><span class="demo-icon-font demo-education-icon-24"></div></span></span>
+                <!-- /ko -->
+                <!-- ko if:keyDTO.recipientCategory() !== null -->
+
+                <!-- ko ifnot: keyDTO.recipient().includes('_') -->
+                <span class="acc-header" slot="header"><div class="acc-recipient"data-bind="text:$component.getRecipientLabel($index(),keyDTO)"><span class="demo-icon-font demo-education-icon-24"></div></span></span>
+                <!-- /ko -->
+
+                <!-- ko if :keyDTO.recipient().includes('_') -->
+                <span class="acc-header" slot="header"><div class="acc-recipient"data-bind="text:$component.getRecipientLabel($index(),keyDTO)"><span class="demo-icon-font demo-education-icon-24"></div></span></span>
+
+                <!-- /ko -->
+                <!-- /ko -->
+
+
+                <div class="message-templates">
+                  <div data-bind="component:{name:'message-template-maintenance',params:{rootModel:$component,index:$index(),messageTemplateModel:$data, validationTracker:$component.validationTracker,mode:$component.mode}}"> </div>
+                </div>
+              </oj-collapsible>
+
+              <!-- /ko -->
+            </oj-accordion>
+            <div class="oj-flex-item oj-lg-2 deleteTemplate">
+              <a href="javascript:void(0)" class="icon icon-delete" data-bind="click: $component.deleteTemplate.bind($data, $index(), $data),attr:{'aria-label':$component.nls.alerts.labels.deleteRecipient+($index()+1)}"></a>
+            </div>
+          </div>
+
+          <!-- /ko -->
+          <!-- ko if:$component.eventDescriptionUpdated() -->
+          <div class="oj-flex">
+            <div class="oj-flex-items-pad">
+              <oj-button class="help-button addButton" on-click="[[addNewTemplate]]">
+                <span data-bind="text:$component.nls.alerts.labels.addNew"></span>
+              </oj-button>
+            </div>
+          </div>
+          <!-- /ko -->
+
+        </page-section>
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <!-- ko if: $component.mode()==="CREATE" || $component.mode()==="EDIT"  -->
+          <oj-button class="action-button-primary" on-click="[[save]]">
+            <span data-bind="text:$component.nls.genericAlert.save"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" on-click="[[cancelConfirmation]]">
+            <span data-bind="text:$component.nls.genericAlert.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" on-click="[[back]]">
+            <span data-bind="text:$component.nls.genericAlert.back"></span>
+          </oj-button>
+
+          <!-- /ko -->
+          <!-- ko if: $component.mode()==="VIEW" -->
+          <oj-button class="action-button-primary" on-click="[[editAlert]]">
+            <span data-bind="text:$component.nls.genericAlert.edit"></span>
+          </oj-button>
+          <!-- ko if: $component.payload().alertType==="S" -->
+          <oj-button class="action-button-secondary" on-click="[[deleteModal]]">
+            <span data-bind="text:$component.nls.genericAlert.delete"></span>
+          </oj-button>
+          <!-- /ko -->
+          <oj-button class="action-button-secondary" on-click="[[cancelConfirmation]]">
+            <span data-bind="text:$component.nls.genericAlert.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" on-click="[[back]]">
+            <span data-bind="text:$component.nls.genericAlert.back"></span>
+          </oj-button>
+
+          <!-- /ko -->
+
+          <!-- ko if: $component.mode()==="REVIEW" && !approverReview() -->
+          <oj-button class="action-button-primary" on-click="[[confirm]]">
+            <span data-bind="text:$component.nls.genericAlert.confirm"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" on-click="[[cancelConfirmation]]">
+            <span data-bind="text:$component.nls.genericAlert.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" on-click="[[editReviewAlert]]">
+            <span data-bind="text:$component.nls.genericAlert.back"></span>
+          </oj-button>
+
+          <!-- /ko -->
+        </div>
+        <modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'cancelDialog',header:$component.nls.alerts.labels.cancelWarning">
+          <div class="message-box">
+            <div class="dialog-text" data-bind="text:$component.nls.alerts.labels.cancelMessage">
+            </div>
+            <div class="button-container">
+              <oj-button class="action-button-primary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                <span data-bind="text:$component.nls.genericAlert.yes"></span>
+              </oj-button>
+              <oj-button class="action-button-secondary" on-click="[[$component.closeDialogBox]]">
+                <span data-bind="text:$component.nls.genericAlert.no"></span>
+              </oj-button>
+            </div>
+          </div>
+        </modal-window>
+        <!-- /ko -->
+      </div>
+    </div>
+
+    <!-- ko if: $component.mode()!=="REVIEW" -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+      <!-- ko if: $component.mode()==="VIEW" -->
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'alerts-maintenance-view'"></help>
+      <!-- /ko -->
+      <!-- ko if: $component.mode()==="CREATE" -->
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'alerts-maintenance-create'"></help>
+      <!-- /ko -->
+      <!-- ko if: $component.mode()==="EDIT" -->
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'alerts-maintenance-edit'"></help>
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+  </div>
+</div>

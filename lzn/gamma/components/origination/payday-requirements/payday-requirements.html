@@ -1,0 +1,91 @@
+<!-- ko if: $component.existingRequirementsLoaded() -->
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <oj-validation-group id="payday-requirements-tracker"  valid="{{groupValid}}">
+    <div class="">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+
+          <div class="requirements" data-bind="with:productDetails().requirements">
+            <div data-bind="component: {
+                          name: 'amount-input', params: {
+                              amount :requestedAmount.amount,
+                              placeholder: $component.dollar,
+                              label : $component.resource.loan.loanAmount,
+                              currency:requestedAmount.currency,
+                              labelClasses : 'oj-lg-3 oj-md-4 oj-lg-offset-2 oj-md-offset-1',
+                              valueClasses : 'oj-lg-5 oj-md-6',
+                              currencyParser : $component.currencyParser,
+                              converter:$root.formatCurrency,
+                              validator:$component.validationTracker,
+                              isMandatory:true,
+                              maxlength:15,
+                              rootId:'loan-amount',
+                              rootClass:'form-input',
+                              inline:true,
+                              formattedAmount: ko.observable()
+                          }
+                      }"></div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+                <oj-label :for="[['promoCode']]"><span data-bind="text:$component.resource.promoCode"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-input-text maxlength="50" autocomplete="off" spellcheck="false" :id="[['promoCode']]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{promoCode}}"></oj-input-text>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad section">
+              <div class="oj-flex-item oj-lg-offset-2 oj-md-offset-1 oj-lg-12 oj-md-12 oj-sm-12">
+                <span class="form-heading" data-bind="text:$component.resource.militaryDisclosure"></span>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad section">
+              <div class="oj-flex-item oj-lg-offset-2 oj-md-offset-1 oj-lg-9 oj-md-12 oj-sm-12">
+                <span class="text" data-bind="text:$component.resource.militaryDisclosureText"></span>
+              </div>
+            </div>
+            <!-- ko foreach: $component.productDetails().militaryDisclosures-->
+            <div class="militaryDisclosures oj-flex oj-flex-items-pad">
+              <a class="desc oj-flex-item oj-lg-9 oj-md-10 oj-lg-offset-2 oj-md-offset-1" href="javascript:void(0)" data-bind=" click: $component.selectMilitaryDisclosure.bind($data,$index()) ,attr:{'id':'militaryDisclosure'+$index(), alt: $component.resource.selectMilitaryDisclosure, title: $component.resource.selectMilitaryDisclosureTitle}">
+                        <span class="icon select-icon"></span>
+                        <div class="text" data-bind="html: disclosure">
+                        </div>
+                    </a>
+            </div>
+            <!-- /ko -->
+            <!-- ko if : $component.isServiceMember() -->
+            <div class="oj-flex oj-flex-items-pad">
+
+              <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2">
+                <oj-label for="SCRADate"><span data-bind="text:$component.resource.scraDate"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-input-date id="SCRADate" required autocomplete="off" spellcheck="false" translations="[[{'required':{messageDetail:$component.resource.messages.scraDate}}]]" converter="[[$component.dateConverter]]" value="{{$component.productDetails().SCRADate}}"
+                  datepicker="[[{yearRange:'c:c+100'}]]"></oj-input-date>
+              </div>
+
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2">
+                <oj-label for="SCRARefNo"><span data-bind="text:$component.resource.scraRefNo"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+                <oj-input-text id="SCRARefNo" required maxlength="30" autocomplete="off" spellcheck="false" translations="[[{'required':{messageDetail:$component.resource.messages.scraRefNo}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL',$component.resource.messages.scraRefNo,$component.validateScraRefNo)]]"
+                  value="{{$component.productDetails().SCRARefNo}}"></oj-input-text>
+              </div>
+            </div>
+            <!-- /ko -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </oj-validation-group>
+</page-section>
+<!-- /ko -->
+<div class="button-container oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item  oj-md-10 oj-lg-10">
+    <oj-button raised="" id="submit-requirements" class="form-button-secondary" on-click="[[$component.submitRequirements]]" disabled="[[$component.disableSubmit]]"><span data-bind="text:$component.resource.generic.common.continue"></span></oj-button>
+  </div>
+</div>

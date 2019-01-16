@@ -1,0 +1,67 @@
+<!-- ko if:$component.stageOne() -->
+    <!-- Account nick name -->
+    <oj-validation-group id="dd-payee-tracker">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label ">
+            <oj-label for="nickName"><span data-bind="text:$component.payments.payee.international.draftfavouring"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 ">
+            <oj-input-text required id="nickName" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('NAME')]]" value="{{international.nickName}}"></oj-input-text>
+        </div>
+    </div>
+    <!-- draft payable at -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label ">
+            <oj-label for="country"> <span data-bind="text:$component.payments.payee.international.draftpayableatcountry"></span></oj-label>
+        </div>      
+                <div class="oj-flex-item oj-sm-12">
+                    <!-- ko if:isCountriesLoaded() -->
+                    <oj-select-one required id="country" on-value-changed="[[$component.getSelectedCountry]]" value="{{international.payAtCountry}}" :placeholder="[[$component.payments.common.select]]">
+                        <!-- ko foreach:countries -->
+                        <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+
+                    <!-- /ko -->
+                </div>
+
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                <!-- ko if:$component.selectedCountry() -->
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-label for="draftcity"> <span data-bind="text:$component.payments.payee.international.draftcity"></span></oj-label>
+                </div>
+
+                <div class="oj-flex-item oj-sm-12">
+
+                    <oj-input-text required id="draftcity" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('CITY')]]" value="{{international.payAtCity}}"></oj-input-text>
+                    
+                </div>
+                <!-- /ko -->
+    </div>
+
+
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="required oj-flex-item oj-sm-12 label">
+            <oj-label for="DeliveryLocation"><span data-bind="text:$component.payments.common.DeliveryLocation"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 ">
+            <div id="DeliveryLocation" data-bind="component: {name: 'address',
+                    params:{rootModel: $parent,
+                      data:$data,validator:$component.validationTracker,
+                      address:$component.addressDetails}}">
+            </div>
+        </div>
+    </div>
+</oj-validation-group>
+<!-- /ko -->
+
+
+
+<!-- ko if:$component.stageTwo() -->
+
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.payments.payee.review">
+    <div data-bind="template: { name: 'payee/review-international-demand-draft' }"></div>
+</page-section>
+
+<!-- /ko -->

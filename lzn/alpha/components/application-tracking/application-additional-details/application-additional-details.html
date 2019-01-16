@@ -1,0 +1,41 @@
+
+    <div class="text-top" data-bind="text:$component.resource.fillAdditional">
+    </div>
+
+
+        <!-- ko if: showComponents() -->
+        <div id="addtionalInfoAccordion" class="accordion">
+            <!-- ko foreach: uplTrackingDetails().additionalInfo.sections -->
+            <div class="card  ">
+                <div class="card-header oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-1 oj-md-1 oj-lg-1">
+                    <div class="accordion-strip"></div>
+                    <div class="oj-sm-only-hide card-icon-container"><span class="image-icon" data-bind="css: icon"></span></div>
+                  </div>
+                   <!-- <a href="javascript:void(0)" class="icon icon-arrow-down section-icon collapse-icon"></a>
+                   <img class='card-icon'  data-bind="loadImage:'origination/accordion/'+$data.component+'.svg'"  alt=""> -->
+                   <div class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.accordionNames.accordionNames[$data.name]"></div>
+                   <!-- ko if: !$data.isComplete() -->
+                   <div class=""><a href="javascript:void(0)" class="icon icon-arrow-right section-icon collapse-icon"></a></div>
+                   <!-- /ko -->
+                    <!-- ko if: $data.isComplete() -->
+                        <span class="icon icon-success section-icon pull-right done-icon"></span>
+                    <!-- /ko -->
+                </div>
+                <div class="card-body form-main-container" data-bind="component: { name: $data.component, params: { rootModel: $parent }}">
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+    <!-- /ko -->
+
+    <div class=" button-container product-button-panel">
+        <oj-button class="action-button-secondary last-2 " on-click="[[clickBackButton]]">
+      <span data-bind="text:$component.resource.back"></span>
+</oj-button>
+        <oj-button id="backButton" class="action-button-secondary first-2 oj-button pull-right" on-click="[[function(){$baseModel.switchPage({homeComponent:{module:'application-tracking',component: 'application-tracking-base',query: {context: 'index'}}},true);}]]">
+      <span data-bind="text:$component.resource.return"></span>
+</oj-button>
+
+
+    </div>

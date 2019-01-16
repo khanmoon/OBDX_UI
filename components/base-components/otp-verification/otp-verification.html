@@ -1,0 +1,124 @@
+<div data-bind="template: $component.getTemplate()"></div>
+<script type="text/html" id="templateDefault">
+
+  <div class="oj-flex oj-flex-items-pad  ">
+    <span class="oj-flex-item" data-bind="text:$component.locale.message['otpDevice5']"></span>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 label">
+      <oj-label for="otp"><span data-bind="text:$component.locale.verificationcode"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-10 oj-md-3 oj-lg-3">
+      <oj-input-password required type="password" autocomplete="off" id="otp" maxlength="10" value="{{verificationCode}}" validators="[[$baseModel.getValidator('OTP')]]"></oj-input-password>
+    </div>
+    <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1">
+      <a href="#" id="eyecon" class="icon icon-eye-slash" data-bind="attr:{'alt':$component.locale.togglePasswordAlt ,'title':$component.locale.togglePassword,'aria-label':$component.locale.togglePassword },click:togglePassword"></a>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" id="submitOTPButton" on-click="[[submitOTP]]">
+      <span data-bind="text:$component.locale.submit"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" id="cancelButton" on-click="[[cancel]]">
+      <span data-bind="text:$component.locale.cancel"></span>
+    </oj-button>
+  </div>
+
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 label">
+      <span data-bind="text:$component.locale.resendcode_msg"></span>
+
+      <a href="#" id="resendOTPButton" data-bind="text:$component.locale.resendcode,
+      click:resendOTP ,attr:{alt: $component.locale.resendcode,
+         title: $component.locale.resendcode}"></a>
+    </div>
+  </div>
+</script>
+<script type="text/html" id="walletTemplate">
+  <div class="wallet-confirm-screen">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <div class="section">
+        <div class="">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="otpVerify"><span data-bind="text:wallet.origination.enterCode.textBoxHeading"></span></oj-label>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-10 oj-md-11 oj-lg-11">
+            <oj-input-password id="otpVerify" maxlength="10" required autofocus type="password" autocomplete="off" translations="[[{'required':{messageDetail:messages.walletOrigination.verificationCode}}]]" value="{{verificationCode}}"></oj-input-password>
+          </div>
+          <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1 otp-eye">
+            <a id="eyecon" href="#" class="icon icon-eye-slash" data-bind="attr:{'alt':$component.locale.togglePasswordAlt ,'title':$component.locale.togglePassword,'aria-label':$component.locale.togglePassword },click:togglePassword"></a>
+          </div>
+        </div>
+        <!-- ko if:resendMsg() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <span data-bind="text : wallet.codeResendMsg"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:exceedResendMsg() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <span data-bind="text : wallet.resendMsg"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-primary" on-click="[[submitOTP]]">
+            <span data-bind="text:wallet.origination.enterCode.button"></span>
+          </oj-button>
+          <img data-bind="loadImage:'wallet/wallet-farward-white.png'" alt="">
+          <oj-button class="action-button-secondary" id="resendOTPButton" on-click="[[resendOTP]]" disabled="{{resendCode() > 3}}">
+            <span data-bind="text:$component.wallet.OPTverification.resendcode"></span>
+          </oj-button>
+        </div>
+      </div>
+    </page-section>
+  </div>
+</script>
+
+<script type="text/html" id="popupTemplate">
+  <div class="otp-verification">
+    <div class="oj-flex oj-flex-items-pad primary-heading">
+      <h3 data-bind="text:$component.locale.verification"></h3>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad  ">
+      <span class="text" data-bind="text: $component.locale.message[$component.otpDevice()]"></span>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-lg-5 oj-md-5 ">
+        <oj-label for="otp"><span data-bind="text:$component.locale.verificationcode"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-10 oj-md-5 oj-lg-4">
+        <oj-input-password required type="password" autocomplete="off" id="otp" maxlength="10" value="{{verificationCode}}" validators="[[$baseModel.getValidator('OTP')]]"></oj-input-password>
+      </div>
+      <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1">
+        <a href="#" id="eyecon" class="icon icon-eye-slash" data-bind="attr:{'alt':$component.locale.togglePasswordAlt ,'title':$component.locale.togglePassword,'aria-label':$component.locale.togglePassword },click:togglePassword"></a>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad margin-bottom-20">
+      <div class="oj-flex-item oj-lg-5 oj-md-5 ">
+        <span data-bind="text:$component.locale.resendcode_msg"></span>
+      </div>
+      <div class="oj-flex-item oj-lg-4 oj-md-4 ">
+        <oj-button class="form-button-secondary" id="resendOTPButton" on-click="[[resendOTP]]">
+          <span data-bind="text:$component.locale.resendcode"></span>
+        </oj-button>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad message-btn button-container">
+      <oj-button class="action-button-primary" id="submit-button" on-click="[[submitOTP]]">
+        <span data-bind="text:$component.locale.submit"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" id="cancel-button" on-click="[[cancel]]">
+        <span data-bind="text:$component.locale.cancel"></span>
+      </oj-button>
+    </div>
+  </div>
+</script>

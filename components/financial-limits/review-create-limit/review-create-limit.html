@@ -1,0 +1,134 @@
+<!-- ko if : loadData() -->
+<!-- ko ifnot : showConfirm() -->
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+  <!-- ko if : $component.mode = 'review' -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.common.review , reviewHeader :$component.nls.common.addReviewHeaderMsg}}"></div>
+
+  <!-- /ko -->
+
+  <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.LimitType , value :$component.limitType()"></row>
+  <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.limitCode , value : $component.params.data.limitName"></row>
+  <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.limitDescription, value : $component.params.data.limitDescription"></row>
+  <!-- ko if:$component.cummulativeLimitSection() -->
+  <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.frequency, value : nls.limit[$component.frequency()]"></row>
+  <!-- /ko -->
+  <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.limitCurrency, value : $component.params.data.currency"></row>
+
+  <!-- ko if:$component.transactionLimitSection() -->
+
+
+
+  <!-- <row params="rootModel : $parent, label : nls.common.currency(), value : $component.params.data.amountRange.maxTransaction.currency()"></row> -->
+
+  <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.minAmount , value :$baseModel.formatCurrency($component.params.data.amountRange.minTransaction.amount(),$component.params.data.amountRange.maxTransaction.currency())"></row>
+
+  <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.maxAmount , value :$baseModel.formatCurrency($component.params.data.amountRange.maxTransaction.amount(),$component.params.data.amountRange.maxTransaction.currency())"></row>
+
+
+  <!-- /ko -->
+
+  <!-- ko if:$component.cummulativeLimitSection() -->
+
+  <!-- ko if:$component.frequency() === 'DAILY' -->
+  <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.cummuTrnsAmnt, value : $baseModel.format($component.nls.limit.perDay, {
+    attribute : $baseModel.formatCurrency(params.data.maxAmount.amount(),params.data.maxAmount.currency())
+  })"></row>
+
+  <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.maxTransactions, value : $baseModel.format($component.nls.limit.perDay, {
+    attribute :$component.params.data.maxCount()
+  })"></row>
+
+  <!-- /ko -->
+  <!-- ko if:$component.frequency() === 'MONTHLY' -->
+  <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.cummuTrnsAmnt, value : $baseModel.format($component.nls.limit.perMonth, {
+    attribute : $baseModel.formatCurrency(params.data.maxAmount.amount(),params.data.maxAmount.currency())
+  })"></row>
+
+  <row params="baseModel : $baseModel, rootModel : $parent, label :nls.limit.maxTransactions, value : $baseModel.format($component.nls.limit.perMonth, {
+    attribute : $component.params.data.maxCount()
+  })"></row>
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+  <!-- ko if:$component.coolingPeriodLimitSection() -->
+  <!-- <row params="rootModel : $parent, label : nls.limit.fromTime, value : ($component.params.data.durationLimitSlots()[0].startDuration.hours()+nls.limit.colon+$component.params.data.durationLimitSlots()[0].startDuration.minutes())"></row>
+
+            <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.toTime , value :($component.params.data.durationLimitSlots()[0].endDuration.hours()+nls.limit.colon+$component.params.data.durationLimitSlots()[0].endDuration.minutes())"></row>
+
+            <row params="baseModel : $baseModel, rootModel : $parent, label : nls.limit.cumuAmount , value :$baseModel.formatCurrency($component.params.data.durationLimitSlots()[0].amount.amount(),$component.params.data.durationLimitSlots()[0].amount.currency())"></row> -->
+  <!-- /ko -->
+  <!-- ko if:$component.coolingPeriodLimitSection() -->
+  <oj-table id="table1" :aria-label="[[$component.nls.limit.transactionTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('rowTemplate', true)]]"
+  columns="[[[{headerText:$component.nls.limit.fromTime,sortable:'disabled',style:'width: 15%'},
+  {headerText:$component.nls.limit.toTime,sortable:'disabled',style:'width: 15%'},
+  {headerText:$component.nls.limit.cumuAmount,sortable:'disabled'}]]]" data="[[$component.reviewCoolingDatasource]]">
+    <caption class="hide-label" data-bind="text:$component.nls.limit.transactionTable"></caption>
+  </oj-table>
+  <script type="text/html" id="rowTemplate">
+    <tr>
+      <td>
+        <span data-bind="text:$baseModel.format($component.nls.limit.durationFormat,{dd:startDuration.days(),hh:startDuration.hours(),mm:startDuration.minutes()})"> </span>
+      </td>
+      <td>
+        <span data-bind="text:$baseModel.format($component.nls.limit.durationFormat,{dd:endDuration.days(),hh:endDuration.hours(),mm:endDuration.minutes()})"> </span>
+      </td>
+      <td>
+        <span data-bind="text:$baseModel.formatCurrency(amount.amount(),amount.currency())"></span>
+      </td>
+    </tr>
+  </script>
+  <!-- /ko -->
+
+</page-section>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'cancelDialog',header:$component.nls.common.cancelWarning">
+  <div class="form-main-container message-text">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <span data-bind="text:$component.nls.common.cancelMessage"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.nls.common.yes"></span>
+</oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$component.closeDialogBox]]">
+      <span data-bind="text:$component.nls.common.no"></span>
+</oj-button>
+    </div>
+  </div>
+</modal-window>
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <!-- ko if : $component.params.mode !== 'approval' -->
+  <oj-button class="action-button-primary" on-click="[[$component.confirm]]">
+      <span data-bind="text:nls.common.confirm"></span>
+</oj-button>
+  <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:nls.common.cancel"></span>
+</oj-button>
+  <oj-button class="action-button-tertiary" on-click="[[$component.edit]]">
+      <span data-bind="text:nls.common.back"></span>
+</oj-button>
+
+  <!-- /ko -->
+</div>
+<!-- /ko -->
+
+<!-- /ko -->
+
+<!-- ko if: $component.showConfirm() -->
+<div class="oj-flex oj-flex-items-pad">
+
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+    <label data-bind="text:$component.nls.common.confirm"></label>
+  </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button class="action-button-primary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.nls.common.ok"></span>
+</oj-button>
+</div>
+<!-- /ko -->

@@ -1,0 +1,39 @@
+<!-- ko if:dataLoaded() -->
+<div class="action-widget">
+    <!-- ko if: $component.header -->
+    <div class="oj-flex oj-flex-items-pad action-widget__header action-widget-header">
+        <div class="oj-flex-item action-widget-header__content action-widget-header-content">
+            <div class="action-widget-header-content__heading action-widget-heading">
+                <h3 class="action-widget-heading__title" data-bind="text:ko.utils.unwrapObservable($component.header)"></h3>
+                <!-- ko if:$component.captionText() -->
+                <h4 class="action-widget-heading__caption" data-bind="text:$component.captionText()"></h4>
+                <!-- /ko -->
+
+            </div>
+
+            <div class="action-widget-header-content__navigation action-widget-navigation">
+                <!-- ko if:$component.controls.ctrl2-->
+                <a class="action-widget-navigation__item action-widget-navigation-item" href="#" data-bind="click:$component.controls.ctrl2, attr:{ alt:$component.locale.title2 , title: $component.locale.title2Text, 'aria-label': $component.locale.title2 }">
+                    <span id="ctrl2" class="action-widget-navigation-item__icon icon-search"></span>
+                </a>
+                <!-- /ko -->
+                <!-- ko if:$component.controls.ctrl3-->
+                <a class="action-widget-navigation__item action-widget-navigation-item" href="#" data-bind="click:$component.controls.ctrl3, attr:{ alt:$component.locale.title3 , title: $component.locale.title3Text, 'aria-label': $component.locale.title3 }">
+                    <span id="ctrl3" class="action-widget-navigation-item__icon icon-more"></span>
+                </a>
+                <!-- /ko -->
+                <!-- ko if: ko.utils.unwrapObservable($component.expandComponent) -->
+                <a class="action-widget-navigation__item action-widget-navigation-item" href="#" data-bind="click:$component.expandComponentHandler, attr:{ alt: $component.locale['title'+$component.expansionHandler], title: $component.locale[$component.expansionHandler], 'aria-label': $component.locale['title'+$component.expansionHandler] }">
+                    <span id="ctrl4" class="action-widget-navigation-item__icon" data-bind="css:$component.expansionHandler === 4 ? 'icon-expand' : 'icon-compress' "></span>
+                </a>
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+    <div class="oj-panel action-widget__container">
+        <!-- ko template: { nodes: $componentTemplateNodes}-->
+        <!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->

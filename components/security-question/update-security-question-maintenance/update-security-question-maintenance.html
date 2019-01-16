@@ -1,0 +1,52 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+  <div class=" oj-flex-item oj-sm-9">
+    <div class="form-main-container security-questions">
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <oj-validation-group id="TaskValidater">
+          <!-- ko foreach: $component.updateSecQueModel.updateSecurityQuestionPayload.secQueMapping -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label :for="[['questions_'+$index()]]">
+                <span data-bind="text:$baseModel.format($component.nls.securityQuestion.labels.question_list,{number:$component.questionNumber.bind($data,$index())})"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-8 oj-md-4 oj-sm-4">
+              <oj-input-text type="text" required :aria-label="{{question}}" maxlength="50" :id="[['questions_'+$index()]]" value="{{question}}" invalidcomponenttracker="{{$component.validationTracker}}"></oj-input-text>
+            </div>
+            <div class="oj-flex-item oj-lg-2 oj-md-4 oj-sm-4">
+              <!-- ko if: !questionId -->
+              <a href="#" class="security-questions-icon__delete" data-bind="click:$component.deleteQuestion.bind($data, $index())">
+                  <span class="icons icon-delete">
+                  </span>
+              </a>
+              <!-- /ko -->
+            </div>
+          </div>
+          <!-- /ko -->
+        </oj-validation-group>
+        <!-- ko if:$component.updateSecQueModel.updateSecurityQuestionPayload.secQueMapping().length<20 -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+            <oj-button class="help-button" on-click="[[$component.addQuestion.bind($data,$component.updateSecQueModel.updateSecurityQuestionPayload.secQueMapping.length)]]">
+              <span data-bind="text:$component.nls.securityQuestion.labels.addMore"></span>
+            </oj-button>
+          </div>
+        </div>
+        <!-- /ko -->
+      </page-section>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" on-click="[[save]]">
+          <span data-bind="text:$component.nls.common.save"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+          <span data-bind="text:$component.nls.common.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+          <span data-bind="text:$component.nls.common.back"></span>
+        </oj-button>
+      </div>
+    </div>
+  </div>
+  <div class="oj-flex-item oj-lg-3 oj-sm-only-hide oj-md-only-hide help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction:'update-security-question-maintenance'"></help>
+  </div>
+</div>

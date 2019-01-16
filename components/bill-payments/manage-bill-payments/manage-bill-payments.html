@@ -1,0 +1,523 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between bill-payments">
+
+  <!-- ko if: $component.currentStage() === "LIST" -->
+
+  <div class="form-main-container oj-flex-item oj-sm-12 oj-md-12 oj-lg-7">
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+      <!-- ko if: $component.billersLoaded() -->
+
+      <!-- ko if: $component.originalBillers().length > 0 -->
+      <div class="oj-flex oj-flex-items-pad search-box">
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-10" data-bind="css: { 'no-pad-cols': $baseModel.small()}">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="component: { name: 'search-box',
+              params: {rootModel:$component, searchFields : ['billerNickName','categoryName'],
+              arrayReference: $component.billerSearchData,
+              refreshReference: $component.searchRefresh,
+              searchBy:$component.resourceBundle.labels.searchFields}}">
+            </div>
+          </div>
+        </div>
+        <!-- ko ifnot:$baseModel.small() -->
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+          <oj-button id="addBillerButton" class="help-button" on-click="[[registerBiller]]">
+              <span class="icons icon-plus oj-button-icon oj-start" slot="startIcon"></span>
+              <span data-bind="text:$component.resourceBundle.labels.registerBiller"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+      </div>
+
+      <!-- ko if: $component.searchRefresh() -->
+      <!-- ko if: $component.billers().length > 0 -->
+      <!-- ko foreach: $component.billers() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small()}">
+          <h5 class="oj-flex-item oj-lg-12 biller-type-heading" data-bind="text: $component.resourceBundle.billerTypeHeadings[$data.billerType]"></h5>
+          <oj-list-view class="biller-list" :id="[[$data.id]]" :aria-label="[[$component.resourceBundle.labels.billerList]]" data="[[$data.datasource]]" item.renderer="[[$component.renderer]]" translations="[[$data.translations]]">
+          </oj-list-view>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko ifnot: $component.billers().length > 0 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <span data-bind="text: $component.resourceBundle.messages.noSearchRecord"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+
+      <!-- ko ifnot: $component.originalBillers().length > 0 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <span data-bind="text: $component.resourceBundle.messages.noBillerRegistered"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 center">
+          <oj-button id="addBillerButton" class="action-button-primary" on-click="[[registerBiller]]">
+              <span class="icons icon-plus oj-button-icon oj-start" slot="startIcon"></span>
+              <span data-bind="text:$component.resourceBundle.labels.registerBiller"></span>
+          </oj-button>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <!-- /ko -->
+
+    </page-section>
+  </div>
+
+  <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'manage-bill-payments'"></help>
+  </div>
+
+  <!-- /ko -->
+
+  <!-- ko if: $component.currentStage() === "DETAILS" -->
+  <div data-bind="component:{name: 'review-register-biller', params:{rootModel: $component,registerBillerDetails:$component.registerBillerDetails(),mode:'VIEW'}}"></div>
+  <!-- /ko -->
+
+  <!-- ko if: $baseModel.small() -->
+  <a href="#" data-bind="click: $component.registerBiller">
+    <div class="floating-button"><span class="icons icon-plus"></span></div>
+  </a>
+  <!-- /ko -->
+
+</div>
+
+<script type="text/html" id="biller_template">
+    <li data-bind="attr: {id: $data.id}">
+        <div class="oj-flex">
+            <div class="oj-lg-1 oj-md-1 oj-sm-3">
+              <oj-avatar role="img" size="xxs" initials="[[$data.initials]]" data-bind="attr:{'aria-label': billerNickName}" src="[[$data.categoryLogo()]]" class="oj-avatar-image">
+              </oj-avatar>
+            </div>
+            <div class="oj-lg-11 oj-md-11 oj-sm-9 biller-details">
+                <div class="oj-flex row">
+                    <div class="oj-lg-5 oj-md-5 oj-sm-8">
+                      <div class="oj-lg-12 oj-md-12 oj-sm-12">
+                        <span class="data"><a href="#" data-bind="text: $data.billerNickName, click: $component.showBillerDetails"></a></span>
+                      </div>
+                      <div class="oj-lg-12 oj-md-12 oj-sm-12">
+                        <span class="data info-text-small">
+                          <span data-bind="text: $data.relationshipDetails[0].label"></span>
+                          <span data-bind="text: $data.relationshipDetails[0].value"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="oj-lg-4 oj-md-4 oj-sm-4">
+                        <div class="oj-lg-12 oj-md-12 oj-sm-12">
+                          <!-- ko if: $data.ebill -->
+                          <a href="javascript:void(0)" class="oj-choice-row-inline" data-bind="attr:{ title: $component.resourceBundle.registerBiller.labels.sampleBillImage},text:$baseModel.formatCurrency($data.ebill.totalAmount.amount,$data.ebill.totalAmount.currency),click:$component.viewBill.bind($data)"></a>
+                          <!-- /ko -->
+                          <!-- ko if: $data.noBillDue -->
+                          <span class="data info-text-small" data-bind="text: $component.resourceBundle.labels.noBillDue"></span>
+                          <!-- /ko -->
+                        </div>
+                      <!-- ko if: $data.ebill -->
+                        <div class="oj-lg-12 oj-md-12 oj-sm-12">
+                          <span class="data info-text-small">
+                            <span data-bind="text: $component.resourceBundle.labels.dueBy"></span>
+                            <span data-bind="text: $baseModel.formatDate($data.ebill.dueDate)"></span>
+                          </span>
+                        </div>
+                      <!-- /ko -->
+                      <!-- ko if: $data.billPaymentStatus -->
+                          <div class="oj-lg-12 oj-md-12 oj-sm-12">
+                            <!-- ko if: $data.billPaymentStatus === "OVERDUE" -->
+                            <span class="data info-text-small text-danger" data-bind="text: $component.resourceBundle.labels.pastDue"></span>
+                            <!-- /ko -->
+                            <!-- ko ifnot: $data.billPaymentStatus === "OVERDUE" -->
+                            <span class="data info-text-small text-warning" data-bind="text: $component.resourceBundle.labels[$data.billPaymentStatus]"></span>
+                            <!-- /ko -->
+                          </div>
+                      <!-- /ko -->
+                    </div>
+                    <div class="oj-lg-3 oj-md-3 oj-sm-4 right" data-bind="attr:{id:'menuLauncher-' + id}">
+                        <div class="oj-flex row status-div">
+                          <div class="oj-lg-10 oj-md-10 oj-sm-10 right">
+                          <!-- ko ifnot: $data.registrationStatus === "APPROVED" -->
+                            <span class="data info-text-small" data-bind="text: $component.resourceBundle.messages[$data.registrationStatus]"></span>
+                          <!-- /ko -->
+                          <!-- ko if: $data.registrationStatus === "APPROVED" -->
+                          <!-- ko if: $data.billerType !== "PRESENTMENT" || ($data.billerType === "PRESENTMENT" && $data.ebill) -->
+                                <oj-button class="action-button-primary" on-click="[[$component.showPayBill.bind($data,id)]]">
+                                  <span class="icons icon-pay oj-button-icon oj-start" slot="startIcon"></span>
+                                  <span data-bind="text:$component.resourceBundle.labels.pay"></span>
+                                </oj-button>
+                          <!-- /ko -->
+                          <!-- /ko -->
+                        </div>
+                        <div class="oj-lg-2 oj-md-2 oj-sm-2">
+                          <a href="#" data-bind="attr:{id : 'menuLauncher-billerlist-' + id , alt : $component.resourceBundle.labels.openmenualt , title : $component.resourceBundle.labels.openmenutitle}, click: $component.openMenu">
+                              <div class="icons icon-more-vertical"></div>
+                          </a>
+                          <oj-menu class="bill-menu" :id="[['menuLauncher-billerlist-contents-' + id]]"
+                          on-oj-action="[[$component.menuItemSelect.bind($data,$data)]]"
+                          open-options.launcher="[['menuLauncher-billerlist-' + id]]" open-options.display="dropDown">
+                            <!-- ko foreach: $component.menuItems -->
+                                <oj-option data-bind="attr: {id: $data.id + '_' + $parent.id, value: $data.id}">
+                                  <span slot="startIcon" data-bind="attr: {class: 'icons '+$data.icon}"></span>
+                                  <span data-bind="text: $data.label"></span>
+                                </oj-option>
+                            <!-- /ko -->
+                          </oj-menu>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+    </li>
+</script>
+
+<script type="text/html" id="biller_mobile_template">
+    <li class="item-marker" data-bind="attr: {id: $data.id}">
+      <div class="oj-offcanvas-outer-wrapper">
+        <div class="oj-offcanvas-inner-wrapper">
+          <a class="oj-flex wrapper-padding" href="#" data-bind="click: $component.showPayBill.bind($data, $data.id)">
+            <div class="oj-flex-item oj-lg-2 oj-md-2 oj-sm-2">
+              <oj-avatar role="img" size="xxs" initials="[[$data.initials]]" data-bind="attr:{'aria-label': billerNickName}" src="[[$data.logo]]" class="oj-avatar-image">
+              </oj-avatar>
+            </div>
+            <div class="oj-flex-item oj-lg-10 oj-md-10 oj-sm-10 biller-details" data-bind="css: { 'vertical-center': (!$data.ebill && (!$data.noBillDue || !$data.billPaymentStatus))}">
+                <div class="oj-flex">
+                    <div class="oj-flex-item oj-lg-5 oj-md-5 oj-sm-6">
+                      <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+                        <span class="data" data-bind="text: $data.billerNickName"></span>
+                      </div>
+                      <!-- ko if: $data.ebill -->
+                        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+                          <span class="data info-text-small">
+                            <span data-bind="text: $component.resourceBundle.labels.dueBy"></span>
+                            <span data-bind="text: $baseModel.formatDate($data.ebill.dueDate)"></span>
+                          </span>
+                        </div>
+                      <!-- /ko -->
+                    </div>
+                    <div class="oj-flex-item oj-lg-5 oj-md-5 oj-sm-5">
+                      <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+                        <!-- ko if: $data.ebill -->
+                        <span class="data"><b data-bind="text: $baseModel.formatCurrency($data.ebill.totalAmount.amount,$data.ebill.totalAmount.currency)"></b></span>
+                        <!-- /ko -->
+                        <!-- ko if: $data.noBillDue -->
+                        <span class="data info-text-small" data-bind="text: $component.resourceBundle.labels.noBillDue"></span>
+                        <!-- /ko -->
+                      </div>
+                      <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+                      <!-- ko ifnot: $data.registrationStatus === "APPROVED" -->
+                        <span class="data info-text-small" data-bind="text: $component.resourceBundle.messages[$data.registrationStatus]"></span>
+                      <!-- /ko -->
+                      <!-- ko if: $data.billPaymentStatus -->
+                        <!-- ko if: $data.billPaymentStatus === "OVERDUE" -->
+                        <span class="data info-text-small text-danger" data-bind="text: $component.resourceBundle.labels.pastDue"></span>
+                        <!-- /ko -->
+                        <!-- ko ifnot: $data.billPaymentStatus === "OVERDUE" -->
+                        <span class="data info-text-small text-warning" data-bind="text: $component.resourceBundle.labels[$data.billPaymentStatus]"></span>
+                        <!-- /ko -->
+                      <!-- /ko -->
+                    </div>
+                  </div>
+                  <div class="oj-flex-item oj-lg-2 oj-md-2 oj-sm-1">
+                    <div class="icons icon-arrow-right"></div>
+                  </div>
+                </div>
+            </div>
+          </a>
+          <div tabindex="-1" class="oj-offcanvas-end">
+            <a href="#" class="manage-button" data-bind="attr:{'alt':$component.resourceBundle.labels.manage,'title':$component.resourceBundle.labels.manageBiller}, click: $component.handleEdit">
+                <div class="oj-flex-bar">
+                    <div class="oj-flex-bar-center-absolute">
+                        <div class="oj-flex oj-sm-flex-direction-column">
+                            <div class="oj-flex-item">
+                              <div class="icons icon-edit"></div>
+                              <div data-bind="text: $component.resourceBundle.labels.manage"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+              <a href="#" class="delete-button" data-bind="attr:{'alt':$component.resourceBundle.generic.common.delete,'title':$component.resourceBundle.labels.deleteBiller}, click: $component.handleTrash">
+                  <div class="oj-flex-bar">
+                      <div class="oj-flex-bar-center-absolute">
+                          <div class="oj-flex oj-sm-flex-direction-column">
+                              <div class="oj-flex-item">
+                                <div class="icons icon-delete"></div>
+                                <div data-bind="text: $component.resourceBundle.generic.common.delete"></div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </a>
+            </div>
+          </div>
+        </div>
+    </li>
+</script>
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'deleteBiller', header:$component.resourceBundle.heading.deleteBiller">
+  <div class="oj-flex oj-flex-items-pad grid-row-group">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() },
+    text: $component.resourceBundle.messages.deleteBiller"></div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-secondary btn proceed-main-btn" on-click="[[function(){$('#deleteBiller').hide();}]]">
+    <span class="icons icon-cancel" slot="startIcon"></span>
+    <span data-bind="text:$component.resourceBundle.generic.common.no"></span>
+  </oj-button>
+  <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[$component.deleteBiller]]">
+    <span slot="startIcon" class="icons icon-confirm"></span>
+    <span data-bind="text:$component.resourceBundle.generic.common.yes"></span>
+  </oj-button>
+  </div>
+</modal-window>
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'autoPayBill', header:$component.resourceBundle.heading.billPayment">
+  <div class="oj-flex oj-flex-items-pad grid-row-group">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.resourceBundle.messages.autoPayBiller"></div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[autoPayBill]]">
+      <span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.resourceBundle.labels.continue"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary btn proceed-main-btn" on-click="[[function(){$('#autoPayBill').hide();}]]">
+    <span class="icons icon-cancel" slot="startIcon"></span>
+    <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+  </oj-button>
+  </div>
+</modal-window>
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'scheduledPay', header:$component.resourceBundle.heading.billPayment">
+  <div class="oj-flex oj-flex-items-pad grid-row-group">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.resourceBundle.messages.scheduledPay"></div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[autoPayBill]]">
+    <span slot="startIcon" class="icons icon-confirm"></span>
+    <span data-bind="text:$component.resourceBundle.labels.continue"></span>
+  </oj-button>
+  <oj-button class="action-button-secondary btn proceed-main-btn" on-click="[[function(){$('#scheduledPay').hide();}]]">
+  <span class="icons icon-cancel" slot="startIcon"></span>
+  <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+</oj-button>
+  </div>
+</modal-window>
+
+<modal-window class="full-width-modal" params="baseModel : $baseModel, rootModel : $data, id:'billWindow', header:$component.resourceBundle.labels.detailedBill">
+  <!-- ko if: $component.billLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" >
+        <div class="oj-flex oj-flex-items-pad biller-logo">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5">
+              <span id="billerName" data-bind="text: $component.billerName()"></span>
+          </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6 bill-data">
+              <oj-avatar role="img" size="xs" initials='[[$data.initials]]'
+                data-bind="attr:{'aria-label': $data.name}"
+                src="[[$data.logoList()[0].billerLogo]]" class="oj-avatar-image">
+              </oj-avatar>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" >
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                  <label for="customerName" data-bind="text: $component.resourceBundle.registerBiller.labels.customerName"></label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                  <span id="customerName" data-bind="text: $component.registerBillerDetails().customerName"></span>
+              </div>
+          </div>
+        </div>
+      </div>
+      <!-- ko foreach:$component.relationshipDetails -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" >
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                    <label for="billerRelationship" :for="[['billerLabel_'+ $index()]]" data-bind="text:$data.label"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                    <span id="billerRelationship" data-bind="text: $data.value, attr : {'for' :'billerLabel_' + $index()}"></span>
+                </div>
+            </div>
+          </div>
+        </div>
+      <!-- /ko -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                    <label for="billNumber" data-bind="text: $component.resourceBundle.labels.billNumber"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                    <span id="billNumber" data-bind="text: $component.registerBillerDetails().ebill.id"></span>
+                </div>
+            </div>
+          </div>
+        </div>
+
+  <!-- ko if: $component.registerBillerDetails().ebill.duration -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                <label for="duration" data-bind="text: $component.resourceBundle.labels.billPeriod"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                <span id="duration" data-bind="text: $component.registerBillerDetails().ebill.duration"></span>
+            </div>
+        </div>
+      </div>
+    </div>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                <label for="billDate" data-bind="text: $component.resourceBundle.labels.billDate"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                <span id="billDate" data-bind="text: $baseModel.formatDate($component.registerBillerDetails().ebill.generationDate)"></span>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                  <label for="dueDate" data-bind="text: $component.resourceBundle.labels.billDueDate"></label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                  <span id="dueDate" data-bind="text: $baseModel.formatDate($component.registerBillerDetails().ebill.dueDate)"></span>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                    <label for="billAmount" data-bind="text: $component.resourceBundle.labels.billAmount"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                    <span id="billAmount" data-bind="text: $baseModel.formatCurrency($component.registerBillerDetails().ebill.totalAmount.amount,$component.registerBillerDetails().ebill.totalAmount.currency)"></span>
+                </div>
+            </div>
+          </div>
+        </div>
+        <!-- ko if: $component.registerBillerDetails().ebill.earlyPayDate -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                      <label for="earlyPayDate" data-bind="text: $component.resourceBundle.labels.billPeriod"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                      <span id="earlyPayDate" data-bind="text: $baseModel.formatDate($component.registerBillerDetails().ebill.earlyPayDate)"></span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        <!-- /ko -->
+        <!-- ko if: $component.registerBillerDetails().ebill.earlyPayDiscount -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                      <label for="earlyPayDiscount" data-bind="text: $component.resourceBundle.labels.earlyPayDiscount"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                      <span id="earlyPayDiscount" data-bind="text: $baseModel.formatCurrency($component.registerBillerDetails().ebill.earlyPayDiscount.amount,$component.registerBillerDetails().ebill.earlyPayDiscount.currency)"></span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        <!-- /ko -->
+        <!-- ko if: $component.registerBillerDetails().ebill.earlyPayBillAmount -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                      <label for="earlyPayBillAmount" data-bind="text: $component.resourceBundle.labels.earlyPayBillAmount"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                      <span id="earlyPayBillAmount" data-bind="text: $baseModel.formatCurrency($component.registerBillerDetails().ebill.earlyPayBillAmount.amount,$component.registerBillerDetails().ebill.earlyPayBillAmount.currency)"></span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        <!-- /ko -->
+        <!-- ko if: $component.registerBillerDetails().ebill.latePayCharges -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                      <label for="latePayCharges" data-bind="text: $component.resourceBundle.labels.latePayCharges"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                      <span id="latePayCharges" data-bind="text: $baseModel.formatCurrency($component.registerBillerDetails().ebill.latePayCharges.amount,$component.registerBillerDetails().ebill.latePayCharges.currency)"></span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        <!-- /ko -->
+        <!-- ko if: $component.registerBillerDetails().ebill.latePayBillAmount -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                      <label for="latePayBillAmount" data-bind="text: $component.resourceBundle.labels.latePayBillAmount"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                      <span id="latePayBillAmount" data-bind="text: $baseModel.formatCurrency($component.registerBillerDetails().ebill.latePayBillAmount.amount,$component.registerBillerDetails().ebill.latePayBillAmount.currency)"></span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        <!-- /ko -->
+        <!-- ko if: $component.registerBillerDetails().ebill.description -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                      <label for="description" data-bind="text: $component.resourceBundle.labels.description"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7 bill-data">
+                      <span id="description" data-bind="text: $component.registerBillerDetails().ebill.description"></span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        <!-- /ko -->
+<!-- /ko -->
+</modal-window>
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'hidePayBill', header:$component.resourceBundle.heading.billPayment">
+  <div class="oj-flex oj-flex-items-pad grid-row-group">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.resourceBundle.messages.paymentNotAllowed"></div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-secondary btn proceed-main-btn" on-click="[[function(){$('#hidePayBill').hide();}]]">
+    <span slot="startIcon" class="icons icon-confirm"></span>
+    <span data-bind="text:$component.resourceBundle.generic.common.ok"></span>
+  </oj-button>
+  </div>
+</modal-window>
+
+<script type="text/html" id="biller_template">
+  <oj-avatar role="img" size="xs" initials="[[$data.initials]]" data-bind="attr:{'aria-label': label}"
+    src="[[$data.billerLogo]]" class="oj-avatar-image">
+  </oj-avatar>
+  <span data-bind="text: label"></span>
+</script>

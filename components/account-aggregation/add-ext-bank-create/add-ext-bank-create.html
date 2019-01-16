@@ -1,0 +1,391 @@
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-9">
+<div class="form-main-container add-ext-bank-create">
+
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+  <oj-validation-group id="tracker" valid="{{groupValid}}">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.heading.bankDetails">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="bankName">
+                <!-- ko text: $component.resourceBundle.labels.bankName  -->
+                <!-- /ko -->
+            </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+          <oj-input-text id="bankName" value="{{$component.bankDetails.bankName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',
+                            $component.resourceBundle.messages.invalidExtBank,
+                            {type: 'length',
+                             options: {
+                               min: 1,
+                               max: 100}})]]" required>
+            </oj-input-text>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+          <oj-label for="addressline1">
+            <!-- ko text: $component.resourceBundle.labels.bankaddress  -->
+            <!-- /ko -->
+          </oj-label>
+        </div>
+         <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+          <oj-input-text id="addressline1" value="{{$component.bankDetails.address.line1}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidAddress,{type: 'length',
+                                 options: {
+                                     min: 1,
+                                     max: 80}})]]" required>
+          </oj-input-text>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+              <oj-label class="hide-label" for="addressline2">
+                <!-- ko text: $component.resourceBundle.labels.bankaddress  -->
+                <!-- /ko -->
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+               <oj-input-text id="addressline2" value="{{$component.bankDetails.address.line2}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidAddress,{
+                               type: 'length',
+                               options: {
+                                   min: 1,
+                                   max: 80}})]]">
+                </oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label class="hide-label" for="addressline3">
+                  <!-- ko text: $component.resourceBundle.labels.bankaddress  -->
+                  <!-- /ko -->
+                </oj-label>
+              </div>
+              <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+                <oj-input-text id="addressline3" value="{{$component.bankDetails.address.line3}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidAddress,{
+                                 type: 'length',
+                                 options: {
+                                     min: 1,
+                                     max: 80}})]]">
+                  </oj-input-text>
+              </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <oj-label for="url"><span data-bind="text:$component.resourceBundle.labels.bankurl"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="url" value="{{$component.bankDetails.url}}" validators="{{[$component.validateSpecification]}}">
+                  </oj-input-text>
+              </div>
+          </div>
+          <image-upload params="baseModel : $baseModel, rootModel:$component,
+                                label: $component.resourceBundle.labels.bankLogo,
+                                preview:$component.previewLogo,
+                                imageId:$component.imageId2,
+                                fileId:$component.fileId2,
+                                imageUploaded : !$component.isLogoExist(),
+                                file:$component.fileLogo">
+          </image-upload>
+
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                  <oj-label for="bankIdentifier">
+                      <!-- ko text: $component.resourceBundle.labels.bankIdentifier  -->
+                      <!-- /ko -->
+                  </oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="bankIdentifier" value="{{$component.bankDetails.bankIdentifier}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',
+                                  $component.resourceBundle.messages.invalidExtBank,
+                                  {type: 'length',
+                                   options: {
+                                     min: 1,
+                                     max: 50}})]]" required>
+                  </oj-input-text>
+              </div>
+          </div>
+
+      </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.heading.authDetails">
+    <div class="oj-flex oj-flex-items-pad  ">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3  label">
+        <oj-label for="switch"><span data-bind="text:$component.resourceBundle.labels.status"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 label">
+        <oj-switch data-bind="attr:{id: 'switch' }" value="{{$component.bankDetails.oauth_enabled}}" on-click="{{$component.onSwitchChange}}"></oj-switch>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="authurl"><span data-bind="text:$component.resourceBundle.labels.authurl"></span></oj-label>
+          </div>
+          <!-- ko if: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="authurl" value="{{$component.bankDetails.authorizationDetail.authurl}}">
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="authurl" disabled="[[true]]" value="{{$component.bankDetails.authorizationDetail.authurl}}" validators="{{[$component.validateSpecification]}}" required>
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="tokenurl"><span data-bind="text:$component.resourceBundle.labels.tokenurl"></span></oj-label>
+          </div>
+          <!-- ko if: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="tokenurl" value="{{$component.bankDetails.authorizationDetail.tokenurl}}" validators="{{[$component.validateSpecification]}}" required>
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="tokenurl" disabled="[[true]]" value="{{$component.bankDetails.authorizationDetail.tokenurl}}" validators="{{[$component.validateSpecification]}}" required>
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="revokeurl"><span data-bind="text:$component.resourceBundle.labels.revokeurl"></span></oj-label>
+          </div>
+          <!-- ko if: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="revokeurl" value="{{$component.bankDetails.authorizationDetail.revokeurl}}" validators="{{[$component.validateSpecification]}}" required>
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+           <!-- ko ifnot: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="revokeurl" disabled="[[true]]" value="{{$component.bankDetails.authorizationDetail.revokeurl}}" validators="{{[$component.validateSpecification]}}" required>
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="redirecturl"><span data-bind="text:$component.resourceBundle.labels.redirecturl"></span></oj-label>
+          </div>
+          <!-- ko if: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="redirecturl" value="{{$component.bankDetails.authorizationDetail.redirecturl}}" validators="{{[$component.validateSpecification]}}" required>
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="redirecturl" disabled="[[true]]" value="{{$component.bankDetails.authorizationDetail.redirecturl}}" validators="{{[$component.validateSpecification]}}" required>
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="client_id"><span data-bind="text:$component.resourceBundle.labels.clientid"></span></oj-label>
+          </div>
+          <!-- ko if: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="client_id" value="{{$component.bankDetails.authorizationDetail.client_id}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidClientDetails,{
+                             type: 'length',
+                             options: {
+                                 min: 1,
+                                 max: 80}})]]" required>
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="client_id" disabled="[[true]]" value="{{$component.bankDetails.authorizationDetail.client_id}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidClientDetails,{
+                             type: 'length',
+                             options: {
+                                 min: 1,
+                                 max: 80}})]]" required>
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="client_secret"><span data-bind="text:$component.resourceBundle.labels.clientsecret"></span></oj-label>
+          </div>
+          <!-- ko if: $component.bankDetails.oauth_enabled  -->
+           <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+              <oj-input-password required type="password" autocomplete="off" id="client_secret" value="{{$component.bankDetails.authorizationDetail.client_secret}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidClientDetails,{
+                                 type: 'length',
+                                 options: {
+                                     min: 1,
+                                     max: 80}})]]" required>
+                </oj-input-password>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+             <oj-input-password required type="password" disabled="[[true]]" autocomplete="off" id="client_secret" value="{{$component.bankDetails.authorizationDetail.client_secret}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidClientDetails,{
+                                type: 'length',
+                                options: {
+                                    min: 1,
+                                    max: 80}})]]" required>
+               </oj-input-password>
+         </div>
+          <!-- /ko -->
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="scope"><span data-bind="text:$component.resourceBundle.labels.scope"></span></oj-label>
+          </div>
+          <!-- ko if: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="scope" value="{{$component.bankDetails.authorizationDetail.scope}}" required>
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot: $component.bankDetails.oauth_enabled  -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+            <oj-input-text id="scope" disabled="[[true]]" value="{{$component.bankDetails.authorizationDetail.scope}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidScope,{
+                             type: 'length',
+                             options: {
+                                 min: 1,
+                                 max: 80}})]]" required>
+              </oj-input-text>
+          </div>
+          <!-- /ko -->
+      </div>
+ <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.heading.externalApi">
+      <!-- ko foreach : externalapiList -->
+      <div class="oj-flex oj-flex-items-pad">
+             <!-- ko if: $component.bankDetails.oauth_enabled  -->
+            <div class="oj-flex-item oj-lg-3 oj-md-6 oj-sm-12" label>
+
+                <!-- ko if: $index() === 0 -->
+                <oj-select-one data-bind="attr:{'id': 'externalapiType'+$index()}" value="{{api_name}}"  required>
+                  <!-- ko foreach:$component.bankDataType() -->
+                  <oj-option value="[[value]]"><span data-bind="text: label"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+                <!-- ko ifnot: $index() === 0 -->
+                <oj-select-one data-bind="attr:{'id': 'externalapiType'+$index()}" value="{{api_name}}" >
+                  <!-- ko foreach:$component.bankDataType1() -->
+                  <oj-option value="[[value]]"><span data-bind="text: label"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: $component.bankDetails.oauth_enabled  -->
+            <div class="oj-flex-item oj-lg-3 oj-md-6 oj-sm-12" label>
+                <!-- ko if: $index() === 0 -->
+                <oj-select-one disabled="[[true]]" data-bind="attr:{'id': 'externalapiType'+$index()}" value="{{api_name}}" required>
+                  <!-- ko foreach:$component.bankDataType() -->
+                  <oj-option value="[[value]]"><span data-bind="text: label"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+                <!-- ko ifnot: $index() === 0 -->
+                <oj-select-one disabled="[[true]]" data-bind="attr:{'id': 'externalapiType'+$index()}" value="{{api_name}}">
+                  <!-- ko foreach:$component.bankDataType() -->
+                  <oj-option value="[[value]]"><span data-bind="text: label"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $component.bankDetails.oauth_enabled  -->
+            <div class="oj-flex-item oj-lg-5 oj-md-6 oj-sm-12">
+                <!-- ko if: $index() === 0 -->
+                <oj-input-text data-bind="attr:{'id': 'externalapiLabel'+$index()}" value="{{api_url}}" placeholder="{{$component.resourceBundle.labels.  enterExternalAPI}}" validators="{{[$component.validateSpecificationapi]}}" required>
+                    </oj-input-text>
+                <!-- /ko -->
+                <!-- ko ifnot: $index() === 0 -->
+                <oj-input-text data-bind="attr:{'id': 'externalapiLabel'+$index()}" value="{{api_url}}" placeholder="{{$component.resourceBundle.labels.  enterExternalAPI}}" validators="{{[$component.validateSpecificationapi]}}">
+                </oj-input-text>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: $component.bankDetails.oauth_enabled  -->
+            <div class="oj-flex-item oj-lg-5 oj-md-6 oj-sm-12">
+                <!-- ko if: $index() === 0 -->
+                <oj-input-text disabled="[[true]]" data-bind="attr:{'id': 'externalapiLabel'+$index()}" value="{{api_url}}" placeholder="{{$component.resourceBundle.labels.enterExternalAPI}}" validators="{{[$component.validateSpecificationapi]}}" required>
+                    </oj-input-text>
+                <!-- /ko -->
+                <!-- ko ifnot: $index() === 0 -->
+                <oj-input-text disabled="[[true]]" data-bind="attr:{'id': 'externalapiLabel'+$index()}" value="{{api_url}}" placeholder="{{$component.resourceBundle.labels.enterExternalAPI}}" validators="{{[$component.validateSpecificationapi]}}">
+                </oj-input-text>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+
+            <!-- ko ifnot: $index() === 0 -->
+            <!-- ko if: $component.bankDetails.oauth_enabled  -->
+            <div class="oj-flex-item oj-lg-1 oj-md-6 oj-sm-12">
+              <a href="#" data-bind="click:$component.remove.bind($data,$index())">
+                  <span class="icons icon-delete delete-draft icon-2x" data-bind="attr:{ title: $component.resourceBundle.generic.common.delete}"></span>
+              </a>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+          </div>
+          <!-- /ko -->
+          </page-section>
+          <div class="oj-flex oj-flex-items-pad">
+            <!-- ko if: $component.bankDetails.oauth_enabled  -->
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+              <a href="javascript:void(0)" id="addrowid" data-bind="text:$component.resourceBundle.labels.addRow" on-click="[[$component.addRow.bind()]]">
+
+            </a>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: $component.bankDetails.oauth_enabled  -->
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+              <a href="javascript:void(0)" id="addrowid" data-bind="text:$component.resourceBundle.labels.addRow" on-click="[[$component.addRow.bind()]]">
+
+            </a>
+            </div>
+            <!-- /ko -->
+          </div>
+    </page-section>
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+    <!-- ko ifnot : $component.editFromView -->
+      <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[$component.save]]">
+          <span data-bind="text:$component.resourceBundle.generic.common.save"></span>
+      </oj-button>
+      <!-- ko ifnot:$baseModel.small() -->
+        <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.messages.cancelOperation)]]">
+            <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+        </oj-button>
+      <!-- /ko -->
+      <oj-button class="action-button-secondary btn proceed-main-btn" on-click="[[back]]">
+          <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+      </oj-button>
+    <!-- /ko -->
+    <!-- ko if : $component.editFromView -->
+      <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[save]]">
+        <span data-bind="text:$component.resourceBundle.generic.common.save"></span>
+      </oj-button>
+      <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.messages.cancelOperation)]]">
+        <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary btn proceed-main-btn" on-click="[[backToView]]">
+        <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+      </oj-button>
+    <!-- /ko -->
+    </div>
+    </oj-validation-group>
+  </div>
+
+</div>
+</div>
+<!-- ko if: $baseModel.large() -->
+<div class="oj-sm-12 oj-md-12 oj-lg-3 oj-sm-only-hide oj-md-only-hide pull-right help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'add-ext-bank-create'"></help>
+</div>
+<!-- /ko -->
+</div>

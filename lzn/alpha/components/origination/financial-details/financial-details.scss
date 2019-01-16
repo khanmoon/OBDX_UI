@@ -1,0 +1,85 @@
+$accordion-font-size: 1.3rem;
+$accordion-max-width: 100%;
+$accordion-font-size-small: 1rem;
+$accordion-height-small: 4rem;
+$accordions: "account-holder", "primary-registration", "occupation-info", "contact-info", "identity-info", "income-info","liabilities-info","assets-info","expense-info","vehicle-info","property-info","offers","funding-table","requirements";
+
+.accordion {
+  .card {
+    margin-bottom: 0.6rem !important;
+    max-width: $accordion-max-width;
+
+    .card-header {
+      .card-icons-title {
+        height: 100%;
+      }
+
+      .accordion-strip {
+        width: 0.2rem;
+        height: 4rem;
+        background-color: var(--base-color-secondary);
+        position: absolute;
+        @include mq(small) {
+          width: 0.2rem;
+          height: $accordion-height-small;
+          position: inherit;
+        }
+      }
+      height: 4rem;
+      background: var(--base-color-secondary-text);
+
+      .card-title {
+        color: var(--base-text-primary);
+        font-size: var(--base-font-size-h3);
+        font-weight: var(--base-font-weight-regular);
+        margin: auto 0;
+      }
+
+      .card-expander {
+        margin: auto 0;
+
+        .icon {
+          @include float(right);
+          color: var(--base-color-secondary);
+        }
+      }
+
+      .icon-success {
+        color: var(--base-color-primary);
+      }
+
+      .card-icon-container {
+        text-align: center;
+        height: 100%;
+        width: 4rem;
+        @include single-padding(left,1rem);
+
+        .card-icon {
+          font-size: 2.6rem;
+          color: var(--base-color-secondary);
+          @each $accordion in $accordions {
+            &.icon-#{$accordion}:before {
+              vertical-align: middle;
+            }
+          }
+        }
+      }
+    }
+
+    &.active {
+      & .card-header {
+        background: var(--base-color-secondary);
+
+        .card-title {
+          color: var(--base-color-secondary-text);
+          font-weight: var(--base-font-weight-light);
+          @include single-padding(left,0.6rem);
+        }
+
+        .icon {
+          color: var(--base-color-secondary-text);
+        }
+      }
+    }
+  }
+}

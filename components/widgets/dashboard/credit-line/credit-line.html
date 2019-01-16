@@ -1,0 +1,24 @@
+<div class="oj-flex-item financial-position">
+  <!-- credit card chart -->
+  <action-widget params="baseModel : $baseModel, rootModel: $data,header:$component.nls.accountDetails.labels.creditLineHeader,controls:$component.controls,onDashboard:$dashboard.isDashboard()">
+    <!-- ko if : $component.creditCardLineLimitLoaded() -->
+    <div class="oj-flex oj-flex-items-pad party-id">
+      <label data-bind="attr:{for: $baseModel.incrementIdCount()}, text:$component.nls.accountDetails.labels.partyDropDown"></label>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+        <oj-select-one :id="[[$baseModel.currentIdCount()]]" value="{{$component.selectedPartyID}}">
+          <!-- ko foreach: $component.segregatedData -->
+          <oj-option value="{{id}}"><span data-bind="text:name"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div id="chart-container" class="oj-flex-item oj-sm-12 barChart">
+        <oj-chart id="loanbarChart" type="bar" series="[[series]]" groups="[[lines]]" animation-on-data-change="auto" hoverBehavior="dim" orientation="horizontal" animation-on-display="auto" style-defaults="[[styleDefaults]]" legend="[[legendObject]]" yAxis="[[{tickLabel: {converter: ko.toJS(yAxisConverter)}]]">
+        </oj-chart>
+
+      </div>
+    </div>
+    <!-- /ko -->
+  </action-widget>
+</div>

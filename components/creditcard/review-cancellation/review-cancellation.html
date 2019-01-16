@@ -1,0 +1,58 @@
+<div class="form-main-container">
+
+  <!-- ko if:verifyCancel() -->
+  <div class="review-text-heading">
+    <span class="icons icon-information pull-left"></span>
+    <span data-bind="text: $component.resource.cancelCard.reviewHeading"></span>
+  </div>
+  <page-section class="review" ="" params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.genericCard.review">
+    <div class="row-group">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="totalDue"><span data-bind="text:resource.cancelCard.cardNo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:creditCardDisplayId"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="totalDue"><span data-bind="text:resource.cancelCard.action"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$component.actionType"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="totalDue"><span data-bind="text:resource.cancelCard.reason"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:resource.cancelCard[$component.selectedReason()]"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="totalDue"><span data-bind="text:$component.resource.cancelCard.comment"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$component.comment()"></span>
+        </div>
+      </div>
+    </div>
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="cancelConfirmButton" class="action-button-primary " on-click="[[cancelConfirm]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:resource.genericCard.confirm"></span>
+    </oj-button>
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button id="cancelCardButton" class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:resource.genericCard.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button id="backcardbutton" class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:resource.genericCard.back"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+</div>

@@ -1,0 +1,113 @@
+<div class="oj-panel demand-deposit-service-request">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <h3 class="demand-deposit-service-request__header" data-bind="text:$component.locale.serviceRequest.title"></h3>
+    </div>
+  </div>
+
+  <!-- ko if: ($component.openRequestArray().length > 0) || ($component.closedRequestArray().length > 0) -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12" data-bind='component: {name: "nav-bar", params:{rootModel: $data, menuOptions: menuCountOptions, uiOptions: uiOptions, navBarDescription: $component.locale.serviceRequest.navDescription}}'>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if: $component.openRequests() -->
+    <!-- ko if: $component.openRequestArray().length > 0 -->
+    <div class="demand-deposit-service-request__content demand-deposit-service-request-content">
+    <!-- ko foreach: $component.openRequestArray() -->
+    <!-- ko if: $baseModel.small() -->
+    <div class="oj-flex oj-flex-items-pad demand-deposit-service-request-content__list">
+          <div class="oj-flex-item oj-sm-6 no-pad-cols" data-bind='component: { name: "date-box", params: {date: $data.creationDate}}'></div>
+
+      <div class="oj-flex-item oj-sm-6 right">
+        <oj-label><span data-bind="text:$component.locale.serviceRequest.referenceNo"></span></oj-label>
+        <div data-bind="text: $data.id"></div>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <div data-bind="text: $data.definition.name"></div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $baseModel.small() -->
+    <div class="oj-flex oj-flex-items-pad demand-deposit-service-request-content__list">
+          <div class="oj-flex-item oj-md-2 no-pad-cols" data-bind='component: { name: "date-box", params: {date: $data.creationDate}}'></div>
+
+          <div class="oj-flex-item oj-md-6">
+            <div data-bind="text: $data.definition.name"></div>
+          </div>
+
+      <div class="oj-flex-item oj-md-4 right">
+          <oj-label><span data-bind="text:$component.locale.serviceRequest.referenceNo"></span></oj-label>
+        <div data-bind="text: $data.id"></div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.openRequestArray().length > 0 -->
+    <div class="oj-flex oj-flex-items-pad demand-deposit-service-request__noData demand-deposit-service-request-noData">
+      <div class="oj-flex-item oj-sm-12 demand-deposit-service-request-noData__text">
+        <img class="" data-bind="attr:{'alt': $component.locale.serviceRequest.noData},loadImage:'dashboard/service-request.svg'">
+      </div>
+      <div class="oj-flex-item oj-sm-12 center" data-bind="text:$component.locale.serviceRequest.noData"></div>
+    </div>
+    <!-- /ko -->
+  <!-- /ko -->
+  <!-- ko if: $component.closedRequests() -->
+    <!-- ko if: $component.closedRequestArray().length > 0 -->
+    <div class="demand-deposit-service-request__content demand-deposit-service-request-content">
+    <!-- ko foreach: $component.closedRequestArray() -->
+    <!-- ko if: $baseModel.small() -->
+    <div class="oj-flex oj-flex-items-pad demand-deposit-service-request-content__list">
+          <div class="oj-flex-item oj-sm-6 no-pad-cols" data-bind='component: { name: "date-box", params: {date: $data.creationDate}}'></div>
+
+      <div class="oj-flex-item oj-sm-6 right">
+        <oj-label><span data-bind="text:$component.locale.serviceRequest.referenceNo"></span></oj-label>
+        <div data-bind="text: $data.id"></div>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <div data-bind="text: $data.definition.name"></div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $baseModel.small() -->
+    <div class="oj-flex oj-flex-items-pad demand-deposit-service-request-content__list">
+          <div class="oj-flex-item oj-md-2 no-pad-cols" data-bind='component: { name: "date-box", params: {date: $data.creationDate}}'></div>
+
+          <div class="oj-flex-item oj-md-6">
+            <div data-bind="text: $data.definition.name"></div>
+          </div>
+
+      <div class="oj-flex-item oj-md-4 right">
+          <oj-label><span data-bind="text:$component.locale.serviceRequest.referenceNo"></span></oj-label>
+        <div data-bind="text: $data.id"></div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.closedRequestArray().length > 0 -->
+    <div class="oj-flex oj-flex-items-pad demand-deposit-service-request__noData demand-deposit-service-request-noData">
+      <div class="oj-flex-item oj-sm-12 demand-deposit-service-request-noData__text">
+        <img class="" data-bind="attr:{'alt': $component.locale.serviceRequest.noData},loadImage:'dashboard/service-request.svg'">
+      </div>
+      <div class="oj-flex-item oj-sm-12 center" data-bind="text:$component.locale.serviceRequest.noData"></div>
+    </div>
+    <!-- /ko -->
+  <!-- /ko -->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-6 demand-deposit-service-request__newRequest">
+      <a href="#" data-bind="attr:{'alt':$component.locale.serviceRequest.raiseNewRequestAlt,'title':$component.locale.serviceRequest.raiseNewRequestTitle}, click:$dashboard.loadComponent.bind($data,'service-requests-base-main')">
+        <div data-bind="text: $component.locale.serviceRequest.raiseNewRequest"></div>
+      </a>
+    </div>
+    <div class="oj-flex-item oj-sm-6 demand-deposit-service-request__trackRequest">
+      <a href="#" data-bind="attr:{'alt':$component.locale.serviceRequest.trackRequestAlt,'title':$component.locale.serviceRequest.trackRequestTitle}, click:$dashboard.loadComponent.bind($data,'service-requests-track')">
+        <div data-bind="text: $component.locale.serviceRequest.trackRequest"></div>
+      </a>
+    </div>
+  </div>
+</div>

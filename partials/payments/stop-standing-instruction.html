@@ -1,0 +1,62 @@
+
+<!-- ko if:stageTwo() -->
+    <page-section params="baseModel : $baseModel, rootModel : $parent, heading : ''">
+        <div class="row-group" data-bind="with:$component.standingInstruction">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.transferTo , value :[('payeeNickName' in $data)?payeeNickName:'',creditAccountId.displayValue]"></row>
+            <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.resource.amount , value :$baseModel.formatCurrency(amount.amount,amount.currency)"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.transferFrom , value :debitAccountId.displayValue"></row>
+        </div>
+        <div class="row-group" data-bind="with:$component.standingInstruction">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.repeat , value :$component.getRepeatData($data)"></row>
+            <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.resource.nextPayment , value :$baseModel.formatDate(nextExecutionDate)"></row>
+        </div>
+
+
+
+    </page-section>
+            <!-- cancel confirm buttons -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary " on-click="[[cancelSI]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:resource.stopRepeatTransfer"></span>
+</oj-button>
+
+            <oj-button class="action-button-secondary " on-click="[[viewList]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:resource.done"></span>
+</oj-button>
+        </div>
+<!-- /ko -->
+
+<!-- ko if:stageThree() -->
+
+    <page-section params="baseModel : $baseModel, rootModel : $parent, heading : ''">
+        <div class="oj-flex oj-flex-items-pad  ">
+        <!-- ko ifnot:$baseModel.small() -->
+            <div class="oj-flex oj-flex-items-pad center margin-bottom-20">
+                <span class="question-text" data-bind="text:resource.stopSImessage"></span>
+            </div>
+        <!-- /ko -->
+        </div>
+        <div class="row-group" data-bind="with:$component.standingInstruction">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.transferTo , value :[('payeeNickName' in $data)?payeeNickName:'',creditAccountId.displayValue]"></row>
+            <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.resource.amount , value :$baseModel.formatCurrency(amount.amount,amount.currency)"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.transferFrom , value :debitAccountId.displayValue"></row>
+        </div>
+        <div class="row-group" data-bind="with:$component.standingInstruction">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.repeat , value :$component.getRepeatData($data)"></row>
+            <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.resource.nextPayment , value :$baseModel.formatDate(nextExecutionDate)"></row>
+        </div>
+    </page-section>
+
+    <!-- cancel confirm buttons -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary " on-click="[[confirmCancelSI]]"><span slot="startIcon" class="icons icon-stop-transfer"></span>
+      <span data-bind="text:resource.stopTransfer"></span>
+</oj-button>
+
+                
+        <oj-button class="action-button-secondary " on-click="[[viewDetails]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:resource.cancel"></span>
+</oj-button>
+    </div>
+
+<!-- /ko -->

@@ -1,0 +1,48 @@
+<!-- ko foreach : $component.statusHistory()  -->
+<div class="status-history oj-flex-item oj-sm-12">
+	<div class="status-history-card">
+		<div class=" oj-flex oj-flex-items-pad  card-row">
+
+			<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 padding-left ">
+
+				<div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item  oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.state"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text: $data.currentStatus"></span>
+					</div>
+				</div>
+				<!-- ko if: $data['statusChangeRemarks']  -->
+				<div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.remarks"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<span class="dark-text " data-bind="text: $data.statusChangeRemarks"></span>
+					</div>
+				</div>
+				<!-- /ko -->
+
+			</div>
+
+			<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6  ">
+
+				<!-- ko if: $data['statusChangedBy'] -->
+				<div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.actedBy"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<div class="dark-text " data-bind="html :$data.statusChangedBy "></div>
+					</div>
+				</div>
+				<!-- /ko -->
+				<!-- ko if:  $data['statusUpdatedOn']   -->
+				<div class="oj-flex oj-flex-items-pad application-card-row ">
+					<oj-label class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-4"><span data-bind="text:$component.resource.updatedOn"></span></oj-label>
+					<div class="oj-flex-item oj-sm-12 oj-lg-8 oj-md-8 value-text ">
+						<div class="dark-text " data-bind="text:$baseModel.formatDate($oj.IntlConverterUtils.dateToLocalIso(new Date($data.statusUpdatedOn.substring(0,15))))"></div>
+					</div>
+				</div>
+				<!-- /ko -->
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /ko -->

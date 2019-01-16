@@ -1,0 +1,114 @@
+<div class="oj-flex">
+<div class="oj-flex-item oj-sm-9">
+<div class="form-main-container">
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+<!-- ko if:dataLoaded() -->
+
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-9">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="billerName">
+                  <!-- ko text: $component.resourceBundle.labels.billerName  -->
+                  <!-- /ko -->
+                </oj-label>
+              </div>
+              <div class="oj-flex-item oj-lg-offset-2 oj-lg-4 oj-md-6 oj-sm-12">
+                <oj-input-text id="billerName" value="{{$component.billerName}}"
+                 validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidBillerName,{
+                               type: 'length',
+                               options: {
+                                   min: 0,
+                                   max: 35}})]]">
+                  </oj-input-text>
+              </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="billerCategory">
+                  <!-- ko text: $component.resourceBundle.labels.billerCategory  -->
+                  <!-- /ko -->
+                </oj-label>
+              </div>
+              <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+                  <oj-select-one id="billerCategory" value="{{$component.categoryId}}" placeholder="{{$component.resourceBundle.generic.common.select}}" minimum-results-for-search="[[5]]">
+                      <!-- ko foreach:billerCategoryList() -->
+                      <oj-option value="[[id]]"><span data-bind="text: name"></span></oj-option>
+                      <!-- /ko -->
+                  </oj-select-one>
+              </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="billerLocation">
+                  <!-- ko text: $component.resourceBundle.labels.billerLocation  -->
+                  <!-- /ko -->
+                </oj-label>
+              </div>
+
+              <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+                  <oj-select-one id="billerLocation" value="{{$component.operationalAreaId}}" placeholder="{{$component.resourceBundle.generic.common.select}}" minimum-results-for-search="[[5]]">
+                      <!-- ko foreach:billerLocationList() -->
+                      <oj-option value="[[id]]"><span data-bind="text: areaName"></span></oj-option>
+                      <!-- /ko -->
+                  </oj-select-one>
+              </div>
+          </div>
+        </page-section>
+
+        <div class="button-container">
+            <oj-button id="search" class="action-button-primary" on-click="[[getListBillers]]">
+            <span data-bind="text:$component.resourceBundle.generic.common.search"></span>
+            </oj-button>
+            <!-- ko if: !dataSourceCreated() -->
+            <oj-button id="cancel" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+            <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+            </oj-button>
+            <!-- /ko -->
+            <oj-button id="reset" class="action-button-tertiary" on-click="[[$component.reset]]">
+            <span data-bind="text:$component.resourceBundle.generic.common.clear"></span>
+            </oj-button>
+        </div>
+
+        <!-- ko if: dataSourceCreated() -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+              <div class="oj-flex oj-flex-items-pad grid-row-group">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-table id="table" aria-label=$component.resourceBundle.labels.listofBillers
+                     data='[[pagingDatasource]]'
+                     columns-default.sortable='enabled'
+                     columns='[[headerText]]'>
+                    <caption class="hide-label" data-bind="text:$component.resourceBundle.labels.templateName"></caption>
+                    <oj-paging-control id="paging" data='[[pagingDatasource]]' page-size='10' slot='bottom'>
+                    </oj-paging-control>
+                    </oj-table>
+                  </div>
+              </div>
+         </page-section>
+         <div class="oj-flex oj-flex-items-pad button-container">
+             <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+                 <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+             </oj-button>
+         </div>
+
+         <!-- /ko -->
+      </div>
+  <!-- /ko -->
+ </div>
+</div>
+ </div>
+<!-- ko if: $baseModel.large() -->
+<div class="oj-sm-12 oj-md-12 oj-lg-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'biller-search'"></help>
+</div>
+<!-- /ko -->
+</div>
+    <script type="text/html" id="biller_link">
+                <td>
+                 <a href="javascript:void(0)" data-bind="attr:{alt:$component.resourceBundle.labels.alt,title:$component.resourceBundle.labels.title},text:$context.row.billerName,click:$component.viewBillerDetails.bind($data,$context.row.billerId)"></a>
+                 <div data-bind="text:$context.row.billerId"></div>
+               </td>
+    </script>

@@ -1,0 +1,634 @@
+<div class="form-main-container">
+  <!-- ko if: $component.reviewDataLoaded() -->
+  <div class="review" data-bind="with:productDetails()">
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+    <div data-bind="with:requirements">
+      <!-- ko if: $component.productDetails().productClassName === 'LOANS' -->
+      <div class="card ">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-requirements"></span>
+            </div>
+          </div>
+          <h3 class="card-title oj-flex-item oj-sm-8 oj-md-8 oj-lg-8" data-bind="text: $component.resource.requirements.loan.title"></h3>
+
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/loan-requirements', data:{data: $data, resource: $component.resource.requirements} }"></div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.productDetails().productClassName === 'CASA' -->
+      <div class="card ">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-requirements"></span>
+            </div>
+          </div>
+          <h3 class="card-title oj-flex-item oj-sm-8 oj-md-8 oj-lg-8" data-bind="text: $component.resource.requirements.casa.title"></h3>
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/saving-requirements', data:{data: $data, resource: $component.resource.requirements} }"></div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.productDetails().productClassName === 'TERM_DEPOSITS' -->
+      <div class="card ">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-requirements"></span>
+            </div>
+          </div>
+          <h3 class="card-title oj-flex-item oj-sm-8 oj-md-8 oj-lg-8" data-bind="text: $component.resource.requirements.td.title"></h3>
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/td-requirements', data:{data: $data, resource: $component.resource.requirements} }"></div>
+      </div>
+      <!-- /ko -->
+    </div>
+
+    <!-- ko if : $component.offersLoadedInReview() -->
+    <!-- ko if: $component.productDetails().offers.offerName -->
+    <div data-bind="with:offers">
+      <div class="card ">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-offers"></span>
+            </div>
+          </div>
+          <h3 class="card-title oj-flex-item oj-sm-8 oj-md-8 oj-lg-8" data-bind="text: $component.resource.offers.title">
+          </h3>
+          <!-- ko if : $component.productDetails().productClassName === 'LOANS' -->
+          <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editCollateralDetails.bind($data,'offers-insurance') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.offers.title}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.offers.title})}"></a>
+          </div>
+          <!-- /ko -->
+        </div>
+
+        <div class="section-info">
+          <div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+            <div class="oj-flex-item label oj-sm-12 oj-md-3 oj-lg-2 oj-md-offset-1 oj-lg-offset-2">
+              <oj-label>
+                <span data-bind="text:$component.resource.offers.offerName"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+              <span data-bind="text: offerName "></span>
+            </div>
+          </div>
+          <!-- ko if: $data['features'] -->
+          <!-- ko if: $component.productDetails().offers.features -->
+          <div class="oj-flex oj-flex-items-pad ">
+            <oj-label class="oj-sm-12 oj-md-offset-1 oj-md-3 oj-lg-offset-2 oj-lg-2 oj-flex-item label pull-left">
+              <span data-bind="text:$component.resource.offers.features"></span>
+            </oj-label>
+            <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left">
+              <span data-bind="text: features "></span>
+            </span>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <div class="row-group">
+      <!-- ko if:$component.stateLoaded-->
+      <div class="card ">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-property-info"></span>
+            </div>
+          </div>
+
+          <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.resource.propertyInfo.propertyInfo"></h3>
+
+          <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editPersonalDetails.bind($data,'property-info') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.propertyInfo.propertyInfo}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.propertyInfo.propertyInfo})}"></a>
+          </div>
+
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/property-info', data:{data: $component.productDetails().requirements, resource: $component.resource.propertyInfo}}"></div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.productDetails().requirements.vehicleDetails -->
+      <div class="card ">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-vehicle-info"></span>
+            </div>
+          </div>
+          <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.resource.vehicleInfo.vehicleInfo"></h3>
+
+
+          <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editPersonalDetails.bind($data,'vehicle-info') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.vehicleInfo.vehicleInfo}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.vehicleInfo.vehicleInfo})}"></a>
+          </div>
+
+
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/vehicle-info', data:{data: $component.productDetails().requirements, resource: $component.resource.vehicleInfo} }"></div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:$component.productDetails().fundingTableInfo-->
+      <div class="card ">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-funding-table"></span>
+            </div>
+          </div>
+
+          <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.resource.fundingTable.fundingTable"></h3>
+
+          <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editPersonalDetails.bind($data,'funding-table') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.fundingTable.fundingTable}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.fundingTable.fundingTable})}"></a>
+          </div>
+
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/funding-table', data:{data: $component.productDetails().fundingTableInfo, resource: $component.resource.fundingTable}}"></div>
+      </div>
+      <!-- /ko -->
+      <!-- ko foreach: $component.applicantDetails -->
+      <div class="card ">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-primary-registration"></span>
+            </div>
+          </div>
+
+          <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.getAccordionLabel('primaryInformation', $index())"></h3>
+
+          <!-- ko if: applicantType() !== 'customer' -->
+          <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editPersonalDetails.bind($data,'primary-registration') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.getAccordionLabel('primaryInformation', $index())}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.getAccordionLabel('primaryInformation', $index())})}"></a>
+          </div>
+          <!-- /ko -->
+
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/primary-info', data:{data: primaryInfo, resource: $component.resource.primaryRegistration}}"></div>
+      </div>
+      <!-- /ko -->
+      <!-- ko foreach: $component.applicantDetails -->
+      <!-- ko if: typeof identityInfo !== 'undefined' -->
+      <div class="card section-info">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-identity-info"></span>
+            </div>
+          </div>
+          <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.getAccordionLabel('proofOfIdentity', $index())"></h3>
+
+          <!-- ko if: applicantType() !== 'customer' -->
+          <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editPersonalDetails.bind($data,'identity-info') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.getAccordionLabel('proofOfIdentity', $index())}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.getAccordionLabel('proofOfIdentity', $index())})}"></a>
+          </div>
+          <!-- /ko -->
+
+        </div>
+
+        <!-- ko if: identityInfo.identityInfo.length>0 -->
+        <!-- ko foreach: identityInfo.identityInfo -->
+        <!-- ko if:$data.type === 'TEC' || $data.type ==='TFN' -->
+        <div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 oj-md-offset-1 oj-lg-offset-2">
+            <oj-label><span data-bind="text:$component.resource.identityInfo.taxIdType"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+            <span data-bind="text: $data.temp_selectedIdentification()"></span>
+          </div>
+        </div>
+        <!-- ko if: $data.type ==='TFN' -->
+        <div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 oj-md-offset-1 oj-lg-offset-2">
+            <oj-label><span data-bind="text:$component.resource.identityInfo.taxFileNumber"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+            <span data-bind="text: $data.id"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: $data.type ==='TEC' -->
+        <div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 oj-md-offset-1 oj-lg-offset-2">
+            <oj-label><span data-bind="text:$component.resource.identityInfo.taxExemptionCode"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+            <span data-bind="text: $data.temp_selectedTEC()"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko foreach: identityInfo.identityInfo -->
+        <!-- ko ifnot: $data.type === 'TEC' || $data.type ==='TFN' -->
+        <div class="form-heading-strip oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top additional-label">
+            <!-- ko if : $index()===0 -->
+            <h4 class="section-heading additional-label" data-bind="text: $component.resource.identityInfo.primaryIdentification"></h4>
+            <!-- /ko -->
+            <!-- ko if : $index()>0 -->
+            <h4 class="section-heading additional-label" data-bind="text: $component.resource.identityInfo.additionalIdentification"></h4>
+            <!-- /ko -->
+          </div>
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/identity-info', data:{data: $data, resource: $component.resource.identityInfo} }"></div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko ifnot:identityInfo.identityInfo.length > 0 -->
+        <div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 oj-md-offset-1 oj-lg-offset-2">
+            <oj-label><span data-bind="text:$component.resource.identityInfo.taxIdType"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+            <span data-bind="text: $component.resource.identityInfo.noA"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko foreach: $component.applicantDetails -->
+      <!-- ko if: typeof contactInfo !== 'undefined' -->
+      <div class="card ">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-contact-info"></span>
+            </div>
+          </div>
+          <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.getAccordionLabel('contactInformation', $index())"></h3>
+
+          <!-- ko if: applicantType() !== "customer" -->
+          <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editPersonalDetails.bind($data,'contact-info') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.getAccordionLabel('contactInformation', $index())}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.getAccordionLabel('contactInformation', $index())})}"></a>
+          </div>
+          <!-- /ko -->
+
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/contact-info', data:{data: $data, resource: $component.resource.contactInfo} }"></div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko foreach: $component.applicantDetails -->
+      <!-- ko if: typeof amlData !== 'undefined' -->
+      <div class="card">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-anti-money-laundering"></span>
+            </div>
+          </div>
+          <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.getAccordionLabel('antiMoneyLaundering', $index())"></h3>
+          <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editPersonalDetails.bind($data,'anti-money-laundering') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.getAccordionLabel('antiMoneyLaundering', $index())}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.getAccordionLabel('antiMoneyLaundering', $index())})}"></a>
+          </div>
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/anti-money-laundering', data:{data: $data, resource: $component.resource.antiMoneyLaundering} }"></div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko foreach: $component.applicantDetails -->
+      <!-- ko if: typeof occupationInfo!== 'undefined'   -->
+      <div class="card employments-financial-info  section-info">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-occupation-info"></span>
+            </div>
+          </div>
+
+          <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.getAccordionLabel('employmentInformation', $index())"></h3>
+
+          <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editPersonalDetails.bind($data,'occupation-info') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.getAccordionLabel('employmentInformation', $index())}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.getAccordionLabel('employmentInformation', $index())})}"></a>
+          </div>
+        </div>
+        <!-- ko if: occupationInfo.occupations().employmentDTOs.length === 0 -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-md-offset-1 oj-lg-offset-1">
+            <div class="text" data-bind="text: $component.resource.noInfo"></div>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko foreach : occupationInfo.occupations().employmentDTOs -->
+        <div class="form-heading-strip oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top additional-label">
+            <!-- ko if : $index()===0 -->
+            <h4 class="section-heading additional-label" data-bind="text: $component.resource.primaryOccupation"></h4>
+            <!-- /ko -->
+            <!-- ko if : $index()>0 -->
+            <h4 class="section-heading additional-label" data-bind="text: $component.resource.additionalOccupation"></h4>
+            <!-- /ko -->
+          </div>
+        </div>
+        <div class="section-info">
+          <div class="margin-bottom-20" data-bind="template: { name: 'origination/review/occupation-info', data:{data: $data, resource: $component.resource.occupationInfo} }"></div>
+        </div>
+        <!-- /ko -->
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+
+      <!-- ko if:  $component.productDetails().productClassName === 'CASA' -->
+      <!-- ko if: $component.applicantDetails()[0].accountHolder.savingsHolderConfiguration.accountHolderPreferenceDTO.productIdent !== '' ||  $component.applicantDetails()[0].accountHolder.savingsHolderConfiguration.activityProfileRequestDTO.activityProfileDetails.activityProfileQuestionList[0].answer -->
+      <div class="card ">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-account-holder"></span>
+            </div>
+          </div>
+          <h3 class="card-title oj-flex-item oj-sm-10 oj-md-8 oj-lg-8" data-bind="text: $component.resource.specifications"></h3>
+          <div class="oj-flex-item oj-sm-1 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editPersonalDetails.bind($data,'account-holder') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.specifications}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.specifications})}"></a>
+          </div>
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/account-holder-info', data:{data: $component.applicantDetails()[0].accountHolder, resource: $component.resource.accountHolder} }"></div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if: typeof $component.applicantDetails()[0].accountFunding !== 'undefined' -->
+      <div class="card ">
+        <div class="oj-flex oj-flex-items-pad card-header">
+          <!-- ko if: $component.productDetails().productClassName!=='TERM_DEPOSITS' -->
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-offers"></span>
+            </div>
+          </div>
+          <h3 class="card-title oj-flex-item oj-sm-8 oj-md-8 oj-lg-8" data-bind="text: $component.resource.accountFundingtitle"></h3>
+          <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editPersonalDetails.bind($data,'account-funding') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.accountFundingtitle}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.accountFundingtitle})}"></a>
+          </div>
+          <!-- /ko -->
+          <!-- ko if: $component.productDetails().productClassName==='TERM_DEPOSITS' -->
+          <div>
+
+            <div class="oj-sm-only-hide card-icon-container">
+              <span class="image-icon card-icon icon-account-funding"></span>
+            </div>
+          </div>
+          <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.resource.depositDetailsTitle"></h3>
+          <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editPersonalDetails.bind($data,'account-funding') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.depositDetailsTitle}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.depositDetailsTitle})}"></a>
+          </div>
+          <!-- /ko -->
+        </div>
+        <div class="section-info" data-bind="template: { name: 'origination/review/account-funding-info', data:{data: $component.applicantDetails()[0].accountFunding, resource: $component.resource.accountFunding} }"></div>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko if: $component.productDetails().productClassName !== 'CASA' && $component.productDetails().productClassName !=='TERM_DEPOSITS' -->
+      <div class="employments-financial-info section-info">
+        <!-- ko foreach: $component.applicantDetails -->
+        <!-- ko foreach: financialProfile -->
+        <div class="oj-flex oj-flex-items-pad filmstrip margin-top-20">
+          <div class="oj-flex-item oj-sm-1 oj-md-1 oj-lg-1 bands"></div>
+          <div class="oj-flex-item oj-sm-10 oj-md-10 oj-lg-10" data-bind="css: $component.applicantDetails().length > 1 ? '' : 'padding-top'">
+            <h2 class="filmstrip-text" data-bind="html: $component.getFilmstripLabel($index(), $parentContext.$index())"></h2>
+          </div>
+          <div class="oj-flex-item oj-sm-1 oj-md-1 oj-lg-1 pull-right bands"></div>
+        </div>
+        <!-- ko if: typeof incomeInfo !== 'undefined' -->
+        <div class="card ">
+          <div class="oj-flex oj-flex-items-pad card-header">
+            <div>
+              <div class="oj-sm-only-hide card-icon-container">
+                <span class="image-icon card-icon icon-income-info"></span>
+              </div>
+            </div>
+            <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text : incomeInfo.incomeList().length > 0 ? $component.resource.incomeInfo.allIncome : $component.resource.incomeInfo.noIncome"></h3>
+            <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+              <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editFinancialDetails.bind($data,'income-info') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.incomeInfo.income}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.incomeInfo.income})}">
+              </a>
+            </div>
+          </div>
+
+          <!-- ko foreach : incomeInfo.incomeList() -->
+          <div class="form-heading-strip oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top">
+              <!-- ko if : $index()===0 -->
+              <h4 class="section-heading additional-label" data-bind="text: $component.resource.incomeInfo.primaryIncome"></h4>
+              <!-- /ko -->
+              <!-- ko if : $index()>0 -->
+              <h4 class="section-heading additional-label" data-bind="text: $component.resource.incomeInfo.additionalIncome"></h4>
+              <!-- /ko -->
+            </div>
+          </div>
+          <div class="section-info">
+            <div data-bind="template: { name: 'origination/review/income-info', data:{data: $data, resource: $component.resource.incomeInfo} }" class="sub-section"></div>
+          </div>
+          <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- ko if: typeof expenseInfo !== 'undefined' -->
+        <div class="card ">
+          <div class="oj-flex oj-flex-items-pad card-header">
+            <div>
+
+              <div class="oj-sm-only-hide card-icon-container">
+                <span class="image-icon card-icon icon-expense-info"></span>
+              </div>
+            </div>
+            <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text : expenseInfo.expenseList().length > 0 ? $component.resource.expenseInfo.allExpenses : $component.resource.expenseInfo.noExpenses"></h3>
+            <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+              <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editFinancialDetails.bind($data,'expense-info') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.expenseInfo.expenseSource}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.expenseInfo.expenseSource})}">
+              </a>
+            </div>
+          </div>
+          <!-- ko foreach : expenseInfo.expenseList() -->
+          <div class="form-heading-strip oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top">
+              <!-- ko if : $index()===0 -->
+              <h4 class="section-heading additional-label" data-bind="text: $component.resource.expenseInfo.primaryExpense"></h4>
+              <!-- /ko -->
+              <!-- ko if : $index()>0 -->
+              <h4 class="section-heading additional-label" data-bind="text: $component.resource.expenseInfo.additionalExpense"></h4>
+              <!-- /ko -->
+            </div>
+          </div>
+          <div class="section-info">
+            <div data-bind="template: { name: 'origination/review/expense-info', data:{data: $data, resource: $component.resource.expenseInfo} }" class="sub-section"></div>
+          </div>
+          <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- ko if: typeof assetsInfo !== 'undefined' -->
+        <div class="card ">
+          <div class="oj-flex oj-flex-items-pad card-header">
+            <div>
+
+              <div class="oj-sm-only-hide card-icon-container">
+                <span class="image-icon card-icon icon-assets-info"></span>
+              </div>
+            </div>
+            <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text : assetsInfo.assetsList().length > 0 ? $component.resource.assetsInfo.allAssets : $component.resource.assetsInfo.noAssets"></h3>
+            <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+              <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editFinancialDetails.bind($data,'assets-info') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.assetsInfo.allAssets}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.assetsInfo.allAssets})}">
+              </a>
+            </div>
+          </div>
+          <!-- ko foreach : assetsInfo.assetsList() -->
+          <div class="form-heading-strip oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top">
+              <!-- ko if : $index()===0 -->
+              <h4 class="section-heading additional-label" data-bind="text: $component.resource.assetsInfo.primaryAsset"></h4>
+              <!-- /ko -->
+              <!-- ko if : $index()>0 -->
+              <h4 class="section-heading additional-label" data-bind="text: $component.resource.assetsInfo.additionalAsset"></h4>
+              <!-- /ko -->
+            </div>
+          </div>
+          <div class="section-info">
+            <div data-bind="template: { name: 'origination/review/assets-info', data:{data: $data, resource: $component.resource.assetsInfo} }" class="sub-section"></div>
+          </div>
+          <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- ko if: typeof liabilitiesInfo !== 'undefined' -->
+        <div class="card ">
+          <div class="oj-flex oj-flex-items-pad card-header">
+            <div>
+
+              <div class="oj-sm-only-hide card-icon-container">
+                <span class="image-icon card-icon icon-liabilities-info"></span>
+              </div>
+            </div>
+            <h3 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text : liabilitiesInfo.liabilitiesList().length > 0 ? $component.resource.liabilitiesInfo.allLiabilities : $component.resource.liabilitiesInfo.noLiabilities"></h3>
+            <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+              <a class="icon-remarks pull-right edit-info edit" href="javascript:void(0)" data-bind="click : $component.editFinancialDetails.bind($data,'liabilities-info') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.liabilitiesInfo.allLiabilities}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.liabilitiesInfo.allLiabilities})}">
+              </a>
+            </div>
+          </div>
+          <!-- ko foreach: liabilitiesInfo.liabilitiesList() -->
+          <div class="form-heading-strip oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top">
+              <!-- ko if : $index()===0 -->
+              <h4 class="section-heading additional-label" data-bind="text: $component.resource.liabilitiesInfo.primaryLiability"></h4>
+              <!-- /ko -->
+              <!-- ko if : $index()>0 -->
+              <h4 class="section-heading additional-label" data-bind="text: $component.resource.liabilitiesInfo.additionalLiability"></h4>
+              <!-- /ko -->
+            </div>
+          </div>
+          <div class="section-info">
+            <div data-bind="template: { name: 'origination/review/liabilities-info', data:{data: $data, resource: $component.resource.liabilitiesInfo} }" class="sub-section"></div>
+          </div>
+          <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+      <!-- /ko -->
+      <!-- ko  if:$component.productDetails().productClassName === 'CREDIT_CARD' -->
+      <div class="card  employments-financial-info section-info">
+        <div data-bind="with:$component.productDetails()">
+          <!-- ko if:typeof balanceTransferDetails !== 'undefined' || typeof addonDetails !== 'undefined'-->
+
+          <div class="oj-flex oj-flex-items-pad card-header">
+            <div>
+
+              <div class="oj-sm-only-hide card-icon-container">
+                <span class="image-icon card-icon icon-add-on-card"></span>
+              </div>
+            </div>
+            <h3 class="card-title oj-flex-item oj-sm-8 oj-md-9 oj-lg-9" data-bind="text: $component.resource.customizeYourCard"></h3>
+            <div class="pull-right oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+              <a href="#" class="icon-remarks pull-right edit-info edit" data-bind="click : $component.editCardDetails.bind($data,'card-additional-details') ,attr:{'alt':$baseModel.format($component.accessibilityResource.alt.reviewEdit,{title:$component.resource.customizeYourCard}),'title':$baseModel.format($component.accessibilityResource.title.reviewEdit,{title:$component.resource.customizeYourCard})}">
+              </a>
+            </div>
+          </div>
+
+          <!-- ko  if:(!(addonDetails.addonCards) && !(balanceTransferDetails.transferCards))-->
+          <div class="oj-flex oj-flex-items-pad  margin-top-20">
+            <oj-label class="oj-sm-12 oj-md-offset-1  oj-lg-offset-2  oj-flex-item label pull-left">
+              <span data-bind="text:$component.resource.noCustomizationAdded"></span>
+            </oj-label>
+          </div>
+          <!-- /ko -->
+          <!-- ko  if:addonDetails.addonCards -->
+          <div class="form-heading-strip oj-flex oj-flex-items-pad margin-top-20">
+            <h4 class="form-heading oj-flex-item oj-md-10 oj-lg-10 oj-md-offset-1 oj-lg-offset-1" data-bind="text:$component.resource.addOnCard.heading"></h4>
+          </div>
+          <!-- /ko -->
+          <!-- ko foreach :addonDetails.addonCards -->
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top">
+
+              <span class="section-heading additional-label" data-bind="text: $baseModel.format($component.resource.addOnCard.addOn,{index:($index()+1)})"></span>
+
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad section-info">
+            <div class="oj-flex-item section-info" data-bind="template: { name: 'origination/review/card-addon', data:{addOn: $data, resource: $component.resource.addOnCard}}"></div>
+          </div>
+          <!-- /ko -->
+
+
+          <!-- ko  if:balanceTransferDetails.transferCards -->
+          <div class="form-heading-strip oj-flex oj-flex-items-pad margin-top-20">
+            <h4 class=" form-heading oj-flex-item oj-md-10 oj-lg-10 oj-md-offset-1 oj-lg-offset-1" data-bind="text:$component.resource.cardBalanceTransfer.balanceTransfer"></h4>
+          </div>
+          <!-- /ko -->
+          <!-- ko foreach :balanceTransferDetails.transferCards -->
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top">
+              <span class="section-heading additional-label" data-bind="text: $baseModel.format($component.resource.cardBalanceTransfer.balanceTransferCard,{index:($index()+1)})"></span>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad section-info">
+            <div class="oj-flex-item section-info" data-bind="template: { name: 'origination/review/card-balance-transfer', data:{transferCard: $data, resource: $component.resource.cardBalanceTransfer}}"></div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+
+      </div>
+      <!-- /ko -->
+    </div>
+
+
+
+
+  </div>
+
+  <!-- /ko -->
+</div>
+<div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+  <oj-button raised="" id="personalInfoSubmit" class="action-button-primary first-3" on-click="[[$component.submitApplication]]">
+    <span data-bind="text:$component.resource.generic.common.submit"></span>
+  </oj-button>
+  <oj-button raised="" id="cancel" class="action-button-secondary last-3 oj-button" on-click="[[$component.showPluginComponent.bind($data,'cancel-application')]]">
+    <span data-bind="text:$component.resource.generic.common.cancel"></span>
+  </oj-button>
+  <oj-button raised="" id="saveForLater" class="action-button-secondary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]">
+    <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+  </oj-button>
+</div>

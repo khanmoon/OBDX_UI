@@ -1,0 +1,60 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+<!-- ko if: $component.basicPrimaryInfoLoaded() -->
+  <oj-validation-group id="basicPrimaryInfoTracker">
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+        <oj-label :for="[['firstName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.firstName"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <oj-input-text required maxlength="35" name="firstName" :id="[['firstName'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.firstName}}]]" validators="[[$baseModel.getValidator('NAME')]]" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"
+          value="{{$component.applicantObject().primaryInfo.primaryInfo.firstName}}"></oj-input-text>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2">
+        <oj-label :for="[['middleName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.middleName"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <oj-input-text maxlength="20" name="middleName" autocomplete="off" spellcheck="false" :id="[['middleName'+($baseModel.currentIdCount())]]" validators="[[$baseModel.getValidator('NAME')]]" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"
+          value="{{$component.applicantObject().primaryInfo.primaryInfo.middleName}}"></oj-input-text>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+        <oj-label :for="[['lastName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.lastName"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <oj-input-text required maxlength="35" name="lastName" :id="[['lastName'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.lastName}}]]" validators="[[$baseModel.getValidator('NAME')]]" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"
+          value="{{$component.applicantObject().primaryInfo.primaryInfo.lastName}}"></oj-input-text>
+      </div>
+    </div>
+
+    <!-- ko if: $component.suffixLoaded() -->
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2">
+        <div class="oj-label ">
+          <oj-label :for="[['suffix'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.suffix"></span></oj-label>
+        </div>
+
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+        <oj-select-one id="suffix" :id="[['suffix'+($baseModel.currentIdCount())]]" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]" value="{{$component.applicantObject().primaryInfo.primaryInfo.suffix}}" :placeholder="">
+          <!-- ko foreach: $component.suffixOptions -->
+          <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+    <!-- /ko -->
+  </oj-validation-group>
+<!-- /ko -->
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item oj-lg-10 oj-md-10">
+    <oj-button id="submitBasicPrimary" class="form-button-secondary" on-click="[[$component.submitBasicPrimaryInfo]]"><span data-bind="text:$component.resource.generic.common.continue"></span></oj-button>
+  </div>
+</div>

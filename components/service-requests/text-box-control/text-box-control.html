@@ -1,0 +1,128 @@
+<oj-validation-group :id="[[$component.uniqueId()+'track']]">
+<div class="oj-flex oj-flex-items-pad text-box-control">
+  <div class="oj-flex-item oj-md-12 text-box-control__banner">
+    <span data-bind="text:$component.resource.textBox"></span>
+  </div>
+  <div class="oj-flex text-box-control__middle">
+    <div class="oj-flex-item oj-sm-3">
+      <oj-input-text :id="[['textBox1'+$component.id]]" :aria-label="[[$component.resource.labelNamePlaceHolder]]" placeholder="{{$component.resource.labelNamePlaceHolder}}" value="{{$component.formField().label}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+                       type: 'length',
+                       options: {
+                           min: 1,
+                           max: 80
+                       }})]]" disabled="{{$component.isDisabled}}" required>
+      </oj-input-text>
+    </div>
+
+    <div class="oj-flex-item oj-sm-4 internal-padding">
+      <oj-input-text :id="[['textBox2'+$component.id]]" :aria-label="[[$component.resource.hintTextPlaceHolder]]" placeholder="{{$component.resource.hintTextPlaceHolder}}" value="{{$component.formField().hintText}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+        type: 'length',
+        options: {
+            min: 1,
+            max: 80
+        }})]]" disabled="{{$component.isDisabled}}" required>
+      </oj-input-text>
+    </div>
+    <!-- ko if: $component.buttonShow -->
+    <div class="oj-flex-item oj-md-4 right icon-style text-box-control__icon">
+      <a href="javascript:void(0)" on-click="[[$component.showHideDetails]]">
+        <span class="icons icon-setting"></span>
+      </a>
+    </div>
+      <div class="oj-flex-item oj-md-1 text-box-control__icon">
+      <a href="javascript:void(0)" on-click="[[$component.deleteTextBox]]">
+        <span class="icons icon-delete"></span>
+      </a>
+  </div>
+    <!-- /ko -->
+</div>
+
+  <!-- ko if:isDetails -->
+  <div class="text-box-control__section">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-4">
+        <oj-label class="oj-label-inline"><span data-bind="text:$component.resource.fieldLength"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-3">
+        <oj-input-text placeholder="{{$component.resource.minValue}}" :aria-label="[[$component.resource.minValue]]" value="{{$component.formField().validation.minLength}}" validators="[[$baseModel.getValidator('NUMBERS',$component.resource.validationMessage,{
+          type: 'length',
+          options: {
+              min: 1,
+              max: 3
+          }})]]" disabled="{{$component.isDisabled}}" required>
+        </oj-input-text>
+      </div>
+      <div class="oj-flex-item oj-sm-1">
+      </div>
+      <div class="oj-flex-item oj-sm-3">
+        <oj-input-text placeholder="{{$component.resource.maxValue}}" :aria-label="[[$component.resource.maxValue]]" value="{{$component.formField().validation.maxLength}}" validators="[[$baseModel.getValidator('NUMBERS',$component.resource.validationMessage,{
+          type: 'length',
+          options: {
+              min: 1,
+              max: 3
+          }})]]" disabled="{{$component.isDisabled}}" required>
+        </oj-input-text>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-3">
+        <oj-label :for="[[$component.uniqueId()+3]]" class="oj-label-inline"><span data-bind="text:$component.resource.allowedCharacters"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-1">
+      </div>
+      <div class="oj-flex-item oj-sm-8">
+        <oj-radioset :id="[[$component.uniqueId()+3]]" class="oj-choice-direction-row" value="{{$component.formField().validation.textBoxValidationType}}" disabled="{{$component.isDisabled}}" required>
+          <oj-option value="ALPHABETS"><span data-bind="text:$component.resource.alphabets"></span></oj-option>
+          <oj-option value="NUMBERS"><span data-bind="text:$component.resource.numbers"></span></oj-option>
+          <oj-option value="ALPHANUMERIC"><span data-bind="text:$component.resource.alphanumeric"></span></oj-option>
+          <oj-option value="ALPHANUMERIC_WITH_SPACE"><span data-bind="text:$component.resource.alphaWithSpace"></span></oj-option>
+          <oj-option value="ALPHANUMERIC_WITH_SPECIAL"><span data-bind="text:$component.resource.alphaWithSpecial"></span></oj-option>
+        </oj-radioset>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-3">
+        <oj-label :for="[[$component.uniqueId()+4]]" class="oj-label-inline"><span data-bind="text:$component.resource.validations"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-1">
+      </div>
+      <div class="oj-flex-item oj-sm-8">
+        <oj-radioset labelled-by="mainlabelid" :id="[[$component.uniqueId()+4]]" class="oj-choice-direction-row" value="{{$component.formField().validation.isMandatory}}" disabled="{{$component.isDisabled}}">
+          <oj-option value="{{true}}"><span data-bind="text:$component.resource.mandatory"></span></oj-option>
+          <oj-option value="{{false}}"><span data-bind="text:$component.resource.optional"></span></oj-option>
+        </oj-radioset>
+      </div>
+    </div>
+    <!-- ko if: JSON.parse($component.formField().validation.isMandatory()) -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-3">
+        <oj-label for="[['error'+$component.id]]" class="oj-label-inline"><span data-bind="text:$component.resource.errorMessage"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-1">
+      </div>
+      <div class="oj-flex-item oj-sm-5">
+        <oj-input-text :id="[['error'+$component.id]]" :aria-label="[[$component.resource.ariaLabel]]" placeholder="{{$component.resource.errorMessagePlaceHolder}}" value="{{$component.formField().errorMessage}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+                         type: 'length',
+                         options: {
+                             min: 1,
+                             max: 200
+                         }})]]" disabled="{{$component.isDisabled}}" required>
+        </oj-input-text>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $component.buttonShow -->
+    <div class="oj-flex button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.saveTextBox]]" disabled="{{$component.isDisabled}}">
+        <span data-bind="text:$component.resource.save"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$component.copyTextBox]]" disabled="{{$component.isDisabled}}">
+        <span data-bind="text:$component.resource.copy"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+
+  </div>
+  <!-- /ko -->
+  </div>
+</oj-validation-group>

@@ -1,0 +1,29 @@
+<div data-bind="with:$component.international">
+
+    <div class="">
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.recipientname ,    value :name()"></row>
+    </div>
+    <div class="">
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.drafttype , value :$component.payments.payee.accinternational"></row>
+         <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.draftfavouring ,  value :nickName()"></row>
+         <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.draftpayableat ,  value :payAtCity() + ', ' + $component.selectedCountry()"></row>
+    </div>
+    <div class="">
+         <!-- ko if:demandDraftDeliveryDTO.deliveryMode !=='BRN' -->
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.deliverdraftto ,value :$component.payments.payee.international.msgtype.myaddress"></row>
+            <!-- /ko -->
+             <!-- ko if:demandDraftDeliveryDTO.deliveryMode ==='BRN' -->
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.deliverdraftto ,value :$component.payments.payee.international.msgtype.branchaddress"></row>
+            <!-- /ko -->
+      <!-- ko if:$component.addressDetails -->
+         <div data-bind="template: { name: 'common/review/address',data:$component.addressDetails }"></div>
+         <!-- /ko -->
+    </div>
+
+    <!-- ko if:$component.userSegment === "CORP" -->
+    <div class="">
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.payeeaccesstype , value :$component.payments.payee[$component.payeeAccessType]"></row>
+    </div>
+    <!-- /ko -->
+
+</div>

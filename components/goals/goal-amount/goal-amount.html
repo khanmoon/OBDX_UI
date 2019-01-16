@@ -1,0 +1,63 @@
+<div class="pfm">
+    <div class="form-main-container category">
+        <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                  <oj-validation-group id="goalAmountTracker">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12 category__amount" data-bind="component: {
+                      name: 'amount-input', params: {
+                      amount :$component.transferObject.goalAmount,
+                      label : $component.goal.calculator.enterAmount,
+                      isMandatory: true,
+                      currency: ko.utils.unwrapObservable($component.transferObject.productDetails().goalAmountParameters[0].currency),
+                      minimumAmount: $component.transferObject.productDetails().goalAmountParameters[0].minAmount.amount,
+                      maximumAmount: $component.transferObject.productDetails().goalAmountParameters[0].maxAmount.amount,
+                      converter:$baseModel.formatCurrency,
+                      validator: $component.validationTracker,
+                      rootId:'goal-amount',
+                      rootClass:'form-input'
+                  }
+                }">
+                            <div class="oj-flex-item">
+                                <div class="info-text-small" data-bind="text:$baseModel.format($data.goal.calculator.amountRange,{minAmount:$baseModel.formatCurrency($data.transferObject.productDetails().goalAmountParameters[0].minAmount.amount,$data.transferObject.productDetails().goalAmountParameters[0].currency),
+                                maxAmount:$baseModel.formatCurrency($data.transferObject.productDetails().goalAmountParameters[0].maxAmount.amount,$data.transferObject.productDetails().goalAmountParameters[0].currency)})"></div>
+                            </div>
+                        </div>
+                    </div>
+                    </oj-validation-group>
+                </page-section>
+                <div class="button-container">
+                        <!-- ko if:!$baseModel.small() -->
+                        <oj-button class="action-button-primary" id="button-proceed" on-click="[[$component.proceed]]">
+                          <span slot="startIcon" class="icons icon-forward-arrow"></span>
+                            <span data-bind="text:$component.goal.calculator.proceed"></span>
+                        </oj-button>
+                        <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$component.cancel]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                            <span data-bind="text:$component.goal.calculator.cancel"></span>
+                        </oj-button>
+                        <!-- /ko -->
+                        <!-- ko if:$baseModel.small() -->
+                        <oj-button class="action-button-primary" id="buttonproceed" on-click="[[$component.proceed]]"><span slot="startIcon" class="icons icon-forward-arrow"></span>
+                            <span data-bind="text:$component.goal.calculator.proceed"></span>
+                        </oj-button>
+                        <oj-button class="action-button-secondary" id="buttoncancel" on-click="[[$component.cancel]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                            <span data-bind="text:$component.goal.calculator.cancel"></span>
+                        </oj-button>
+                        <oj-button class="action-button-tertiary" id="button-back" on-click="[[$component.back]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+                            <span data-bind="text:$component.goal.calculator.back"></span>
+                        </oj-button>
+                        <!-- /ko -->
+                    </div>
+            </div>
+            <!-- ko if: $baseModel.large() -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+                <help params="baseModel : $baseModel, rootModel : $component, transaction: 'goal-amount'"></help>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+<!-- ko if: $baseModel.large() -->
+<a class="back-link" href="#" data-bind="text: $component.goal.calculator.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

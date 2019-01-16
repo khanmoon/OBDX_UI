@@ -1,0 +1,11 @@
+<div class="oj-flex oj-flex-items-pad cust-details">
+    <div class="oj-flex-item oj-sm-12 label">
+        <oj-label class="oj-label" for="recipient-type"><span data-bind="text:$component.resource.labels.manage"></span></oj-label>
+    </div>
+    <div id="recipient-type" class="oj-flex-item oj-sm-12">
+        <oj-radioset class="payments-money-transfer__radiosetSpacing oj-choice-direction-row" :aria-label="[[$component.resource.labels.manage]]" on-value-changed="[[$component.managingChanged]]" value="{{manage}}"><!-- ko foreach: managingArray --><oj-option name="manage" value="{{id}}" :id="[[id + $baseModel.currentIdCount()]]" :data-id="[[id]]"><span class="label" data-bind="attr: {for: id + $baseModel.incrementIdCount()},text: label"></span></oj-option><!-- /ko --></oj-radioset>
+    </div>
+</div>
+<!-- ko if:refreshComponent() -->
+<div data-bind="component:{name:component(),params:{rootModel: $component}}"></div>
+<!-- /ko -->

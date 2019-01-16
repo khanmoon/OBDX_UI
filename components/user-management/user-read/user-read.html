@@ -1,0 +1,287 @@
+<!-- ko if :dataLoaded -->
+  <div class="form-main-container">
+    <!-- ko ifnot :showConfirmation -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <div class="oj-flex oj-lg-flex-items-initial oj-lg-justify-content-flex-end">
+        <a href="#" class="confirm-screen__eReceipt-top confirm-screen__form-button-link" data-bind="attr:{'alt':$component.nls.headers.download ,'title':$component.nls.headers.downloadFile,'aria-label':$component.nls.headers.downloadFile }, click: $component.downloadUserDetails ">
+      <span class="confirm-screen__eReceipt-bottom-icon icons icon-download"></span>
+      <span class="confirm-screen__eReceipt-bottom-text" data-bind="text:$component.nls.headers.downloadFile"></span>
+    </a>
+      </div>
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.userType , value :userFullData().userType.enterpriseRoleName"></row>
+      <!-- ko if: userFullData().userType.enterpriseRoleName ==="Administrator" -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.organization , value :userFullData().organization"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.manager , value :userFullData().manager"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.empno , value :userFullData().employeeNumber"></row>
+      <!-- /ko -->
+      <!-- ko ifnot: userFullData().userType.enterpriseRoleName ==="Administrator" -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.partyid , value :userFullData().partyId.displayValue"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.partyname , value :userFullData().partyName"></row>
+      <!-- /ko -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.personalinfo">
+      </action-header>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.username , value :userFullData().username"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.title , value :userFullData().title"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.firstname , value :userFullData().firstName"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.middlename , value :userFullData().middleName"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.lastname , value :userFullData().lastName"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.dob , value :$baseModel.formatDate(userFullData().dateOfBirth)"></row>
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.contacts">
+      </action-header>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.emailid , value :userFullData().emailId"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.contactmobile , value :userFullData().mobileNumber"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.contactlandline , value :userFullData().phoneNumber"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.address1 , value :userFullData().address.line1"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.address2 , value :userFullData().address.line2"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.address3 , value :userFullData().address.line3"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.address4 , value :userFullData().address.line4"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.country , value :$component.countryName"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.city , value :userFullData().address.city"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.pincode , value :userFullData().address.zipCode"></row>
+      <!-- ko if: userFullData().userType.enterpriseRoleName ==="Administrator" -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.role">
+      </action-header>
+      <!-- /ko -->
+      <!-- ko ifnot: userFullData().userType.enterpriseRoleName ==="Administrator" -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.limitrole">
+      </action-header>
+      <!-- ko if: !$component.homeEntityLimitPackage() -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.limit , value : $component.nls.message.noLimitAssigned "></row>
+      <!-- /ko -->
+
+      <!-- ko if: $component.dataLoaded() -->
+      <!-- ko foreach:$component.entityLimitPackages -->
+      <!-- ko if: $data.targetUnit === $component.userFullData().homeEntity-->
+      <!-- ko foreach:$data.entityLimitPackageMappingDTO -->
+
+      <row params="baseModel : $baseModel, label :$data.accessPointDescription, value : $data.limitPackage"></row>
+      <!-- /ko -->
+
+      <!-- /ko -->
+      <!-- /ko -->
+
+
+      <!-- /ko -->
+      <!-- /ko -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.nls.fieldname.role"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+          <!-- ko if: childRoleEnumsLoaded -->
+          <oj-checkboxset id="checkboxSetId" class="oj-choice-direction-row" :aria-label="$component.nls.fieldname.role" disabled="[[true]]" value="{{selectedChildRole}}">
+            <!-- ko foreach: childRoleEnums -->
+            <oj-option value="{{applicationRoleName}}"><span data-bind="text:applicationRoleName"></span></oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
+          <!-- /ko -->
+        </div>
+      </div>
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading:$component.nls.headers.internalAccessPoints">
+      </action-header>
+      <!-- ko if: $component.isAccessPointFetched() -->
+      <!-- ko if: $component.selectedAccessType()==="INT" -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.nls.fieldname.selectedAccessPoints"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+          <oj-checkboxset :id="[['accessPoint_'+$baseModel.incrementIdCount()]]" :aria-label="[[$component.nls.fieldname.accessPoints+$baseModel.incrementIdCount()]]" class="oj-choice-direction-row" value="{{selectedAccessPoint}}" disabled="[[true]]">
+            <!-- ko foreach: $component.accessPoint() -->
+            <oj-option value="[[value]]">
+              <span data-bind="text: text"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+
+      <!-- ko if: userFullData().userType.enterpriseRoleName ==="Administrator" -->
+      <!-- ko if: userFullData().accessibleEntities.length>1 -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading:$component.nls.accessibleEntity.accessibleEntity.accessibleEntities">
+      </action-header>
+
+      <!-- ko foreach: userFullData().accessibleEntities -->
+      <!-- ko ifnot: $component.userFullData().homeEntity === $data.entityId -->
+
+      <div>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.accessibleEntity.accessibleEntity.entityName , value :entityName"></row>
+
+        <!-- ko if: $component.isAccessPointFetched() -->
+        <!-- ko if: $component.selectedAccessType()==="INT" -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-label><span data-bind="text:$component.nls.fieldname.selectedAccessPoints"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+            <oj-checkboxset :id="[['accessPoint_'+$baseModel.incrementIdCount()]]" :aria-label="[[$component.nls.fieldname.accessPoints+$baseModel.incrementIdCount()]]" class="oj-choice-direction-row" value="{{$data.selectedAccessPoints}}" disabled="[[true]]">
+              <!-- ko foreach: $component.accessPoint() -->
+              <oj-option value="[[value]]">
+                <span data-bind="text: text"></span>
+              </oj-option>
+              <!-- /ko -->
+            </oj-checkboxset>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+
+      <!-- ko ifnot: userFullData().userType.enterpriseRoleName ==="Administrator" -->
+      <!-- ko if:$component.deviceDataLoaded() -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.deviceRegistration">
+      </action-header>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-7">
+            <div data-bind="text: $component.nls.fieldname.androidDevice"></div>
+          </div>
+          <div class="oj-flex-item oj-sm-3">
+            <oj-switch id="androidDeviceSwitch" disabled="[[androidDisabled]]" value="{{androidDevice}}"></oj-switch>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-7">
+            <div data-bind="text: $component.nls.fieldname.iOsDevice"></div>
+          </div>
+          <div class="oj-flex-item oj-sm-3">
+            <oj-switch id="iOsDeviceSwitch" disabled="[[iOsDisabled]]" value="{{iOsDevice}}"></oj-switch>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:$component.deviceDataLoadedForPushNotification() -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.pushNotification">
+      </action-header>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-7">
+            <div data-bind="text: $component.nls.fieldname.androidDevice"></div>
+          </div>
+          <div class="oj-flex-item oj-sm-3">
+            <oj-switch id="androidDeviceSwitchForPushNotification" disabled="[[androidDisabledForPushNotification]]" value="{{androidDeviceForPushNotification}}"></oj-switch>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-7">
+            <div data-bind="text: $component.nls.fieldname.iOsDevice"></div>
+          </div>
+          <div class="oj-flex-item oj-sm-3">
+            <oj-switch id="iOsDeviceSwitchForPushNotification" disabled="[[iOsDisabledForPushNotification]]" value="{{iOsDeviceForPushNotification}}"></oj-switch>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+
+      <!-- ko ifnot: userFullData().userType.enterpriseRoleName ==="Administrator" -->
+      <!-- ko if: userFullData().accessibleEntities.length>1 -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading :$component.nls.accessibleEntity.accessibleEntity.accessibleEntities">
+      </action-header>
+
+
+      <!-- ko foreach:userFullData().accessibleEntities -->
+      <!-- ko if:$data.entityId!== $component.userFullData().homeEntity-->
+      <row params="baseModel : $baseModel, label:$component.nls.fieldname.entityName, value : entityName"></row>
+      <!-- ko if: $component.isAccessPointFetched() -->
+      <!-- ko if: $component.selectedAccessType()==="INT" -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.nls.fieldname.selectedAccessPoints"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+          <oj-checkboxset :id="[['accessPoint_'+$baseModel.incrementIdCount()]]" :aria-label="[[$component.nls.fieldname.accessPoints+$baseModel.incrementIdCount()]]" class="oj-choice-direction-row" value="{{$data.selectedAccessPoints}}" disabled="[[true]]">
+            <!-- ko foreach: $component.accessPoint() -->
+            <oj-option value="[[value]]">
+              <span data-bind="text: text"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+
+      <!-- ko with: userPartyRelationship -->
+      <!-- ko with: partyId -->
+      <row params="baseModel : $baseModel, label :$component.nls.fieldname.partyid, value : displayValue"></row>
+      <!-- /ko -->
+      <!-- /ko -->
+      <row params="baseModel : $baseModel, label :$component.nls.fieldname.partyname, value : partyName"></row>
+      <!-- ko foreach:$component.entityLimitPackages -->
+      <!-- ko if:  $data.targetUnit === $parent.entityId -->
+      <!-- ko ifnot:  $data.entityLimitPackageMappingDTO.length -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.limit , value : $component.nls.message.noLimitAssigned "></row>
+      <!-- /ko -->
+
+      <!-- ko foreach:$data.entityLimitPackageMappingDTO -->
+      <row params="baseModel : $baseModel, label :$data.accessPointDescription, value : $data.limitPackage"></row>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.nls.fieldname.role"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+          <!-- ko if: $parent.childRoleEnumsLoaded -->
+          <oj-checkboxset id="checkboxSetId" class="oj-choice-direction-row" :aria-label="[[$parent.selectedChildRole]]" disabled="[[true]]" value="{{$parent.selectedChildRole}}">
+            <!-- ko foreach: $parent.childRoleEnums -->
+            <oj-option value="{{applicationRoleName}}">
+              <span data-bind="text:applicationRoleName"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
+          <!-- /ko -->
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+    </page-section>
+
+    <!-- ko ifnot :approverReview -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[edit]]">
+        <span data-bind="text:$component.nls.buttons.edit"></span>
+      </oj-button>
+      <oj-button class="action-button-primary" on-click="[[showModalWindow]]">
+        <span data-bind="text:$component.nls.buttons.resetpassword"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+        <span data-bind="text:$component.nls.buttons.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[back]]">
+        <span data-bind="text:$component.nls.buttons.back"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+
+<modal-window params="baseModel : $baseModel, rootModel : $data,id:'resetPassword', header : $component.nls.headers.resetCredentials">
+  <div class="confirm-dialog">
+    <div class="confirm-dialog__container confirm-dialog-container">
+      <div class="oj-flex oj-flex-items-pad confirm-dialog-container__message">
+        <div data-bind="text:$component.nls.message.resetalert"></div>
+      </div>
+      <div class="confirm-dialog-container__buttons button-container">
+        <oj-button class="action-button-primary" on-click="[[resetPassword]]">
+          <span data-bind="text:$component.nls.buttons.yes"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[hideModalWindow]]">
+          <span data-bind="text:$component.nls.buttons.no"></span>
+        </oj-button>
+      </div>
+    </div>
+  </div>
+</modal-window><!-- /ko -->

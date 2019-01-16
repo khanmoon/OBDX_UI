@@ -1,0 +1,78 @@
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.name"></span></oj-label>
+	<!-- ko ifnot : addOn.selectedValues().primaryInfo.suffix -->
+	<!-- ko ifnot : addOn.applicantDTO.personalInfo.middleName() -->
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left addonCard" data-bind="text: $baseModel.format(resource.salFirstLast,{salutation:addOn.selectedValues().primaryInfo.salutation,firstName:addOn.applicantDTO.personalInfo.firstName(),lastName:addOn.applicantDTO.personalInfo.lastName()})"></span>
+	<!-- /ko -->
+	<!-- /ko -->
+	<!-- ko if : addOn.selectedValues().primaryInfo.suffix  -->
+	<!-- ko ifnot : addOn.applicantDTO.personalInfo.middleName() -->
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left addonCard" data-bind="text: $baseModel.format(resource.salFirstLastSuffix,{salutation:addOn.selectedValues().primaryInfo.salutation,firstName:addOn.applicantDTO.personalInfo.firstName(),lastName:addOn.applicantDTO.personalInfo.lastName(),suffix:addOn.applicantDTO.personalInfo.suffix()})"></span>
+	<!-- /ko -->
+	<!-- ko if : addOn.applicantDTO.personalInfo.middleName() -->
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left addonCard" data-bind="text: $baseModel.format(resource.salFirstMiddleLastSuffix,{salutation:addOn.selectedValues().primaryInfo.salutation,firstName:addOn.applicantDTO.personalInfo.firstName(),middleName:addOn.applicantDTO.personalInfo.middleName(),lastName:addOn.applicantDTO.personalInfo.lastName(),suffix:addOn.applicantDTO.personalInfo.suffix()})"></span>
+	<!-- /ko -->
+	<!-- /ko -->
+	<!-- ko if : addOn.applicantDTO.personalInfo.middleName()  -->
+	<!-- ko ifnot : addOn.selectedValues().primaryInfo.suffix -->
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left addonCard" data-bind="text: $baseModel.format(resource.salFirstMiddleLast,{salutation:addOn.selectedValues().primaryInfo.salutation,firstName:addOn.applicantDTO.personalInfo.firstName(),middleName:addOn.applicantDTO.personalInfo.middleName(),lastName:addOn.applicantDTO.personalInfo.lastName()})"></span>
+	<!-- /ko -->
+	<!-- /ko -->
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.dateOfBirth"></span></oj-label>
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: $baseModel.format(addOn.applicantDTO.personalInfo.birthDate())"></span>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.countryOfCitizenship"></span></oj-label>
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: addOn.selectedValues().primaryInfo.citizenship"></span>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.isPermanentResident"></span></oj-label>
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text : addOn.applicantDTO.personalInfo.isPermanentResidence() ? resource.generic.common.yes : resource.generic.common.no"></span>
+</div>
+<!-- ko if : addOn.applicantDTO.personalInfo.residentCountry() -->
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.countryOfResidence"></span></oj-label>
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: addOn.selectedValues().primaryInfo.residentCountry"></span>
+</div>
+<!-- /ko -->
+<!-- ko if : addOn.partyAddresses[0].postalAddress-->
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.address"></span></oj-label>
+	<div data-bind="with:addOn.partyAddresses[0].postalAddress" class="oj-flex-item oj-md-6 oj-sm-12  oj-lg-4">
+		<!-- ko if : $data['line2'] -->
+		<!-- ko if: line2 -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress, {line1: line1, line2: line2, city: city,state: state, country: country,zip: postalCode})"></span>
+		<!-- /ko -->
+		<!-- ko ifnot: line2 -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress2, {line1: line1, city: city,state: state, country: country,zip: postalCode})"></span>
+		<!-- /ko -->
+		<!-- /ko -->
+		<!-- ko ifnot : $data['line2'] -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress2, {line1: line1, city: city,state: state,country: country, zip: postalCode})"></span>
+		<!-- /ko -->
+	</div>
+</div>
+<!-- /ko -->
+<!-- ko if : addOn.temp_previousAddressRequired()-->
+<!-- ko if : addOn.partyAddresses[1].postalAddress-->
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.previousAddress"></span></oj-label>
+	<div data-bind="with:addOn.partyAddresses[1].postalAddress" class="oj-flex-item oj-md-6 oj-sm-12  oj-lg-4">
+		<!-- ko if : $data['line2'] -->
+		<!-- ko if: line2 -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress, {line1: line1, line2: line2, city: city,state: state,country: country, zip: postalCode})"></span>
+		<!-- /ko -->
+		<!-- ko ifnot: line2 -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress2, {line1: line1, city: city,state: state, country: country, zip: postalCode})"></span>
+		<!-- /ko -->
+		<!-- /ko -->
+		<!-- ko ifnot : $data['line2'] -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress2, {line1: line1, city: city,state: state, country: country,zip: postalCode})"></span>
+		<!-- /ko -->
+
+	</div>
+</div>
+<!-- /ko -->
+<!-- /ko -->

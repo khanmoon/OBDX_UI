@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=5.0' name='viewport' />
+  <meta name="apple-mobile-web-app-title" content="Oracle DigX" />
+  <meta name="theme-color" content="#5F2D61" />
+  <link rel="manifest" href="../manifest.json">
+  <link data-embed rel="stylesheet" href="../framework/css/loader.css">
+
+</head>
+
+<body class="page-is-changing">
+  <!-- ko if: isDashboardSet() -->
+  <div data-bind="childContext: {name: '$baseModel', context: getBaseModel()}">
+    <div data-bind="childContext: {name: '$oj', context: getOJET()}">
+      <div data-bind="component:{name: 'dashboard', params:{rootModel: $root, baseModel: $baseModel}}"></div>
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="cd-cover-layer"></div>
+  <!-- this is the cover layer -->
+  <div class="cd-logo"></div>
+  <!-- this is the logo icon -->
+  <div class="cd-loading-bar progress"></div>
+  <!-- this is the loading bar -->
+  <script defer src="../framework/js/libs/oraclejet/js/libs/require/require.js"></script>
+  <script defer src="../framework/js/pages/security.js"></script>
+  <script defer src="../framework/js/pages/require-config.js"></script>
+  <script async src="../framework/js/workers/service-worker.js" data-service-worker="/sw.js"></script>
+  <noscript>Your browser does not support JavaScript! Please enable JavaScript on browser.</noscript>
+</body>
+
+</html>

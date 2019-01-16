@@ -1,0 +1,42 @@
+<div class="file-upload-container">
+  <div class="oj-flex">
+    <div class="oj-flex-item">
+      <div class="oj-sm-6 check-box-label">
+        <oj-label class="oj-label-inline">
+          <span data-bind="text: $component.label"></span>
+        </oj-label>
+        <!-- ko if: $component.needtoupload -->
+        <a href="javascript:void(0)" data-bind="attr: {alt:$component.resource.altUpload}">
+          <oj-file-picker class="oj-filepicker-custom" selection-mode="single" selecton="click" on-oj-select="[[fileSelectListener]]"
+            data-bind="attr: {alt:$component.resource.altUpload,'id': 'document-upload'}" accept='[".jpg",".png",".pdf",".zip",".jpeg"]'
+            required="{{$component.isRequired}}" translations="[[{'required':{messageDetail:$component.errorMessage()}}]]">
+            <div class="icons icon-upload upload-icon-padding service-request-size oj-sm-2" slot="trigger">
+            </div>
+          </oj-file-picker>
+        </a>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.needtoupload -->
+        <oj-file-picker class="oj-filepicker-custom" data-bind="attr: {alt:$component.resource.empty,'id': 'document-upload'}" required="{{$component.isRequired}}"
+          accept='[".jpg",".png",".pdf",".zip",".jpeg"]' translations="[[{'required':{messageDetail:$component.errorMessage()}}]]">
+          <div class="icons icon-upload upload-icon-padding service-request-size oj-sm-2" slot="trigger">
+          </div>
+        </oj-file-picker>
+        <!-- /ko -->
+      </div>
+      <div class="oj-flex oj-sm-12">
+        <!-- ko if: $component.formData -->
+        <div class="oj-flex-item oj-sm-6">
+          <span data-bind="text:$component.fileName" class="fileup" :id="[[$component.name]]" translations="[[{'required':{messageDetail:$component.errorMessage()}}]]"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.formData -->
+        <!-- ko if: $component.isRequired -->
+        <div class="oj-flex-item oj-sm-6">
+          <span class="fileuperr" :id="[[$component.name]]" translations="[[{'required':{messageDetail:$component.errorMessage()}}]]"></span>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+    </div>
+  </div>
+</div>

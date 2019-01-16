@@ -1,0 +1,80 @@
+$payment-card-height: 10.5rem;
+$payment-features: var(--base-text-secondary) !default;
+$link-text-color: var(--base-text-primary);
+$link-arrow-color: var(--base-text-primary);
+
+
+.payment-card {
+	cursor: pointer;
+	height: $payment-card-height;
+
+	&__container {}
+
+	&-container {
+		&__title {
+			@include panel-title;
+			font-weight: var(--base-font-weight-regular);
+		}
+
+		&__description {
+			color: $payment-features;
+			font-size: var(--base-font-size-default);
+		}
+
+		&__icon {
+			position: absolute;
+			@include right(0);
+			bottom: 3.1rem;
+			height: 4.4rem;
+    	width: 6.3rem;
+
+			img {
+				width: 4.4rem;
+				height: 4.4rem;
+			}
+		}
+	}
+
+	&__footer {
+		border-top: 0.05rem solid var(--base-border-default);
+		height: 2.6rem;
+		position: absolute;
+		bottom: 0;
+		@include left(0);
+		width: 100%;
+		line-height: 2.6rem;
+		color: $link-text-color;
+	}
+
+	&-footer {
+		&-link {
+			color: $link-text-color;
+			font-weight: var(--base-font-weight-regular);
+
+			&__text {
+				@include float(left);
+				padding: 0 0.6rem;
+				font-size: var(--base-font-size-large);
+			}
+
+			&__icon {
+				@include float(right);
+				padding: 0.2rem 0.6rem;
+				font-size: calc(#{var(--base-font-size-default)} + 0.4rem);
+				color: $link-arrow-color;
+				font-weight: var(--base-font-weight-light);
+
+				&:active,
+				&:hover,
+				&:link,
+				&:visited {
+					text-decoration: none;
+					color: $link-text-color;
+				}
+			}
+		}
+	}
+
+
+
+}

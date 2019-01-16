@@ -1,0 +1,44 @@
+<div class="journey">
+    <section class="journey__timeline">
+        <ol>
+            <!-- ko foreach:$component.data -->
+            <li>
+                <!-- ko if:Object.keys($data).length -->
+                <div class="block">
+                    <!-- ko if:$data.header -->
+                    <header data-bind="text:header"></header>
+                    <!-- /ko -->
+                    <!-- ko if:$data.body -->
+                      <!-- ko foreach:body -->
+                        <div>
+                          <!-- ko if:$data.icon -->
+                          <span class="icons" data-bind="css:icon"></span>
+                          <!-- /ko -->
+                          <!-- ko if:$data.img -->
+                          <img data-bind="loadImage:img">
+                          <!-- /ko -->
+                          <!-- ko if:$data.description -->
+                          <span class="contents" data-bind="text:description"></span>
+                          <!-- /ko -->
+                        </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </li>
+            <!-- /ko -->
+
+        </ol>
+
+        <div class="arrows">
+            <button class="arrow arrow__prev disabled" disabled>
+                <span class="icons icon-back-arrow"></span>
+            </button>
+            <button class="arrow arrow__next">
+                <span class="icons icon-forward-arrow"></span>
+            </button>
+        </div>
+    </section>
+</div>
+<div class="" data-bind="template:{afterRender: $component.initializeJourney}">
+</div>

@@ -1,0 +1,33 @@
+<!-- ko if:$baseModel.small() -->
+<div class="form-main-container alerts-menu-list">
+  <oj-navigation-list selection="{{selectedItem}}" class="mobileMenu">
+      <ul>
+        <!-- ko foreach:$component.listItem -->
+        <li data-bind="attr: {id: $data.id}">
+          <a href="#" data-bind="attr:{'alt':$component.resource.labels[$data.moduleId]  }">
+            <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-2">
+                      <img class="alert-image" data-bind="loadImage: $data.imageUrl">
+                    </div>
+                    <div class="oj-flex-item oj-sm-10 alert-name">
+                      <span data-bind="text:$component.resource.labels[$data.moduleId]"></span>
+                    </div>
+                </div>
+          </a>
+        </li>
+        <!-- /ko -->
+      </ul>
+    </oj-navigation-list>
+  </div>
+<!-- /ko -->
+<!-- ko if:!$baseModel.small() -->
+<div class="form-main-container">
+  <div class="oj-sm-12 oj-md-12" data-bind='component: {name: "nav-bar", params:{rootModel: $data,
+    menuOptions: listItem,
+    uiOptions: uiOptions,
+    navBarDescription: $component.resource.labels.navBarDescription}}'></div>
+  <!-- ko if:$component.refreshModuleID() -->
+  <div class="menu-option" data-bind="component: {name: 'alerts-subscription', params:{rootModel: $data,moduleId:$component.alertModuleId}}"></div>
+  <!-- /ko -->
+</div>
+<!-- /ko -->

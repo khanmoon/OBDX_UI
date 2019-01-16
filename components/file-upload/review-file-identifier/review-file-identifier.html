@@ -1,0 +1,35 @@
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <action-header params="baseModel : $baseModel, rootModel : $component, heading:$component.Nls.review"></action-header>
+    <div data-bind="with:$component.selectedFUID">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.corporateid , value :partyId"></row>
+        <!-- ko if:$component.isPartyNameLoaded() -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.corporatename , value :partyName"></row>
+        <!-- /ko -->
+    </div>
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.Nls.details">
+    </action-header>
+    <div class="row-group">
+        <div data-bind="with: $component.selectedFUID">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.fileIdentifier , value :fileIdentifier"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.description , value :description"></row>
+        </div>
+    </div>
+    <!-- ko if:$component.isTemplateDetailsLoaded() -->
+    <div data-bind="with: $component.templateDetails()">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.fileformat , value :description"></row>
+    </div>
+    <div data-bind="with: $component.selectedFUID">
+        <!-- ko if:'maxNoOfRecords' in $data -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.maxNoOfRecords , value :maxNoOfRecords"></row>
+        <!-- /ko -->
+        <!-- ko if:'partialProcessingTolerance' in $data -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.ppTolerance , value :partialProcessingTolerance"></row>
+        <!-- /ko -->
+        <!-- ko if:'debitAccountNumber' in $data -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.debitAccountNumber , value :debitAccountNumber.displayValue"></row>
+        <!-- /ko -->
+    </div>
+    <div data-bind="template: { name: 'file-upload/template-details',data:$component.templateDetails()}"></div>
+    <!-- /ko -->
+    <div data-bind="template: { name: 'file-upload/approval-type',data:$component.selectedFUID}"></div>
+</page-section>

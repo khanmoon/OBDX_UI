@@ -1,0 +1,122 @@
+
+<oj-validation-group id="tracker" valid="{{groupValid}}">
+
+  <div class="oj-flex oj-flex-items-pad ">
+
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-label :for="[['createPackage_Name']]"><span data-bind="text:$component.nls.package_create.limit_package_code"></span></oj-label>
+    </div>
+    <!-- ko if: $component.params.action==='CLONE' || $component.params.action==='cloneAfterEdit'-->
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3">
+      <oj-input-text :id="[['createPackage_cloneName']]" required validators="[[$baseModel.getValidator('APPLICATION_NAME')]]" disabled="[[$component.params.action==='EDIT']]" value="{{$component.limitPackageCloneId}}"></oj-input-text>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.params.action==='CLONE'  || $component.params.action==='cloneAfterEdit'-->
+
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3">
+      <oj-input-text :id="[['createPackage_Name']]" required validators="[[$baseModel.getValidator('APPLICATION_NAME')]]" disabled="[[$component.params.action==='EDIT']]" value="{{$component.createPackageData().key.id}}"></oj-input-text>
+    </div>
+    <!-- /ko -->
+
+  </div>
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-label :for="[['createPackage_Desc']]"><span data-bind="text:$component.nls.package_create.limit_package_desc"></span></oj-label>
+    </div>
+    <!-- ko if: $component.params.action==='CLONE'  || $component.params.action==='cloneAfterEdit'-->
+
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-7">
+      <oj-input-text maxlength="200" :id="[['createPackage_Desc']]" required validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" value="{{$component.limitPackageCloneDesc}}"></oj-input-text>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.params.action==='CLONE'  || $component.params.action==='cloneAfterEdit'-->
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-7">
+      <oj-input-text maxlength="200" :id="[['createPackage_Desc']]" required validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" value="{{$component.createPackageData().description}}"></oj-input-text>
+    </div>
+    <!-- /ko -->
+
+  </div>
+  <!-- ko ifnot: $component.params.action==="EDIT"-->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-label for="accessType" id="accessTypeLabel">
+        <span data-bind="text:$component.nls.package_create.access_point"></span>
+      </oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-7">
+      <oj-radioset class="oj-choice-direction-row" id="accessPointType" labelled-by="accessTypeLabel" value="{{accessPointType}}" required="[[true]]">
+        <oj-option :id="[['AccessPoint']]" value="{{'SINGLE'}}"><span data-bind="text:$component.nls.package_create.access_point"></span></oj-option>
+        <oj-option :id="[['AccessPointGroup']]" value="{{'GROUP'}}"><span data-bind="text:$component.nls.package_create.access_point_group"></span></oj-option>
+      </oj-radioset>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if:$component.accessPointType()==="SINGLE" -->
+  <!-- ko if:showAccessPoint -->
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-label class="" :for="[['createPackage_accessPoint']]"><span data-bind="text:$component.nls.package_create.access_point"></span></oj-label>
+    </div>
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-2">
+
+      <!-- ko ifnot: $component.params.action==="EDIT"-->
+
+      <oj-select-one class="oj-flex-item  oj-lg-8" :id="[['createPackage_accessPoint']]" required="[[true]]" translations="[[{'required':{messageDetail:nls.package_create.select_access_point}}]]" value="{{selectedAccessPoint}}" :placeholder="[[$component.nls.package_create.select_access_point]]" options="[[groupData]]">
+      </oj-select-one>
+      <!-- /ko -->
+      <!-- ko if: $component.params.action==="EDIT"-->
+        <span data-bind="text:selectedAccessPoint"></span>
+      <!-- /ko -->
+
+    </div>
+
+  </div>
+
+  <!-- /ko -->
+  <!-- /ko -->
+
+  <!-- ko if:$component.accessPointType()==="GROUP" -->
+  <!-- ko if:showAccessPointGroup -->
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-label class="" :for="[['createPackage_accessPointGroup']]"><span data-bind="text:$component.nls.package_create.access_point_group"></span></oj-label>
+    </div>
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-2">
+      <!-- ko ifnot: $component.params.action==="EDIT"-->
+
+      <oj-select-one class="oj-flex-item  oj-lg-8" :id="[['createPackage_accessPointGroup']]" required="[[true]]" translations="[[{'required':{messageDetail:nls.package_create.select_access_point}}]]" value="{{selectedAccessPoint}}" :placeholder="[[$component.nls.package_create.select_access_point]]">
+        <!-- ko foreach:limitsData().accessPointGroup()  -->
+        <oj-option value="{{accessPointGroupId}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+      <!-- /ko -->
+      <!-- ko if: $component.params.action==="EDIT"-->
+        <span data-bind="text:selectedAccessPoint"></span>
+      <!-- /ko -->
+
+    </div>
+
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- ko ifnot:isCorpAdmin -->
+  <div class="oj-flex oj-flex-items-pad ">
+    <!-- ko if:showEnterpriseRole -->
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-label class="" :for="[['createPackage_Role']]"><span data-bind="text:$component.nls.package_create.availableToRole"></span></oj-label>
+    </div>
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3">
+      <oj-select-many id="createPackage_Role" value="{{selectedRoleValues}}" placeholder="{{$component.nls.package_create.select_role}}" required>
+        <!-- ko foreach:limitsData().enterpriseRoles  -->
+        <oj-option value="{{enterpriseRoleId}}"><span data-bind="text:enterpriseRoleName"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-many>
+
+
+    </div>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+</oj-validation-group>

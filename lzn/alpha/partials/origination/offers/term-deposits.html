@@ -1,0 +1,57 @@
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-7">
+
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="html:$component.resource.td.minDepositAmount"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<span class="details-text-value" data-bind="text: $baseModel.formatCurrency(offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferCurrencyParameterResponseDTOs[0].minDepositAmount.amount,offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferCurrencyParameterResponseDTOs[0].minDepositAmount.currencyCode)"></span>
+			</div>
+		</div>
+
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="html:$component.resource.td.maxDepositAmount"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<span class="details-text-value" data-bind="text: $baseModel.formatCurrency(offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferCurrencyParameterResponseDTOs[0].maxDepositAmount.amount,offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferCurrencyParameterResponseDTOs[0].maxDepositAmount.currencyCode)"></span>
+			</div>
+		</div>
+
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="html:$component.resource.td.minTerm"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<span class="details-text-value" data-bind="html: $baseModel.format($component.resource.td.term, {years:offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferTermResponseDTO.minTerm.years,months:offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferTermResponseDTO.minTerm.months, days:offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferTermResponseDTO.minTerm.days})"></span>
+			</div>
+		</div>
+
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="html:$component.resource.td.maxTerm"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<span class="details-text-value" data-bind="html: $baseModel.format($component.resource.td.term, {years:offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferTermResponseDTO.maxTerm.years,months:offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferTermResponseDTO.maxTerm.months, days:offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferTermResponseDTO.maxTerm.days})"></span>
+			</div>
+		</div>
+
+	</div>
+
+
+	<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5 facilities">
+		<div class="details-text" data-bind="text:$component.resource.casa.facilities"></div>
+		<ul class="oj-flex-item oj-sm-5 oj-md-6 oj-lg-12 no-pad-cols facilities-values">
+			<!-- ko if:offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferFacilityResponseDTO.prematureRedemptionAllowed -->
+			<li class="details-text-value" data-bind="text:$component.resource.td.prematureRedemptionAllowed"></li>
+			<!-- /ko  -->
+			<!-- ko if:offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferFacilityResponseDTO.partRedemptionAllowed -->
+			<li class="details-text-value" data-bind="text:$component.resource.td.partRedemptionAllowed"></li>
+			<!-- /ko  -->
+			<!-- ko if:offerDetails[0].offerAdditionalDetails.termDepositOfferDetails.termDepositOfferFacilityResponseDTO.lienAllowed === "ON_PRINCIPAL" -->
+			<li class="details-text-value" data-bind="text:$component.resource.td.lienAllowed"></li>
+			<!-- /ko  -->
+		</ul>
+	</div>
+</div>

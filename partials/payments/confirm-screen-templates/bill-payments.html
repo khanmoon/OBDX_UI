@@ -1,0 +1,54 @@
+
+  <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item center">
+              <a href="#" data-bind="click:addFavorites">
+              <span class="icon icon-heart icon-2x" id="favorite"></span></a>
+
+            </div>
+        </div>
+
+
+
+    <div class="button-container">
+
+        <oj-button class="action-button-primary " on-click="[[transactionDone]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:resource.billPayment.done"></span>
+</oj-button>
+
+    </div>
+
+    <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'favoritesDialog'">
+        <div class="grid-main-container ">
+            <div class="dialog-text-heading center">
+                <div data-bind="text:$parent.resource.billPayment.favorite">
+                </div>
+            </div>
+            <div class="dialog-text center" data-bind="text:$baseModel.format($parent.resource.billPayment.favadded,{name:$parent.customBillerName()})">
+            </div>
+            <div class="button-container">
+                <oj-button class="action-button-secondary " on-click="[[$parent.cancelFavourite]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$parent.resource.billPayment.cancel"></span>
+</oj-button>
+                <oj-button class="action-button-primary " on-click="[[$parent.persistFavorites]]"><span slot="startIcon" class="icons icon-ok"></span>
+      <span data-bind="text:$parent.resource.billPayment.ok"></span>
+</oj-button>
+            </div>
+        </div>
+    </modal-window>
+
+    <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'favoritesSuccessDialog'">
+        <div class="grid-main-container ">
+            <div class="dialog-text-heading center">
+                <div data-bind="text:$parent.resource.billPayment.favorite">
+                </div>
+            </div>
+            <div class="dialog-text center">
+                <span class="confirm-text" data-bind="text:$baseModel.format($parent.resource.billPayment.favsuccess,{name:$parent.customBillerName()})"></span>
+            </div>
+            <div class="button-container">
+                <oj-button class="action-button-primary " on-click="[[$parent.transactionDone]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$parent.resource.billPayment.done"></span>
+</oj-button>
+            </div>
+        </div>
+    </modal-window> 

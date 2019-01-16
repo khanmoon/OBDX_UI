@@ -1,0 +1,79 @@
+<!-- ko if:templateFlag()==="transactionGroup" || $component.targetId()==="TASK_GROUP"-->
+<div data-bind="template: { name: 'limits/transaction-group'}">
+</div>
+<!-- /ko -->
+<!-- ko if:(templateFlag()==="transaction" || $component.targetId()==="TASK")-->
+
+<div class="limit oj-flex oj-flex-items-pad  transactionLimitBox" id="limitTransaction">
+  <div class="oj-flex oj-flex-items-pad  oj-sm-12">
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-label :for="[['limitTransaction_'+$index()]]"><span data-bind="text:$component.nls.limits.transaction_name"></span></oj-label>
+    </div>
+    <!-- ko if:taskCodeListFetch -->
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-8">
+
+      <oj-select-one class="listbox-drop" :id="[[('limitTransaction_'+$index())]]" translations="[[{'required':{messageDetail:$component.nls.limits.select_transaction}}]]" required="[[true]]" :placeholder="[[$component.nls.limits.select_task]]" value="{{selectedTransactionForPackage}}" on-value-changed="[[showLimitsForTransaction.bind($data,$index())]]" disabled="[[(new Date($component.dateValueForTransaction())<($baseModel.getDate()))]]" :invalidcomponenttracker="[[$component.validationTracker]]" options="[[taskCodeList]]">
+      </oj-select-one>
+    </div>
+    <!-- /ko -->
+
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad  oj-sm-12">
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-label class="" :for="[['transaction_limit_effectiveDate_'+$index()]]"><span data-bind="text:$component.nls.limits.effective_date"></span></oj-label>
+    </div>
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3">
+      <oj-input-date :id="[['transaction_limit_effectiveDate_'+$index()]]" required="[[true]]" min="[[minDate()]]" converter="[[$baseModel.dateConverter]]" disabled="[[$component.params.action==='EDIT'?(($component.selectedTransactionForPackage()===undefined) ||(new Date($component.dateValueForTransaction())<($baseModel.getDate()))):(($component.selectedTransactionForPackage()===undefined) &&(new Date($component.dateValueForTransaction())<($baseModel.getDate())))]]" value="{{dateValueForTransaction}}"></oj-input-date>
+    </div>
+
+  </div>
+
+  <!-- ko if:$component.params.action==='EDIT' -->
+  <div class="oj-flex oj-flex-items-pad  oj-sm-12">
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-label class="" :for="[['transaction_limit_expiryDate_'+$index()]]"><span data-bind="text:$component.nls.limits.expiry_date"></span></oj-label>
+    </div>
+    <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-input-date :id="[['transaction_limit_expiryDate_'+$index()]]" min="[[minExpDate()]]" converter="[[$baseModel.dateConverter]]" disabled="[[$component.expiryDateValueForTransaction()&&$component.existingTransaction()]]" value="{{expiryDateValueForTransaction}}"></oj-input-date>
+    </div>
+
+  </div>
+
+  <!-- /ko -->
+
+  <!-- ko foreach:$component.createPackageData().targetLimitLinkages()[$index()].limits() -->
+  <!-- ko if:limitType()==='PER' -->
+  <!-- ko if:$parent.effectiveSameDayFlag()==='Y' -->
+  <div class="oj-sm-12" data-bind="component:{name:'cumulative-limit' ,
+              params:{'rootModel':$data,validationObject:$component.validationTracker,parentIndex:$parentContext.$parentContext.$index,limitsData:$component.limitsData,visibility:$component.showCummulativeSearchSection,limitEditable:($component.selectedTransactionForPackage()!==undefined) && (new Date($component.dateValueForTransaction())>=($baseModel.getDate().setHours(0,0,0,0)))}}"></div>
+  <!-- /ko -->
+  <!-- ko if:$parent.effectiveSameDayFlag()==='N' -->
+  <div class="oj-sm-12" data-bind="component:{name:'cumulative-limit' ,
+              params:{'rootModel':$data,validationObject:$component.validationTracker,parentIndex:$parentContext.$parentContext.$index,limitsData:$component.limitsData,visibility:$component.showCummulativeSearchSection,limitEditable:($component.selectedTransactionForPackage()!==undefined) && (new Date($component.dateValueForTransaction())>($baseModel.getDate().setHours(0,0,0,0)))}}"></div>
+  <!-- /ko -->
+  <!-- $component.editable in limitEditable -->
+  <!-- /ko -->
+  <!-- ko if:limitType()==='TXN' -->
+  <!-- ko if:$parent.effectiveSameDayFlag() === 'Y' -->
+  <div class="oj-sm-12" data-bind="component:{name:'transaction-limit' ,
+          params:{'rootModel':$data,validationObject:$component.validationTracker,parentIndex:$parentContext.$parentContext.$index,limitsData:$component.limitsData,visibility:$component.showTransactionLimitsSearch,templateLoadingFlag: $component.templateFlag,limitEditable:($component.selectedTransactionForPackage()!==undefined) && (new Date($component.dateValueForTransaction())>=($baseModel.getDate().setHours(0,0,0,0)))}}"></div>
+  <!-- /ko -->
+  <!-- ko if:$parent.effectiveSameDayFlag()==='N' -->
+  <div class="oj-sm-12" data-bind="component:{name:'transaction-limit' ,
+          params:{'rootModel':$data,validationObject:$component.validationTracker,parentIndex:$parentContext.$parentContext.$index,limitsData:$component.limitsData,visibility:$component.showTransactionLimitsSearch,templateLoadingFlag: $component.templateFlag,limitEditable:($component.selectedTransactionForPackage()!==undefined) && (new Date($component.dateValueForTransaction())>($baseModel.getDate().setHours(0,0,0,0)))}}"></div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- ko if:limitType()==='DUR' -->
+  <!-- ko if:$parent.effectiveSameDayFlag()==='Y' -->
+  <div class="oj-sm-12" data-bind="component:{name:'cooling-period-limit' ,
+          params:{'rootModel':$data,validationObject:$component.validationTracker,parentIndex:$parentContext.$parentContext.$index,limitsData:$component.limitsData,visibility:$component.showCoolingLimitSearchSection,limitEditable:($component.selectedTransactionForPackage()!==undefined) && (new Date($component.dateValueForTransaction())>=($baseModel.getDate().setHours(0,0,0,0)))}}"></div>
+  <!-- /ko -->
+  <!-- ko if:$parent.effectiveSameDayFlag()==='N' -->
+  <div class="oj-sm-12" data-bind="component:{name:'cooling-period-limit' ,
+            params:{'rootModel':$data,validationObject:$component.validationTracker,parentIndex:$parentContext.$parentContext.$index,limitsData:$component.limitsData,visibility:$component.showCoolingLimitSearchSection,limitEditable:($component.selectedTransactionForPackage()!==undefined) && (new Date($component.dateValueForTransaction())>($baseModel.getDate().setHours(0,0,0,0)))}}"></div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->
+</div>
+<!-- /ko -->

@@ -1,0 +1,74 @@
+<!-- ko ifnot: $baseModel.small() -->
+<div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <div class="oj-flex oj-flex-items-pad goal__disclaimer goal-disclaimer">
+                <!-- <div class="oj-flex-item oj-sm-12 ij-md-12 oj-lg-12"> -->
+                <div class="icons icon-information goal-disclaimer__icon-info"></div>
+                <div class="oj-flex-item oj-sm-11 goal-disclaimer__text" id="goaldisclaimer" data-bind="text:$component.resource.manageGoal.activitydisclaimer"></div>
+                <!-- </div> -->
+            </div>
+            <!-- ko if:isTransactionListLoaded() -->
+            <div class="oj-flex-item">
+                <div class="oj-flex oj-flex-items-pad">
+                    <oj-table :aria-label="[[$component.resource.withdrawGoal.header]]" columns="[[[{headerText:$component.resource.withdrawGoal.date,template:'formatedDate',style:'width:15%'},{headerText:$component.resource.withdrawGoal.description,field:'description',style:'width:40%'},{headerText:$component.resource.withdrawGoal.type,field:'transactionType',style:'width:15%'},{headerText:$component.resource.withdrawGoal.amount,template:'formatedAmount',style:'width:15%'},{headerText:$component.resource.withdrawGoal.referenceNumber,field:'externalReferenceNumber',style:'width:15%'}]]]" selection-mode="[[{row:'multiple',column:'multiple'}]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.dataSource]]">
+                        <template slot="formatedAmount">
+                            <td>
+                                <div data-bind="text:$baseModel.formatCurrency($current.row.amount,$component.baseCurrency())"></div>
+                            </td>
+                        </template>
+                        <template slot="formatedDate">
+                            <td>
+                                <date-box params="baseModel : $baseModel, date:$current.row.transactionDate"></date-box>
+                            </td>
+                        </template>
+                        <template slot="content_template">
+                            <li>
+                                <div data-bind="component:{name:'goal-transaction-card',params:{rootModel: $component, data : $data}}"></div>
+                            </li>
+                        </template>
+                    </oj-table>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.dataSource]]">
+                    </oj-paging-control>
+                </div>
+            </div>
+            <!-- /ko -->
+        </page-section>
+        <oj-button class="action-button-secondary " on-click="[[$component.cancel]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resource.Generic.common.cancel"></span>
+            </oj-button>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'goal-transactions'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko if: $baseModel.small() -->
+<!-- ko if:isTransactionListLoaded() -->
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <div class="oj-flex oj-flex-items-pad goal__tab-header">
+        <div class="oj-flex-item">
+            <div class="goal__tab-header--small" id="page-header" data-bind="text:$component.resource.labels.viewtransaction"></div>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad goal__disclaimer goal-disclaimer">
+        <!-- <div class="oj-flex-item oj-sm-12 0j-md-12 oj-lg-12"> -->
+        <div class="icons icon-information goal-disclaimer__icon-info"></div>
+        <div class="oj-flex-item oj-sm-11 goal-disclaimer__text" id="goaldisclaimer" data-bind="text:$component.resource.manageGoal.activitydisclaimer"></div>
+        <!-- </div> -->
+    </div>
+    <script type="text/html" id="content_template">
+        <li>
+            <div data-bind="component:{name:'goal-transaction-card',params:{rootModel: $component, data : $data}}"></div>
+        </li>
+    </script>
+    <oj-list-view id="listview_dashboard" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.dataSource()]]"></oj-list-view>
+    <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.dataSource]]">
+    </oj-paging-control>
+</page-section>
+<!-- /ko -->
+<!-- /ko -->

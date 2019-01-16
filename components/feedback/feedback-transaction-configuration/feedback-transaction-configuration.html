@@ -1,0 +1,206 @@
+<!-- ko if:$component.scaleSVGLoaded && $component.dataLoaded  -->
+<oj-validation-group id="tracker" valid="{{$component.groupValid}}">
+  <div class="form-main-container">
+  <div class="oj-flex design-feedback">
+      <div class="oj-flex-item oj-sm-8">
+        <page-section params="baseModel : $baseModel, rootModel : $data">
+          <!-- ko ifnot:$component.reviewTemplate()  -->
+          <div class="oj-flex">
+            <div class="oj-flex-items oj-lg-3 label">
+              <label for="checkboxSetFeedaback" data-bind="attr:{id:'checkboxSetFeedabackLabel'},text: $component.resource.feedbackType"></label></div>
+            <div class="oj-flex-items oj-lg-9">
+              <oj-checkboxset id="checkboxSetFeedaback" class="oj-choice-direction-row" :aria-label="[[$component.resource.feedbackType]]" value={{$component.feedbackType}} on-value-changed="[[$component.feedbackTypeChangedHandler]]" required>
+                <oj-option value="generic"><span data-bind="text: $component.resource.feedbackTypeGeneral"></span></oj-option>
+                <oj-option value="transactions"><span data-bind="text: $component.resource.feedbackTypeTransactions"></span></oj-option>
+              </oj-checkboxset>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if:$component.showGenericSection -->
+          <oj-accordion class="oj-accordion-collapsible" id="GenAccordion">
+            <oj-collapsible id="GenericCollapsible" expanded>
+              <span slot="header"><span class="" data-bind="text: $component.resource.feedbackTypeGeneral"></span></span>
+              <!-- ko foreach: $component.feedbackDefinitionDTODefault -->
+              <div>
+              <!-- ko foreach: ratings -->
+              <div class="oj-flex">
+                <div class="oj-flex-item oj-lg-3">
+                  <oj-rating-gauge readonly value="{{$component.convertToInt(weightId)}}" selected-state.shape="[[$component.customShape]]" hover-state.shape="[[$component.customShape]]" unselected-state.shape="[[$component.customShape]]" changed-state.shape="[[$component.customShape]]"></oj-rating-gauge>
+                </div>
+
+                <div class="oj-flex-item oj-lg-6">
+                  <oj-label class="hide">
+                    <span data-bind="attr:{id:'selectQuestionsIdLabel'+$index()}, text: $component.resource.selectQuestions"></span>
+                  </oj-label>
+                  <oj-select-one :aria-label="[[$component.resource.selectQuestions]]" :placeholder="{{$component.resource.selectQuestions}}" on-value-changed="{{$component.questionChangeHandler}}" value="{{temp_questionDescription}}" disabled="[[$component.reviewTemplate]]"
+                    required>
+                    <!-- ko foreach: $component.question -->
+                    <oj-option value="[[questionId]]"><span data-bind="text: questionDescription"></span></oj-option>
+                    <!-- /ko -->
+                  </oj-select-one>
+                </div>
+              </div>
+              <div class="oj-flex-item oj-lg-3">
+              </div>
+              <!-- ko if: temp_questionSelected -->
+              <div class="oj-flex">
+                <div class="oj-flex-item oj-lg-3">
+                </div>
+                <div class="oj-flex-item oj-lg-6">
+                  <oj-label><span data-bind="text:$component.resource.selectOptionApplicableLable"></span></oj-label>
+                </div>
+              </div>
+              <div class="oj-flex">
+                <div class="oj-flex-item oj-lg-3">
+                </div>
+                <div class="oj-flex-item oj-lg-6">
+                  <span class="oj-choice-row ">
+                 <oj-checkboxset  :aria-label="[[$component.resource.reviewTemplate]]" on-value-changed="{{$component.OptionRequestChangedHandler}}" value="{{temp_selectedOptions}}" disabled="[[$component.reviewTemplate]]" required>
+                   <!-- ko foreach: temp_optionsRequestList -->
+                                 <oj-option value="[[optionId]]"><span data-bind="text: optionDescription" attr="{'id':'checkboxSetOptionId'}"></span></oj-option>
+                  <!-- /ko -->
+                  </oj-checkboxset>
+                  </span>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:$component.reviewTemplate() -->
+              <div class="transaction-separate"></div>
+              <!-- /ko -->
+              <!-- /ko -->
+            </div>
+              <!-- /ko -->
+            </oj-collapsible>
+          </oj-accordion>
+          <!-- /ko -->
+          <!-- ko if:$component.showTransactionSection -->
+          <oj-accordion class="oj-accordion-collapsible" id="TransactionAccordion">
+            <oj-collapsible id="transactionsCollapsible" expanded="[[$component.reviewTemplate]]">
+            <span slot="header"><span class="" data-bind="text: $component.resource.feedbackTypeTransactions"></span></span>
+              <!-- ko foreach: $component.feedbackDefinitionDTO -->
+              <div class="oj-flex oj-lg-12">
+                <div class="oj-flex oj-lg-12">
+                  <div class="oj-flex-item oj-lg-3 ">
+                    <oj-label for="transactions">
+                      <span data-bind="attr:{id:'transactionsLabel'}, text: $component.resource.selectTransactionLabel"></span>
+                    </oj-label>
+                  </div>
+                  <div class="oj-flex-item oj-lg-6 ">
+                    <oj-select-many id="transactions" value="{{temp_transactions}}" placeholder="{{$component.resource.selectedTransaction}}" required disabled="[[$component.reviewTemplate]]" options="[[$component.transactionList]]" on-value-changed="[[$component.transactionHandler]]">
+                    </oj-select-many>
+                  </div>
+                </div>
+                <!-- ko foreach: ratings -->
+                <div class="oj-flex oj-lg-12">
+                  <div class="oj-flex-item oj-lg-3">
+                    <oj-rating-gauge :id="[['gauge9'+$index()]]" readonly value="{{$component.convertToInt(weightId)}}" selected-state.shape="[[$component.customShape]]" hover-state.shape="[[$component.customShape]]" unselected-state.shape="[[$component.customShape]]" changed-state.shape="[[$component.customShape]]"></oj-rating-gauge>
+                  </div>
+
+                  <div class="oj-flex-item oj-lg-6">
+                    <oj-label for="[['selectQuestionsId'+($baseModel.incrementIdCount())]]" class="hide">
+                      <span data-bind="attr:{id:'selectQuestionsIdLabel'+($baseModel.incrementIdCount())}, text: $component.resource.selectQuestions"></span>
+                    </oj-label>
+                    <oj-select-one :id="[['selectQuestionsId'+($baseModel.currentIdCount())]]" :aria-label="[[$component.resource.selectQuestions]]" :placeholder="{{$component.resource.selectQuestions}}" on-value-changed="{{$component.questionChangeHandler}}" value="{{temp_questionDescription}}"
+                      required disabled="[[$component.reviewTemplate]]">
+                      <!-- ko foreach: $component.question -->
+                      <oj-option value="[[questionId]]"><span data-bind="text: questionDescription"></span></oj-option>
+                      <!-- /ko -->
+                    </oj-select-one>
+                  </div>
+                </div>
+                <div class="oj-flex-item oj-lg-3">
+                </div>
+                <!-- ko if: temp_questionSelected -->
+                <div class="oj-flex oj-lg-12">
+                  <div class="oj-flex-item oj-lg-3">
+                  </div>
+                  <div class="oj-flex-item oj-lg-6">
+                    <oj-label><span data-bind="text:$component.resource.selectOptionApplicableLable"></span></oj-label>
+                  </div>
+                </div>
+                <div class="oj-flex oj-lg-12">
+                  <div class="oj-flex-item oj-lg-3">
+                  </div>
+                  <div class="oj-flex-item oj-lg-6">
+                    <span class="oj-choice-row ">
+                 <oj-checkboxset  :aria-label="[[$component.resource.selectOptionApplicableLable]]" on-value-changed="{{$component.OptionRequestChangedHandler}}" value="{{temp_selectedOptions}}" disabled="[[$component.reviewTemplate]]" required  translations="[[{
+                 'required': {
+                   'messageDetail': $component.resource.transactionSelectMessage}
+                 }]]">
+                   <!-- ko foreach: temp_optionsRequestList -->
+                                 <oj-option value="[[optionId]]"><span data-bind="text: optionDescription" attr="{'id':'checkboxSetOptionId'}"></span></oj-option>
+                    <!-- /ko -->
+                    </oj-checkboxset>
+                    </span>
+                  </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:$component.reviewTemplate() -->
+                <div class="transaction-separate"></div>
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- ko if: $component.addAnotherTransactionInput() -->
+                <div class="oj-flex" data-bind="template: { name: 'feedback/feedback-transaction-configurations-template' ,data:$component.newFeedbackDefinitionDTO}"></div>
+                <!-- /ko -->
+                <!-- ko ifnot: $component.reviewTemplate() -->
+                <div class="oj-flex-items">
+                  <a href="#" data-bind="click:$component.addAnotherTransaction" attr="{'id':'newTransactionId'}">
+                  <span data-bind="text: $component.resource.addAnotherTransactionLink"></span>
+                </a>
+                </div>
+                <!-- /ko -->
+              </div>
+              <!-- /ko -->
+            </oj-collapsible>
+          </oj-accordion>
+          <!-- /ko -->
+          <!-- ko ifnot:$component.reviewTemplate() -->
+          <!-- ko ifnot:$component.hideTemplateInfo() -->
+          <div class="oj-flex-items">
+            <div class="button-container">
+              <div class="oj-flex-items oj-lg-8">
+                <oj-button class="action-button-primary" id="next-button-save" type="submit" on-click="[[$component.createFeedbackTransaction]]">
+                  <span data-bind="text:$component.resource.save"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="next-button-cancel" type="submit" on-click="[[$dashboard.openDashBoard]]">
+                  <span data-bind="text:$component.resource.cancel"></span>
+                </oj-button>
+                <oj-button class="action-button-tertiary" id="next-button-back" type="submit" on-click="[[$component.previousStep]]">
+                  <span data-bind="text:$component.resource.back"></span>
+                </oj-button>
+              </div>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if:$component.hideTemplateInfo() -->
+          <div class="oj-flex-items">
+            <div class="button-container">
+              <div class="oj-flex-items oj-lg-8">
+                <oj-button class="action-button-primary" id="next-button-save" type="submit" on-click="[[$component.createFeedbackTransaction]]">
+                  <span data-bind="text:$component.resource.save"></span>
+                </oj-button>
+                <oj-button class="action-button-tertiary" id="next-button-cancel" type="submit" on-click="[[$dashboard.openDashBoard]]">
+                  <span data-bind="text:$component.resource.cancel"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="next-button-back" type="submit" on-click="[[$component.previousStep]]">
+                  <span data-bind="text:$component.resource.back"></span>
+                </oj-button>
+              </div>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+        </page-section>
+      </div>
+    </div>
+  </div>
+</oj-validation-group>
+<!-- /ko -->
+<modal-window class="message form-main-container" params="baseModel : $baseModel, rootModel : $component,id:'createFeedback', header: $component.resource.confirmation">
+  <div class="message-text label scroll" data-bind="html:$component.resource.createFeedback"></div>
+  <div class="message-btn button-container">
+    <oj-button class="action-button-primary" :id="[['okButton']]" on-click="[[$component.closePopup]]">
+      <span data-bind="text:$component.resource.ok"></span>
+    </oj-button>
+  </div>
+</modal-window>

@@ -1,0 +1,11 @@
+<div class="oj-flex oj-flex-items-pad text-input">
+    <div class="oj-flex-item" data-bind="attr:{class:containerClass}">
+      <oj-label class="hide-label" :for="[[$component.fieldId]]"><span data-bind="text:$component.label"></span></oj-label>
+        <textarea data-bind="html:editorData,attr:{id:$component.fieldId,name:fieldId}">        </textarea>
+    </div>
+    <!-- ko if:$component.validationRequired -->
+    <oj-label class="hide-label" :for="[[$component.txtBoxId]]"><span data-bind="text:$component.label"></span></oj-label>
+    <oj-input-text type="text" class="text-input__validation-purpose" required :id="[[$component.txtBoxId]]" value="{{editorData}}"></oj-input-text>
+    <!-- /ko -->
+    <div data-bind="template:{afterRender: $component.initializeEditor}"></div>
+</div>

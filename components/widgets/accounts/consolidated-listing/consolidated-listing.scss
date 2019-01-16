@@ -1,0 +1,186 @@
+$overview-analysis-card-height: 4.4rem;
+$overview-analysis-card-heading-size: 1.3rem;
+$overview-card-count-size:3.1rem;
+$overview-btn-set-height:2.1rem;
+$overview-analysis-label-size:1.1rem;
+$overview-analysis-amount-size:1.6rem;
+$overview-analysis-link-size:0.9rem;
+$overview-analysis-gradient-text-size:0.8rem;
+$overview-analysis-icon-size:0.9rem;
+$overview-analysis-primary-color:#89c33d;
+$overview-analysis-secondary-color:#b8fc22;
+$overview-analysis-header-text-color:var(--base-color-secondary-text);
+$overview-analysis-box-shadow-color:var(--base-color-secondary);
+$title-font-sizes: ( small: 0.9rem, medium: 0.9rem, large: 1rem);
+.overview {
+	.product-card {
+		
+		&-count {
+			font-size: $overview-card-count-size;
+			font-weight: var(--base-font-weight-light);
+			
+			z-index: 1;
+			
+			line-height: 1.6rem;
+		}
+		&-name {
+			font-size: $overview-analysis-card-heading-size;
+			@include single-margin(left,0.6rem);
+			position: absolute;
+			line-height: 1.6rem;
+		}
+		&-title-bar {
+			height: 2.3rem;
+			position: relative;
+			margin-top: 0.3rem;
+			background: transparent !important;
+
+		}
+		&-icon {
+			@include float(right);
+			img {
+				height: 3.1rem;
+				width:3.1rem;
+				position: absolute;
+				top: -0.5rem;@include right(0.6rem)
+			}
+		}
+		.payment-feature {
+			position: absolute;
+			top: 4.4rem;
+			font-size: 1.3rem;
+		}
+	}
+	&.summary {@include padding(0, 0, 2.5rem, 0);
+		.account-listing{
+    	
+    	box-shadow: 0 0.1rem 0.1rem rgba(0,0,0,0.18);
+			@include mq(small){
+				background-color:var(--base-color-secondary);
+				color:$overview-analysis-header-text-color;
+				z-index:1;
+			}
+			
+			&__account-header{
+				background-color:var(--base-color-secondary);
+				color:$overview-analysis-header-text-color;
+				z-index:1;
+			}
+			&-account-header{
+				
+				&__title{
+					@include float(left);
+					padding:1.3rem 0.6rem;
+					display:inline-block;
+					@include mq(small){@include padding(0.9rem, 0, 0, 0.3rem);
+					}
+				}
+				&-title{
+					&__highlightCount{
+						width: 2.5rem;
+					  height: 2.5rem;
+					  background: var(--base-color-secondary);
+					  border-radius: 100%;
+					  position: relative;
+					  text-align: center;
+					  padding: 0.4rem 0.1rem;
+					  box-sizing: border-box;
+						@include float(left);
+						font-size:$overview-analysis-card-heading-size;
+						@include mq(small){
+							width: 1.6rem;
+							height: 1.6rem;
+							padding: 0.1rem;
+							font-size:$overview-analysis-label-size;
+						}
+					}
+					&__highlightCount:before{
+						 border-radius: 100%;
+						 width: 100%;
+						 height:100%;
+						 content: '';
+						 background-image: linear-gradient(to bottom, $overview-analysis-primary-color 0%, $overview-analysis-secondary-color 100%);
+						 padding: 0.3rem;
+						 top: -0.3rem;@include left(-0.3rem)
+						 position:absolute;
+						 z-index:-1;
+					}
+					&__label{
+						padding:0.6rem 1.3rem;
+						font-size:$overview-analysis-label-size;
+						display:inline-block;
+
+						@include mq(small){
+							padding:0 1.3rem;
+						}
+
+					}
+				}
+				&__balance{@include padding(0.9rem,0.6rem,0,0);
+					@include float(right);
+					@include text-align(right);
+					@include mq(small){@include padding(0, 0.6rem, 0.6rem, 0);
+						
+					}
+
+				}
+				&-balance{
+					&__label{
+						font-size:$overview-analysis-link-size;
+					}
+					&__amount{
+						font-size:$overview-analysis-amount-size;
+						color:$overview-analysis-primary-color;
+						font-weight:var(--base-font-weight-regular);
+						@include mq(small){
+							font-size:$overview-analysis-label-size;
+							padding-top:0.2rem;
+						}
+					}
+				}
+			}
+			&__moreInfo{
+				background-color:var(--base-background-secondary);
+				display: flex;
+		    align-items: center;
+		    justify-content: center;
+				@include mq(small){
+					padding:0.9rem;
+				}
+			}
+			&-moreInfo{
+				&__link{
+					color:$overview-analysis-header-text-color;
+					@include single-padding(right,0.6rem);
+					font-size:$overview-analysis-link-size;
+					display:inline-block;
+					@include float(left);
+				}
+				&__icons{
+					font-size:$overview-analysis-icon-size;
+					color:$overview-analysis-header-text-color;
+					display:inline-block;
+					
+
+				}
+			}
+			&__consolidated-accounts{
+				padding:0.6rem;
+				background-color:$overview-analysis-header-text-color;
+				box-shadow: 0 0.2rem 0.9rem 0 $overview-analysis-box-shadow-color;
+			}
+		}
+		
+	}
+
+	.oj-flex-item.oj-lg-6 {
+		@include mq(medium) {
+			@include single-padding(left,0);
+			@include single-padding(right,0);
+		}
+		@include mq(small) {
+			@include single-padding(left,0);
+			@include single-padding(right,0);
+		}
+	}
+}

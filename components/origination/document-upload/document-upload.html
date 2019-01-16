@@ -1,0 +1,144 @@
+<div class="form-main-container">
+  <div class="">
+	<div class="page-container document-upload-container">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <h3 class="primary-heading" data-bind="text: $component.resource.uploadDocuments"></h3>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <label class="text" data-bind="text:$component.resource.uploadDocumentText1"></label>
+        <span><a class="link text" href="#" data-bind="click: function(){$('#uploadDocumentInstructions').trigger('openModal')},text:$component.resource.uploadDocumentText2 ,attr:{alt: $component.resource.uploadDocumentPolicyClick, title: $component.resource.uploadDocumentPolicyTitle}"></a></span>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <label class="" data-bind="text: $component.resource.uploadDocumentText3"></label>
+      </div>
+    </div>
+		<!-- ko if: $component.dataLoaded() -->
+		<div class="documents-list">
+			<!-- ko foreach: $component.documentCategories() -->
+      <div class="row-group">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 document-category oj-md-12 oj-lg-12">
+          <h4 class="primary-heading" data-bind="text: $data.category"></h4>
+        </div>
+      </div>
+			<!-- ko foreach: $data.type -->
+			<div class="oj-flex oj-flex-items-pad">
+        <!-- ko if: $data.mandatory -->
+				<div class="oj-flex-item oj-sm-9 oj-md-3 oj-lg-3 oj-lg-offset-1 oj-md-offset-1">
+					<label class="" data-bind="html : $component.format($component.resource.documentRequired, {documentType: $data.type})"></label>
+				</div>
+        <!-- /ko -->
+        <!-- ko ifnot: $data.mandatory -->
+				<div class="oj-flex-item oj-sm-9 oj-md-3 oj-lg-3 oj-lg-offset-1 oj-md-offset-1">
+					<label class="" data-bind="text : $data.type"></label>
+				</div>
+        <!-- /ko -->
+        <!-- ko ifnot: $data.anyDocumentUploaded -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+          <oj-file-picker :id="{{JSON.stringify($parentContext.$index())+JSON.stringify($index())+'-document-upload'}}" selection-mode="single" selectOn="click" on-oj-select="[[$component.fileSelectListener.bind($data, $index(), $parentContext.$index())]]">
+                <div tabindex="0" slot="trigger" class="oj-filepicker-dropzone oj-filepicker-text" data-bind="html: $component.resource.attachDocument">
+                </div>
+          </oj-file-picker>
+        </div>
+        <!-- /ko -->
+      </div>
+      <!-- ko if: $data.anyDocumentUploaded -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-10 oj-md-10 oj-lg-offset-1 oj-md-offset-1">
+        <oj-table id="table" :aria-label="[[$component.resource.tableHeading]]" columns="[[$component.columnsArray]]" selection-mode="[[{row:'none',column:'none'}]]" display="[['grid']]" data="[[$data.dataSource]]">
+                      <caption class="hide-label" data-bind="text:$component.resource.tableHeading"></caption>
+        </oj-table>
+        <script type="text/html" id="document_template">
+            <td>
+                <!-- ko if: $context.row.uploaded -->
+                <a href="#" data-bind="text: $context.row.document, click: $component.downloadDocument.bind($data, $context.row.contentId), attr:{alt: $component.resource.documentDownloadClick, title: $component.resource.documentDownloadClickTitle}"></a>
+                <!-- /ko -->
+                <!-- ko ifnot: $context.row.uploaded -->
+                <div data-bind="text: $context.row.document"></div>
+                <!-- /ko -->
+            </td>
+        </script>
+        <script type="text/html" id="action_template">
+            <td>
+                <a href="#" data-bind="css: $context.row.iconDelete, click: $component.deleteDocument.bind($data, $parentContext.$parentContext.$index(), $index(), $context.cellContext.status.rowIndex), attr:{alt: $component.resource.deleteDocumentClick, title: $component.resource.deleteDocumentClickTitle}"></a>
+            </td>
+        </script>
+        <script type="text/html" id="remarks_template">
+            <td>
+              <!-- ko ifnot: $context.row.uploaded -->
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item">
+                  <oj-input-text maxlength="30" name="remarks" id="remarks" autocomplete="off" spellcheck="false" value="{{$context.row.remarks}}"></oj-input-text>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko if: $context.row.uploaded -->
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item">
+                  <div data-bind="text: $context.row.remarks"></div>
+                </div>
+              </div>
+              <!-- /ko -->
+            </td>
+        </script>
+        <oj-file-picker :id="{{JSON.stringify($parentContext.$index())+JSON.stringify($index())+'-document-upload-attach'}}" selection-mode="single" selectOn="click" on-oj-select="[[$component.fileSelectListener.bind($data, $index(), $parentContext.$index())]]">
+              <a class="link text" href="#" tabindex="0" slot="trigger" data-bind="html: $component.resource.attachAnotherDocument">
+              </a>
+        </oj-file-picker>
+      </div>
+      </div>
+      <!-- /ko -->
+			<!-- ko if: $data.showProcessing() -->
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-lg-offset-1 oj-md-offset-1">
+					<div class=""><img class="processing-image" data-bind="loadImage:'origination/app-tracker/processing.gif'" alt=""></div>
+				</div>
+			</div>
+			<!-- /ko -->
+			<!-- /ko -->
+			<!-- /ko -->
+    </div>
+			<!-- /ko -->
+		</div>
+		<!-- /ko -->
+  </div>
+	</div>
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <oj-button raised="" id="saveAndContinue" class="action-button-primary" on-click="[[$component.documentUploadContinue]]">
+      <span data-bind="text:$component.resource.saveAndContinue"></span>
+</oj-button>
+    <oj-button raised="" id="cancelApplication" class="action-button-secondary" on-click="[[$component.cancelApplicationFromDocument]]">
+      <span data-bind="text:$component.resource.generic.common.cancelApp"></span>
+</oj-button>
+    <oj-button raised="" id="returnToApplication" class="action-button-tertiary" on-click="[[function(){$component.productflowComponent(true);}]]">
+      <span data-bind="text:$component.resource.generic.common.returnApplication"></span>
+</oj-button>
+  </div>
+</div>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'NOFILE', header: $component.resource.generic.common.error">
+	<div class="message-text scroll" data-bind="text:$component.resource.noFile"></div>
+	<div class="message-btn button-container">
+		<oj-button id="hideButton" class="oj-button form-button-primary" on-click="[[function(){$('#NOFILE').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.ok"></span>
+</oj-button>
+	</div>
+</modal-window>
+<modal-window class="message form-main-container" params="baseModel : $baseModel, rootModel : $component, id:'uploadDocumentInstructions', header:$component.resource.uploadDocumentPolicyTitle">
+  <div class="message-text label scroll">
+    <ul>
+      <li data-bind="text:$component.resource.documentIns1"></li>
+      <li data-bind="text:$component.resource.documentIns2"></li>
+      <li data-bind="text:$component.resource.documentIns3"></li>
+      <li data-bind="text:$component.resource.documentIns4"></li>
+    </ul>
+  </div>
+  <div class="message-btn button-container">
+    <oj-button id="privacyAndSecurityPolicyutton2" class="toUpperCase form-button-primary" on-click="[[function(){$('#uploadDocumentInstructions').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.generic.common.ok"></span>
+</oj-button>
+  </div>
+</modal-window>

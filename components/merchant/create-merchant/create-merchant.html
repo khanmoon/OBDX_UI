@@ -1,0 +1,198 @@
+<oj-validation-group id="merchantTracker">
+<div class="oj-flex oj-sm-flex-items-initial">
+<div class="oj-flex-item" data-bind="css: $component.stageOne() ? 'oj-sm-9' :'oj-sm-12'">
+<div class="form-main-container">
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+  <!-- ko if:stageOne() -->
+    <div class="oj-flex oj-flex-items-pad ">
+        <oj-label for="merchantid" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+          <span data-bind="text:$component.resource.merchant.merchantid"></span>
+        </oj-label>
+        <oj-input-text required id="merchantid" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8 " maxlength="100" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('PARTY_ID',$component.resource.merchant.messageid)]]" disabled="[[$component.editMode()]]" value="{{$component.code}}"></oj-input-text>
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+          <oj-label for="merchantdesc" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+            <span data-bind="text:$component.resource.merchant.merchantdesc"></span>
+          </oj-label>
+          <oj-input-text required id="merchantdesc" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8" maxlength="100" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('APPLICATION_DESCRIPTION',$component.resource.merchant.message)]]" value="{{$component.description}}"></oj-input-text>
+    </div>
+  <action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.merchant.accounts"></action-header>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <h6 data-bind="text:$component.resource.merchant.creditAccountDetails"></h6>
+            </div>
+        </div>
+    <div class="oj-flex oj-flex-items-pad ">
+          <oj-label for="accounttype" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+            <span data-bind="text:$component.resource.merchant.accounttype"></span>
+          </oj-label>
+          <oj-select-one required id="accounttype" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8 left" :placeholder="[[$component.resource.common.select]]" value="{{$component.accountType}}">
+              <oj-option value="{{'CASA'}}"><span data-bind="text:$component.resource.merchant.casa"></span></oj-option>
+          </oj-select-one>
+    </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+          <oj-label for="accountidnumber" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+            <span data-bind="text:$component.resource.merchant.accountidnumber"></span>
+          </oj-label>
+          <oj-input-text required id="accountidnumber" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4" maxlength="100" value="{{$component.merchantAccount}}"></oj-input-text>
+  </div>
+
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <h6 data-bind="text:$component.resource.merchant.serviceCharge"></h6>
+            </div>
+        </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <oj-checkboxset id="checkboxSetId" value={{$component.commissionAccountFlagArray}} on-value-changed="[[commissionAccountFlagChangeHandler]]">
+          <oj-option value="commissionAccountFlag" id="commissionAccountFlag">
+            <span for="commissionAccountFlag" data-bind="text:$component.resource.merchant.commissionAccountFlag"></span>
+          </oj-option>
+        </oj-checkboxset>
+        <!-- ko if:commissionAccountFlag() -->
+        <div class="oj-flex oj-flex-items-pad ">
+            <oj-label for="commissionAccountType" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+              <span data-bind="text:$component.resource.merchant.accounttype"></span>
+            </oj-label>
+
+            <oj-select-one required id="commissionAccountType" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8" :placeholder="[[$component.resource.common.select]]" value="{{$component.commissionAccountType}}">
+              <oj-option value="{{'CASA'}}"><span data-bind="text:$component.resource.merchant.casa"></span></oj-option>
+            </oj-select-one>
+        </div>
+        <div class="oj-flex oj-flex-items-pad ">
+            <oj-label for="commissionAccount" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+              <span data-bind="text:$component.resource.merchant.accountidnumber"></span>
+            </oj-label>
+            <oj-input-text required id="commissionAccount" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4" maxlength="100" value="{{$component.commissionAccount}}">
+            </oj-input-text>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <oj-checkboxset id="checkboxSetId2" value={{$component.userAccountFlagArray}} on-value-changed="[[userAccountFlagChangeHandler]]"><oj-option value="userAccountFlag" id="userAccountFlag"><span for="userAccountFlag" data-bind="text:$component.resource.merchant.userAccountFlag"></span></oj-option></oj-checkboxset>
+      </div>
+    </div>
+    <action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.merchant.responseRedirections"></action-header>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <h6 data-bind="text:$component.resource.merchant.successfultransactions"></h6>
+            </div>
+        </div>
+    <div class="oj-flex oj-flex-items-pad ">
+          <oj-label for="staticurl" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+            <span data-bind="text:$component.resource.merchant.staticurl"></span>
+          </oj-label>
+          <oj-input-text required id="staticurl" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8" maxlength="100" validators="[[$baseModel.getValidator('URL')]]" value="{{$component.static_success_url}}">
+          </oj-input-text>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <oj-label for="dynamicurl" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+        <span data-bind="text:$component.resource.merchant.dynamicurl"></span>
+      </oj-label>
+        <oj-input-text required id="dynamicurl" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8 " maxlength="100" validators="[[$baseModel.getValidator('URL')]]" value="{{$component.dynamic_success_url}}"></oj-input-text>
+    </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <h6 data-bind="text:$component.resource.merchant.failedtransactions"></h6>
+            </div>
+        </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <oj-label for="staticurl2" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+          <span data-bind="text:$component.resource.merchant.staticurl"></span>
+        </oj-label>
+          <oj-input-text required id="staticurl2" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8" maxlength="100" validators="[[$baseModel.getValidator('URL')]]" value="{{$component.static_failure_url}}"></oj-input-text>
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+        <oj-label for="dynamicurl2" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+          <span data-bind="text:$component.resource.merchant.dynamicurl"></span>
+        </oj-label>
+        <oj-input-text required id="dynamicurl2" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8" maxlength="100" validators="[[$baseModel.getValidator('URL')]]" value="{{$component.dynamic_failure_url}}"></oj-input-text>
+    </div>
+    <action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.merchant.checksumDetails"></action-header>
+      <div class="oj-flex oj-flex-items-pad ">
+        <oj-label for="checksumType" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+          <span data-bind="text:$component.resource.merchant.checksumtype"></span>
+        </oj-label>
+          <oj-select-one required id="checksumType" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8" on-value-changed="[[checksumTypeChanged]]" :placeholder="[[$component.resource.common.none]]" value="{{$component.checksumType}}">
+              <!-- ko foreach: $component.checksumTypeList -->
+              <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+              <!-- /ko -->
+          </oj-select-one>
+      </div>
+    <!-- </div> -->
+    <div class="oj-flex oj-flex-items-pad">
+        <oj-label for="checksumAlgorithm" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+          <span data-bind="text:$component.resource.merchant.checksumAlgorithm"></span>
+        </oj-label>
+        <oj-select-one required id="checksumAlgorithm" class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8" on-value-changed="[[algoChanged]]" :placeholder="[[$component.resource.common.none]]" value="{{$component.checksumAlgorithm}}">
+          <!-- ko foreach:$component.checksumAlgorithmList -->
+          <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+    </div>
+    <!-- ko if:isChecksumAlgo() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <oj-label for="securityKey" class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3 label">
+        <span data-bind="text:$component.resource.merchant.securityKey"></span>
+      </oj-label>
+      <oj-input-text required id="securityKey" value="{{$component.securityKey}}">
+      </oj-input-text>
+    </div>
+   <!-- /ko -->
+    <div class="oj-flex-item button-container">
+      <oj-button class="action-button-primary" id="save" on-click="[[$component.reviewMerchant]]">
+        <span data-bind="text:$component.resource.common.save"></span>
+      </oj-button>
+
+      <oj-button class="action-button-secondary" id="cancel" on-click="[[$dashboard.openDashBoard.bind()]]">
+        <span data-bind="text:$component.resource.common.cancel"></span>
+      </oj-button>
+      
+      <oj-button class="action-button-tertiary" id="back" on-click="[[$component.back]]">
+        <span data-bind="text:$component.resource.common.back"></span>
+      </oj-button>
+      
+    </div>
+  <!-- /ko -->
+
+  <!-- ko if:stageReview() -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.common.review , reviewHeader : $component.resource.merchant.initiateHeader}}"></div>
+
+        <div data-bind="template: { name:'merchant/view-merchant'}"></div>
+        <div class="button-container">
+          <!-- ko if:editMode() -->
+          <oj-button class="action-button-primary" on-click="[[$component.confirmEditMerchant]]">
+            <span data-bind="text:$component.resource.common.confirm"></span>
+          </oj-button>
+          <!-- /ko -->
+          <!-- ko if:createMode() || (confirmFlag()&& !editMode()) -->
+          <oj-button class="action-button-primary" id="button-confirm" on-click="[[$component.createMerchant]]">
+            <span data-bind="text:$component.resource.common.confirm"></span>
+          </oj-button>
+          <!-- /ko -->
+          <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$dashboard.openDashBoard.bind()]]">
+            <span data-bind="text:$component.resource.common.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" id="button-back" on-click="[[$component.reviewBack]]">
+            <span data-bind="text:$component.resource.common.back"></span>
+          </oj-button>
+      </div>
+  <!-- /ko -->
+
+  </page-section>
+</div>
+</div>
+    <!-- ko if: $baseModel.large() && $component.stageOne() -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'merchant-create'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+</oj-validation-group>

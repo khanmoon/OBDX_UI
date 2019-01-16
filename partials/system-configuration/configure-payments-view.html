@@ -1,0 +1,119 @@
+<!-- ko foreach:$component.configuration.configurationItemDTOs -->
+<action-header params="baseModel : $baseModel, rootModel : $component, heading : $data.name ">
+</action-header>
+
+
+<!-- ko if:$data.id ==='PRODUCT_TRANS_CONFIGURATION_ITEM' -->
+
+<div class="oj-flex oj-flex-items-pad">
+    <table class="system-configuration" data-bind="visible: $data.inputDTOs.length > 0">
+
+        <thead>
+            <tr class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12">
+                <td colspan="1"></td>
+                <td>
+                    <span class="tableHeader" data-bind=" text: $component.nls.tableHeader.prod_cat"></span>
+                </td>
+
+                <td>
+                    <div class="oj-flex-item oj-sm-6 blank">
+                         
+                    </div>
+                </td>
+
+                <td>
+                    <span class="tableHeader" data-bind=" text: $component.nls.tableHeader.prod_code"></span>
+                </td>
+
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: $data.inputDTOs">
+            <tr class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                <td class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+                    <label data-bind="text: uiDefinition.title"></label>
+                </td>
+                <td>
+
+                    <!-- ko if :$data.type === 'TXT' || $data.type === 'LISTBOX' || $data.type === 'RO' -->
+
+                    <div>
+                        <span data-bind="text:$data.inputValues[0]!==null?$data.inputValues[0]:'---'"></span>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko if :$data.type === 'CHB' -->
+                    <div>
+                        <label data-bind="text: $data.uiDefinition.title"></label>
+                    </div>
+                    <div>
+
+                        <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" class="oj-choice-direction-row" disabled="[[true]]" value="{{$data.inputValues}}"><!-- ko foreach: $data.tempObj.options --><oj-option value="{{key}}" :id="[['AcctType'+ $index()]]"><span data-bind="text: description, attr : {'for' :'AcctType' + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+                    </div>
+                    <!-- /ko -->
+                </td>
+
+                <td>
+                    <div class="oj-flex-item oj-sm-6 blank">
+                         
+                    </div>
+                </td>
+                <td>
+
+                    <!-- ko if :$data.type === 'TXT' || $data.type === 'LISTBOX' || $data.type === 'RO' -->
+
+                    <div>
+                        <span data-bind="text:$data.inputValues[1]!==null?$data.inputValues[1]:'---'"></span>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko if :$data.type === 'CHB' -->
+                    <div>
+                        <label data-bind="text: $data.uiDefinition.title"></label>
+                    </div>
+                    <div>
+
+                        <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" class="oj-choice-direction-row" disabled="[[true]]" value="{{$data.inputValues}}"><!-- ko foreach: $data.tempObj.options --><oj-option value="{{key}}" :id="[['AcctType'+ $index()]]"><span data-bind="text: description, attr : {'for' :'AcctType' + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+                    </div>
+                    <!-- /ko -->
+                </td>
+            </tr>
+        </tbody>
+
+
+        <caption class="hide-label" data-bind="text:$data.name"></caption>
+
+    </table>
+</div>
+
+<!-- /ko -->
+
+
+<!-- ko ifnot:$data.id ==='PRODUCT_TRANS_CONFIGURATION_ITEM' -->
+<div class="oj-flex oj-flex-items-pad">
+
+    <!-- ko foreach:$data.inputDTOs -->
+    <!-- ko if :$data.type === 'TXT' ||$data.type === 'MSELECT' || $data.type === 'LISTBOX' || $data.type === 'RO' -->
+
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+        <label data-bind="text: $data.uiDefinition.title"></label>
+    </div>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-8">
+        <span data-bind="text:$data.inputValues"></span>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if :$data.type === 'CHB' -->
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+        <label data-bind="text: $data.uiDefinition.title"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-8">
+
+        <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" class="oj-choice-direction-row" disabled="[[true]]" value="{{$data.inputValues}}"><!-- ko foreach: $data.tempObj.options --><oj-option value="{{key}}" :id="[['AcctType'+ $index()]]"><span data-bind="text: description, attr : {'for' :'AcctType' + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>
+
+<!-- /ko -->
+<!-- /ko -->

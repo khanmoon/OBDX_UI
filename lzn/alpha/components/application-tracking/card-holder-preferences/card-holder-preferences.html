@@ -1,0 +1,54 @@
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+        <oj-label class="oj-label" :for="[['nameOnCard'+($index())]]"><span data-bind="text:$component.resource.nameOnCard"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <oj-input-text maxlength="20" autocomplete="off" spellcheck="false" required :id="[['nameOnCard'+($index())]]" translations="[[{'required':{
+  messageDetail:$component.resource.messages.nameOnCard}}]]" value="{{$component.holderPreferences.cardHolderPreferences.embossName}}" validators="[[$baseModel.getValidator('CARD_NAME')]]"></oj-input-text>
+    </div>
+</div>
+
+<!-- ko if: $component.backGroundContentIdsLoaded() && $component.holderPreferences.cardHolderPreferences.applicantRelationshipType==='APPLICANT'-->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+        <oj-label class="oj-label" :for="[['cardDesign'+($index())]]"><span data-bind="text:$component.resource.cardDesign"></span></oj-label>
+
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+
+        <oj-select-one required="[[true]]" :id="[['cardDesign'+($index())]]" :placeholder="''" value="{{$component.holderPreferences.cardHolderPreferences.cardBackgroundId}}" on-value-changed="[[$component.imageChange]]">
+            <!-- ko foreach: $component.backGroundContentIds() -->
+            <oj-option value="{{contentId}}"><span data-bind="text:contentValue"></span></oj-option>
+            <!-- /ko -->
+            </oj-select-one>
+
+    </div>
+    <!-- ko if: ($component.cardDesignLoaded() && $component.holderPreferences.cardHolderPreferences.selectedValues().cardImage)-->
+    <div class="card-design bg-image" data-bind="style:{backgroundImage:'url('+$component.constants.imageResourcePath+'/origination/cards/cc/'+$component.holderPreferences.cardHolderPreferences.selectedValues().cardImage+'.png)'}">
+    </div>
+    <!-- /ko -->
+</div>
+
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+        <oj-label class="oj-label" :for="[['imageOnCard'+($index())]]"><span data-bind="text:$component.resource.imageOnCard"></span></oj-label>
+
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 document-name-upload no-pad-cols">
+        <div class="oj-flex oj-flex-items-pad" data-bind="component:{name:'file-input',params:{rootModel: $component , id:$component.holderPreferences.cardHolderPreferences.partyId.value+'-document-upload', upload: function(){$component.uploadDocument($component.holderPreferences.cardHolderPreferences)}}}"></div>
+    </div>
+</div>
+<!-- ko if:$component.holderPreferences.cardHolderPreferences.selectedValues().documentInfoLoaded()-->
+<div class="oj-flex-item oj-sm-12 oj-md-3 oj-md-offset-5 oj-lg-3 oj-lg-offset-5 document-name">
+    <a class="link" href="#" data-bind="click: $component.downloadImage, text:  $component.holderPreferences.cardHolderPreferences.selectedValues().documentName ,attr:{alt: $component.resource.cardImage, title: $component.resource.cardImageTitle}"></a>
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item right oj-lg-10 oj-md-10">
+        <oj-button class="form-button-secondary" on-click="[[updateCardHolderPreferences.bind($data,$index())]]">
+      <span data-bind="text:$component.resource.generic.common.save"></span>
+</oj-button>
+    </div>
+</div>

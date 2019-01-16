@@ -1,0 +1,177 @@
+  <oj-validation-group id="trackerFunding" valid="{{$component.groupValid}}">
+<!-- ko if:$component.fundingOtionsListLoaded() -->
+<div class="oj-flex oj-flex-items-pad margin-top-20">
+  <div class="oj-flex-item term-deposit">
+    <div class="min-width" data-bind="component: {
+         name: 'amount-input', params: {
+         amount :$component.productDetails().productClassName==='TERM_DEPOSITS'?$component.applicantObject().accountFunding.tdRequirements.termDepositApplicationRequirementDTO.requestedAmount.amount:$component.initialAmount.amount,
+         label:$component.productDetails().productClassName==='TERM_DEPOSITS'?$component.resource.initialAmountTD:$component.resource.initialAmount,
+         currency: $component.productDetails().currency,
+         converter:$root.formatCurrency,
+         validator:$component.validationTracker,
+         isMandatory:true,
+         labelClasses : 'oj-lg-3 oj-md-4 oj-lg-offset-2 oj-md-offset-1',
+         valueClasses : 'oj-lg-6 oj-md-7',
+         maxlength:15,
+         minimumAmount:$component.minimumAmount,
+         maximumAmount:$component.productDetails().productClassName==='TERM_DEPOSITS'?$component.productDetails().offers.offerAdditionalDetails.termDepositOfferCurrencyParameterResponseDTOs[0].maxDepositAmount.amount:null,
+         rootId:'depositAmount',
+         rootClass:'form-input',
+         inline:true,
+         formattedAmount: ko.observable(),
+         translations: {'required': {messageDetail: $component.resource.messages.depositAmount}}
+
+         }
+         }"></div>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item label oj-sm-12 oj-md-8 oj-lg-8 oj-md-offset-5 oj-lg-offset-5 cust-label">
+        <div data-bind="html:$baseModel.format($component.resource.minAmount, {amount: $baseModel.formatCurrency($component.minimumAmount, $component.productDetails().currency)})">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ko if: $component.productDetails().productClassName==='TERM_DEPOSITS' -->
+<div class="oj-flex-item tenure">
+  <div class="oj-flex oj-flex-items-pad" data-bind="with:$component.applicantObject().accountFunding.tdRequirements.termDepositApplicationRequirementDTO.requestedTenure">
+    <div class="oj-flex-item label oj-sm-12 oj-md-offset-1 oj-md-12 oj-lg-offset-2 oj-lg-3">
+      <oj-label class="line-height-2"><span data-bind="text:$component.resource.tenure"></span></oj-label>
+      <span class="small-text spacing text" data-bind="html:$baseModel.format($component.resource.minMaxTenure,{days :  $component.productDetails().offers.offerAdditionalDetails.termDepositOfferTermResponseDTO.minTerm.days,years :  $component.productDetails().offers.offerAdditionalDetails.termDepositOfferTermResponseDTO.maxTerm.years})"></span>
+    </div>
+    <div class="oj-flex-item oj-sm-8 oj-md-offset-1 oj-md-6 oj-lg-offset-0 oj-lg-1">
+      <oj-input-text required class=" " autocomplete="off" spellcheck="false" :id="[['tenureYears']]" translations="[[{'required':{messageDetail:$component.resource.messages.years}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[[$component.validateTenure]]]"
+        value="{{years}}"></oj-input-text>
+    </div>
+    <div class="oj-flex-item label tenure-labels oj-sm-4 oj-md-4 oj-lg-1">
+      <oj-label :for="[['tenureYears']]"><span data-bind="text:$component.resource.years"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-8 oj-md-offset-1 oj-md-6 oj-lg-offset-0 oj-lg-1">
+      <oj-input-text required class=" " autocomplete="off" spellcheck="false" :id="[['tenureMonths']]" translations="[[{'required':{messageDetail:$component.resource.messages.months}}]]" :invalidcomponenttracker="[[$component.validationTracker]]"
+        validators="[[[$component.validateTenure]]]" value="{{months}}"></oj-input-text>
+    </div>
+    <div class="oj-flex-item label tenure-labels oj-sm-4 oj-md-4 oj-lg-1">
+      <oj-label for="tenureMonths"><span data-bind="text:$component.resource.months"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-8 oj-md-offset-1 oj-md-6 oj-lg-offset-0 oj-lg-1">
+      <oj-input-text required class=" " autocomplete="off" spellcheck="false" :id="[['tenureDays']]" translations="[[{'required':{messageDetail:$component.resource.messages.days}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[[$component.validateTenure]]]"
+        value="{{days}}"></oj-input-text>
+    </div>
+    <div class="oj-flex-item label tenure-labels oj-sm-4 oj-md-4 oj-lg-1">
+      <oj-label for="tenureDays"><span data-bind="text:$component.resource.days"></span></oj-label>
+    </div>
+
+  </div>
+</div>
+
+<!-- ko if: $component.frequencyOptionsLoaded() -->
+<div>
+  <div class="oj-flex oj-flex-items-pad term-deposit">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+      <oj-label class="line-height-2" for="frequency-type"><span data-bind="text:$component.resource.frequency"></span></oj-label>
+      <span class="small-text text" for="frequency-type" data-bind="text:$component.resource.frequencyText"></span>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-select-one required id="frequency-type" translations="[[{'required':{messageDetail:$component.resource.messages.frequency}}]]" on-value-changed="[[createTDRequirements]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.selectedFrequency}}"
+        :placeholder="">
+        <!-- ko foreach: $component.repaymentFrequencyData() -->
+        <oj-option value="{{$data}}"><span data-bind="text:$component.resource.frequencyList[$data]"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+</div>
+<!-- ko if: $component.applicantObject().accountFunding.interestRate() -->
+<div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+      <oj-label :for="[['interestRate']]"><span data-bind="text:$component.resource.interestRate"></span></oj-label>
+    </div>
+    <div id="interestRate" class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+      <span class="span-text" data-bind="text: $baseModel.format($component.resource.interestRatePercent,{interestRate:$component.applicantObject().accountFunding.interestRate()})"></span>
+    </div>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if:$component.fundingOtionsListLoaded() -->
+<div class="oj-flex oj-flex-items-pad margin-top-20">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-md-offset-1 oj-lg-offset-1 ">
+    <h4 class="form-heading" data-bind="text:$component.resource.urFundingSource"></h4>
+  </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item  oj-md-offset-1 oj-lg-offset-1 ">
+    <span class="text" id="mainlabelid" data-bind="text:$component.resource.selectMethod"></span>
+  </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class=" oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-md-offset-1 oj-lg-offset-2">
+    <div class="">
+      <div id="radiosetBasicDemoId" aria-labelledby="mainlabelid">
+        <oj-radioset required id="fundingDetails" class="oj-choice-direction-row" value="{{fundingType}}" on-value-changed="[[$component.getAccountFundingList.bind($data,$data)]]">
+          <!-- ko foreach: $component.fundingOptionsList-->
+          <div class="oj-radioset-wrapper">
+            <oj-option value="[[code]]">
+              <span data-bind="text:$component.resource.fundingOption[code]"></span>
+            </oj-option>
+          </div>
+          <!-- ko if:$component.fundingType()==='CARD_CREDIT' && code==='CARD_CREDIT' -->
+          <div class="">
+            <div data-bind="template:{name:'origination/card-payment', data:{fundingOption:$component.fundingType()}}"></div>
+          </div>
+          <!-- /ko  -->
+          <!-- ko if:$component.fundingType()==='CARD_DEBIT'  && code==='CARD_DEBIT'-->
+          <div class="">
+            <div data-bind="template:{name:'origination/card-payment', data:{fundingOption:$component.fundingType()}}"></div>
+          </div>
+          <!-- /ko  -->
+          <!-- ko if:$component.fundingType()==='DDAO'  && code==='DDAO'-->
+          <div class="">
+            <div data-bind="template:{name:'origination/linked-account-payment', data:{fundingOption:$component.fundingType()}}"></div>
+          </div>
+          <!-- /ko  -->
+          <!-- ko if:$component.fundingType()==='COLL'  && code==='COLL'-->
+          <div class="">
+            <div data-bind="template:{name:'origination/linked-account-payment', data:{fundingOption:$component.fundingType()}}"></div>
+          </div>
+          <!-- /ko  -->
+          <!-- ko if:$component.fundingType()==='LATER'  && code==='LATER'-->
+          <div class="oj-flex oj-flex-items-pad-group">
+
+          </div>
+          <!-- /ko  -->
+          <!-- /ko  -->
+        </oj-radioset>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /ko  -->
+</oj-validation-group>
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item oj-md-10 oj-lg-10">
+    <oj-button id="submitAccountFunding" class="form-button-secondary" on-click="[[$component.checkAccountFundingInfo.bind($data,$component)]]" disabled="[[$component.displayContinueButton()]]"><span data-bind="text:$component.resource.generic.common.continue"></span></oj-button>
+  </div>
+</div>
+
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'SAVEFUNDINGSOURCE', header: $component.resource.generic.common.info">
+    <div class="message-text scroll" data-bind="html:$component.resource.securityReason"></div>
+    <div class="message-btn button-container">
+      <oj-button id="saveButton" class="action-button-primary" on-click="[[$component.saveAccountFundingInfo.bind($data)]]">
+        <span data-bind="text:$component.resource.generic.common.yes"></span>
+      </oj-button>
+      <oj-button id="hideButton" class="action-button-secondary" on-click="[[function(){$('#SAVEFUNDINGSOURCE').trigger('closeModal')}]]">
+        <span data-bind="text:$component.resource.generic.common.no"></span>
+      </oj-button>
+    </div>
+  </modal-window>
+</div>

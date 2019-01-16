@@ -1,0 +1,19 @@
+<row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.creditCardId, value : $component.requestDetails.cardNumber.displayValue"></row>
+<!-- ko if: $component.requestDetails.cardReplaceRequestData.deliveryDetails.modeOfDelivery -->
+<row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.deliveryOption, value : $component.requestDetails.cardReplaceRequestData.deliveryDetails.modeOfDelivery"></row>
+<!-- /ko -->
+<row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.deliveryOption, value : $component.requestDetails.cardReplaceRequestData.deliveryDetails.modeOfDelivery"></row>
+<!-- ko if: $component.requestDetails.cardReplaceRequestData.personalDetail.embossingName -->
+<row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.embossingName, value : $component.requestDetails.cardReplaceRequestData.personalDetail.embossingName"></row>
+<!-- /ko -->
+
+<!-- ko if: $component.requestDetails.cardReplaceRequestData.deliveryDetails.address -->
+<div class="oj-flex oj-flex-items-pad">
+<div class="required oj-flex-item oj-sm-12 label">
+  <oj-label for="DeliveryLocation"><span data-bind="text:$component.requestDetailsTemplate.detail.address"></span></oj-label>
+</div>
+<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+  <div id="DeliveryLocation" data-bind="template:{name:'service-request/retail/address', data:{address:$component.requestDetails.cardReplaceRequestData.deliveryDetails.address}}"></div>
+</div>
+</div>
+<!-- /ko -->

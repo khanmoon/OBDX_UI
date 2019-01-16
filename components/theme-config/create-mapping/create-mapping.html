@@ -1,0 +1,101 @@
+<div class="form-main-container theme-config">
+    <oj-validation-group :id="[[validationTrackerID]]" valid="{{validationTracker}}">
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-3">
+                    <oj-label :for="[['mappingSelect'+ $baseModel.incrementIdCount()]]">
+                        <span data-bind="text:$component.resourceBundle.labels.mappingType"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-3">
+                    <!-- ko if: $component.entities().length -->
+                    <oj-select-one :id="[['mappingSelect'+ $baseModel.currentIdCount()]]" value="{{$component.mappingData().mappedType}}" required="[[true]]"
+                        :placeholder="[[$component.resourceBundle.selectMapping]]">
+                        <!-- ko foreach:$component.entities -->
+                        <oj-option value="{{$data}}">
+                            <span data-bind="text:$component.resourceBundle.entities[$data]"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-3">
+                    <oj-label :for="[['mapping_type'+ $baseModel.incrementIdCount()]]">
+                        <span data-bind="text:$component.resourceBundle.labels.brand"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-3">
+                    <!-- ko if:$component.parameters.brandList().length -->
+                    <oj-select-one :id="[['mapping_type'+ $baseModel.currentIdCount()]]" value="{{$component.mappingData().brandId}}" required="[[true]]"
+                        :placeholder="[[$component.resourceBundle.selectBrand]]">
+                        <!-- ko foreach:$component.parameters.brandList -->
+                        <oj-option value="{{brandId}}">
+                            <span data-bind="text:$baseModel.format($component.resourceBundle.brandList,{brandId:brandId,brandName:brandName})"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad ">
+                <!-- ko if: $component.mappingData().mappedType() -->
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+                    <oj-label for="mapping_value">
+                        <span data-bind="text:$component.resourceBundle.labels.mappingValue"></span>
+                    </oj-label>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: $component.mappingData().mappedType() === "USER" -->
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+                    <oj-input-text required :id="mapping_value" validators="[[$baseModel.getValidator('APPLICATION_NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]"
+                        value="{{$component.mappingData().mappedValue}}"></oj-input-text>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: $component.mappingData().mappedType() === "ROLE" || $component.mappingData().mappedType() === "BANK" -->
+                <div class="oj-flex-item oj-sm-3">
+                    <!-- ko if: $component.mappedValues().length -->
+                    <oj-select-one :id="mapping_value" value="{{$component.mappingData().mappedValue}}" required="[[true]]" :placeholder="[[$component.resourceBundle.selectMappingValue]]">
+                        <!-- ko foreach:$component.mappedValues -->
+                        <oj-option value="{{$data.value}}">
+                            <span data-bind="text:$data.text"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+                <!-- ko if: $component.mappingData().mappedType() === "PARTY" -->
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+                    <!-- ko if:$component.partyId() -->
+                    <span class="oj-sm-12" data-bind="text: $component.mappingData().mappedValue()"></span>
+                    <oj-button class="action-button-tertiary" on-click="[[$component.showParty]]">
+                        <span data-bind="text:$component.resourceBundle.partySearch"></span>
+                    </oj-button>
+                    <!-- /ko -->
+                    <!-- ko if:showPartySearch() -->
+                    <div class="party-search" data-bind="component:{name:'party-name-search',params:{rootModel:$data}}"></div>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </div>
+        </page-section>
+    </oj-validation-group>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <!-- ko if:$component.parameters.mode ==='create'-->
+        <oj-button id="dialogtopupButton" class="action-button-primary " on-click="[[saveMapping]]">
+            <span slot="startIcon" class="icons icon-confirm"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.save"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+        </oj-button>
+        <!-- /ko -->
+    </div>
+</div>

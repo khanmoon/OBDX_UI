@@ -1,0 +1,66 @@
+<div class="container-record">
+
+  <div class="form-main-container">
+    <div class="oj-flex-item right">
+      <oj-button id="openCreatePanel" class="action-button-primary" on-click="[[$component.create]]">
+      <span data-bind="text:$component.nls.buttons.create"></span>
+</oj-button>
+    </div>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2">
+          <label data-bind="text: nls.fieldname.roleName"></label>
+        </div>
+        <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text id="RoleNameSearch" validators="[[$baseModel.getValidator('ALPHABETS',$component.nls.message.invalidRoleName,{
+                          type:'length',options:{
+                              min:0,max:20}})]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.roleName}}"></oj-input-text>
+        </div>
+
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2">
+          <label data-bind="text: nls.fieldname.roleDescription"></label>
+        </div>
+        <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text id="RoleDecSearch" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.nls.message.invalidRoleDesc,{
+                          type:'length',options:{
+                              min:0,max:40}})]]" value="{{$component.roleDesc}}"></oj-input-text>
+        </div>
+      </div>
+          </page-section>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-secondary" on-click="[[openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.nls.cancel"></span>
+</oj-button>
+        <oj-button id="clear" class="action-button-secondary" on-click="[[clear]]">
+      <span data-bind="text:nls.clear"></span>
+</oj-button>
+        <oj-button id="search" class="action-button-primary" on-click="[[listRoles]]">
+      <span data-bind="text:nls.search"></span>
+</oj-button>
+      </div>
+      <!-- ko if:$component.showList() -->
+      <oj-table id="roleTable" columns-default="[[{sortable:'enabled'}]]" columns="[[[{headerText:nls.fieldname.roleName,field:'enterpriseRoleName',template:'role_template'},{headerText:nls.fieldname.roleDescription,field:'enterpriseRoleDesc'},{headerText:nls.fieldname.childRoles,field:'listOfChildRoles'}]]]" data="[[datasource]]">
+        <caption class="hide-label" data-bind="text:$component.nls.roleDesc"></caption>
+      </oj-table>
+      <script type="text/html" id="role_template">
+        <td>
+          <div>
+            <a href="#" data-bind="attr:{'alt':$data.enterpriseRoleName,'title':$component.nls.fieldname.roleName},
+                  text:$data.enterpriseRoleName,click:$component.readRoleDetails">
+            </a>
+          </div>
+
+        </td>
+      </script>
+      <!-- /ko -->
+
+
+
+
+    <div>
+    </div>
+</div></div>

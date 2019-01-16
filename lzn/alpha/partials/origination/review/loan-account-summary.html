@@ -1,0 +1,25 @@
+<!-- ko if : typeof($component.getStageIndex(data.loanAccountSummary.stageDetails, 'INTEREST')) === 'number'-->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <div class="section-heading margin-top-20" data-bind="text:resource.interestOnlyTitle"></div>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko foreach: data.loanAccountSummary.stageDetails -->
+<!-- ko if: stageName() === "INTEREST" -->
+<div data-bind="template:{name:'origination/loan-account-summary', data:{accountSummaryData:$data, resource: $parent.resource}}"></div>
+
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if :typeof ($component.getStageIndex(data.loanAccountSummary.stageDetails, 'PRINCIPAL')) === 'number'-->
+<div class="oj-flex oj-flex-items-pad margin-top-20">
+    <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <div class="section-heading" data-bind="text:$component.resource.loanAccountSummaryInfo.principleOnlyTitle"></div>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko foreach: data.loanAccountSummary.stageDetails -->
+<!-- ko if: stageName() === "PRINCIPAL" -->
+<div data-bind="template:{name:'origination/loan-account-summary', data:{accountSummaryData:$data, resource: $parent.resource}}"></div>
+<!-- /ko -->
+<!-- /ko -->

@@ -1,0 +1,83 @@
+<!-- ko if:toShow() -->
+<div class="batch-approvals oj-sm-12 oj-flex-items-pad button-container">
+  <oj-button id="" class="action-button-primary" on-click="[[showModalWindow.bind($data,'approve')]]">
+      <span data-bind="text:nls.batchProcessApprovals.approve"></span>
+</oj-button>
+  <oj-button id="" class="action-button-secondary" on-click="[[showModalWindow.bind($data,'reject')]]">
+      <span data-bind="text:nls.batchProcessApprovals.reject"></span>
+</oj-button>
+
+</div>
+
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $data, id:'graceTransactionsApproval',header:$component.nls.batchProcessApprovals.approvalComment">
+    <div class="form-main-container batch-approvals__dialog">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading: $baseModel.format($component.nls.batchProcessApprovals.otherTransactionsApproval, {nature:$component.typeOfTransaction()})">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <div data-bind="text: nls.batchProcessApprovals.graceWindowMessage"></div>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-md-4 oj-lg-3 oj-sm-12 ">
+          <ul data-bind="foreach : referenceIDs">
+            <li>
+                <span data-bind="text: $data"> </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="cancelGraceModel" class="action-button-secondary" on-click="[[closeGraceModel]]">
+      <span data-bind="text:nls.generic.common.cancel"></span>
+</oj-button>
+      <oj-button id="ok" class="action-button-primary" on-click="[[ok]]">
+      <span data-bind="text:nls.generic.common.ok"></span>
+</oj-button>
+    </div>
+   </div>
+</modal-window>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $data, id:'otherTransactionsApproval' ,header:$component.nls.batchProcessApprovals.approvalComment">
+  <div class="form-main-container batch-approvals__dialog">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading: $baseModel.format($component.nls.batchProcessApprovals.otherTransactionsApproval, {nature:$component.typeOfTransaction()})">
+      <!-- ko ifnot:$component.forceShow && $component.forceShow() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <div data-bind="text: $baseModel.format(nls.batchProcessApprovals.selectedTransactions, {count: $component.transactions().length})"></div>
+        </div>
+      </div>
+      <!-- /ko -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-md-4 oj-lg-3 oj-sm-12 ">
+          <oj-label for="remarksBox"><span data-bind="text:nls.batchProcessApprovals.remarks"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-md-8 oj-lg-8 oj-sm-12 ">
+          <oj-text-area id="remarksBox" value="{{remarks}}"></oj-text-area>
+        </div>
+      </div>
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="cancel" class="action-button-secondary" on-click="[[function(){$('#otherTransactionsApproval').hide().trigger('closeModal');}]]">
+      <span data-bind="text:nls.batchProcessApprovals.cancel"></span>
+</oj-button>
+      <oj-button id="confirm" class="action-button-primary" on-click="[[submit]]">
+      <span data-bind="text:$component.nls.batchProcessApprovals[$component.natureOfTask()]"></span>
+</oj-button>
+    </div>
+  </div>
+</modal-window>
+
+
+<!-- /ko -->
+<!-- ko if:transactionSuccess() -->
+<!-- ko if:!$component.forceShow -->
+<div role="alert" class="oj-flex oj-sm-12 oj-flex-items-pad">
+  <div class="oj-flex-item batch-approvals__approver-status batch-approvals-approver-status" data-bind="css:  $component.responseData() && $component.responseData().action === 'APPROVE' ? 'batch-approvals-approver-status__approved' : 'batch-approvals-approver-status__rejected'">
+    <span class="batch-approvals-approver-status__status-message" data-bind="text:$baseModel.format($component.erroneousTransaction() > 0 ? ($component.nls.batchProcessApprovals['someSuccessText_' + ($component.responseData() ? $component.responseData().action : $component.natureOfTask().toUpperCase())]) : ($component.nls.batchProcessApprovals['allSuccessText_' + ($component.responseData() ? $component.responseData().action : $component.natureOfTask().toUpperCase())]), {successCount:$component.successfulTransactions(), failureCount:$component.erroneousTransaction() })"></span>
+    <a href="#" data-bind="attr:{'alt':$component.nls.batchProcessApprovals.removeMessage ,'title':$component.nls.batchProcessApprovals.removeMessageTitle, 'aria-label':$component.nls.batchProcessApprovals.removeMessage },click:close"><span class="batch-approvals-approver-status__icon icon icon-close"></span></a>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->

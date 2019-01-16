@@ -1,0 +1,36 @@
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+           <oj-label for="transferMode"><span data-bind="text:$component.payments.transferMode"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <!-- ko if:$component.transferModeArray().length>0 -->
+                 <oj-select-one id="transferMode" required on-value-changed="[[$component.transferModeChange]]" :placeholder="[[$component.payments.select]]" value="{{$component.transferMode}}">
+                        <!-- ko foreach:$component.transferModeArray() -->
+                            <oj-option value="{{code}}"><span data-bind="text:value"></span></oj-option>
+                        <!-- /ko -->
+                </oj-select-one>
+            <!-- /ko -->
+        </div>
+    </div>
+</page-section>
+<!-- ko if:$component.isPeerToPeer() -->
+    <div data-bind='component:{name:"payment-peer-to-peer",params:{rootModel: $root}}'></div>
+<!-- /ko -->
+<!-- ko if:!$component.isPeerToPeer() -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                <oj-label><span data-bind="text:$component.payments.addNewrecipientmsg"></span></oj-label>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary " id="button" on-click="[[$dashboard.loadComponent.bind($data,'bank-account-payee',$component,null)]]"><span slot="startIcon" class="icons icon-add"></span>
+      <span data-bind="text:$component.payments.addbankaccount"></span>
+</oj-button>
+        </div>
+    </page-section>
+<!-- /ko -->

@@ -1,0 +1,31 @@
+
+    <!-- ko if:isNew -->
+    
+        
+        <oj-label class="hide-label" :for="[['category'+$baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.billerCategory.billerCategory"></span></oj-label>
+        <oj-input-text maxlength="35" required id="categoryName" :id="[['category'+$baseModel.currentIdCount()]]" validators="[[$baseModel.getValidator('NAME')]]" value="{{category}}"></oj-input-text>
+    
+    <!-- /ko -->
+    <!-- ko if:!isNew -->
+
+        
+        
+
+    <!-- /ko -->
+    
+
+
+    
+        <!-- ko if:billers?(billers.length===0 && !isNew):false -->
+        <a href="javascript:void(0)" data-bind="click:$component.confirmDelete.bind($data)">
+        <span class="icon icon-delete" aria-hidden="true"></span>
+      </a>
+        <!-- /ko -->
+        <!-- ko if:isNew -->
+        <a href="javascript:void(0)" data-bind="click:$component.removeCategory">
+        <span class="icon icon-close" aria-hidden="true"></span>
+        </a>
+        <!-- /ko -->
+    
+
+

@@ -1,0 +1,162 @@
+<div class="form-main-container view-bank-guarantee">
+
+  <!-- ko if: $baseModel.small() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 trade-heading-banner">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12">
+          <oj-label for="amendments"><span data-bind="text:$component.resourceBundle.labels.guaranteeNumber"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12">
+          <span for="amendments" data-bind="text:$component.guaranteeDetails.bgId"></span>
+        </div>
+      </div>
+      <!-- ko if: $component.chargesCommissionFlag()==='true' -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12">
+          <oj-label for="chargesCommission-Radioset" class="hide-label"><span data-bind="text:$component.resourceBundle.labels.commision"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7">
+          <oj-radioset class="oj-choice-direction-row" id="chargesCommission-Radioset" required value="{{$component.chargesOrCommissionSelection}}"><oj-option value="COMMISION" id="commisionRadioset" name="chargesCommission"><span for="commisionRadioset" data-bind="text:$component.resourceBundle.labels.commision"></span></oj-option><oj-option value="CHARGES" id="chargesRadioset" name="chargesCommission"><span for="chargesRadioset" data-bind="text:$component.resourceBundle.instructionsDetails.labels.charges"></span></oj-option></oj-radioset>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- /ko -->
+
+<!-- ko if:dataLoaded() -->
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : $baseModel.small() === false ?$baseModel.format($component.resourceBundle.labels.bgNumber,{bgNumber:$component.guaranteeDetails.bgId}):''">
+    <div class="oj-flex oj-flex-items-pad">
+      <!-- ko if: $baseModel.medium() -->
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-2" data-bind='component: {name: "nav-bar",
+      params:{rootModel: $data, menuOptions: menuOptions, uiOptions: uiOptions,
+        navBarDescription: $component.resourceBundle.leftMenu.viewBGDetails}}'></div>
+      <!-- /ko -->
+
+      <!-- ko if: $baseModel.large() -->
+       <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2 view-lc-menu">
+          <oj-navigation-list  :aria-label="[[$component.resourceBundle.leftMenu.viewBGDetails]]" drill-mode="none" selection='[["menuSelection"]]' >
+            <ul id="listview">
+              <!-- ko foreach:menuOptions -->
+             <li class="oj-flex oj-flex-items-pad grid-row-group" data-bind="attr: {id: $data.id}">
+               <a href="#" data-bind="text:$data.label,click:$component.showSection.bind($data,$data.label,$data.templatePath)"></a>
+             </li>
+             <!-- /ko -->
+            </ul>
+          </oj-navigation-list>
+       </div>
+      <!-- /ko -->
+
+    <!-- ko if : sectionName() === $component.resourceBundle.leftMenu.viewBGDetails -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-10" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+      <oj-accordion id="tradeFinanceAccordion">
+          <!-- ko foreach:stages -->
+          <oj-collapsible expanded="[[expanded]]">
+            <h3 slot="header">
+               <span>
+                 <span data-bind="text: stageName"></span>
+               </span>
+            </h3>
+            <div class="stage-content" data-bind="template:{name : templateName}"> </div>
+          </oj-collapsible>
+          <!-- /ko -->
+      </oj-accordion>
+        <div class="button-container">
+            <!-- ko ifnot: $baseModel.small() -->
+          <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+              <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+            </oj-button>
+          <!-- /ko -->
+          <oj-button class="action-button-tertiary" on-click="[[goBack]]">
+              <span slot="startIcon" class="icons icon-back-arrow"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+            </oj-button>
+        </div>
+      </div>
+   <!-- /ko -->
+
+   <!-- ko ifnot : sectionName() === $component.resourceBundle.leftMenu.viewBGDetails -->
+   <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-10 view-details-span">
+     <!-- ko if : sectionName() === $component.resourceBundle.leftMenu.viewAttachedDocuments -->
+     <div id="attachDocs" class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 " data-bind="component:{name:'attach-documents',
+        params:{rootModel: $component, attachDocList: $component.attachedDocuments, deletedDocList:$component.deletedDocuments, contractModified:$component.contractModified, mode: $component.mode, allowAttachments:  $component.guaranteeDetails.authStatus === 'A' ? true : false}}">
+     </div>
+     <!-- /ko -->
+     <!-- ko ifnot : sectionName() === $component.resourceBundle.leftMenu.viewAttachedDocuments -->
+     <div data-bind="template:{name : sectionName}"></div>
+     <!-- /ko -->
+     <div class="button-container" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+
+     <!-- ko if : sectionName() === $component.resourceBundle.leftMenu.viewAttachedDocuments && $component.contractModified-->
+        <oj-button id="submit" class="action-button-primary" on-click="[[$component.modifyContract]]">
+            <span slot="startIcon" class="icons icon-submit"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.submit"></span>
+         </oj-button>
+        <!-- /ko -->
+        <!-- ko ifnot: $baseModel.small() -->
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+         </oj-button>
+        <!-- /ko -->
+         <oj-button class="action-button-tertiary" on-click="[[goBack]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+         </oj-button>
+     </div>
+   </div>
+  <!-- /ko -->
+</div>
+
+<!-- ko if: $baseModel.small() -->
+<a href="#" data-bind="click: $component.showFloatingPanel">
+  <div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+</a>
+<floating-panel params="baseModel : $baseModel, panelId: 'panelDD', rootModel: $component">
+  <ul>
+     <li id="main" class="oj-flex oj-flex-items-pad grid-row-group">
+       <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.viewBGDetails,$component.resourceBundle.leftMenu.viewBGDetails)">
+         <span class="icons icon-summary"></span>
+         <span data-bind="text:$component.resourceBundle.leftMenu.viewBGDetails"></span>
+       </a>
+    </li>
+    <li id="ammendments" class="oj-flex oj-flex-items-pad grid-row-group">
+      <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.amendments,'trade-finance/view-guarantees/bank-guarantee-amendments')">
+        <span class="icons icon-issue"></span>
+        <span data-bind="text:$component.resourceBundle.leftMenu.amendments"></span>
+      </a>
+    </li>
+    <li id="attachedDocs" class="oj-flex oj-flex-items-pad grid-row-group">
+      <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.viewAttachedDocuments,$component.resourceBundle.leftMenu.viewAttachedDocuments)">
+        <span class="icons icon-attachment"></span>
+        <span data-bind="text:$component.resourceBundle.leftMenu.viewAttachedDocuments"></span>
+      </a>
+    </li>
+    <li id="charges" class="oj-flex oj-flex-items-pad grid-row-group">
+      <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.charges,'trade-finance/view-guarantees/bank-guarantee-charges')">
+        <span class="icons icon-fees-charges"></span>
+        <span data-bind="text:$component.resourceBundle.leftMenu.charges"></span>
+      </a>
+    </li>
+    <li id="viewSwiftMessages" class="oj-flex oj-flex-items-pad grid-row-group">
+      <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.viewSwiftMessages,'trade-finance/swift-message')">
+        <span class="icons icon-mailbox-view"></span>
+        <span data-bind="text:$component.resourceBundle.leftMenu.viewSwiftMessages"></span>
+      </a>
+    </li>
+    <li id="viewAdvice" class="oj-flex oj-flex-items-pad grid-row-group">
+      <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.viewAdvice,'trade-finance/advices')">
+        <span class="icons icon-claim-money"></span>
+        <span data-bind="text:$component.resourceBundle.leftMenu.viewAdvice"></span>
+      </a>
+    </li>
+  </ul>
+</floating-panel>
+<!-- /ko -->
+
+</page-section>
+
+  <!-- /ko -->
+</div>

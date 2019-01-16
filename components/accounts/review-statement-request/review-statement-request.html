@@ -1,0 +1,30 @@
+<div class="form-main-container">
+  <!-- ko if: $component.params.mode ==='review' -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+  <!-- /ko -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading :''">
+    <div class="row-group">
+      <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.account , value : $component.params.data.payLoadData.selectedAccount()"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.fromDate , value : $baseModel.formatDate($component.params.data.payLoadData.fromDate())"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.toDate , value : $baseModel.formatDate($component.params.data.payLoadData.toDate())"></row>
+    </div>
+  </page-section>
+  <!-- ko if:$component.params.mode ==='review'-->
+  <div class="button-container">
+    <oj-button id="dialogtopupButton" class="action-button-primary " on-click="[[$component.confirm]]">
+      <span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.nls.generic.common.confirm"></span>
+    </oj-button>
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+      <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.nls.generic.common.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]">
+      <span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.nls.generic.common.back"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+</div>

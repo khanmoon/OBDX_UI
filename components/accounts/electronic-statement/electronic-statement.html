@@ -1,0 +1,55 @@
+<div class="eStatement">
+<!-- ko ifnot:subscribeConfirmScreen -->
+
+<div class="oj-flex oj-flex-items-pad">
+<div class="oj-flex-item oj-sm-12 eStatement__content eStatement-content">
+  <div class="eStatement-content__icon">
+    <span class="icon icon-subscription"></span>
+  </div>
+    <!-- ko if:accountNumberAlreadySubscribed -->
+    <div class="oj-flex-item oj-sm-10 eStatement-content__description">
+      <div class="eStatement-content__text" data-bind="text: $component.resource.eStatement.estatement"></div>
+        <div data-bind="text : $baseModel.format($component.resource.eStatement.unsubscribeText, {accountNumber : $component.encryptedAccountNumber, emailID : $component.primaryEmailID().displayValue})"></div>
+    </div>
+    <!-- /ko -->
+
+
+    <!-- ko ifnot:accountNumberAlreadySubscribed -->
+    <div class="oj-flex-item oj-sm-10 eStatement-content__description">
+      <div class="eStatement-content__text" data-bind="text: $component.resource.eStatement.estatement"></div>
+        <div data-bind="text : $baseModel.format($component.resource.eStatement.subscribeText, {accountNumber : $component.encryptedAccountNumber, emailID : $component.primaryEmailID().displayValue})"></div>
+    </div>
+
+    <!-- /ko -->
+</div>
+</div>
+<div class="oj-flex oj-flex-items-pad button-container">
+<div class="eStatement-content__subscribeButton">
+    <!-- ko if:accountNumberAlreadySubscribed -->
+    <oj-button class="action-button-primary " on-click="[[unSubscribeForStatement]]"><span slot="startIcon" class="icons icon-reject"></span>
+      <span data-bind="text:$component.resource.eStatement.unsubscribe"></span>
+</oj-button>
+    <!-- /ko -->
+
+
+    <!-- ko ifnot:accountNumberAlreadySubscribed -->
+    <oj-button class="action-button-primary " on-click="[[subscribeForStatement]]"><span slot="startIcon" class="icons icon-review"></span>
+      <span data-bind="text:$component.resource.eStatement.subscribe"></span>
+</oj-button>
+    <!-- /ko -->
+  </div>
+</div>
+
+<!-- /ko -->
+
+<!-- ko if:subscribeConfirmScreen -->
+<div class="oj-flex oj-flex-items-pad center ">
+        <div class="oj-flex-item button-container">
+            <oj-button class="action-button-primary " on-click="[[ok]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.resource.eStatement.done"></span>
+</oj-button>
+        </div>
+</div>
+
+<!-- /ko -->
+</div>

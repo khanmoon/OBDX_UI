@@ -1,0 +1,153 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+  <div class="oj-flex-item oj-sm-12">
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+      <div class="row-group">
+        <!-- ko if: $component.customerDataLoaded -->
+        <oj-validation-group id="customerInfoTracker">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="title"><span data-bind="text:$component.resource.customerIdentificationInfo.title"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-2 oj-md-3">
+              <span data-bind="text:$component.fatcaComplianceData.identificationInfo.title"></span>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="fullName"><span data-bind="text:$component.resource.customerIdentificationInfo.fullName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-5">
+              <!-- ko if:$component.disableFullName -->
+              <span data-bind="text:$component.fatcaComplianceData.identificationInfo.fullName"></span>
+              <!-- /ko -->
+              <!-- ko ifnot:$component.disableFullName -->
+              <oj-input-text id="fullName" required maxlength="35" value="{{$component.fatcaComplianceData.identificationInfo.fullName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', resource.messages.fullName,{
+                             type:'length',options:{min:1,max:100}})]]" translations="[[{'required':{messageDetail:$component.resource.messages.fullName}}]]"
+                name="firstName"></oj-input-text>
+                <!-- /ko -->
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="addressType" id="addressTypeLabel"><span data-bind="text:$component.resource.customerIdentificationInfo.addressType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-12 oj-md-12">
+              <oj-radioset class="oj-choice-direction-row" id="addressType" aria-labelledby="addressTypeLabel" translations="[[{'required':{messageDetail:$component.resource.messages.addressType}}]]" value="{{$component.addressType}}">
+                <oj-option id="permanent" value="permanent"><span data-bind="text:$component.resource.customerIdentificationInfo.addressType1"></span></oj-option>
+                <oj-option id="currentResidential" value="currentResidential"><span data-bind="text:$component.resource.customerIdentificationInfo.addressType2"></span></oj-option>
+                <oj-option id="other" value="other"><span data-bind="text:$component.resource.customerIdentificationInfo.addressTypeOther"></span></oj-option>
+              </oj-radioset>
+            </div>
+          </div>
+          <!-- ko if: $component.addressType() === "other" -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="otherAddressType"><span data-bind="text:$component.resource.customerIdentificationInfo.otherAddress"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-6">
+              <oj-input-text id="otherAddressType" required maxlength="100" value="{{$component.fatcaComplianceData.identificationInfo.addressType}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL', resource.messages.otherAddressTypeValid, {
+                             type:'length',options:{min:1,max:100}})]]" translations="[[{'required':{messageDetail:$component.resource.messages.otherAddressType}}]]" name="otherAddressType"></oj-input-text>
+            </div>
+          </div>
+          <!-- /ko -->
+          <div class="" data-bind="template: {name: 'compliance/address', data: {addressData: $component.fatcaComplianceData.identificationInfo.addressDetails, resource: $component.resource, type: 'Permanent', countriesLoaded: $component.permanentCountriesLoaded, states: $component.states}}"></div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <h4 id="mailingAddress" data-bind="text: $component.resource.customerIdentificationInfo.mailingAddress"></h4>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+              <oj-checkboxset id="mailingAddressCheckbox" labelled-by="mailingAddress" value="{{isMailingAddressSame}}" on-value-changed="[[mailingAddressChangeHandler]]">
+                <oj-option value="same">
+                  <span data-bind="text:$component.resource.customerIdentificationInfo.sameAsAbove">
+                </span></oj-option>
+              </oj-checkboxset>
+            </div>
+          </div>
+          <!-- ko if: $component.fillMailingAddress -->
+<div class="" data-bind="template: {name: 'compliance/address', data: {addressData: $component.fatcaComplianceData.identificationInfo.mailingAddress, resource: $component.resource, type: 'Mailing', countriesLoaded: $component.mailingCountriesLoaded, states: $component.statesMailing}}"></div>
+          <!-- /ko -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="nationality"><span data-bind="text:$component.resource.customerIdentificationInfo.nationality"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+              <oj-select-one id="nationality" required value="{{$component.fatcaComplianceData.identificationInfo.nationality}}" translations="[[{'required':{messageDetail:$component.resource.messages.nationality}}]]" on-value-changed="[[$component.titleChanged]]" :placeholder="">
+                <!-- ko foreach: $component.countries -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="countryOfBirth"><span data-bind="text:$component.resource.customerIdentificationInfo.countryOfBirth"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+              <oj-select-one id="countryOfBirth" required value="{{$component.fatcaComplianceData.identificationInfo.countryOfBirth}}" translations="[[{'required':{messageDetail:$component.resource.messages.countryOfBirth}}]]" on-value-changed="[[$component.titleChanged]]" :placeholder="">
+                <!-- ko foreach: $component.countries -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="placeOfBirth"><span data-bind="text:$component.resource.customerIdentificationInfo.placeOfBirth"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+              <oj-input-text id="placeOfBirth" required maxlength="35" value="{{$component.fatcaComplianceData.identificationInfo.cityOfBirth}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL', $component.resource.messages.placeOfBirth,{
+                             type:'length',options:{min:1,max:35}})]]" translations="[[{'required':{messageDetail:$component.resource.messages.placeOfBirth}}]]"
+                name="placeOfBirth"></oj-input-text>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="identificationType"><span data-bind="text:$component.resource.customerIdentificationInfo.identificationType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+              <oj-select-one id="identificationType" required value="{{$component.fatcaComplianceData.identificationInfo.identificationType}}" translations="[[{'required':{messageDetail:$component.resource.messages.placeOfBirth}}]]" on-value-changed="[[$component.titleChanged]]" :placeholder="">
+                <!-- ko foreach: $component.identificationTypes -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="identificationNumber"><span data-bind="text:$component.resource.customerIdentificationInfo.identificationNumber"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+              <oj-input-text id="identificationNumber" required maxlength="25" value="{{$component.fatcaComplianceData.identificationInfo.identificationNumber}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE', $component.resource.messages.identificationNumber, {
+                             type:'length',options:{min:1,max:25}})]]" translations="[[{'required':{messageDetail:$component.resource.messages.fullName}}]]"
+                name="identificationNumber"></oj-input-text>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="fathersName"><span data-bind="text:$component.resource.customerIdentificationInfo.fathersName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-5">
+              <oj-input-text id="fathersName" maxlength="100" value="{{$component.fatcaComplianceData.identificationInfo.fathersName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.resource.messages.fathersName,{
+                             type:'length',options:{min:0,max:100}})]]" name="fathersName"></oj-input-text>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="spousesName"><span data-bind="text:$component.resource.customerIdentificationInfo.spousesName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-5">
+              <oj-input-text id="spousesName" maxlength="100" value="{{$component.fatcaComplianceData.identificationInfo.spouseName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.resource.messages.spouseName,{
+                             type:'length',options:{min:0,max:100}})]]" name="spousesName"></oj-input-text>
+            </div>
+          </div>
+        </oj-validation-group>
+        <!-- /ko -->
+      </div>
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="continueCustomerInfo" class="action-button-primary" on-click="[[continueCustomerInfo]]">
+        <span data-bind="text:$component.resource.continue"></span>
+      </oj-button>
+    </div>
+  </div>
+</div>

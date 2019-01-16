@@ -1,0 +1,104 @@
+<!-- ko if: $component.parentAccessLevel() ==="PARTY" -->
+<action-header params="baseModel : $baseModel, rootModel : $data, heading :nls.headers.newAccounts">
+</action-header>
+
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <label class="pull-left" data-bind="text: nls.fieldname.mapAccts"></label>
+        <span class="icons icon-help tool-tip">
+			  <div class="tooltip-content talign-left"
+        data-bind=" html:$baseModel.format($component.nls.messages.tooltip.autoManualMessage,
+        {accountType:$component.transactionNames.loan,accountType1:$component.transactionNames.loan})"></div>
+		</span>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-9">
+        <oj-buttonset-one disabled="[[showEditableForm]]"
+        on-value-changed="[[$component.loanDefaultPolicyChangeHandler]]"
+        value="{{$component.selectedLoanPolicy}}"><oj-option name="loanPolicy"
+        value="{{'loanAuto'}}" :id="[['loanAuto']]"><span data-bind="attr: {for: 'loanAuto'},text:$component.nls.common.auto"></span>
+      </oj-option><oj-option name="loanPolicy" value="{{'loanManual'}}" :id="[['loanManual']]">
+        <span data-bind="attr: {for: 'loanManual'},text:$component.nls.common.manual"></span>
+      </oj-option></oj-buttonset-one>
+
+    </div>
+</div>
+
+
+<action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.headers.existingAccounts">
+</action-header>
+<!-- /ko -->
+
+<!-- ko if: $component.parentAccessLevel()==="USER" -->
+
+<oj-checkboxset class=" oj-flex oj-flex-items-pad " disabled="[[$parent.showEditableForm]]"
+ value="{{$component.selectedLoanPolicyChecked}}"
+  on-value-changed="[[$component.loanDefaultPolicyChangeHandler]]">
+  <oj-option value="loanAuto" :id="[['loan_review_'+$baseModel.incrementIdCount()]]"><span for="loan_review" data-bind="text:$component.nls.common.ApplyChanges">
+                        </span></oj-option></oj-checkboxset>
+
+<!-- /ko -->
+
+<oj-checkboxset class=" oj-flex oj-flex-items-pad " disabled="[[showEditableForm]]"
+value="{{$component.mapAllTransactionsLonFlag}}"><oj-option id="loan_review_map_all"
+value="{{'MAP_ALL'}}"><span data-bind="text:nls.headings.mapAllTransactionToAllAccnts"
+for="loan_review_map_all"></span></oj-option></oj-checkboxset>
+
+
+<!-- ko if: reloadLoanTable() -->
+
+<oj-table id="loanReviewtable" :aria-label="[[$component.nls.headers.loanAccounts]]"
+columns="[[[{headerText:nls.headers.AccountNumber,field:'accountID'},{headerText:nls.headers.currency,field:'currency'},
+{headerText:nls.headers.displayName,field:'displayName'},{headerText:nls.headers.accountStatus,field:'accountStatus'}]]]"
+ row-renderer='[[$oj.KnockoutTemplateUtils.getRenderer("loan_template", true)]]'
+  data="[[$parent.loanTransactionDatasource]]">
+    <caption class="hide-label"
+    data-bind="text:$component.nls.headers.loanAccounts"></caption>
+</oj-table>
+<!-- /ko -->
+
+<script type="text/html" id="loan_template">
+    <tr>
+        <!-- ko if: $context.rowContext.depth===1 -->
+        <td>
+            <!-- ko if: ($component.selectedLoanAccounts).indexOf(accountNumber.value) > -1 -->
+              <oj-row-expander context="[[$context.rowContext]]"></oj-row-expander>
+            <!-- /ko -->
+            <input type="checkbox" name="loanTransaction"
+             data-bind="attr:{'aria-label':$component.nls.headers.loancheckbox+id,
+             id: $component.nls.headers.loancheckbox+id },
+             checked: $parent.selectedLoanAccounts,
+             disable:($parent.showEditableForm && $parent.disableAccountSelection),
+             value : accountNumber.value ">
+           <span data-bind="attr:{ 'for':$component.nls.headers.loancheckbox+id},
+            text: $context.row.accountNumber.displayValue"></span>
+         </td>
+        <td>
+            <span data-bind="text:$context.row.currency"></span>
+        </td>
+        <td>
+            <span data-bind="text:$context.row.displayName"></span>
+        </td>
+        <td>
+            <span data-bind="text:$context.row.accountStatus"></span>
+        </td>
+
+        <!-- /ko -->
+
+        <!-- ko if: $context.rowContext.depth===2 -->
+        <!-- ko if: ($component.selectedLoanAccounts).indexOf(accountNumber.value) > -1 -->
+        <td colspan="4">
+            <div data-bind="component:{name: 'transaction-selection',
+            params:{rootModel: $parent,key:'LON', data: $data,
+             resoureTaskList : $component.resourceListLON,
+             selectedResourceTaskList : $data.selectedTask,
+             showReviewComponent: $component.showReviewComponent,
+             mapAllTransactionsToAllAccounts:$component.mapAllTransactionsToAllAccountLon,
+             indicatorArray:$component.loanMapAllTransactionIndicatorArray,
+             tempTaskArray:$component.tmpTransactionCodeLonArray}}">
+            </div>
+        </td>
+        <!-- /ko -->
+        <!-- /ko -->
+    </tr>
+</script>

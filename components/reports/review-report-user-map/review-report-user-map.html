@@ -1,0 +1,35 @@
+
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+         <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header: $component.Nls.review,reviewHeader: $component.Nls.reviewMessage}}">
+        </div>
+         <!-- ko if:isUserTypeFetched() -->
+        <div data-bind="with:$component.partyDetails" class="label">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.corporateid , value :party.displayValue"></row>
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.corporatename , value :partyName"></row>
+            </div>
+            <div data-bind="with:$component.selectedUser" class="label">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.username , value :$baseModel.format($component.Nls.user,{firstName:firstName,lastName:lastName})"></row>
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.userId , value :username"></row>
+            </div>
+        <!-- /ko -->
+    </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.Nls.mappingDetails">
+    <!-- ko if:$component.isReportListLoaded()-->
+        <div data-bind="template: { name: 'report/report-user-map-details'}"></div>
+        <!-- /ko -->
+    </page-section>
+    <!-- ko if:$component.params.mode ==='review'-->
+    <div class="button-container">
+         <oj-button class="action-button-primary" on-click="[[$component.confirm.bind($data,$component.ReportUserMapModel)]]">
+      <span data-bind="text:$component.Nls.confirm"></span>
+</oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.Nls.cancelTransaction)]]">
+      <span data-bind="text:$component.Nls.cancel"></span>
+</oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$component.back]]">
+      <span data-bind="text:$component.Nls.back"></span>
+</oj-button>
+       
+    </div>
+    <!-- /ko -->
+

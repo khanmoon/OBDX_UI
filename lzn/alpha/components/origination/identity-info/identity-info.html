@@ -1,0 +1,202 @@
+<!-- ko if: $component.existingIdentitiesLoaded() -->
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <div class="margin-top-20" data-bind="with:applicantObject().identityInfo">
+    <oj-validation-group id="identityTracker" valid="{{$component.identityValid}}">
+      <!-- ko if:$component.taxIdentificationTypeLoaded() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+          <oj-label :for="taxIdType"><span data-bind="text:$component.resource.taxIdType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5 label">
+          <oj-select-one required :id="taxIdType" translations="[[{'required':{messageDetail:$component.resource.messages.taxIdType}}]]" :placeholder="" disabled="[[$component.applicantObject().identityInfo.disableInputs]]" on-value-changed="[[$component.taxIdentificationChanged]]"
+            value="{{$component.selectedTaxIdentificationType}}">
+            <!-- ko foreach: $component.taxIdentificationTypes() -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.selectedTaxIdentificationType() === 'TFN' -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+          <oj-label :for="tFNumber"><span data-bind="text:$component.resource.taxFileNumber"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+          <oj-input-text required  id="tFNumber" :id="idNum" validators="[[[$component.validateTFN]]]" translations="[[{'required':{messageDetail:$component.resource.messages.taxFileNumber}}]]" disabled="[[$component.applicantObject().identityInfo.disableInputs]]" value="{{$component.tfNumber}}"></oj-input-text>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko if: $component.selectedTaxIdentificationType() === 'TEC' && $component.taxExemptionCodeLoaded() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+          <oj-label :for="taxExemptionCode"><span data-bind="text:$component.resource.taxExemptionCode"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+          <oj-select-one required :id="taxExemptionCode" translations="[[{'required':{messageDetail:$component.resource.messages.taxExemptionCode}}]]" :placeholder="" disabled="[[$component.applicantObject().identityInfo.disableInputs]]" value="{{$component.taxExemptionCode}}">
+            <!-- ko foreach: $component.taxExemptionCodes() -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko if:$component.anotherIdentification() -->
+      <!-- ko foreach: $component.identificationList() -->
+      <!-- ko if: temp_isActive() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-8 oj-md-6 oj-lg-5">
+          <!-- ko if : $index()===0 -->
+          <h4 class="form-heading additional-label" data-bind="text: $component.resource.primaryIdentification"></h4>
+          <!-- /ko -->
+          <!-- ko if : $index()>0 -->
+          <h4 class="form-heading additional-label" data-bind="text: $component.resource.additionalIdentification"></h4>
+          <!-- /ko -->
+        </div>
+        <!-- ko ifnot:$component.applicantObject().identityInfo.disableInputs -->
+        <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1 right">
+          <a href="#" class="icons icon icon-remarks" data-bind="click : $component.editIdentity.bind($data, $parent) ,attr:{alt: $component.resource.alt.editIdentityClick, title: $component.resource.title.editIdentityClick}"></a>
+        </div>
+        <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1 icon-pipe">
+          <a href="#" class="icons icon icon-delete" data-bind="click : $component.deleteIdentity.bind($data, $index(), $parent) ,attr:{alt: $component.resource.alt.deleteIdentityClick, title: $component.resource.title.deleteIdentityClick}"></a>
+        </div>
+        <!-- /ko -->
+      </div>
+      <!-- ko if: $data.type==='DLN' && $component.statesFetched() -->
+      <div class="row-group">
+        <div data-bind="template: { name: 'origination/review/identity-info', data:{data: $data, resource: $component.resource} }" class="show-info"></div>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko ifnot: $data.type==='DLN' -->
+      <div class="row-group">
+        <div data-bind="template: { name: 'origination/review/identity-info', data:{data: $data, resource: $component.resource} }" class="show-info"></div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+
+      <!-- ko ifnot: temp_isActive() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-8 oj-md-6 oj-lg-5">
+          <!-- ko if : $index()===0 -->
+          <h4 class="form-heading additional-label" data-bind="text: $component.resource.primaryIdentification"></h4>
+          <!-- /ko -->
+          <!-- ko if : $index()>0 -->
+          <h4 class="form-heading additional-label" data-bind="text: $component.resource.additionalIdentification"></h4>
+          <!-- /ko -->
+        </div>
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-1">
+          <a href="#" class="icons icon pull-right icon-delete" data-bind="click : $component.deleteIdentity.bind($data, $index(), $parent) ,attr:{alt: $component.resource.alt.deleteIdentityClick, title: $component.resource.title.deleteIdentityClick}"></a>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label :for="[['idType'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.idType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+              <oj-select-one required :id="[['idType'+($baseModel.currentIdCount())]]" :placeholder="" translations="[[{'required':{messageDetail:$component.resource.messages.type}}]]" on-value-changed="[[$component.identitytypeChanged]]" disabled="[[$component.applicantObject().identityInfo.disableInputs]]"
+                value="{{$data.type}}">
+                <!-- ko foreach: $component.identificationTypes -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label :for="[['idNum'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.idNumber"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+              <oj-input-text required maxlength="20" id="idNum" :id="[['idNum'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.number}}]]" validators="[[$baseModel.getValidator('REFERENCE_NUMBER')]]" disabled="[[$component.applicantObject().identityInfo.disableInputs]]"
+                value="{{$data.id}}"></oj-input-text>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label :for="[['expiryDate'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.expiryDate"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+              <oj-input-date required :id="[['expiryDate'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.validExpiryDate}}]]" validators="[[$component.validateDate]]" converter="[[$baseModel.dateConverter]]"
+                disabled="[[$component.applicantObject().identityInfo.disableInputs]]" value="{{$data.expiryDate}}" datepicker="[[{yearRange:'c:c+100'}]]" min="[[$component.todayIsoDate]]"></oj-input-date>
+            </div>
+          </div>
+
+          <!-- ko if: $data.currentType() ==='DLN' -->
+          <!-- ko if:$component.countryFetched() -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label :for="[['countryOfIssue'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.countryOfIssue"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+              <oj-select-one required :id="[['countryOfIssue'+($baseModel.currentIdCount())]]" :placeholder="" on-value-changed="[[$component.countryOfIssueChanged]]" translations="[[{'required':{messageDetail:$component.resource.messages.countryOfIssue}}]]" disabled="[[$component.applicantObject().identityInfo.disableInputs]]"
+                value="{{$data.countryOfIssue}}">
+                <!-- ko foreach: $component.countryCodes -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <!-- /ko -->
+
+          <!-- ko if:$component.statesFetched() -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label :for="[['placeOfIssue'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.placeOfIssue"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+              <oj-select-one required :id="[['placeOfIssue'+($baseModel.currentIdCount())]]" :placeholder="" translations="[[{'required':{messageDetail:$component.resource.messages.placeOfIssue}}]]" disabled="[[$component.applicantObject().identityInfo.disableInputs]]"
+                value="{{$data.placeOfIssue}}">
+                <!-- ko foreach: $component.stateCodes -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <div class="oj-flex-item oj-lg-10 oj-md-10">
+          <oj-button id="add" class="help-button" on-click="[[$component.saveIdentity.bind($data,$data)]]">
+            <span data-bind="text:$component.resource.add"></span>
+          </oj-button>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+    </oj-validation-group>
+  </div>
+</page-section>
+
+<!-- ko ifnot:$component.editOn() -->
+<diV class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-md-3 oj-lg-1">
+    <div class="button-container oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-md-10 oj-lg-10">
+        <oj-button raised="" id="submit-identity" class="form-button-secondary" :aria-label="[[$component.resource.submitIdentity]]" on-click="[[$component.submitIdentityInfo.bind($data)]]">
+          <span data-bind="text:$component.resource.origination.common.continue"></span>
+        </oj-button>
+      </div>
+    </div>
+  </div>
+  <!-- ko ifnot:$component.applicantObject().identityInfo.disableInputs -->
+  <div class="oj-flex-item oj-md-3 oj-lg-3 label add-link">
+    <span>
+        <a href="#" data-bind="click : $component.addIdentification, text:$component.resource.addAnotherIdentification,
+                                attr:{'id':'addAnotherIdentification','alt':$component.resource.alt.addAnotherIdentification,'title':$component.resource.title.addAnotherIdentification}">
+        </a>
+    </span>
+  </div>
+  <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- /ko -->

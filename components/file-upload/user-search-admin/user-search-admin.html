@@ -1,0 +1,134 @@
+<div class="form-main-container">
+  <page-section params="baseModel : $baseModel, rootModel : $data">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 label">
+        <oj-label class="" for="usertype"><span data-bind="text:$component.resource.userSearchAdmin.userType"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4 label">
+        <span data-bind="text:$component.resource.userSearchAdmin.admin"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 label">
+        <oj-label for="usernamesearch"><span data-bind="text:$component.resource.userSearchAdmin.username"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4 label">
+        <oj-input-text :aria-label="[[$component.resource.userSearchAdmin.username]]" id="usernamesearch" maxlength="80" on-submitifenter="[[submitIfEnter]]" value="{{$component.username}}"></oj-input-text>
+      </div>
+    </div>
+    <!-- ko if: showOptionRecords -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+        <oj-label for="fnsearch"><span data-bind="text:$component.resource.userSearchAdmin.firstname"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 label">
+        <oj-input-text id="fnsearch" maxlength="50" on-submitifenter="[[submitIfEnter]]" value="{{$component.firstName}}"></oj-input-text>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+        <oj-label for="lnsearch"><span data-bind="text:$component.resource.userSearchAdmin.lastname"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 label">
+        <oj-input-text id="lnsearch" maxlength="50" on-submitifenter="[[submitIfEnter]]" value="{{$component.lastName}}"></oj-input-text>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+        <oj-label for="emailsearch"><span data-bind="text:$component.resource.userSearchAdmin.email"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 label">
+        <oj-input-text id="emailsearch" maxlength="60" on-submitifenter="[[submitIfEnter]]" value="{{$component.emailId}}"></oj-input-text>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+        <oj-label for="mobilesearch"><span data-bind="text:$component.resource.userSearchAdmin.mobilenumber"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 label">
+        <oj-input-text id="mobilesearch" maxlength="10" on-submitifenter="[[submitIfEnter]]" value="{{$component.mobileNumber}}"></oj-input-text>
+      </div>
+    </div>
+  </page-section>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- ko ifnot: showOptionRecords -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6">
+      <a href="javascript:void(0)" data-bind="click:$component.showMoreOptions, attr:{'aria-label': $component.resource.userSearchAdmin.showMoreOptions">
+                <span class="form-button-link" data-bind="text:$component.resource.userSearchAdmin.showMoreOptions">   </span>
+                <span class="oj-button-icon oj-end oj-component-icon oj-button-menu-dropdown-icon">
+            </span>
+            </a>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: showOptionRecords -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6">
+      <a href="javascript:void(0)" data-bind="click:$component.showLessOptions, attr:{'aria-label': $component.resource.userSearchAdmin.showLessOptions}">
+      <span class="form-button-link" data-bind="text:$component.resource.userSearchAdmin.showLessOptions"> </span>
+          <span class="icon icon-arrow-up"></span>
+    </a>
+    </div>
+    <!-- /ko -->
+  </div>
+
+  <div class="button-container">
+    <oj-button class="action-button-primary" on-click="[[$component.fetchedUsers]]">
+      <span data-bind="text:$component.resource.userSearchAdmin.search"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:$component.resource.userSearchAdmin.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.resetForm]]">
+      <span data-bind="text:$component.resource.userSearchAdmin.clear"></span>
+    </oj-button>
+  </div>
+
+
+  <!-- ko if: $component.userDataLoaded() -->
+  <oj-table id="table" class="record" :aria-label="[[$component.resource.userSearchAdmin.userList]]" columns="[[[{
+      headerText:$component.resource.userSearchAdmin.initials,
+      renderer:$oj.KnockoutTemplateUtils.getRenderer('initials', true),
+      sortable:'none'},
+      {
+      headerText:$component.resource.userSearchAdmin.userDetails,renderer:$oj.KnockoutTemplateUtils.getRenderer('userDetail',true)
+      },
+      {
+      headerText:$component.resource.userSearchAdmin.number,
+      renderer:$oj.KnockoutTemplateUtils.getRenderer('contactDetails', true)
+      },
+      {
+      headerText:$component.resource.userSearchAdmin.mapping,
+      renderer:$oj.KnockoutTemplateUtils.getRenderer('mapping', true)}]]]" selection-mode="[[{row:'single',column:'single'}]]" on-selection-changed="[[onUserSelectedInTable]]" translations="[[{msgNoData:$component.resource.userSearchAdmin.noData}]]"
+    data="[[$component.datasource()]]">
+    <caption class="hide-label" data-bind="text:$component.Nls.userList"></caption>
+  </oj-table>
+  <script type="text/html" id="initials">
+    <td>
+      <div class="user-initials" data-bind="text:$component.placeInitials($context.row.firstName,$context.row.lastName)"></div>
+    </td>
+  </script>
+  <script type="text/html" id="contactDetails">
+    <td><span data-bind="text:$context.row.emailId"></span>
+      <br>
+      <span data-bind="text:$context.row.mobileNumber"></span>
+    </td>
+  </script>
+  <script type="text/html" id="userDetail">
+    <td>
+      <div data-bind="text: $baseModel.format($component.resource.userSearchAdmin.user,{firstName:$context.row.firstName,lastName:$context.row.lastName})"></div>
+      <div data-bind="text: $context.row.username"></div>
+    </td>
+  </script>
+  <script type="text/html" id="mapping">
+    <td>
+      <!-- ko if:$context.row.isMapped -->
+      <span class="icons icon-success"></span>
+      <!-- /ko -->
+      <!-- ko ifnot:$context.row.isMapped -->
+      <span class="icons icon-maintenance"></span>
+      <!-- /ko -->
+    </td>
+  </script>
+  <!-- /ko -->
+
+</div>

@@ -1,0 +1,144 @@
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <!-- ko if:stageOne() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <oj-validation-group id="debtorTracker" valid="{{validationTracker}}">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label ">
+                <oj-label for="debtorName"> <span data-bind="text:$component.debtors.debtorName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-input-text required id="debtorName" maxlength="20" validators="[[$baseModel.getValidator('NAME')]]" value="{{debtorName.name}}"></oj-input-text>
+
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label ">
+                <oj-label for="debtorIban"> <span data-bind="text:$component.debtors.debtorIban"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-input-text required id="debtorIban" maxlength="20" validators="[[$baseModel.getValidator('IBAN')]]" value="{{debtor.sepaDomesticPayer.iban}}"></oj-input-text>
+
+            </div>
+        </div>
+
+        <!-- Lookup code -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label ">
+                <oj-label for="bankCode"><span data-bind="text:$component.debtors.bankBICCode"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-12">
+                <!-- ko ifnot:$component.additionalBankDetails() -->
+                <div class="oj-flex oj-flex-items-pad  bottom-margin-small oj-sm-12">
+                    <div class="oj-flex-item oj-sm-6 oj-md-5 oj-lg-8">
+                        <oj-input-text id="bankCode" maxlength="20" required validators="[[validateCode]]" value="{{bankDetailsCode}}"></oj-input-text>
+                    </div>
+                    <div class="oj-flex-item oj-sm-6 oj-md-3 oj-lg-4">
+                        <oj-button class="form-button-secondary" id="verify" on-click="[[verifyCode]]">
+                            <span data-bind="text:$component.common.verify"></span>
+                        </oj-button>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad bottom-margin-small oj-sm-12">
+                    <div class="oj-flex-item " data-bind="text:$component.debtors.or">
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad bottom-margin-small oj-sm-12">
+                    <div class="oj-flex-item">
+                        <a href="#" class="form-button-link" data-bind="attr:{'alt':$component.debtors.lookUpBIC,'title':$component.debtors.lookUpBICTitle},text:$component.debtors.lookUpBIC,click:openLookup"></a>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:$component.additionalBankDetails() -->
+                <div class="oj-flex oj-flex-items-pad" data-bind="with:$component.additionalBankDetails">
+                    <div class="oj-flex-item">
+                        <div data-bind="text:code"></div>
+                        <div data-bind="text:('name' in $data)?name:''"></div>
+                        <div data-bind="text:('line1' in branchAddress)?branchAddress.line1:''"></div>
+                        <div data-bind="text:('city' in branchAddress)?branchAddress.city:''"></div>
+                        <div data-bind="text:('country' in branchAddress)?branchAddress.country:''"></div>
+                        <div class="">
+                            <oj-button class="form-button-secondary" id="reset" on-click="[[$component.resetCode]]">
+                                <span data-bind="text:$component.common.reset"></span>
+                            </oj-button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label ">
+                <oj-label for="nickname"> <span data-bind="text:$component.debtors.nickname"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-input-text required id="nickname" maxlength="20" validators="[[$baseModel.getValidator('NAME')]]" value="{{debtor.nickName}}"></oj-input-text>
+            </div>
+        </div>
+    </oj-validation-group>
+    <!-- lookup -->
+        <div data-bind="component: {name: 'bank-look-up', params:{rootModel: $component,
+          clearingCodeType:$component.clearingCodeType,
+          accountType: $component.debtors.sepaDebtor,
+          region:'SEPA',
+          networkCode:bankDetailsCode,
+          additionalBankDetails:additionalBankDetails}}"></div>
+
+    </page-section>
+
+    <div class="button-container">
+        <oj-button class="action-button-primary" id="add" on-click="[[addDebtor]]" disabled="[[enableButton]]">
+            <span slot="startIcon" class="icons icon-add"></span>
+            <span data-bind="text:$component.common.add"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="cancelAddDebtor" on-click="[[enableButton()?false:cancelAddDebtor]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.common.cancel"></span>
+        </oj-button>
+    </div>
+</div>
+  <!-- ko if: $baseModel.large() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'add-new-debtor'"></help>
+        </div>
+        <!-- /ko -->
+
+    <!-- /ko -->
+
+    <!-- ko if:stageTwo() -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.generic.common.review , reviewHeader : $component.debtors.reviewHeaderMsg}}"></div>
+    <page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading :''">
+        <div class="oj-flex oj-flex-items-pad center">
+            <span class="highlight-text" data-bind="text:$component.debtors.review"></span>
+        </div>
+
+        <div class="row-group">
+            <row class="highlight-text " params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.debtorName , value :debtorName.name()"></row>
+            <row class="highlight-text " params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.debtorIban , value :debtor.sepaDomesticPayer.iban()"></row>
+            <row class="" params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.bicCode , value :bankDetailsCode()"></row>
+            <row class="" params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.nickname , value :debtor.nickName()"></row>
+            <!-- /ko -->
+        </div>
+    </page-section>
+
+    <!-- cancel confirm buttons -->
+    <div class="button-container">
+        <oj-button class="action-button-primary" id="button-confirm" on-click="[[confirmAddDebtor]]">
+            <span slot="startIcon" class="icons icon-confirm"></span>
+            <span data-bind="text:$component.common.confirm"></span>
+        </oj-button>
+
+        <oj-button class="action-button-secondary" id="button-cancel" on-click="[[cancelStageTwo]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.common.cancel"></span>
+        </oj-button>
+
+        <oj-button class="action-button-tertiary" id="button-back" on-click="[[$dashboard.hideDetails]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.debtors.back"></span>
+        </oj-button>
+    </div>
+
+    <!-- /ko -->
+</div>

@@ -1,0 +1,112 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+  <div class="oj-flex-item oj-lg-9 biller-category-maintenance">
+    <div class="form-main-container">
+    <!-- ko if:$component.loadTable() -->
+
+<page-section params="rootModel : $data, heading : ''">
+<div class="oj-flex oj-flex-items-pad">
+
+
+        <oj-table id="categoryTable" :aria-label="[[$component.resource.billerCategory.billerCategory]]" columns="[[[{headerText:resource.billerCategory.billerCategory,headerClassName:'left',renderer: $oj.KnockoutTemplateUtils.getRenderer('categoryCode', true),sortable:'none'},{headerText:resource.billerCategory.billerCount,headerClassName:'left',renderer: $oj.KnockoutTemplateUtils.getRenderer('billerCount', true),sortable:'none'},{headerText:$component.resource.billerCategory.action,headerClassName:'left',renderer: $oj.KnockoutTemplateUtils.getRenderer('icon', true),sortable:'none'}]]]" selection-mode="[[{column:'none',row:'none'}]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.categoryDataSource]]">
+        </oj-table>
+
+    <script type="text/html" id="categoryCode">
+
+
+      <td>
+      <!-- ko if:$context.row.isNew -->
+        <div class="oj-flex oj-flex-items-pad oj-lg-12">
+          <div class="oj-lg-10">
+        <oj-label class="hide-label" data-bind="attr:{for: 'category'+$baseModel.incrementIdCount()}"><span data-bind="text:$component.resource.billerCategory.billerCategory"></span>
+        </oj-label>
+
+        <oj-input-text maxlength="35" :id="[['category'+$baseModel.currentIdCount()]]" :invalidcomponenttracker="[[$baseModel.invalidTracker]]" validators="[[$baseModel.getValidator('NAME')]]" value="{{$context.row.category}}"></oj-input-text>
+      </div>
+      <div class="oj-flex-item oj-lg-2">
+         <!-- ko if:$context.row.isNew -->
+        <a href="javascript:void(0)" data-bind="attr:{alt:$component.resource.billerCategory.alt,title:$component.resource.billerCategory.title},click:$component.removeCategory.bind($data,$context.row)">
+        <div class="icon icon-close biller-category-close-padding" aria-hidden="true"></div>
+        </a>
+        <!-- /ko -->
+      </div>
+      </div>
+          <!-- /ko -->
+
+          <!-- ko if:!$context.row.isNew -->
+
+            <div data-bind="text : $context.row.categoryCode"></div>
+
+          <!-- /ko -->
+
+      </td>
+    </script>
+
+    <script type="text/html" id="billerCount">
+        <td>
+            <div data-bind="text : $context.row.billers?$context.row.billers.length:''"></div>
+        </td>
+    </script>
+
+    <script type="text/html" id="icon">
+
+        <td>
+        <!-- ko if:$context.row.billers?($context.row.billers.length===0 && !$context.row.isNew):false -->
+        <a href="javascript:void(0)" data-bind="attr:{alt:$component.resource.billerCategory.alt,title:$component.resource.billerCategory.title},click:$component.confirmDelete.bind($data,$context.row)">
+            <div class="icon icon-delete biller-category-delete-icon" aria-hidden="true"></div>
+        </a>
+        <!-- /ko -->
+        </td>
+
+  </script>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+        <div class="oj-flex-item">
+            <oj-button class="help-button" on-click="[[$component.addNewRow]]">
+      <span data-bind="text:$component.resource.billerCategory.addnew"></span>
+</oj-button>
+</div>
+
+    </div>
+  </page-section>
+<!-- /ko -->
+
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <!-- ko if:$component.isSave() -->
+        <oj-button id="addCategories" class="action-button-primary" on-click="[[$component.addCategories]]">
+      <span data-bind="text:$component.resource.common.save"></span>
+</oj-button>
+<!-- /ko -->
+        <oj-button id="cancel" class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:$component.resource.common.cancel"></span>
+</oj-button>
+        <oj-button id="goBack" class="action-button-tertiary" on-click="[[$component.goBack]]">
+      <span data-bind="text:$component.resource.common.back"></span>
+</oj-button>
+    </div>
+
+    <modal-window params="rootModel : $component, id:'deleteCategory', header: $component.resource.billerCategory.header">
+
+        <div class="oj-flex oj-flex-items-pad">
+           <div class="oj-flex-item oj-lg-12"><span data-bind="text:$baseModel.format($component.resource.billerCategory.deletecategorymsg, {categoryId:$component.categoryId()})">
+           </span></div>
+        </div>
+
+        <div class="button-container">
+        <oj-button id="confirmDelete" class="form-button-primary" on-click="[[$component.deleteCategory]]">
+      <span class="icons icon-delete" slot="startIcon"></span><span data-bind="text:$component.resource.common.delete"></span>
+</oj-button>
+        <oj-button id="cancelDelete" class="form-button-secondary" on-click="[[$component.cancelDeleteCategory]]">
+      <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resource.common.cancel"></span>
+</oj-button>
+    </div>
+    </modal-window>
+  </div>
+</div>
+  <!-- ko if: $baseModel.large() -->
+  <div class="oj-flex-item oj-lg-3 oj-sm-only-hide oj-md-only-hide help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'biller-category-maintenance'"></help>
+  </div>
+   <!-- /ko -->
+</div>

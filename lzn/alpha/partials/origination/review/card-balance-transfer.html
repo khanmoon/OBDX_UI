@@ -1,0 +1,25 @@
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.cardIssuerName"></span></oj-label>
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left label" data-bind="text: transferCard.cardIssuerName"></span>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.payeeName"></span></oj-label>
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left label" data-bind="text: transferCard.payeeName"></span>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.cardNumber"></span></oj-label>
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left label" data-bind="text: transferCard.temp_maskedNumber"></span>
+</div>
+
+<!-- ko if: typeof transferCard.balanceTransferAmount === 'function' -->
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.transferAmount"></span></oj-label>
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left label" data-bind="text: $baseModel.formatCurrency(transferCard.balanceTransferAmount(),$component.productDetails().offers.offerAdditionalDetails.balanceTransferAttributes[0].balanceTransferAttributeKey.currencyCode)"></span>
+</div>
+<!-- /ko -->
+<!-- ko ifnot: typeof transferCard.balanceTransferAmount === 'function' -->
+<div class="oj-flex oj-flex-items-pad">
+	<oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item label pull-left"><span data-bind="text:resource.transferAmount"></span></oj-label>
+	<span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left label" data-bind="text: $baseModel.formatCurrency(transferCard.balanceTransferAmount,$component.productDetails().offers.offerAdditionalDetails.balanceTransferAttributes[0].balanceTransferAttributeKey.currencyCode)"></span>
+</div>
+<!-- /ko -->

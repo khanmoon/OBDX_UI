@@ -1,0 +1,129 @@
+<!-- ko if: $component.accounts[$component.module] -->
+<!-- ko ifnot: $baseModel.small() -->
+<a class="account-financial-summary-actionCard__link" href="#" data-bind="attr:{'alt':$component.resource.labels[$parent] ,'title':'' }, click:$component.showSummaryDetails.bind($data, $component.module)">
+  <div class="accounts-action-card" data-bind="css: $component.module==='CSA' ? 'colorCasa' : $component.module==='TRD' ? 'colorTd' : 'colorLoan'">
+    <div class="oj-flex oj-flex-items-pad accounts-action-card__heading">
+      <div class="oj-flex-item oj-sm-9 accounts-action-card__header accounts-action-card-header">
+        <h3 class="accounts-action-card-header__text" data-bind="text:$component.resource.labels[$component.module]"></h3>
+        <span data-bind="text: $component.accounts[$component.module].totalCount"></span>
+        <span class="" data-bind="text:$component.resource.labels.totalAccounts"></span>
+      </div>
+
+      <div class="oj-flex-item oj-sm-3 accounts-action-card__icon right">
+        <img class="accounts-action-card__img" data-bind="attr:{'alt':$component.resource.labels[$component.module]},loadImage: $component.accounts[$component.module].loadImage">
+      </div>
+    </div>
+
+    <div class="oj-flex accounts-action-card__seperator"></div>
+
+    <div class="oj-flex accounts-action-card__content accounts-action-card-content">
+      <div class="oj-flex-item oj-sm-12 oj-sm-flex-items-initial oj-sm-justify-content-flex-end">
+          <oj-film-strip data-bind="attr:{id:'filmStrip' + $component.identifier,'aria-label':$component.resource.labels.filmstripText}" max-items-per-page="1" arrow-visibility="hidden" data-oj-context="">
+            <!-- ko foreach:$component.accounts[$component.module].ccywisePosition -->
+          <div class="oj-flex no-margin">
+            <div class="oj-flex-item oj-sm-12 accounts-action-card-content-filmstrip__amount right" data-bind="text:$baseModel.formatCurrency(totalBal,currency)"></div>
+            <div class="oj-flex-item oj-sm-12 right">
+              <span data-bind="text:currency"></span>
+              <span data-bind="html:$baseModel.format($component.resource.labels.accountCount, { count : noOfAccount })"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+        </oj-film-strip>
+      </div>
+      <div clas="oj-flex-item">
+        <div class="accounts-action-card-content__pagingControl">
+          <!-- ko if: $component.accounts[$component.module].ccywisePosition.length > 1 -->
+          <oj-paging-control data-bind="attr:{id:'filmStripCardPagingControl'+$component.identifier}" data="[[pagingModel]]" page-size="0" page-options='{"type": "dots"}'>
+          </oj-paging-control>
+          <!-- /ko -->
+        </div>
+      </div>
+    </div>
+  </div>
+</a>
+<!-- /ko -->
+<!-- ko if: $baseModel.small() -->
+<a class="account-financial-summary-actionCard__link" href="#" data-bind="attr:{'alt':$component.resource.labels[$parent] ,'title':'' }, click:$component.showSummaryDetails.bind($data, $component.module)">
+<div class="accounts-action-card" data-bind="css: $component.module==='CSA' ? 'colorCasa' : $component.module==='TRD' ? 'colorTd' : 'colorLoan'">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-6 accounts-action-card__header">
+    <span data-bind="text: $component.accounts[$component.module].totalCount"></span>
+    <span class="" data-bind="text:$component.resource.labels.totalAccounts"></span>
+   </div>
+
+   <div class="oj-flex-item oj-sm-6 accounts-action-card__content accounts-action-card-content">
+     <oj-film-strip data-bind="attr:{id:'filmStrip' + $component.identifier}" arrow-visibility="hidden" data-oj-context="">
+       <!-- ko foreach:$component.accounts[$component.module].ccywisePosition -->
+       <div class="oj-flex">
+         <div class="oj-flex-item oj-sm-12 accounts-action-card-content-filmstrip__amount right" data-bind="text:$baseModel.formatCurrency(totalBal,currency)"></div>
+         <div class="oj-flex-item oj-sm-12 right">
+           <span data-bind="text:currency"></span>
+           <span data-bind="html:$baseModel.format($component.resource.labels.accountCount, { count : noOfAccount })"></span>
+         </div>
+       </div>
+       <!-- /ko -->
+     </oj-film-strip>
+   </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+   <div class="oj-flex-item oj-sm-12 accounts-action-card-content__pagingControl">
+     <!-- ko if: $component.accounts[$component.module].ccywisePosition.length > 1 -->
+       <oj-paging-control id="filmStripCardPagingControl" data="[[pagingModel]]" page-size="0" page-options='{"type": "dots"}'>
+       </oj-paging-control>
+       <!-- /ko -->
+   </div>
+ </div>
+</div>
+</a>
+<!-- /ko -->
+
+<!-- /ko -->
+
+<!-- ko template : {afterRender : $component.cardReady} -->
+<!-- /ko -->
+
+<!-- ko ifnot: $component.accounts[$component.module] -->
+<!-- ko ifnot: $baseModel.small() -->
+<div class="accounts-action-card" data-bind="css: $component.module==='CSA' ? 'colorCasa' : $component.module==='TRD' ? 'colorTd' : 'colorLoan'">
+  <div class="oj-flex oj-flex-items-pad accounts-action-card__heading">
+    <div class="oj-flex-item oj-sm-9 accounts-action-card__header accounts-action-card-header">
+      <h3 class="accounts-action-card-header__text" data-bind="text:$component.resource.labels[$component.module]"></h3>
+    </div>
+  </div>
+
+  <div class="oj-flex">
+  <div class="oj-flex-item oj-sm-12 center">
+    <img class="accounts-action-card__img" data-bind="attr:{'alt':$component.resource.labels[$component.module]},loadImage: $component.module==='CSA' ? 'dashboard/casa-icon.svg' : $component.module==='TRD' ? 'dashboard/td-icon.svg' : 'dashboard/loans-icon.svg'">
+  </div>
+</div>
+
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-12">
+    <div class="accounts-action-card__info" data-bind="text: $component.module==='CSA' ? $component.resource.labels.noCASAAccounts : $component.module==='TRD' ? $component.resource.labels.noTRDAccounts : $component.resource.labels.noLoanAccounts"></div>
+  </div>
+</div>
+</div>
+ <!-- /ko -->
+ <!-- ko if:$baseModel.small() -->
+ <div class="oj-flex">
+   <!-- ko if: $component.module==='CSA' -->
+   <div class="oj-flex-item oj-sm-12 accounts-action-card colorCasa">
+     <div class="accounts-action-card__info" data-bind="text: $component.resource.labels.noCASAAccounts">
+     </div>
+   </div>
+   <!-- /ko -->
+   <!-- ko if: $component.module==='TRD' -->
+   <div class="oj-flex-item oj-sm-12 accounts-action-card colorTd">
+   <div class="accounts-action-card__info" data-bind="text: $component.resource.labels.noTRDAccounts">
+   </div>
+ </div>
+ <!-- /ko -->
+ <!-- ko if: $component.module==='LON' -->
+ <div class="oj-flex-item oj-sm-12 accounts-action-card colorLoan">
+ <div class="accounts-action-card__info" data-bind="text: $component.resource.labels.noLoanAccounts">
+ </div>
+</div>
+<!-- /ko -->
+</div>
+ <!-- /ko -->
+<!-- /ko -->

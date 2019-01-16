@@ -1,0 +1,172 @@
+<div class="oj-flex">
+    <div class="oj-flex-item oj-sm-9">
+        <div class="form-main-container">
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-10" data-bind="component:{name: 'cutoff-nav-bar', params:{rootModel:$data}}">
+        </div>
+    </div>
+  </page-section>
+  
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <oj-validation-group id="tracker" valid="{{groupValid}}">  
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 label">
+        <oj-label for="effectiveDate">
+            <span data-bind="text:$component.resourceBundle.workingWindow.effectiveDate"></span>
+        </oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <oj-input-date id="effectiveDate" converter="[[$baseModel.dateConverter]]" :placeholder="[[$component.resourceBundle.workingWindow.selectDate]]" value="{{effectiveDate}}">
+        </oj-input-date>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-lg-1 "></div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 label">
+        <oj-label for="type">
+            <span data-bind="text:$component.resourceBundle.workingWindow.userType"></span>
+        </oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <!-- ko if:showuserTypeOptions() -->
+        <oj-select-one id="type" class="listbox-drop" :placeholder="[[$component.resourceBundle.workingWindow.pleaseSelect]]" value="{{$component.selectedUserType}}" options="[[userTypeOptions]]">
+        </oj-select-one>
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- ko if:showuserTypeOptions() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 label">
+        <oj-label for="tridata">
+            <span data-bind="text:$component.resourceBundle.common.transaction"></span>
+        </oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <!-- ko if: showDropDownTransactions() -->
+        <oj-select-one class="listbox-drop" id="tridata" required="[[true]]" :placeholder="[[$component.resourceBundle.workingWindow.selectTransaction]]" value="{{$component.selectedTransaction}}" options="[[searchTransactions]]">
+        </oj-select-one>
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- /ko -->
+    </oj-validation-group>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item button-container">
+        <oj-button id="searchButton" class="action-button-primary" on-click="[[search]]">
+            <span data-bind="text:$component.resourceBundle.generic.common.search"></span>
+        </oj-button>
+        <!-- ko if: !currentTransactionsAvailabe() || !futureWorkingWindowAvailable() -->
+        <oj-button id="cancelButton" class="action-button-secondary " on-click="[[$dashboard.openDashBoard]]">
+            <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button id="clearButton" class="action-button-tertiary" on-click="[[reset]]">
+            <span data-bind="text:$component.resourceBundle.generic.common.clear"></span>
+        </oj-button>
+      </div>
+    </div>  
+
+    <!-- ko if: currentTransactionsAvailabe() -->
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading: $component.resourceBundle.common.currentTransactionWindow"></action-header>
+      
+    <row params="baseModel : $baseModel,rootModel:$parent,label:$component.resourceBundle.common.transaction, value : $component.selectedTransactionName()"></row>
+
+    <row params="baseModel : $baseModel,rootModel:$parent,label:$component.resourceBundle.workingWindow.effectiveDate, value : $component.currentEffectiveDate()"></row>
+      
+    <row params="baseModel : $baseModel,rootModel:$parent,label:$component.resourceBundle.workingWindow.userType, value : $component.displayCurrentUserType()"></row>
+
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <oj-table id="table" :aria-label="[[$component.resourceBundle.workingWindow.workingWindowTable]]" columns="[[[{headerText:$component.resourceBundle.common.days,field:'day'},{headerText:$component.resourceBundle.common.transactionWindow,field:'transactionWindowType'},{headerText:$component.resourceBundle.common.fromTime,field:'startTime'},{headerText:$component.resourceBundle.common.toTime,field:'endTime'}]]]" data="[[$component.currentRetailDatasource]]">
+          <caption class="hide-label" data-bind="text:$component.resourceBundle.workingWindow.details"></caption>
+        </oj-table>
+      </div>
+    </div>
+
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading: $component.resourceBundle.common.otherDetails"></action-header>
+    
+    <row params="baseModel : $baseModel,rootModel:$parent,label:$component.resourceBundle.common.processingType, value : processingType"></row>
+      
+    <!-- /ko -->
+
+    <!-- ko if: futureWorkingWindowAvailable() -->
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading: $component.resourceBundle.common.futureTransactionWindow"></action-header>
+
+    <!-- ko foreach: futureWorkWindowList() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+        <oj-accordion id="accordionPage" class="accordion">
+        <oj-collapsible class="oj-accordion-collapsible">
+            <h3 slot="header">
+                <span>
+                <span class="oj-sm-12 oj-md-12 oj-lg-4" data-bind="text:$component.resourceBundle.workingWindow.futureEffectiveDate"></span>
+                <span class="oj-sm-12 oj-md-12 oj-lg-2"> 
+                </span>
+                <span class="oj-sm-12 oj-md-12 oj-lg-4" data-bind="text: $baseModel.formatDate($component.futureEffectiveDate()[$index()])"></span>
+                </span>
+            </h3>
+          <div>
+              
+            <row params="baseModel : $baseModel,rootModel:$parent,label:$component.resourceBundle.common.transaction, value : $component.selectedTransactionName()"></row>
+              
+            <row params="baseModel : $baseModel,rootModel:$parent,label:$component.resourceBundle.workingWindow.userType, value : $component.displayFutureUserType()[$index()]"></row>
+
+              
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-table id="table" :aria-label="[[$component.resourceBundle.workingWindow.workingWindowTable]]" columns="[[[{headerText:$component.resourceBundle.common.days,field:'day'},{headerText:$component.resourceBundle.common.transactionWindow,field:'transactionWindowType'},{headerText:$component.resourceBundle.common.fromTime,field:'startTime'},{headerText:$component.resourceBundle.common.toTime,field:'endTime'}]]]" columns-default="[[{sortable:'disabled'}]]" data="[[$component.futureDatasource()[$index()]]]">
+                  <caption class="hide-label" data-bind="text:$component.resourceBundle.workingWindow.details"></caption>
+                </oj-table>
+              </div>
+            </div>
+
+            <action-header params="baseModel : $baseModel, rootModel : $data, heading: $component.resourceBundle.common.otherDetails"></action-header>
+
+             <row params="baseModel : $baseModel,rootModel:$parent,label:$component.resourceBundle.common.processingType, value : $component.futureProcessingType()[$index()]"></row>
+              
+            <div class="oj-flex button-container">
+                <oj-button class="action-button-primary" :id="[['futureWorkWindow_'+$index()]]" on-click="[[$component.edit]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.edit"></span>
+                </oj-button>
+                <oj-button id="deletButton" class="action-button-secondary " :id="[['deleteButton_'+$index()]]" on-click="[[$component.showDelete]]">
+                  <span data-bind="text:$component.resourceBundle.common.delete"></span>
+                </oj-button>     
+            </div>
+          </div>
+        </oj-collapsible>
+      </oj-accordion>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: currentTransactionsAvailabe() || futureWorkingWindowAvailable() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item button-container">
+        <oj-button id="cancelButton" class="action-button-secondary " on-click="[[$dashboard.openDashBoard]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+        </oj-button>
+        </div>
+    </div>
+    <!-- /ko -->
+  </page-section>
+</div>
+    </div>
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'standard-work-window'"></help>
+    </div>
+</div>
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'deleteDialog', header: $component.resourceBundle.workingWindow.deleteWorkingWindow ">
+  <div class=" oj-flex oj-flex-items-pad  ">
+    <div class="oj-flex-item">
+      <div data-bind="text:$component.resourceBundle.workingWindow.deleteMessage"></div>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="confirmbutton" class="action-button-primary" on-click="[[$component.deleteWorkWindow]]">
+        <span data-bind="text:$component.resourceBundle.generic.common.confirm"></span>
+    </oj-button>
+    <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$component.hideDeleteBlock]]">
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+    </oj-button>
+  </div>
+
+</modal-window>

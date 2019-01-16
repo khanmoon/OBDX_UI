@@ -1,0 +1,185 @@
+<!-- ko if:stageOne() -->
+
+<action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.wallet.configaration.offerdetails">
+
+</action-header>
+
+<div class="oj-flex oj-flex-items-pad">
+   <div class="oj-sm-12 oj-md-6 oj-lg-3  oj-flex-item">
+      <oj-label for="text-input"><span data-bind="text:$component.wallet.configaration.offercode"></span></oj-label>
+   </div>
+   <div class="oj-sm-12 oj-md-6 oj-lg-2  oj-flex-item">
+      <oj-input-text id="text-input" type="text" autocomplete="off" value="{{details.configModel.configOfferDTO.offerCode}}" readonly="{{true}}"></oj-input-text>
+   </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+   <div class="oj-sm-12 oj-md-6 oj-lg-3 oj-flex-item">
+      <oj-label for="text-input"><span data-bind="text:$component.day0.offerName"></span></oj-label>
+   </div>
+   <div class="oj-sm-12 oj-md-6 oj-lg-2  oj-flex-item">
+      <oj-input-text id="text-input" type="text" autocomplete="off" value="{{details.configModel.configOfferDTO.offerName}}" readonly="{{true}}"></oj-input-text>
+   </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+   <div class="oj-sm-12 oj-md-6 oj-lg-3  oj-flex-item">
+      <oj-label for="basicSelect"><span data-bind="text:$component.day0.currency"></span></oj-label>
+   </div>
+   <div class="oj-sm-12 oj-md-6 oj-lg-2  oj-flex-item">
+      <oj-input-text id="basicSelect" type="text" readonly autocomplete="off" value="{{$component.selectedCurrency}}"></oj-input-text>
+   </div>
+</div>
+
+
+<action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.day0.limits">
+  <!-- ko ifnot:isEditable() -->
+  <a href="javascript:void(0)" data-bind="click:edit">
+    <span class="oj-lg-3 oj-flex-item icon icon-remarks" aria-hidden="true"></span>
+  </a>
+  <!-- /ko -->
+</action-header>
+
+
+          <div class="oj-flex oj-flex-items-pad">
+         <div class="oj-flex oj-flex-items-pad" data-bind="component: {
+                name: 'amount-input', params: {
+                    amount : details.configModel.configLimitsDTO.balanceLimit.amount,
+                    label : $component.day0.totalwalletlimit,
+                    currency:selectedCurrency(),
+                    validator:$component.validationTracker,
+                    isMandatory:true,
+                    readOnly:$component.editDisabled,
+                    currencyListRequired:false,
+                    rootId:'transferAmount',
+                    rootClass:'form-input'
+                }
+            }"></div>
+          </div>
+         <!--totalwalletlimit-->
+
+         <div class="oj-flex oj-flex-items-pad">
+
+            <div class="oj-flex oj-flex-items-pad" data-bind="component: {
+                   name: 'amount-input', params: {
+                       amount : details.configModel.configLimitsDTO.dailyDebitLimit.amount,
+                       label : $component.day0.debitallowed,
+                       currency:selectedCurrency(),
+                       validator:$component.validationTracker,
+                       isMandatory:true,
+                       readOnly:$component.editDisabled,
+                       currencyListRequired:false,
+                       rootId:'transferAmount',
+                       rootClass:'form-input'
+                   }
+               }"></div>
+         </div>
+         <!--debitallowed-->
+
+         <div class="oj-flex oj-flex-items-pad">
+        
+            <div class="oj-flex oj-flex-items-pad" data-bind="component: {
+                   name: 'amount-input', params: {
+                       amount : details.configModel.configLimitsDTO.dailyCreditLimit.amount,
+                       label : $component.day0.creditallowed,
+                       currency:selectedCurrency(),
+                       validator:$component.validationTracker,
+                       isMandatory:true,
+                       readOnly:$component.editDisabled,
+                       currencyListRequired:false,
+                       rootId:'transferAmount',
+                       rootClass:'form-input'
+                   }
+               }"></div>
+         </div>
+
+<action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.day0.GL">
+
+</action-header>
+
+<div class="oj-flex oj-flex-items-pad">
+   <div class="oj-sm-12 oj-md-6 oj-lg-3 oj-flex-item">
+      <oj-label for="text-input"><span data-bind="text:$component.day0.walletzGlCode"></span></oj-label>
+   </div>
+   <div class="oj-sm-12 oj-md-6 oj-lg-2  oj-flex-item">
+      <oj-input-text id="text-input" type="text" autocomplete="off" value="{{details.configModel.configGLDTO[0].ledgerCode}}" readonly="{{true}}"></oj-input-text>
+   </div>
+</div>
+<!--walletzGlCode-->
+
+
+      <div class="oj-flex oj-flex-items-pad">
+         <div class="oj-sm-12 oj-md-6 oj-lg-3 oj-flex-item">
+            <oj-label for="text-input"><span data-bind="text:$component.day0.intermediaryGlCode1"></span></oj-label>
+         </div>
+         <div class="oj-sm-12 oj-md-6 oj-lg-2  oj-flex-item">
+            <oj-input-text id="text-input" type="text" autocomplete="off" value="{{details.configModel.configGLDTO[1].ledgerCode}}" readonly="{{true}}"></oj-input-text>
+         </div>
+      </div>
+      <!--intermediaryGlCode1-->
+
+
+      <div class="oj-flex oj-flex-items-pad">
+         <div class="oj-sm-12 oj-md-6 oj-lg-3 oj-flex-item">
+            <oj-label for="text-input"><span data-bind="text:$component.day0.intermediaryGlCode2"></span></oj-label>
+         </div>
+         <div class="oj-sm-12 oj-md-6 oj-lg-2  oj-flex-item">
+            <oj-input-text id="text-input" type="text" autocomplete="off" value="{{details.configModel.configGLDTO[2].ledgerCode}}" readonly="{{true}}"></oj-input-text>
+         </div>
+      </div>
+      <!--intermediaryGlCode2-->
+
+
+      <div class="oj-flex oj-flex-items-pad">
+         <div class="oj-sm-12 oj-md-6 oj-lg-3 oj-flex-item">
+            <oj-label for="text-input"><span data-bind="text:$component.day0.nodeGlCodeL"></span></oj-label>
+         </div>
+         <div class="oj-sm-12 oj-md-6 oj-lg-2  oj-flex-item">
+            <oj-input-text id="text-input" type="text" autocomplete="off" value="{{details.configModel.configGLDTO[3].ledgerCode}}" readonly="{{true}}"></oj-input-text>
+         </div>
+      </div>
+      <!--nodeGlCodeL-->
+
+
+      <div class="oj-flex oj-flex-items-pad">
+         <div class="oj-sm-12 oj-md-6 oj-lg-3 oj-flex-item">
+            <oj-label for="text-input"><span data-bind="text:$component.day0.nodeGlCodeA"></span></oj-label>
+         </div>
+         <div class="oj-sm-12 oj-md-6 oj-lg-2  oj-flex-item">
+            <oj-input-text id="text-input" type="text" autocomplete="off" value="{{details.configModel.configGLDTO[4].ledgerCode}}" readonly="{{true}}"></oj-input-text>
+         </div>
+      </div>
+<div class="button-container">
+
+        <oj-button class="action-button-secondary" id="calcelButton" on-click="[[cancel]]">
+      <span data-bind="text:$component.common.cancel"></span>
+</oj-button>
+        <!-- ko ifnot:isConfirm() -->
+            <!-- ko ifnot:isEditable() -->
+            <oj-button class="action-button-primary" id="confirmButton" on-click="[[edit]]">
+      <span data-bind="text:$component.common.edit"></span>
+</oj-button>
+            <!-- /ko -->
+            <!-- ko if:isEditable() -->
+            <oj-button class="action-button-primary" id="confirmButton" on-click="[[modify]]">
+      <span data-bind="text:$component.common.modify"></span>
+</oj-button>
+            <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if:isConfirm() -->
+        <oj-button class="action-button-primary" id="confirmButton" on-click="[[confirm]]">
+      <span data-bind="text:$component.common.confirm"></span>
+</oj-button>
+        <!-- /ko -->
+
+</div>
+<!-- /ko -->
+<!-- ko if:stageTwo() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <oj-label><span data-bind="text:$component.wallet.configaration.successmsg"></span></oj-label>
+    </div>
+    <div class=" button-container">
+            <oj-button class="action-button-primary" id="confirmButton" on-click="[[done]]">
+      <span data-bind="text:$component.common.done"></span>
+</oj-button>
+
+    </div>
+<!-- /ko -->

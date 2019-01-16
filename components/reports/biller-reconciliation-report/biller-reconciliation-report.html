@@ -1,0 +1,36 @@
+<form>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+            <oj-label for="billerId"> 
+                <span data-bind="text:$component.nls.billerId"></span>
+            </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+            <oj-input-text id="billerId" name="billerId"></oj-input-text>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+            <oj-label for="billerName"> 
+                <span data-bind="text:$component.nls.billerName"></span>
+            </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+             <oj-input-text id="billerName" name="billerName"></oj-input-text>
+        </div>
+    </div>
+    <!-- ko  if:$component.reportGenerationPayload.reportFreq()+"" ==="ADHOC" -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+            <oj-label for="startDate"> <span data-bind="text:$component.nls.duration"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+            <oj-input-date required id="startDate" name="startDate" max="[[$component.todayDate]]" :placeholder="[[$component.nls.dateFrom]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+        </div>
+        <oj-label for="endDate" class="hide-label"> <span data-bind="text:$component.nls.dateTo"></span></oj-label>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+            <oj-input-date required id="endDate" name="endDate" max="[[$component.todayDate]]" :placeholder="[[$component.nls.dateTo]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+        </div>
+    </div>
+    <!-- /ko -->
+</form>

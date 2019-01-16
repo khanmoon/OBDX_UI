@@ -1,0 +1,120 @@
+<!-- ko if: $component.dataLoaded -->
+<div class="upgrade-card-container" data-bind="template: {name: 'accounts/upgrade-card', data: $component.debitCardDetailsObject}">
+</div>
+<div class="form-main-container upgrade-card-container">
+  <div class="oj-flex">
+    <div class="oj-flex-item">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="upgradeCardType"><span data-bind="text:$component.resource.upgradeCard"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-5">
+              <oj-select-one id="upgradeCardType" required value="{{$component.upcardCardModel.cardType}}" translations="[[{'required':{messageDetail:$component.resource.messages.upgradeCardType}}]]" on-value-changed="[[$component.cardTypeChangeHandler]]">
+                <!-- ko foreach: $component.cardTypes -->
+                <oj-option value="{{debitCardType}}"><span data-bind="text:debitCardType"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-2 oj-md-3">
+              <!-- ko ifnot: $component.detailsDisplayed -->
+              <a id="viewDetails" href="javascript:void(0)" :alt="{{$component.resource.viewDetailsAlt}}" :title="{{$component.resource.viewDetailsTitle}}" data-bind="click : $component.viewDetailsClick, text: $component.resource.viewDetails"></a>
+              <!-- /ko -->
+              <!-- ko if: $component.detailsDisplayed -->
+              <a id="hideDetails" href="javascript:void(0)" :alt="{{$component.resource.hideDetailsAlt}}" :title="{{$component.resource.hideDetailsTitle}}" data-bind="click : $component.viewDetailsClick, text: $component.resource.hideDetails"></a>
+              <!-- /ko -->
+            </div>
+          </div>
+          <!-- ko if: $component.detailsDisplayed -->
+          <div class="upgrade-card-container" data-bind="template: {name: 'debit-card/upgrade-card-details', data: $component.cardTypes()[$component.getCardTypeIndex($component.upcardCardModel.cardType)]}">
+          </div>
+          <!-- /ko -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.emailId, value : $component.cardHolderDetails.cardHolderEmailId"></row>
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.mobileNo, value : $component.cardHolderDetails.cardHolderPhoneNo"></row>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="required oj-flex-item oj-sm-12 label">
+              <oj-label for="DeliveryLocation"><span data-bind="text:$component.resource.DeliveryLocation"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 ">
+              <div id="DeliveryLocation" data-bind="component: {name: 'address',
+                  params:{rootModel: $component,
+                    data:$data,validator:$component.validationTracker,
+                    address:$component.addressDetails}}">
+              </div>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 tnc-div">
+              <oj-checkboxset id="checkboxSetAgreeId"
+                              :aria-label="[[$component.resource.termsAndConditions]]"
+                              value="{{termsAndConditions}}">
+                <oj-option id="agree" value="true" class="oj-checkbox-label hide-label"><span data-bind="text:$component.resource.terms"></span></oj-option>
+                <a href="javascript:void(0)" class="oj-choice-row-inline" data-bind="attr:{ title: $component.resource.termsAndConditions}, text: $component.resource.terms, click: $component.showTermsAndConditions"></a>
+              </oj-checkboxset>
+            </div>
+          </div>
+        </div>
+      </page-section>
+    </div>
+  </div>
+  <div class="button-container">
+    <oj-button id="submitButton" disabled="{{!termsAndConditions()[0]}}" class="action-button-primary" on-click="[[$component.review]]"><span slot="startIcon" class="icons icon-submit"></span>
+      <span data-bind="text:$component.resource.generic.common.submit"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.resource.generic.common.back"></span>
+    </oj-button>
+  </div>
+  <modal-window params="baseModel : $baseModel, rootModel : $data, id:'passwordDialog', header : $component.resource.termsAndConditions,display:'full-screen'">
+         <div class="form-main-container">
+           <div class="oj-flex oj-flex-items-pad">
+               <div class="oj-flex-item">
+                 <div data-bind="template: {name: 'help/debit-card-terms-and-conditions'}">
+                 </div>
+                 <div class="oj-flex button-container">
+                   <oj-button id="ok" class="action-button-primary" on-click="[[$component.ok]]">
+                     <span data-bind="text:$component.resource.ok"></span>
+                   </oj-button>
+                </div>
+               </div>
+         </div>
+       </div>
+  </modal-window>
+</div>
+<!-- ko ifnot: $baseModel.large() -->
+<a href="#" data-bind="click: $component.showFloatingPanel">
+	<div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+</a>
+<floating-panel params="baseModel : $baseModel, panelId: 'panelDebitCard3', rootModel: $component">
+	<ul>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reissue-card',cardObject,$data)">
+        <span class="icons icon-limit"></span>
+        <span data-bind="text: $component.locale.buttons.reissueCard"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'upgrade-card',cardObject,$data)">
+        <span class="icons icon-card-preference"></span>
+        <span data-bind="text: $component.locale.buttons.upgradeCard"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'debit-card-hotlisting',cardObject,$data)">
+        <span class="icons icon-cancel-card"></span>
+        <span data-bind="text: $component.locale.buttons.blockCards"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reset-pin',cardObject,$data)">
+        <span class="icons icon-refresh"></span>
+        <span data-bind="text: $component.locale.buttons.resetPin"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'debit-card-pin-request',cardObject,$data)">
+        <span class="icons icon-request-pin"></span>
+        <span data-bind="text: $component.locale.buttons.pinRequest"></span></a>
+		</li>
+	</ul>
+</floating-panel>
+
+<!-- /ko -->
+<!-- /ko -->

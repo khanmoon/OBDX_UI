@@ -1,0 +1,42 @@
+<oj-validation-group id="tracker" valid="{{groupValid}}">
+  <oj-table id="relationship-table" class="relationship-mapping-table" data-bind="attr:{'aria-label':$component.resource.relationsipMappingTable}" data=[[dataSource]] selection-mode='{"row":"multiple","column":"multiple"}' columns={{columnArray}}>
+  </oj-table>
+
+  <script type="text/html" id="checkbox_hdr_tmpl">
+    <td>
+      <oj-checkboxset value='[false]' on-value-changed='[[$parent.selectAllListener]]' class='oj-checkboxset-no-chrome'>
+        <oj-option id="checkbox_hdr" value="checked"></oj-option>
+      </oj-checkboxset>
+    </td>
+  </script>
+
+  <script type="text/html" id="checkbox_tmpl">
+    <td>
+      <oj-checkboxset value='{{$context.row.Selected}}' class='oj-checkboxset-no-chrome'>
+        <oj-option data-bind="attr:{
+                            id: 'relationshipCheckbox' + $context.cellContext.status.rowIndex}" value="checked"></oj-option>
+      </oj-checkboxset>
+    </td>
+  </script>
+
+  <script type="text/html" id="inputbox_tmpl">
+    <td>
+      <oj-input-text required data-bind="attr:{
+                          id: 'relationshipTextInput' + $context.cellContext.status.rowIndex}" value="{{$context.row.hostRelId}}" disabled="{{$context.row.disabled}}" validators="{{$component.validators}}"></oj-input-text>
+    </td>
+  </script>
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="saveRelationship" class="action-button-primary" on-click="[[$component.reviewRelationship]]">
+      <span data-bind="text:$component.resource.saveRelationship"></span>
+    </oj-button>
+    <oj-button id="cancelRelationship" class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+      <span data-bind="text:$component.resource.cancelRelationship"></span>
+    </oj-button>
+    <!-- ko if:$component.currentView()==="edit"  -->
+    <oj-button id="backRelationship" class="action-button-tertiary" on-click="[[$component.backFirst]]">
+      <span data-bind="text:$component.resource.backRelationship"></span>
+    </oj-button>
+    <!-- /ko -->
+  </div>
+</oj-validation-group>

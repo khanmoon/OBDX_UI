@@ -1,0 +1,437 @@
+<div class="page-section-content">
+<oj-validation-group id="amendShipmentTracker" valid="{{$component.amendShipmentGroupValid}}">
+<!-- First row  -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad grid-row-group">
+         <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="partialShipmentradioset"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.partialShipment"></span></oj-label>
+         </div>
+         <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-4 content">
+            <span id="partialShipmentradioset" data-bind="text: $component.letterOfCreditDetails.shipmentDetails.partial.toString() ==='true'?
+               $component.resourceBundle.common.labels.allowed:$component.resourceBundle.common.labels.notAllowed"></span>
+         </div>
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad grid-row-group">
+         <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="transShipmentradioset"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.transShipment"></span></oj-label>
+         </div>
+         <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-4 content">
+            <span id="transShipmentradioset" data-bind="text: $component.letterOfCreditDetails.shipmentDetails.transShipment.toString() ==='true'?
+               $component.resourceBundle.common.labels.allowed:$component.resourceBundle.common.labels.notAllowed"></span>
+         </div>
+      </div>
+    </div>
+  </div>
+<!-- end of first row -->
+
+<!-- second row  -->
+<!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+       <oj-label for="shipmentDatePeriodRadioSet-radioset" class="hide-label"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.transShipment"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-7">
+       <oj-radioset class="oj-choice-direction-row" id="shipmentDatePeriodRadioSet-radioset" required="[[true]]" value="{{$component.shipmentDatePeriodRadioSetValue}}"><oj-option value="latestdateofShipment" id="shipmentDateRadio" name="shipmentDatePeriodRadioSet"><span for="shipmentDateRadio" data-bind="text:$component.resourceBundle.shipmentDetails.labels.lastdateofShipment"></span></oj-option><oj-option value="latestperiodofShipment" id="shipmentPeriodRadio" name="shipmentDatePeriodRadioSet"><span for="shipmentPeriodRadio" data-bind="text:$component.resourceBundle.shipmentDetails.labels.shipmentPeriod"></span></oj-option></oj-radioset>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+      <!-- ko if : $component.shipmentDatePeriodRadioSetValue() === 'latestdateofShipment' -->
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="lastdateofShipment" class="hide-label"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.lastdateofShipment"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-6 oj-md-5 oj-lg-3">
+
+        <oj-input-date id="lastdateofShipment" required="[[true]]" converter="[[$baseModel.dateConverter]]" value="{{$component.lcAmendmentDetails.shipmentDetails.date}}" :placeholder="[[$component.resourceBundle.common.labels.selectDate]]" max="[[$component.lcAmendmentDetails.newExpiryDate]]" min="[[$component.minEffectiveDate]]"></oj-input-date>
+
+      </div>
+      <!-- /ko -->
+
+      <!-- ko if : $component.shipmentDatePeriodRadioSetValue() === 'latestperiodofShipment' -->
+       <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+           <oj-label for="shipmentPeriod" class="hide-label"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.shipmentPeriod"></span></oj-label>
+       </div>
+       <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+         <oj-text-area id="shipmentPeriod" maxlength="390" required="[[true]]" value="{{$component.lcAmendmentDetails.shipmentDetails.period}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.shipmentDetails.invalidShipmentPeriod,{
+                                     type:'length',options:{
+                                         min:0,max:390}})]]"></oj-text-area>
+       </div>
+       <!-- /ko -->
+    </div>
+
+  </div>
+</div>
+<!-- /ko -->
+
+<!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="lastdateofShipment"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.lastdateofShipment"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-4 content">
+        <!-- ko if:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.date)  -->
+          <span id="lastdateofShipment" data-bind="text: $baseModel.formatDate($component.lcAmendmentDetails.shipmentDetails.date())"></span>
+          <!-- ko if: $component.isShipmentDateChanged() -->
+          <span id="lastdateofShipment" class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$baseModel.formatDate($component.letterOfCreditDetails.shipmentDetails.date)})"></span>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko ifnot:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.date) -->
+          <!-- ko if:$component.letterOfCreditDetails.shipmentDetails.date  -->
+          <span id="lastdateofShipment" data-bind="text: $component.resourceBundle.shipmentDetails.labels.notApplicable"></span>
+          <span id="lastdateofShipment" class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$baseModel.formatDate($component.letterOfCreditDetails.shipmentDetails.date)})"></span>
+          <!-- /ko -->
+          <!-- ko ifnot:$component.letterOfCreditDetails.shipmentDetails.date  -->
+          <span id="lastdateofShipment" data-bind="text: $component.resourceBundle.shipmentDetails.labels.notApplicable"></span>
+          <!-- /ko -->
+          <!-- /ko -->
+      </div>
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="shipmentPeriod"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.shipmentPeriod"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-8 content">
+        <!-- ko if:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.period)  -->
+         <span id="shipmentPeriod" data-bind="text: $component.lcAmendmentDetails.shipmentDetails.period"></span>
+          <!-- ko if:$component.letterOfCreditDetails.shipmentDetails.period -->
+         <!-- ko ifnot: ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.period) === $component.letterOfCreditDetails.shipmentDetails.period -->
+         <span id="shipmentPeriod" class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.letterOfCreditDetails.shipmentDetails.period})"></span>
+         <!-- /ko -->
+         <!-- /ko -->
+         <!-- /ko -->
+         <!-- ko ifnot:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.period)  -->
+         <!-- ko if:$component.letterOfCreditDetails.shipmentDetails.period  -->
+         <span id="shipmentPeriod" data-bind="text: $component.resourceBundle.shipmentDetails.labels.notApplicable"></span>
+         <span id="shipmentPeriod" class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.letterOfCreditDetails.shipmentDetails.period})"></span>
+         <!-- /ko -->
+         <!-- ko ifnot:$component.letterOfCreditDetails.shipmentDetails.period  -->
+         <span id="shipmentPeriod" data-bind="text: $component.resourceBundle.shipmentDetails.labels.notApplicable"></span>
+         <!-- /ko -->
+         <!-- /ko -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /ko -->
+<!-- second row  -->
+<!-- third row  -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad grid-row-group">
+         <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="sellerAddress"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.shipmentFrom"></span></oj-label>
+         </div>
+         <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+         <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+            <oj-input-text id="sellerAddress" maxlength="65" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.tradeFinanceErrors.shipmentDetails.invalidShipmentFrom,{
+               type:'length',options:{
+               min:0,max:65}})]]" value="{{$component.lcAmendmentDetails.shipmentDetails.source}}"></oj-input-text>
+          </div>
+          <!-- /ko -->
+
+          <!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+          <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7 content">
+             <!-- ko if:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.source)  -->
+             <span data-bind="text: $component.lcAmendmentDetails.shipmentDetails.source"></span>
+             <!-- ko if:$component.letterOfCreditDetails.shipmentDetails.source -->
+             <!-- ko ifnot:$component.letterOfCreditDetails.shipmentDetails.source ===  ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.source)-->
+             <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.letterOfCreditDetails.shipmentDetails.source})"></span>
+             <!-- /ko -->
+             <!-- /ko -->
+             <!-- ko ifnot:$component.letterOfCreditDetails.shipmentDetails.source  -->
+             <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.resourceBundle.shipmentDetails.labels.notApplicable})"></span>
+             <!-- /ko -->
+             <!-- /ko -->
+             <!-- ko ifnot:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.source)  -->
+             <!-- ko if:$component.letterOfCreditDetails.shipmentDetails.source  -->
+             <span data-bind="text: $component.resourceBundle.shipmentDetails.labels.notApplicable"></span>
+             <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.letterOfCreditDetails.shipmentDetails.source})"></span>
+             <!-- /ko -->
+             <!-- /ko -->
+
+           </div>
+           <!-- /ko -->
+
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad grid-row-group">
+         <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="buyerAddress"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.shipmentTo"></span></oj-label>
+         </div>
+         <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+         <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+            <oj-input-text id="buyerAddress" maxlength="65" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.tradeFinanceErrors.shipmentDetails.invalidShipmentTo,{
+               type:'length',options:{
+               min:0,max:65}})]]" value="{{$component.lcAmendmentDetails.shipmentDetails.destination}}"></oj-input-text>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+          <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7 content">
+            <!-- ko if:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.destination)  -->
+            <span data-bind="text: $component.lcAmendmentDetails.shipmentDetails.destination"></span>
+            <!-- ko if:$component.letterOfCreditDetails.shipmentDetails.destination -->
+            <!-- ko ifnot:$component.letterOfCreditDetails.shipmentDetails.destination ===  ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.destination)-->
+            <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.letterOfCreditDetails.shipmentDetails.destination})"></span>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot:$component.letterOfCreditDetails.shipmentDetails.destination  -->
+            <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.resourceBundle.shipmentDetails.labels.notApplicable})"></span>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.destination)  -->
+            <!-- ko if:$component.letterOfCreditDetails.shipmentDetails.destination  -->
+            <span data-bind="text: $component.resourceBundle.shipmentDetails.labels.notApplicable"></span>
+            <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.letterOfCreditDetails.shipmentDetails.destination})"></span>
+            <!-- /ko -->
+            <!-- /ko -->
+
+         </div>
+         <!-- /ko -->
+      </div>
+    </div>
+  </div>
+<!-- end of third row  -->
+<!-- fourth row  -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad grid-row-group">
+         <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="portOfLoading"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.portOfLoading"></span></oj-label>
+         </div>
+         <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+         <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+            <oj-input-text id="portOfLoading" maxlength="65" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.tradeFinanceErrors.shipmentDetails.invalidLoadingPort,{
+               type:'length',options:{
+               min:0,max:65}})]]" value="{{$component.lcAmendmentDetails.shipmentDetails.loadingPort}}"></oj-input-text>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+          <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7 content">
+            <!-- ko if:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.loadingPort)  -->
+            <span data-bind="text: $component.lcAmendmentDetails.shipmentDetails.loadingPort"></span>
+            <!-- ko if:$component.letterOfCreditDetails.shipmentDetails.loadingPort -->
+            <!-- ko ifnot:$component.letterOfCreditDetails.shipmentDetails.loadingPort ===  ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.loadingPort)-->
+            <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.letterOfCreditDetails.shipmentDetails.loadingPort})"></span>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot:$component.letterOfCreditDetails.shipmentDetails.loadingPort  -->
+            <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.resourceBundle.shipmentDetails.labels.notApplicable})"></span>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.loadingPort)  -->
+            <!-- ko if:$component.letterOfCreditDetails.shipmentDetails.loadingPort  -->
+            <span data-bind="text: $component.resourceBundle.shipmentDetails.labels.notApplicable"></span>
+            <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.letterOfCreditDetails.shipmentDetails.loadingPort})"></span>
+            <!-- /ko -->
+            <!-- /ko -->
+          </div>
+          <!-- /ko -->
+
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad grid-row-group">
+         <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="portOfDischarge"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.portOfDischarge"></span></oj-label>
+         </div>
+         <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+         <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+            <oj-input-text id="portOfDischarge" maxlength="65" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.tradeFinanceErrors.shipmentDetails.invalidDischargePort,{
+               type:'length',options:{
+               min:0,max:65}})]]" value="{{$component.lcAmendmentDetails.shipmentDetails.dischargePort}}"></oj-input-text>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+          <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7 content">
+            <!-- ko if:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.dischargePort)  -->
+            <span data-bind="text: $component.lcAmendmentDetails.shipmentDetails.dischargePort"></span>
+            <!-- ko if:$component.letterOfCreditDetails.shipmentDetails.dischargePort -->
+            <!-- ko ifnot:$component.letterOfCreditDetails.shipmentDetails.dischargePort ===  ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.dischargePort)-->
+            <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.letterOfCreditDetails.shipmentDetails.dischargePort})"></span>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot:$component.letterOfCreditDetails.shipmentDetails.dischargePort  -->
+            <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.resourceBundle.shipmentDetails.labels.notApplicable})"></span>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot:ko.utils.unwrapObservable($component.lcAmendmentDetails.shipmentDetails.dischargePort)  -->
+            <!-- ko if:$component.letterOfCreditDetails.shipmentDetails.dischargePort  -->
+            <span data-bind="text: $component.resourceBundle.shipmentDetails.labels.notApplicable"></span>
+            <span class="align-right info-text-small previous-value-span" data-bind="text: $baseModel.format($component.resourceBundle.labels.prevValueLabel,{prevValueLabel:$component.letterOfCreditDetails.shipmentDetails.dischargePort})"></span>
+            <!-- /ko -->
+            <!-- /ko -->
+         </div>
+         <!-- /ko -->
+
+      </div>
+    </div>
+  </div>
+<!-- end of fourth row  -->
+<!-- fifth row  -->
+<!-- ko ifnot: $component.multiGoodsSupported-->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad grid-row-group">
+         <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="goodsCode"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.goods"></span></oj-label>
+         </div>
+         <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-6 content">
+            <span id="goodsCode" data-bind="text: $component.letterOfCreditDetails.shipmentDetails.goodsCode"></span>
+         </div>
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad grid-row-group">
+         <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="descriptionOfGoods"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.descriptionOfGoods"></span></oj-label>
+         </div>
+         <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-8 content">
+            <span id="descriptionOfGoods" data-bind="text: $component.letterOfCreditDetails.shipmentDetails.description"></span>
+         </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+<!-- ko if: $component.multiGoodsSupported-->
+    <!-- ko ifnot:$baseModel.small() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+            <label for="goodsTable" data-bind="text: $component.resourceBundle.shipmentDetails.labels.goods"></label>
+            <oj-table id="goodsTable" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('row_tmpl_goods', true)]]"columns="[[[{headerText:$component.resourceBundle.lcDetails.labels.srNo,style:'width: 5%'},{headerText:$component.resourceBundle.shipmentDetails.labels.goods,style:'width: 20%'},{headerText:$component.resourceBundle.shipmentDetails.labels.descriptionOfGoods,style:'width: 25%'},{headerText:$component.resourceBundle.shipmentDetails.labels.units,style:'width: 25%'},{headerText:$component.resourceBundle.shipmentDetails.labels.pricePerUnit,style:'width: 25%'}]]]" data="[[$component.datasourceForAmendedGoods]]">
+              <caption class="hide-label" data-bind="text:$component.resourceBundle.documents.labels.drafts"></caption>
+          </oj-table>
+        </div>
+      </div>
+    <!-- /ko -->
+    <!-- ko if:$baseModel.small() -->
+    <div class="oj-flex grid-main-container">
+      <div class="oj-flex-item oj-sm-12">
+          <oj-label for="goods"><span data-bind="text: $component.resourceBundle.shipmentDetails.labels.goods"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+          <oj-list-view id="listview-txn-card" class="cards draft-cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('goods_list',true)}]]" selection-mode="[['single']]" data="[[$component.datasourceForAmendedGoods]]">
+          </oj-list-view>
+      </div>
+    </div>
+    <!-- /ko -->
+<!-- /ko -->
+  </oj-validation-group>
+</div>
+<!-- end of fifth row  -->
+<script type="text/html" id="row_tmpl_goods">
+    <tr>
+        <td data-bind="text: $component.getRowId($context.rowContext.status.rowIndex)">
+        </td>
+        <td data-bind="text: $data.code">
+        </td>
+        <td data-bind="text: $data.description">
+        </td>
+        <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+        <td>
+          <div class="oj-flex oj-sm-12 oj-md-12 oj-lg-12">
+                      <label class="hide-label" data-bind="text:$component.resourceBundle.shipmentDetails.labels.units, attr : {'for' :'units_' +  $context.rowContext.status.rowIndex}"></label>
+                      <oj-input-text type="text" maxlength="60" :id="[['units_'+  $context.rowContext.status.rowIndex]]" :invalidcomponenttracker="[[$component.lcDetailsValidationTracker]]" validators="[[$baseModel.getValidator('NUMBERS',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidTenure,{
+                                                    type:'numberRange',options:{
+                                                    min:1,max:1000}})]]" value="{{noOfUnits}}"></oj-input-text>
+          </div>
+        </td>
+        <!-- /ko -->
+        <!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+        <td data-bind="text: $data.noOfUnits">
+        </td>
+        <!-- /ko -->
+
+        <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+        <td>
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex oj-sm-10 oj-md-9 oj-lg-10">
+          <label class="hide-label" data-bind="text:$component.resourceBundle.shipmentDetails.labels.pricePerUnit, attr : {'for' :'pricePerUnit_' + $context.rowContext.status.rowIndex}"></label>
+          <oj-input-text type="number" maxlength="16" :id="[['pricePerUnit_'+  $context.rowContext.status.rowIndex]]" :invalidcomponenttracker="[[$component.lcDetailsValidationTracker]]" validators="[[[$component.validateLCAmount]]]" converter="[[{type:'number',options:{
+                                              style:'currency',currency:typeof ko.utils.unwrapObservable($component.letterOfCreditDetails.amount.currency) ==='string'? ko.utils.unwrapObservable($component.letterOfCreditDetails.amount.currency):'',currencyDisplay:'symbol'}}]]" value="{{pricePerUnit}}"></oj-input-text>
+
+        </div>
+        <div class="oj-flex oj-sm-2 oj-md-3 oj-lg-2 flex-right">
+          <a href="#"  data-bind="click:$component.remove.bind($data, $context.rowContext.status.rowIndex)">
+              <span class="icons icon-delete delete-draft icon-2x" data-bind="attr:{ title: $component.resourceBundle.generic.common.delete}"></span>
+          </a>
+        </div>
+        </div>
+        </td>
+        <!-- /ko -->
+        <!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+        <td>
+          <span data-bind="text:$baseModel.formatCurrency($data.pricePerUnit(),$component.letterOfCreditDetails.amount.currency)"></span> 
+        </td>
+        <!-- /ko -->
+    </tr>
+</script>
+<script type="text/html" id="goods_list">
+  <li data-bind="attr: {id: $component.getRowId($context.index)}">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-9" data-bind="text: $baseModel.format($component.resourceBundle.shipmentDetails.labels.goodWithSrNo,
+            {srNo: $component.getRowId($context.index)})">
+            </div>
+            <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+              <div class="oj-flex-item oj-sm-3 right">
+                <a href="#" data-bind="click:$component.remove.bind($data, $context.index)">
+                    <span class="icons icon-delete icon-2x icon-padding-right" data-bind="attr:{ title: $component.resourceBundle.generic.common.delete}"></span>
+                </a>
+              </div>
+            <!-- /ko -->
+          </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.shipmentDetails.labels.goods"></label>
+            <div data-bind="text: $data.code"></div>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.shipmentDetails.labels.descriptionOfGoods"></label>
+            <div data-bind="text: $data.description"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text:$component.resourceBundle.shipmentDetails.labels.units, attr : {'for' :'units_' +  $context.index}"></label>
+              <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+                <oj-input-text type="text" maxlength="60" :id="[['units_'+  $context.index]]" :invalidcomponenttracker="[[$component.lcDetailsValidationTracker]]" validators="[[$baseModel.getValidator('NUMBERS',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidTenure,{
+                                          type:'numberRange',options:{
+                                          min:1,max:1000}})]]" value="{{noOfUnits}}"></oj-input-text>
+              <!-- /ko -->
+              <!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+                  <div data-bind="text: $data.noOfUnits"></div>
+              <!-- /ko -->
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text:$component.resourceBundle.shipmentDetails.labels.pricePerUnit, attr : {'for' :'pricePerUnit_' + $context.index}"></label>
+            <!-- ko if:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+            <oj-input-text type="number" maxlength="16" :id="[['pricePerUnit_'+  $context.index]]" :invalidcomponenttracker="[[$component.lcDetailsValidationTracker]]" validators="[[[$component.validateLCAmount]]]" converter="[[{type:'number',options:{
+                                                style:'currency',currency:typeof ko.utils.unwrapObservable($component.letterOfCreditDetails.amount.currency) ==='string'? ko.utils.unwrapObservable($component.letterOfCreditDetails.amount.currency):'',currencyDisplay:'symbol'}}]]" value="{{pricePerUnit}}"></oj-input-text>
+            <!-- /ko -->
+            <!-- ko ifnot:$component.mode() === 'EDIT' || $component.mode() === 'CREATE' -->
+              <div data-bind="text:$baseModel.formatCurrency($data.pricePerUnit(),$component.letterOfCreditDetails.amount.currency)"></div> 
+            <!-- /ko -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+</script>

@@ -1,0 +1,243 @@
+<oj-validation-group id="paymentsTracker">
+  <!-- ko if:refreshAccountInputTF() -->
+  <div class="oj-sm-12 oj-lg-9">
+    <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.payments.moneytransfer.transferfrom,taskCode : $component.currentTask(),
+    validator:$component.validationTracker,type : 'balance' , account : srcAccount ,additionalDetails : additionalDetailsFrom "></account-input>
+  </div>
+  <!-- /ko -->
+  <div data-bind="component: {
+            name: 'amount-input', params: {
+            amount :transferAmount,
+            label : $component.payments.moneytransfer.amount,
+            currency: transferCurrency,
+            converter:$baseModel.formatCurrency,
+            currencyListRequired : true,
+            validator:$component.validationTracker,
+            isMandatory:true,
+            rootId:'dd-amount' + $baseModel.incrementIdCount(),
+            currencyURL : customCurrencyURL(),
+            currencyParser : $component.currencyParser,
+            rootClass:'form-input',
+            valueClasses : 'oj-lg-8'
+        }
+      }">
+    <div class="oj-flex-item">
+      <a data-id="viewLimits" href="#" class="form-button-link" data-bind="attr:{for : 'button' + $baseModel.incrementIdCount(), 'alt':$data.payments.moneytransfer.viewlimits,'title':$data.payments.moneytransfer.viewlimitsTitle},click:$data.viewLimits, text:$data.payments.moneytransfer.viewlimits">
+        </a>
+    </div>
+  </div>
+  <modal-window params="baseModel : $baseModel, rootModel : $component,header:$component.payments.common.mylimits,id:$component.viewLimitsModalId">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <!-- ko if:(customLimitType() ||  customLimitType()!=="") -->
+      <!-- ko if: $component.loadAccessPointList() -->
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+    <span data-bind="text:$component.payments.channel"></span>
+  <a class="oj-label-inline" id="channel-disclaimer" href="javascript:void(0)" data-bind="attr:{title:$component.payments.showInformation},click:$component.channelPopup.bind($data,true)">
+          <span class="icons icon-2x icon-information iconStyling"></span></a>
+        </div>
+</div>
+
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4">
+          <oj-select-one :id="[['channel']]" value="{{selectedChannelIndex}}" on-value-changed="[[channelTypeChangeHandler]]" :placeholder="[[$component.payments.pleaseSelect]]">
+            <!-- ko foreach:$component.channelList -->
+            <oj-option value="[[$index]]"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: viewlimits() && $component.selectedChannel() -->
+      <div data-bind="component:{name:'transfer-view-limits', params:{rootModel: $component,type:$component.customLimitType,id:$component.customPayeeId,accessPointValue:$component.selectedChannelType}}">
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if:!customLimitType() ||  customLimitType()===""-->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12" data-bind="text:$component.payments.moneytransfer.selectpayee">
+        </div>
+      </div>
+      <!-- /ko -->
+    </page-section>
+    <div class="button-container ">
+      <oj-button class="action-button-primary " on-click="[[done]]"><span slot="startIcon" class="icons icon-ok"></span>
+        <span data-bind="text:$component.payments.common.ok"></span>
+      </oj-button>
+    </div>
+  </modal-window>
+  <!-- ko if:userSegment ==='CORP' && $component.additionalDetailsFrom() && $component.transferCurrency() !== $component.additionalDetailsFrom().account.currencyCode && !$component.isMultiplePayment && !$component.isStandingInstruction() && ($component.transferMode() === "SELF" || $component.selectedPayee) -->
+  <div class="oj-flex oj-flex-items-pad oj-sm-12">
+    <div class="oj-flex oj-flex-items-pad oj-lg-10 oj-md-12 oj-sm-12 payments-money-transfer">
+      <div class="oj-flex-item">
+        <a href="javascript:void(0)" class="form-button-link" data-bind="attr:{alt:$component.payments.moneytransfer.viewCurExcRate, title:$component.payments.moneytransfer.viewCurExcRateTitle},click:$component.exchangeRate.bind($data,{
+                branchCode: $component.additionalDetailsFrom().account.branchCode,
+                ccy1Code: $component.additionalDetailsFrom().account.currencyCode,
+                ccy2Code: $component.transferCurrency()
+            },true),text:$component.payments.moneytransfer.viewCurExcRate">
+        </a>
+      </div>
+      <div class="oj-flex-item" data-bind="css: 'exchange-rate processed'">
+        <span data-bind="text:$component.currentExchangeRate"></span>
+      </div>
+    </div>
+    <div data-bind="css: $baseModel.large() ? 'button-container' : ''" class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-6">
+        <oj-button class="help-button" id="initiateButton" on-click="[[$dashboard.loadComponent.bind($data,'forex-deal-create',{
+                    retainedData : $component,
+                    transferCurrency: $component.transferCurrency,
+                    currency2: $component.additionalDetailsFrom().account.currencyCode,
+                    amount: $component.transferAmount()
+                }
+            )]]" disabled="[[!$component.transferAmount()]]">
+          <span data-bind="text: $component.payments.moneytransfer.bookNewDeal"></span>
+        </oj-button>
+    </div>
+    <div class="oj-flex-item oj-lg-12" data-bind='component:{name: "forex-deal-utilization", params:{rootModel : {
+            params : {
+            retainedData : $component,
+            transferCurrency: $component.transferCurrency,
+            transferAmount : $component.transferAmount,
+            currency2: $component.additionalDetailsFrom().account.currencyCode,
+            dealId: $component.dealId,
+            usePreBookedDeal: $component.usePreBookedDeal,
+            dealDetails: $component.dealDetails,
+            dealsAvailable: $component.dealsAvailable,
+            showList: $component.showList
+        }
+    }}}'>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if:!isStandingInstruction() && !ispeerToPeer() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 ">
+      <oj-label :for="[['transferon-'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.payments.moneytransfer.transferon"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 ">
+      <oj-radioset class="payments-money-transfer__radiosetSpacing oj-choice-direction-row" :id="[['transferon-'+ $baseModel.currentIdCount()]]" :aria-label="[[$component.payments.moneytransfer.transferon]]" on-value-changed="[[transferOnChange]]" value="{{transferOn}}">
+        <!-- ko foreach: transferOnArray -->
+        <oj-option name="transferon" value="{{id}}" :id="[[id + $baseModel.currentIdCount()]]"><span data-bind="attr: {for: id + $baseModel.incrementIdCount()},text: label"></span></oj-option>
+        <!-- /ko -->
+      </oj-radioset>
+    </div>
+  </div>
+  <!-- ko if:transferLater() && $component.currentDateLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- ko if:!$baseModel.small() -->
+    <div class=" oj-flex-item oj-sm-12  ">
+      <oj-label :for="[['transferondate'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.payments.moneytransfer.transferondate"></span></oj-label>
+    </div>
+    <!-- /ko -->
+    <div class="oj-sm-12 oj-lg-5 oj-md-5 oj-flex-item">
+      <oj-input-date required :id="[['transferondate'+ $baseModel.currentIdCount()]]" :aria-label="[[$component.payments.moneytransfer.transferon]]" value="{{valuedate}}" min="[[$oj.IntlConverterUtils.dateToLocalIso(formattedTomorrow())]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if:$component.region() === "INDIA" && isNetworkTypesLoaded() && !$component.AdhocFlag()-->
+  <div class="oj-flex oj-flex-items-pad">
+    <oj-label for="networkType" class="oj-flex-item oj-lg-12">
+      <span data-bind="text:$component.payments.payee.domestic.payvia"></span>
+    </oj-label>
+    <div class="oj-flex-item oj-sm-12 ">
+      <oj-radioset id="networkType" class="payments-money-transfer__radiosetSpacing oj-choice-direction-row" value="{{$component.network}}" on-value-changed="[[$component.networkTypeChanged]]">
+        <!-- ko foreach: domesticNetworkTypes -->
+        <oj-option value="{{value}}">
+          <span data-bind="text:$component.payments.payee.domestic.india[text]"></span>
+        </oj-option>
+        <!-- /ko -->
+      </oj-radioset>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!--code for standing sinstructions-->
+  <!-- ko if:isStandingInstruction() -->
+  <!-- ko if:$component.region() === "INDIA" && isNetworkTypesLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <oj-label for="networkType" class="oj-flex-item oj-lg-12">
+      <span data-bind="text:$component.payments.payee.domestic.payvia"></span>
+    </oj-label>
+    <div class="oj-flex-item oj-sm-12 ">
+      <oj-radioset id="networkType" class="payments-money-transfer__radiosetSpacing oj-choice-direction-row" value="{{$component.network}}" on-value-changed="[[$component.networkTypeChanged]]">
+        <!-- ko foreach: domesticNetworkTypes -->
+        <oj-option value="{{value}}">
+          <span data-bind="text:$component.payments.payee.domestic.india[text]"></span>
+        </oj-option>
+        <!-- /ko -->
+      </oj-radioset>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if:frequencyLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class=" oj-flex-item oj-sm-12 ">
+      <oj-label :id="[['frequency'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.payments.moneytransfer.frequency"></span></oj-label>
+    </div>
+    <div class="oj-sm-12 oj-lg-5 oj-md-5 oj-flex-item">
+      <!-- ko if:frequencyArray().length>0 -->
+      <oj-select-one required :id="[['frequency'+ $baseModel.currentIdCount()]]" :aria-label="[[$component.payments.moneytransfer.frequency]]" :placeholder="[[$component.payments.common.pleaseSelect]]" :invalidcomponenttracker="[[$component.validationTracker]]"
+        value="{{frequency}}">
+        <!-- ko foreach:frequencyArray() -->
+        <oj-option value="{{code +'_'+ description}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- ko if:$component.currentDateLoaded() -->
+    <div class=" oj-flex-item oj-sm-12  ">
+      <oj-label for="startTransfer"><span data-bind="text:$component.payments.moneytransfer.startTransfer"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-5 oj-md-5">
+      <oj-input-date id="startTransfer" required :aria-label="[[$component.payments.moneytransfer.startTransfer]]" value="{{$component.siStartDate}}" min="[[$oj.IntlConverterUtils.dateToLocalIso(formattedTomorrow())]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+    </div>
+    <!-- /ko -->
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class=" oj-flex-item oj-sm-12">
+      <oj-label for="stopTransfer"><span data-bind="text:$component.payments.moneytransfer.stopTransfer"></span></oj-label>
+    </div>
+    <div class="oj-sm-12 oj-lg-5 oj-md-5 oj-flex-item">
+      <div class=" ">
+        <oj-radioset class="payments-money-transfer__radiosetSpacing oj-choice-direction-row" id="radiosetBasicDemoId" aria-labelledby="mainlabelid" required on-value-changed="[[instanceOptionChangeHandler]]" value="{{siEnd}}">
+          <oj-option name="rbb" value="PAYLATER" :id="[['Paylater'+ $baseModel.currentIdCount()]]"><span data-bind="
+                             text: $component.payments.moneytransfer.on,
+                             attr: {for: 'Paylater'+ $baseModel.incrementIdCount()}
+                             "></span></oj-option>
+          <oj-option name="rbb" value="{{$component.payments.moneytransfer.instances}}" :id="[['instances']]"><span data-bind="
+                     text: $component.payments.moneytransfer.after,
+                     attr: {for: 'instances'}
+                     "></span></oj-option>
+        </oj-radioset>
+        <!-- ko if:$component.isEndDateRequired() && $component.currentDateLoaded() -->
+        <div class="oj-flex-item">
+          <oj-label class="hide-label" :for="[['siEndDate'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.payments.moneytransfer.enddate"></span></oj-label>
+          <oj-input-date required="[[$component.isEndDateRequired()]]" :id="[['siEndDate'+ $baseModel.currentIdCount()]]" :aria-label="[[$component.payments.moneytransfer.stopTransfer]]" converter="[[$baseModel.dateConverter]]" value="{{$component.siEndDate}}"
+            min="[[$oj.IntlConverterUtils.dateToLocalIso(formattedDayAfterTomorrow())]]" disabled="[[!$component.isEndDateRequired()]]"></oj-input-date>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$component.isEndDateRequired() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class=" oj-sm-7 oj-flex-item no-pad-cols">
+            <oj-label class="hide-label" :for="[['isEndDateRequired'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.payments.moneytransfer.instances"></span></oj-label>
+            <oj-input-text type="text" :id="[['isEndDateRequired'+ $baseModel.currentIdCount()]]" value="{{instances}}" disabled="[[$component.isEndDateRequired()]]" validators="[[$baseModel.getValidator('ONLY_NUMERIC')]]" required></oj-input-text>
+          </div>
+          <div class=" oj-sm-5 oj-flex-item">
+            <div data-bind="text:$component.payments.moneytransfer.instances"></div>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+</oj-validation-group>
+<!--standing instruction code ends-->
+<oj-popup id="channel-popup" modality="modeless" tail="simple" position.my.horizontal="start" position.my.vertical="top" position.at.horizontal="right" position.at.vertical="bottom">
+  <span data-bind="text:$component.payments.showInformation"></span>
+</oj-popup>

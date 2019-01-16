@@ -1,0 +1,80 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class=" oj-flex-item oj-sm-9">
+        <div class="form-main-container">
+            <!-- ko if:stageOne() -->
+            <page-section params="baseModel : $baseModel, rootModel:$data ,heading:''">
+                <div class="oj-flex oj-flex-items-pad">
+                    <oj-label for="categoryCode" class="label oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                        <span data-bind="text:$component.resource.spendCategory.categoryCode"></span>
+                    </oj-label>
+                    <oj-input-text class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5" maxlength="40" :id="categoryCode" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[[$component.validateName]]]" value="{{$component.categoryCode}}"></oj-input-text>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <oj-label id="categoryNameLabel" :for="categoryName" class="label oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                        <span data-bind="text:$component.resource.spendCategory.categoryName"></span>
+                    </oj-label>
+                    <oj-input-text maxlength="40" :id="categoryName" class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[[$component.validateName]]]" value="{{$component.categoryName}}"></oj-input-text>
+                </div>
+            </page-section>
+            <div class="oj-flex oj-flex-items-pad button-container right">
+                <oj-button id="search" class="action-button-primary" on-click="[[$component.search]]">
+                    <span data-bind="text:$component.resource.common.search"></span>
+                </oj-button>
+                <!-- ko ifnot:stageTwo() -->
+                <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                    <span data-bind="text:$component.resource.common.cancel"></span>
+                </oj-button>
+                <!-- /ko -->
+                <oj-button id="reset" class="action-button-tertiary" on-click="[[$component.reset]]">
+                    <span data-bind="text:$component.resource.common.clear"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:stageTwo() -->
+            <oj-table id="categoryTable" :aria-label="[[$component.resource.spendCategory.spendSearchTable]]" columns="[[[
+    {headerText:$component.resource.spendCategory.categoryCode,field:'code'},
+    {headerText:$component.resource.spendCategory.categoryName,template:'catg_name_link'}
+    ]]]" selection-mode="[[{row:'multiple',column:'multiple'}]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.dataSource]]">
+                <template slot="catg_name_link">
+                    <td>
+                        <a href="javascript:void(0)" data-bind="attr : {id:$current.row.name, alt:$baseModel.format($component.resource.spendCategory.alt, {categoryName: $current.row.name}), title:$baseModel.format($component.resource.spendCategory.landingTitle, {categoryName: $current.row.name})}, text:$current.row.name, click:$component.viewCategory.bind($data,$current.row)"></a>
+                    </td>
+                </template>
+            </oj-table>
+            <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.dataSource]]">
+            </oj-paging-control>
+            <div class="oj-flex oj-flex-items-pad button-container right">
+                <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                    <span data-bind="text:$component.resource.common.cancel"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:stageThree() -->
+            <page-section params="baseModel : $baseModel, rootModel:$data ,heading:''">
+                <div data-bind="template: { name: 'spend-analysis/view-review-spend-category' }"></div>
+            </page-section>
+            <div class="oj-flex oj-flex-items-pad button-container right">
+                <oj-button class="action-button-primary" on-click="[[$dashboard.loadComponent.bind($data,'spend-category-edit',{},$component)]]">
+                    <span data-bind="text:$component.resource.common.edit"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="cancel" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                    <span data-bind="text:$component.resource.common.cancel"></span>
+                </oj-button>
+                <oj-button class="action-button-tertiary" id="back" on-click="[[viewScreenBack]]">
+                    <span data-bind="text:$component.resource.common.back"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-3 oj-sm-only-hide oj-md-only-hide help-panel">
+        <!-- ko if: $component.stageThree() -->
+        <help params="baseModel : $baseModel, rootModel : $component, transaction:'spend-category-view'"></help>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.stageThree() -->
+        <help params="baseModel : $baseModel, rootModel : $component, transaction:'spend-category-landing'"></help>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+</div>

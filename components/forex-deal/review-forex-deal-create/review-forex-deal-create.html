@@ -1,0 +1,99 @@
+<div class="form-main-container">
+    <!-- ko if:$component.params.reviewMode -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.generic.common.review , reviewHeader : $component.params.iseditable ? $component.nls.forexDeal.reviewHeaderMsg:$component.nls.forexDeal.reviewHeaderMsg}}"></div>
+    <!-- /ko -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, dashboard : $dashboard, heading : $component.nls.forexDeal.partyDetails">
+        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.nls.forexDeal.partyId, value : $dashboard.userData.userProfile.partyId.displayValue"></row>
+            <!-- ko if:$component.partyName() -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.nls.forexDeal.partyName, value : $component.partyName()"></row>
+            <!-- /ko -->
+        </div>
+    </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.forexDeal.transactionDetails">
+        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.nls.forexDeal.dealType, value : $component.dealType"></row>
+            <!-- ko if:$component.forward -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.nls.forexDeal.validity, value : $baseModel.format($component.nls.forexDeal.totalNoDays,{bookingDate:$baseModel.formatDate($component.createForexDealModel.forexDealDTO.bookingDate()),valueDate:$baseModel.formatDate($component.createForexDealModel.forexDealDTO.valueDate()),noOfDays:parseInt($component.createForexDealModel.forexDealDTO.forwardPeriod())})"></row>
+            <!-- /ko -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.nls.forexDeal.currencyCombination, value : $component.currencyCombo"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.nls.forexDeal.transType, value : $component.selectedRateType"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.selectedRateType, value : $baseModel.formatCurrency($component.rateAmount(),$component.rateCurrency())"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.nls.forexDeal.exchangeRate, value : $baseModel.formatCurrency($component.createForexDealModel.forexDealDTO.rate(),$component.createForexDealModel.forexDealDTO.exchangeRateCurrency())"></row>
+        </div>
+    </page-section>
+    <!-- ko if:$component.params.reviewMode -->
+    <div id="button-container" class="oj-flex-item button-container">
+        <oj-button class="action-button-primary" id="confirmButton" on-click="[[confirmForexDealBooking]]">
+            <span slot="startIcon" class="icons icon-confirm"></span>
+            <span data-bind="text: $component.nls.generic.common.confirm"></span>
+        </oj-button>
+        <!-- ko ifnot:$baseModel.small() -->
+        <oj-button class="action-button-secondary" id="cancelButton" on-click="[[$dashboard.openDashBoard]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text: $component.nls.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary" id="backButton" on-click="[[onBack]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text: $component.nls.generic.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+    <modal-window params="baseModel : $baseModel, rootModel : $component, id:'rate-expired', dashboard : $dashboard, header : $component.nls.generic.common.NOTIFICATION, closeHandler : $dashboard.openDashBoard.bind(void 0,void 0)">
+        <div class="oj-flex oj-flex-items-pad center question-text">
+            <div class="oj-flex-item" data-bind="text:$component.nls.forexDeal.rateExpired"></div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary" id="button-ok" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                <span data-bind="text:$component.nls.generic.common.ok"></span>
+            </oj-button>
+        </div>
+    </modal-window>
+    <modal-window params="baseModel : $baseModel, rootModel : $component, id:'confirm-deal', dashboard : $dashboard, header : $component.nls.forexDeal.confirmationHeader, closeHandler :  $dashboard.openDashBoard.bind(void 0,void 0)">
+        <page-section params="baseModel : $baseModel, rootModel : $component">
+            <!-- ko if:$component.remainingTimeInSeconds() -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12">
+                    <span slot="startIcon" class="icons icon-information oj-sm-2 oj-flex-item"></span>
+                    <span data-bind="text:$component.nls.forexDeal.confirmDeal"></span>
+                </div>
+            </div>
+            <div>
+                <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-sm-12">
+                    <oj-label class="oj-flex-item oj-lg-3 oj-sm-6"><span data-bind="text:$component.nls.forexDeal.exchangeRate"></span></oj-label>
+                    <div class="oj-flex-item oj-sm-6"><span data-bind="text:$baseModel.formatCurrency($component.createForexDealModel.forexDealDTO.rate(),$component.createForexDealModel.forexDealDTO.exchangeRateCurrency())"></span>
+                    </div>
+                </div>
+                <div class="oj-lg-8">
+                    <oj-status-meter-gauge id="gauge" max="[[totalWaitTimeInSeconds()]]" min="0" value="[[remainingTimeInSeconds()]]" orientation="circular" inner-radius=".9" readonly thresholds="[[[{max : totalWaitTimeInSeconds(), color : 'turquoise'},{max: 10 , color : 'red'}]]]" metric-label.rendered="off" label="[[timeHandler]]" class="circular-status-meter-common circular-status-meter-small timer">
+                    </oj-status-meter-gauge>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:!$component.remainingTimeInSeconds() -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12">
+                    <span slot="startIcon" class="icons icon-information oj-sm-2 oj-flex-item"></span>
+                    <span data-bind="text:$component.nls.forexDeal.rateExpired"></span>
+                </div>
+            </div>
+            <!-- /ko -->
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <!-- ko if:$component.remainingTimeInSeconds() -->
+            <oj-button class="action-button-primary" id="button-confirm" on-click="[[$component.forexDealBooking]]">
+                <span data-bind="text:$component.nls.generic.common.confirm"></span>
+            </oj-button>
+            <!-- /ko -->
+            <!-- ko if:!$component.remainingTimeInSeconds() -->
+            <oj-button class="action-button-primary" id="buttonconfirm" disabled="true" on-click="[[$component.forexDealBooking]]">
+                <span data-bind="text:$component.nls.generic.common.confirm"></span>
+            </oj-button>
+            <!-- /ko -->
+            <oj-button class="action-button-tertiary" id="button-cancel" on-click="[[$component.closeModal]]">
+                <span data-bind="text:$component.nls.generic.common.cancel"></span>
+            </oj-button>
+        </div>
+    </modal-window>
+</div>

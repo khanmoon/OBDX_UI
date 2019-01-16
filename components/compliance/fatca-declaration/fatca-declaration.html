@@ -1,0 +1,90 @@
+<div class="form-main-container">
+  <!-- ko if: $component.formType === "INDIVIDUAL" -->
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <div class="row-group">
+      <oj-validation-group id="declarationTracker">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <label data-bind="text: $component.resource.declaration.declarationText1"></label>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <label data-bind="text: $component.resource.declaration.declarationText2"></label>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <label data-bind="text: $component.resource.declaration.declarationText3"></label>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label class="hide-label" for="declarationCheckbox"><span data-bind="text:$component.resource.declaration.declarationAccept"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <oj-checkboxset id="declarationCheckbox" value="{{$component.declaration}}" translations="[[{'required':{messageDetail:$component.resource.messages.declarationCheckbox}}]]" required>
+              <oj-option value="accept">
+                <span data-bind="text: $baseModel.format($component.resource.declaration.declarationAccept, {fullName: $component.fatcaComplianceData.identificationInfo.fullName})">
+          </span></oj-option>
+            </oj-checkboxset>
+          </div>
+        </div>
+      </oj-validation-group>
+    </div>
+  </page-section>
+  <!-- /ko -->
+  <!-- ko if: $component.formType === "ENTITY" -->
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <div class="row-group">
+      <oj-validation-group id="declarationTracker">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <label data-bind="text: $component.entityResource.declaration.declarationText1"></label>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <label data-bind="text: $component.entityResource.declaration.declarationText2"></label>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <label data-bind="text: $component.entityResource.declaration.declarationText3"></label>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label class="hide-label" for="declarationCheckbox"><span data-bind="text:$component.entityResource.declaration.declarationAccept"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <oj-checkboxset id="declarationCheckbox" value="{{$component.declaration}}" translations="[[{'required':{messageDetail:$component.resource.messages.declarationCheckbox}}]]" required>
+              <oj-option value="accept">
+                <span data-bind="text:$component.entityResource.declaration.declarationAccept">
+          </span></oj-option>
+            </oj-checkboxset>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for="representativeFullName"><span data-bind="text:$component.entityResource.declaration.representativeFullName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+            <oj-input-text id="representativeFullName" required maxlength="100" value="{{$component.fatcaComplianceData.representativeFullName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.entityResource.messages.fullName, {
+                           type:'length',options:{min:1,max:100}})]]" translations="[[{'required':{messageDetail:$component.entityResource.messages.fullName}}]]" name="representativeFullName"></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for="representativeDesignation"><span data-bind="text:$component.entityResource.declaration.representativeDesignation"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+            <oj-input-text id="representativeDesignation" required maxlength="100" value="{{$component.fatcaComplianceData.designation}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.entityResource.messages.designation,{
+                           type:'length',options:{min:1,max:100}})]]" translations="[[{'required':{messageDetail:$component.entityResource.messages.designation}}]]" name="representativeDesignation"></oj-input-text>
+          </div>
+        </div>
+      </oj-validation-group>
+    </div>
+  </page-section>
+  <!-- /ko -->
+</div>

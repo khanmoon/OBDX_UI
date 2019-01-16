@@ -1,0 +1,219 @@
+<div class="search-section">
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <action-header params="baseModel : $baseModel, rootModel : $component, heading:$component.Nls.recordList">
+            <a href="" class="icons icon-search pull-right" data-bind="click: $component.searchEnable ,  attr: { alt: $component.Nls.searchEnableText, title: $component.Nls.searchEnable }"></a>
+        </action-header>
+    </page-section>
+    <div id="search" class="search-container hide">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <div class="oj-flex oj-flex-items-pad">
+                <!-- ********************** DropDown For Record Status ********************** -->
+                <!-- ko if:isRStatusListLoaded() -->
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="rStatus" data-bind="text: $component.Nls.rStatus"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-select-one id="rStatus" :placeholder="[[$component.Nls.selectRStatus]]" on-value-changed="[[rStatusValueChangeHandler]]" value="{{$component.searchData.rStatus}}">
+                        <!-- ko foreach:$component.rStatusList -->
+                        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="beneName" data-bind="text: $component.Nls.beneName"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-input-text id="beneName" type="text" value="{{$component.searchData.beneName}}"></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="debitAccNo" data-bind="text: $component.Nls.debitAccNo"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-input-text id="debitAccNo" name="debitAccno" type="text" value="{{$component.searchData.debitAccno}}"></oj-input-text>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="creditAccNo" data-bind="text: $component.Nls.creditAccNo"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-input-text id="creditAccNo" name="creditAccno" type="text" value="{{$component.searchData.creditAccno}}"></oj-input-text>
+                </div>
+            </div>
+            <!--**************************** Date Range **********************************-->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="fromDate" data-bind="text: $component.Nls.fromDate"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 ">
+                    <oj-input-date id="fromDate" value="{{$component.searchData.valueDateFrom}}" on-value-changed="[[fromDateChanged]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="toDate" data-bind="text: $component.Nls.toDate"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 ">
+                    <oj-input-date id="toDate" value="{{$component.searchData.valueDateTo}}" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="fromAmount" data-bind="text: $component.Nls.fromAmount"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-input-text id="fromAmount" type="text" value="{{$component.searchData.fromAmount}}" validators="[[$baseModel.getValidator('AMOUNT')]]"></oj-input-text>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="toAmount" data-bind="text: $component.Nls.toAmount"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-input-text id="toAmount" type="text" value="{{$component.searchData.toAmount}}" validators="[[$baseModel.getValidator('AMOUNT')]]"></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <!-- ********************** Dropdown for Currency Types.********************** -->
+                <!-- ko if:isCurrencyListLoaded() -->
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="currency" data-bind="text: $component.Nls.currencyLabel"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-select-one id="currency" :placeholder="[[$component.Nls.selectCurrency]]" on-value-changed="[[currencyValueChangeHandler]]" value="{{$component.searchData.currency}}">
+                        <!-- ko foreach:$component.currencyList -->
+                        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+                <!-- /ko -->
+                <!-- *************************** DROP DOWN for payment Type **************************** -->
+                <!-- ko if:isPaymentTypeListLoaded() -->
+                <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+                    <label for="paymentType" data-bind="text: $component.Nls.type"> </label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 ">
+                    <oj-select-one id="paymentType" :placeholder="[[$component.Nls.selectPaymentType]]" on-value-changed="[[paymentTypeValueChangeHandler]]" disabled="[[$component.paymentTypeDisabled]]" value="{{$component.searchData.paymentType}}">
+                        <!-- ko foreach:$component.paymentTypeList -->
+                        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+                <!-- /ko -->
+            </div>
+        </page-section>
+        <!-- **************************** Search Button **************************** -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary" id="search1" on-click="[[searchRecord]]">
+                <span data-bind="text:$component.Nls.search"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" id="button" on-click="[[closeSearch]]">
+                <span data-bind="text:$component.Nls.cancel"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" id="clear" on-click="[[refreshSearch]]">
+                <span data-bind="text:$component.Nls.clear"></span>
+            </oj-button>
+        </div>
+    </div>
+</div>
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <!-- ko if:$component.transactionSuccess() -->
+    <div role="alert" class="oj-flex oj-sm-12 oj-flex-items-pad">
+        <div class="oj-flex-item">
+            <span class="" data-bind="text:$baseModel.format($component.Nls.successText, {
+            successCount : $component.successfulTransactions(),
+            approvedCount: $component.pendingApprovalsTransaction(),
+            failureCount: $component.erroneousTransaction()
+            })"></span>
+            <a href="#" data-bind="attr:{'alt':$component.Nls.removeMessage ,'title':$component.Nls.removeMessageTitle, 'aria-label':$component.Nls.removeMessage },click:$component.close"><span class="icons icon-close"></span></a>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:$baseModel.large() -->
+    <div class="widget-table">
+        <oj-table id="table" :aria-label="[[$component.Nls.details]]" columns="[[[{
+                                   headerRenderer:$component.renderHeaderCheckBox,sortable:'none',renderer:$component.renderCheckBox},{
+                                   headerText:$component.Nls.valueDt,field:'date'},{
+                                  headerText:$component.Nls.billerName,field:'billerName',template:'record_link'},{
+                                  headerText:$component.Nls.billerType,field:'billerType'},{
+                                  headerText:$component.Nls.billerCategory,field:'billerCategory'},{
+                                  headerText:$component.Nls.billerLocation,field:'billerLocation'},{
+                                  headerText:$component.Nls.action,template:'e-receipt'}]]]" selection-mode="[[{row:'single',column:'single'}]]" translations="[[{msgNoData:$component.Nls.noData}]]" data="[[$component.datasource()]]">
+            <caption class="hide-label" data-bind="text:$component.Nls.details"></caption>
+            <template slot="e-receipt">
+                <a href="javascript:void(0)" class="icons icon-download" data-bind="click:$component.downloadEReceipt.bind($data, $current.row), attr: { alt: $component.Nls.downloadReceipt, title:  $component.Nls.downloadReceiptText },css: ($current.row.status === 'COMPLETED')?'':'disabled'">
+                </a>
+                <span data-bind="text: $component.Nls.eReceipt"></span>
+            </template>
+            <template slot="record_link">
+                <a href="javascript:void(0)" data-bind="text:$current.row.billerName,click:$component.onUserListSelected.bind($data,$current.row)"></a>
+            </template>
+        </oj-table>
+    </div>
+    <oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[datasource()]]">
+    </oj-paging-control>
+    <!-- /ko -->
+    <!-- ko ifnot:$baseModel.large() -->
+    <div class="grid-main-container">
+        <oj-list-view id="listview" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('record_template',true)}]]" data="[[datasource()]]">
+        </oj-list-view>
+    </div>
+    <script type="text/html" id="record_template">
+        <li>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-md-6 oj-sm-12">
+                    <label data-bind="text: $component.Nls.valueDt"></label>
+                    <a href="" class="icons icon-download" data-bind="click:$component.downloadEReceipt.bind($context), attr: { alt: $component.Nls.downloadReceipt, title:  $component.Nls.downloadReceiptText },css: ($context.data.status === 'COMPLETED')?'':'icon-color' ">
+            <span data-bind="text: $component.Nls.eReceipt"></span>
+          </a>
+                    <div class="date" data-bind="text: date"></div>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-md-6 oj-sm-12">
+                    <label data-bind="text: $component.Nls.billerName"></label>
+                    <div>
+                        <a href="#" data-bind="attr:{ title:  billerName, alt :  billerName},text:billerName,click:$component.onUserListSelected.bind($data)"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-md-6 oj-sm-12">
+                    <label data-bind="text: $component.Nls.billerType"></label>
+                    <div data-bind="text: billerType"></div>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-md-6 oj-sm-12">
+                    <label data-bind="text: $component.Nls.billerCategory"></label>
+                    <div data-bind="text: billerCategory"></div>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-md-6 oj-sm-12">
+                    <label data-bind="text: $component.Nls.billerLocation"></label>
+                    <div data-bind="text: billerLocation"></div>
+                </div>
+            </div>
+        </li>
+    </script>
+    <div class="center">
+        <oj-paging-control id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[datasource()]]">
+        </oj-paging-control>
+    </div>
+    <!-- /ko -->
+</page-section>
+<modal-window params="baseModel : $baseModel, rootModel : $data,id:'confirm-dialog', header:$component.Nls.warning">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog__container confirm-dialog-container">
+            <div class="oj-flex oj-flex-items-pad confirm-dialog-container__message">
+                <div class="oj-flex-item oj-sm-12" data-bind="text:$component.Nls.deleteConfirmationMessage"></div>
+            </div>
+            <div class="confirm-dialog-container__buttons button-container">
+                <oj-button class="action-button-secondary" on-click="[[function(){$('#confirm-dialog').hide().trigger('closeModal');}]]">
+                    <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.Nls.no"></span>
+                </oj-button>
+                <oj-button class="action-button-primary" on-click="[[$component.deleteRecords]]">
+                    <span class="icons icon-confirm" slot="startIcon"></span><span data-bind="text:$component.Nls.yes"></span>
+                </oj-button>
+            </div>
+        </div>
+    </div>
+</modal-window>

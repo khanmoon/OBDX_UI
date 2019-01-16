@@ -1,0 +1,29 @@
+<div class="form-main-container">
+    <!-- ko if:dataLoaded() -->
+     <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.generic.common.review , reviewHeader : $component.resource.reviewHeaderMsg}}"></div>
+    <page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading :''">
+        <div class="row-group">
+            <row class="highlight-text " params="baseModel : $baseModel, rootModel : $component, label : $component.resource.debtorName , value :debtorName.name()"></row>
+            <row class="highlight-text " params="baseModel : $baseModel, rootModel : $component, label : $component.resource.debtorIban , value :debtor.sepaDomesticPayer.iban()"></row>
+            <row class="" params="baseModel : $baseModel, rootModel : $component, label : $component.resource.bicCode , value :bankDetailsCode()"></row>
+            <row class="" params="baseModel : $baseModel, rootModel : $component, label : $component.resource.nickname , value :debtor.nickName()"></row>
+            <!-- /ko -->
+        </div>
+    </page-section>
+    <!-- confirm back cancel buttons -->
+    <div data-bind='component:{name:"warning-message-dialog", params:{rootModel: $component }}'></div>
+    <div class="button-container">
+        <oj-button class="action-button-primary " on-click="[[confirmAddDebtor]]"><span slot="startIcon" class="icons icon-confirm"></span>
+            <span data-bind="text:$component.common.confirm"></span>
+        </oj-button>
+        <!-- ko ifnot: $baseModel.small() -->
+        <oj-button class="action-button-secondary " id="cancelButton" on-click="[[$dashboard.openDashBoard.bind($data,true)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.nls.generic.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+</div>

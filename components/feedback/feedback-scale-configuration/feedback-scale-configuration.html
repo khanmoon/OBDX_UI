@@ -1,0 +1,58 @@
+<div class="oj-flex design-feedback">
+  <div class="oj-flex-item oj-sm-9">
+  <div class="form-main-container">
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <!-- ko if:scaleLoaded -->
+        <div class="oj-flex scale-configuration-container">
+          <oj-validation-group id="tracker" valid="{{$component.groupValid}}">
+            <label class="hide" data-bind="attr:{id:'scaleId',for:'scale'},text: $component.resource.questionLabel"></label>
+            <oj-radioset :id="scale" :aria-label="[[$component.resource.cancel]]" value="{{$component.selectedScale}}" disabled="[[$component.reviewTemplate]]" required>
+              <!-- ko foreach: $component.scale -->
+              <oj-option class="scale-rating" :id="[['option'+$index()]]" value="[[scaleId]]">
+                <label class="scale-label" data-bind="text: scaleType"></label>
+                <oj-rating-gauge :id="[['ratingGauge'+$index()]]" readonly value="{{weightage}}" selected-state.shape="[[dataContent]]" hover-state.shape="[[dataContent]]" unselected-state.shape="[[dataContent]]" changed-state.shape="[[dataContent]]"></oj-rating-gauge>
+
+              </oj-option>
+              <!-- /ko -->
+            </oj-radioset>
+          </oj-validation-group>
+        </div>
+        <!-- ko if:$component.reviewTemplate() -->
+        <div class="section-separate"></div>
+        <!-- /ko -->
+        <!-- /ko -->
+      </page-section>
+      <!-- ko ifnot:$component.reviewTemplate() -->
+      <div class="oj-flex button-container">
+        <!-- ko ifnot:$component.hideTemplateInfo() -->
+        <oj-button class="action-button-primary" id="next-button" type="submit" on-click="[[$component.nextStep]]">
+          <span data-bind="text:$component.resource.next"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="cancelButtonId" type="submit" on-click="[[$dashboard.openDashBoard]]">
+          <span data-bind="text:$component.resource.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" id="backButtonId" type="submit" on-click="[[$component.back]]">
+          <span data-bind="text:$component.resource.back"></span>
+        </oj-button>
+        <!-- /ko -->
+        <!-- ko if:$component.hideTemplateInfo() -->
+        <oj-button class="action-button-primary" id="next-button" type="submit" on-click="[[$component.saveToReview]]">
+          <span data-bind="text:$component.resource.save"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="cancelButtonId" type="submit" on-click="[[$dashboard.openDashBoard]]">
+          <span data-bind="text:$component.resource.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" id="next-button" type="submit" on-click="[[$component.nextStep]]">
+          <span data-bind="text:$component.resource.next"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" id="backButtonForPrevious" type="submit" on-click="[[$component.backFromScale]]">
+          <span data-bind="text:$component.resource.back"></span>
+        </oj-button>
+        <!-- /ko -->
+
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+
+  </div>

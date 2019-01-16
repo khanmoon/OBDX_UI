@@ -1,0 +1,59 @@
+<div class="oj-panel limits-widget">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-6">
+      <h3 class="limits-widget__heading" data-bind="text:$component.locale.heading[$component.typeOfWidget]"></h3>
+    </div>
+
+    <div class="oj-flex-item oj-sm-6 view">
+      <a href="#" data-bind="attr:{'title': $baseModel.format($component.locale.viewAllTitle, {typeOfWidget: $component.typeOfWidget}), 'alt': $baseModel.format($component.locale.viewAllAlt, {typeOfWidget: $component.typeOfWidget})}, click: $dashboard.loadComponent.bind($component, 'my-limits',typeOfWidget)">
+        <div data-bind="text: $component.locale.viewAll"></div>
+      </a>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-lg-12">
+
+      <!-- ko if: $component.dataLoaded() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-12">
+          <oj-select-one :id="[['transactions']]" required="[[true]]" value="{{selectedTransactionType}}" :placeholder="[[$component.locale.please_select]]">
+            <!-- ko foreach:$component.taskCodeList -->
+            <oj-option value="{{id}}"><span data-bind="text:name"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+
+    <!-- ko if: $component.showGraph() && $component.selectedTransactionData().transactionalLimitData-->
+    <div class="oj-flex-item oj-lg-12 amount-align">
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-6 oj-lg-6">
+            <span class="oj-sm-6 oj-lg-6" data-bind="text:$component.locale.minAmount"></span>
+
+          <span class="amount-label" data-bind="text:$baseModel.formatCurrency($component.selectedTransactionData().transactionalLimitData.miniAmount,$component.selectedTransactionData().transactionalLimitData.miniCurrency)"></span>
+
+        </div>
+        <div class="oj-flex-item oj-sm-6 oj-lg-6">
+            <span class="oj-sm-6 oj-lg-6" data-bind="text:$component.locale.maxAmount"></span>
+
+          <span class="amount-label" data-bind="text:$baseModel.formatCurrency($component.selectedTransactionData().transactionalLimitData.maxAmount,$component.selectedTransactionData().transactionalLimitData.maxCurrency)"></span>
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <div class="oj-flex-item oj-sm-12 oj-lg-12 center">
+      <!-- ko if: $component.showGraph() -->
+      <div class="oj-flex oj-flex-items-pad oj-flex-item" data-bind='component:{name: "limits-graph", params:{rootModel: $component, data: $component.selectedTransactionData(),flag: $component.flag()}}'></div>
+      <!-- /ko -->
+      <!-- ko if: $component.dataLoaded() && !$component.showGraph() -->
+      <img class="no-limit-image" data-bind="loadImage:'dashboard/reports.svg'">
+      <div data-bind="text:$component.locale.nolimits"></div>
+      <!-- /ko -->
+    </div>
+
+  </div>
+</div>

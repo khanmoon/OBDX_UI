@@ -1,0 +1,142 @@
+<div class="oj-flex-item oj-sm-12 personal-details-container">
+  <!-- ko if: showComponents() -->
+  <div class="oj-flex oj-flex-items-pad personal-details">
+    <div class="oj-flex-item oj-lg-12 oj-md-11 oj-sm-11 document right">
+      <a href="javascript:void(0)" id="uploadDocument" data-bind="click:$component.showPluginComponent.bind($data,'document-upload'),
+          attr:{'alt':$component.resource.alt.uploadDocumentLink,'title':$component.resource.title.uploadDocument}">
+		      <span class="icons icon-upload"></span>
+          <span data-bind="text:$component.resource.title.uploadDocument"></span>
+      </a>
+    </div>
+  </div>
+  <div id="personalDetailsAccordion" class="accordion">
+    <!-- ko foreach: productDetails().application().currentApplicationStage.applicantStages -->
+    <!-- ko if: $component.showAboutYouBanner() -->
+    <!-- ko if: $index() === $component.applicationStages.length -->
+    <div class="oj-flex oj-flex-items-pad customer-prefilled-section">
+      <div class="oj-flex-item oj-sm-10 oj-md-10 oj-lg-10">
+        <div class="" data-bind="text: $component.resource.infoPrefilled"></div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <div class="card ">
+      <div class="card-header oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-10 oj-md-9 oj-lg-9">
+          <div class="oj-flex oj-flex-items-pad card-icons-title">
+            <div class="accordion-strip"></div>
+            <div class="card-icon-container">
+              <div class="card-icon icons icon" data-bind="css: 'icon-' + $data.id"></div>
+            </div>
+            <h2 class="card-title oj-flex-item" data-bind="text: $data.accordionTitle(), attr:{'aria-label':$data.accordionTitle()}"></h2>
+          </div>
+        </div>
+        <div class="card-expander oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+          <!-- ko if: !$data.isComplete() -->
+          <!-- ko if: !$data.showAlert() -->
+          <a href="#" class="icons icon icon-arrow-right section-icon collapse-icon" data-bind="attr:{'alt':$component.resource.alt.minimize,'title':$component.resource.title.minimize}"></a>
+          <!-- /ko -->
+          <!-- ko if: $data.showAlert() -->
+
+          <a href="javascript:void(0)" class="icon icon-alert section-icon collapse-icon" alt=""></a>
+
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if: $data.isComplete() -->
+
+          <span class="icons icon-success pull-right done-icon"></span>
+          <!-- /ko -->
+        </div>
+      </div>
+      <div class="">
+        <!-- ko ifnot: $component.showAboutYouBanner() -->
+        <!-- ko if : $index() === 0 -->
+        <div class="card-body form-main-container" data-bind="component: { name: $data.id, params: { rootModel: $parent,
+                                                    coApplicant:$data.coappNumber?true:false,
+                                                    applicantObject: $data.coappNumber?$component.applicantDetails()[$data.coappNumber]:$component.applicantDetails()[0],
+                                                    applicantAccordion:$component.productDetails().application().currentApplicationStage.applicantAccordion,
+                                                    applicantStages: $component.productDetails().application().currentApplicationStage.applicantStages[$index()],
+                                                    index:$index()
+                                                    }}">
+        </div>
+        <!-- /ko -->
+        <!-- ko if : $index()>0 && $component.productDetails().application().currentApplicationStage.applicantStages[$index()-1].isComplete() -->
+        <div class="card-body form-main-container" data-bind="component: { name: $data.id, params: { rootModel: $parent,
+                                               coApplicant:$data.coappNumber?true:false,
+                                               applicantObject: $data.coappNumber?$component.applicantDetails()[$data.coappNumber]:$component.applicantDetails()[0],
+                                               applicantAccordion:$component.productDetails().application().currentApplicationStage.applicantAccordion,
+                                               applicantStages: $component.productDetails().application().currentApplicationStage.applicantStages[$index()],
+                                               index:$index()
+                                                }}"></div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: $component.showAboutYouBanner() -->
+        <!-- ko if : $index() < $component.applicationStages.length -->
+        <!-- ko if : $index() === 0 -->
+        <div class="card-body form-main-container" data-bind="component: { name: $data.id, params: { rootModel: $parent,
+                                                    coApplicant:$data.coappNumber?true:false,
+                                                    applicantObject: $data.coappNumber?$component.applicantDetails()[$data.coappNumber]:$component.applicantDetails()[0],
+                                                    applicantAccordion:$component.productDetails().application().currentApplicationStage.applicantAccordion,
+                                                    applicantStages: $component.productDetails().application().currentApplicationStage.applicantStages[$index()],
+                                                    index:$index()
+                                                    }}">
+        </div>
+        <!-- /ko -->
+        <!-- ko if : $index()>0 && $component.productDetails().application().currentApplicationStage.applicantStages[$index()-1].isComplete() -->
+        <div class="card-body form-main-container" data-bind="component: { name: $data.id, params: { rootModel: $parent,
+                                               coApplicant:$data.coappNumber?true:false,
+                                               applicantObject: $data.coappNumber?$component.applicantDetails()[$data.coappNumber]:$component.applicantDetails()[0],
+                                               applicantAccordion:$component.productDetails().application().currentApplicationStage.applicantAccordion,
+                                               applicantStages: $component.productDetails().application().currentApplicationStage.applicantStages[$index()],
+                                               index:$index()
+                                                }}"></div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko ifnot : $index() < $component.applicationStages.length -->
+        <div class="card-body form-main-container" data-bind="component: { name: $data.id, params: { rootModel: $parent,
+                                                    coApplicant:$data.coappNumber?true:false,
+                                                    applicantObject: $data.coappNumber?$component.applicantDetails()[$data.coappNumber]:$component.applicantDetails()[0],
+                                                    applicantAccordion:$component.productDetails().application().currentApplicationStage.applicantAccordion,
+                                                    applicantStages: $component.productDetails().application().currentApplicationStage.applicantStages[$index()],
+                                                    index:$index()
+                                                    }}">
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- /ko -->
+  </div>
+  <span data-bind="template:{afterRender:$component.initializeAccordion}"></span>
+  <!-- /ko -->
+  <!-- ko if: displaySubmitButton() -->
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <oj-button raised="" id="personalInfoSubmit" class="action-button-primary first-3" :aria-label="[[$component.resource.proceed]]" on-click="[[$component.continueClick]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+    <oj-button raised="" id="cancel" class="action-button-secondary last-3 oj-button" on-click="[[$component.showPluginComponent.bind($data,'cancel-application')]]">
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+    </oj-button>
+    <oj-button raised="" id="saveForLater" class="action-button-tertiary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]" disabled="[[!$component.productDetails().application().currentApplicationStage.applicantStages[0].isComplete()]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+
+  </div>
+  <!-- /ko -->
+</div>
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component, id:'continueInvalidAlert', header:$component.resource.generic.common.warning">
+  <div class="message-text label scroll" data-bind="html:$component.resource.continueInvalidAlert"></div>
+  <div class="message-btn button-container">
+    <oj-button id="" class="toUpperCase form-button-primary" on-click="[[function(){$('#continueInvalidAlert').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.generic.common.ok"></span>
+    </oj-button>
+  </div>
+</modal-window>
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component, id:'continueInvalid', header:$component.resource.generic.common.warning">
+  <div class="message-text label scroll" data-bind="html:$component.resource.continueInvalid"></div>
+  <div class="message-btn button-container">
+    <oj-button id="" class="toUpperCase form-button-primary" on-click="[[function(){$('#continueInvalid').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.generic.common.ok"></span>
+    </oj-button>
+  </div>
+</modal-window>

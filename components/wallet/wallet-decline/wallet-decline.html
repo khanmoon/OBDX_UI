@@ -1,0 +1,28 @@
+<!-- ko if: showBalanceInfo -->
+    <div data-bind="component:{name: 'wallet-info-panel', params:{rootModel: $parent }}"></div>
+<!-- /ko -->
+<div class=" wallets_container">
+<div class="oj-panel form-main-container card-action-container">
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="section">
+          <div class="oj-row">
+            <div class=" wallets-action-label">
+              <oj-label><span data-bind="text:$component.wallet.decline.decline"></span></oj-label>
+            </div>
+          </div>
+          <div class="oj-row button-container">
+            <oj-button class="action-button-primary" on-click="[[declineRequest]]">
+      <span data-bind="text:$component.common.yes"></span>
+</oj-button>
+            <img data-bind="loadImage:'wallet/wallet-farward-white.png'">           
+
+            <oj-button class="action-button-secondary" id="button-cancel" on-click="[[cancelDecline]]">
+      <span data-bind="text:$component.common.no"></span>
+</oj-button>
+          </div>
+      </div>
+    </page-section>
+
+</div>
+</div>

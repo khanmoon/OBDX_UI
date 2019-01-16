@@ -1,0 +1,56 @@
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-7">
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="text:$component.resource.creditCard.cardOfferType"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<span class="details-text-value" data-bind="text: offerDetails[0].offerAdditionalDetails.cardOfferDetails.standardFeature.creditCardOfferType"></span>
+			</div>
+		</div>
+
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="text:$component.resource.creditCard.minCreditLimit"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<span class="details-text-value" data-bind="text: $baseModel.formatCurrency(offerDetails[0].offerAdditionalDetails.cardOfferDetails.creditCardLimitDetail[0].minimumCreditLimit,offerDetails[0].offerAdditionalDetails.cardOfferDetails.creditCardLimitDetail[0].creditCardLimitDetailKey.currencyCode)"></span>
+			</div>
+		</div>
+
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="text:$component.resource.creditCard.maxCreditLimit"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<span class="details-text-value" data-bind="text: $baseModel.formatCurrency(offerDetails[0].offerAdditionalDetails.cardOfferDetails.creditCardLimitDetail[0].maximumCreditLimit,offerDetails[0].offerAdditionalDetails.cardOfferDetails.creditCardLimitDetail[0].creditCardLimitDetailKey.currencyCode)"></span>
+			</div>
+		</div>
+
+		<!-- ko if: offerDetails[0].offerAdditionalDetails.cardOfferDetails.standardFeature.addOnCardAllowed -->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="text:$component.resource.creditCard.maxAddOnCardAllowed"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<span class="details-text-value" data-bind="text: offerDetails[0].offerAdditionalDetails.cardOfferDetails.standardFeature.maximumAddOnCard"></span>
+			</div>
+		</div>
+		<!-- /ko -->
+	</div>
+
+	<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5 facilities">
+		<div class="details-text" data-bind="text:$component.resource.casa.facilities"></div>
+		<ul class="oj-flex-item oj-sm-5 oj-md-6 oj-lg-12 no-pad-cols facilities-values">
+			<!-- ko if:offerDetails[0].offerAdditionalDetails.cardOfferDetails.standardFeature.balanceTransferAllowed -->
+			<li class="details-text-value" data-bind="text:$component.resource.creditCard.balanceTransferAllowed"></li>
+			<!-- /ko  -->
+			<!-- ko if:offerDetails[0].offerAdditionalDetails.cardOfferDetails.pictureCard -->
+			<li class="details-text-value" data-bind="text:$component.resource.creditCard.pictureCardAllowed"></li>
+			<!-- /ko  -->
+			<!-- ko if:offerDetails[0].offerAdditionalDetails.cardOfferDetails.standardFeature.addOnCardAllowed -->
+			<li class="details-text-value" data-bind="text:$component.resource.creditCard.addOnCardAllowed"></li>
+			<!-- /ko  -->
+		</ul>
+	</div>
+</div>

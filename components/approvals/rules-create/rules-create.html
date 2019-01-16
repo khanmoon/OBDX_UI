@@ -1,0 +1,475 @@
+<div class="oj-flex">
+    <div data-bind="css: $component.mode() === 'REVIEW'  ? 'oj-flex-item oj-sm-12' : 'oj-flex-item oj-sm-9'">
+        <oj-validation-group id="validTracker" valid="{{groupValid}}">
+
+            <!-- ko if: $component.pageLoaded()===true -->
+            <!-- ko ifnot: $component.mode()==='SUCCESS' -->
+            <!-- <span data-bind="text:$component.userInputModel()[0].editable"/> -->
+            <div class="form-main-container">
+                <!-- ko if : $component.mode() === 'REVIEW' -->
+                <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+                <!-- /ko -->
+                <page-section params="baseModel : $baseModel, rootModel : $data">
+
+                    <!-- ko ifnot:$component.rulesCreateModelInstance().approvals.partyDetailsFetched() -->
+
+                    <!-- /ko -->
+                    <!-- end this ko after page section -->
+
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.rules.partyid , value : $component.params.partyDetails.party.displayValue"></row>
+
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.rules.partyname , value : $component.partyName"></row>
+
+
+
+                    <!-- Transaction Type -->
+
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                            <oj-label :for="[['selectTransaction']]"><span data-bind="text:$component.nls.rules.selectTransaction"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 ">
+                            <oj-buttonset-one :id="[['selectTransaction']]" value="{{$component.transactionType}}" on-value-changed="[[fetchTransactionRules]]" disabled="[[$component.disableUITxn]]">
+                                <oj-option value="{{'FINANCIAL_TRANSACTION'}}" disabled="[[!$component.userInputModel()[0].editable]]" :id="[['FINANCIAL_TRANSACTION']]" :name="[['name']]">
+                                    <span data-bind="attr: {for: 'FINANCIAL_TRANSACTION'},text: $component.nls.rules.financialTransaction"></span></oj-option>
+                                <oj-option value="{{'NONFINANCIAL_TRANSACTION'}}" disabled="[[!$component.userInputModel()[0].editable]]" :id="[['NONFINANCIAL_TRANSACTION']]" :name="[['name']]">
+                                    <span data-bind="attr: {for: 'NONFINANCIAL_TRANSACTION'},text: $component.nls.rules.nonFinancialTransaction"></span></oj-option>
+                                <oj-option value="{{'MAINTENANCE'}}" disabled="[[!$component.userInputModel()[0].editable]]" :id="[['ADMIN_MAINTENANCE']]" :name="[['name']]"><span data-bind="attr: {for: 'ADMIN_MAINTENANCE'},text: $component.nls.rules.admin_maintenance"></span></oj-option>
+                                <!-- ko ifnot:isCorpAdmin() -->
+                                <oj-option value="{{'ADMINISTRATION'}}" disabled="[[!$component.userInputModel()[0].editable]]" :id="[['ADMINISTRATION']]" :name="[['name']]"><span data-bind="attr: {for: 'ADMINISTRATION'},text: $component.nls.rules.administrationValue"></span></oj-option>
+                                <!-- /ko -->
+                            </oj-buttonset-one>
+                        </div>
+                    </div>
+
+                    <!-- ko if: $component.mode() !=='CREATE' -->
+
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.rules.ruleCode , value : $component.rulesCreateModelInstance().rulesCreatePayload.ruleName"></row>
+                    <!-- /ko -->
+                    <!-- ko if: $component.mode()==='CREATE'-->
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                            <oj-label for="ruleCode"><span data-bind="text:$component.nls.rules.ruleCode"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                            <oj-input-text id="ruleCode" type="text" translations="[[{'required':{messageDetail:$component.nls.rules.Empty}}]]" required="[[true]]" validators="[[$baseModel.getValidator('APPLICATION_CODE')]]" value="{{$component.rulesCreateModelInstance().rulesCreatePayload.ruleName}}"></oj-input-text>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko ifnot: (($component.mode()==='CREATE') || ($component.mode()==='EDIT')) -->
+
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.rules.ruleDescription , value : $component.rulesCreateModelInstance().rulesCreatePayload.description"></row>
+
+                    <!-- /ko -->
+                    <!-- ko if: $component.mode()==='EDIT'-->
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                            <oj-label for="ruleDescription"><span data-bind="text:$component.nls.rules.ruleDescription"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                            <oj-input-text id="ruleDescription" type="text" translations="[[{'required':{messageDetail:$component.nls.rules.Empty}}]]" required="[[true]]" validators="[[$component.getValidator('APPLICATION_DEscriptION')]]" value="{{$component.rulesCreateModelInstance().rulesCreatePayload.description}}"></oj-input-text>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: $component.mode()==='CREATE'-->
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                            <oj-label for="ruleDescription"><span data-bind="text:$component.nls.rules.ruleDescription"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                            <oj-input-text id="ruleDescription" type="text" translations="[[{'required':{messageDetail:$component.nls.rules.Empty}}]]" required="[[true]]" validators="[[$component.getValidator('APPLICATION_DEscriptION')]]" value="{{$component.rulesCreateModelInstance().rulesCreatePayload.description}}"></oj-input-text>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko if: $component.mode() !=='VIEW' -->
+                    <!-- ko if : $component.rulesCreateModelInstance().approvals.partyDetailsFetched() -->
+                    <!-- both ko end after user-input component -->
+                    <!-- /ko -->
+                    <!-- /ko -->
+
+                </page-section>
+                <page-section params="rootModel : $data, heading : nls.rules.initiator">
+
+
+                    <div data-bind="component: {name: 'user-input', params:{rootModel:$component,userInputModel:$component.userInputModel()[0], nodeId:nodeId,multipleCall:false,userListId:true, validationTracker:$component.validationTracker}}, attr:{'id':'steps_'+0}"></div>
+
+                </page-section>
+
+                <!-- ko if: ($component.mode() ==='CREATE') || ($component.mode() ==='EDIT') -->
+
+                <!-- ko if:showTransactions -->
+                <page-section params="rootModel : $data, heading : nls.rules.transactions">
+
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                            <oj-label id="Transactions" for="tridata"><span data-bind="text:$component.nls.rules.transactions"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                            <!-- ko if: showDropDownTransactions() -->
+                            <oj-select-one class="listbox-drop" id="tridata" translations="[[{'required':{messageDetail:$component.nls.rules.pleaseSelect}}]]" required="[[true]]" value="{{selectedTransaction}}" options="[[Transactions]]">
+                            </oj-select-one>
+
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </page-section>
+                <!-- /ko -->
+
+                <!-- ko if:showUserAccounts -->
+                <page-section params="rootModel : $data, heading : nls.rules.accounts">
+
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                            <oj-label id="Accounts" for="tridataForAccounts"><span data-bind="text:$component.nls.rules.accounts"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                            <!-- ko if: showDropDownAccounts() -->
+                            <oj-select-one class="listbox-drop" id="tridataForAccounts" translations="[[{'required':{
+                      messageDetail:$component.nls.rules.pleaseSelect}}]]" required="[[true]]" value="{{selectedAccount}}" options="[[Accounts]]">
+                            </oj-select-one>
+
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </page-section>
+
+                <!-- /ko -->
+
+                <!-- ko if:showAmountRule -->
+
+                <page-section params="rootModel : $data, heading : nls.rules.currency">
+
+
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                            <oj-label for="amountCurrency"><span data-bind="text:$component.nls.rules.currency"></span></oj-label>
+                        </div>
+                        <!-- ko if : $component.currencyLoaded() -->
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+                            <oj-select-one class="listbox-drop" :id="[['amountCurrency']]" translations="[[{'required':{
+                                      messageDetail:$component.nls.rules.pleaseSelect}}]]" required="[[true]]" value="{{currency}}" on-value-changed="[[$component.currencyChangeHandler]]" :placeholder="[[$component.nls.rules.pleaseSelect]]" :invalidcomponenttracker="[[$component.validationTracker]]">
+                                <!-- ko foreach:$component.currencyList() -->
+                                <oj-option value="{{code}}"><span data-bind="text:code"></span></oj-option>
+                                <!-- /ko -->
+                            </oj-select-one>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+
+                </page-section>
+                <!-- /ko -->
+
+
+                <!-- ko if:showAmountRule -->
+
+                <page-section params="rootModel : $data, heading : nls.rules.amountRange">
+
+
+                    <div data-bind="component: {
+                      name: 'amount-input', params: {
+                      amount :$component.fromAmount,
+                      label : $component.nls.rules.fromAmount,
+                      currency: $component.currency,
+                      validator:$component.validationTracker,
+                      isMandatory:true,
+                      rootId:'fromAmount',
+                      currencyURL : '',
+                      currencyParser : '',
+                      rootClass:'form-input'
+                      }}">
+                    </div>
+
+                    <div data-bind="component: {
+                              name: 'amount-input', params: {
+                              amount :$component.toAmount,
+                              label : $component.nls.rules.toAmount,
+                              currency: $component.currency,
+                              validator:$component.validationTracker,
+                              isMandatory:true,
+                              rootId:'toAmount',
+                              currencyURL : '',
+                              currencyParser : '',
+                              rootClass:'form-input'
+                          }
+                        }">
+                    </div>
+                </page-section>
+
+                <!-- /ko -->
+
+                <!-- /ko -->
+
+                <!-- ko ifnot: ($component.mode() ==='CREATE') || ($component.mode() ==='EDIT') -->
+
+                <!-- ko if: (selectedTransaction && showTransactions) -->
+                <page-section params="rootModel : $data, heading : nls.rules.transactions">
+
+                    <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.rules.transactions , value : transactionName"></row>
+
+                </page-section>
+                <!-- /ko -->
+
+                <!-- ko if: (selectedAccount && showUserAccounts)-->
+                <page-section params="rootModel : $data, heading : nls.rules.accounts">
+
+                    <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.rules.accounts , value : selectedAccount"></row>
+
+                </page-section>
+                <!-- /ko -->
+
+                <!-- ko if:currency && showCurrency-->
+                <page-section params="rootModel : $data, heading : nls.rules.currency">
+
+                    <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.rules.currency , value : $component.currency()"></row>
+
+                </page-section>
+                <!-- /ko -->
+
+                <!-- ko if:(fromAmount && showAmountRule)-->
+                <page-section params="rootModel : $data, heading : nls.rules.amountRange">
+
+                    <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.rules.fromAmount , value : $component.formatCurrency(fromAmount(), currency())"></row>
+
+                </page-section>
+                <!-- /ko -->
+
+                <!-- ko if:(toAmount && showAmountRule)-->
+                <page-section params="rootModel : $data, heading : ''">
+
+                    <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.rules.toAmount, value : $component.formatCurrency(toAmount(), currency())"></row>
+
+                </page-section>
+                <!-- /ko -->
+
+
+
+                <!-- /ko -->
+                <page-section params="rootModel : $data, heading : nls.rules.workflowDetails">
+
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                            <oj-label :for="[['approvalRequiredLabelRules']]"><span data-bind="text:$component.nls.rules.approvalsRequired"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 ">
+                            <oj-buttonset-one :id="[['approvalRequiredLabelRules']]" value="{{$component.isApprovalRequired}}" on-value-changed="[[changeApprovalRequired]]" disabled="[[$component.disableUITxn]]">
+                                <oj-option value="{{'YES'}}" disabled="[[!$component.userInputModel()[0].editable()]]" :id="[['YES']]" :name="[['approval']]"><span data-bind="attr: {for: 'YES'},text:$component.nls.common.yes"></span>
+                                </oj-option>
+                                <oj-option value="{{'NO'}}" disabled="[[!$component.userInputModel()[0].editable()]]" :id="[['NO']]" :name="[['approval']]"><span data-bind="attr: {for: 'NO'},text:$component.nls.common.no"></span>
+                                </oj-option>
+                            </oj-buttonset-one>
+                        </div>
+                    </div>
+
+                    <!-- WorkFlow List-->
+                    <!-- ko if: ($component.mode()==='EDIT') || ($component.mode()==='CREATE') -->
+
+                    <div class="oj-flex oj-flex-items-pad">
+                        <!-- ko if:workFlowLoaded -->
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+
+                            <oj-label id="workFlowNameLabel" for="workFlowNameRules"><span data-bind="text:$component.nls.rules.ruleWorkflow"></span></oj-label>
+
+                        </div>
+                        <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-4">
+
+                            <oj-select-one id="workFlowNameRules" required="[[true]]" :id="[['workflow']]" translations="[[{'required':{messageDetail:$component.nls.rules.pleaseSelect}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.nls.rules.pleaseSelect]]"
+                              value="{{$component.rulesCreateWorkFlowId}}" on-value-changed="[[$component.rulesCreateWorkFlowIdSubscriptions]]">
+                                <!-- ko foreach: workFlowList -->
+                                <oj-option value="{{workFlowId}}"><span data-bind="text:name"></span></oj-option>
+                                <!-- /ko -->
+                            </oj-select-one>
+
+                            <!-- ko if:workFlowLoaded -->
+                            <!-- ko if:rulesCreateWorkFlowId -->
+                            <!-- ko if:workFlowDetailsLoaded -->
+                            <!-- ko foreach:$component.workflowDetails().workFlowDetails.steps -->
+                            <!--  <div class="oj-flex oj-flex-items-pad">-->
+                            <!-- ko if: userGroup.unary -->
+                            <!-- ko foreach:userGroup.users -->
+                            <br>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+
+                                <oj-label for="workflowDescription"><span data-bind="text:$component.format($component.nls.rules.appLevel,{level:$parent.sequenceNo})"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                <span id="workflowDescription" data-bind="text:$component.format($component.nls.rules.userName,{firstName:firstName,lastName:lastName,userName:userId})"></span>
+                            </div>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- ko if: !userGroup.unary -->
+                            <br>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                                <oj-label for="workflowname"><span data-bind="text:$component.format($component.nls.rules.appLevel,{level:sequenceNo})"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                                <span id="workflowname" data-bind="text:userGroup.name"></span>
+                            </div>
+                            <!-- /ko -->
+                            <!-- </div>-->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+
+                        <!-- /ko -->
+
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko ifnot: ($component.mode()==='EDIT') || ($component.mode()==='CREATE') -->
+
+                    <!-- ko if:workFlowLoaded -->
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                            <oj-label id="workFlowNameLabel" for="workFlowNameRules"><span data-bind="text:$component.nls.rules.ruleWorkflow"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-4">
+                            <span data-bind="text:selectedWorkflowName"></span>
+
+                            <!-- ko if:workFlowLoaded -->
+                            <!--  if:rulesCreateWorkFlowId -->
+
+                            <!-- ko if:workFlowDetailsLoaded -->
+
+                            <!-- ko foreach:$component.workflowDetails().workFlowDetails.steps -->
+                            <!--  <div class="oj-flex oj-flex-items-pad">-->
+                            <!-- ko if: userGroup.unary -->
+                            <!-- ko foreach:userGroup.users -->
+                            <br>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                                <oj-label for="workflowLevelNotUnary"><span data-bind="text:$component.format($component.nls.rules.appLevel,{level:$parent.sequenceNo})"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                <span id="workflowLevelNotUnary" data-bind="text:$component.format($component.nls.rules.userName,{firstName:firstName,lastName:lastName,userName:userId})"></span>
+                            </div>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- ko if: !userGroup.unary -->
+                            <br>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                                <oj-label for="workflowLevelUnary"><span data-bind="text:$component.format($component.nls.rules.appLevel,{level:sequenceNo})"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                                <span id="workflowLevelUnary" data-bind="text:userGroup.name"></span>
+                            </div>
+
+                            <!-- /ko -->
+                            <!-- </div>-->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!--  -->
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <modal-window class="message" params="rootModel : $component,id:'deleteRule',header:$component.nls.common.delete">
+                        <div class="form-main-container message-text">
+                            <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-flex-item">
+                                    <span class="icon icon-warning"></span>
+                                    <span data-bind="text:$component.nls.rules.deleteRuleMsg"></span>
+                                </div>
+                            </div>
+                            <div class="button-container">
+                                <oj-button id="deleteYes" class="action-button-primary" on-click="[[deleteRule]]">
+                                    <span data-bind="text:$component.nls.common.yes"></span>
+                                </oj-button>
+                                <oj-button id="deleteNo" class="action-button-secondary" on-click="[[function(){$('#deleteRule').hide();}]]">
+                                    <span data-bind="text:$component.nls.common.no"></span>
+                                </oj-button>
+                            </div>
+                        </div>
+                    </modal-window>
+
+                </page-section>
+
+                <!-- ko if: ($component.mode()==='VIEW')  -->
+                <div class="oj-flex oj-flex-items-pad button-container">
+
+                    <oj-button class="action-button-primary" on-click="[[editRule]]">
+                        <span data-bind="text:$component.nls.common.edit"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[function(){$('#deleteRule').trigger('openModal');}]]">
+                        <span data-bind="text:$component.nls.common.delete"></span>
+                    </oj-button>
+                    <oj-button class="action-button-tertiary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0).bind(void 0,void 0)]]">
+                        <span data-bind="text:$component.nls.common.cancel"></span>
+                    </oj-button>
+                    <oj-button class="action-button-tertiary" on-click="[[back]]">
+                        <span data-bind="text:$component.nls.common.back"></span>
+                    </oj-button>
+
+
+
+                </div>
+                <!-- /ko -->
+
+                <!-- ko if: $component.mode()==='EDIT' -->
+                <div class="oj-flex oj-flex-items-pad button-container">
+                    <oj-button class="action-button-primary" on-click="[[save]]">
+                        <span data-bind="text:$component.nls.common.save"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[cancelConfirmation]]">
+                        <span data-bind="text:$component.nls.common.cancel"></span>
+                    </oj-button>
+                    <oj-button class="action-button-tertiary" on-click="[[back]]">
+                        <span data-bind="text:$component.nls.common.back"></span>
+                    </oj-button>
+
+
+
+                </div>
+                <!-- /ko -->
+
+                <!-- ko if: $component.mode()==='CREATE' -->
+                <div class="oj-flex oj-flex-items-pad button-container">
+                    <!-- click: function(){$('#confirmCancellationScreen').trigger('openModal');} -->
+                    <oj-button class="action-button-primary" on-click="[[save]]">
+                        <span data-bind="text:$component.nls.common.save"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[cancelConfirmation]]">
+                        <span data-bind="text:$component.nls.common.cancel"></span>
+                    </oj-button>
+                    <oj-button class="action-button-tertiary" on-click="[[back]]">
+                        <span data-bind="text:$component.nls.common.back"></span>
+                    </oj-button>
+
+
+
+                </div>
+                <!-- /ko -->
+
+                <!-- ko if: $component.mode()==='REVIEW' -->
+                <div class="oj-flex oj-flex-items-pad button-container">
+
+                    <oj-button class="action-button-primary" on-click="[[create]]">
+                        <span data-bind="text:$component.nls.common.confirm"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[cancelConfirmation]]">
+                        <span data-bind="text:$component.nls.common.cancel"></span>
+                    </oj-button>
+                    <oj-button class="action-button-tertiary" on-click="[[editReview]]">
+                        <span data-bind="text:$component.nls.common.back"></span>
+                    </oj-button>
+                </div>
+                <!-- /ko -->
+
+
+
+            </div>
+            <!-- /ko -->
+
+
+            <!-- /ko -->
+        </oj-validation-group>
+    </div>
+    <!-- ko ifnot: $component.mode()==='REVIEW' -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'rules'"></help>
+    </div>
+    <!-- /ko -->
+</div>

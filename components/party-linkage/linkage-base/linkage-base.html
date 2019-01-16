@@ -1,0 +1,119 @@
+<div class="container-record">
+
+  <div class="form-main-container">
+    <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+        <!-- ko if: showPartyValidateComponent  -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8" data-bind="component: {
+           name: 'party-validate', params:{
+           rootModel: $data, partyDetails: rootModelInstance().partyDetails, additionalDetails: rootModelInstance().partyDetails.additionalDetails
+           }} ">
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: showPartyValidateComponent  -->
+        <!-- ko if:showStaticPartyInfo() -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+          <!-- as per wireframe when neither create nor update screen is visible, there is no header -->
+          <!-- ko ifnot: ($component.loadUpdateComponent()&&$component.loadCreateComponent()) -->
+          <!-- <action-header params="rootModel : $data, heading : nls.common.view">
+            </action-header>-->
+          <!-- /ko -->
+          <!-- header present only if linkage is already created -->
+
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+              <label data-bind="text: nls.fieldname.partyId"></label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+              <span data-bind="text:partyDisplayName"></span>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+              <label data-bind="text: nls.fieldname.partyName"></label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+              <span data-bind="text:partyName"></span>
+            </div>
+          </div>
+
+        </page-section>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: $component.loadCreateComponent() -->
+        <div data-bind="component: {name:'create-linkage' , params:{rootModel:$data }}">
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: $component.loadUpdateComponent() -->
+        <div data-bind="component: {name:'linkage-update' , params:{rootModel:$data }}">
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.loadCreateComponent() -->
+        <!-- ko if: isLinkageCreated  -->
+        <!-- ko if: loadSummaryTable  -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : isLinkageCreated ? nls.headers.linkedparties : nls.headers.linkparties">
+
+          <oj-table :aria-label="[[$component.nls.headers.linkparties]]" columns="[[[{headerText:nls.common.partyID,field:'relatedPartyIdDisplay'},{headerText:nls.common.partyName,field:'relatedPartyName'}]]]" data="[[$component.linkagedataSource]]">
+            <caption class="hide-label" data-bind="text:$component.nls.headers.linkparties"></caption>
+          </oj-table>
+          <!--<script type="text/html" id="name_template">
+                <td>
+                    <span data-bind="text: $baseModel.format($component.nls.fieldvalues.fullname, {firstName: ($data.relatedPartyFirstName ? $data.relatedPartyFirstName : ''),lastName:($data.relatedPartyLastName ? $data.relatedPartyLastName : '')})"></span>
+
+                </td>
+            </script>-->
+
+        </page-section>
+
+        <div class="oj-flex-item button-container">
+          <!-- ko ifnot: partyIdFetched  -->
+          <oj-button class="action-button-primary" on-click="[[loadLinkageUpdateComponent]]">
+            <span data-bind="text:$component.nls.generic.common.edit"></span>
+          </oj-button>
+          <!-- /ko -->
+          <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+          </oj-button>
+          <!-- ko ifnot: partyIdFetched  -->
+          <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+            <span data-bind="text:$component.nls.common.back"></span>
+          </oj-button>
+          <!-- /ko -->
+        </div>
+
+
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: isDataRecieved -->
+        <!-- ko ifnot: isLinkageCreated -->
+        <div class="oj-flex-item button-container">
+          <oj-button id="editButton" class="action-button-primary" on-click="[[loadLinkageCreationComponent]]" disabled="[[isCorpAdmin]]">
+            <span data-bind="text:$component.nls.generic.common.create"></span>
+          </oj-button>
+          <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+          </oj-button>
+          <oj-button id="backButton" class="action-button-tertiary" on-click="[[$component.back]]">
+            <span data-bind="text:$component.nls.common.back"></span>
+          </oj-button>
+        </div>
+
+
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+      <!-- ko if: $baseModel.large() -->
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'party-linkage'"></help>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>

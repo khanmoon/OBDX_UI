@@ -1,0 +1,57 @@
+<div class="form-main-container">
+  <!-- ko ifnot: $baseModel.small() -->
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <oj-table id="multiple-sweep-in-instruction-status" :aria-label="[[$component.resource.label.caption]]" columns='[[[{"headerText": $component.resource.label.accountNo, "field": "accountId"},{"headerText": $component.resource.label.partyName,
+        "field": "partyName"},{"headerText": $component.resource.label.hostRefNo, "field":"hostRefNo"},{"headerText": $component.resource.label.status,
+        "field": "status"}].concat($component.showFailureReason() ?[{"headerText": $component.resource.label.failureReason,
+        "field": "failureReason"}]:[])]]' selection-mode="[[{column:'none',row:'none'}]]" data="[[$component.multipleSweepInInstructionStatusDataProvider]]">
+          <caption class="hide-label" data-bind="text:$component.resource.label.caption"></caption>
+        </oj-table>
+      </div>
+    </div>
+  </page-section>
+  <!-- /ko -->
+  <!-- ko if: $baseModel.small() -->
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <oj-list-view id="multiple-sweep-in-instruction-status-list" :aria-label="[[$component.resource.label.caption]]" data="[[$component.multipleSweepInInstructionStatusDataProvider]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('multiple_sweep_in_instruction_status_template', true)]]"
+      selection-mode="single"></oj-list-view>
+    <script type="text/html" id="multiple_sweep_in_instruction_status_template">
+      <li class="card">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+            <label class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.label.accountNo"></label>
+            <div class="oj-flex-item oj-sm-12" data-bind="text:accountId"> </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+            <label class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.label.partyName"></label>
+            <div class="oj-flex-item oj-sm-12" data-bind="text:partyName"> </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+            <label class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.label.hostRefNo"></label>
+            <div class="oj-flex-item oj-sm-12" data-bind="text:hostRefNo"> </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+            <label class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.label.status"></label>
+            <div class="oj-flex-item oj-sm-12" data-bind="text:status"> </div>
+          </div>
+          <!-- ko if: $component.showFailureReason() -->
+          <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+            <label class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.label.failureReason"></label>
+            <div class="oj-flex-item oj-sm-12" data-bind="text:failureReason"> </div>
+          </div>
+          <!-- /ko -->
+        </div>
+      </li>
+    </script>
+  </page-section>
+  <!-- /ko -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <a class="black-link" href="#" data-bind="text:$component.resource.action.backToDashboard, click:$dashboard.switchModule.bind($data, $dashboard.application())"></a>
+      </div>
+    </div>
+  </page-section>
+</div>

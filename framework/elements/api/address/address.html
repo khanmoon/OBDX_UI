@@ -1,0 +1,272 @@
+<div class="address">
+
+    <oj-radioset class="oj-choice-direction-row" id="chequeSet" value="{{modofdelivery}}">
+
+        <!-- ko foreach: deliverAtArray -->
+      <oj-option :value="[[id]]" :id="[[id]]" :name="[[label]]"><span :for="[[id]]" data-bind="text:label"></span></oj-option>
+      <!-- /ko -->
+    </oj-radioset>
+
+    <!-- ko if:$component.defaultModeOfDelivery()  -->
+    <!-- ko if:courierAddressLoaded() -->
+
+    <div class="oj-flex">
+        <div class="oj-flex-item oj-sm-12 label ">
+            <oj-label class="hide-label" :for="[['addressType'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.locale.address.addressType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+            <oj-select-one data-id="addressTypeDropdown" required :id="[['addressType'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.locale.messages.address.addressType}}]]" :placeholder="[[$component.locale.messages.address.selectAddress]]" value="{{$component.addressType}}">
+              <!-- ko foreach:typeOfAddress() -->
+              <oj-option value="{{code+'/'+description}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+        </div>
+    </div>
+
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if:!$component.defaultModeOfDelivery() -->
+    <!-- ko if:stateLoaded -->
+    <div class="oj-flex oj-flex-items-pad oj-flex">
+        <div class="oj-flex-item oj-sm-12 label ">
+            <oj-label class="hide-label" :for="[['statelist'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.locale.messages.address.state"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <oj-select-one required :id="[['statelist'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.locale.messages.address.state}}]]" :placeholder="[[$component.locale.messages.address.select]]" value="{{selectedState}}">
+        <!-- ko foreach:$component.state() -->
+        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: cityLoaded() -->
+    <div class="oj-flex ">
+          <div class="oj-flex-item oj-sm-12 label ">
+            <oj-label :for="[['citylist'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.locale.city"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <oj-select-one required :id="[['citylist'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.locale.messages.city}}]]" :placeholder="[[$component.locale.messages.address.selectCity]]" value="{{selectedCity}}">
+              <!-- ko foreach:$component.city() -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+
+        </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if:$component.branchLoaded() -->
+    <div class="oj-flex ">
+            <!-- ko if:$component.branch().length>0 -->
+            <div class="oj-flex-item oj-sm-12 label ">
+              <oj-label :for="[['branchlist'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.locale.address.branch"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+              <oj-select-one data-id="branchList" required :id="[['branchlist'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.locale.messages.address.branch}}]]" :placeholder="[[$component.locale.messages.address.selectBranch]]" value="{{selectedBranch}}">
+                <!-- ko foreach:$component.branch() -->
+                  <oj-option value="{{code+'/'+description}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+            <!-- /ko -->
+    </div>
+        <!-- <responsive-select params="rootModel : $data,
+                placeholder:$component.locale.messages.address.selectBranch,
+                options:$component.branch(),
+                label:$component.locale.address.branch,type:'slider', validationTracker:validationTracker,
+                id:'branchList' + ($baseModel.incrementIdCount()),required:true,
+                output:selectedBranch"></responsive-select> -->
+    <!-- /ko -->
+
+
+    <!-- /ko -->
+
+    <!-- ko if:addressLoaded() -->
+    <div class="addressfields " data-bind="with:$component.addressMap()[$component.selectedAddressType()]">
+        <!-- ko if:line1 !== "" -->
+
+        <div>
+            <span data-bind="text:line1"></span>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if:line2 !== "" -->
+        <div>
+            <span data-bind="text:line2"></span>
+        </div>
+        <!-- /ko -->
+
+
+        <!-- ko if:line3 !== "" -->
+        <div>
+            <span data-bind="text:line3"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line4 !== "" -->
+        <div>
+            <span data-bind="text:line4"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line5 !== "" -->
+        <div>
+            <span data-bind="text:line5"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line6 !== "" -->
+        <div>
+            <span data-bind="text:line6"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line7 !== "" -->
+        <div>
+            <span data-bind="text:line7"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line8 !== "" -->
+        <div>
+            <span data-bind="text:line8"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line9 !== "" -->
+        <div>
+            <span data-bind="text:line9"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line10 !== "" -->
+        <div>
+            <span data-bind="text:line10"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line11 !== "" -->
+        <div>
+            <span data-bind="text:line11"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line12 !== "" -->
+        <div>
+            <span data-bind="text:line12"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:state !== "" -->
+        <div>
+            <span data-bind="text:state"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:city !== "" -->
+        <div>
+            <span data-bind="text:city"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:country !== "" -->
+        <div>
+            <span data-bind="text:country"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:zipCode !== "" -->
+        <div>
+            <span data-bind="text:zipCode"></span>
+        </div>
+        <!-- /ko -->
+
+
+    </div>
+
+    <!-- /ko -->
+    <!-- ko if:branchAddressLoaded() -->
+    <div class="addressfields " data-bind="with:$component.addresstoShow()">
+        <!-- ko if:branchName !== "" -->
+        <div>
+            <span data-bind="text:branchName"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line1 !== "" -->
+        <div>
+            <span data-bind="text:line1"></span>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if:line2 !== "" -->
+        <div>
+            <span data-bind="text:line2"></span>
+        </div>
+        <!-- /ko -->
+
+
+        <!-- ko if:line3 !== "" -->
+        <div>
+            <span data-bind="text:line3"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line4 !== "" -->
+        <div>
+            <span data-bind="text:line4"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line5 !== "" -->
+        <div>
+            <span data-bind="text:line5"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line6 !== "" -->
+        <div>
+            <span data-bind="text:line6"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line7 !== "" -->
+        <div>
+            <span data-bind="text:line7"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line8 !== "" -->
+        <div>
+            <span data-bind="text:line8"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line9 !== "" -->
+        <div>
+            <span data-bind="text:line9"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line10 !== "" -->
+        <div>
+            <span data-bind="text:line10"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line11 !== "" -->
+        <div>
+            <span data-bind="text:line11"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:line12 !== "" -->
+        <div>
+            <span data-bind="text:line12"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:state !== "" -->
+        <div>
+            <span data-bind="text:state"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:city !== "" -->
+        <div>
+            <span data-bind="text:city"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:country !== "" -->
+        <div>
+            <span data-bind="text:country"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:zipCode !== "" -->
+        <div>
+            <span data-bind="text:zipCode"></span>
+        </div>
+        <!-- /ko -->
+
+
+    </div>
+
+    <!-- /ko -->
+</div>

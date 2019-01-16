@@ -1,0 +1,101 @@
+<!-- ko ifnot: showConfirmation -->
+<!-- ko ifnot: showConfirmationForCreate -->
+<div class="mapping-module">
+<div data-bind="template: { name: 'review-screen/review-banner-template', data: {header: $component.nls.navLabels.review,reviewHeader:$component.nls.info.reviewMessage}}">
+  </div>
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading :">
+    </page-section>
+
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.partyID , value : $component.party.displayValue()"></row>
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.partyName , value :$component.partyName()"></row>
+
+    <!-- ko if: $component.accessLevel()==="USER" -->
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.userID , value : $component.selectedUserId()"></row>
+    <!-- ko if: $component.isUserNameLoaded -->
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.userName , value :$component.selectedUserName()"></row>
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.fieldname.transMapping">
+    </action-header>
+
+
+
+        <div class="" id="tabs-container-select">
+            <oj-tab-bar id="tabGroups-select" on-selection-changed="[[selectedTaskTabChangeHandler]]">
+                <!-- tab bar -->
+                <ul class="tab-list">
+                    <li><span data-bind="text : nls.fieldname.casaMapping"></span></li>
+                    <li><span data-bind="text : nls.fieldname.tdMapping"></span></li>
+                    <li><span data-bind="text : nls.fieldname.loansMapping"></span></li>
+                </ul>
+
+                <!-- For CASA -->
+                <div id="CASA">
+                    <div class="" data-bind="template: { name: 'account-access/casa-review'}"></div>
+                </div>
+
+                <!-- For TD -->
+
+                <div id="TRD">
+                    <div data-bind="template: { name: 'account-access/td-review'}"></div>
+                </div>
+
+                <!-- For Loans -->
+                <div id="LON">
+                    <div data-bind="template: { name: 'account-access/loan-review'}"></div>
+                </div>
+
+            </oj-tab-bar>
+        </div>
+        <div data-bind="template : {afterRender : $component.activateTab}"></div>
+
+
+</page-section>
+</div>
+
+<!-- ko ifnot : $component.rootParams && $component.rootParams.userAccountAccessDTOs -->
+
+<div class="oj-flex oj-flex-items-pad button-container">
+<!-- ko ifnot: $component.isAccessCreated -->
+    <oj-button class="action-button-primary" on-click="[[$component.createAccess]]">
+      <span data-bind="text:nls.common.confirm"></span>
+</oj-button>
+    <!-- /ko -->
+
+    <!-- ko if: $component.isAccessCreated -->
+    <!-- ko if: $component.editButtonPressed -->
+    <oj-button class="action-button-primary" on-click="[[$component.updateAccess]]">
+      <span data-bind="text:nls.common.confirm"></span>
+</oj-button>
+    <!-- /ko -->
+    <!-- /ko -->
+    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:nls.common.cancel"></span>
+</oj-button>
+
+    <oj-button class="action-button-tertiary" on-click="[[$component.editAccountAccess]]">
+      <span data-bind="text:nls.common.back"></span>
+</oj-button>
+
+
+    
+
+</div>
+
+
+<!-- /ko -->
+
+<!-- /ko -->
+<!-- /ko -->
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'confirmCancellationScreen'">
+    <div data-bind='component:{name: "confirmation", params:{rootModel: $component, hideDetails : false}}'>
+    </div>
+</modal-window>

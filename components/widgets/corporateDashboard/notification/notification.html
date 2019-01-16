@@ -1,0 +1,49 @@
+<div class="oj-panel notification">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <h3 class="notification__title" data-bind="text:$component.nls.mailbox.notificationTitle">
+    </h3>
+    <!-- ko if:isUnreadNotification -->
+    <!-- ko if: unreadNotificationCount -->
+    <span class="notification-count" data-bind="attr:{'aria-label':$baseModel.format($component.nls.mailbox.ariaCount,{unreadNotificationCount:unreadNotificationCount()})},text:unreadNotificationCount"></span>
+    <!-- /ko -->
+    <!-- /ko -->
+    </div>
+  </div>
+  <!-- ko if:isUnreadNotification -->
+  <div class="oj-flex oj-flex-items-pad notification__content-area notification-content-area">
+    <div class="oj-flex-item oj-sm-12">
+      <oj-table id="notificationList" class="notification-table" :aria-label="[[$component.nls.mailbox.notifications]]"
+      columns="[[[{headerText:$component.nls.mailbox.dateText,field:'receivedDate',template:'notificationDate'},{headerText:$component.nls.mailbox.messageText,field:'subject',template:'notificationSubject'}]]]" columns-default="[[{sortable:'none'}]]" data="[[notificationDataSource]]">
+        <caption class="hide-label" data-bind="text:$component.nls.mailbox.notifications"></caption>
+        <template slot="notificationDate">
+          <div class="" data-bind='component:{name: "date-time", params:{rootModel: $component,date:$current.data}}'></div>
+              <!-- <span data-bind='text: $baseModel.formatDate($current.data, "dateTimeFormat")'></span> -->
+        </template>
+        <template slot="notificationSubject">
+            <a href="#" data-bind="attr:{'title': $component.nls.mailbox.subject, 'alt':$component.nls.mailbox.subjectLink },click:$component.loadMailBoxComponent.bind($data,'T')">
+              <span data-bind="text: $current.data"></span>
+            </a>
+        </template>
+      </oj-table>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 notification__viewAll">
+      <a href="#" data-bind="attr:{'title': $component.nls.mailbox.viewAll, 'alt':$component.nls.mailbox.anchorClick }, click:$component.loadMailBoxComponent.bind($data,'T')">
+        <div data-bind="text: $component.nls.mailbox.viewAll"></div>
+    </a>
+   </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot: isUnreadNotification -->
+  <div class="oj-flex oj-flex-items-pad notification__noContent notification-noContent">
+    <div class="oj-flex-item oj-sm-12 notification-noContent__noData">
+     <img data-bind="attr:{'alt': $component.nls.mailbox.notificationTitle},loadImage:'dashboard/notification.svg'">
+    </div>
+    <div class="oj-flex-item oj-sm-12 notification-noContent__text" data-bind="text:$component.nls.mailbox.noData"></div>
+     <div class="oj-flex-item oj-sm-12 notification-noContent__subText info-text-small" data-bind="text:$component.nls.mailbox.subData"></div>
+  </div>
+  <!-- /ko -->
+
+</div>

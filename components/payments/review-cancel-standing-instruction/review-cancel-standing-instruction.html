@@ -1,0 +1,21 @@
+<div class="review-text-heading oj-flex">
+    <span class="icons icon-information oj-sm-2 oj-flex-item"></span>
+    <span class="oj-sm-10 oj-flex-item" data-bind="text: $component.resource.paymentDetails.reviewHeaderMsg"></span>
+</div>
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.paymentDetails.cancelHeader">
+    <!-- ko if:stageTwo() -->
+
+    <div class="row-group" data-bind="with:$component.instructionDetails()[0]">
+        <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.transferTo , value :name"></row>
+        <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.amount , value :$baseModel.formatCurrency(amount,currency)"></row>
+        <!-- ko if:type==='NONREC' -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.transferon , value :$baseModel.formatDate(startDate)"></row>
+        <!-- /ko -->
+        <!-- ko if:type==='REC' -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.startTransfer , value :$baseModel.formatDate(startDate)"></row>
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.instances , value :instances"></row>
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.stopTransfer , value :$baseModel.formatDate(endDate)"></row>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+</page-section>

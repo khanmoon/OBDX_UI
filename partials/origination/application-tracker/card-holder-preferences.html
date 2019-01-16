@@ -1,0 +1,42 @@
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+        <oj-label class="oj-label" :for="[['nameOnCard'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.nameOnCard"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <oj-input-text maxlength="20" autocomplete="off" spellcheck="false" required :id="[['nameOnCard1']]" translations="[[{'required':{
+  messageDetail:$component.resource.messages.nameOnCard}}]]" validators="[[$baseModel.getValidator('CARD_NAME')]]"></oj-input-text>
+    </div>
+</div>
+
+<!-- ko if: $component.backGroundContentIdsLoaded() -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+        <oj-label class="oj-label" :for="[['cardDesign'+($baseModel.currentIdCount())]]"><span data-bind="text:$component.resource.cardDesign"></span></oj-label>
+
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+
+        <oj-select-one required="[[true]]" :id="[['cardDesign'+($baseModel.currentIdCount())]]" :placeholder="''">
+            <!-- ko foreach: $component.backGroundContentIds() -->
+            <oj-option value="{{contentId}}"><span data-bind="text:contentValue"></span></oj-option>
+            <!-- /ko -->
+            </oj-select-one>
+
+    </div>
+    <!-- ko if: $component.cardDesignLoaded() -->
+    <div class="card-design bg-image" data-bind="style:{backgroundImage:'url('+IMAGE_RESOURCE_PATH+'/origination/cards/dc/'+$component.cardImage()+'.jpg)'}">
+    </div>
+    <!-- /ko -->
+</div>
+
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+        <oj-label class="oj-label" :for="[['imageOnCard'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.imageOnCard"></span></oj-label>
+
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 document-name-upload no-pad-cols">
+        <div class="oj-flex oj-flex-items-pad" data-bind="component:{name:'file-input',params:{rootModel: $component , id:$parentContext.$index()+'-'+$index()+'-document-upload', upload: function(){$component.uploadDocument($parentContext.$index(),$index())}}}"></div>
+    </div>
+</div>

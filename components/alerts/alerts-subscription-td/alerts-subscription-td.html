@@ -1,0 +1,82 @@
+<!-- ko if:$component.accountsLoaded -->
+<div class="oj-flex alerts-accordionPage">
+  <!-- ko if:$component.refreshList -->
+  <oj-accordion id="accordionPage" expanded="{{$component.expandedAccordians()}}" class="accordion oj-lg-12" >
+
+    <!-- ko foreach:accountlist-->
+    <oj-collapsible :id="[['collapsibleDiv' + $index()]]" class="oj-accordion-collapsible">
+      <span class="acc-header" slot="header">
+              <div class="accordionHeader" data-bind="text:$baseModel.format($component.nls.subscription.accountNumber, {accountNumber: accountDisplayId})"></div>
+      </span>
+
+
+              <!-- ko if: $baseModel.large() -->
+
+              <oj-table :id="[['alertTable_td_'+$
+              baseModel.incrementIdCount()]]" :aria-label="[[$component.nls.subscription.alertslist.ariaLabel]]" columns="[[[{
+                headerText:'',
+                  template:'alerts_checked'
+                },
+                {
+                headerText:$component.nls.subscription.alertslist.alertType,
+                template:'alerts_name'
+                },
+                {
+                  headerText:$component.nls.subscription.alertslist.sendAlertVia,
+                  template:'alerts_subscription'
+                }
+              ]]]" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'single',column:'single'}]]" data="[[datasource]]">
+                <caption class="hide-label" data-bind="text:$component.nls.subscription.heading"></caption>
+
+                <template slot="alerts_checked">
+                  <td>
+                    <!-- ko if: $current.emailSelected|| $current.smsSelected  || $current.mailboxSelected  -->
+                    <div class="alerts-active">
+                      <span class="badge subscribe">
+                                                  <span class="icons icon-check"></span>
+                      </span>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko if: !$current.emailSelected && !$current.smsSelected && !$current.mailboxSelected -->
+                    <div class="alerts-inactive">
+                      <span class="badge unsubscribe">
+                                                  <span class="icons icon-check"></span>
+                      </span>
+                    </div>
+                    <!-- /ko -->
+                  </td>
+                </template>
+
+
+                <template slot="alerts_name">
+                  <td>
+                    <div class="oj-flex-item oj-sm-9 oj-md-9 oj-lg-9 pull-left vertical-center alert-name" data-bind="text: $current.row.activityEventAction.activityEventDescription"></div>
+                  </td>
+                </template>
+
+                <template slot="alerts_subscription">
+                  <div data-bind="template: { name: 'alerts/generic-notification-template'}"></div>
+                </template>
+
+              </oj-table>
+
+
+              <!-- /ko -->
+
+
+</oj-collapsible>
+        <!-- /ko -->
+
+
+    </oj-accordion>
+            <!-- /ko -->
+</div>
+
+<!-- /ko -->
+
+<!-- ko if:$component.noAccountsMapped -->
+<div class="oj-flex-item oj-flex-items-pad  oj-sm-12 oj-md-12 oj-lg-12">
+  <span data-bind="text:$component.nls.subscription.emptyAccountList"></span>
+</div>
+<!-- /ko -->

@@ -1,0 +1,36 @@
+<div class="form-main-container">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item no-pad-cols">
+            <label for="partyName" data-bind="text:$component.nls.fieldname.searchParty" class="hide-label"></label>
+            <oj-input-text :aria-label="[[$component.nls.fieldname.searchParty]]" id="partyName" type="text" required on-submitifenter="[[submitIfEnter]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.nls.fieldname.partyPlaceholder]]" value="{{partyName}}"></oj-input-text>
+        </div>
+
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button class="action-button-primary" on-click="[[$component.fetchPartyDetailsByName]]">
+    <span data-bind="text:nls.common.search"></span>
+  </oj-button>
+  <oj-button class="action-button-secondary" on-click="[[$component.resetParty]]">
+    <span data-bind="text:nls.common.clear"></span>
+  </oj-button>
+</div>
+    <!-- ko if:$component.showList() -->
+    <div class="oj-flex">
+        <div class="oj-flex-item">
+            <oj-table columns="[[[{headerText:$component.nls.fieldname.partyid,field:'displayValue'},{headerText:$component.nls.fieldname.partyname,field:'partyName'}]]]" columns-default="[[{sortable:'enabled'}]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('party_link', true)]]" data="[[datasource]]">
+                <caption data-bind="text:$component.nls.fieldname.caption" class="hide-label"></caption>
+            </oj-table>
+            <script type="text/html" id="party_link">
+                <tr class="record">
+                    <td>
+                        <a href="#" data-bind="text:displayValue,click:$component.partySelected.bind($data)"></a>
+                    </td>
+                    <td>
+                        <span data-bind="text:partyName"></span>
+                    </td>
+                </tr>
+            </script>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>

@@ -1,0 +1,115 @@
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-9">
+    <div class="form-main-container">
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+
+  <!-- ko if:createEnable() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item " data-bind='component:{name: "create-limit", params:{rootModel: $component}}'>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot:createEnable() -->
+  <!-- <action-header params="rootModel : $data, heading : nls.limit.limitsMgmnt">
+    </action-header> -->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 label">
+      <label for="limitCode" data-bind="text:$component.nls.limit.limitCode"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+
+      <oj-input-text :aria-label="[[$component.nls.limit.limitCode]]" id="limitCode" validators="[[$baseModel.getValidator('APPLICATION_NAME')]]" value="{{$component.limitName}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+    </div>
+
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 label">
+      <label for="limitDescription" data-bind="text:$component.nls.limit.limitDescription"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4">
+
+      <oj-input-text :aria-label="[[$component.nls.limit.limitDescription]]" id="limitDescription" validators="[[$baseModel.getValidator('APPLICATION_DESCRIPTION')]]" value="{{$component.limitDescription}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+      <label for="limitTypeSet" data-bind="text:$component.nls.limit.LimitType"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-10 label">
+      <div class="oj-flex-bar-middle">
+        <oj-radioset id="limitTypeSet" aria-labelledby="mainlabelid" value="{{selectedTransactionType}}" :aria-label="[[$component.nls.limit.LimitType]]" class="oj-choice-direction-row">
+          <oj-option value="TXN" id="transaction" name="limitType"><span for="transaction" data-bind="text:$component.nls.limitType.transaction"></span></oj-option>
+          <oj-option value="PER" id="periodic" name="limitType"><span for="periodic" data-bind="text:$component.nls.limitType.cummulative"></span></oj-option>
+          <oj-option value="DUR" id="durational" name="limitType"><span for="durational" data-bind="text:$component.nls.limitType.coolingPeriod"></span></oj-option>
+        </oj-radioset>
+      </div>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+      <label for="generationDate" data-bind="text: $component.nls.limit.updationDate"> </label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
+      <oj-input-date :id="[['frDt']]" max="[[$component.today]]" value="{{$component.fromDate}}"
+      :placeholder="[[$component.nls.limit.fromDate]]"></oj-input-date>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
+      <oj-input-date :id="[['tDt']]" min="[[$component.fromDate]]" max="[[$component.today]]" value="{{$component.toDate}}"
+       :placeholder="[[$component.nls.limit.toDate]]" ></oj-input-date>
+    </div>
+    <div data-bind="template:{afterRender: $component.fileRefIdValueChangeHandler}"></div>
+  </div>
+
+
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item  button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.search]]">
+        <span data-bind="text:$component.nls.common.search"></span>
+      </oj-button>
+      <!-- ko ifnot :showSearchData()  -->
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.common.cancel"></span>
+      </oj-button>
+      <!-- /ko -->
+      <oj-button class="action-button-tertiary" on-click="[[clearValues]]">
+        <span data-bind="text:$component.nls.common.clear"></span>
+      </oj-button>
+
+    </div>
+  </div>
+
+
+  <!-- ko if :showSearchData()  -->
+  <div id="pagingControlAll" class="full-width">
+
+    <oj-table id="table" :aria-label="[[$component.nls.limit.limitSearch]]" columns="[[[{headerText:$component.nls.limit.limitCode,field:'name',renderer: $oj.KnockoutTemplateUtils.getRenderer('viewLimitDetails',true)},{headerText:$component.nls.limit.limitDescription,field:'desc'},{headerText:$component.nls.limit.LimitType,field:'type'},{headerText:$component.nls.limit.LastUpdatedOn,field:'lastUpdatedOn'}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[pagingDatasource]]">
+
+    </oj-table>
+    <oj-paging-control id="paging" class="oj-pagingcontrol oj-component " slot="bottom" :page-size="[[10]]" data="[[pagingDatasource]]"></oj-paging-control>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item  button-container">
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.common.cancel"></span>
+      </oj-button>
+    </div>
+  </div>
+  <script type="text/html" id="viewLimitDetails">
+    <td>
+      <a href="javascript:void(0)" data-bind="text:$context.row.name,click:$component.openLimitDetails.bind($data,$context.row)"></a>
+    </td>
+  </script>
+
+  <!-- /ko -->
+  <!-- /ko -->
+</page-section>
+</div>
+</div>
+<div class="oj-flex-item oj-sm-3 help-panel">
+  <help params="baseModel : $baseModel, rootModel : $component, transaction: 'limit-search'"></help>
+</div>
+</div>

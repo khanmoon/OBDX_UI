@@ -1,0 +1,60 @@
+<div class=" wallets_container">
+  <div class=" oj-panel form-main-container card-action-container">
+    <div class="header">
+        <div class="title_primary" data-bind="text:$component.resource.wallet.verifymobile"></div>
+        <div class="title_secondary" data-bind="text:$component.resource.wallet.signupmsg"></div>
+    </div>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="section">
+          <div class="">
+          <div class="oj-col oj-sm-12 oj-md-12 oj-lg-12">
+              <div class="wallets-action-label">
+                <oj-label for="otp-validation-mobile"><span data-bind="text:$component.resource.wallet.verificationcodemsg"></span></oj-label>
+              </div>
+          </div>
+          </div>
+          <div class="oj-row customizedinput">
+          <div class="oj-col oj-sm-8 oj-md-11 oj-lg-11">
+            <oj-input-password id="otp-validation-mobile" maxlength="10" required autofocus type="password" autocomplete="off" translations="[[{'required':{messageDetail:$component.resource.messages.walletOrigination.verificationCode}}]]" value="{{verificationCode}}"></oj-input-password>
+          </div>
+          <div class="oj-col oj-sm-2 oj-md-1 oj-lg-1 otp-eye">
+
+              <a href="javascript:void(0)" data-bind="click:togglePassword">
+                <span id="eyecon" class="icon icon-eye-slash"></span>
+              </a>
+
+          </div>
+          </div>
+          <!-- ko if:codeResendMsg() -->
+          <div class="">
+          <div class="oj-col oj-sm-12 oj-md-12 oj-lg-12">
+              <div class="wallets-action-label">
+               <oj-label><span data-bind="text:$component.resource.wallet.codeResendMsg"></span></oj-label>
+            </div>
+            </div>
+        </div>
+          <!-- /ko -->
+          <!-- ko if:resendButtonMsg() -->
+          <div class="">
+          <div class="oj-col oj-sm-12 oj-md-12 oj-lg-12">
+              <div class="wallets-action-label">
+               <oj-label><span data-bind="text:$component.resource.wallet.resendMsg"></span></oj-label>
+            </div>
+              </div>
+              </div>
+          <!-- /ko -->
+        <div class="oj-row button-container">
+              <oj-button class="action-button-primary" on-click="[[save]]">
+      <span data-bind="text:$component.resource.common.continue"></span>
+</oj-button>
+              <img data-bind="loadImage:'wallet/wallet-farward-white.png'">            
+
+              <oj-button class="action-button-secondary" id="button-resendcode" on-click="[[resend]]" disabled="[[!(resendCode() < 3)]]">
+      <span data-bind="text:$component.resource.wallet.resendcode"></span>
+</oj-button>
+
+        </div>
+      </div>
+    </page-section>
+</div>
+</div>

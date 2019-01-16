@@ -1,0 +1,36 @@
+<div class="form-main-container">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <!-- ko if:$component.categoryHandle -->
+    <!-- ko if:$component.refreshSRList -->
+    <div class="oj-flex oj-sm-12">
+      <div class="oj-flex-item oj-sm-12 sr-accordian-container">
+        <oj-accordion id="sr-group-accordian" multiple="true" class="oj-sm-12">
+          <!-- ko foreach:$component.SRCategoryList-->
+          <div class="oj-flex-item oj-sm-12">
+            <div class="oj-flex">
+              <div class="oj-flex-item oj-sm-12">
+                <div class="sr-accordian-container-heading" data-bind="text:categoryName"></div>
+              </div>
+            </div>
+            <div class="sr-accordian-list">
+              <oj-navigation-list aria-label=[[SRAriaLabel]]>
+                <ul>
+                  <!-- ko foreach:srList-->
+                  <li data-bind="id:reqName">
+                    <div class="sr-request-list">
+                      <a href="#" data-bind="text:reqName, click: $component.callView"></a>
+                    </div>
+                  </li>
+                  <!-- /ko -->
+                </ul>
+              </oj-navigation-list>
+            </div>
+          </div>
+          <!-- /ko -->
+        </oj-accordion>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+  </page-section>
+</div>

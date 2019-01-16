@@ -1,0 +1,10 @@
+<!-- ko if: $root.isDashboardSet() && $component.entityListLoaded() -->
+<div class="oj-flex-item oj-sm-12">
+  <oj-label :for="[['entity-switcher_'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.nls.entity.currentView"></span></oj-label>
+  <oj-select-one :id="[['entity-switcher_'+ $baseModel.currentIdCount()]]" value="{{currentEntity}}">
+    <!-- ko foreach : $component.entityList  -->
+    <oj-option value="{{$data.value}}"><span data-bind="text:$data.text"></span></oj-option>
+    <!-- /ko -->
+  </oj-select-one>
+</div>
+<!-- /ko -->

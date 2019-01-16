@@ -1,0 +1,94 @@
+<div class="oj-flex">
+    <div class="oj-flex-item oj-sm-9">
+        <div class="form-main-container">
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading :''">
+                <oj-validation-group id="tracker" valid="{{groupValid}}">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 label">
+                        <oj-label for="effectiveDate">                 
+                            <span data-bind="text:$component.resourceBundle.common.date"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+                        <oj-input-date id="effectiveDate" converter="[[$baseModel.dateConverter]]" value="{{effectiveDate}}" :placeholder="[[$component.resourceBundle.common.selectDate]]"></oj-input-date>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-lg-1 "></div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 label">
+                        <oj-label for="userType">                 
+                            <span data-bind="text:$component.resourceBundle.common.userType"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+                        <!-- ko if: showDropDownUsers() -->
+                        <oj-select-one class="listbox-drop" id="userType" :placeholder="[[$component.resourceBundle.workingWindow.pleaseSelect]]" value="{{selectedUserType}}" options="[[searchUserTypeOptions]]">
+                        </oj-select-one>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 label">
+                        <oj-label for="unsearch">                 
+                            <span data-bind="text:$component.resourceBundle.transaction.transactionType"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+                        <!-- ko if: showDropDown() -->
+                        <oj-select-one id="unsearch" :placeholder="[[$component.resourceBundle.workingWindow.pleaseSelect]]" required value="{{typeTransactionForSearch}}">
+                            <!-- ko foreach: $component.transTypes -->
+                                <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                        <!-- /ko -->
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-lg-1"></div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 label">
+                        <oj-label for="tridata">                 
+                            <span data-bind="text:$component.resourceBundle.transaction.transactionName"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+                        <oj-select-one id="tridata" :placeholder="[[$component.resourceBundle.workingWindow.pleaseSelect]]" value="{{selectedTrasactionForSearch}}" options="[[searchTransactions]]" disabled="{{editDisabled}}" required>
+                        </oj-select-one>
+                    </div>
+                </div>
+                </oj-validation-group>
+            </page-section>
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button id="searchButton" class="action-button-primary" on-click="[[search]]">
+                    <span data-bind="text:$component.resourceBundle.common.search"></span>
+                </oj-button>
+                <!-- ko if:!dataLoaded() -->
+                <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+                    <span data-bind="text:$component.resourceBundle.common.cancel"></span>
+                </oj-button>
+                <!-- /ko -->
+                <oj-button id="clearButton" class="action-button-tertiary" on-click="[[reset]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.clear"></span>
+                </oj-button>
+            </div>
+            <!-- ko if:dataLoaded() -->
+            <div class="oj-flex oj-flex-items-pad">
+                <action-header params="baseModel : $baseModel, rootModel : $data, heading:''"></action-header>
+                <oj-table id="table" :aria-label="[[$component.resourceBundle.transaction.blackoutTable]]" columns="[[[{headerText:$component.resourceBundle.transaction.transactionName,field:'transactionName', renderer:$oj.KnockoutTemplateUtils.getRenderer('transactionNameTemplate', true)},{headerText:$component.resourceBundle.datetime.startDate,field:'startDate'},{headerText:$component.resourceBundle.datetime.endDate,field:'endDate'},{headerText:$component.resourceBundle.transaction.blackoutType,field:'blackoutType'},{headerText:$component.resourceBundle.transaction.status,field:'status'}]]]" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'single',column:'single'}]]" data="[[$component.datasource]]">
+                    <caption class="hide-label" data-bind="text:$component.resourceBundle.transaction.blackout"></caption>
+                </oj-table>
+                <script type="text/html" id="transactionNameTemplate">
+                  <td>
+                    <div>
+                        <a href="javascript:void(0)" data-bind = "text:$context.row.transactionName, click:$component.onBlackoutIdSelected.bind($data,$context.row)"></a>
+                    </div>
+                  </td>
+                </script>
+            </div>
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+                    <span data-bind="text:$component.resourceBundle.common.cancel"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'search-transaction-blackout'"></help>
+    </div>
+</div>

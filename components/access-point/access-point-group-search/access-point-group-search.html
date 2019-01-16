@@ -1,0 +1,94 @@
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-9">
+    <div class="form-main-container">
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-4 label">
+            <oj-label for="groupId"><span data-bind="text:$component.nls.accessPointGroup.groupCode"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-4">
+            <oj-input-text id="groupId" value="{{groupId}}" aria-labelledby="groupId"></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-4 label">
+            <oj-label for="groupDescription">
+              <span data-bind="text:$component.nls.accessPointGroup.description"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-4">
+            <oj-input-text id="groupDescription" value="{{groupDescription}}" aria-labelledby="groupDescription"></oj-input-text>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-primary" id="searchBtn" on-click="[[$component.search]]">
+            <span data-bind="text:$component.nls.generic.common.search"></span>
+          </oj-button>
+          <!-- ko ifnot :showSearchData()  -->
+          <oj-button class="action-button-secondary" id="cancelBtn" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+          </oj-button>
+          <!-- /ko -->
+          <oj-button class="action-button-tertiary" id="clearBtn" on-click="[[clear]]">
+            <span data-bind="text:$component.nls.generic.common.clear"></span>
+          </oj-button>
+        </div>
+
+        <!-- ko if :showSearchData()  -->
+        <div class="oj-flex spacing-table">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-table id="table" aria-label=$component.nls.accessPointGroup.searchResults data='[[pagingDatasource]]' columns-default.sortable='enabled' columns='[[headerText]]'>
+              <caption class="hide-label" data-bind="text:$component.nls.accessPointGroup.accessPointSearch"></caption>
+              <oj-paging-control id="paging" data='[[pagingDatasource]]' page-size='10' slot='bottom'>
+              </oj-paging-control>
+            </oj-table>
+          </div>
+        </div>
+        <script type="text/html" id="groupCodeTemplate">
+          <td>
+            <div>
+              <a href="javascript:void(0)" data-bind="text:$context.row.groupCode,click:$component.view.bind($data,$context.row)"></a>
+            </div>
+          </td>
+        </script>
+        <script type="text/html" id="descriptionTemplate">
+          <td>
+            <span data-bind="text:$context.row.description"></span>
+          </td>
+        </script>
+        <script type="text/html" id="numberOfAccessPoints">
+          <td>
+            <span data-bind="text:$context.row.numberOfAccessPoints"></span>
+          </td>
+        </script>
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-secondary" id="cancelBtn" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+
+        <modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'searchError',header:$component.nls.accessPointGroup.searchError">
+          <div class="message-box">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <div class="dialog-text"><span data-bind="text:$component.nls.accessPointGroup.searchErrorMessage"></span></div>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad button-container">
+              <oj-button class="action-button-primary" id="okBtn" on-click="[[$component.closeDialogBox]]">
+                <span data-bind="text:$component.nls.generic.common.ok"></span>
+              </oj-button>
+            </div>
+          </div>
+        </modal-window>
+
+      </page-section>
+    </div>
+  </div>
+
+  <div class="oj-flex-item oj-sm-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'access-point-group-search'"></help>
+  </div>
+</div>

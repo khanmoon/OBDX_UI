@@ -1,0 +1,207 @@
+<div class="oj-flex oj-flex-items-pad category_row_padding">
+    <div class="oj-sm-12 oj-md-6 oj-lg-6 oj-flex-item text-align-center ">
+        <oj-input-text id="searchTextBox" :placeholder="[[$component.resource.searchByDescription]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.searchText}}"></oj-input-text>
+    </div>
+    <div class="oj-sm-12 oj-md-1 oj-lg-1 oj-md-offset-1 oj-flex-item text-align-center ">
+        <oj-button class="form-button-secondary" type="submit" :id="[['search']]" on-click="[[searchProperty]]">
+            <span data-bind="text:$component.resource.search"></span>
+        </oj-button>
+    </div>
+    <div class="oj-sm-12 oj-md-3 oj-lg-3 oj-md-offset-1 oj-flex-item">
+        <oj-button class="form-button-secondary" id="resetButton" type="submit" on-click="[[resetData]]">
+            <span data-bind="text:$component.resource.resetButton"></span>
+        </oj-button>
+    </div>
+</div>
+<div>
+    <br>
+    <br>
+    <br>
+</div>
+<!-- ko if:categoriesLoaded() -->
+<div class="oj-flex oj-flex-items-pad category_row_padding">
+    <div class="oj-sm-12 oj-md-6 oj-lg-6 oj-flex-item text-align-center ">
+        <oj-label class="hide" :id="[['selectCategoryLabel']]" :for="[['selectCategory']]"><span data-bind="text:$component.resource.selectCategory"></span></oj-label>
+        <oj-select-one id="selectCategory" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.selectedCategory}}" on-value-changed="[[optionChangedHandler]]" :placeholder="[[$component.resource.selectCategory]]">
+            <!-- ko foreach: selectDescriptions -->
+            <oj-option value="{{value}}" :id="[['category'+$index()]]"><span data-bind="text:label"></span></oj-option>
+            <!-- /ko -->
+        </oj-select-one>
+    </div>
+    <div class="oj-sm-12 oj-md-3 oj-lg-3 oj-md-offset-1 oj-flex-item">
+        <oj-button class="form-button-secondary" id="resetButtonCategory" type="submit" on-click="[[resetData]]">
+            <span data-bind="text:$component.resource.resetButton"></span>
+        </oj-button>
+    </div>
+</div>
+<!-- /ko -->
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <div class="oj-form">
+        <div class="oj-flex oj-flex-items-pad blank">
+            <br>
+            <br>
+            <br>
+        </div>
+        <div id="searchLoading" data-bind="visible:isLoading"><span data-bind="text: $component.resource.searching"></span></div>
+        <!-- ko if:dataRefreshed() -->
+        <!-- ko if: properties()().length > 0 -->
+        <div class="oj-flex oj-flex-items-pad oj-sm-only-hide property-header-row">
+            <div class="oj-md-5 oj-lg-5 oj-flex-item property-header" data-bind="text: $component.resource.propIdLabel"></div>
+            <div class="oj-md-6 oj-lg-6 oj-flex-item property-header" data-bind="text: $component.resource.category"></div>
+            <div class="oj-md-only-hide oj-lg-1 oj-flex-item property-header"></div>
+        </div>
+        <!-- ko foreach: properties() -->
+        <div class="oj-flex oj-flex-items-pad property-header-sm">
+            <div class="oj-sm-12 oj-md-5 oj-lg-5 oj-flex-item wrap">
+                <span class="oj-md-hide property-label-sm" data-bind="text: $component.resource.propIdLabel"></span>
+                <span class="property-text-sm" data-bind="text: propertyId"></span>
+            </div>
+            <div class="oj-sm-12 oj-md-6 oj-lg-6 oj-flex-item wrap">
+                <span class="oj-md-hide property-label-sm" data-bind="text: $component.resource.category"></span>
+                <span class="property-text-sm" data-bind="text: categoryDescription"></span>
+            </div>
+            <div class="oj-sm-12 oj-md-1 oj-lg-1 oj-flex-item detailButton">
+                <!-- ko if: $data.showPropflag  -->
+                <span>
+            <a href="javascript:void(0)" class="icon icon-arrow-down section-icon collapse-icon" data-bind="click: $parent.hideProp,attr:{alt: $component.resource.hidePropAlt, title: $component.resource.hidePropTitle}"></a>
+          </span>
+                <!-- /ko -->
+                <!-- ko ifnot: $data.showPropflag  -->
+                <span>
+            <a href="javascript:void(0)" class="icon icon-arrow-right section-icon collapse-icon" data-bind="click: $parent.showProp,attr:{alt: $component.resource.showPropAlt, title: $component.resource.showPropTitle}"></a>
+          </span>
+                <!-- /ko -->
+            </div>
+        </div>
+        <!-- ko if: $data.showPropflag  -->
+        <div class="oj-form">
+            <!-- ko if: !($data.enableReset()) -->
+            <div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-12">
+                        <div id="ackPopup">
+                            <oj-popup id="ackPopup">
+                            </oj-popup>
+                            <oj-label :id="[['ackLabel']]"><span data-bind="text:$component.ackMsg"></span></oj-label>
+                        </div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-2">
+                        <span class="required">
+            <oj-label :id="[['propertyIdLabel'+$index()]]" :for="[['propertyIdInputtext'+$index()]]"><span data-bind="text:$component.resource.propIdLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-md-offset-2">
+                        <span>
+            <oj-input-text :id="[['propertyIdInputtext'+$index()]]" disabled="[[true]]" value="{{propertyId}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+            </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-2">
+                        <span class="required">
+            <oj-label :id="[['categoryId'+$index()]]" :for="[['categoryIdInputtext'+$index()]]"><span data-bind="text:$component.resource.categoryId"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-md-offset-2">
+                        <span>
+            <oj-input-text :id="[['categoryIdInputtext'+$index()]]" disabled="[[true]]" value="{{categoryId}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+            </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-2">
+                        <span class="required">
+            <oj-label :id="[['propertyValueLabel'+$index()]]" :for="[['propertyValueInputtext'+$index()]]">
+            <span data-bind="text:$component.resource.propValueLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-md-offset-2">
+                        <span>
+            <oj-input-text required :id="[['propertyValueInputtext'+$index()]]" :attr="[[{maxLength:4000}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" disabled="[[!isActive()]]" value="{{propertyValue}}"></oj-input-text>
+            </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad" data-bind="if: showEditRow()">
+            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-md-offset-2">
+                <oj-button class="form-button-secondary" type="submit" :id="[['edit'+$index()]]" on-click="[[$component.editProperty]]">
+                    <span data-bind="text:$component.resource.editLabel"></span>
+                </oj-button>
+            </div>
+            <div class="oj-flex-item oj-md-1">
+            </div>
+            <div class="oj-flex oj-flex-items-pad" data-bind="if: showUpdateRow()">
+                <div class="oj-flex-item oj-sm-12 oj-md-2 oj-md-offset-2 ">
+                    <oj-button class="form-button-secondary" type="submit" :id="[['update'+$index()]]" on-click="[[$component.updateProperty]]">
+                        <span data-bind="text:$component.resource.updateLabel"></span>
+                    </oj-button>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-1">
+                    <oj-button class="form-button-secondary" type="submit" :id="[['cancel'+$index()]]" on-click="[[$component.cancel]]">
+                        <span data-bind="text:$component.resource.cancelLabel"></span>
+                    </oj-button>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-1 reset-button-left-margin">
+                    <oj-button class="form-button-secondary" type="submit" :id="[['reset'+$index()]]" on-click="[[$component.reset]]">
+                        <span data-bind="text:$component.resource.resetLabel"></span>
+                    </oj-button>
+                </div>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad">
+                <hr>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: properties()().length === 0 -->
+            <div class="oj-flex oj-flex-items-pad">
+                <span class="oj-sm-12 property-label-sm" data-bind="text:$component.noRecFound"></span>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: dataFiltered -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-sm-12 oj-md-4 oj-flex-item">
+                    <oj-button class="form-button-secondary" id="action-button-back" type="submit" on-click="[[showConfigScreen]]">
+                        <span data-bind="text:$component.resource.backButton"></span>
+                    </oj-button>
+                </div>
+                <div class="oj-sm-12 oj-md-8 oj-flex-item">
+                    <oj-paging-control class="floatRight" id="paging" slot="bottom" :page-size="[[10]]" data="[[$parent.dataSource]]">
+                    </oj-paging-control>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div id="dialogWrapperDelete">
+            <oj-dialog id="deleteConfirm" title="$component.resource.confirm">
+                <div slot="body" data-bind="text: $component.resource.errorDialogLabel">
+                </div>
+                <div slot="footer">
+                    <oj-button class="form-button-secondary" id="okButtonDelete" type="submit" on-click="[[deleteConfirm]]">
+                        <span data-bind="text:$component.resource.ok"></span></oj-button>
+                </div>
+            </oj-dialog>
+        </div>
+        <div id="dialogWrapperConfirm">
+            <oj-dialog id="confirmDialog" title="$component.resource.confirmation">
+                <div slot="body" data-bind="text: $component.resource.errorDialogLabel">
+                </div>
+                <div slot="footer">
+                    <oj-button class="form-button-secondary" id="okButtonDelete" type="submit" on-click="[[confirmClick]]">
+                        <span data-bind="text:$component.resource.ok"></span></oj-button>
+                </div>
+            </oj-dialog>
+        </div>
+    </div>
+</page-section>

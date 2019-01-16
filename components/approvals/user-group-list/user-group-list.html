@@ -1,0 +1,88 @@
+<!-- ko if:loadPartyValidate() && partyIdFetched() -->
+
+  <div id="partyValidateSearchUsergroups" class="oj-flex oj-flex-items-pad" data-bind="component: {name: 'party-validate', params:{rootModel: $component,partyDetails:$component.rootModelInstance().approvals,additionalDetails:$component.rootModelInstance().approvals.additionalDetails}}"></div>
+
+<!-- /ko -->
+<!-- ko if:$component.rootModelInstance().approvals.partyDetailsFetched() -->
+<div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button id="userGroup_btnCreate" class="action-button-primary" on-click="[[createNew]]">
+      <span data-bind="text:createNewLabel"></span>
+</oj-button>
+  <!-- ko if: !$component.partyIdAvailable -->
+  <oj-button class="action-button-secondary" on-click="[[back]]">
+      <span data-bind="text:backLabel"></span>
+</oj-button>
+  <!-- /ko -->
+  <oj-button class="action-button-tertiary" on-click="[[cancelSearch]]">
+      <span data-bind="text:cancel"></span>
+</oj-button>
+
+</div>
+
+    <!-- ko if:dataLoaded() -->
+
+    <!-- ko if:!$baseModel.small() -->
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+      <oj-table id="table" :aria-label="[[$component.nls.userGroup.userGroupDetails]]" columns="[[[{headerText:userGroupCode,field:'name',template:'group_code'},{headerText:userGroupDescription,field:'description',headerClassName:'left',className:'left'},{headerText:users,field:'usercount',headerClassName:'left',className:'left'}]]]" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'single',column:'single'}]]" data="[[$component.datasource]]">
+          <caption class="hide-label" data-bind="text:$component.nls.userGroup.userGroupDetails"></caption>
+          <template slot="group_code">
+            <td>
+              <a href="javascript:void(0)" data-bind="text:$current.row.name,click:$component.onUserGroupSelected.bind($data,$current.row)"></a>
+            </td>
+          </template>
+      </oj-table>
+
+</page-section>
+    <!-- /ko -->
+
+    <!-- ko if:$baseModel.small() -->
+    <div class="grid-main-container">
+      <div class="oj-flex oj-flex-items-pad grid-table-header">
+
+        <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+          <span data-bind="text : userGroupCode"></span>
+        </div>
+
+        <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+          <span data-bind="text : userGroupDescription"></span>
+        </div>
+
+        <div class="oj-lg-2 oj-md-2 oj-sm-3 oj-flex-item">
+          <span data-bind="text : users"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad grid-main-container">
+        <oj-list-view id="searchRuleListView" data="[[$component.datasource]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('rulesSearch_template',true)}]]" selection-mode="[['single']]"></oj-list-view>
+        <script type="text/html" id="rulesSearch_template">
+          <li data-bind="attr: {id: $data['name']}">
+            <div class="oj-flex oj-flex-items-pad grid-row-group"> <a href="javascript:void(0)" data-bind="click:$component.onUserGroupSelected.bind(name)">
+              <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                <span data-bind="text: name"></span>
+              </div>
+
+              <!-- ko if:'description' in $data -->
+              <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                <span data-bind="text: description"></span>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:!('description' in $data) -->
+              <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                 
+              </div>
+              <!-- /ko -->
+
+              <div class="oj-lg-2 oj-md-2 oj-sm-2 oj-flex-item">
+                <span data-bind="text:usercount"></span>
+              </div>
+
+            </a></div><a href="javascript:void(0)" data-bind="click:$component.onUserGroupSelected.bind(name)">
+          </a></li><a href="javascript:void(0)" data-bind="click:$component.onUserGroupSelected.bind(name)">
+        </a></script><a href="javascript:void(0)" data-bind="click:$component.onUserGroupSelected.bind(name)">
+      </a></div><a href="javascript:void(0)" data-bind="click:$component.onUserGroupSelected.bind(name)">
+    </a></div><a href="javascript:void(0)" data-bind="click:$component.onUserGroupSelected.bind(name)"></a>
+    <!-- /ko -->
+    <!-- /ko -->
+
+<!-- /ko -->
+<!-- /ko -->

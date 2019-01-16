@@ -1,0 +1,95 @@
+<div class="page-section-content">
+
+  <!-- ko if: $component.discrepanciesData() -->
+  <!-- ko ifnot:$baseModel.small() -->
+  <div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 grid-row-group" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+
+    <oj-table id="printTable" :aria-label="[[$component.resourceBundle.discrepancies.listOfDiscrepancies]]" columns="[[[{headerText:$component.resourceBundle.discrepancies.receivedDate},{headerText:$component.resourceBundle.common.labels.description},{headerText:$component.resourceBundle.common.labels.status},{headerText:$component.resourceBundle.discrepancies.resolvedDate},{headerText:$component.resourceBundle.discrepancies.approvedDate}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('discrepancies_template', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.discrepanciesData]]">
+      <caption class="hide-label" data-bind="text:$component.resourceBundle.leftMenu.discrepancies"></caption>
+    </oj-table>
+
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if:$baseModel.small() -->
+  <div class="oj-flex grid-main-container">
+    <div class="oj-flex-item oj-sm-12">
+        <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('discrepancies_list_card',true)}]]" selection-mode="[['single']]" data="[[discrepanciesData]]">
+        </oj-list-view>
+
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+
+  <!-- ko ifnot: $component.discrepanciesData() -->
+  <div class="oj-flex oj-flex-items-pad padding-tb">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }, text: $component.resourceBundle.tradeFinanceErrors.messages.noDiscrepancies">
+    </div>
+  </div>
+  <!-- /ko -->
+
+</div>
+<script type="text/html" id="discrepancies_template">
+    <tr>
+       <td>
+        <span data-bind="text:receivedDate"></span>
+      </td>
+      <td>
+        <span data-bind="text:description"></span>
+      </td>
+      <td>
+        <span data-bind="text:status"></span>
+      </td>
+      <td>
+        <span data-bind="text:resolvedDate"></span>
+      </td>
+        <td>
+        <span data-bind="text:approvedDate"></span>
+      </td>
+  </tr>
+</script>
+<script type="text/html" id="discrepancies_list_card">
+  <li>
+    <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 grid-row-group" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+              <label data-bind="text: $component.resourceBundle.discrepancies.receivedDate"></label>
+              <div data-bind="text: receivedDate"></div>
+            </div>
+          </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.common.labels.description"></label>
+            <div data-bind="text: description"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.common.labels.status"></label>
+            <div data-bind="text: status"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.discrepancies.resolvedDate"></label>
+            <div data-bind="text: resolvedDate"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.discrepancies.approvedDate"></label>
+            <div data-bind="text: approvedDate"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+</script>

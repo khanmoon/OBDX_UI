@@ -1,0 +1,52 @@
+<div class="oj-panel account-financial-summary">
+  <div class="oj-flex oj-flex-items-pads">
+    <!-- ko if:showSummaryData -->
+    <!-- ko ifnot : $baseModel.small() -->
+
+    <div class="oj-flex-item oj-sm-4 account-financial-summary__actionCard account-financial-summary-actionCard" data-bind="component: {name:'accounts-action-card', params:{rootModel:$component, module : 'CSA',identifier : 0}}">
+    </div>
+    <div class="oj-flex-item oj-sm-4 account-financial-summary__actionCard account-financial-summary-actionCard" data-bind="component: {name:'accounts-action-card', params:{rootModel:$component, module : 'TRD',identifier : 1}}">
+    </div>
+    <div class="oj-flex-item oj-sm-4 account-financial-summary__actionCard account-financial-summary-actionCard" data-bind="component: {name:'accounts-action-card', params:{rootModel:$component, module : 'LON',identifier : 2}}">
+    </div>
+
+
+    <div class="colorLoader" data-bind="css:$component.animateLoader"></div>
+
+    <div class="oj-flex-item oj-sm-12 account-financial-summary__accountDetails" data-bind="component: {name:'corporate-account-details', params:{rootModel:$component,moduleData:$component.moduleData()}}">
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if : $baseModel.small() -->
+    <div class="oj-flex-item oj-sm-12">
+      <oj-tab-bar edge="top" selection="{{$component.currentSelection}}">
+        <ul class="account-financial-summary__listView account-financial-summary-listView">
+          <li class="account-financial-summary-listView__listItem account-financial-summary-listView-listItem colorCasa" data-bind="attr:{id: 'CSA'}">
+            <a href="#">
+              <div class="icons account-financial-summary-listView-listItem__icon icon-accounts" data-bind=""></div>
+              <div class="account-financial-summary-listView-listItem__text break-word" data-bind="text:$component.nls.labels['CSA']"></div>
+            </a>
+          </li>
+          <li class="account-financial-summary-listView__listItem account-financial-summary-listView-listItem colorTd" data-bind="attr:{id: 'TRD'}">
+            <a href="#">
+              <div class="icons account-financial-summary-listView-listItem__icon icon-accounts" data-bind=""></div>
+              <div class="account-financial-summary-listView-listItem__text break-word" data-bind="text:$component.nls.labels['TRD']"></div>
+            </a>
+          </li>
+          <li class="account-financial-summary-listView__listItem account-financial-summary-listView-listItem colorLoan" data-bind="attr:{id: 'LON'}">
+            <a href="#">
+              <div class="icons account-financial-summary-listView-listItem__icon icon-loans" data-bind=""></div>
+              <div class="account-financial-summary-listView-listItem__text break-word" data-bind="text:$component.nls.labels['LON']"></div>
+            </a>
+          </li>
+        </ul>
+      </oj-tab-bar>
+    </div>
+    <div class="oj-flex-item oj-sm-12 account-financial-summary__actionCard account-financial-summary-actionCard" data-bind="component: {name:'accounts-action-card', params:{rootModel:$component, module : $component.currentSelection() ,identifier : $component.currentSelection()}}">
+    </div>
+    <div class="oj-flex-item oj-sm-12 account-financial-summary__accountDetails" data-bind="component: {name:'corporate-account-details', params:{rootModel:$component,moduleData:$component.currentSelection()}}">
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+</div>

@@ -1,0 +1,186 @@
+<div class="trade-finance">
+
+<div class="trade-finance-nav-bar" data-bind="component:{name: 'customer-acceptance-nav-bar', params:{rootModel:$data, selectedMenu: $component.resourceBundle.navLabels.amendment}}">
+</div>
+
+<div class="form-main-container">
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <label for="beneficiaryName" data-bind="text: $component.resourceBundle.viewLC.lcDetails.labels.beneficiaryName"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+          <oj-select-one id="beneficiaryName" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" options="[[$component.beneNameArray]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" value="{{$component.benePartyId}}">
+         </oj-select-one>
+        </div>
+      </div>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad grid-row-group">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <label for="applicantName" data-bind="text: $component.resourceBundle.viewLC.lcDetails.labels.applicantName"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+          <oj-input-text id="applicantName" type="text" minlength="0" maxlength="35" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidBeneficiaryName,{type:'length',options:{
+                        min:0,max:35}})]]" value="{{$component.applicantName}}"></oj-input-text>
+        </div>
+      </div>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <label for="lcNumber" data-bind="text: $component.resourceBundle.viewLC.labels.lcNo"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+          <oj-input-text id="lcNumber" type="text" maxlength="16" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidLCNumber,{type:'length',options:{
+                        min:1,max:16}})]]" value="{{$component.lcNumber}}"></oj-input-text>
+        </div>
+      </div>
+  </div>
+</div>
+
+</page-section>
+
+<div class="button-container">
+  <oj-button id="search" class="action-button-primary" on-click="[[getExportAmendmentList]]">
+    <span slot="startIcon" class="icons icon-search"></span>
+    <span data-bind="text:$component.resourceBundle.generic.common.search"></span>
+</oj-button>
+  <!-- ko ifnot: dataSourceExportAmendments -->
+  <!-- ko ifnot: $baseModel.small() -->
+    <oj-button id="cancel" class="action-button-secondary" on-click="[[cancel]]">
+      <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+</oj-button>
+ <!-- /ko -->
+  <!-- /ko -->
+    <oj-button id="reset" class="action-button-tertiary" on-click="[[reset]]">
+      <span slot="startIcon" class="icons icon-refresh"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.reset"></span>
+</oj-button>
+
+
+</div>
+
+<!-- ko if: dataSourceExportAmendments -->
+<div class="oj-flex oj-flex-items-pad grid-row-group">
+
+<!-- ko if: listOfExportAmendments().length > 0 -->
+  <!-- ko if:$baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+    <oj-table id="exportAmendments" :aria-label="[[$component.resourceBundle.heading.amendTransactionName]]" class="export-lc-list" columns="[[[{headerText:$component.resourceBundle.viewLC.lcDetails.amendments.amendmentNumber},{headerText:$component.resourceBundle.labels.productName},{headerText:$component.resourceBundle.viewLC.lcDetails.labels.applicantName},{headerText:$component.resourceBundle.viewLC.labels.lcNo},{headerText:$component.resourceBundle.viewLC.lcDetails.labels.lcAmount,headerClassName:'right',className:'right'}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('exportAmendments_template', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[dataSourceForExportAmendment]]">
+        <caption class="hide-label" data-bind="text:$component.resourceBundle.navLabels.amendment"></caption>
+    </oj-table>
+
+    <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSourceForExportAmendment]]"></oj-paging-control>
+  </div>
+<!-- /ko -->
+
+
+<!-- ko ifnot:$baseModel.large() -->
+<div class="oj-flex grid-main-container">
+  <div class="oj-flex-item oj-sm-12">
+      <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('template_list_card',true)}]]" selection-mode="[['single']]" data="[[dataSourceForExportAmendment]]">
+      </oj-list-view>
+      <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.dataSourceForExportAmendment]]">
+    </oj-paging-control>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+</div>
+<!-- ko ifnot: listOfExportAmendments().length > 0 -->
+<div class="oj-flex oj-flex-items-pad padding-tb">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.resourceBundle.tradeFinanceErrors.messages.noRecordFound">
+  </div>
+</div>
+<!-- /ko -->
+
+<!-- ko if: dataSourceExportAmendments && !$baseModel.small()-->
+<div class="button-container">
+<oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+  <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+</oj-button>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+</div>
+</div>
+
+<script type="text/html" id="exportAmendments_template">
+    <tr>
+      <td>
+        <a href="javascript:void(0)" data-bind="text:$data.amendmentNo,click:$component.fetchAmendmentDetails.bind($data)"></a>
+      </td>
+       <td>
+        <span data-bind="text: $data.productName"></span>
+      </td>
+      <td>
+        <span data-bind="text: $data.applicant"></span>
+      </td>
+      <td>
+        <span data-bind="text: $data.lcNumber"></span>
+      </td>
+      <td>
+        <span data-bind="text: $data.lcAmount"></span>
+      </td>
+    </tr>
+</script>
+<script type="text/html" id="template_list_card">
+  <li data-bind="attr: {id: $data.amendmentNo}">
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-md-12 oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-9 description">
+              <a href="#" data-bind="text:$baseModel.format($component.resourceBundle.labels.amendmentNumber,{amendmentNumber:$data.amendmentNo}),
+              click:$component.fetchAmendmentDetails.bind($data)"></a>
+            </div>
+          </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6 content" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.labels.productName"></label>
+            <div data-bind="text: $data.productName"></div>
+          </div>
+        </div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.viewLC.lcDetails.labels.applicantName"></label>
+            <div data-bind="text: $data.applicant"></div>
+          </div>
+        </div>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.viewLC.labels.lcNo"></label>
+            <div data-bind="text: $data.lcNumber"></div>
+          </div>
+        </div>
+
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <label data-bind="text: $component.resourceBundle.viewLC.lcDetails.labels.lcAmount"></label>
+          <div data-bind="text: $data.lcAmount"></div>
+        </div>
+      </div>
+      </div>
+      </div>
+
+  </li>
+</script>

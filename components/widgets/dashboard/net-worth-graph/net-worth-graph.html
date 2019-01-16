@@ -1,0 +1,95 @@
+<div class="oj-panel networth logo-in-background" id="chart-container">
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-6">
+      <h3 class="networth__heading" data-bind="text:$component.resource.myNetworth">
+      </h3>
+      <div class="networth__date" data-bind="text:$baseModel.format($component.resource.on,{date: $baseModel.formatDate($oj.IntlConverterUtils.dateToLocalIso($baseModel.getDate()))})"></div>
+    </div>
+    <div class="oj-flex-item oj-sm-6 right">
+      <oj-buttonset-one class="networth__switchButtons" value="{{$component.selectedValue}}" :aria-label="[[$component.resource.myNetworthLabel]]">
+        <!-- ko foreach: netWorthLabels -->
+        <oj-option value='[[id]]'>
+          <span data-bind="text: label"></span>
+        </oj-option>
+        <!-- /ko -->
+      </oj-buttonset-one>
+    </div>
+  </div>
+  <!-- ko if:$component.amountData -->
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- ko if:$component.showIHaveGraph() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+      <oj-chart type="pie" class="networth__pie" series="[[pieSeriesValueForCredit]]" animation-on-display="auto" animation-on-data-change="auto" pie-center.renderer="[[pieCenterLabelContent]]" style-defaults="[[styleDefaults]]" legend="[[legend]]" hover-behavior="dim">
+      </oj-chart>
+
+    </div>
+    <div id="iHaveLegends" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 networth__legend networth-legend">
+      <div class="oj-flex oj-flex-items-pad networth-legend__info networth-legend-info">
+        <!-- ko foreach: pieSeriesValueForCredit -->
+        <!-- ko ifnot: $baseModel.small() -->
+          <div class="oj-flex-item oj-sm-12">
+            <div class="networth-legend__color" data-bind="style:{background:$data.color}"></div>
+            <div class="networth-legend__text" data-bind="text:$data.name"></div>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <div class="networth-legend__amount" data-bind="text:$baseModel.formatCurrency($data.items,$component.currency())"></div>
+          </div>
+        <!-- /ko -->
+
+        <!-- ko if: $baseModel.small() -->
+        <div class="oj-flex-item oj-sm-6 networth-legend-info__content">
+          <div class="networth-legend__color" data-bind="style:{background:$data.color}"></div>
+          <div class="networth-legend__text" data-bind="text:$data.name"></div>
+          <div class="networth-legend__amount" data-bind="text:$baseModel.formatCurrency($data.items,$component.currency())"></div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+    </div>
+
+    <!-- /ko -->
+    <!-- ko if:$component.showIOweGraph() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+      <oj-chart type="pie" class="networth__pie" series="[[pieSeriesValueForDebit]]" animation-on-display="auto" animation-on-data-change="auto" pie-center.renderer="[[pieCenterLabelContent]]" style-defaults="[[styleDefaults]]" legend="[[legend]]" hover-behavior="dim">
+      </oj-chart>
+    </div>
+    <div id="iOweLegends" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 networth__legend networth-legend">
+      <div class="oj-flex oj-flex-items-pad networth-legend__info networth-legend-info">
+        <!-- ko foreach: pieSeriesValueForDebit -->
+        <!-- ko ifnot: $baseModel.small() -->
+          <div class="oj-flex-item oj-sm-12">
+            <div class="networth-legend__color" data-bind="style:{background:$data.color}"></div>
+            <div class="networth-legend__text" data-bind="text:$data.name"></div>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <div class="networth-legend__amount" data-bind="text:$baseModel.formatCurrency($data.items,$component.currency())"></div>
+          </div>
+        <!-- /ko -->
+
+        <!-- ko if: $baseModel.small() -->
+        <div class="oj-flex-item oj-sm-6 networth-legend-info__content">
+          <div class="networth-legend__color" data-bind="style:{background:$data.color}"></div>
+          <div class="networth-legend__text" data-bind="text:$data.name"></div>
+          <div class="networth-legend__amount" data-bind="text:$baseModel.formatCurrency($data.items,$component.currency())"></div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+    </div>
+
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot: $component.amountData -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 networth__placeholder networth-placeholder">
+      <img class="networth-placeholder__image" alt="" data-bind="loadImage:'dashboard/transaction.svg'">
+    </div>
+    <div class="oj-flex-item oj-sm-12 center">
+      <div data-bind="text:$component.resource.onceYourTransaction"></div>
+    </div>
+  </div>
+  <!-- /ko -->
+
+</div>

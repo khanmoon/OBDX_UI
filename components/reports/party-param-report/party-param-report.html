@@ -1,0 +1,32 @@
+
+<form onsubmit="return false">
+    <!-- ko ifnot:$component.partyDetailsFetched() -->
+    <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+            <oj-label for="partyId"> <span data-bind="text:$component.Nls.partyId"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+            <oj-input-text required id="partyId"  name="partyId" on-$parent.onsubmitbyenter="[[$parent.onSubmitByEnter]]"></oj-input-text>
+
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:$component.partyDetailsFetched() -->
+    <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+            <oj-label for="partyId"> <span data-bind="text:$component.Nls.partyId"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+            <span data-bind="text : $component.partyId()"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+            <oj-label for="partyName"> <span data-bind="text:$component.Nls.partyName"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+            <span data-bind="text : $component.partyName()"></span>
+        </div>
+    </div>
+    <!-- /ko -->
+</form>
+
+

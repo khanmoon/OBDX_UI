@@ -1,0 +1,60 @@
+<!-- ko foreach:$component.configuration.configurationItemDTOs -->
+
+<div class="oj-flex oj-flex-items-pad">
+
+  <!-- ko foreach:$data.inputDTOs -->
+
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label for="input"><span data-bind="text:$data.uiDefinition.title"></span></oj-label>
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+
+    <!-- ko if :$data.type === 'TXT' && $data.fieldName !== 'userName'-->
+    <oj-input-text :id="[[$data.fieldName]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator,$data.uiDefinition.message,$data.uiDefinition.extension)]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues}}"></oj-input-text>
+    <!-- /ko -->
+    <!-- ko if :$data.type === 'LISTBOX' -->
+    <oj-label for="field_select" class="hide-label"><span data-bind="text:$data.uiDefinition.title"></span></oj-label>
+    <oj-select-one id="field_select" :id="[['field_select_'+ $index()]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues}}"
+      :placeholder="[[$component.nls.fieldname.select]]">
+      <!-- ko foreach: $data.tempObj.options -->
+      <oj-option value="{{key}}"><span data-bind="text:description"></span></oj-option>
+      <!-- /ko -->
+    </oj-select-one>
+
+    <!-- /ko -->
+    <!-- ko if :$data.type === 'CHB' -->
+
+    <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" class="oj-choice-direction-row" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" value="{{$data.inputValues}}" on-value-changed="[[$component.disableUsernamePasswordHandler.bind($data,$data,$parent.inputDTOs)]]">
+      <!-- ko foreach: $data.tempObj.options -->
+      <oj-option value="{{key}}" :id="[[$parent.fieldName + $index()]]"><span data-bind="text: description, attr : {'for' :$parent.fieldName + $index()}"></span></oj-option>
+      <!-- /ko -->
+    </oj-checkboxset>
+     <div data-bind="template:{afterRender:$component.disableUsernamePasswordHandler.bind($data,$data,$parent.inputDTOs)}"></div>
+    <!-- /ko -->
+    <!-- ko if : $component.displayFlag -->
+    <!-- ko if :$data.type === 'TXT' && $data.fieldName === 'userName' -->
+    <oj-input-text id="input" :id="[[$data.fieldName]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator,$data.uiDefinition.message,$data.uiDefinition.extension)]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues}}"></oj-input-text>
+    <!-- /ko -->
+    <!-- ko if :$data.type === 'PWD' -->
+    <oj-label for="password" class="hide-label"><span data-bind="text:$data.uiDefinition.title"></span></oj-label>
+    <oj-input-password id="password" type="password" autocomplete="off" maxlength="16" value="{{$data.inputValues}}" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]"></oj-input-password>
+    <!-- /ko -->
+    <!--/ko -->
+    <br>
+    <br>
+
+  </div>
+
+  <!-- /ko -->
+</div>
+
+
+
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-6">
+    <a href="#" data-bind="click: $component.validateSmtpServerConnectivity,attr:{alt:$component.nls.buttons.TestEmailAlt, title:$component.nls.buttons.TestEmail,'aria-label':$component.nls.buttons.TestEmail}"><span data-bind="text : $component.nls.buttons.TestEmail"></span></a>
+  </div>
+</div>

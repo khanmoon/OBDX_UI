@@ -1,0 +1,147 @@
+<!-- ko if:$component.params.serviceNos -->
+
+        <div class="oj-flex oj-flex-items-pad cust-details oj-sm-flex-items-initial" data-bind="with : $component.params.serviceNos">
+            <!-- ko foreach: items -->
+            <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-2">
+              <div class="label" data-bind="text:$data.label">
+              </div>
+              <div class="cust-name" data-bind="text:$data.value">
+              </div>
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+  <!-- ko if:$component.params.flagHotList -->
+        <page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+          <div class="row-group">
+            <!-- ko if:$component.params.selectBlockType.code==="TEM" -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.locale.common.blockType , value :$component.params.selectBlockType.description"></row>
+            <!-- /ko -->
+            <!-- ko if:$component.params.selectBlockType.code==="HOTLIST" -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.locale.common.reasonLabel , value :$component.reasonReview"></row>
+            <!-- ko if:$component.replaceConfirmationType() === 'OPTION_YES' -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$component.locale.hotlisting.replacementCard">
+                  </span>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item" data-bind="template: { name: 'common/review/address',data:$component.addressDetails }">
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+          </div>
+
+        </page-section>
+<!-- /ko -->
+
+<!-- ko if:$component.params.flagPinRequest-->
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+  <div class="row-group">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item" data-bind="template: { name: 'common/review/address',data:$component.addressDetails }">
+        </div>
+      </div>
+    </div>
+  </div>
+</page-section>
+<!-- /ko -->
+
+<!-- ko if:$component.params.flagLimits -->
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+<div class="oj-flex-item oj-md-5 oj-lg-5">
+  <oj-table id="table" class="debit-card-limit__limitsTable debit-card-limit-limitsTable" :aria-label="[[$component.locale.debitCards.limits.limitsTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('rowTemplate', true)]]" columns="[[$component.params.columns]]"
+    data="[[$component.params.datasource]]">
+    <caption class="hide-label" data-bind="text:$component.locale.debitCards.limits.limitsTable"></caption>
+  </oj-table>
+</div>
+  <script type="text/html" id="rowTemplate">
+    <tr>
+      <td data-bind="text:limitTypeLocal">
+      </td>
+      <td data-bind="text:count">
+      </td>
+      <td class="debit-card-limit-limitsTable__amount right" data-bind="text:$baseModel.formatCurrency(amountType.amount(),amountType.currency())"></td>
+    </tr>
+  </script>
+</page-section>
+
+<!-- /ko -->
+
+<!-- ko if:$component.params.flagApplyPin-->
+<page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading : $component.nls.review.reviewHeading">
+
+  <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.common.accountNumber , value : $component.accountInputDetails().account.id.displayValue"></row>
+  <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.common.reason , value : $component.applyCardModel.reason"></row>
+
+  <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.compName.embossedName , value :$component.applyCardModel.name"></row>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item" data-bind="template: { name: 'common/review/address',data:$component.addressDetails }"></div>
+
+  </div>
+</page-section>
+
+<!-- /ko -->
+
+
+<!-- ko if:$component.params.flagUpgradeCard -->
+<page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading : ''">
+  <div class="row-group">
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.upgradeCard , value :$component.params.cardType"></row>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item" data-bind="template: { name: 'common/review/address',data:$component.addressDetails }">
+      </div>
+    </div>
+  </div>
+</page-section>
+<!-- /ko -->
+
+<!-- ko if:$component.params.flagReissueCard -->
+<page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading : ''">
+  <div class="row-group">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item" data-bind="template: { name: 'common/review/address',data:$component.addressDetails }">
+      </div>
+    </div>
+  </div>
+</page-section>
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item" data-bind="text:$component.confirmScreenResources.confirm.actions.nextAction">
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad ">
+  <div class="oj-flex-item">
+    <ul class="confirm-screen__list">
+      <li>
+        <a href="#" data-bind="click:$dashboard.openDashBoard.bind(void 0,void 0)">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToDashboard},loadImage:'dashboard/quick-access/dashboard.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToDashboard"></div>
+        </a>
+      </li>
+      <!-- ko if: $component.constants.userSegment === "RETAIL" -->
+      <li>
+        <a href="#" data-bind="click:$component.openTransaction.bind($data,'demand-deposit-details', 'demand-deposits', 'demandDeposit')">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToAccountDetails},loadImage:'dashboard/quick-access/account-details.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToAccountDetails"></div>
+        </a>
+      </li>
+      <!-- /ko -->
+      <!-- ko if: $component.constants.userSegment === "CORP" -->
+      <li>
+        <a href="#" data-bind="click:$dashboard.switchModule.bind($data,'demand-deposits')">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToAccountDetails},loadImage:'dashboard/quick-access/account-details.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToAccountDetails"></div>
+        </a>
+      </li>
+      <!-- /ko -->
+    </ul>
+  </div>
+</div>

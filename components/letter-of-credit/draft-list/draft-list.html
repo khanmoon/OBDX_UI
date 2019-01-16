@@ -1,0 +1,89 @@
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+    <!-- ko if: dataSourceCreated() -->
+
+    <!-- ko if: draftList().length > 0 -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 template-search" data-bind="component: {
+                     name: 'search-box',
+                     params: {rootModel:$component,
+                            searchFields : ['draft_name'],
+                            data:dataSource(),
+                            searchBy:$component.resourceBundle.drafts.labels.draftName}}">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ko if:$baseModel.large() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <oj-table id="table" :aria-label="[[$component.resourceBundle.drafts.labels.listofDrafts]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('template_row', true)]]" columns="[[[{headerText:$component.resourceBundle.drafts.labels.draftName,sortProperty:'draft_name'},{headerText:$component.resourceBundle.drafts.labels.savedOn}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[dataSource]]">
+          <caption class="hide-label" data-bind="text:$component.resourceBundle.drafts.labels.draftName"></caption>
+        </oj-table>
+        <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSource]]">
+        </oj-paging-control>
+      </div>
+    </div>
+    <script type="text/html" id="template_row">
+      <tr>
+        <td>
+          <a href="#" data-bind="attr:{ title: $data.draft_name},text:$data.draft_name,click:$component.onDraftSelected.bind($data)"></a>
+        </td>
+        <td>
+          <span data-bind="text:$data.created_on"></span>
+        </td>
+      </tr>
+    </script>
+
+    <!-- /ko -->
+
+    <!-- ko ifnot:$baseModel.large() -->
+    <div class="oj-flex grid-main-container">
+      <div class="oj-flex-item oj-sm-12">
+          <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('draft_list_card',true)}]]" selection-mode="[['single']]" data="[[dataSource]]">
+          </oj-list-view>
+          <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.dataSource]]">
+          </oj-paging-control>
+      </div>
+    </div>
+    <script type="text/html" id="draft_list_card">
+      <li data-bind="attr: {id: $data.draftId}">
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item oj-sm-12">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 description">
+                <a href="#" data-bind="attr:{ title:  $data.draft_name, alt : $data.draft_name },text:$data.draft_name,
+                click:$component.onDraftSelected.bind($data)"></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 grid-row-group">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <label data-bind="text: $component.resourceBundle.drafts.labels.savedOn"></label>
+                <div data-bind="text: $data.created_on"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        </li>
+      </script>
+      <!-- /ko -->
+
+    <!-- /ko -->
+
+    <!-- ko ifnot: draftList().length > 0 -->
+    <div class="oj-flex oj-flex-items-pad padding-tb">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.resourceBundle.messages.noDraftCreated">
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- /ko -->
+</page-section>

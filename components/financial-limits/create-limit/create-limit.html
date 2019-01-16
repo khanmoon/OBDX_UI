@@ -1,0 +1,282 @@
+<div class="oj-flex financial-limits-create">
+    <div class="oj-flex-item oj-sm-9">
+      <div class="form-main-container">
+  <oj-validation-group id="tracker" valid="{{groupValid}}">
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+          <oj-label for="optionset"><span data-bind="text:$component.nls.limit.LimitType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 ">
+          <oj-buttonset-one id="optionset" on-value-changed="[[handleCreateLimit]]" aria-hidden="true" value="{{checkedOption()}}">
+            <oj-option name="transaction" value="{{'Transaction'}}" :id="[['Transaction']]"><span data-bind="attr: {for: 'Transaction'},text:$component.nls.limitType.transaction"></span></oj-option>
+            <oj-option name="transaction" value="{{'Cumulative'}}" :id="[['Cumulative']]"><span data-bind="attr: {for: 'Cumulative'},text:$component.nls.limitType.cummulative"></span></oj-option>
+            <oj-option name="transaction" value="{{'Durational'}}" :id="[['Durational']]"><span data-bind="attr: {for: 'Durational'},text: $component.nls.limitType.coolingPeriod"></span></oj-option>
+          </oj-buttonset-one>
+        </div>
+      </div>
+      <!-- ko if : $component.transactionLimitSection() -->
+
+      <div data-bind="template: { name: 'limits/create-limit-new', data:$component.transactionLimitModelInstance()}"></div>
+      <!-- ko if : $component.showTransactionAmount() -->
+      <div data-bind="component: {
+              name: 'amount-input', params: {
+              amount :$component.transactionLimitModelInstance().amountRange.minTransaction.amount,
+              label : $component.nls.limit.minAmount,
+              currency: $component.currency,
+              currencyListRequired : false,
+              validator:$component.validationTracker,
+              isMandatory:true,
+              rootId:'limit-minAmount',
+              currencyURL : '',
+              currencyParser : '',
+              rootClass:'form-input'
+          }
+        }"></div>
+
+      <div data-bind="component: {
+                  name: 'amount-input', params: {
+                  amount :$component.transactionLimitModelInstance().amountRange.maxTransaction.amount,
+                  label : $component.nls.limit.maxAmount,
+                  currency: $component.currency,
+                  currencyListRequired : false,
+                  validator:$component.validationTracker,
+                  isMandatory:true,
+                  rootId:'limit-maxAmount',
+                  currencyURL : '',
+                  currencyParser : '',
+                  rootClass:'form-input'
+              }
+            }"></div>
+      <!-- /ko -->
+
+
+
+
+      <!-- /ko -->
+
+      <!-- ko if : $component.cummulativeLimitSection() -->
+
+
+      <div data-bind="template: { name: 'limits/create-limit-new', data : $component.cummulativeLimitModelInstance()}"></div>
+      <!-- ko if : $component.showCummulativeAmount() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12" data-bind="component: {
+                          name: 'amount-input', params: {
+                          amount :$component.cummulativeLimitModelInstance().maxAmount.amount,
+                          label :$component.nls.limit.cummuTrnsAmnt,
+                          currency: $component.currency,
+                          currencyListRequired : false,
+                          validator:$component.validationTracker,
+                          isMandatory:true,
+                          isLabelHidden: false,
+                          labelClasses:'hide-label',
+                          valueClasses:'oj-lg-12',
+                          rootId:'limit-cummu-maxAmount',
+                          currencyURL : '',
+                          currencyParser : '',
+                          rootClass:'form-input'
+                      }
+                    }">
+          <!-- ko if:frequency() === 'DAILY' -->
+          <span class="financial-limits-create--perDay" data-bind="text:nls.limit.perDay"></span>
+          <!-- /ko -->
+          <!-- ko if:frequency() === 'MONTHLY' -->
+          <span class="financial-limits-create--perDay" data-bind="text:nls.limit.perMonth"></span>
+          <!-- /ko -->
+        </div>
+      </div>
+
+
+
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+          <oj-label for="duration"><span data-bind="text:$component.nls.limit.maxTransactions"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+
+          <oj-input-text id="duration" type="number" required validators="[[$baseModel.getValidator('NUMBERS',$component.nls.limit.countValidationMessage,{type:'length',options:{min:1,max:10}})]]" value="{{$component.cummulativeLimitModelInstance().maxCount}}"></oj-input-text>
+
+          <!-- ko if:$component.frequency() === 'DAILY' -->
+
+          <span data-bind="text:$parent.nls.limit.perDay"></span>
+          <!-- /ko -->
+          <!-- ko if:$component.frequency() === 'MONTHLY' -->
+          <span data-bind="text:$parent.nls.limit.perMonth"></span>
+          <!-- /ko -->
+
+        </div>
+
+
+      </div>
+      <!-- /ko -->
+
+
+
+
+      <!-- /ko -->
+    </page-section>
+
+  </oj-validation-group>
+
+  <!-- ko if :$component.coolingPeriodLimitSection() -->
+
+  <div data-bind="template: { name: 'limits/create-limit-new', data:$component.coolingPeriodLimitModelInstance()}"></div>
+
+  <!-- ko if : $component.currencyLoaded() && $component.showCoolingAmount() -->
+  <oj-table id="table" :aria-label="[[$component.nls.limit.transactionTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('rowTemplate', true)]]"
+  columns="[[[{headerText:$component.nls.limit.fromTime,style:'width: 20%;vertical-align:middle'},
+  {headerText:$component.nls.limit.toTime,style:'width: 40%'},
+  {headerText:$component.nls.limit.cumuAmount,style:'width: 40%'},
+  {style:'width: 10%'}]]]"
+    columns-default="[[{sortable:'disabled'}]]" data="[[$component.coolingDatasource]]">
+    <caption class="hide-label" data-bind="text:$component.nls.limit.transactionTable"></caption>
+  </oj-table>
+
+  <script type="text/html" id="rowTemplate">
+    <tr>
+      <td>
+        <span data-bind="text:$baseModel.format($component.nls.limit.durationFormat,{dd:startDuration.days(),hh:startDuration.hours(),mm:startDuration.minutes()})"> </span>
+      </td>
+      <td>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+            <oj-select-one :id="[['endDuration-day-'+ $context.rowContext.status.rowKey + $context.rowContext.status.rowIndex]]" :aria-label="[[$component.nls.limit.days]]" :placeholder="[[$component.nls.limit.dd]]" required="[[true]]" value="{{endDuration.days}}"
+              on-value-changed="[[$component.verifyStartTime.bind($data,$context.rowContext.status.rowIndex,$data)]]">
+
+              <!-- ko foreach:$component.daysList() -->
+              <oj-option value="{{$index()}}"><span data-bind="text:$component.daysList()[$index()]"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+
+
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+            <oj-select-one :id="[['endDuration-hrs-'+ $context.rowContext.status.rowKey + $context.rowContext.status.rowIndex]]" :aria-label="[[$component.nls.limit.hours]]" :placeholder="[[$component.nls.limit.hh]]" required="[[true]]" value="{{endDuration.hours}}"
+              on-value-changed="[[$component.verifyStartTime.bind($data,$context.rowContext.status.rowIndex,$data)]]">
+
+              <!-- ko foreach:$component.hoursList -->
+              <oj-option value="{{$index()}}"><span data-bind="text:$component.hoursList()[$index()]"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+            <oj-select-one :id="[['endDuration-mins-'+ $context.rowContext.status.rowKey + $context.rowContext.status.rowIndex]]" :aria-label="[[$component.nls.limit.minutes]]" :placeholder="[[$component.nls.limit.mm]]" required="[[true]]" value="{{endDuration.minutes}}"
+              on-value-changed="[[$component.verifyStartTime.bind($data,$context.rowContext.status.rowIndex,$data)]]">
+
+              <!-- ko foreach:$component.minutesList -->
+              <oj-option value="{{$index()}}"><span data-bind="text:$component.minutesList()[$index()]"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+
+        </div>
+      </td>
+      <td>
+
+        <div class="oj-flex-item" data-bind="component: {
+                                  name: 'amount-input', params: {
+                                  amount :amount.amount,
+                                  label :$component.nls.limit.amount,
+                                  currency: $component.currency,
+                                  currencyListRequired : false,
+                                  validator:$component.validationTracker,
+                                  isMandatory:true,
+                                  isLabelHidden: true,
+                                  labelClasses:'hide-label',
+                                  rootId:'limit-dur-amount'+ $context.rowContext.status.rowIndex,
+                              }
+                            }">
+
+        </div>
+
+      </td>
+      <td>
+
+        <div class="oj-flex-item oj-md-2 oj-sm-2 oj-lg-2 financial-limits-create--deleteIcon" data-bind="visible:$context.rowContext.status.rowIndex > 0 ">
+          <a href="javascript:void(0);" class="pull-right icons icon-delete" data-bind="click:$component.removePeriod.bind($data,$context.rowContext.status.rowIndex,$data)"></a>
+        </div>
+</td>
+</tr>
+</script>
+
+
+<!-- ko if :$component.coolingPeriodLimitSection() -->
+<div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button class="help-button" on-click="[[addTimePeriod]]">
+    <span data-bind="text:$component.nls.limit.timePeriod"></span>
+  </oj-button>
+</div>
+<!-- /ko -->
+
+<!-- /ko -->
+<!-- /ko -->
+
+
+
+<modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'cancelDialog',header:$component.nls.common.cancelWarning">
+  <div class="message-box">
+    <div class="dialog-text center" data-bind="text:$component.nls.common.cancelMessage">
+    </div>
+    <div class="button-container">
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.common.yes"></span>
+      </oj-button>
+      <oj-button class="action-button-primary" on-click="[[$component.closeDialogBox]]">
+        <span data-bind="text:$component.nls.common.no"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+<modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'invalidTimeDialog',header:$component.nls.limit.timeError">
+  <div class="message-box">
+    <!-- ko if: chekValidation -->
+    <div class="dialog-text center" data-bind="text:$component.nls.common.invalidTimeMsg">
+    </div>
+    <!-- /ko -->
+    <!-- ko if: addTimeButton -->
+    <div class="dialog-text center" data-bind="text:$component.nls.common.invalidEntryMsg">
+    </div>
+    <!-- /ko -->
+    <div class="button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.closeDialogBox]]">
+        <span data-bind="text:$component.nls.common.ok"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+<modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'invalidAmountDialog',header:$component.nls.limit.amountErrorMsg">
+  <div class="message-box">
+
+    <div class="dialog-text center" data-bind="text:$component.nls.common.invalidAmountMsg">
+    </div>
+    <div class="button-container">
+
+      <oj-button class="action-button-primary" on-click="[[$component.closeDialogBox]]">
+        <span data-bind="text:$component.nls.common.ok"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button class="action-button-primary" on-click="[[save]]">
+    <span data-bind="text:$component.nls.common.save"></span>
+  </oj-button>
+  <oj-button class="action-button-secondary" on-click="[[cancel]]">
+    <span data-bind="text:$component.nls.common.cancel"></span>
+  </oj-button>
+  <oj-button class="action-button-tertiary" on-click="[[back]]">
+    <span data-bind="text:$component.nls.common.back"></span>
+  </oj-button>
+</div>
+</div>
+</div>
+<div class="oj-flex-item oj-sm-3 help-panel">
+  <help params="baseModel : $baseModel, rootModel : $component, transaction: 'limit-create'"></help>
+</div>
+</div>

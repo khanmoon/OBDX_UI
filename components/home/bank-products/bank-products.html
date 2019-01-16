@@ -1,0 +1,16 @@
+<!-- ko if: renderModuleData() -->
+<div class="product-quick-links">
+
+    <h3 data-bind="text:$component.nls.quickLinks.labels.quickHeading"></h3>
+    <ul class="oj-flex oj-flex-items-pad product-quick-links-flex-container oj-sm-flex-wrap-nowrap">
+        <!-- ko foreach: productTiles -->
+        <li class="oj-flex-item product-quick-links-flex-container__listItems">
+            <a class="product-quick-links-flex-item" href="javascript:void(0)" data-bind="click : $component.actionCardClick.bind($data,$data.card_text) ,attr:{alt: $baseModel.format($component.resource.alt.productName,{productName:$component.nls.quickLinks.labels[$data.id]}), title: $component.nls.quickLinks.labels[$data.id]}">
+                <img class="icons" data-bind="loadImage: 'index/icons/'+$data.id+'.svg',attr:{alt:$baseModel.format($component.resource.alt.productImage,{productName:$component.nls.quickLinks.labels[$data.id]})} ">
+                <div class="icon-title" data-bind="text: $component.nls.quickLinks.labels[$data.id]"></div>
+            </a>
+        </li>
+        <!-- /ko -->
+    </ul>
+</div>
+<!-- /ko -->

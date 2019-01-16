@@ -1,0 +1,36 @@
+<div class="form-main-container">
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading :actionHeaderheading">
+
+
+<!-- ko if:questionPopulated()-->
+<!-- ko foreach : $component.mappingOfQuestionsAndId -->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 label">
+      <oj-label>
+    <span data-bind="text:question"></span></oj-label></div>
+    <div class="oj-flex-item oj-sm-6 oj-lg-4 oj-md-4 ">
+      <oj-input-password value="{{answer}}"></oj-input-password>
+    </div>
+  </div>
+  <!-- /ko -->
+
+
+
+<!-- /ko -->
+
+</page-section>
+
+<div class="oj-flex button-container">
+  <oj-button class="action-button-primary" id="button" on-click="[[submitAnswers]]">
+      <span data-bind="text:$component.locale.common.submit"></span>
+</oj-button>
+  <oj-button class="action-button-secondary" id="button" on-click="[[cancelSecQuestion]]">
+      <span data-bind="text:$component.locale.common.cancel"></span>
+</oj-button>
+
+</div>
+
+
+</div>

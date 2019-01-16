@@ -1,0 +1,99 @@
+<div class="form-main-container submission-confirmation">
+    <div class=" registration">
+        <div class="page-container">
+            <div class="oj-flex oj-flex-items-pad ">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom-20 primary-heading">
+                    <h3 data-bind="text: $component.resource.sucessRegistration"></h3>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom ">
+                    <div class="text" data-bind="text: $component.resource.successMsg"></div>
+                </div>
+
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom-20 primary-heading margin-top-20">
+                    <h3 data-bind="text: $component.resource.trackStatus"></h3>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom ">
+                    <div class="text" data-bind="text: $component.resource.trackMsg1"></div>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom ">
+                    <div class="text" data-bind="text: $component.resource.trackMsg2"></div>
+                </div>
+            </div>
+
+            <!-- ko if: $component.applicantDetails()[1]  -->
+            <div class="oj-flex oj-flex-items-pad">
+              <!-- ko if: $component.applicantDetails()[1].applicantType() === 'anonymous' && !$component.applicantDetails()[1].channelUser() -->
+              <!-- ko ifnot:  $component.isCoApplogin() -->
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom-20 primary-heading margin-top-20">
+                  <h3 data-bind="text: $component.resource.coAppregister"></h3>
+                  </div>
+                  <div class="form-content oj-flex-item">
+                  <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12  ">
+                      <div data-bind="text: $component.resource.coApplinkMsg"></div>
+                    </div>
+                  </div>
+                    <div class="oj-flex oj-flex-items-pad">
+                      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                          <oj-input-text oncopy="return false" autocomplete="off" ondragstart="return false" onselectstart="return false" onpaste="return false" onmousedrop="return false" required maxlength="100" :id="[['username2']]" translations="[[{'required':{messageDetail:$component.resource.messages.email}}]]" validators="[[$baseModel.getValidator('EMAIL')]]" value="{{$component.userCreationPayload().coApp.username}}"></oj-input-text>
+                      </div>
+                      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+                        <oj-button raised="" id="sendlink" class="form-button-primary " on-click="[[$component.registerCoAppUser]]">
+      <span data-bind="text:$component.resource.sendlink"></span>
+</oj-button>
+                    </div>
+                    </div>
+                    <!-- ko if:  $component.coAppRegSuccessful()  -->
+                    <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-10 oj-md-9 oj-lg-8  ">
+                        <div data-bind="text: $component.resource.messages.coAppMsg"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1">
+                        <span class="icon icon-success section-icon pull-right done-icon"></span>
+                    </div>
+                    </div>
+                    <!-- /ko -->
+                  </div>
+                  <!-- /ko -->
+                <!-- /ko -->
+
+                <!-- ko if: ($component.applicantDetails()[1].applicantType() === 'customer' && $component.applicantDetails()[1].channelUser()) && ($component.applicantDetails()[0].applicantType() === 'anonymous' && !$component.applicantDetails()[0].channelUser()) -->
+                <!-- ko if:  $component.isCoApplogin()  -->
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom-20 primary-heading margin-top-20">
+                    <h3 data-bind="text: $component.resource.primaryAppregister"></h3>
+                  </div>
+                  <div class="form-content oj-flex-item">
+                  <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12  ">
+                      <div data-bind="text: $component.resource.primaryApplinkMsg"></div>
+                  </div>
+                  </div>
+                    <div class="oj-flex oj-flex-items-pad">
+                      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                          <oj-input-text oncopy="return false" autocomplete="off" ondragstart="return false" onselectstart="return false" onpaste="return false" onmousedrop="return false" required maxlength="100" :id="[['username2']]" translations="[[{'required':{messageDetail:$component.resource.messages.email}}]]" validators="[[$baseModel.getValidator('EMAIL')]]" value="{{$component.userCreationPayload().coApp.username}}"></oj-input-text>
+                      </div>
+                      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+                        <oj-button raised="" id="sendlink" class="form-button-primary " on-click="[[$component.registerCoAppUser]]">
+      <span data-bind="text:$component.resource.sendlink"></span>
+</oj-button>
+                    </div>
+                    </div>
+                    <!-- ko if:  $component.coAppRegSuccessful()  -->
+                    <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-10 oj-md-9 oj-lg-8  ">
+                        <div data-bind="text: $component.resource.messages.coAppMsg"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1">
+                        <span class="icon icon-success section-icon pull-right done-icon"></span>
+                    </div>
+                    </div>
+                    <!-- /ko -->
+                  </div>
+                    <!-- /ko -->
+                  <!-- /ko -->
+
+              </div>
+              <!-- /ko -->
+        </div>
+    </div>
+</div>

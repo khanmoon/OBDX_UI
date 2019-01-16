@@ -1,0 +1,199 @@
+<div class="oj-panel form-main-container card-action-container">
+				<div class="oj row aggregator-large">
+					<div class="oj-sm-9 oj-md-9 oj-lg-9 oj-col">
+						<div class="oj-row">
+							<div id="vtabs-container">
+								<oj-tab-bar id="vtabs" class="tab oj-tabs-icon-only" edge="[['start']]" on-selection-changed="[[$component.tabChangehandler]]">
+									<ul>
+										<li>
+											<span class="icon icon-exchange" aria-hidden="true"></span>
+											<span data-bind="text:$component.wallet.origination.details.ownaccount">
+										</span></li>
+										<li id="credit">
+											<span class="icon icon-card" aria-hidden="true"></span>
+											<span data-bind="text:$component.wallet.origination.details.credit">
+										</span></li>
+										<li id="debit">
+											<span class="icon icon-card" aria-hidden="true"></span>
+											<span data-bind="text:$component.wallet.origination.details.debit">
+										</span></li>
+									</ul>
+									<div class="tab1" id="tabs-1">
+										<div class="credit" data-bind="text:$component.wallet.aggregator.OATlabel"></div>
+										<div class="ownaccount">
+											<img data-bind="loadImage:'wallet/banking.jpg'" alt="B">
+										</div>
+										<div class="button-container">
+											<oj-button id="button" class="action-button-primary" on-click="[[initiateOAT]]">
+      <span data-bind="text:$component.wallet.aggregator.proceed"></span>
+</oj-button>
+										</div>
+									</div>
+									<div id="tabs-2">
+										<div class="credit" data-bind="text:$component.wallet.origination.details.cre"></div>
+										<div class="oj-row center">
+											<span class="icon icon-cc-visa" aria-hidden="true"></span>
+											<span class="icon icon-cc-mastercard" aria-hidden="true"></span>
+										</div>
+										<div class="tab2 oj-row left">
+											<div class="instab2 oj-row">
+												<oj-label for="cardNumcc" class="card"><span data-bind="text:$component.wallet.origination.details.cardNumber"></span></oj-label>
+												<oj-input-text id="cardNumcc" type="text" maxlength="16" value="{{cardNumcc}}" :placeholder="[[$component.wallet.origination.placeholder.cardNumber]]" translations="[[{'required':{messageDetail:$component.messages.wallet.invalidcardnum}}]]" validators="[[[validateCardNumber]]]" required="[[$component.isCredit()]]" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+												</div>
+												<div class="instab2 oj-row">
+													<div class="oj-row">
+														<div class="oj-lg-8 oj-md-12 oj-col">
+															<div class="oj-row">
+																<oj-label for="monthcc" class="card"><span data-bind="text:$component.wallet.origination.details.expirydate"></span></oj-label>
+															</div>
+															<div class="oj-row">
+																<div class="mar oj-lg-6 oj-md-6 oj-col">
+																	<oj-label class="hide-label" :for="[[$baseModel.incrementIdCount()]]"><span data-bind="text:$component.wallet.origination.placeholder.labelmonthCC"></span></oj-label>
+																	<oj-select-one class="select" :id="[[$baseModel.currentIdCount()]]" :placeholder="[[$component.wallet.origination.placeholder.month]]" value="{{$component.monthcc}}" required="[[$component.isCredit()]]" :invalidcomponenttracker="[[$component.validationTracker]]">
+																		<!-- ko foreach:month() -->
+																		<oj-option value="{{code}}">
+																		<span data-bind="text:description"></span></oj-option>
+																		<!-- /ko -->
+																	</oj-select-one>
+																</div>
+																<div class="oj-lg-6 oj-md-6 oj-col">
+																	<oj-label class="hide-label" :for="[[$baseModel.incrementIdCount()]]"><span data-bind="text:$component.wallet.origination.placeholder.labelyearCC"></span></oj-label>
+																	<oj-select-one :id="[[$baseModel.currentIdCount()]]" :placeholder="[[$component.wallet.origination.placeholder.year]]" required="[[$component.isCredit()]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.yearcc}}">
+																		<!-- ko foreach:year() -->
+																		<oj-option value="{{code}}">
+																		<span data-bind="text:description"></span></oj-option>
+																		<!-- /ko -->
+																	</oj-select-one>
+
+
+
+
+
+																</div>
+															</div>
+														</div>
+														<div class="oj-lg-4 oj-md-12  oj-col">
+
+															<oj-label for="cvvcc" class="card"><span data-bind="text:$component.wallet.origination.details.CVV"></span></oj-label>
+
+															<div class="oj-row">
+																<oj-input-password class="cvv" id="cvvcc" type="text" maxlength="3" value="{{cvvcc}}" translations="[[{'required':{messageDetail:$component.messages.wallet.invalidcvv}}]]" required="[[$component.isCredit()]]" validators="[[[validateCVV]]]"></oj-input-password>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="instab2 oj-row">
+														<oj-label for="accountHolderNamecc" class="card"><span data-bind="text:$component.wallet.origination.details.cardHolderName"></span></oj-label>
+														<oj-input-text id="accountHolderNamecc" type="text" :placeholder="[[$component.wallet.origination.placeholder.cardHolderName]]" value="{{$component.accountHolderNamecc}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+														</div>
+														<div class="button-container">
+															<oj-button id="button" class="action-button-primary" on-click="[[setComponent]]">
+      <span data-bind="text:$component.wallet.origination.details.pay"></span>
+</oj-button>
+														</div>
+
+													</div>
+												</div>
+												<div id="tabs-3">
+													<div class="credit" data-bind="text:$component.wallet.origination.details.deb"></div>
+													<div class="oj-row center">
+														<span class="icon icon-cc-visa" aria-hidden="true"></span>
+														<span class="icon icon-cc-mastercard" aria-hidden="true"></span>
+													</div>
+													<div class="tab2 oj-row left">
+														<div class="instab2 oj-row">
+															<oj-label class="card"><span data-bind="text:$component.wallet.origination.details.cardNumber"></span></oj-label>
+															<oj-input-text id="mobile" type="text" maxlength="16" value="{{cardNumdc}}" :placeholder="[[$component.wallet.origination.placeholder.cardNumber]]" translations="[[{'required':{messageDetail:$component.messages.wallet.invalidcardnum}}]]" validators="[[[validateCardNumber]]]" required="[[$component.isDebit()]]" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+															</div>
+															<div class="instab2 oj-row">
+																<div class="oj-row">
+																	<div class="oj-lg-8 oj-md-12  oj-col">
+																		<div class="oj-row">
+																			<oj-label class="card"><span data-bind="text:$component.wallet.origination.details.expirydate"></span></oj-label>
+																		</div>
+																		<div class="oj-row">
+																			<div class="mar oj-lg-6 oj-md-6  oj-col">
+																				<oj-label class="hide-label" :for="[[$baseModel.incrementIdCount()]]"><span data-bind="text:$component.wallet.origination.placeholder.labelmonthDC"></span></oj-label>
+																				<oj-select-one class="select" :id="[[$baseModel.currentIdCount()]]" :placeholder="[[$component.wallet.origination.placeholder.month]]" value="{{$component.monthdc}}" required="[[$component.isDebit()]]" :invalidcomponenttracker="[[$component.validationTracker]]">
+																					<!-- ko foreach:month() -->
+																					<oj-option value="{{code}}">
+																					<span data-bind="text:description"></span></oj-option>
+																					<!-- /ko -->
+																				</oj-select-one>
+
+
+
+
+
+																			</div>
+																			<div class="oj-lg-6 oj-md-6  oj-col">
+																				<oj-label class="hide-label" :for="[[$baseModel.incrementIdCount()]]"><span data-bind="text:$component.wallet.origination.placeholder.labelyearDC"></span></oj-label>
+																				<oj-select-one :id="[[$baseModel.currentIdCount()]]" :placeholder="[[$component.wallet.origination.placeholder.year]]" required="[[$component.isDebit()]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.yeardc}}">
+																					<!-- ko foreach:year() -->
+																					<oj-option value="{{code}}">
+																					<span data-bind="text:description"></span></oj-option>
+																					<!-- /ko -->
+																				</oj-select-one>
+
+
+
+
+																			</div>
+																		</div>
+																	</div>
+																	<div class="oj-lg-4 oj-md-12 oj-col">
+
+																		<oj-label class="card"><span data-bind="text:$component.wallet.origination.details.CVV"></span></oj-label>
+
+																		<div class="oj-row">
+																			<oj-input-password class="cvv" id="mobile" type="text" maxlength="3" value="{{cvvdc}}" translations="[[{'required':{messageDetail:$component.messages.wallet.invalidcvv}}]]" required="[[$component.isDebit()]]" validators="[[[validateCVV]]]"></oj-input-password>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="instab2 oj-row">
+																	<oj-label for="mobile" class="card"><span data-bind="text:$component.wallet.origination.details.cardHolderName"></span></oj-label>
+																	<oj-input-text id="mobile" type="text" :placeholder="[[$component.wallet.origination.placeholder.cardHolderName]]" value="{{$component.accountHolderNamedc}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+																	</div>
+																	<div class="button-container">
+																		<oj-button id="button" class="action-button-primary" on-click="[[setComponent]]">
+      <span data-bind="text:$component.wallet.origination.details.pay"></span>
+</oj-button>
+																	</div>
+
+																</div>
+															</div>
+														</oj-tab-bar>
+													</div>
+												</div>
+											</div>
+
+											<div class="pay oj-sm-3 oj-md-3 oj-lg-3 oj-col">
+												<div class="credit" data-bind="text:$component.wallet.origination.details.paymentdesc"></div>
+												<div class="dis oj row left">
+
+													<div class="oj-row">
+														<oj-label><span data-bind="text:$component.wallet.origination.details.mobileNumber"></span></oj-label>
+													</div>
+													<div class="oj-row">
+														<span data-bind="text:$component.mobileNumber()">
+													</span></div>
+
+
+													<div class="oj-row">
+														<oj-label><span data-bind="text:$component.wallet.origination.details.emailAddr"></span></oj-label>
+													</div>
+													<div class="oj-row">
+														<span data-bind="text:$component.emailId()">
+													</span></div>
+												</div>
+
+												<div class="payment oj-row">
+													<div class="oj-col oj-lg-12" data-bind="text:$component.wallet.origination.details.paymentAmnt">
+													<div class="oj-col oj-lg-12" data-bind="text:$baseModel.formatCurrency($component.amount(),'AUD')">
+												</div>
+											</div>
+
+										</div>
+									</div>
+</div></div>

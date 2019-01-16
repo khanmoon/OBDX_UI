@@ -1,0 +1,81 @@
+<div data-bind="with:uplTrackingDetails().additionalInfo.applicationFeesData">
+    <div class="oj-flex oj-flex-items-pad margin-top-20">
+        <span class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10 text" data-bind="text : $component.resource.applicationTreatment"></span>
+    </div>
+
+    <!-- ko if:$parent.feesLoaded()-->
+    <div class="oj-flex oj-flex-items-pad">
+        <!-- ko foreach: $parent.feeTypes -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+                <oj-label :for="[['fee-type-'+$index()]]">
+                <span data-bind="text:$data.description"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-select-one required :id="[['fee-type-'+$index()]]" translations="[[{'required':{messageDetail:$component.resource.messages.feeAction}}]]" on-value-changed="[[$component.collectionTypeSelected]]" value="{{$index() +','+ $data.collectionType}}">
+                    <!-- ko foreach: $component.feeCollectionTypeList() -->
+                    <oj-option value="{{$parentContext.$index() +','+ $data.type()}}"><span data-bind="text:$data.displayName()"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10 text">
+            <span class="form-heading" accesskey="" data-bind="text : $component.resource.feeSuummary">
+            </span>
+        </div>
+    </div>
+    <!-- ko if:$parent.feesCollectionLoaded()-->
+    <div class="section-info application-fees">
+        <!-- ko foreach: $parent.feeCollectionTypeList() -->
+        <div class="oj-flex oj-flex-items-pad application-fees-section">
+            <oj-label class="oj-flex-item label oj-sm-8 oj-md-6 oj-md-offset-1 oj-lg-5 oj-lg-offset-2 border-bottom">
+            <span data-bind="text:$component.resource[$data.displayName()]"></span></oj-label>
+            <span class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1 border-bottom right" data-bind="text: $component.currencySymbol()+$data.amount() ">
+				</span>
+        </div>
+        <!-- ko if: showData()-->
+        <!-- ko foreach: feesForThisType -->
+        <div class="oj-flex oj-flex-items-pad application-fees-subsection">
+
+            <oj-label class="oj-flex-item label oj-sm-8 oj-md-5 oj-md-offset-2 oj-lg-4 oj-lg-offset-3 ">
+            <span data-bind="text:name()"></span></oj-label>
+            <span class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1 right" data-bind="text: $component.currencySymbol()+$data.amount()">
+							</span>
+
+        </div>
+        <!-- /ko -->
+
+        <!-- /ko -->
+
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+</div>
+<!-- ko if: $component.isAccountAvailable() && $component.isCollectAnywhere()-->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label for="linked-account">
+            <span data-bind="text:$component.resource.payFromAccount"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-select-one id="linked-account" required translations="[[{'required':{messageDetail:$component.resource.messages.accountNumber}}]]" value="{{$component.selectedAccount}}">
+                <!-- ko foreach: $component.internalAccountOptions -->
+                <oj-option value="{{id.value}}"><span data-bind="text:id.displayValue"></span></oj-option>
+                <!-- /ko -->
+            </oj-select-one>
+        </div>
+    </div>
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item right oj-md-10 oj-lg-10">
+        <oj-button class="form-button-secondary" on-click="[[submitApplicationFeesInfo]]">
+      <span data-bind="text:$component.resource.continue"></span>
+</oj-button>
+    </div>
+</div>

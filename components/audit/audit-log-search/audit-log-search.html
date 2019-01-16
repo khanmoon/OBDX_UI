@@ -1,0 +1,124 @@
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+<div id="" class="search-container">
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+        <oj-label class="talign-left" for="audit type"><span data-bind="text:nls.audit.auditType"></span></oj-label>
+    </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+           <!-- ko if:auditTypeEnumLoaded -->
+           <oj-select-one id="audit type" on-value-changed="[[optionChangedHandler]]" value="{{audit}}">
+              <!-- ko foreach: auditTypeEnumList -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+           </oj-select-one>
+           <!-- /ko -->
+        </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                <oj-label class="" for="userID"><span data-bind="text:nls.audit.userID"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="userID" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{userID}}"></oj-input-text>
+
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad ">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                <oj-label class="" for="contextID"><span data-bind="text:nls.audit.contextID"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="contextID" value="{{contextID}}"></oj-input-text>
+
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                <oj-label class="" for="serviceID"><span data-bind="text:nls.audit.serviceId"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="contextID" value="{{serviceId}}"></oj-input-text>
+
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad ">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                <oj-label class="" for="partyId"><span data-bind="text:nls.audit.partyId"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+				<oj-input-text id="partyId" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{partyId}}"></oj-input-text>
+            </div>
+
+        <!-- ko if:requestUrlFlag -->
+    
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                <oj-label class="" for="requestUrl"><span data-bind="text:nls.audit.requestUrl"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="requestUrl" value="{{requestUrl}}"></oj-input-text>
+
+            </div>
+
+        <!-- /ko -->
+      </div>
+        <div class="oj-flex oj-flex-items-pad ">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                <oj-label class="" for="startTime"><span data-bind="text:nls.audit.startTime"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="startTime" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{startTime}}"></oj-input-text>
+
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                <oj-label class="" for="endTime"><span data-bind="text:nls.audit.endTime"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="endTime" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{endTime}}"></oj-input-text>
+
+            </div>
+        </div>
+        <!-- ko if:clickedHost -->
+        <div class="oj-flex oj-flex-items-pad ">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                <oj-label class="" for="serviceName"><span data-bind="text:nls.audit.serviceName"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="serviceName" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{serviceName}}"></oj-input-text>
+
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad ">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                <oj-label class="" for="operationName"><span data-bind="text:nls.audit.operationName"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="operationName" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{operationName}}"></oj-input-text>
+
+            </div>
+        </div>
+        <!-- /ko -->
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+
+          <oj-button class="action-button-primary" on-click="[[$component.searchAudit]]">
+      <span data-bind="text:$component.nls.common.search"></span>
+</oj-button>
+
+          <oj-button class="action-button-secondary" on-click="[[$component.resetform]]">
+      <span data-bind="text:$component.nls.common.reset"></span>
+</oj-button>
+
+    </div>
+</div>
+</page-section>

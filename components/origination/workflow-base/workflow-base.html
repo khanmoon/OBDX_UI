@@ -1,0 +1,115 @@
+<div class="form-main-container workflow-base">
+  <page-section params="rootModel : $component, heading : ''">
+        <!-- ko if:$component.headInputArrayLoaded -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <oj-label :for="[['approvalRequiredLabelRules']]"><span data-bind="text:$component.resource.productClass"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 ">
+                <oj-buttonset-one :aria-label="[[$component.resource.productClass]]" :id="[['approvalRequiredLabelRules']]" on-value-changed="[[changeProductClass]]" value="{{$component.currentProductClass}}"><!-- ko foreach:headInputArray --><oj-option value="{{code}}" :id="[[code]]" :name="[['approval']]"><span data-bind="attr: {'for': code},text:description"></span></oj-option><!-- /ko --></oj-buttonset-one>
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if:$component.showProductSelction -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <oj-label id="workFlowNameLabel" for="workflow"><span data-bind="text:$component.resource.productName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-4">
+                <oj-select-one id="workFlowNameRules" required="[[true]]" :id="[['workflow']]" :placeholder="''" value="{{$component.currentProduct}}" on-value-changed="[[$component.changeProduct]]">
+                  <!-- ko foreach:currentProductsArray     -->
+                    <oj-option value="{{code+'|'+description}}"><span data-bind="text:description"></span></oj-option>
+                  <!-- /ko -->
+          </oj-select-one>
+            </div>
+        </div>
+        <!-- /ko   -->
+
+    <!-- ko if:loadSecondScreen -->
+    <div class="table-offset">
+        <div class="oj-flex oj-flex-items-pad grid-table-header">
+            <div class="oj-flex-item oj-lg-2">
+                <h4 data-bind="text:$component.resource.WorkFlowType"></h4>
+            </div>
+            <div class="oj-flex-item oj-lg-2">
+                <h4 data-bind="text:$component.resource.status"></h4>
+            </div>
+            <div class="oj-flex-item oj-lg-2">
+                <h4 data-bind="text:$component.resource.actions"></h4>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad workflow-base__cell-border workflow-base-cell-border">
+            <div class="oj-flex-item oj-lg-2">
+                <oj-label class="workflow-base-cell-border__label"><span data-bind="text:$component.resource.default"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-lg-2">
+
+                <!-- ko ifnot:isDefault -->
+                <oj-label class="workflow-base-cell-border__label"><span data-bind="text:$component.resource.inactive"></span></oj-label>
+                <!-- /ko -->
+                <!-- ko if:isDefault -->
+                <span class="icon-success workflow-base-cell-border__workflow-icon workflow-base-cell-border-workflow-icon">
+                <oj-label class="workflow-base-cell-border-workflow-icon__label"><span data-bind="text:$component.resource.active"></span></oj-label>
+                </span>
+                <!-- /ko -->
+            </div>
+            <div class="oj-flex-item oj-lg-2">
+                <a href="#" data-bind="attr:{'alt':$component.resource.view,'title':$baseModel.format($component.resource.title,{workflow:$component.resource.default})}, click: $component.goToViewScreen">
+                    <div data-bind="text:$component.resource.view"></div>
+                </a>
+            </div>
+        </div>
+        <!-- ko if:customFlowExists -->
+        <div class="oj-flex oj-flex-items-pad workflow-base__cell-border workflow-base-cell-border">
+            <div class="oj-flex-item oj-lg-2">
+                <oj-label><span data-bind="text:$component.resource.customFlow"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-lg-2">
+
+              <!-- ko ifnot:isDefault -->
+              <span class="workflow-base-cell-border__workflow-icon workflow-base-cell-border-workflow-icon icon-success">
+              <oj-label class="workflow-base-cell-border-workflow-icon__label"><span data-bind="text:$component.resource.active"></span></oj-label>
+              </span>
+              <!-- /ko -->
+              <!-- ko if:isDefault -->
+              <oj-label class="workflow-base-cell-border-workflow-icon__label"><span data-bind="text:$component.resource.inactive"></span></oj-label>
+              <!-- /ko -->
+
+            </div>
+            <div class="oj-flex-item oj-lg-2 workflow-base-cell-border__link">
+
+                <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.view,'title':$baseModel.format($component.resource.title,{workflow:$component.resource.customFlow})}, click: $component.goToCustomViewScreen">
+                    <div data-bind="text:$component.resource.view"></div>
+                </a>
+
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:customFlowNA -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-2">
+                <oj-label><span data-bind="text:$component.resource.customWorkFlow"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-2">
+                <oj-label></oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-2 workflow-base-cell-border__link">
+                <a href="#" data-bind="attr:{}, click: $component.goToCreateScreen">
+                    <div data-bind="text:$component.resource.createNew"></div>
+                </a>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-tertiary" on-click="[[function(){$dashboard.openDashBoard();}]]">
+      <span data-bind="text:$component.resource.back"></span>
+</oj-button>
+    </div>
+  </page-section>
+</div>

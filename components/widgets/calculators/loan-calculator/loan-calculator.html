@@ -1,0 +1,174 @@
+<div data-bind="template : $component.getTemplate(), data:$data"></div>
+<script type="text/html" id="corpTemplate">
+  <div class="oj-panel calculator">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+  <h3 class="calculator__subheading" data-bind="text:nls.calculator.labels.pageHeader"></h3>
+</div>
+</div>
+<!-- ko if:dataLoaded() -->
+  <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between calculator__slider">
+    <div class="oj-flex-item oj-sm-12 oj-md-6">
+      <oj-label :for="[['amount'+($baseModel.incrementIdCount())]]">
+      <span data-bind="text:nls.calculator.labels.amount"></span></oj-label>
+      <div id="amount-slider-container">
+            <oj-slider value="{{$component.sliderData['PRINCIPALAMOUNT'].value}}" min="[[$component.sliderData['PRINCIPALAMOUNT'].min]]" max="[[$component.sliderData['PRINCIPALAMOUNT'].max]]" step="[[$component.sliderData['PRINCIPALAMOUNT'].step]]" data-bind="attr:{id:'amount'+ $baseModel.incrementIdCount(),'aria-label':$component.sliderData['PRINCIPALAMOUNT'].value}"> </oj-slider>
+      </div>
+    </div>
+    <oj-label class="hide-label" :for="[['amount'+($baseModel.incrementIdCount())]]">
+             <span data-bind="text:$component.nls.calculator.validate.amount"></span></oj-label>
+    <div class="oj-flex-item oj-sm-12 oj-md-3">
+
+      <oj-input-text class="" type="number" required :maxlength="[[7]]" :id="[['amount'+($baseModel.currentIdCount())]]" converter="[[{
+        type:'number',options:{
+        style:'currency',currency:typeof ko.utils.unwrapObservable(currency) ==='string'?
+        ko.utils.unwrapObservable(currency):'',currencyDisplay:'symbol',minimumIntegerDigits:4,useGrouping:false}}]]"
+        validators="[[$baseModel.getValidator('DECIMALS',$component.nls.calculator.validate.amount,{type:'numberRange',options:{min:$component.sliderData['PRINCIPALAMOUNT'].min, max:$component.sliderData['PRINCIPALAMOUNT'].max}})]]"
+        value="{{$component.sliderData['PRINCIPALAMOUNT'].value}}"></oj-input-text>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between calculator__slider">
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6">
+        <oj-label>
+        <span data-bind="text:nls.calculator.labels.tenure"></span></oj-label>
+        <div id="tenure-slider-container">
+              <oj-slider value="{{$component.sliderData['TENURE'].value}}" min="[[$component.sliderData['TENURE'].min]]" max="[[$component.sliderData['TENURE'].max]]" step="[[$component.sliderData['TENURE'].step]]" data-bind="attr:{id:'inputYears'+ $baseModel.incrementIdCount(),'aria-label':$component.sliderData['TENURE'].value}"> </oj-slider>
+        </div>
+      </div>
+      <oj-label class="hide-label" :for="[['inputYears'+($baseModel.incrementIdCount())]]">
+         <span data-bind="text:nls.calculator.labels.tenure"></span></oj-label>
+        <div class="oj-flex-item oj-sm-12 oj-md-3">
+          <oj-label class="hide-label" :for="[['inputYears'+($baseModel.incrementIdCount())]]">
+          <span data-bind="text:nls.calculator.labels.tenure"></span></oj-label>
+          <oj-input-text data-id="noOfYears" type="number " required :maxlength="[[2]]" :id="[['inputYears'+($baseModel.currentIdCount())]]"
+            validators="[[$baseModel.getValidator('TENURE_YEARS', {type: 'numberRange', options: {
+              min: $component.sliderData['TENURE'].min,
+              max: $component.sliderData['TENURE'].max
+            }})]]"
+            value="{{$component.sliderData['TENURE'].value}}"></oj-input-text>
+        </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between calculator__slider">
+    <div class="oj-flex-item oj-sm-12 oj-md-6">
+      <oj-label :for="[['inputInterest'+ $baseModel.incrementIdCount()]]">
+      <span data-bind="text:nls.calculator.labels.interest"></span></oj-label>
+      <div id="interest-slider-container">
+            <oj-slider value="{{$component.sliderData['INTERESTRATE'].value}}" min="[[$component.sliderData['INTERESTRATE'].min]]" max="[[$component.sliderData['INTERESTRATE'].max]]" step="[[$component.sliderData['INTERESTRATE'].step]]" data-bind="attr:{id:'inputInterest'+ $baseModel.incrementIdCount(),'aria-label':$component.sliderData['INTERESTRATE'].value}"> </oj-slider>
+      </div>
+    </div>
+    <oj-label class="hide-label" :for="[['inputInterest'+($baseModel.incrementIdCount())]]">
+         <span data-bind="text:nls.calculator.labels.tenure"></span></oj-label>
+    <div class="oj-flex-item oj-sm-12 oj-md-3">
+      <oj-input-text type="number" :id="[['inputInterest'+ $baseModel.currentIdCount()]]" converter="[[{
+                          type:'number',options:{
+                          style:'percent',maximumFractionDigits:2,useGrouping:false}}]]"
+                          validators="[[$baseModel.getValidator('DECIMALS',$component.nls.calculator.validate.emptyInterest,{type:'numberRange',options:{min:$component.sliderData['INTERESTRATE'].min, max:$component.sliderData['INTERESTRATE'].max}})]]"
+                          value="{{$component.sliderData['INTERESTRATE'].value}}"></oj-input-text>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 button-container calculateButton">
+      <oj-button id="calculateLoan" class="action-button-primary" on-click="[[calculateLoanInstallment]]">
+      <span data-bind="text:nls.calculator.labels.calculate"></span>
+</oj-button>
+    </div>
+    <!-- ko if:dataLoaded1() -->
+      <div class="oj-flex-item oj-sm-12 oj-md-6 calculator__avgInstallment">
+        <div data-bind="text:nls.calculator.labels.installmentAmt"></div>
+         <span data-bind="text :$baseModel.format(nls.calculator.labels.installmentAmtVal,{amount:$baseModel.formatCurrency($component.installmentAmout(),$component.installmentCurrency())})"></span>
+      </div>
+    <!-- /ko -->
+  </div>
+<!-- /ko -->
+</div>
+</script>
+
+<script type="text/html" id="retTemplate">
+<!-- ko if:dataLoaded() -->
+  <div class="form-main-container calculator">
+  <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+    <oj-validation-group id="loanCalculation" valid="{{validationTracker}}">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : '' ">
+          <div data-bind="component: {
+            name: 'amount-input',
+            params: {
+            amount :amount,
+            label :nls.calculator.labels.amount,
+            currency: typeof ko.utils.unwrapObservable(currency) === 'string' ? ko.utils.unwrapObservable(currency) : '',
+            validator:$component.validationTracker,
+            isMandatory:true,
+            rootId:'amount',
+          rootClass :'form-input'}
+          }">
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <oj-label :for="[['inputYears'+($baseModel.incrementIdCount())]]"><span data-bind="text:nls.calculator.labels.for"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-4 oj-md-3 oj-lg-3">
+            <oj-label class="hide-label" :for="[['inputTenure'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.nls.calculator.labels.for"></span></oj-label>
+            <oj-input-text required type="number" class="tenure" :maxlength="[[2]]" :id="[['inputTenure'+($baseModel.currentIdCount())]]"
+              validators="[[$baseModel.getValidator('TENURE_YEARS', {type: 'numberRange', options: {
+                min: $component.sliderData['TENURE'].min,
+                max: $component.sliderData['TENURE'].max
+              }})]]"
+              value="{{years}}"></oj-input-text>
+          </div>
+          <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4 label-container vertical-middle">
+            <label data-bind="text:$component.nls.calculator.labels.years"></label>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad calculator__interest calculator-interest">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 calculator-interest__text">
+                <oj-label class="" for="inputInterest"><span data-bind="text:nls.calculator.labels.interestRate"></span></oj-label>
+            </div>
+            <a href="#" data-bind="click:leftClick">
+                <img class="calculator__image" data-bind="attr:{alt:$component.nls.calculator.labels.reduceInterest,title:$component.nls.calculator.labels.reduceInterestTitle},loadImage:'calculator/left-arrow.svg'" id="left">
+            </a>
+            <div class="calculator-interest__value">
+              <oj-input-text type="number" id="inputInterest" converter="[[{
+                  type:'number',options:{
+                  style:'percent',maximumFractionDigits:2,useGrouping:false}}]]"
+                  validators="[[$baseModel.getValidator('DECIMALS',$component.nls.calculator.validate.emptyInterest,{type:'numberRange',options:{min:$component.sliderData['INTERESTRATE'].min, max:$component.sliderData['INTERESTRATE'].max}})]]"
+                  value="{{interest}}"></oj-input-text>
+            </div>
+            <a href="#" data-bind="click:rightClick">
+                <img class="calculator__image" data-bind="attr:{alt:$component.nls.calculator.labels.increaseInterest,title:$component.nls.calculator.labels.increaseInterestTitle},loadImage:'calculator/right-arrow.svg'" id="right">
+            </a>
+        </div>
+
+        <!-- ko if:dataLoaded1() -->
+        <div class="oj-flex oj-flex-items-pad calculator__response calculator-response">
+          <div class="oj-flex-item oj-sm-12 calculator-response__text" data-bind="html :$baseModel.format(nls.calculator.labels.monthlyInstallment,{amount:$baseModel.formatCurrency($component.installmentAmout(),$component.installmentCurrency())})">
+          </div>
+        </div>
+        <!-- /ko -->
+
+    </page-section>
+  </oj-validation-group>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button id="calculateLoan" class="action-button-primary " on-click="[[calculateLoan]]"><span slot="startIcon" class="icons icon-foreign-exchange"></span>
+        <span data-bind="text:nls.calculator.labels.calculate"></span>
+  </oj-button>
+        <!-- ko if: $dashboard.userData === null -->
+        	<oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+        <span data-bind="text:nls.calculator.labels.back"></span>
+  </oj-button>
+        <!-- /ko -->
+      </div>
+  </div>
+
+  <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'loan-calculator'"></help>
+  </div>
+  </div>
+  </div>
+<!-- /ko -->
+</script>

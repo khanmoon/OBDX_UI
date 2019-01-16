@@ -1,0 +1,50 @@
+<div class="payments">
+<modal-window class="payee-card-dialog" params="baseModel : $baseModel, rootModel : $data,id:'choiseDialog', closeHandler : $component.modalCloseHandler, header : $component.payments.payee.addnew">
+ <div class="oj-flex oj-flex-items-pad question-text">
+     <div class="oj-flex-item" data-bind="text:$component.payments.payee.whichaccount"></div>
+ </div>
+
+<!-- ko if:userSegment==='CORP' -->
+ <div class="oj-flex oj-flex-items-pad">
+     <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12 center vertical-ruler ">
+       <div class="icons bank-account-img"></div>
+
+       <div class="">
+         <oj-button class="action-button-primary " id="bankaccountbutton" on-click="[[$dashboard.loadComponent.bind($data,'bank-account-payee',{},$component)]]"><span slot="startIcon" class="icons icon-bank-account"></span>
+      <span data-bind="text:$component.payments.payee.bankaccount"></span>
+</oj-button>
+       </div>
+     </div>
+     <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12 center">
+       <div class="icons demand-draft-img"></div>
+
+       <div class="">
+         <oj-button class="action-button-primary " id="demanddraftbutton" on-click="[[$dashboard.loadComponent.bind($data,'demand-draft-payee',{},$component)]]"><span slot="startIcon" class="icons icon-demand-draft"></span>
+      <span data-bind="text:$component.payments.payee.demanddraft"></span>
+</oj-button>
+       </div>
+     </div>
+ </div>
+<!-- /ko -->
+
+<!-- ko ifnot:userSegment==='CORP' -->
+<div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+                <oj-radioset value="{{$component.accountType}}" class="oj-choice-direction-row"><oj-option id="bank-account-payee" name="acctype" value="{{'bank-account-payee'}}" :data-id="[['bank-account-payee']]"><span class="label" for="bank-account-payee" data-bind="text: $component.payments.payee.bankaccount"></span></oj-option><oj-option id="demand-draft-payee" name="acctype" value="{{'demand-draft-payee'}}" :data-id="[['demand-draft-payee']]"><span class="label" for="demand-draft-payee" data-bind="text: $component.payments.payee.demanddraft"></span></oj-option></oj-radioset>
+            </div>
+
+            <div class="oj-flex-item button-container">
+              <oj-button class="action-button-primary " id="okbutton" on-click="[[$component.createPayee]]"><span slot="startIcon" class="icons icon-ok"></span>
+      <span data-bind="text:$component.payments.common.ok"></span>
+</oj-button>
+           </div> 
+
+
+</div> 
+<!-- /ko -->
+
+
+
+
+</modal-window>
+</div>

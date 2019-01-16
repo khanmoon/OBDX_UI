@@ -1,0 +1,47 @@
+<div class="oj-flex oj-flex-items-pad">
+  <oj-table id="relationship-table" class="relationship-mapping-table" data-bind="attr:{'aria-label':$component.reviewResource.relationsipMappingTable}" data=[[reviewDataSource]] selection-mode='{"row":"multiple","column":"multiple"}' columns={{columnArray}}>
+  </oj-table>
+  <script type="text/html" id="checkbox_hdr_tmpl">
+    <td>
+      <oj-checkboxset aria-hidden="true" value="[false]" class="oj-checkboxset-no-chrome" disabled="true">
+        <oj-option id="checkbox_hdr_review" value="checked"></oj-option>
+      </oj-checkboxset>
+    </td>
+  </script>
+  <script type="text/html" id="checkbox_tmpl">
+    <td>
+      <oj-checkboxset aria-hidden='true' value='{{$context.row.Selected}}' class='oj-checkboxset-no-chrome' disabled="true">
+        <oj-option data-bind="attr:{
+                            id: 'relationshipCheckbox' + $context.cellContext.status.rowIndex}" value="checked"></oj-option>
+      </oj-checkboxset>
+    </td>
+  </script>
+  <script type="text/html" id="inputbox_tmpl">
+    <td>
+      <span data-bind="attr:{
+                          id: 'relationshipTextInput' + $context.cellContext.status.rowIndex},text:$context.row.hostRelId"></span>
+    </td>
+  </script>
+  <!-- ko ifnot:$component.transactionId-->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <!-- ko if:$component.currentView()==="review"  -->
+    <oj-button id="confirmRelationship" class="action-button-primary" on-click="[[$component.createRelationship]]">
+      <span data-bind="text:$component.reviewResource.confirmRelationship"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if:$component.currentView()==="view"  -->
+    <oj-button id="confirmRelationship" class="action-button-primary" on-click="[[$component.editRelationship]]">
+      <span data-bind="text:$component.reviewResource.editRelationship"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button id="cancelRelationship" class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+      <span data-bind="text:$component.reviewResource.cancelRelationship"></span>
+    </oj-button>
+    <!-- ko if:$component.currentView()==="review"  -->
+    <oj-button id="backRelationship" class="action-button-tertiary" on-click="[[$component.backFirst]]">
+      <span data-bind="text:$component.reviewResource.backRelationship"></span>
+    </oj-button>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+</div>

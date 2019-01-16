@@ -1,0 +1,30 @@
+<div data-bind="css:$component.isMultipleBillPayment?'':'form-main-container'">
+
+        <!-- ko if:$component.params.reviewMode -->
+         <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : resource.generic.common.review , reviewHeader : $component.resource.billPayment.reviewHeaderMsg}}"></div>
+        <!-- /ko -->
+
+        <!-- ko if:dataLoaded() -->
+        <page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading : ($component.params.reviewMode || $component.isMultipleBillPayment)?'':$component.resource.billPayment.header">
+                <div data-bind="template: { name: 'payments/review-bill-payments' }"></div>
+        </page-section>
+
+        <!-- ko if:$component.params.reviewMode -->
+        <div class="oj-flex oj-flex-items-pad button-container ">
+
+                <oj-button class="action-button-primary " on-click="[[confirmPayment]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:resource.generic.common.confirm"></span>
+</oj-button>
+ <!-- ko if:!$baseModel.small() -->
+                <oj-button class="action-button-secondary " id="cancel" on-click="[[$dashboard.openDashBoard.bind($component.resource.common.cancelConfirm)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:resource.generic.common.cancel"></span>
+</oj-button>
+                <!-- /ko -->
+                <oj-button class="action-button-tertiary" id="button" on-click="[[$dashboard.hideDetails]]">
+                    <span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:resource.generic.common.back"></span>
+</oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+</div>

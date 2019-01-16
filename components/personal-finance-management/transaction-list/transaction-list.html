@@ -1,0 +1,212 @@
+<div class="transaction-list pfm">
+    <div class="form-main-container">
+        <!-- ko if: $component.categoriesLoaded() && $component.accountsLoaded() -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <!-- ko if: $component.showActivitySuccessMsg() -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item success-bar">
+                    <span class="success-icon icons" data-bind="css: 'icon-success'"></span>
+                    <span class="success-msg" id="confirm" data-bind="text:$component.successMsg"></span>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: $baseModel.small() -->
+            <!-- ko template: { name: 'pfm/spend-analysis/transaction-list-filter-template-large'}-->
+            <!-- /ko -->
+            <!-- ko if: $component.transactionsLoaded() -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-table class="transaction-list__table table" id="txnTable" :aria-label="[[$component.resource.tableHeaders.header]]" columns="[[[{headerText:resource.tableHeaders.date,template:'date',sortProperty:'valueDateObject'},
+          {headerText:resource.tableHeaders.categoryNsubcategory,template:'categoryNsubcategory',sortProperty:'categoryName'},
+          {headerText:resource.tableHeaders.transaction,template:'transaction',sortProperty:'transactionDescription'},
+          {headerText:resource.tableHeaders.amount,headerClassName:'left',template:'formatted-amount',sortProperty:'amount'},
+          {headerText:resource.tableHeaders.action,template:'action-icons',headerClassName:'action-align',sortable:'none',style:'width : 10%'}]]]" selection-mode="[[{row:'single'}]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.transactionsDataSource]]">
+                        <template slot="date">
+                            <td>
+                                <date-box params="baseModel : $baseModel, date:$current.row.valueDateObject"></date-box>
+                            </td>
+                        </template>
+                        <template slot="categoryNsubcategory">
+                            <td>
+                                <div class="table__categoryName" data-bind="text:$current.row.categoryName"></div>
+                                <div class="table__subCategoryName" data-bind="text:$current.row.subcategoryName"></div>
+                            </td>
+                        </template>
+                        <template slot="transaction">
+                            <td>
+                                <div data-bind="text:$current.row.transactionDescription"></div>
+                                <div class="table__secondary-text" data-bind="text:$current.row.accountId.displayValue"></div>
+                            </td>
+                        </template>
+                        <template slot="formatted-amount">
+                            <td>
+                                <div data-bind="text:$baseModel.formatCurrency($current.row.transactionAmount.amount,$current.row.transactionAmount.currency)"></div>
+                            </td>
+                        </template>
+                        <template slot="action-icons">
+                            <td>
+                                <a href="#" data-bind="attr:{'alt':$component.resource.alt.edit ,'title':$component.resource.alt.editTitle },click:$component.recategorize.bind($data,$current.row)">
+                                    <div class="icons table__editIcon" data-bind="css: 'icon-remarks'"></div>
+                                </a>
+                                <!-- ko ifnot: $current.row.isSplittedTxn -->
+                                <a href="#" data-bind="attr:{'alt':$component.resource.alt.split ,'title':$component.resource.alt.splitTitle },click:$component.split.bind($data,$current.row)">
+                                    <div class="icons table__splitIcon" data-bind="css: 'icon-split'"></div>
+                                </a>
+                                <!-- /ko -->
+                            </td>
+                        </template>
+                    </oj-table>
+                </div>
+                <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.transactionsDataSource]]">
+                </oj-paging-control>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+        </page-section>
+        <!-- /ko -->
+        <!-- ko ifnot: $baseModel.small() -->
+        <div class="button-container">
+            <oj-button class="action-button-primary" id="managecategory" on-click="[[$dashboard.loadComponent.bind($data,'manage-spend-categories',{},$component)]]">
+                <span class="icons icon-issue" slot="startIcon"></span>
+                <span data-bind="text:$component.resource.managecategory"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+        <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'recategorize', header : $baseModel.small()?$component.resource.recategorize.header.small :$component.resource.recategorize.header.large">
+            <div data-bind="css : $baseModel.large()?'modal-window-container':''">
+                <!-- ko if: $component.refreshModalWindow() -->
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                    <oj-validation-group id="transRecategorizationTracker">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12">
+                                <label for="categoriesdropdown" data-bind="text:$component.resource.recategorize.category"></label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-lg-6">
+                                <oj-select-one required id="categoriesdropdown" :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$component.recategorizationCategoryChangeHandler]]" :placeholder="[[$component.resource.recategorize.placeholder]]" value="{{$component.selectedRecategorizationCategory}}">
+                                    <!-- ko foreach: $component.categoryList() -->
+                                    <!-- ko ifnot: categoryId === 'UN-CATEGORIZED' -->
+                                    <oj-option value="{{categoryId}}"><span data-bind="text:name"></span></oj-option>
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                        </div>
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12">
+                                <label for="subcategoriesdropdown" data-bind="text:$component.resource.recategorize.subcategory"></label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-lg-6">
+                                <oj-select-one required id="subcategoriesdropdown" :placeholder="[[$component.resource.recategorize.placeholder]]" value="{{$component.selectedRecategorizationSubCategory}}">
+                                    <!-- ko foreach: $component.recategorizationSubCategoryList() -->
+                                    <!-- ko ifnot: categoryId === 'OTHER-U' -->
+                                    <oj-option value="{{categoryId}}"><span data-bind="text:name"></span></oj-option>
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                        </div>
+                    </oj-validation-group>
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                            <a href="#" data-bind="attr:{alt:$component.resource.recategorize.addnewcategorymsg,title:$component.resource.recategorize.addnewcategorymsgTitle},text:$component.resource.recategorize.addnewcategorymsg, click:$component.addNewCategory"></a>
+                        </div>
+                    </div>
+                </page-section>
+                <div class="oj-flex oj-flex-items-pad button-container right">
+                    <oj-button class="action-button-primary" id="save" on-click="[[$component.saveRecategorization]]">
+                        <span class="icons icon-save" slot="startIcon"></span><span data-bind="text:$component.resource.recategorize.save"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" id="cancel" on-click="[[$component.closeWindow]]">
+                        <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resource.recategorize.cancel"></span>
+                    </oj-button>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: $component.loadCategoryCreateTemplate() -->
+                <div data-bind="component:{name:'spend-category-create', params:{rootModel: $component, data: {recategorization : true}}}"></div>
+                <!-- /ko -->
+            </div>
+        </modal-window>
+        <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'split-transaction', header : $component.resource.split.header">
+            <div data-bind="css : $baseModel.large()?'modal-window-container':''">
+                <!-- ko if: $component.refreshSplitModalWindow() -->
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                    <oj-validation-group id="splitTransactionTracker">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12 oj-lg-12">
+                                <span class="icons icon-information"></span>
+                                <span class="oj-flex-item oj-sm-11 oj-lg-11" data-bind="text:$baseModel.format($component.resource.split.splitmsg,{amount:$baseModel.formatCurrency($component.selectedTransactionForSplit().transactionAmount.amount, $component.selectedTransactionForSplit().transactionAmount.currency)})"></span>
+                            </div>
+                        </div>
+                        <!-- ko if: $baseModel.large() -->
+                        <strong>
+                            <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-12" data-bind="text:$component.resource.split.category"></div>
+                                <div class="oj-flex-item oj-sm-12 oj-lg-4 oj-md-12" data-bind="text:$component.resource.split.subcategory"></div>
+                                <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-12" data-bind="text:$component.resource.split.amount"></div>
+                            </div>
+                        </strong>
+                        <!-- /ko -->
+                        <!-- ko foreach: $component.splitDetails -->
+                        <!-- ko template: { name: 'pfm/spend-analysis/split-transaction-row'}-->
+                        <!-- /ko -->
+                        <!-- /ko -->
+                    </oj-validation-group>
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-lg-12 oj-md-12">
+                            <oj-button class="help-button" id="add" on-click="[[$component.addSplitCategory]]">
+                                <span class="icons icon-add" slot="startIcon"></span>
+                                <span data-bind="text:$component.resource.split.add"></span>
+                            </oj-button>
+                        </div>
+                    </div>
+                </page-section>
+                <div class="oj-flex oj-flex-items-pad button-container right">
+                    <oj-button class="action-button-primary" id="save" on-click="[[$component.saveSplitTransaction]]">
+                        <span class="icons icon-save" slot="startIcon"></span><span data-bind="text:$component.resource.recategorize.save"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" id="cancel" on-click="[[$component.closeSplitWindow]]">
+                        <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resource.recategorize.cancel"></span>
+                    </oj-button>
+                </div>
+                <!-- /ko -->
+            </div>
+        </modal-window>
+        <!-- ko if: $baseModel.small() -->
+        <div class="oj-flex oj-flex-items-pad transaction-list__filterIcon transaction-list-filterIcon">
+            <div class="oj-flex-item">
+                <a href="#" data-bind="attr:{'alt':$component.resource.alt.filter ,'title':$component.resource.alt.filterText },click:$component.toggleFilter">
+                    <div class="icons icon-filter transaction-list-filterIcon__icon"></div>
+                </a>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.categoriesLoaded() && $component.accountsLoaded() && $component.transactionsLoaded() && $baseModel.small() -->
+        <div class="hundredvh" data-bind="css : $baseModel.small() ? 'oj-offcanvas-outer-wrapper' : ''">
+            <div id="txnMainContent">
+                <script type="text/html" id="txn-card-template">
+                    <li class="oj-disabled no-pad-cols" data-bind="attr: {id: transactionId + subSequenceId}">
+                        <div data-bind="component:{name:'spend-transaction-card',params:{rootModel: $component, data : $data}}">
+                        </div>
+                    </li>
+                </script>
+                <oj-list-view id="listview-txn-card" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('txn-card-template',true)}]]" selection-mode="[['none']]" data="[[transactionsDataSource()]]">
+                </oj-list-view>
+                <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.transactionsDataSource]]">
+                </oj-paging-control>
+                <div class="button-container">
+                    <oj-button class="action-button-primary" id="category" on-click="[[$dashboard.loadComponent.bind($data,'manage-spend-categories',{},$component)]]">
+                        <span class="icons icon-issue" slot="startIcon"></span><span data-bind="text:$component.resource.managecategory"></span>
+                    </oj-button>
+                </div>
+            </div>
+            <div id="filterDrawer" data-bind="css : $baseModel.small()?'oj-offcanvas-end oj-panel oj-panel-alt4 filter-content' : ''">
+                <!-- ko template: { name: 'pfm/spend-analysis/transaction-list-filter-template-small'}-->
+                <!-- /ko -->
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>
+<!-- ko if: $baseModel.large() -->
+<a class="back-link" href="#" data-bind="attr:{'alt':$component.resource.backToDashboard ,'title':$component.resource.backToDashboardTitle },text: $component.resource.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

@@ -1,0 +1,39 @@
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.module()[0].displayName">
+  <!-- ko if: expandFlag -->
+  <oj-tree-view id="[['treeview'+$baseModel.incrementIdCount()]]" :aria-label="[[$component.nls.entitlement.entitlements]]" item.renderer="[[renderer]]" expanded={{expanded}}>
+    <!-- ko foreach: module() -->
+    <ul>
+      <!-- ko foreach: subGroupDTOs -->
+      <li><span class="oj-treeview-item-text" data-bind="text: displayName"></span>
+        <ul>
+          <!-- ko foreach: entitlements -->
+          <li><span class="oj-treeview-item-text" data-bind="text: name"></span>
+            <ul>
+              <!--  -->
+              <li>
+                <div class="oj-flex oj-flex-items-pad">
+                  <div data-bind='component:{name: "entitlements-details", params:{rootModel:$data}}'></div>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <!-- /ko -->
+        </ul>
+        <!-- /ko -->
+      </li>
+    </ul>
+    <!-- /ko -->
+  </oj-tree-view>
+  <!-- /ko -->
+  <script type="text/html" id="item_template">
+    <li>
+      <span data-bind="text: "></span>
+    </li>
+  </script>
+</page-section>
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+    <span data-bind="text:$component.nls.generic.common.cancel"></span>
+  </oj-button>
+</div>

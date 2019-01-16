@@ -1,0 +1,221 @@
+$nav-bar-paddings: 0 !default;
+$nav-bar-width: auto !default;
+$nav-bar-font-size: var(--base-font-size-default);
+$nav-bar-font-color: var(--nav-selected-text) !important;
+$nav-bar-font-color-active: var(--nav-selected-border);
+$nav-bar-font-color-hover: var(--nav-selected-border);
+$nav-bar-count-font-size: 1.9rem !default;
+$nav-bar-seperator: var(--base-border-default) !default;
+$nav-bar-icon-font-size: 0 !default;
+$nav-bar-default-bottom-line: solid #fff !default;
+$nav-bar-hover-bottom-line: solid $nav-bar-font-color-active !default;
+$nav-bar-active-bottom-line: solid $nav-bar-font-color-active !default;
+$nav-bar-display-icon: none !default;
+$nav-bar-display-count: block !default;
+$nav-bar-display-text: block !default;
+$nav-bar-tab-default-bg: transparent !default;
+$nav-bar-tab-hover-bg: var(--nav-hover-background) !important;
+$nav-bar-tab-selected-bg: transparent !default;
+$nav-bar-height: auto !default;
+$nav-bar-margins: 0 1.3rem 0 0 !default;
+$nav-bar-text-padding: 0.6rem 0 !default;
+
+.nav-bar {
+    width: $nav-bar-width;
+    float: none;
+    background: var(--color-white);
+    padding: $nav-bar-paddings;
+
+    &__container {}
+
+    &-list {
+        display: -moz-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-justify-content: flex-start;
+        justify-content: flex-start;
+        width: 100%;
+        -webkit-align-items: center;
+        align-items: center;
+        margin: 0;
+        border-bottom: 0.05rem solid var(--base-border-default);
+
+        &__item {}
+    }
+
+    &-item {
+        text-align: center;
+        //min-width: 7.5rem;
+        margin: 0;
+        //min-height: 3.8rem;
+        //flex: auto !important;
+        //border-bottom: 0 !important;
+        height: $nav-bar-height;
+        //background: var(--color-white);
+        padding: 0 0.6rem !important;
+
+        @include mq(small) {
+            min-width: inherit;
+        }
+
+        &__link {
+            //@include single-border(right,0.05rem solid $nav-bar-seperator);
+            //@include single-border(left,0);
+        }
+
+        &:last-child a {
+            border: 0;
+        }
+
+        &-link {
+            &__text {
+                font-size: $nav-bar-font-size;
+                font-weight: var(--base-font-weight-regular);
+                display: $nav-bar-display-text;
+                padding: $nav-bar-text-padding;
+
+                @include mq(small) {
+                    display: block;
+                    text-align: center;
+                }
+            }
+
+            &__icon {
+                font-size: $nav-bar-icon-font-size;
+                display: $nav-bar-display-icon;
+                position: relative;
+                top: 0.2rem;
+                @include single-padding(right, 0.6rem);
+                color: $nav-bar-font-color !important;
+
+                @include mq(small) {
+                    display: block;
+                    text-align: center;
+                    padding: 0;
+                    background: none !important;
+                    border: none;
+                    width: 100%;
+                }
+            }
+
+            &__count {
+                font-size: $nav-bar-count-font-size;
+                font-weight: var(--base-font-weight-light);
+                padding-bottom: 0.2rem;
+                display: $nav-bar-display-count;
+            }
+        }
+
+        &.oj-default {
+
+            // background: $nav-bar-tab-default-bg;
+            //border-bottom: $nav-bar-default-bottom-line !important;
+            @include mq(small) {
+                background: $nav-bar-tab-default-bg !important;
+            }
+
+            a .oj-navigationlist-item-label {
+                font-size: $nav-bar-font-size;
+                color: $nav-bar-font-color !important;
+                //border-bottom: $nav-bar-default-bottom-line;
+                //width: 100%;
+                // text-align: center;
+                // overflow: hidden;
+                // padding: 0;
+                // position: relative;
+            }
+        }
+
+        &.oj-hover {
+            background: $nav-bar-tab-hover-bg;
+            border-bottom: $nav-bar-hover-bottom-line !important;
+
+            @include mq(small) {
+                background: $nav-bar-tab-hover-bg !important;
+            }
+
+            a .oj-navigationlist-item-label {
+                font-size: $nav-bar-font-size;
+                color: $nav-bar-font-color-hover !important;
+                //border-bottom: $nav-bar-hover-bottom-line;
+                //width: 100%;
+                // text-align: center;
+                // overflow: hidden;
+                // padding: 0;
+                // position: relative;
+            }
+
+            a .nav-bar-item-link__icon {
+                color: $nav-bar-font-color-hover !important;
+            }
+        }
+
+        &.oj-selected {
+            //background: $nav-bar-tab-selected-bg;
+            //border-bottom: 0.3rem solid $nav-bar-tab-selected-bg;
+            color: $nav-bar-font-color-active !important;
+            border-bottom: $nav-bar-active-bottom-line !important;
+
+            @include mq(small) {
+                background: $nav-bar-tab-selected-bg !important;
+                //border-bottom: 0.3rem solid $nav-bar-tab-selected-bg;
+                //color: $nav-bar-tab-selected-bg;
+            }
+
+            a .oj-navigationlist-item-label {
+                font-size: $nav-bar-font-size;
+                color: $nav-bar-font-color-active !important;
+                // border-bottom: $nav-bar-active-bottom-line;
+                // //width: 100%;
+                // text-align: center;
+                // overflow: hidden;
+                // padding: 0;
+                // position: relative;
+            }
+
+            a .nav-bar-item-link__icon {
+                color: $nav-bar-font-color-active !important;
+            }
+
+        }
+    }
+
+    .oj-navigationlist-icon-only .oj-navigationlist-item-label {
+        display: block;
+    }
+}
+
+.oj-panel .nav-bar {
+    //margin: 0 0 0.6rem;
+    //width: 100%;
+}
+
+.message-nav-bar {
+    .nav-bar .oj-navigationlist-listview-container ul li.oj-navigationlist-item {
+        margin-bottom: 0;
+    }
+
+    .oj-flex:first-child {
+        padding-bottom: 0 !important;
+    }
+}
+
+.security-nav-bar {
+    .max-width-for-tab {
+        flex: 0 0 auto !important;
+    }
+}
+
+.icon-spacing {
+    padding-top: 0.8rem;
+}
+
+.list-spacing {
+    padding: 0 !important;
+}
+
+.imageHeight {
+    height: 2.5rem;
+}

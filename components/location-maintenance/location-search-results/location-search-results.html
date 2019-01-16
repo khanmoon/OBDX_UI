@@ -1,0 +1,24 @@
+<div class="">
+        <div id="pagingControlAll" class="full-width">
+        <oj-table id="table_noStatus" :aria-label="[[$component.nls.header.detailstable]]" columns="[[[{headerText:nls.header.id,field:'id',style:'width: 30%'},{headerText:nls.header.address,style:'width: 70%',field:'type'}]]]" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'multiple',column:'multiple'}]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('results_template', true)]]" data="[[paginationDataSource]]">
+            <caption class="hide-label" data-bind="text:$component.nls.header.details"></caption>
+            </oj-table>
+            <oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[paginationDataSource]]"></oj-paging-control>
+            </div>
+            <!-- /ko -->
+
+
+                <!-- ko foreach:results() -->
+                <script type="text/html" id="results_template">
+                    <tr class="record">
+                        <td>
+                            <a href="javascript:void(0)" class="form-button-link" data-bind="text:id,click:$component.showLocationDetails.bind($data)"></a>
+                            <br>
+                        </td>
+
+                       <td>
+                         <span data-bind="text:$component.renderAddress($data) "></span>
+                        </td>
+                    </tr>
+                </script>
+</div>

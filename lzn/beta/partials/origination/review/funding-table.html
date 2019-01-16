@@ -1,0 +1,79 @@
+<!-- ko if: $component.productDetails().productType === "LOANS" -->
+<div class="oj-flex oj-flex-items-pad margin-top-20">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.propertyPurchacePrice"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text : $baseModel.formatCurrency(data.fundingTableDetailDTO.fundingItemDetailDTOs[$component.getIndex(data.fundingTableDetailDTO.fundingItemDetailDTOs,'PROPERTY_PURCHASE_COST')].totalAmount.amount(),data.fundingTableDetailDTO.fundingItemDetailDTOs[$component.getIndex(data.fundingTableDetailDTO.fundingItemDetailDTOs,'PROPERTY_PURCHASE_COST')].totalAmount.currency)"></span>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko if: $component.productDetails().productType === "AUTOMOBILE" -->
+<div class="oj-flex oj-flex-items-pad margin-top-20">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.estValue"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text : $baseModel.formatCurrency(data.fundingTableDetailDTO.fundingItemDetailDTOs[$component.getIndex(data.fundingTableDetailDTO.fundingItemDetailDTOs,'VEHICLE_COST')].totalAmount.amount(),data.fundingTableDetailDTO.fundingItemDetailDTOs[$component.getIndex(data.fundingTableDetailDTO.fundingItemDetailDTOs,'VEHICLE_COST')].totalAmount.currency)"></span>
+    </div>
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.requestedLoanAmount"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text : $baseModel.formatCurrency(data.fundingTableDetailDTO.fundingItemDetailDTOs[$component.getIndex(data.fundingTableDetailDTO.fundingItemDetailDTOs,'FACILITY')].totalAmount.amount(),data.fundingTableDetailDTO.fundingItemDetailDTOs[$component.getIndex(data.fundingTableDetailDTO.fundingItemDetailDTOs,'FACILITY')].totalAmount.currency)"></span>
+    </div>
+</div>
+<!-- ko if: $component.getIndex(data.fundingTableDetailDTO.fundingItemDetailDTOs,'BANK_FEE') -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.totalFees"></span></oj-label>
+    </div>
+    <div class="tooltip-section oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+        <span data-bind="text : $baseModel.formatCurrency(data.fundingTableDetailDTO.fundingItemDetailDTOs[$component.getIndex(data.fundingTableDetailDTO.fundingItemDetailDTOs,'BANK_FEE')].totalAmount.amount(),data.fundingTableDetailDTO.fundingItemDetailDTOs[$component.getIndex(data.fundingTableDetailDTO.fundingItemDetailDTOs,'BANK_FEE')].totalAmount.currency)"></span>
+        <!-- ko if: $baseModel.large() -->
+        <div class="tooltip message-text" id="totalFees_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component, message: $component.productDetails().message}}">
+        </div>
+        <span class="icon-help" id="tool-tip-holder" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'totalFees_tooltip','tool-tip-holder'), mouseout: $component.hideToolTip.bind($data,'totalFees_tooltip') }"></span>
+        <!-- /ko -->
+        <!-- ko ifnot: $baseModel.large() -->
+        <a class="icon-help" href="javascript:void(0)" aria-hidden="true" data-bind="click: function(){$('#totalFeesPopup').trigger('openModal')}"></a>
+        <!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko if: $component.productDetails().productType === "LOANS" -->
+<!-- ko if: data.fundingTableDetailDTO.lvrValue() !== 0 -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.lendersMortgageInsurance"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text : $baseModel.formatCurrency(data.fundingTableDetailDTO.lvrValue(), data.fundingTableDetailDTO.totalOutlay.currency)"></span>
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.totalCosts"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text : $baseModel.formatCurrency(data.fundingTableDetailDTO.totalOutlay.amount(),data.fundingTableDetailDTO.totalOutlay.currency)"></span>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.yourContribution"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text : $baseModel.formatCurrency(data.fundingTableDetailDTO.fundingItemDetailDTOs[$component.getIndex(data.fundingTableDetailDTO.fundingItemDetailDTOs,'CUSTOMER')].customerFundingItemDTOs[0].totalFeeValue.amount(),data.fundingTableDetailDTO.fundingItemDetailDTOs[$component.getIndex(data.fundingTableDetailDTO.fundingItemDetailDTOs,'CUSTOMER')].customerFundingItemDTOs[0].totalFeeValue.currency)"></span>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <modal-window class="origination-popup message" params="baseModel : $baseModel, rootModel : $component, id:'totalFeesPopup'">
+        <div class="message-text scroll" data-bind="html:$component.productDetails().message"></div>
+    </modal-window>
+</div>

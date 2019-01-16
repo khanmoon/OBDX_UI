@@ -1,0 +1,224 @@
+<div class="trade-finance">
+
+  <div class="trade-finance-nav-bar" data-bind="component:{name: 'collection-nav-bar', params:{rootModel:$data}}">
+  </div>
+
+  <div class="form-main-container">
+
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+        <!-- ko if: dataSourceCreatedForTemplate() -->
+
+
+        <!-- ko if:$component.componentId() === "TEMPLATES" -->
+
+        <!-- ko if: $component.templateList().length > 0 -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 template-search" data-bind="component: {
+               name: 'search-box',
+               params: {rootModel:$component,
+                      data:dataSourceForTemplate(),
+                      searchFields : ['template_name'],
+                      searchBy:$component.resourceBundle.templates.labels.templateName}}">
+            </div>
+        </div>
+        <!-- ko if:$baseModel.large() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+                <oj-table id="table" :aria-label="[[$component.resourceBundle.templates.labels.listofTemplates]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('template_row', true)]]" columns="[[[{headerText:$component.resourceBundle.templates.labels.templateName,sortProperty:'template_name',style:'width: 20%'},{headerText:$component.resourceBundle.templates.labels.beneficiary,style:'width: 10%'},{headerText:$component.resourceBundle.templates.labels.product,style:'width: 25%'},{headerText:$component.resourceBundle.templates.labels.createdBy,style:'width: 15%'},{headerText:$component.resourceBundle.templates.labels.updatedOn,style:'width: 15%'},{headerText:$component.resourceBundle.templates.labels.access_type,style:'width: 20%'}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[dataSourceForTemplate]]">
+                    <caption class="hide-label" data-bind="text:$component.resourceBundle.templates.labels.templateName"></caption>
+                </oj-table>
+                <oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSourceForTemplate]]">
+                </oj-paging-control>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$baseModel.large() -->
+        <div class="oj-flex grid-main-container">
+          <div class="oj-flex-item oj-sm-12">
+              <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('template_list_card',true)}]]" selection-mode="[['single']]" data="[[dataSourceForTemplate]]">
+              </oj-list-view>
+              <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.dataSourceForTemplate]]">
+              </oj-paging-control>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- /ko -->
+
+        <!-- ko ifnot: $component.templateList().length > 0 -->
+        <div class="oj-flex oj-flex-items-pad padding-tb">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.resourceBundle.messages.noTemplateCreated">
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: dataSourceCreatedForDraft() -->
+        <!-- ko if:$component.componentId() === "DRAFTS" -->
+        <!-- ko if: $component.draftList().length > 0 -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 template-search" data-bind="component: {
+                 name: 'search-box',
+                 params: {rootModel:$component,
+                        data:dataSource(),
+                        searchFields : ['draft_name'],
+                        searchBy:$component.resourceBundle.drafts.labels.draftName}}">
+            </div>
+        </div>
+        <!-- ko if:$baseModel.large() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+                <oj-table id="table" :aria-label="[[$component.resourceBundle.drafts.labels.listofDrafts]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('draft_row', true)]]" columns="[[[{headerText:$component.resourceBundle.drafts.labels.draftName,sortProperty:'draft_name'},{headerText:$component.resourceBundle.drafts.labels.savedOn}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[dataSource]]">
+                    <caption class="hide-label" data-bind="text:$component.resourceBundle.drafts.labels.draftName"></caption>
+                </oj-table>
+                <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSource]]">
+                </oj-paging-control>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$baseModel.large() -->
+        <div class="oj-flex grid-main-container">
+          <div class="oj-flex-item oj-sm-12">
+              <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('draft_list_card',true)}]]" selection-mode="[['single']]" data="[[dataSource]]">
+              </oj-list-view>
+              <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.dataSource]]">
+              </oj-paging-control>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- /ko -->
+        <!-- ko ifnot: $component.draftList().length > 0 -->
+          <div class="oj-flex oj-flex-items-pad padding-tb">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.resourceBundle.messages.noDraftCreated">
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- /ko -->
+        <!-- ko ifnot: $baseModel.small() -->
+        <div class="button-container">
+        <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+          <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+</oj-button>
+        </div>
+        <!-- /ko -->
+
+    </page-section>
+
+  </div>
+
+</div>
+
+<script type="text/html" id="template_row">
+    <tr>
+        <td>
+            <a href="#" data-bind="attr:{ title:  $baseModel.format('TemplateName',{template_name : $data.template_name}), alt :  $baseModel.format('TemplateNameText',{template_name : $data.template_name}) },text:$data.template_name,click:$component.onTemplateNameSelected.bind($data)"></a>
+        </td>
+        <td>
+            <span data-bind="text:$data.beneficiary"></span>
+        </td>
+        <td>
+            <span data-bind="text:$data.product"></span>
+        </td>
+        <td>
+            <span data-bind="text:$data.customer_id"></span>
+        </td>
+        <td>
+            <span data-bind="text:$data.updated_on"></span>
+        </td>
+        <td>
+            <span data-bind="text:$data.access_type"></span>
+        </td>
+    </tr>
+</script>
+
+<script type="text/html" id="draft_row">
+    <tr>
+        <td>
+            <a href="#" data-bind="attr:{title:$data.draft_name},text:$data.draft_name,click:$component.onDraftSelected.bind($data)"></a>
+        </td>
+        <td>
+            <span data-bind="text:$data.created_on"></span>
+        </td>
+    </tr>
+</script>
+
+<script type="text/html" id="template_list_card">
+  <li data-bind="attr: {id: $data.templateId}">
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-9 description">
+              <a href="#" data-bind="attr:{ title:  $data.template_name, alt : $data.template_name },text:$data.template_name,
+              click:$component.onTemplateNameSelected.bind($data)"></a>
+            </div>
+
+            <div class="oj-flex-item oj-sm-3 right" data-bind="text: $data.access_type">
+            </div>
+          </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 grid-row-group">
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.templates.labels.beneficiary"></label>
+            <div data-bind="text: $data.beneficiary"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.templates.labels.product"></label>
+            <div data-bind="text: $data.product"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.templates.labels.createdBy"></label>
+            <div data-bind="text: $data.customer_id"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.templates.labels.updatedOn"></label>
+            <div data-bind="text: $data.updated_on"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </li>
+</script>
+<script type="text/html" id="draft_list_card">
+  <li data-bind="attr: {id: $data.draftId}">
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 description">
+            <a href="#" data-bind="attr:{ title:  $data.draft_name, alt : $data.draft_name },text:$data.draft_name,
+            click:$component.onDraftSelected.bind($data)"></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 grid-row-group">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.drafts.labels.savedOn"></label>
+            <div data-bind="text: $data.created_on"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    </li>
+  </script>

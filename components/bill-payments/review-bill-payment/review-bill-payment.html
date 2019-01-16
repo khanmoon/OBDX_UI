@@ -1,0 +1,150 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between bill-payments">
+<div class="review-text-heading oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+  <span class="icons icon-information pull-left"></span>
+  <span data-bind="text: $component.resourceBundle.messages.reviewPaymentMsg"></span>
+  </div>
+
+  <div class="form-main-container oj-flex-item oj-sm-12 oj-md-12 oj-lg-7">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.billerDetails.billerNickName">
+
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+          <label for="billerName" data-bind="text: $component.resourceBundle.labels.billerName"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+          <div id="billerName" data-bind="text: $component.billerPaymentDetails.billerName()"></div>
+        </div>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+          <label for="billerLocation" data-bind="text: $component.resourceBundle.labels.billerLocation"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+          <div id="billerLocation" data-bind="text: $component.billerPaymentDetails.location()"></div>
+        </div>
+    </div>
+    <!-- ko foreach:$component.relationshipDetails() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+          <label for="billerRelationship" data-bind="text: $data.label, attr : {'for' :'billerLabel_' + $index()}"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+          <div id="billerRelationship" data-bind="text: $data.value, attr : {'for' :'billerLabel_' + $index()}"></div>
+        </div>
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+        <label for="customerName" data-bind="text: $component.resourceBundle.labels.customerName"></label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+        <span id="customerName" data-bind="text: $component.billerPaymentDetails.customerName()"></span>
+      </div>
+    </div>
+
+    <!-- ko if: $component.dropdownLabels.currentAccountType()-->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+            <label for="accType" data-bind="text: $component.resourceBundle.labels.paymentType"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+          <div id="accType" data-bind="text: $component.resourceBundle.labels[$component.currentAccountType()]">
+          </div>
+        </div>
+    </div>
+    <!-- /ko -->
+
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+          <label for="billerAcc" data-bind="text: $component.resourceBundle.labels.billerAccount"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+          <div id="billerAcc" data-bind="text: $component.billerPaymentDetails.debitAccount.displayValue()">
+          </div>
+        </div>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+          <label for="paymentAmount" data-bind="text: $component.resourceBundle.labels.paymentAmount"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+          <div id="paymentAmount" data-bind="text: $baseModel.formatCurrency($component.billerPaymentDetails.billAmount.amount(),$component.billerPaymentDetails.billAmount.currency())">
+          </div>
+        </div>
+    </div>
+    <!-- ko if: $component.billerPaymentDetails.isRecurring() === 'false'-->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+          <label for="paymentTime" data-bind="text:  $component.resourceBundle.labels.payWhen"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+          <div id="scheduledDate" data-bind="text: $baseModel.formatDate($component.billerPaymentDetails.paymentDate())">
+          </div>
+          </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if: $component.billerPaymentDetails.isRecurring() === 'true'-->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+        <label for="paymentTime" data-bind="text:  $component.resourceBundle.labels.payWhen"></label>
+      </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+          <div id="paymentTime" data-bind="text: $component.resourceBundle.labels.RECURRING">
+          </div>
+          </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+        <label for="paymentTime" data-bind="text:  $component.resourceBundle.labels.startDate"></label>
+      </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+          <div id="scheduledDate" data-bind="text: $baseModel.formatDate($component.billerPaymentDetails.paymentDate())">
+          </div>
+          </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+        <label for="paymentTime" data-bind="text:  $component.resourceBundle.labels.endDate"></label>
+      </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+          <div id="scheduledDate" data-bind="text: $baseModel.formatDate($component.billerPaymentDetails.billerRegistration.autopayInstructions.endDate())">
+          </div>
+          </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+          <label for="scheduledFreq" data-bind="text: $component.resourceBundle.labels.frequencyType"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+          <div id="scheduledFreq" data-bind="text: $component.billerPaymentDetails.billerRegistration.autopayInstructions.frequency()">
+          </div>
+          </div>
+    </div>
+    <!-- /ko -->
+  </div>
+
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="confirmButton" class="action-button-primary" on-click="[[confirm]]">
+      <span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.confirm"></span>
+    </oj-button>
+    <!-- ko ifnot: $baseModel.small() -->
+    <oj-button id="cancelbutton" class="action-button-tertiary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.messages.cancelOperation)]]">
+      <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button id="backbutton" class="action-button-secondary" on-click="[[$component.editPayBill]]">
+      <span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+    </oj-button>
+
+    </div>
+
+  </div>
+    </div>

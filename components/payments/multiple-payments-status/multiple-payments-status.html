@@ -1,0 +1,190 @@
+<div class="form-main-container multiple-payments">
+    <!-- ko ifnot: $baseModel.small() -->
+    <page-section class="multiple-payments__status" params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+            <!-- ko if: $component.userSegment === 'CORP' && !$component.isInitAuth() && $component.firstSuccessfulPayment -->
+            <div class="oj-flex-item oj-sm-12 right">
+                <a href="#" data-bind="click: $component.downloadAllEreceipts">
+                        <span class="icons icon-download"></span>
+                        <span data-bind="text: $component.resource.action.downloadAllEreceipts"></span>
+                </a>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex-item oj-sm-12">
+                <oj-table id="multiple-payments-status" :aria-label="[[$component.resource.label.caption]]" columns="[[[{headerText:$component.resource.label.payee,template:'payee_name',style:'width:25%;'},{headerText:$component.resource.label.fromaccount,template:'dbt_Account'},{headerText:$component.resource.label.datenamount,template:'date_n_amount'}].concat($component.isInitAuth() ?[{
+                headerText:$component.resource.label.refno,template:'reference_number'}]:[{
+                headerText:$component.resource.label.hostrefno,template:'ext_ref_id'}]).concat([{
+                headerText:$component.resource.label.status,template:'payment_status'}]).concat(($component.userSegment ==='CORP'&& !$component.isInitAuth() && $component.firstSuccessfulPayment && $component.isSuccessful()) ?[{
+                headerText:$component.resource.label.action,template:'action_template'}]:[]).concat($component.firstFailedPayment?[{
+                headerText:$component.resource.label.failureReason,template:'failure_reason_template',style:'width:22%;'}]:[])]]" selection-mode="[[{column:'none',row:'none'}]]" columns-default="[[{sortable:'disabled'}]]" data="[[$component.statusDataSource]]">
+                    <caption class="hide-label" data-bind="text:$component.resource.label.caption"></caption>
+                    <template slot="payee_name">
+                        <td>
+                            <div class="oj-flex-item oj-sm-12" data-bind="text : $current.row.autoPopulationData.overviewDetails().nickName"></div>
+                            <div class="oj-flex-item oj-sm-12" data-bind="text : $current.row.autoPopulationData.overviewDetails().crtAccount"></div>
+                        </td>
+                    </template>
+                    <template slot="dbt_Account">
+                        <td>
+                            <div data-bind="text : $current.row.autoPopulationData.overviewDetails().dbtAccount"></div>
+                        </td>
+                    </template>
+                    <template slot="date_n_amount">
+                        <td>
+                            <div class="oj-flex-item oj-sm-12" data-bind="text : $current.row.autoPopulationData.overviewDetails().valueDate"></div>
+                            <div class="oj-flex-item oj-sm-12" data-bind="text : $current.row.autoPopulationData.overviewDetails().amount"></div>
+                        </td>
+                    </template>
+                    <template slot="reference_number">
+                        <td>
+                            <div data-bind="text : $current.row.response.status.referenceNumber || '—'"></div>
+                        </td>
+                    </template>
+                    <template slot="ext_ref_id">
+                        <td>
+                            <div data-bind="text : $current.row.response.externalReferenceId || '—'"></div>
+                        </td>
+                    </template>
+                    <template slot="payment_status">
+                        <td>
+                            <div data-bind="text : $component.resource.status[$current.row.status] || $component.resource.status.error"></div>
+                        </td>
+                    </template>
+                    <template slot="action_template">
+                        <td>
+                            <!-- ko if: $current.row.isSuccess -->
+                            <a href="#" data-bind="click: $component.downloadEreceipt.bind($data, $current.row.response.status.referenceNumber)">
+                        <span class="icons icon-claim-money"></span>
+                        <span data-bind="text: $component.resource.action.eReceipt"></span>
+                    </a>
+                            <!-- /ko -->
+                            <!-- ko ifnot: $current.row.isSuccess -->
+                            <span data-bind="text :'—'"></span>
+                            <!-- /ko -->
+                        </td>
+                    </template>
+                    <template slot="failure_reason_template">
+                        <td>
+                            <!-- ko ifnot: $current.row.isSuccess -->
+                            <div data-bind="text : $current.row.failureReason || ''"></div>
+                            <!-- /ko -->
+                            <!-- ko if: $current.row.isSuccess -->
+                            <div data-bind="text : $component.resource.label.na"></div>
+                            <!-- /ko -->
+                        </td>
+                    </template>
+                </oj-table>
+            </div>
+        </div>
+    </page-section>
+    <!-- /ko -->
+    <!-- ko if: $baseModel.small() -->
+    <page-section class="multiple-payments__status" params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <oj-list-view id="multiple-payments-status-list" :aria-label="[[$component.resource.label.caption]]"" data="[[$component.statusDataSource]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('payment_status_template', true)]]" selection-mode="single">
+            </oj-list-view>
+        <script type="text/html" id="payment_status_template">
+            <li class="card">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-6">
+                        <div class="oj-flex oj-flex-items-pad">
+                             <oj-label class="oj-sm-12">
+                                <span data-bind="text:$component.isInitAuth()?$component.resource.label.refno:$component.resource.label.hostrefno"></span>
+                                </oj-label>
+                            <div class="oj-sm-12" data-bind="text : $component.isInitAuth()?(response.status.referenceNumber || '—'):(response.externalReferenceId || '—')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-6 right">
+                        <div class="oj-flex oj-flex-items-pad">
+                              <oj-label class="oj-sm-12">
+                                <span data-bind="text:$component.resource.label.status"></span>
+                                </oj-label>
+                            <div class="oj-sm-12" data-bind="text : $component.resource.status[status] || $component.resource.status.error">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-6">
+                        <div class="oj-flex oj-flex-items-pad">
+                             <oj-label class="oj-sm-12">
+                                <span data-bind="text:$component.resource.label.payee"></span>
+                                </oj-label>
+                            <div class="oj-sm-12" data-bind="text : autoPopulationData.overviewDetails().nickName">
+                            </div>
+                            <div class="oj-sm-12" data-bind="text : autoPopulationData.overviewDetails().crtAccount">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-6 right">
+                        <div class="oj-flex oj-flex-items-pad">
+                             <oj-label class="oj-sm-12">
+                                <span data-bind="text:$component.resource.label.fromaccount"></span>
+                                </oj-label>
+                            <div class="oj-sm-12" data-bind="text : autoPopulationData.overviewDetails().dbtAccount">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-6">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <oj-label class="oj-sm-12">
+                                <span data-bind="text:$component.resource.label.date"></span>
+                                </oj-label>
+                            <div class="oj-sm-12" data-bind="text : autoPopulationData.overviewDetails().valueDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-6 right">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <oj-label class="oj-sm-12">
+                                <span data-bind="text:$component.resource.label.amount"></span>
+                                </oj-label>
+                            <div class="oj-sm-12 right multiple-payments__amount" data-bind="text : autoPopulationData.overviewDetails().amount">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ko if: $component.userSegment === 'CORP' && isSuccess && !$component.isInitAuth() -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-6">
+                        <a href="#" data-bind="click: $component.downloadEreceipt.bind($data, response.status.referenceNumber)">
+                        <span class="icons icon-claim-money"></span>
+                        <span data-bind="text: $component.resource.action.eReceipt"></span>
+                    </a>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko ifnot: isSuccess -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <oj-label class="oj-sm-12">
+                                <span data-bind="text:$component.resource.label.failureReason"></span>
+                                </oj-label>
+                            <div class="oj-sm-12" data-bind="text : failureReason">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </li>
+        </script>
+        <!-- ko if: $component.userSegment === 'CORP' && !$component.isInitAuth() && $component.firstSuccessfulPayment -->
+        <a href="#" data-bind="click: $component.downloadAllEreceipts">
+            <div class="floating-button"><span class="icons icon-download"></span></div>
+        </a>
+        <!-- /ko -->
+    </page-section>
+    <!-- /ko -->
+</div>
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <!-- ko ifnot: $baseModel.small() -->
+    <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item oj-sm-12 ">
+            <a class="back-link" href="#" data-bind="text: $component.resource.action.backToDashboard, click: $dashboard.openDashBoard.bind(void 0,void 0)"></a>
+        </div>
+    </div>
+    <!-- /ko -->
+</page-section>

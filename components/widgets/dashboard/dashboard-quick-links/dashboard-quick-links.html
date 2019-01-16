@@ -1,0 +1,21 @@
+<div class="quick-links" data-bind="css:$dashboard.isDashboard()?'oj-panel':''">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+            <h3 class="quick-links__heading" data-bind="text:$component.subheading"></h3>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad quick-links__section">
+        <div class="oj-flex-item oj-sm-12">
+            <ul class="oj-flex oj-flex-items-pad quick-links__flex-container quick-links-flex-container oj-sm-flex-wrap-nowrap">
+                <!-- ko foreach: quicklinksArray -->
+                <li class="oj-flex-item oj-sm-4 quick-links-flex-container__list quick-links-flex-container-list">
+                    <a class="quick-links-flex-container-list__item quick-links-flex-container-list-item" href="#" data-bind="click:$component.iconClick,attr:{alt:$component.resource.title[$data.id],title:$component.resource[$data.id]}">
+                        <img alt="" class="bounceUp quick-links-flex-container-list-item__icons" data-bind="loadImage:'dashboard/quick-access/' + $data.icon + '.svg',attr:{title:$component.resource.title[$data.id]}">
+                        <div class="quick-links-flex-container-list-item__icon-title" data-bind="text:$component.resource[$data.id]"></div>
+                    </a>
+                </li>
+                <!-- /ko -->
+            </ul>
+        </div>
+    </div>
+</div>

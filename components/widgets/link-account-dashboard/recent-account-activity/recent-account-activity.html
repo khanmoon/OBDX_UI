@@ -1,0 +1,81 @@
+<div class="oj-panel recent-account-transaction">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-6 oj-md-12">
+      <h3 class="recent-account-transaction__sub-heading" data-bind="text:$component.resource.recentActivity"></h3>
+    </div>
+
+    <!-- ko if:!$baseModel.small() -->
+    <!-- ko if: $component.accountsLoaded() -->
+    <div class="oj-flex-item oj-sm-4 oj-md-3 oj-lg-6 recent-account-transaction__account-type">
+      <oj-label class="hide" :for="[['selectAccount'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.selectAccountType"></span></oj-label>
+      <oj-select-one value="{{$component.selectedAccountType}}" on-value-changed="[[selectedAccountTypeChangedHandler]]" data-bind="attr:{id:'selectAccount'+ $baseModel.currentIdCount(),'aria-label':$component.resource.selectAccountType}">
+        <!-- ko foreach: accountTypeList -->
+        <oj-option value="[[$data]]"><span data-bind="text: $component.resource[$data]"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+    <!-- ko if: accountsMatchedLoaded -->
+    <div class="oj-flex-item oj-sm-4 oj-md-3 oj-lg-6 right recent-account-transaction__account-type">
+      <oj-label class="hide" :for="[['selectAccountID'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.selectAccountType"></span></oj-label>
+      <oj-select-one on-value-changed="[[selectedExternalAccountTypeChangedHandler]]" data-bind="attr:{id:'selectAccountID'+ $baseModel.currentIdCount(),'aria-label':$component.resource.selectAccountType}">
+        <!-- ko foreach : Object.keys($component.accountsMatched) -->
+        <oj-optgroup label="[[$data]]">
+          <!-- ko foreach : $component.accountsMatched[$data] -->
+          <oj-option value="[[$data.id.value]]"><span data-bind="text: $data.id.displayValue"></span></oj-option>
+          <!-- /ko -->
+        </oj-optgroup>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <!-- ko if:$component.detailsFetched -->
+    <ul class="recent-account-transaction__list recent-account-transaction-list">
+      <!-- ko foreach:$component.items -->
+
+      <li class="recent-account-transaction-list__item recent-account-transaction-list-item" data-bind="">
+
+        <div class="oj-flex oj-flex-items-pad">
+
+          <!-- <div class="oj-lg-3 oj-md-3 oj-sm-12 oj-flex-item word-nowrap" data-bind="text:date">
+        </div> -->
+          <div class="oj-md-2 oj-flex-item word-nowrap" data-bind='component: { name: "date-box", params: {date: date}}'></div>
+          <div class="oj-md-6 oj-flex-item word-ellipsis" data-bind="">
+            <span data-bind="text : $data.narration"></span>
+          </div>
+
+
+          <div class="oj-md-4 oj-flex-item recent-account-transaction-list-item__amount" data-bind="">
+
+            <!-- ko if: transactionType === "D" -->
+            <span class="debit" data-bind="text : $baseModel.formatCurrency(amount, tempCurrency)"></span>
+            <span class="debit" data-bind="text:$component.resource.Dr"></span>
+            <!-- /ko -->
+            <!-- ko if: transactionType === "C" -->
+            <span class="credit" data-bind="text : $baseModel.formatCurrency(amount, tempCurrency)"></span>
+            <span class="credit" data-bind="text:$component.resource.Cr"></span>
+            <!-- /ko -->
+
+          </div>
+        </div>
+      </li>
+      <!-- /ko -->
+      <!-- ko ifnot: $component.items().length > 0 -->
+      <li class="recent-account-transaction-list__nodata recent-account-transaction-list-nodata">
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-5">
+            <img class="recent-account-transaction-list-nodata__image" alt="" data-bind="loadImage:'dashboard/recent-activity.svg'">
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-7 recent-account-transaction-list-nodata__text">
+            <span data-bind="text:$component.resource.nodata"></span>
+          </div>
+        </div>
+      </li>
+      <!-- /ko -->
+    </ul>
+    <!-- /ko -->
+    <!-- /ko -->
+
+  </div>
+</div>

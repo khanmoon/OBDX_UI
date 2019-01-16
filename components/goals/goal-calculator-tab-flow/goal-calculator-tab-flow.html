@@ -1,0 +1,29 @@
+<!-- ko if:stageSelectCategory() -->
+<div data-bind="component:{
+        name : 'goal-category-select',
+        params : {
+          calculateGoal : true,
+          rootModel : $component
+        }
+}"></div>
+<!-- /ko -->
+<!-- ko if:stageGoalAmount() -->
+<div data-bind="component:{
+        name : 'goal-amount',
+        params : {
+             transferDTO: $component.transferObject(),
+             isCalculationRequired: true,
+             rootModel : $component
+        }
+}"></div>
+
+<!-- /ko -->
+<!-- ko if:stageGoalCalculator() -->
+<div data-bind="component:{
+        name : 'goal-calculator',
+        params : {
+          transferObject : JSON.parse(ko.toJSON($component.transferObject)),
+          rootModel : $component
+        }
+}"></div>
+<!-- /ko -->

@@ -1,0 +1,65 @@
+<!-- ko if:feedbackUserRoleLoaded -->
+<div class="oj-flex design-feedback form-main-container">
+  <div class="oj-flex-item oj-sm-9">
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-lg-4 label">
+            <label for="text-input-readonly-identifier" data-bind="attr:{id:'templateId'},text: $component.resource.templateIdLabel"></label>
+          </div>
+          <div class="oj-flex-item  oj-lg-4 label">
+            <oj-input-text id="text-input-readonly-identifier" :aria-label="[[$component.resource.templateIdPlaceholder]]" value="{{inputTemplateIdentifier}}" placeholder="{{$component.resource.templateIdPlaceholder}}">
+            </oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex">
+          <div class="oj-flex-item  oj-lg-4 label">
+            <label for="text-input-readonly-name" data-bind="attr:{id:'templateName'},text: $component.resource.templateNameLabel"></label>
+          </div>
+          <div class="oj-flex-item  oj-lg-4 label">
+            <oj-input-text id="text-input-readonly-name" :aria-label="[[$component.resource.templateNamePlaceholder]]" value="{{inputTemplateName}}" placeholder="{{$component.resource.templateNamePlaceholder}}">
+            </oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex">
+          <div class="oj-flex-items oj-lg-4 label">
+            <label for="checkboxSetAgreeIdForUserRole" data-bind="attr:{id:'applicableRoleLabelId'},text: $component.resource.applicableRoleLabel"></label></div>
+          <div class="oj-flex-items oj-lg-4">
+            <oj-checkboxset id="checkboxSetAgreeIdForUserRole" :aria-label="[[$component.resource.search]]" value={{$component.defaultRole}}>
+              <!-- ko foreach: $component.feedbackUserRole -->
+              <oj-option value="[[enterpriseRoleId]]"><span data-bind="text: enterpriseRoleName"></span></oj-option>
+              <!-- /ko -->
+            </oj-checkboxset>
+          </div>
+        </div>
+        <div class="oj-flex button-container">
+          <oj-button class="action-button-primary" id="saveButtonId" type="submit" on-click="[[$component.searchResult]]">
+            <span data-bind="text:$component.resource.search"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" id="clearButtonId" type="submit" on-click="[[$component.clearFields]]">
+            <span data-bind="text:$component.resource.clear"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" id="cancelButtonId" type="submit" on-click="[[$dashboard.openDashBoard]]">
+            <span data-bind="text:$component.resource.cancel"></span>
+          </oj-button>
+        </div>
+        <!-- ko if: viewTable -->
+        <div class="oj-flex spacing-table">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-table id="table" :aria-label="[[$component.resource.cancel]]" data="[[dataSource]]" columns-default.sortable="enabled" selection-mode='{"row":"single","column":"single"}' columns="[[headerText]] ">
+              <caption class="hide-label" data-bind="text:$component.resource.cancel"></caption>
+            </oj-table>
+          </div>
+        </div>
+        <!-- /ko -->
+      </page-section>
+    </div>
+  <div class="oj-flex-item oj-sm-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'feedback-template-search'"></help>
+  </div>
+</div>
+<script type="text/html" id="templateIdentifier">
+  <td>
+    <a href="javascript:void(0)" data-bind="text:$context.row.templateIdentifier,click:$component.onSelectedInTable.bind($data,$context.row)"></a>
+  </td>
+</script>
+<!-- /ko -->

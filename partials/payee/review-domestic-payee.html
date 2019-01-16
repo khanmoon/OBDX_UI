@@ -1,0 +1,153 @@
+<!-- ko if:$component.domesticPayeeType() === 'INDIA' -->
+
+<div data-bind="with:$component.payeeDetails().indiaDomesticPayee">
+    <div class="">
+      <!-- ko if:!('adhocPaymentFlag' in $component) -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.india.recipientname , value :name"></row>
+        <!-- /ko -->
+    </div>
+    <div class="">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.accounttype , value :$component.payments.payee.domestic.accdomestic"></row>
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.accountnumber , value :accountNumber,dataClass :'highlight-text'"></row>
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.accountname , value :accountName,dataClass :'highlight-text'"></row>
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.india.ifsc , value :[
+         bankDetails.code,
+         ('name' in bankDetails)?bankDetails.name:'',
+         ('address' in bankDetails)?bankDetails.address:'',
+         ('city' in bankDetails)?bankDetails.city:'',
+         ('country' in bankDetails)?bankDetails.country:''
+         ]"></row>
+    </div>
+    <div class="">
+      <!-- ko if:!('adhocPaymentFlag' in $component) -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.accountnickname , value :nickName,dataClass :'highlight-text'"></row>
+        <!-- /ko -->
+    </div>
+
+    <!-- ko if:$component.userSegment === "CORP" && !('adhocPaymentFlag' in $component) -->
+    <div class="">
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.payeeaccesstype , value :$component.payments.payee[payeeAccessType]"></row>
+    </div>
+    <!-- /ko -->
+</div>
+
+<!-- /ko -->
+
+
+<!-- ko if:$component.domesticPayeeType() === 'UK' -->
+
+<div data-bind="with:$component.payeeDetails().ukDomesticPayee">
+
+    <!-- ko if:!('adhocPaymentFlag' in $component) -->
+    <div class="">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.india.recipientname , value :name"></row>
+    </div> 
+    <!-- /ko -->
+
+    <div class="">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.accounttype , value :$component.payments.payee.domestic.accdomestic"></row>
+
+        <!--Account Number-->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.accountnumber , value :accountNumber,dataClass :'highlight-text'"></row>
+
+        <!--Account Name-->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.accountname , value :accountName,dataClass :'highlight-text'"></row>
+
+        <!--payvia-->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.payvia , value :network"></row>
+
+        <!-- ko if:paymentType==="NOU" ||   paymentType==="FAS" -->
+
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.uk.sortcode , value :[
+            bankDetails.code,
+              ('name' in bankDetails)?bankDetails.name:'',
+              ('address' in bankDetails)?bankDetails.address:'',
+             ('city' in bankDetails)?bankDetails.city:'',
+             ('country' in bankDetails)?bankDetails.country:''
+        ]"></row>
+
+        <!-- /ko -->
+        <!-- ko if:paymentType==="URG" -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.uk.swiftcode , value :[
+            bankDetails.code,
+              ('name' in bankDetails)?bankDetails.name:'',
+              ('address' in bankDetails)?bankDetails.address:'',
+             ('city' in bankDetails)?bankDetails.city:'',
+             ('country' in bankDetails)?bankDetails.country:''
+        ]"></row>
+        <!-- /ko -->
+
+
+    </div>
+
+    <div class="">
+        <!--Account Nick name-->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.accountnickname , value :nickName,dataClass :'highlight-text'"></row>
+
+    </div>
+
+    <!-- ko if:$component.userSegment === "CORP" && !('AdhocFlag' in $component)-->
+    <div class="">
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.payeeaccesstype , value :$component.payments.payee[payeeAccessType]"></row>
+    </div>
+    <!-- /ko -->
+</div>
+
+<!-- /ko -->
+
+
+<!-- ko if:$component.domesticPayeeType() === 'SEPA' -->
+
+
+<div data-bind="with:$component.payeeDetails().sepaDomesticPayee">
+  <!-- ko if:!('adhocPaymentFlag' in $component) -->
+    <div class="">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.india.recipientname , value :name"></row>
+    </div>
+    <!-- /ko -->
+    <div class="">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.accounttype , value :$component.payments.payee.domestic.accdomestic"></row>
+
+        <!-- ko if:$component.AdhocFlag() -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.paymenttype , value :$component.payments.payee.domestic.sepa[$component.sepaType()]"></row>
+        <!-- /ko -->
+
+        <!--Recipient Account number (IBAN)-->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.sepa.recipientaccnumber , value :iban,dataClass :'highlight-text'"></row>
+
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.accountname , value :accountName,dataClass :'highlight-text'"></row>
+
+        <!--Bank Code(BIC)-->
+        <!-- ko if:sepaType==="CRT" -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.sepa.bankcodebic , value :[
+        bankDetails.code,
+          ('name' in bankDetails)?bankDetails.name:'',
+          ('address' in bankDetails)?bankDetails.address:'',
+        ('city' in bankDetails)?bankDetails.city:'',
+         ('country' in bankDetails)?bankDetails.country:''
+    ]"></row>
+        <!-- /ko -->
+        <!-- ko if:sepaType==="CAT" -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.sepa.debtorbankcode , value :[
+        bankDetails.code,
+          ('name' in bankDetails)?bankDetails.name:'',
+          ('address' in bankDetails)?bankDetails.address:'',
+        ('city' in bankDetails)?bankDetails.city:'',
+         ('country' in bankDetails)?bankDetails.country:''
+    ]"></row>
+        <!-- /ko -->
+    </div>
+    <div class="">
+        <!--Account Nick name-->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.accountnickname , value :nickName"></row>
+    </div>
+
+    <!-- ko if:$component.userSegment === "CORP" && !('AdhocFlag' in $component) -->
+    <div class="">
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.payeeaccesstype , value :$component.payments.payee[payeeAccessType()]"></row>
+    </div>
+    <!-- /ko -->
+
+</div>
+
+<!-- /ko -->

@@ -1,0 +1,35 @@
+<div class="loan-analysis  oj-panel">
+  <div class="summary-card">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item summary-card-title">
+        <span data-bind="text: $component.locale.analysis.summary"></span>
+        <!-- ko if: $component.dataFetched()-->
+          <!-- ko ifnot: Object.keys($component.filteredAccounts).length > 1 -->
+            <oj-label class="loan-count"><span data-bind="text:$baseModel.format($component.locale.accountCount,{count:$component.totalAccounts})"></span></oj-label>
+          <!-- /ko -->
+        <!-- /ko -->
+      </div>
+      <!-- ko if: $component.dataFetched()-->
+      <!-- ko if: Object.keys($component.filteredAccounts).length > 1 -->
+      <oj-buttonset-one class="oj-flex-item oj-sm-12 summary-card-button-set" :aria-label="[[$component.locale.analysis.selectOption]]" value="{{checkedOption}}"><!-- ko foreach: $component.options --><oj-option name="loanAnalysisAccountTypeChoice" value="{{id}}" :id="[[$baseModel.currentIdCount()]]"><span data-bind="attr: {for: $baseModel.incrementIdCount()}, html:$baseModel.format($component.locale.buttonsetBinding, {'count': count, 'label': label})"></span></oj-option><!-- /ko --></oj-buttonset-one>
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+    <!-- ko if: $component.dataFetched() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex oj-flex-items-pad summary-card-row">
+        <div class="oj-flex-item oj-sm-12 center">
+          <div class="summary-label-heading" data-bind="text: $component.locale.analysis.totalBorrow"></div>
+          <div class="totalBorrow-value" data-bind="text: $component.totalOutstanding()"></div>
+          <canvas class="loan-analysis-card" id="loan-analysis-card" height="200px" width="200px"></canvas>
+          <div class="summary-label-heading" data-bind="text: $component.locale.analysis.currentOutstanding"></div>
+          <div class="outstanding-value" data-bind="text: $component.totalBorrowings()"></div>
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.dataFetched() -->
+    <div data-bind="template: {name: 'accounts/no-account-activity', data: $component.noAccountsData}"></div>
+    <!-- /ko -->
+  </div>
+</div>

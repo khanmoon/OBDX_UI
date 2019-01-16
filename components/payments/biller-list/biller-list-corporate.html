@@ -1,0 +1,90 @@
+<!-- ko if:isBillersLoaded() -->
+      <div class="form-main-container">
+          <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+              <div class="oj-flex oj-flex-items-pad oj-md-12 oj-lg-12">
+                <div class="oj-flex-item oj-lg-8 oj-sm-12 oj-md-9" data-bind="component: {
+                      name:'search-box',
+                      params:{
+                      searchFields : ['billerName','relationshipNumber'],
+                        data:billerListDataSource,
+                        searchBy:$component.resource.searchBy
+                        }}">
+                </div>
+
+              <!-- ko if:$baseModel.large() -->
+                <div class=" oj-flex-item oj-lg-4 oj-md-3 right">
+                    <oj-button class="action-button-primary " on-click="[[$dashboard.loadComponent.bind($data,'add-biller-main',{},$component)]]">
+                      <span slot="startIcon" class="icons icon-add"></span>
+      <span data-bind="text:$component.resource.add"></span>
+</oj-button>
+                </div>
+              <!-- /ko -->
+              </div>
+
+              <!-- ko if:!$baseModel.large() -->
+                <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'add-biller-main',{},$component)">
+                  <div class="floating-button"><span class="icons icon-plus"></span></div>
+                </a>
+              <!-- /ko -->
+
+              <!-- ko if:$baseModel.large() -->
+                <oj-table id="table" :aria-label="[[$component.resource.tableheader]]" columns="[[[{headerText:resource.billerName,headerClassName:'left',
+field:'billerName',renderer:$oj.KnockoutTemplateUtils.getRenderer('biller_name_link',true),sortProperty:'billerName'},{headerText:resource.category,headerClassName:'left',
+field:'categoryType'},{headerText:resource.relationshipnum,headerClassName:'left',
+field:'relationshipNumber',sortProperty:'relationshipNumber'}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[billerListDataSource]]">
+                  <caption class="hide-label" data-bind="text:$component.resource.tableheader"></caption>
+                </oj-table>
+
+                <script type="text/html" id="biller_name_link">
+                    <td>
+                        <a href="#" data-bind="attr:{ altBillerDetails: $component.resource.altBillerDetails, titleBillerDetails: $component.resource.titleBillerDetails }, text:$context.row.billerName,click:$dashboard.loadComponent.bind
+                         ($data,'biller-details',$context.row,$component)"></a>
+
+                    </td>
+                </script>
+                <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.billerListDataSource]]">
+                </oj-paging-control>
+              <!-- /ko  -->
+
+        <!-- ko if:!$baseModel.large() -->
+            <oj-list-view class="payments" :aria-label="[[$component.resource.header]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('billerList-corporate',true)}]]" data="[[billerListDataSource]]">
+            </oj-list-view>
+
+            <oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[$component.billerListDataSource]]">
+            </oj-paging-control>
+        <!-- /ko -->
+        </page-section>
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button class="action-button-secondary" id="button" on-click="[[$component.back]]">
+                  <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.cancel"></span>
+</oj-button>
+            </div>
+      </div>
+    <!-- /ko -->
+
+<script type="text/html" id="billerList-corporate">
+    <li class="payments-list__listItem" data-bind="attr: {id: $data['billerName',	'relationshipNumber']}">
+          <div class="oj-flex oj-flex-items-pad oj-sm-12">
+            <div class="oj-flex-item">
+                <label data-bind="text:$component.resource.billerName"></label>
+                <div><a href="#" data-bind="text:billerName,click:$dashboard.loadComponent.bind($data,'biller-details',$data,$component)"></a>
+              </div>
+            </div>
+          </div>
+
+        <div class="oj-flex oj-flex-items-pad oj-sm-12">
+            <div class="oj-flex-item">
+                <label data-bind="text:$component.resource.category"></label>
+                <div data-bind="text: categoryType"></div>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad oj-sm-12">
+            <div class="oj-flex-item">
+                <label data-bind="text:$component.resource.relationshipnum"></label>
+                <div data-bind="text: relationshipNumber"></div>
+            </div>
+        </div>
+    </li>
+</script>

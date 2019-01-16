@@ -1,0 +1,169 @@
+<!-- ko if: dataLoaded() && shouldSummaryBeShown() && isSummaryLoaded() -->
+<div data-bind="with:applicationSummary()">
+  <div class="oj-flex oj-flex-items-pad application-status-text">
+    <div class="oj-flex-item">
+      <h3 data-bind="text : productType">
+        </h3>
+    </div>
+  </div>
+
+  <div class="application-summary-card default-pointer oj-panel label-container oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <!-- ko if: $baseModel.small() -->
+      <!-- ko if:$component.productClassName() === 'TERM_DEPOSITS' -->
+      <div class="oj-flex oj-flex-items-pad application-card-row">
+        <div class="oj-flex-item oj-sm-12 amount">
+          <span class="value-text-right" data-bind="text:$baseModel.formatCurrency(productAmount.amount,productAmount.currency)"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <div class="oj-flex oj-flex-items-pad  application-card-row">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 padding-left">
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <span class="label-text" data-bind="text:$component.resource.applicationId"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:applicationId.displayValue"></span>
+            </div>
+          </div>
+          <!-- ko if:$data['remarks'] -->
+          <div class=" oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <span class="label-text" data-bind="text:$component.resource.applicantName"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:remarks"></span>
+            </div>
+
+          </div>
+          <!-- /ko -->
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <span class="label-text" data-bind="text:$component.resource.submittedOn"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:$baseModel.formatDate($oj.IntlConverterUtils.dateToLocalIso(new Date(submissionDate.substring(0,15))))"></span>
+            </div>
+          </div>
+
+          <!-- ko if:$component.productClassName() === 'CASA' -->
+          <!-- ko if:$component.appDetails().demandDepositSummaryResponse.accountId.displayValue -->
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <span class="label-text" data-bind="text:$component.resource.accountId"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:$component.appDetails().demandDepositSummaryResponse.accountId.displayValue"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+
+          <!-- ko if:$component.productClassName() === 'TERM_DEPOSITS' -->
+          <!-- ko if:$component.appDetails().termDepositSummaryResponse.accountId.displayValue -->
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <span class="label-text" data-bind="text:$component.resource.accountCreated"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:$component.appDetails().termDepositSummaryResponse.accountId.displayValue"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+
+          <!-- ko if:$component.productClassName() === 'LOANS' -->
+          <!-- ko if:$component.appDetails().loanSummaryResponse -->
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <span class="label-text" data-bind="text:$component.resource.loanAmount"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:$baseModel.formatCurrency($component.appDetails().loanSummaryResponse.approvedAmount.amount, $component.appDetails().loanSummaryResponse.approvedAmount.currency)"></span>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <span class="label-text" data-bind="text:$component.resource.requestedTenure"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text: $baseModel.format($component.resource.tenure, {years: $component.appDetails().loanSummaryResponse.requestedTenure.years, months: $component.appDetails().loanSummaryResponse.requestedTenure.months})"></span>
+            </div>
+          </div>
+          <!-- ko if:$component.appDetails().loanSummaryResponse.id && $component.appDetails().loanSummaryResponse.id.displayValue -->
+
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <span class="label-text" data-bind="text:$component.resource.accountId"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:$component.appDetails().loanSummaryResponse.id.displayValue"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- /ko -->
+
+          <!-- ko if:$component.productClassName() === 'CREDIT_CARD' -->
+
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <span class="label-text" data-bind="text:$component.resource.creditLimit"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:$baseModel.formatCurrency(productAmount.amount,productAmount.currency)"></span>
+            </div>
+          </div>
+          <!-- ko if:$component.appDetails().creditCardSummaryResponse.id && $component.appDetails().creditCardSummaryResponse.id.displayValue -->
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <span class="label-text" data-bind="text:$component.resource.accountId"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:$component.appDetails().creditCardSummaryResponse.id.displayValue"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+
+
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+          <!-- ko if:$component.productClassName() === 'TERM_DEPOSITS' -->
+          <!-- ko if: !$baseModel.small() -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 amount">
+              <span class="value-text-right pull-right" data-bind="text:$baseModel.formatCurrency(productAmount.amount,productAmount.currency)"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 no-pad-cols">
+
+              <oj-progress id="progressbar" value="{{$component.applicationInfo().currentApplicationProgress()}}" class="progress-bar"></oj-progress>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7 ">
+              <span class="value-text-right " data-bind="text : $component.applicationInfo().currentApplicationProgress()+ '%' "></span>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad application-summary-content ">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 ">
+              <span class="label-text " data-bind="text:$component.resource.status "></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9 ">
+              <span class="value-text " data-bind="text:$component.resource.submissionStatus[$component.applicationInfo().currentSubmissionStatus()] "></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /ko -->

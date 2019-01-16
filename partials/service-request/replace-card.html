@@ -1,0 +1,53 @@
+<div class="row-group">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+            <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetailsTemplate.detail.creditCardId"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10">
+            <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetails.cardNumber.displayValue"></span></oj-label>
+        </div>
+    </div>
+</div>
+<!-- ko if: $component.requestDetails.cardReplaceRequestData.deliveryDetails.modeOfDelivery -->
+<div class="row-group">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+            <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetailsTemplate.detail.deliveryOption"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10">
+            <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetails.cardReplaceRequestData.deliveryDetails.modeOfDelivery"></span></oj-label>
+        </div>
+    </div>
+</div>
+<!-- /ko -->
+<div class="row-group">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+            <oj-label><span data-bind="text:$component.requestDetailsTemplate.detail.address"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10">
+            <!-- ko if: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.line2 -->
+            <span class="oj-flex oj-flex-items-pad" data-bind="text:$baseModel.format($component.requestDetailsTemplate.detail.reviewAddress, {line1: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.line1, line2: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.line2, city: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.city})"></span>
+            <div class="oj-flex oj-flex-items-pad" data-bind="text:$baseModel.format($component.requestDetailsTemplate.detail.reviewAddressCountryZip, {state: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.state, country: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.country, zip: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.postalCode})"></div>
+
+            <!-- /ko -->
+            <!-- ko ifnot: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.line2 -->
+            <span class="oj-flex oj-flex-items-pad" data-bind="text:$baseModel.format($component.requestDetailsTemplate.detail.reviewAddress2, {line1: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.line1, city: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.city})"></span>
+            <div class="oj-flex oj-flex-items-pad" data-bind="text:$baseModel.format($component.requestDetailsTemplate.detail.reviewAddressCountryZip, {state: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.state, country: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.country, zip: $component.requestDetails.cardReplaceRequestData.deliveryDetails.addressDetails.postalCode})"></div>
+
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+<!-- ko if: $component.requestDetails.cardReplaceRequestData.personalDetail.embossingName -->
+<div class="row-group">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+            <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetailsTemplate.detail.embossingName"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10">
+            <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetails.cardReplaceRequestData.personalDetail.embossingName"></span></oj-label>
+        </div>
+    </div>
+</div>
+<!-- /ko -->

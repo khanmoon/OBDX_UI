@@ -1,0 +1,236 @@
+<div class="auditLog form-main-container">
+
+    <page-section params="rootModel : $data">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-flex-items-pad">
+
+                <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-2">
+                            <label for="date" data-bind="text:nls.audit.dateTime"></label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-4">
+                            <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-flex-item oj-sm-12 selectdropdown">
+                                    <oj-select-one id="date" :aria-label="[[nls.header.dateTime]]" on-value-changed="[[$component.setDate]]" value="{{dateType}}">
+                                        <oj-option value="today"><span data-bind="text:nls.audit.today"></span></oj-option>
+                                        <oj-option value="yesterday"><span data-bind="text:nls.audit.yesterday"></span></oj-option>
+                                        <oj-option value="l3d"><span data-bind="text:nls.audit.l3d"></span></oj-option>
+                                        <oj-option value="dr"><span data-bind="text:nls.audit.dateRange"></span></oj-option>
+                                    </oj-select-one>
+                                </div>
+                            </div>
+                            <!-- ko if:dateRange && dateType() === 'dr'-->
+                            <div class="oj-flex oj-flex-items-pad">
+                                  <div class="oj-flex-item oj-sm-12">
+                                      <label class="hide-label" for="startTime" data-bind="text:nls.audit.startTime"></label>
+                                          <oj-input-date id="startTime" :aria-label="[[nls.audit.startTime]]" converter="[[$baseModel.dateTimeConverter]]" required="[[true]]" :placeholder="[[nls.audit.from]]" value="{{fromDate}}"></oj-input-date>
+                                  </div>
+                                  <div class="oj-flex-item oj-sm-12">
+                                      <label class="hide-label" for="endTime" data-bind="text:nls.audit.endTime"></label>
+                                        <oj-input-date id="endTime" :aria-label="[[nls.audit.endTime]]" converter="[[$baseModel.dateTimeConverter]]" required="[[true]]" :placeholder="[[nls.audit.to]]" value="{{toDate}}"></oj-input-date>
+                                  </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+
+                        <div class="oj-flex-item oj-sm-2">
+                            <label for="activity" data-bind="text:nls.audit.activity"></label>
+                        </div>
+                        <!-- ko if: activityEnumLoaded -->
+                        <div class="oj-flex-item oj-sm-4 selectdropdown">
+                            <oj-select-many id="activity" value="{{selectedActivity}}">
+                                <!-- ko foreach:activityEnum   -->
+                                <oj-option value="{{name}}"><span data-bind="text:name"></span></oj-option>
+                                <!-- /ko -->
+                                </oj-select-many>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+
+                  <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-2 label">
+                            <label for="partyId" data-bind="text:nls.audit.partyId"></label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-4">
+                            <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-flex-item oj-sm-12">
+                                    <oj-input-text id="partyId" type="text" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[(adminLogin ? false:true)]]" value="{{partyId}}" :aria-label="[[$component.nls.audit.partyId]]"></oj-input-text>
+                                </div>
+                                <!-- ko if:adminLogin() -->
+                                  <div class="oj-flex-item oj-sm-12"><a data-bind="click:showPartySearch" href="javascript:void(0)" class="pull-right"><span class="linktext" data-bind="text:nls.auditResult.searchParty"></span></a></div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+
+                        <div class="oj-flex-item oj-sm-2 label">
+                            <label for="userid" data-bind="text:nls.audit.userID"></label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-4">
+                            <div class="oj-flex-item oj-sm-12">
+                                <oj-input-text id="userid" type="text" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{username}}" :aria-label="[[$component.nls.audit.userID]]"></oj-input-text>
+                            </div>
+
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+
+        <!-- ko if:moreSearchOptions() -->
+
+          <div class="oj-flex-item oj-flex-items-pad">
+
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-2">
+                            <label for="checkboxSetId" data-bind="text:nls.header.action"></label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-4 action">
+                            <div class="oj-flex oj-flex-items-pad">
+                                <oj-checkboxset id="checkboxSetId" :aria-label="[[$component.nls.header.action]]" class="oj-flex-item oj-sm-12" value="{{action}}">
+                                  <oj-option value="Initiated" id="Initiated"><span for="Initiated" data-bind="text:nls.audit.initiated"></span></oj-option>
+                                  <oj-option value="Approved" id="Approved"><span for="Approved" data-bind="text:nls.audit.approved"></span></oj-option>
+                                  <oj-option value="Enquired" id="Enquired"><span for="Enquired" data-bind="text:nls.audit.enquired"></span></oj-option>
+                                  <oj-option value="Edited" id="Edited"><span for="Edited" data-bind="text:nls.audit.edited"></span></oj-option>
+                                  <oj-option value="Created" id="Created"><span for="Created" data-bind="text:nls.audit.created"></span></oj-option>
+                                  <oj-option value="Deleted" id="Deleted"><span for="Deleted" data-bind="text:nls.audit.deleted"></span></oj-option></oj-checkboxset>
+                        </div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-2">
+                        <label for="checkboxSetIdStatus" data-bind="text:nls.header.status"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-4 action">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <oj-checkboxset id="checkboxSetIdStatus" :aria-label="[[$component.nls.header.status]]" class="oj-flex-item oj-sm-12" value="{{status}}">
+                              <oj-option value="Success" id="Successful" aria-labelledby="Successful"><span for="Successful" data-bind="text:nls.audit.successful"></span></oj-option>
+                              <oj-option value="Failed" id="Failed" aria-labelledby="Failed"><span for="Failed" data-bind="text:nls.audit.failed"></span></oj-option></oj-checkboxset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="oj-flex oj-flex-items-pad">
+                      <div class="oj-flex-item oj-sm-2">
+                          <label for="userType" data-bind="text:nls.header.userType"></label>
+                      </div>
+
+                      <div class="oj-flex-item oj-sm-12selectdropdown">
+                          <oj-select-many id="userType" disabled="[[(adminLogin ? false:true)]]" value="{{selectedUserType}}">
+                              <!-- ko if: userTypeEnumsLoaded -->
+                                  <!-- ko foreach:userTypeEnums   -->
+                                  <oj-option value="{{enterpriseRoleId}}"><span data-bind="text:enterpriseRoleName"></span></oj-option>
+                                  <!-- /ko -->
+                              <!-- /ko -->
+                          </oj-select-many>
+                      </div>
+                    <div class="oj-flex-item oj-sm-2">
+                        <label for="reference" data-bind="text:nls.header.reference"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-4">
+                        <oj-input-text id="reference" type="text" value="{{referenceNo}}" :aria-label="[[$component.nls.header.reference]]"></oj-input-text>
+                    </div>
+                </div>
+              </div>
+
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+
+            <!-- ko ifnot:moreSearchOptions() -->
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6">
+
+                <a href="javascript:void(0)" data-bind="click:showMoreSearchOptions" class="form-button-link">
+                    <span class="linktext" data-bind="text:nls.audit.moreOptions"></span>
+                    <span class="icon icon-arrow-down arrow"></span>
+                </a>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:moreSearchOptions() -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6">
+                <a href="javascript:void(0)" data-bind="click:showMoreSearchOptions" class="form-button-link">
+                    <span class="linktext" data-bind="text:nls.audit.lessOptions"></span>
+                    <span class="icon icon-arrow-up arrow"></span>
+                </a>
+            </div>
+            <!-- /ko -->
+        </div>
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container">
+
+<oj-button class="action-button-primary" on-click="[[searchAudit]]">
+      <span data-bind="text:nls.common.search"></span>
+</oj-button>
+<!-- ko ifnot:$component.loadSearchedAudits() -->
+    <oj-button class="action-button-secondary" on-click="[[cancel]]">
+      <span data-bind="text:nls.common.cancel"></span>
+</oj-button>
+<!-- /ko -->
+    <oj-button class="action-button-tertiary" on-click="[[resetForm]]">
+      <span data-bind="text:nls.common.clear"></span>
+</oj-button>
+
+</div>
+
+<!-- ko if:$component.loadSearchedAudits() -->
+<div data-bind='component:{name: "audit-log-search-results", params:{rootModel: $data , auditResult:$component.auditResult}}'>
+</div>
+<oj-button class="action-button-secondary" on-click="[[cancel]]">
+      <span data-bind="text:nls.common.cancel"></span>
+</oj-button>
+<!-- /ko -->
+
+<modal-window params="rootModel : $component,id:'partySearch' ,header :nls.auditResult.searchParty">
+    <div class="grid-main-container ">
+        <div class="oj-flex-item oj-sm-12 oj-md-15 oj-lg-15 windowleft">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <label for="partyName" class="hide-label" data-bind="text:nls.audit.partyName"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9 windowtop">
+                <oj-input-text id="partyName" type="text" :invalidcomponenttracker="[[$component.partyValidationTracker]]" value="{{partyName}}" :aria-label="[[$component.nls.audit.partyName]]"></oj-input-text>
+            </div>
+
+              <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button class="action-button-secondary" on-click="[[$component.resetParty]]">
+      <span data-bind="text:nls.common.clear"></span>
+</oj-button>
+                <oj-button class="action-button-primary" on-click="[[$component.fetchPartyDetailsByName]]">
+      <span data-bind="text:nls.common.search"></span>
+</oj-button>
+              </div>
+        </div>
+
+        <!-- ko if:$component.showList() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-15 oj-lg-15 windowleft">
+            <oj-table columns="[[[{headerText:nls.audit.partyId,field:'displayValue'},{headerText:nls.audit.partyName,field:'partyName'}]]]" columns-default="[[{sortable:'enabled'}]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('party_link', true)]]" data="[[datasource]]">
+              <caption data-bind="text:$component.nls.audit.caption" class="hide-label"></caption>
+              </oj-table>
+                <oj-paging-control class="oj-col" id="paging3" slot="bottom" :page-size="[[5]]" data="[[datasource]]"></oj-paging-control>
+                <script type="text/html" id="party_link">
+                    <tr class="record">
+                        <td>
+                            <a href="#" data-bind="text:displayValue,click:$component.partySelected.bind($data)"></a>
+                        </td>
+                        <td>
+                            <span data-bind="text:partyName"></span>
+                        </td>
+                    </tr>
+                </script>
+        </div>
+        <!-- /ko -->
+
+    </div>
+</modal-window>
+
+
+<!-- ko if:mainSearch() -->
+<div class="oj-flex oj-flex-items-pad">
+    <oj-table columns="[[[{headerText:nls.audit.partyId,field:'id',template:'amountWithCurrencyField2'},{headerText:nls.audit.partyName,field:'name',className:''}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[mainPagingDatasource]]">
+        <caption data-bind="text:nls.audit.caption" class="hide-label"></caption>
+        </oj-table>
+        <oj-paging-control class="oj-col" id="paging2" slot="bottom" :page-size="[[5]]" data="[[mainPagingDatasource]]"></oj-paging-control>
+        <script type="text/html" id="amountWithCurrencyField2">
+            <td>
+                <a href="javascript:void(0)" data-bind="text:id,click:"></a>
+            </td>
+        </script>
+</div>
+<!-- /ko -->
+</div>

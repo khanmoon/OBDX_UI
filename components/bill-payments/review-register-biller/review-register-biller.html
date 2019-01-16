@@ -1,0 +1,209 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between bill-payments">
+
+  <!-- ko if: mode() === 'REVIEW' -->
+  <div class="review-text-heading oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+    <span class="icons icon-information pull-left"></span>
+    <!-- ko if: updateBiller() -->
+    <span data-bind="text: $component.resourceBundle.messages.reviewUpdateMsg"></span>
+    <!-- /ko -->
+    <!-- ko ifnot: updateBiller() -->
+    <span data-bind="text: $component.resourceBundle.messages.reviewMsg"></span>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+
+  <div class="form-main-container oj-flex-item oj-sm-12 oj-md-12 oj-lg-7">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+  <!-- ko if: $component.mode() === 'VIEW' -->
+  <div class="biller-details" data-bind="template: 'bill-payments/view-biller-details'"></div>
+  <!-- /ko -->
+  <!-- ko if: $component.mode() === 'REVIEW' -->
+  <div class="biller-details" data-bind="template: 'bill-payments/review-biller-details'"> </div>
+  <!-- /ko -->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+      <label for="customerName" data-bind="text: $component.resourceBundle.labels.customerName"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+      <div id="customerName" data-bind="text: $component.registerBillerDetails.customerName"></div>
+    </div>
+  </div>
+
+  <!-- ko if: $component.registerBillerDetails.billerType === 'PRESENTMENT' || $component.registerBillerDetails.billerType === 'PRESENTMENT_PAYMENT' -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+      <label for="autoPayValue" data-bind="text: $component.resourceBundle.labels.autoPay"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+      <div id="autoPayValue" data-bind="text: $component.registerBillerDetails.autopay.toString() === 'true'? $component.resourceBundle.labels.yes:$component.resourceBundle.labels.no">
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.registerBillerDetails.autopay.toString() === 'true'-->
+  <!-- ko if: $component.dropdownLabels.currentAccountType()-->
+  <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+          <label for="accType" data-bind="text: $component.resourceBundle.labels.paymentMethod"></label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+        <div id="accType" data-bind="text: $component.resourceBundle.labels[$component.dropdownLabels.currentAccountType()]">
+        </div>
+      </div>
+  </div>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+        <label for="billerAcc" data-bind="text: $component.resourceBundle.labels.billerAccount"></label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+        <div id="billerAcc" data-bind="text: $component.registerBillerDetails.autopayInstructions.debitAccount.displayValue">
+        </div>
+      </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+      <label for="payLabel" data-bind="text: $component.resourceBundle.labels.pay"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+      <div id="payLabel" data-bind="text: $component.autoPayLimit() === 'billAmount' ? $component.resourceBundle.labels.billAmount:$component.resourceBundle.labels.limitAmount">
+      </div>
+    </div>
+  </div>
+  <!-- ko if: $component.autoPayLimit() === 'limitAmount'-->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+      <label for="limitAmount" data-bind="text: $component.resourceBundle.labels.amount"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+      <div id="limitAmount" data-bind="text: $baseModel.formatCurrency($component.registerBillerDetails.autopayInstructions.limitAmount.amount,$component.registerBillerDetails.autopayInstructions.limitAmount.currency)">
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+  <!-- ko if: $component.registerBillerDetails.isSchedule -->
+  <!-- ko if: updateBiller() && $component.registerBillerDetails.billerType !== 'PRESENTMENT' -->
+  <div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+    <label for="scheduledPayValue" data-bind="text: $component.resourceBundle.labels.scheduledPay"></label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+    <div id="scheduledPayValue" data-bind="text: $component.registerBillerDetails.isSchedule.toString() === 'true'? $component.resourceBundle.labels.yes:$component.resourceBundle.labels.no">
+    </div>
+  </div>
+  </div>
+  <!-- ko if: $component.registerBillerDetails.isSchedule.toString() === 'true' -->
+  <!-- ko if: $component.dropdownLabels.currentAccountType()-->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+        <label for="accType" data-bind="text: $component.resourceBundle.labels.paymentMethod"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+      <div id="accType" data-bind="text: $component.resourceBundle.labels[$component.dropdownLabels.currentAccountType()]">
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+      <label for="billerAcc" data-bind="text: $component.resourceBundle.labels.billerAccount"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+      <div id="billerAcc" data-bind="text: $component.registerBillerDetails.autopayInstructions.debitAccount.displayValue">
+      </div>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+    <label for="limitAmount" data-bind="text: $component.resourceBundle.labels.amount"></label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+    <div id="limitAmount" data-bind="text: $baseModel.formatCurrency($component.registerBillerDetails.autopayInstructions.limitAmount.amount,$component.registerBillerDetails.autopayInstructions.limitAmount.currency)">
+    </div>
+  </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+    <label for="payDateLabel" data-bind="text: $component.resourceBundle.labels.paymentType"></label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+    <!-- ko if: $component.registerBillerDetails.autopayInstructions.frequency === "ONE_TIME" -->
+    <div id="payDateLabel" data-bind="text: $component.resourceBundle.labels.ONE_TIME">
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.registerBillerDetails.autopayInstructions.frequency === "ONE_TIME" -->
+    <div id="payDateLabel" data-bind="text: $component.resourceBundle.labels.RECURRING">
+    </div>
+    <!-- /ko -->
+  </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-3">
+    <!-- ko if: $component.registerBillerDetails.autopayInstructions.frequency === "ONE_TIME" -->
+    <label for="payDateLabel" data-bind="text: $component.resourceBundle.labels.scheduledDate"></label>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.registerBillerDetails.autopayInstructions.frequency === "ONE_TIME" -->
+    <label for="payDateLabel" data-bind="text: $component.resourceBundle.labels.startDate"></label>
+    <!-- /ko -->
+    <div id="scheduledStartDate" data-bind="text: $baseModel.formatDate($component.registerBillerDetails.autopayInstructions.startDate)">
+    </div>
+  </div>
+  <!-- ko ifnot: $component.registerBillerDetails.autopayInstructions.frequency === "ONE_TIME" -->
+  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-3">
+    <label for="payDateLabel" data-bind="text: $component.resourceBundle.labels.endDate"></label>
+    <div id="scheduledEndDate" data-bind="text: $baseModel.formatDate($component.registerBillerDetails.autopayInstructions.endDate)">
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-3">
+    <label for="payDateLabel" data-bind="text: $component.resourceBundle.labels.frequency"></label>
+    <div id="frequency" data-bind="text: $component.resourceBundle.labels[$component.registerBillerDetails.autopayInstructions.frequency]">
+    </div>
+  </div>
+  <!-- /ko -->
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <!-- ko if: $component.mode() === 'REVIEW' -->
+    <oj-button id="confirmButton" class="action-button-primary" on-click="[[confirm]]">
+      <span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.confirm"></span>
+    </oj-button>
+    <oj-button id="backbutton" class="action-button-secondary" on-click="[[editBiller]]">
+      <span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if: $component.mode() === 'VIEW' -->
+    <oj-button id="backbutton" class="action-button-secondary" on-click="[[goBack]]">
+      <span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko ifnot: $baseModel.small() -->
+    <oj-button id="cancelbutton" class="action-button-tertiary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.messages.cancelOperation)]]">
+      <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+  </div>
+
+</page-section>
+
+</div>
+
+<div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+  <!-- ko if: $component.mode() === 'VIEW' -->
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'manage-bill-payments'"></help>
+  <!-- /ko -->
+  </div>
+</div>

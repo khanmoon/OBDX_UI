@@ -1,0 +1,177 @@
+
+<div class="oj-flex">
+  <div data-bind="css: $component.showReview() ? 'oj-flex-item oj-sm-12' : 'oj-flex-item oj-sm-9'">
+<div class="form-main-container">
+
+  <!-- ko ifnot:showConfirmationScreen -->
+
+  <!-- ko ifnot : showReview -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <oj-validation-group id="validationTracker">
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label : nls.party.partyID , value :$component.partyIDdisplayValue()"></row>
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label : nls.party.partyName , value :$component.partyName()"></row>
+
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading :nls.headings.details">
+      </action-header>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+          <oj-label for="gracePeriod"><span data-bind="text:nls.party.GracePeriod"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-3">
+          <oj-input-text id="gracePeriod" type="text" validators="[[$baseModel.getValidator('NUMBERS',$component.nls.party.validPeriod,{
+                        type:'numberRange',options:{
+                            min:0,max:$component.maxGracePeriod()}})]]" value="{{gracePeriod}}"></oj-input-text>
+          <div>
+            <div class="account-input__info-text-small" data-bind="text:$baseModel.format($component.nls.party.maxDays,{maxGracePeriod:$component.maxGracePeriod()})"></div>
+          </div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2">
+          <span data-bind="text:nls.party.days"></span>
+        </div>
+
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+          <oj-label class=""><span data-bind="text:nls.party.ApprovalType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+          <oj-buttonset-one value="{{$component.selectedApprovalType}}" on-value-changed="[[$component.approvalTypeChangeHandler]]">
+            <oj-option name="approvalTypeValue" value="{{'SE'}}" id="[['approvaltypeseq']]"><span data-bind="attr: {for: 'approvaltypeseq'}, text:nls.fieldname.sequential"></span></oj-option>
+            <oj-option name="approvalTypeValue" value="{{'NSE'}}" id="[['approvaltypeparallel']]"><span data-bind="attr: {for: 'approvaltypeparallel'}, text:nls.fieldname.parallel"></span></oj-option>
+            <oj-option name="approvalTypeValue" value="{{'ZE'}}" id="[['noapprovaltype']]"><span data-bind="attr: {for: 'noapprovaltype'},text:nls.fieldname.noApproval"></span></oj-option>
+          </oj-buttonset-one>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+          <oj-label class=""><span data-bind="text:nls.party.channelAccess"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+          <oj-buttonset-one disabled="[[(isCorpAdmin() ? true:false)]]" value="{{$component.isEnabledSelected}}" on-value-changed="[[$component.switchAction]]">
+            <oj-option name="channelAccessValue" value="{{'true'}}" :id="[['isenable']]"><span data-bind="attr: {for: 'isenable'}, text:nls.common.enable"></span></oj-option>
+            <oj-option name="channelAccessValue" value="{{'false'}}" :id="[['isdisable']]"><span data-bind="attr: {for: 'isdisable'},text:nls.common.disable"></span></oj-option>
+          </oj-buttonset-one>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+          <oj-label class="oj-flex-item oj-lg-12 oj-sm-12">
+            <span data-bind="text: nls.party.dealCreationAllowed"></span>
+          </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+          <oj-buttonset-one disabled="[[(isCorpAdmin() ? true:false)]]" value="{{$component.isForexDealCreationAllowed}}" on-value-changed="[[$component.enableForexDeal]]">
+            <oj-option name="forexDealAllowedValue" value="{{'true'}}" :id="[['isdealcreationallowed']]"><span data-bind="attr: {for: 'isdealcreationallowed'}, text:nls.common.enable"></span>
+            </oj-option>
+            <oj-option name="forexDealAllowedValue" value="{{'false'}}" :id="[['forexDealCreationDisabled']]"><span data-bind="attr: {for: 'forexDealCreationDisabled'},text:nls.common.disable"></span>
+            </oj-option>
+          </oj-buttonset-one>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+          <oj-label class=""><span data-bind="text:nls.party.enableCorpAdministrator"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+          <oj-buttonset-one :id="[['isCorpAdminEnabled']]" disabled="[[(isCorpAdmin() ? true:false)]]" value="{{$component.isCorpAdminEnabled}}" on-value-changed="[[$component.enableCorpAdmin]]">
+            <oj-option value="{{'ENABLED'}}" :id="[['CorpAdminEnabled']]" :name="[['corpAdmin']]"><span data-bind="attr: {for:'CorpAdminEnabled'},text:nls.common.enable"></span></oj-option>
+            <oj-option value="{{'DISABLED'}}" :id="[['corpAdminDisabled']]" :name="[['corpAdmin']]"><span data-bind="attr: {for: 'corpAdminDisabled'},text:nls.common.disable"></span></oj-option>
+          </oj-buttonset-one>
+
+        </div>
+      </div>
+      <!-- ko if: isAccessibleRoles()-->
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+          <oj-label class="" for="usertype"><span data-bind="text:nls.party.allowedRoles"></span></oj-label>
+        </div>
+
+
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+          <!-- ko if:allowedRolesList().length -->
+          <!-- ko if:setRoles() -->
+          <oj-select-many :id="[['combobox']]" value="{{setAllowedRoles}}" placeholder="{{$component.nls.fieldname.select}}">
+            <!-- ko foreach: allowedRolesList -->
+            <oj-option value="[[$data]]"><span data-bind="text:$data"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-many>
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+
+
+      </div>
+      <!-- /ko -->
+
+      <!-- ko ifnot : $component.isCorpAdmin() -->
+      <div data-bind="component: {name: 'access-point-mapping', params:{rootModel: $parent,
+                                                                    listLimitPackageArray:$component.userLimitData,
+                                                                    limitPackageDetails:$component.entityLimitPackageMapArray()[0].limitPackageDetails,
+                                                                    header:$component.nls.party.CumulativeLevel,
+                                                                    accessPointType:$component.accessPointType,
+                                                                    selectedLimitPackages:$component.entityLimitPackageMapArray()[0].selectedLimitPackages,
+                                                                    messages:$component.nls.headings.limitMessage }}"></div>
+      <div data-bind="component: {name: 'access-point-mapping', params:{rootModel: $parent,
+                                                            listLimitPackageArray:$component.userLimitData,
+                                                            limitPackageDetails:$component.entityLimitPackageMapArray()[1].limitPackageDetails,
+                                                            accessPointType:$component.accessPointType,
+                                                            header:$component.nls.party.UserLevel,
+                                                            selectedLimitPackages:$component.entityLimitPackageMapArray()[1].selectedLimitPackages}}"></div>
+      <!-- /ko -->
+      <!-- ko if : $component.isCorpAdmin() -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.party.UserLevel"></action-header>
+      <!-- ko foreach: $component.limitPackagesForUser -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : accessPointValue , value :key.id"></row>
+      <!-- /ko -->
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.party.CumulativeLevel"></action-header>
+      <!-- ko foreach: $component.limitPackagesForParty -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : accessPointValue , value :key.id"></row>
+      <!-- /ko -->
+      <!-- /ko -->
+
+
+    </oj-validation-group>
+  </page-section>
+
+  <div class="pull-center">
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.reviewCP]]">
+        <span data-bind="text:nls.common.save"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$component.cancelOnEdit]]">
+        <span data-bind="text:nls.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.backOnEdit]]">
+        <span data-bind="text:nls.common.back"></span>
+      </oj-button>
+
+    </div>
+  </div>
+
+  <!-- /ko -->
+
+  <!-- /ko -->
+  <!-- ko if: showReview -->
+  <div data-bind="component: {name:'review-modify-customer-preference' , params:{rootModel:$component}}">
+  </div>
+  <!-- /ko -->
+
+</div>
+
+</div>
+<!-- ko ifnot : showReview -->
+
+<div class="oj-flex-item oj-sm-3 help-panel">
+<help params="baseModel : $baseModel, rootModel : $component, transaction: 'modify-preference'"></help>
+</div>
+<!-- /ko -->
+
+</div>

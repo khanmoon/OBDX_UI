@@ -1,0 +1,50 @@
+<div class="form-main-container security-questions">
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.actionHeaderheading">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 security-questions-heading-container">
+        <div class="security-questions-heading__title" for="questions" data-bind="text:$component.nls.securityQuestion.labels.questions"></div>
+      </div>
+    </div>
+
+    <oj-validation-group id="TaskValidater">
+      <!-- ko foreach: $component.createSecQueModel.createSecurityQuestionPayload.secQueMapping-->
+      <oj-label class="hide-label" :for="[['questions_'+$index()]]">
+        <span data-bind="text:$baseModel.format($component.nls.securityQuestion.labels.question_list,{number:$component.questionNumber.bind($data,$index())})"></span></oj-label>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-8 oj-md-4 oj-sm-4">
+
+          <oj-input-text id="questions" maxlength="50" required :id="[['questions_'+$index()]]" value="{{question}}" invalidcomponenttracker="{{$component.validationTracker}}"></oj-input-text>
+        </div>
+        <div class="oj-flex-item oj-lg-2 oj-md-4 oj-sm-4">
+          <a href="#" class="security-questions-icon__delete" data-bind="click:$component.deleteQuestion.bind($data, $index())">
+            <span class="icons icon-delete">
+          </span></a>
+        </div>
+      </div>
+      <!-- /ko -->
+    </oj-validation-group>
+
+    <!-- ko if:$component.createSecQueModel.createSecurityQuestionPayload.secQueMapping().length<20 -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+        <oj-button class="form-button-secondary" on-click="[[$component.addQuestion]]">
+          <span data-bind="text:$component.nls.securityQuestion.labels.addMore"></span>
+        </oj-button>
+      </div>
+    </div>
+    <!-- /ko -->
+  </page-section>
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-tertiary" on-click="[[back]]">
+      <span data-bind="text:$component.nls.common.back"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.nls.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-primary" on-click="[[save]]">
+      <span data-bind="text:$component.nls.common.save"></span>
+    </oj-button>
+  </div>
+</div>

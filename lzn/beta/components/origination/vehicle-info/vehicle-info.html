@@ -1,0 +1,285 @@
+<!-- ko if: $component.vehicleInfoDataLoaded() -->
+<div class="oj-flex oj-flex-items-pad ">
+  <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1">
+    <span class="text" data-bind="text:$component.resource.vehicleMsg"></span>
+  </div>
+</div>
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <oj-validation-group id="vegicleInfoTracker">
+<div data-bind="with:$component.productDetails().requirements">
+  <!-- ko if: $component.productDetails().requirements.noOfCoApplicants > 0 -->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+      <oj-label :for="[['ownershipType']]"><span data-bind="text:$component.resource.ownershipType"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+      <oj-buttonset-one id="ownershipType" :aria-label="[[$component.resource.ownershipType]]" on-value-changed="[[$component.changeOwnership]]" value="{{$component.ownershipDefault}}" disabled="[[$component.disableInputs()]]">
+        <oj-option name="applicationTypes" class="applicationTypes" value="{{'SINGLE'}}" :id="[['single']]"><span data-bind="attr: {for: 'single'},text:$component.resource.single"></span></oj-option>
+        <oj-option name="applicationTypes" class="applicationTypes" value="{{'JOINT'}}" :id="[['joint']]"><span data-bind="attr: {for: 'joint'},text:$component.resource.joint"></span></oj-option>
+      </oj-buttonset-one>
+    </div>
+  </div>
+
+  <!-- ko if: $component.ownershipDefault() === "SINGLE" -->
+  <!-- ko if: $component.ownerListLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+      <oj-label :for="[['owner' + ($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.owner"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+      <oj-select-one required :id="[['owner'+($baseModel.currentIdCount())]]" value="{{vehicleDetails.ownership[0].partyName}}" on-value-changed="[[$component.ownersChangeHandler]]" disabled="[[$component.disableInputs()]]" :invalidcomponenttracker="[[$component.validationTracker]]"
+        :placeholder="">
+
+        <!-- ko foreach: $component.owners() -->
+        <oj-option value="{{$baseModel.format($component.resource.generic.common.name,{firstName:$data.personalInfo.firstName,lastName:$data.personalInfo.lastName})}}"><span data-bind="text:$baseModel.format($component.resource.generic.common.name,{firstName:$data.personalInfo.firstName,lastName:$data.personalInfo.lastName})"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+
+
+  <!-- ko if: $component.ownershipDefault() === "JOINT" -->
+  <div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+      <oj-label><span data-bind="text:$component.resource.owner"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 padding-top-5">
+      <!-- ko foreach: vehicleDetails.ownership -->
+      <div class="oj-flex oj-flex-items-pad">
+        <span data-bind="text : partyName()"></span>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+      <oj-label :for="[['vehicleAge']]"><span data-bind="text:$component.resource.vehicleAge"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+      <oj-buttonset-one id="vehicleAge" :aria-label="[[$component.resource.vehicleAge]]" on-value-changed="[[$component.changeVehicleType]]" value="{{$component.vehicleDefault}}" disabled="[[$component.disableInputs()]]">
+        <oj-option name="vehicleType" class="vehicleType" value="{{'NEW'}}" :id="[['vehicleNew']]"><span data-bind="attr: {for: 'vehicleNew'},text:$component.resource.new"></span></oj-option>
+        <oj-option name="vehicleType" class="vehicleType" value="{{'USED'}}" :id="[['vehicleUsed']]"><span data-bind="attr: {for: 'vehicleUsed'},text:$component.resource.used"></span></oj-option>
+      </oj-buttonset-one>
+    </div>
+  </div>
+
+
+  <!-- ko if: $component.isVehicleLoaded() -->
+
+  <!-- ko if: $component.vehicleTypeLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+      <oj-label :for="[['vehicleType' + ($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.vehicleType"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+      <oj-select-one required :id="[['vehicleType'+($baseModel.currentIdCount())]]" value="{{vehicleDetails.vehicleSubType}}" disabled="[[$component.disableInputs()]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="">
+
+        <!-- ko foreach: $component.vehicleType() -->
+        <oj-option value="{{vehicleSubTypeCode}}"><span data-bind="text:vehicleSubTypeDescription"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+      <div class="oj-label tooltip-section">
+        <oj-label :for="[['vinNum'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.vehicleIdNumber"></oj-label>
+                <!-- ko if: $baseModel.large() -->
+                <div class="tooltip message-text" id="vehicleNum_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.vehicleNumRequirement,toolTipId:'vehicleNum_tooltip'}}">
+                </div>
+                <span class="icon-help" id="tool-tip-holder_vin" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'vehicleNum_tooltip','tool-tip-holder_vin'), mouseout: $component.hideToolTip.bind($data,'vehicleNum_tooltip') }"></span>
+          <!-- /ko -->
+          <!-- ko ifnot: $baseModel.large() -->
+          <span aria-hidden="true"> <a href="#" class="icon-help" data-bind="click: function(){$('#vehicleIdNumber').show()} ,attr:{alt: $component.resource.vehicleNumRequirementAlt, title: $component.resource.vehicleNumRequirementTitle}"></a></span>
+          <!-- /ko -->
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+      <oj-input-text maxlength="17" name="vinNum" :id="[['vinNum'+($baseModel.currentIdCount())]]" value="{{vehicleDetails.vehicleIdentificationNum}}" validators="[[$baseModel.getValidator('POSTAL_CODE',$component.resource.messages.invalidVin)]]" disabled="[[$component.disableInputs()]]"></oj-input-text>
+    </div>
+    <!-- ko if: $component.isUsedVehicle() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+      <oj-button raised="" id="lookupInfoSubmit" class="form-button-secondary " on-click="[[$component.lookupVehicleInfo]]" disabled="[[$component.disableInputs()]]">
+        <span data-bind="text:$component.resource.lookup"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+  </div>
+
+  <!-- ko if: $component.lookupLoaded() -->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+      <oj-label :for="[['vehicleYear']]"><span data-bind="text: $component.resource.year"></span></oj-label>
+      <!-- ko if: $component.isUsedVehicle() -->
+      <span class="small-text spacing text" data-bind="html:$component.resource.yearMsg"></span>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4  oj-lg-4 label">
+      <oj-select-one required :id="[['vehicleYear']]" translations="[[{'required':{messageDetail:$component.resource.messages.years}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="" disabled="[[$component.disableInputs()]]" value="{{vehicleDetails.vehicleYear}}">
+        <!-- ko foreach: $component.optionVehicleYears -->
+        <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+
+  </div>
+
+  <!-- ko if: $component.vehicleMakeLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+      <oj-label :for="[['vehicleMake' + ($baseModel.incrementIdCount())]]"><span data-bind="text: $component.resource.vehiclemake"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+      <oj-select-one required :id="[['vehicleMake'+($baseModel.currentIdCount())]]" value="{{vehicleDetails.vehicleMakeType}}" disabled="[[$component.disableInputs()]]" on-value-changed="[[$component.vehicleMakeChanged]]" :invalidcomponenttracker="[[$component.validationTracker]]"
+        :placeholder="">
+
+        <!-- ko foreach: $component.vehicleMake() -->
+        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.vehicleModelLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+      <oj-label :for="[['vehicleModel' + ($baseModel.incrementIdCount())]]"><span data-bind="text: $component.resource.vehicleModel"></span></oj-label>
+    </div>
+
+
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+      <oj-select-one required :id="[['vehicleModel'+($baseModel.currentIdCount())]]" value="{{vehicleDetails.vehicleModel}}" on-value-changed="[[$component.vehicleModelChanged]]" disabled="[[$component.disableInputs()]]" :invalidcomponenttracker="[[$component.validationTracker]]"
+        :placeholder="">
+
+        <!-- ko foreach: $component.vehicleModels() -->
+        <oj-option value="{{key}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+
+    <!-- ko if: $component.otherModelLoaded() -->
+    <oj-label class="hide-label" :for="[['vehicleModel
+        '+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.vehicleModel"></span></oj-label>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+      <oj-input-text required maxlength="20" name="vehicleModel" :id="[['vehicleModel'+($baseModel.currentIdCount())]]" disabled="[[$component.disableInputs()]]" value="{{vehicleDetails.vehicleModel}}"></oj-input-text>
+    </div>
+    <!-- /ko -->
+
+
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.vehicleModelLookupLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+      <oj-label :for="[['vehicleModel' + ($baseModel.incrementIdCount())]]"><span data-bind="text: $component.resource.vehicleModel"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+      <oj-input-text required maxlength="20" name="vehicleModel" :id="[['vehicleModel'+($baseModel.currentIdCount())]]" disabled="[[$component.disableInputs()]]" value="{{vehicleDetails.vehicleModel}}"></oj-input-text>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.disableInputs() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+      <oj-label><span data-bind="text: $component.resource.estValue"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+      <span data-bind="text : $baseModel.formatCurrency(vehicleDetails.purchasePrice.amount(), vehicleDetails.purchasePrice.currency)"></span>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot: $component.disableInputs() -->
+  <!-- ko if: $component.isEstimatePriceLoaded() -->
+  <div class="">
+    <div data-bind="component: {
+                name: 'amount-input', params: {
+                    amount :vehicleDetails.purchasePrice.amount,
+                    label : $component.resource.estValue,
+                    currency:vehicleDetails.purchasePrice.currency,
+                    labelClasses : 'oj-lg-3 oj-md-4 oj-lg-offset-2 oj-md-offset-1',
+                    valueClasses : 'oj-lg-6 oj-md-7',
+                    currencyParser : $component.currencyParser,
+                    converter:$baseModel.formatCurrency,
+                    disabled: $component.disableInputs(),
+                    validator:$component.validationTracker,
+                    isMandatory:true,
+                    maxlength:15,
+                    rootId:'loan-amount',
+                    rootClass:'form-input',
+                    inline:true,
+                    formattedAmount: ko.observable()
+                }
+            }"></div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- ko if: $component.isUsedVehicle() -->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1">
+      <div class="oj-label ">
+        <oj-label :for="[['mileage']]"><span data-bind="text: $component.resource.mileage"></span></oj-label>
+
+        <!-- ko if: $baseModel.large() -->
+        <div class="tooltip message-text" id="mileage_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.mileageRequirement,toolTipId:'mileage_tooltip'}}">
+        </div>
+        <span class="icon-help" id="tool-tip-holder_miles" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'mileage_tooltip','tool-tip-holder_miles'), mouseout: $component.hideToolTip.bind($data,'mileage_tooltip') }"></span>
+        <!-- /ko -->
+        <!-- ko ifnot: $baseModel.large() -->
+        <span aria-hidden="true"> <a href="#" class="icon-help" data-bind="click: function(){$('#mileage').show()} ,attr:{alt: $component.resource.mileageRequirementAlt, title: $component.resource.mileageRequirementTitle}"></a></span>
+        <!-- /ko -->
+      </div>
+      <div class="text small-text" data-bind="html:$component.resource.mileageMsg"></div>
+
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+      <oj-input-text id="mileage" maxlength="30" name="mileage" required validators="[[$component.validateMileage]]" disabled="[[$component.disableInputs()]]" value="{{vehicleDetails.distanceTravelled}}"></oj-input-text>
+    </div>
+  </div>
+
+
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+
+</div>
+</oj-validation-group>
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container ">
+  <div class="oj-flex-item oj-lg-10 oj-md-10">
+    <oj-button raised="" id="vehicleInfoSubmit" class="form-button-secondary " :aria-label="[[$component.resource.submitVehicle]]" on-click="[[$component.saveVehicleInfo]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+  </div>
+</div>
+<!-- /ko -->
+
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'ERROR_VEHICLENUM', header: $component.resource.generic.common.error">
+    <div class="message-text scroll" data-bind="text:$component.resource.messages.vehicleNumError"></div>
+    <div class="message-btn button-container">
+      <oj-button id="hideButton" class="toUpperCase form-button-primary" on-click="[[function(){$('#ERROR_VEHICLENUM').trigger('closeModal')}]]">
+        <span data-bind="text:$component.resource.generic.common.ok"></span>
+      </oj-button>
+
+    </div>
+  </modal-window>
+</div>

@@ -1,0 +1,180 @@
+$base-background-primary: #fff;
+$base-font-size-default: 0.9rem;
+$base-text-primary:#5F2D61;
+$base-background-secondary:#fafafa;
+$base-color-secondary: #227c32;
+body,
+html {
+	height: 100%;
+	-webkit-text-size-adjust: none;
+	min-height: 100vh;
+	position: relative;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	background: $base-background-primary;
+	font-size: $base-font-size-default;
+	color: $base-text-primary;
+	overflow-y: scroll;
+	-webkit-text-size-adjust: none;
+}
+
+body {
+	&::after,
+	&::before {
+		box-sizing: border-box;
+		/* these are the 2 half blocks which cover the content once the animation is triggered */
+		content: '';
+		height: 50vh;
+		width: 100%;
+		position: fixed;
+		@include left(0);
+		background-color: $base-background-secondary;
+		z-index: 1;
+		/* Force Hardware Acceleration */
+		backface-visibility: hidden;
+		transform : translateZ(0);
+		transition: transform 0.4s 0.4s;
+	}
+	&::before {
+		top: 0;
+		transform :translateY(-100%);
+	}
+	&::after {
+		bottom: 0;
+		transform :translateY(100%);
+	}
+	&.page-is-changing::after,
+	&.page-is-changing::before{
+		transform : translateY(0);
+		transition: transform 0.4s 0s;
+	}
+}
+
+article,
+aside,
+footer,
+header,
+hgroup,
+main,
+nav,
+section {
+	display: block;
+}
+
+.cd-cover-layer {
+	position: fixed;
+	@include center;
+	height: 100%;
+	width: 100%;
+	opacity: 0;
+	z-index: 3;
+	visibility: hidden;
+	background-color: $base-color-secondary;
+	transition: opacity 0.4s 0.4s, visibility 0s 0.8s;
+	.page-is-changing & {
+		opacity: 1;
+		visibility: visible;
+		transition: opacity 0.3s 0s, visibility 0s 0s;
+	}
+
+
+
+}
+
+.cd-logo {
+	position: fixed;
+	z-index: 4;
+	background: url($image-base-path+"/common/logo.svg") no-repeat;
+	top: 40%;
+	animation: animatezoom 0.8s;
+	left: calc(50% - 5.6rem);
+	width: 11.3rem;
+	height: 10%;
+}
+
+.cd-loading-bar {
+	position: fixed;
+	z-index: 4;
+	left: 50%;
+	top: 50%;
+	height: 0.1rem;
+	width: 90%;
+	background-color: $base-background-secondary;
+	visibility: hidden;
+	transition: visibility 0s 0.4s, transform 0.4s 0s ease-in;
+	backface-visibility: hidden;
+	transform :translate3d(-50%,-50%,0);
+	background-color: rgba(255, 255, 255, 0.4);
+	&::before {
+		content: '';
+		position: absolute;
+		@include left(0);
+		top: 0;
+		height: 100%;
+		width: 100%;
+		background-color: rgba(255, 255, 255, 1);
+		/* Force Hardware Acceleration */
+		backface-visibility: hidden;
+		transform: translateZ(0);
+		transform: scaleX(0);
+		transform-origin: left center;
+	}
+	.page-is-changing & {
+		visibility: visible;
+		transform: translateX(-50%) translateY(-50%) scaleX(.3);
+		&::before {
+			animation-duration: 0.8s;
+			animation-delay: 0.8s;
+			animation-name: example;
+			animation-iteration-count: infinite;
+			animation-direction: alternate;
+			animation-timing-function: ease-in;
+		}
+	}
+}
+
+@keyframes example {
+	from {
+		transform: scaleX(0);
+	}
+	to {
+		transform: scaleX(1);
+	}
+}
+
+.se-pre-con {
+	z-index: 2;
+	left: -100%;
+	width: 100%;
+	height: 0.2rem;
+	animation: loading-bar 3s alternate;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	background-size: 100%;
+	background-image: linear-gradient(to right, rgba(0, 135, 191, .5) 0%, rgba(0, 135, 191, 1) 70%);
+	box-shadow: inset 0 0 0.6rem 0.1rem rgba(117, 182, 255, 0.5), 0 0 1.3rem rgba(117, 182, 214, 0.5);
+}
+
+@keyframes loading-bar {
+	0% {
+		left: -100%;
+		background: rgba(0, 135, 191, .5);
+		box-shadow: inset 0 0 0.6rem 0.1rem rgba(117, 182, 255, 0.5), 0 0 2.5rem 0.1rem rgba(105, 135, 255, 1);
+	}
+	50% {
+		left: 100%;
+		transform: rotateY(0deg);
+	}
+	51% {
+		transform: rotateY(180deg);
+	}
+	100% {
+		left: -100%;
+		transform: rotateY(180deg);
+		background: rgba(0, 135, 191, 1);
+		box-shadow: inset 0 0 0.6rem 0.1rem rgba(117, 182, 255, 0.5), 0 0 1.9rem 0.1rem rgba(105, 135, 255, 0.3);
+	}
+}

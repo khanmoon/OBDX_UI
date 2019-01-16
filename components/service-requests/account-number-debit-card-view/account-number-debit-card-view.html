@@ -1,0 +1,44 @@
+<div class="single-select-view-container">
+  <div class="oj-flex">
+    <div class="oj-flex-item oj-sm-5">
+      <oj-label class="oj-label-inline"><span data-bind="text: $component.label"></span></oj-label>
+    </div>
+  </div>
+  <div class="oj-flex oj-sm-12">
+    <div class="oj-flex-item oj-sm-5">
+      <oj-label class="oj-flex-item oj-lg-12">
+        <span data-bind="text:$component.resource.accountNumber"></span>
+      </oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-1">
+    </div>
+    <div class="oj-flex-item oj-sm-5">
+      <oj-label class="oj-flex-item oj-lg-12">
+        <span data-bind="text:$component.resource.debitCard"></span>
+      </oj-label>
+    </div>
+  </div>
+  <div class="oj-flex oj-sm-12">
+    <div class="oj-flex-item oj-sm-5">
+      <!-- ko if: $component.formData -->
+      <oj-select-one id="accountNumber" :aria-label="[[$component.resource.selectAccount]]" value="{{$component.testInput()[0]}}" on-value-changed="[[accountNumberChangeHandler]]" placeholder="{{$component.resource.selectAccount}}" disabled="{{$component.isDisabled}}"
+        required="{{$component.isRequired}}" translations="[[{'required':{messageDetail:$component.errorMessage()}}]]">
+        <!-- ko foreach: $component.accountNumberList -->
+        <oj-option value="{{description}}"><span data-bind="text:code"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex-item oj-sm-1">
+    </div>
+    <div class="oj-flex-item oj-sm-5">
+      <!-- ko if: $component.cardData -->
+      <oj-select-one id="debitCardNumberList" :aria-label="[[$component.resource.selectDebitCard]]" value="{{$component.testInput()[1]}}" placeholder="{{$component.resource.selectDebitCard}}" disabled="{{$component.isDisabled}}" on-value-changed="[[debitChange]]" required="{{$component.isRequired}}" translations="[[{'required':{messageDetail:$component.errorMessage()}}]]">
+        <!-- ko foreach: $component.debitCardNumberList -->
+        <oj-option value="{{description}}"><span data-bind="text:code"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>

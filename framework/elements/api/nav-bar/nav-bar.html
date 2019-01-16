@@ -1,0 +1,29 @@
+<!-- ko if:$component.navBarDescription -->
+<div class="nav-bar">
+  <oj-conveyor-belt :class="full-width" orientation="[[$component.type ==='start'? 'vertical' : 'horizontal']]">
+    <oj-navigation-list selection="{{selectedNode}}" display="[[$baseModel.small() && $component.iconAvailable? 'icons' : 'all']]" data="[[dataSource]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('navigation-list', true)]]" :edge="[[type]]"
+      :class="[[styleClass]]" :aria-label="[[navBarDescription]]">
+      <script type="text/html" id="navigation-list">
+        <li class="nav-bar-list__item nav-bar-item" data-bind="attr:{id:$data.id},css:{'oj-disabled':$data.disabled}">
+          <a class="nav-bar-item__link nav-bar-item-link" href="#" data-bind="attr:{'alt':$data.label ,'title': $baseModel.format($component.locale.common.clickHere, {'action': $data.label}) }">
+            <!-- ko if:$data.icon -->
+            <span class="oj-navigationlist-item-icon" data-bind="css:$data.icon"></span>
+            <!-- /ko -->
+            <!-- ko if:$data.image -->
+            <img class="oj-navigationlist-item-icon" data-bind="loadImage:$data.image"/>
+            <!-- /ko -->
+            <!-- ko if:$data.imageSrc -->
+            <img class="oj-navigationlist-item-icon" data-bind="attr : {src : $data.imageSrc}"/>
+            <!-- /ko -->
+
+            <!-- ko if:!isNaN(ko.utils.unwrapObservable($data.count)) -->
+            <div class="nav-bar-item-link__count" data-bind="text:$data.count"></div>
+            <!-- /ko -->
+            <div class="nav-bar-item-link__text" data-bind="text:$data.label"></div>
+          </a>
+        </li>
+      </script>
+    </oj-navigation-list>
+  </oj-conveyor-belt>
+</div>
+<!-- /ko -->

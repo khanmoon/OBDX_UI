@@ -1,0 +1,291 @@
+<div class="page-section-content">
+  <oj-validation-group id="bgTracker" valid="{{bgGroupValid}}">
+  <!-- first row -->
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- first row first col -->
+      <!-- ko if: $component.partyIDoptions().length > 1 -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <oj-label for="partyID"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.partyID"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+              <oj-select-one id="partyID" required="[[true]]" :invalidcomponenttracker="[[$component.partiesValidationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" value="{{partyId}}" options="[[$component.partyIDoptions]]">
+              </oj-select-one>
+            </div>
+          </div>
+        </div>
+    <!-- /ko -->
+    <!-- ko if: $component.partyIDoptions().length === 1 -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="partyID"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.partyID"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-input-text id="partyID" type="text" disabled="[[true]]" value="{{$component.partyIDoptions()[0].label}}"></oj-input-text>
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- end of first row first col -->
+
+   <!-- first row second col -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="branchID"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.branch"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-select-one id="branchID" required="[[true]]" :invalidcomponenttracker="[[$component.partiesValidationTracker]]" on-value-changed="[[branchChangeHandler]]"  :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[$component.branchIDoptions]]" value="{{branchId}}">
+         </oj-select-one>
+        </div>
+      </div>
+    </div>
+   <!-- end of first row second col -->
+    </div>
+    <!-- end of first row -->
+
+<!-- ko if: $component.applicantName() -->
+  <!-- second row -->
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- second row first col -->
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <h5 class="sub-heading" data-bind="text:$component.resourceBundle.guaranteeDetails.labels.applicantDetails"></h5>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="applicantName"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.applicantName"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <div id="applicantName" type="text" data-bind="text: $component.applicantName"></div>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad address">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="addressline1"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.address"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <div id="applicantAddress1" data-bind="text: $component.applicantAddress.line1, validators: $baseModel.getValidator('ADDRESS')"></div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-12">
+          <div id="applicantAddress2" data-bind="text: $component.applicantAddress.line2, validators: $baseModel.getValidator('ADDRESS')"></div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-12">
+          <div id="applicantAddress3" data-bind="text: $component.applicantAddress.line3, validators: $baseModel.getValidator('ADDRESS')"></div>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="applicantCountry"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.country"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <div id="applicantCountry" data-bind="text: $component.applicantAddress.country"></div>
+        </div>
+      </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="dateOfApplication"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.dateOfApplication"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7 content">
+          <span id="dateOfApplication" data-bind="text:$baseModel.formatDate($component.guaranteeDetails.issueDate)"></span>
+        </div>
+      </div>
+    </div>
+    <!-- end of second row first col -->
+
+    <!-- second row second col -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+      <h5 class="sub-heading" data-bind="text:$component.resourceBundle.guaranteeDetails.labels.beneficiaryDetails"></h5>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-label for="guaranteeDetails" class="hide-label"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.beneficiaryDetails"></span></oj-label>
+          <oj-radioset id="guaranteeDetails" required="[[true]]" value="{{$component.existingBene}}" class="oj-choice-direction-row"><oj-option value="true" id="existingBene" name="draweeDetails"><span for="existingBene" data-bind="text:$component.resourceBundle.common.labels.existing"></span></oj-option><oj-option value="false" id="newBene" name="draweeDetails"><span for="newBene" data-bind="text:$component.resourceBundle.common.labels.new"></span></oj-option></oj-radioset>
+        </div>
+      </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="draweeName"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.beneficiaryName"></span></oj-label>
+        </div>
+        <!-- ko if: $component.beneNameOptions && $component.existingBene() === 'true'-->
+        <oj-select-one class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7" id="draweeName" required="[[true]]" :invalidcomponenttracker="[[$component.partiesValidationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" value="{{$component.guaranteeDetails.beneId}}">
+            <!-- ko foreach: $component.beneNameOptions -->
+              <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+            <!-- /ko -->
+        </oj-select-one>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.existingBene() === 'true'-->
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-input-text id="beneficiaryName" :invalidcomponenttracker="[[$component.partiesValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidBeneficiaryName,{type:'length',options:{ in:1, max:35}})]]" value="{{$component.guaranteeDetails.beneName}}" required></oj-input-text>
+        </div>
+        <!-- /ko -->
+      </div>
+
+      <!-- ko if: $component.existingBene() === 'true' && $component.guaranteeDetails.beneAddress.line1() !== null -->
+      <div class="oj-flex oj-flex-items-pad address">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="addressline1"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.address"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <span id="addressLine1" data-bind="text: $component.guaranteeDetails.beneAddress.line1"></span>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <span data-bind="text: $component.guaranteeDetails.beneAddress.line2"></span>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <span data-bind="text: $component.guaranteeDetails.beneAddress.line3"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="beneCountry"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.country"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <span id="beneCountry" data-bind="text: $component.dropdownLabels.country"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot: $component.existingBene() === 'true'-->
+      <div class="oj-flex oj-flex-items-pad address">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="addressline1"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.address"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-input-text id="addressline1" :invalidcomponenttracker="[[$component.partiesValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.addressError,{
+            type:'length',options:{
+                min:1,max:35}})]]" value="{{$component.guaranteeDetails.beneAddress.line1}}" required></oj-input-text>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-label class="hide-label" for="addressline2"><span data-bind="text:$component.resourceBundle.common.labels.addressLineTwo"></span></oj-label>
+          <oj-input-text id="addressline2" :invalidcomponenttracker="[[$component.partiesValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.addressError,{
+                                 type:'length',options:{
+                                     min:0,max:35}})]]" value="{{$component.guaranteeDetails.beneAddress.line2}}"></oj-input-text>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-label class="hide-label" for="addressline3"><span data-bind="text:$component.resourceBundle.common.labels.addressLineThree"></span></oj-label>
+          <oj-input-text id="addressline3" :invalidcomponenttracker="[[$component.partiesValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.addressError,{    type:'length',options:{min:0,max:35}})]]" value="{{$component.guaranteeDetails.beneAddress.line3}}"></oj-input-text>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="countryInput"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.country"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7 search-bar">
+          <oj-select-one id="countryInput" required="[[true]]" :invalidcomponenttracker="[[$component.partiesValidationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[beneCountryoptions]]" value="{{$component.benecountry}}"></oj-select-one>
+        </div>
+      </div>
+      <!-- /ko -->
+
+    </div>
+    <!-- end of second row second col -->
+  </div>
+<!-- end of second row -->
+
+  <!-- third row -->
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- third row first col -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <h5 class="sub-heading" data-bind="text:$component.resourceBundle.guaranteeDetails.labels.productDetails"></h5>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="product"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.product"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-select-one id="product" required="[[true]]" on-value-changed="[[$component.productChangeHandler]]" :invalidcomponenttracker="[[$component.partiesValidationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" value="{{productId}}">
+            <!-- ko foreach: $component.productTypeOptions -->
+              <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+    <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+      <oj-label for="guaranteeType"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.guaranteeType"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+        <oj-select-one id="guaranteeType" required="[[true]]" :invalidcomponenttracker="[[$component.partiesValidationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[$component.guaranteeTypeOptions]]" value="{{guaranteeType}}">
+     </oj-select-one>
+    </div>
+    </div>
+    </div>
+    <!-- end of third row first col -->
+
+    <!-- third row second col -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <h5 class="sub-heading" data-bind="text:$component.resourceBundle.guaranteeDetails.labels.bankDetails"></h5>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="advisingBankCode"><span data-bind="text:$component.resourceBundle.guaranteeDetails.labels.swiftCode"></span></oj-label>
+            <!-- <span class="align-right info-text-small" data-bind="text: $component.resourceBundle.common.optional"></span> -->
+        </div>
+
+        <!-- ko ifnot: $component.additionalBankDetails-->
+
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-4">
+            <oj-input-text id="advisingBankCode" required :invalidcomponenttracker="[[$component.partiesValidationTracker]]" validators="[[[validateInterCode]]]" value="{{$component.guaranteeDetails.advisingBankCode}}"></oj-input-text>
+        </div>
+
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+            <oj-button class="form-button-secondary verify-button" on-click="[[verifyCode]]">
+      <span data-bind="text:$component.resourceBundle.common.labels.verify"></span>
+</oj-button>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <a href="#" class="form-button-link" data-bind="attr:{'alt':$component.resourceBundle.common.labels.lookupswiftcodeTitle,'title':$component.resourceBundle.common.labels.lookupswiftcodeAlt}, text:$component.resourceBundle.common.labels.lookupswiftcode,click:$component.openLookup">
+            </a>
+        </div>
+        <!--/ko -->
+        <!-- ko if:$component.additionalBankDetails-->
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8" data-bind="with:$component.additionalBankDetails">
+            <div data-bind="text:('code' in $data)?code:''"></div>
+            <div data-bind="text:('name' in $data)?name:''"></div>
+            <div data-bind="text:('line1' in branchAddress)?branchAddress.line1:''"></div>
+            <div data-bind="text:('city' in branchAddress)?branchAddress.city:''"></div>
+            <div data-bind="text:('country' in branchAddress)?branchAddress.country:''"></div>
+            <div class="">
+                <oj-button class="action-button-secondary" on-click="[[$component.resetCode]]">
+                    <span slot="startIcon" class="icons icon-refresh"></span>
+                    <span data-bind="text:$component.resourceBundle.common.labels.reset"></span>
+                </oj-button>
+            </div>
+        </div>
+        <!--/ko -->
+        </div>
+    </div>
+    <!-- end of third row second col -->
+  </div>
+  <!-- end of third row -->
+  <!-- /ko -->
+
+    <!-- ko if : $component.mode() === 'CREATE' -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: {'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <oj-button id="continueButtonForParties" class="action-button-secondary" on-click="[[continueFunc]]">
+            <span slot="startIcon" class="icons icon-submit"></span>
+            <span data-bind="text:$component.resourceBundle.common.labels.continue"></span>
+        </oj-button>
+      </div>
+    </div>
+    <!-- /ko -->
+    </oj-validation-group>
+    <!-- ko if: $component.stages[$component.stageIndex()].expanded() -->
+        <div data-bind="component: {name: 'bank-look-up', params:{rootModel: $component,
+        clearingCodeType:$component.clearingCodeType,
+        networkCode:$component.guaranteeDetails.advisingBankCode,
+        accountType:'International',
+        additionalBankDetails:$component.additionalBankDetails}}"></div>
+    <!-- /ko -->
+
+</div>

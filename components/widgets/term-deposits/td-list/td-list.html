@@ -1,0 +1,96 @@
+
+	<!-- ko if:dataFetched-->
+	<!-- ko if:$baseModel.small() -->
+	<div class="oj-flex-item oj-sm-12">
+		<oj-film-strip
+				 maxItemsPerPage = "1"
+				 arrowPlacement = "adjacent"
+				 arrowVisibility = "visible">
+			<!-- ko foreach: tdCards -->
+			<!-- ko if: status === 'ACTIVE' -->
+			<div class="oj-sm-12" data-bind="component: {name: 'card', params:{rootModel: $data, data:{
+			'topLeftPanel':{
+							'title':$data.partyName,
+							'description': $data.productDTO.name,
+		 					'features': [$data.id.displayValue,$data.accountNickname,$baseModel.format($component.resource.cardDetails.interestRate,{rate: $baseModel.formatNumber($data.interestRate/100,'percent', 2,2) ,maturityDate:$baseModel.formatDate(($data.maturityDate))})],
+		 					'image' : $data.holdingPattern==='SINGLE' ? '' : 'term-deposits/joint-account.svg',
+		 					altText:$component.resource.cardDetails.jointAccount
+ 							},
+				 		 'topRightPanel':$component.multipleModulesPresent()?$data.holdingPattern==='JOINT'?[
+						 	{
+								'label':$data.module==='CON'?$component.resource.cardDetails.conventional:$component.resource.cardDetails.islamic,
+								'class':''
+							},
+							{
+								'label':$data.holdingPattern,
+							'	class':''}]:[
+							{
+						 		'label':$data.module==='CON'?$component.resource.cardDetails.conventional:$component.resource.cardDetails.islamic,
+						 		'class':''}]:$data.holdingPattern==='JOINT'?[
+							{
+								'label':$data.holdingPattern,
+									'class':''}
+								]:[],
+						'bottomRightPanel': {
+							 'label':$component.resource.cardDetails.currentBalance,
+							 'value':$baseModel.formatCurrency($data.availableBalance.amount, $data.availableBalance.currency)
+						 },
+							 clickHandler: $component.loadDetails
+						 },
+					 }},attr:{'id':'card_'+id.value}">
+					</div>
+			<!-- /ko -->
+			<!-- /ko -->
+		</oj-film-strip>
+	</div>
+
+
+
+	<!-- /ko -->
+	<!-- ko if:!$baseModel.small()  -->
+	<div class="oj-flex">
+	<!-- ko foreach: $component.tdCards -->
+	<!-- ko if: status === 'ACTIVE' -->
+	<div class="oj-flex-item oj-sm-12">
+		<div data-bind="attr:{'id':'cards_'+$index()}">
+			<div data-bind="component: {name: 'card', params:{rootModel: $data, data:{
+			'topLeftPanel':
+			{
+		'title':$data.partyName,
+		'description': $data.productDTO.name,
+		 'features': [$data.id.displayValue,$data.accountNickname,$baseModel.format($component.resource.cardDetails.interestRate,{rate: $baseModel.formatNumber($data.interestRate/100,'percent',2,2),maturityDate:$baseModel.formatDate(($data.maturityDate))})],
+		 'image' : $data.holdingPattern==='SINGLE' ? '' : 'term-deposits/joint-account.svg',
+		 altText:$component.resource.cardDetails.jointAccount
+	 		},
+		 'topRightPanel':$component.multipleModulesPresent()?$data.holdingPattern==='JOINT'?[
+		 	{
+				'label':$data.module==='CON'?$component.resource.cardDetails.conventional:$component.resource.cardDetails.islamic,
+				'class':''
+			},
+			{
+				'label':$data.holdingPattern,
+			'	class':''}]:[
+			{
+		 		'label':$data.module==='CON'?$component.resource.cardDetails.conventional:$component.resource.cardDetails.islamic,
+		 		'class':''}]:$data.holdingPattern==='JOINT'?[
+			{
+				'label':$data.holdingPattern,
+					'class':''}
+				]:[],
+			'bottomRightPanel': {
+			 'label':$component.resource.cardDetails.currentBalance,
+			 'value':$baseModel.formatCurrency($data.availableBalance.amount, $data.availableBalance.currency)
+		 },
+		 clickHandler: $component.loadDetails
+				} }},attr:{'id':'card_'+id.value}">
+				<oj-label><span data-bind="text:name"></span></oj-label>
+
+			</div>
+
+		</div>
+	</div>
+	<!-- /ko -->
+	<!-- /ko -->
+	</div>
+	<!-- /ko -->
+	<!-- /ko -->

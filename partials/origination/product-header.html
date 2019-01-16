@@ -1,0 +1,162 @@
+<div class="oj-flex-item">
+    <!-- ko if: $dashboard.application() === 'application-tracking' -->
+    <div class="comp-title">
+        <!-- ko ifnot: ($component.productTrackingComponentName() === "application-additional-details") || ($component.productTrackingComponentName() === "card-additional-preferences") -->
+        <h2 class="" data-bind="text : $component.resource.landingtext"></h2>
+        <!-- /ko -->
+        <!-- ko if:($component.productTrackingComponentName() === "application-additional-details") || ($component.productTrackingComponentName() === "card-additional-preferences") -->
+        <h2 class="" data-bind="text : $component.resource.landingtext+' - '+$component.applicationInfo().currentApplicationIdDisplayValue()"></h2>
+        <!-- /ko -->
+    </div>
+
+    <!-- /ko -->
+
+    <!-- ko if: $dashboard.application() === 'payday' || $dashboard.application() === 'origination' -->
+    <div class="comp-title">
+        <!-- ko if:$component.productComponentName()==='orientation' -->
+        <div class="orientation">
+            <h2 class="" data-bind="text :$component.resource.beforeWeGoAhead"></h2>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko ifnot:$component.productComponentName()==='orientation'   -->
+        <!-- ko if: $component.isApplicationCancelled() -->
+        <h2 class="" data-bind="text :$component.resource.applicationCancelled"></h2>
+        <!-- /ko -->
+        <!-- ko if : $component.productDetails().offers && !($component.constants.host === "fcubs") -->
+        <!-- ko if:$component.productDetails().productClassName === 'TERM_DEPOSITS' || $component.productDetails().productClassName === 'LOANS' -->
+        <!-- ko if:$component.productComponentName()==='requirements' -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadOfferName, {offerName: $component.productDetails().offers.offerName})"></h2>
+        <!-- /ko -->
+        <!-- ko ifnot:$component.productComponentName()==='requirements' -->
+        <!-- ko if: $component.productDetails().requirements && $component.productDetails().requirements.requestedTenure && $component.productDetails().requirements.requestedAmount -->
+        <!-- ko if:$component.productComponentName()==='submission-confirmation' -->
+        <!-- ko if : $component.productDetails().productType === 'PAYDAY' -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.submissionProductAmount, {productGroup: $component.productDetails().offers.offerName, class1: 'amount-tenure', class2: 'amount-tenure-bold', amount: $baseModel.formatCurrency($component.productDetails().requirements.requestedAmount.amount(),$component.productDetails().requirements.requestedAmount.currency)})"></h2>
+        <!-- /ko -->
+        <!-- ko ifnot : $component.productDetails().productType === 'PAYDAY' -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.submisionOfferHeadAmountTenure,{productGroup: $component.productDetails().offers.offerName, class1: 'amount-tenure', class2: 'amount-tenure-bold', amount: $baseModel.formatCurrency($component.productDetails().requirements.requestedAmount.amount(),$component.productDetails().requirements.requestedAmount.currency), years: $component.productDetails().requirements.requestedTenure.years(), months: $component.productDetails().requirements.requestedTenure.months()})"></h2>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if :!$component.isApplicationCancelled() && $component.productComponentName() !=='submission-confirmation'-->
+        <!-- ko ifnot: ($component.queryMap && $component.queryMap.regRefNo) -->
+        <!-- ko if : $component.productDetails().productType === 'PAYDAY' -->
+        <!-- ko if: $component.productDetails().requirements && $component.productDetails().requirements.requestedAmount && $component.productDetails().requirements.requestedAmount.amount -->
+        <!-- ko if: $component.productDetails().requirements.requestedAmount.amount() > 0 -->
+        <h2 class="" data-bind="html: $baseModel.format($component.resource.productAmount, {productGroup: $component.productDetails().productDescription, class1: 'amount-tenure', class2: 'amount-tenure-bold', amount: $baseModel.formatCurrency($component.productDetails().requirements.requestedAmount.amount(),$component.productDetails().requirements.requestedAmount.currency)})"></h2>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.productDetails().requirements.requestedAmount.amount() > 0 -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadProductDescription, {productDescription: $component.productDetails().productDescription})"></h2>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko ifnot: $component.productDetails().requirements && $component.productDetails().requirements.requestedAmount && $component.productDetails().requirements.requestedAmount.amount -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadProductDescription, {productDescription: $component.productDetails().productDescription})"></h2>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko ifnot : $component.productDetails().productType === 'PAYDAY' -->
+        <!-- ko if: $component.productDetails().requirements && $component.productDetails().requirements.requestedTenure && $component.productDetails().requirements.requestedAmount -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadAmountTenure,{productGroup: $component.productDetails().offers.offerName, class1: 'amount-tenure', class2: 'amount-tenure-bold', amount: $baseModel.formatCurrency($component.productDetails().requirements.requestedAmount.amount(),$component.productDetails().requirements.requestedAmount.currency), years: $component.productDetails().requirements.requestedTenure.years(), months: $component.productDetails().requirements.requestedTenure.months()})"></h2>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.productDetails().requirements && $component.productDetails().requirements.requestedTenure && $component.productDetails().requirements.requestedAmount -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadOfferName, {offerName: $component.productDetails().offers.offerName})"></h2>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko ifnot: $component.productDetails().requirements && $component.productDetails().requirements.requestedTenure && $component.productDetails().requirements.requestedAmount -->
+        <!-- ko if:$component.productComponentName()==='submission-confirmation' -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.submisionOfferHeadOfferName,{offerName: $component.productDetails().offers.offerName})"></h2>
+        <!-- /ko -->
+        <!-- ko if :!$component.isApplicationCancelled() && $component.productComponentName() !=='submission-confirmation'-->
+        <!-- ko ifnot: ($component.queryMap && $component.queryMap.regRefNo) -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadOfferName,{offerName: $component.productDetails().offers.offerName})"></h2>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if:$component.productDetails().productClassName !== 'TERM_DEPOSITS' && $component.productDetails().productClassName !== 'LOANS' -->
+        <!-- ko if:$component.productComponentName()==='submission-confirmation' -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.submisionOfferHeadOfferName,{offerName: $component.productDetails().offers.offerName})"></h2>
+        <!-- /ko -->
+        <!-- ko if :!$component.isApplicationCancelled() && $component.productComponentName() !=='submission-confirmation'-->
+        <!-- ko ifnot: ($component.queryMap && $component.queryMap.regRefNo) -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadOfferName,{offerName: $component.productDetails().offers.offerName})"></h2>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+
+
+        <!-- ko if : !$component.productDetails().offers || $component.constants.host === "fcubs" -->
+        <!-- ko if : $component.productDetails().productClassName === 'LOANS' || $component.productDetails().productClassName === 'CASA' -->
+        <!-- ko if:$component.productComponentName()==='requirements' -->
+        <!-- ko if:$component.productComponentName()==='submission-confirmation' -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.submisionOfferHeadProductDescription,{productDescription: $component.productDetails().productDescription})"></h2>
+        <!-- /ko -->
+        <!-- ko if :!$component.isApplicationCancelled() && $component.productComponentName() !=='submission-confirmation'-->
+        <!-- ko ifnot: ($component.queryMap && $component.queryMap.regRefNo) -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadProductDescription,{productDescription: $component.productDetails().productDescription})"></h2>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko ifnot:$component.productComponentName()==='requirements' -->
+        <!-- ko if:$component.productComponentName()==='submission-confirmation' -->
+        <!-- ko if : $component.productDetails().productType === 'PAYDAY' -->
+        <h2 class="" data-bind="html: $baseModel.format($component.resource.productAmount, {productGroup: $component.productDetails().productDescription, class1: 'amount-tenure', class2: 'amount-tenure-bold', amount: $baseModel.formatCurrency($component.productDetails().requirements.requestedAmount.amount(),$component.productDetails().requirements.requestedAmount.currency)})"></h2>
+        <!-- /ko -->
+        <!-- ko if : $component.productDetails().productType !== 'PAYDAY' && $component.productDetails().productClassName === 'LOANS' -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.submisionOfferHeadAmountTenure,{productGroup: $component.productDetails().productDescription, class1: 'amount-tenure', class2: 'amount-tenure-bold', amount: $baseModel.formatCurrency($component.productDetails().requirements.requestedAmount.amount(),$component.productDetails().requirements.requestedAmount.currency), years: $component.productDetails().requirements.requestedTenure.years(), months: $component.productDetails().requirements.requestedTenure.months()})"></h2>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if :!$component.isApplicationCancelled() && $component.productComponentName() !=='submission-confirmation'-->
+        <!-- ko ifnot: ($component.queryMap && $component.queryMap.regRefNo)-->
+        <!-- ko if : $component.productDetails().productType === 'PAYDAY' -->
+        <!-- ko if: $component.productDetails().requirements && $component.productDetails().requirements.requestedAmount && $component.productDetails().requirements.requestedAmount.amount -->
+        <!-- ko if: $component.productDetails().requirements.requestedAmount.amount() > 0 -->
+        <h2 class="" data-bind="html: $baseModel.format($component.resource.productAmount, {productGroup: $component.productDetails().productDescription, class1: 'amount-tenure', class2: 'amount-tenure-bold', amount: $baseModel.formatCurrency($component.productDetails().requirements.requestedAmount.amount(),$component.productDetails().requirements.requestedAmount.currency)})"></h2>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.productDetails().requirements.requestedAmount.amount() > 0 -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadProductDescription, {productDescription: $component.productDetails().productDescription})"></h2>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko ifnot: $component.productDetails().requirements && $component.productDetails().requirements.requestedAmount && $component.productDetails().requirements.requestedAmount.amount -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadProductDescription, {productDescription: $component.productDetails().productDescription})"></h2>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko ifnot : $component.productDetails().productType === 'PAYDAY' -->
+        <!-- ko if: $component.productDetails().requirements && $component.productDetails().requirements.requestedTenure && $component.productDetails().requirements.requestedAmount -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadAmountTenure,{productGroup: $component.productDetails().productDescription, class1: 'amount-tenure', class2: 'amount-tenure-bold', amount: $baseModel.formatCurrency($component.productDetails().requirements.requestedAmount.amount(),$component.productDetails().requirements.requestedAmount.currency), years: $component.productDetails().requirements.requestedTenure.years(), months: $component.productDetails().requirements.requestedTenure.months()})"></h2>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.productDetails().requirements && $component.productDetails().requirements.requestedTenure && $component.productDetails().requirements.requestedAmount -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadProductDescription, {productDescription: $component.productDetails().productDescription})"></h2>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if: $dashboard.application() === "home" -->
+    <div class="pre-login">
+        <div class="comp-title">
+            <!-- ko if:$parent.loadedComponent()==='product-groups' -->
+            <!-- ko if:$component.actionCardData().productType -->
+            <h2 class="" data-bind="text: $component.resource.productGroupsHeader[$baseModel.format($component.resource.productGroupsHeader.class,{productClass: $component.actionCardData().productClass, productSubClass: $component.actionCardData().productType})]"></h2>
+            <!-- /ko -->
+            <!-- ko if:!$component.actionCardData().productType -->
+            <h2 class="" data-bind="text: $component.resource.productGroupsHeader[ $component.actionCardData().productClass]"></h2>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if:$parent.loadedComponent()==='search-vehicle' -->
+            <h2 class="" data-bind="html: $baseModel.format($component.resource.searchVehicleHeader,{class2:'lowercase'})"></h2>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+</div>

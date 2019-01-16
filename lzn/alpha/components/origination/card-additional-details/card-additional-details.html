@@ -1,0 +1,71 @@
+<div class="">
+  <!-- ko if: showComponents() -->
+  <div id="cardDetailsAccordion" class="accordion">
+    <!-- ko foreach: productDetails().currentStage.stages -->
+    <div class="card ">
+      <div class="card-header oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-10 oj-md-9 oj-lg-9">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="accordion-strip"></div>
+            <div class="card-icon-container">
+              <div class="card-icon icons icon icon-add-on-card"></div>
+            </div>
+            <h2 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.accordionNames.accordionNames[$data.name]"></h2>
+          </div>
+        </div>
+        <div class="card-expander oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+          <!-- ko if: !$data.isComplete() -->
+          <a href="#" class="icons icon icon-arrow-right section-icon collapse-icon pull-right"></a>
+          <!-- /ko -->
+          <!-- ko if: $data.isComplete() -->
+          <span class="icons icon icon-success section-icon pull-right done-icon"></span>
+          <!-- /ko -->
+        </div>
+      </div>
+      <div class="">
+        <!-- ko if : $index() === 0 -->
+        <div class="card-body" data-bind="component: { name: $data.id, params: { rootModel: $parent,
+                                                    coApplicant:false,
+                                                    applicantObject :$component.applicantDetails,
+                                                    applicantAccordion:$component.productDetails().currentStage.applicantAccordion,
+                                                    applicantStages: $component.productDetails().currentStage.stages}}"></div>
+        <!-- /ko -->
+        <!-- ko if : $index()>0 && $component.productDetails().currentStage.stages[$index()-1].isComplete() -->
+        <div class="card-body" data-bind="component: { name: $data.id, params: { rootModel: $parent,
+                                               coApplicant:false,
+                                               applicantObject :$component.applicantDetails,
+                                               applicantAccordion:$component.productDetails().currentStage.applicantAccordion,
+                                               applicantStages: $component.productDetails().currentStage.stages}}"></div>
+        <!-- /ko -->
+
+      </div>
+    </div>
+    <!-- /ko -->
+  </div>
+
+
+
+  <span data-bind="template:{afterRender:$component.initializeAccordion}"></span>
+
+  <!-- /ko -->
+  <!-- ko if: displaySubmitButton() -->
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <oj-button raised="" id="personalInfoSubmit" class="action-button-primary first-3" on-click="[[$component.getNextStage]]" disabled="[[$component.disableSubmit()]]">
+      <span data-bind="text:$component.resource.generic.common.revSubmit"></span>
+    </oj-button>
+    <oj-button raised="" id="cancel" class="action-button-secondary last-3" on-click="[[$component.showPluginComponent.bind($data,'cancel-application')]]">
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+    </oj-button>
+    <!-- ko if: !$component.productDetails().isRegistered -->
+    <oj-button raised="" id="saveForLater" class="action-button-secondary" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if: $component.productDetails().isRegistered -->
+    <oj-button raised="" id="saveForLater" class="action-button-secondary" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+</div>

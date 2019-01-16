@@ -1,0 +1,72 @@
+<div class="form-main-container">
+<div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resourceBundle.generic.common.review , reviewHeader :$component.resourceBundle.info.reviewCreateMessage}}"></div>
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+  <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.rolePreferences.enterpriseRoles , value :params.payload.roleId"></row>
+
+  <!-- ko if:isEnterpriseRoleSelected -->
+  <!-- ko foreach: preferencesList -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+    <oj-label :for="[['options_'+$index()]]"><span data-bind="text:$data.text"></span></oj-label>
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 label">
+    <!-- ko if:preferenceId === 'LIMITS_CHECK'  -->
+    <oj-switch :id="[['options_'+$index()]]" value="{{value}}" disabled="[['true']]"></oj-switch>
+    <!-- /ko -->
+    <!-- ko if:preferenceId !== 'LIMITS_CHECK'  -->
+    <oj-switch :id="[['options_'+$index()]]" disabled="[['true']]" value="{{value}}" ></oj-switch>
+    <!-- /ko -->
+  </div>
+
+</div>
+
+<!-- ko if:$component.showLimitPackageSearchSection() &&  preferenceId === 'LIMITS_CHECK'-->
+  <!-- ko if:$component.limitPackageDataLoaded() -->
+  <action-header params="baseModel : $baseModel, rootModel : $data, heading:$component.resource.rolePreferences.limitsEntityLevelConf">
+  </action-header>
+  <!-- ko foreach: $component.limitArray -->
+  <oj-accordion id="tradeFinanceAccordion">
+  <oj-collapsible expanded="[['true']]" disabled="[['true']]">
+        <h3 slot="header">
+            <span>
+                <span data-bind="text: name"></span>
+            </span>
+        </h3>
+    </oj-collapsible>
+      </oj-accordion>
+    <!-- ko if: $component.limitArray()[$data.id].packages.length >0 -->
+    <!-- ko foreach: $component.limitArray()[$data.id].packages -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $data.description, value :$data.value"></row>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko ifnot: $component.limitArray()[$data.id].packages.length >0 -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+      <span class="oj-choice-item" data-bind="text: $component.resourceBundle.info.noLimitsAssigned"></span>
+    </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button id="confirmButton" class="action-button-primary" on-click="[[createRolePreference]]">
+      <span slot="startIcon" class="icons icon-confirm"></span>
+        <span data-bind="text:$component.resourceBundle.generic.common.confirm"></span>
+  </oj-button>
+  <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+      <span slot="startIcon" class="icons icon-cancel"></span>
+    <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+  </oj-button>
+    <oj-button id="backButton" class="action-button-tertiary" on-click="[[editAll]]">
+          <span slot="startIcon" class="icons icon-back-arrow"></span>
+          <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+    </oj-button>
+  </div>
+</page-section>
+</div>

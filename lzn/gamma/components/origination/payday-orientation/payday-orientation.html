@@ -1,0 +1,123 @@
+<div class="form-main-container orientation">
+  <div class="oj-flex oj-flex-items-pad  ">
+    <div class="page-container oj-flex-item">
+      <!-- ko if:$component.productDetails().offers -->
+      <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+          <h3 class="primary-heading" data-bind="text:$component.productDetails().offers.offerName"></h3>
+        </div>
+      </div>
+      <!-- /ko  -->
+      <!-- ko ifnot:$component.productDetails().offers -->
+      <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+          <h3 class="primary-heading" data-bind="text:$component.productDetails().productDescription"></h3>
+        </div>
+      </div>
+      <!-- /ko  -->
+
+      <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+          <h4 class="secondary-heading" data-bind="text:$component.resource.applyForPayday"></h4>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+          <h4 class="secondary-heading" data-bind="text:$component.resource.whatWeRequire"></h4>
+        </div>
+        <span class="text">
+                        <ul>
+                            <li data-bind="text:$component.resource.whatWeRequire1"></li>
+                            <li data-bind="text:$component.resource.whatWeRequire2"></li>
+                            <li data-bind="text:$component.resource.whatWeRequire3"></li>
+                        </ul>
+                      </span>
+      </div>
+      <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+          <h4 class="secondary-heading" data-bind="text:$component.resource.checkYourEligibility"></h4>
+        </div>
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+          <span class="text" data-bind="text:$component.resource.checkYourEligibilityPaydayText"></span>
+        </div>
+        <span class="text">
+                        <ul>
+                            <li data-bind="text:$component.resource.checkYourEligibility1"></li>
+                            <li data-bind="text:$component.resource.checkYourEligibility2"></li>
+                            <li data-bind="text:$component.resource.checkYourEligibility3"></li>
+                            <li data-bind="text:$component.resource.checkYourEligibility4"></li>
+                        </ul>
+                </span>
+      </div>
+      <!-- ko if: !$component.productDetails().isRegistered -->
+      <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12">
+          <div class="oj-flex oj-flex-items-pad section">
+            <div class="secondary-heading oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+              <h4 data-bind="text: $component.resource.existingCustomerPayday"></h4>
+            </div>
+            <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+              <span class="text" data-bind="text: $component.resource.alreadyACustomerText"></span>
+            </div>
+            <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12 login-button">
+              <oj-button id="readyButton" class="form-button-primary" on-click="[[$component.login]]"><span data-bind="text:$component.resource.generic.common.login"></span></oj-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12">
+          <div class="oj-flex oj-flex-items-pad section">
+            <div class="secondary-heading oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+              <h4 data-bind="text: $component.resource.newToModelBank"></h4>
+            </div>
+            <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+              <span class="text" data-bind="text: $component.resource.loginWithSocialMedia"></span>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+              <div class="oj-flex oj-flex-items-pad section">
+                <div class="oj-flex-item oj-lg-2 oj-md-3 oj-sm-3">
+                  <social-media params="baseModel : $baseModel, rootModel:$component,
+                      social_media_type:'linkedin',
+                      socailMediaResponse:$component.socailMediaResponse,callback:loadNextStage">
+                  </social-media>
+                </div>
+                <div class="oj-flex-item oj-lg-2 oj-md-3 oj-sm-3">
+                  <social-media params="baseModel : $baseModel, rootModel:$component,
+                      social_media_type:'facebook',
+                      socailMediaResponse:$component.socailMediaResponse,callback:loadNextStage">
+                  </social-media>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <!-- ko if: !$component.productDetails().isRegistered -->
+    <oj-button raised="" id="primary" class="help-button" on-click="[[loadNextStage]]">
+    <span data-bind="text:$component.resource.continueAsGuest"></span></oj-button>
+    <!-- /ko -->
+    <!-- ko if: $component.productDetails().isRegistered -->
+    <oj-button raised="" id="primary" class="action-button-primary first-2" on-click="[[loadNextStage]]">
+    <span data-bind="text:$component.resource.generic.common.continue"></span></oj-button>
+    <!-- /ko -->
+    <oj-button raised="" id="readyButton" class="action-button-secondary last-2" on-click="[[$component.exitApplication]]">
+        <span data-bind="text:$component.resource.generic.common.cancel"></span></oj-button>
+
+  </div>
+
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'EXITAPPLICATION'">
+    <div class="message-text scroll" data-bind="text:$component.resource.generic.common.exit"></div>
+    <div class="message-btn button-container">
+      <oj-button id="hideButton" class="action-button-secondary" on-click="[[function(){$('#EXITAPPLICATION').hide().trigger('closeModal')}]]"> <span data-bind="text:$component.resource.generic.common.no"></span></oj-button>
+      <oj-button id="saveButton" class="action-button-primary" on-click="[[$component.cancelApplication]]">
+                <span data-bind="text:$component.resource.generic.common.yes"></span></oj-button>
+    </div>
+  </modal-window>
+</div>

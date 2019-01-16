@@ -1,0 +1,36 @@
+<link href="./framework/js/libs/patternLock/patternLock.css" rel="stylesheet" type="text/css">
+<div class="form-main-container">
+  <!-- ko if: $baseModel.large() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-2">
+      <div data-bind="text: $component.resource.patternVisiblity"></div>
+    </div>
+    <div class="oj-flex-item oj-sm-2 ">
+      <oj-switch id="patternVisiblitySwitch" value="{{patternVisible}}"></oj-switch>
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="pattern-lock set-pattern">
+    <div id="set-pattern-slider">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-8">
+          <!--<div data-bind="text:$component.resource.setPattern"></div>-->
+        </div>
+        <div class="oj-flex-item oj-sm-4">
+          <a href="javascript:void(0)" data-bind="attr:{alt:$component.resource.undo,title:$component.resource.clickHereToUndo},click:$component.undoSetPin">
+          <span class="icon-2x icon icon-undo"></span><span data-bind="text:$component.resource.undo"></span>
+        </a>
+        </div>
+      </div>
+      <div class="margin-auto" id="patternContainerSet"></div>
+      <div class="oj-flex flex-center">
+        <oj-button id="cancelButton" class="action-button-secondary " on-click="[[$component.cancelClickHandler]]"><span slot="startIcon" class="icons icon-no"></span>
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+</oj-button>
+        <oj-button id="confirmButton" class="action-button-primary " on-click="[[proceedForSetPattern]]"><span slot="startIcon" class="icons icon-yes"></span>
+      <span data-bind="text:$component.resource.generic.common.confirm"></span>
+</oj-button>
+      </div>
+    </div>
+  </div>
+</div>

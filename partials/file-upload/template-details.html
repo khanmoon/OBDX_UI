@@ -1,0 +1,20 @@
+<!-- ko if:$component.isTransactionTypesLoaded() -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.transactiontype , value :$component.transactionTypesMap[transaction]"></row>
+<!-- /ko -->
+<!-- ko if:$component.isAccountTypesLoaded() -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.accountingtype , value :$component.accountTypesMap[accountingType]"></row>
+<!-- /ko -->
+<!-- ko if:$component.isFileTypesLoaded() -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.filetype , value :$component.fileTypesMap[templateType]"></row>
+<!-- /ko -->
+<!-- ko if:$component.isFileFormatTypesLoaded() -->
+<!-- ko ifnot:formatType === 'CSV' -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.formattype , value :$component.fileFormatTypesMap[formatType]"></row>
+<!-- /ko -->
+<!-- ko if:formatType === 'CSV' && templateType === 'D' -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.formattype , value :$component.Nls.allFileFormat"></row>
+<!-- /ko -->
+<!-- ko if:formatType === 'CSV' && templateType === 'F' -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.formattype , value :$component.Nls.textFileFormat"></row>
+<!-- /ko -->
+<!-- /ko -->

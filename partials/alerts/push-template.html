@@ -1,0 +1,160 @@
+<!-- ko if : $component.mode()==='CREATE' || $component.mode()==='EDIT'-->
+
+<oj-validation-group id="pushtracker" valid="{{groupValidPush}}">
+
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+			<oj-label for="subject"><span data-bind="text:$component.nls.message_template.pushTitle"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+			<oj-input-text required :id="[['text-input'+ $baseModel.incrementIdCount()]]" :aria-label="[[$component.nls.message_template.pushTitle]]" :invalidcomponenttracker="[[$component.invalidTracker]]" disabled="[[isContentDisabled]]" value="{{pushTitle}}"></oj-input-text>
+		</div>
+	</div>
+
+
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+			<oj-label for="content"><span data-bind="text:$component.nls.message_template.pushContent"></span></oj-label>
+		</div>
+
+		<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+			<text-editor params="baseModel : $baseModel, rootModel:$data,id:'contentpush'+index,data:pushContent,containerClass:'oj-sm-12',height:'200px',label:$component.nls.message_template.pushContent,validate:$component.editorValidator()[$component.index].validateEmail">
+			</text-editor>
+		</div>
+	</div>
+
+	<oj-validation-group id="tracker" valid="{{groupValid}}">
+
+		<!-- ko if: dataAttributeList().length >0 -->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+				<oj-label><span data-bind="text:$component.nls.message_template.setAttributeMask"></span></oj-label>
+			</div>
+
+			<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+				<!-- ko if:showPushAttributeLabel -->
+				<div class="oj-flex oj-flex-items-pad">
+					<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+						<oj-label><span data-bind="text:$component.nls.message_template.dataAttribute"></span></oj-label>
+					</div>
+					<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+						<oj-label for="fetchAttributeMasks"><span data-bind="text:$component.nls.message_template.attributeMask"></span></oj-label>
+					</div>
+				</div>
+				<!-- /ko -->
+
+				<!-- ko foreach:pushAttributeList -->
+
+				<div class="oj-flex oj-flex-items-pad grid-row-group">
+					<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+						<span data-bind="attr:{'id':('pushAttributeId'+$component.index+$index())},text:attributeId"></span>
+					</div>
+					<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 label">
+						<span data-bind="attr:{'id':('pushAttributeMask'+$component.index+$index())},text:attributeMask"></span>
+					</div>
+					<div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-1 deleteMask">
+						<a href="javascript:void(0)" class="icon icon-delete pull-right" data-bind="click: $component.deleteAttribute.bind($data,$index,'PUSH_NOTIFICATION')"></a>
+					</div>
+				</div>
+				<!-- /ko -->
+				<!-- ko if: $component.buttonToDropDownPush()===false && pushAttributes().length>0 -->
+				<oj-button class="oj-flex-item help-button form-button-rounded" on-click="[[$component.addRow.bind($data,pushAttributes,pushAttributeList,'PUSH_NOTIFICATION')]]">
+					<span data-bind="text:$component.nls.message_template.addNew"></span>
+				</oj-button>
+				<!-- /ko -->
+				<!-- ko if : ($component.buttonToDropDownPush()) -->
+				<div class="oj-flex oj-flex-items-pad">
+					<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+						<oj-label class="hide-label" for="attributeIdSelect"><span data-bind="text:$component.nls.message_template.attributeId"></span></oj-label>
+						<oj-select-one id="attributeIdSelect" required :id="[['attributeIdSelect'+$component.index+$index()]]" :aria-label="[[$component.nls.message_template.attributeId]]" :placeholder="[[$component.nls.genericTemplate.select]]" on-value-changed="[[$component.attributeSelected]]"
+						  value="{{pushAttributeId}}">
+							<!-- ko foreach : $component.pushAttributes -->
+							<oj-option value="{{attributeId}}"><span data-bind="text:attributeId"></span></oj-option>
+							<!-- /ko -->
+						</oj-select-one>
+					</div>
+
+					<!-- ko ifnot : ($component.attributeMaskEnable()[$component.attributeSelectionOrder]) === true -->
+					<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+						<oj-input-text id="fetchAttributeMasks" type="text" required :id="[['fetchAttributeMasks'+$component.index+ $index()]]" :aria-label="[[$component.nls.message_template.attributeMask]]" validators="[[$baseModel.getValidator('ATTRIBUTE_MASK')]]" value="{{pushAttributeMask}}"></oj-input-text>
+
+					</div>
+					<!-- /ko -->
+
+					<!-- ko if : ($component.attributeMaskEnable()[$component.attributeSelectionOrder]) === true-->
+					<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+						<oj-input-text id="fetchAttributeMasks" type="text" required :id="[['fetchAttributeMasks'+$component.index+ $index()]]" :aria-label="[[$component.nls.message_template.attributeMask]]" validators="[[$baseModel.getValidator('ATTRIBUTE_MASK')]]" readonly="{{true}}"
+						  value="{{pushAttributeMask}}"></oj-input-text>
+
+					</div>
+					<!-- /ko -->
+
+
+
+					<div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
+						<oj-button class="oj-flex-item help-button form-button-rounded" on-click="[[$component.add.bind($data,pushAttributeList,'PUSH_NOTIFICATION')]]">
+							<span data-bind="text:$component.nls.message_template.addNew"></span>
+						</oj-button>
+					</div>
+				</div>
+
+				<!-- /ko -->
+
+			</div>
+
+		</div>
+		<!-- /ko -->
+	</oj-validation-group>
+
+	<div class="oj-flex oj-flex-items-pad button-container">
+		<oj-button class="action-button-primary" on-click="[[savePush]]">
+			<span data-bind="text:$component.nls.genericTemplate.save"></span>
+		</oj-button>
+	</div>
+
+</oj-validation-group>
+
+<!-- /ko -->
+
+<!-- ko if : $component.mode()==='VIEW' || $component.mode()==='REVIEW' -->
+<action-header params="baseModel : $baseModel, rootModel : $data, heading :$component.nls.message_template.push "></action-header>
+<row params="baseModel : $baseModel, rootModel : $root, label : $component.nls.message_template.pushTitle , value :pushTitle"></row>
+<div class="oj-flex oj-flex-items-pad row">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 row__label label-container">
+		<oj-label class="label-container__label"><span data-bind="text:$component.nls.message_template.pushContent"></span></oj-label>
+	</div>
+
+	<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 row__value" data-bind="css: $data.dataClass, html : pushContent">
+	</div>
+
+</div>
+
+<!-- ko if:pushAttributeList().length>0 -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+		<strong data-bind="text:$component.nls.message_template.setAttributeMask"></strong>
+	</div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+		<oj-label><span data-bind="text:$component.nls.message_template.dataAttribute"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+		<oj-label for="fetchAttributeMasks"><span data-bind="text:$component.nls.message_template.attributeMask"></span></oj-label>
+	</div>
+</div>
+<!-- ko foreach:pushAttributeList -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+		<span data-bind="text:attributeId,attr:{id:'pushAttributeId' +  $component.index+$index()}"></span>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+		<span data-bind="text:attributeMask,attr:{id:'pushattributeMask' + $component.index+$index()}"></span>
+	</div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+
+<!-- /ko -->

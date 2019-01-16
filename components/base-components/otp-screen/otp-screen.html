@@ -1,0 +1,76 @@
+<div class="form-main-container">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.pageSectionHeader">
+    <div class="oj-flex oj-flex-items-pad">
+      <oj-label class="oj-flex-item"><span data-bind="text:$component.messageSection"></span></oj-label>
+    </div>
+    <oj-validation-group :id="[[validationTrackerID]]" valid="{{validationTracker}}">
+      <div class="oj-flex oj-flex-items-pad otp-message-container">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="otp"><span data-bind="text:$component.locale.verificationcode"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-6">
+          <oj-input-password required type="password" autocomplete="off" id="otp" maxlength="10" validators="[[$baseModel.getValidator('OTP')]]"
+            value="{{$component.otp}}"></oj-input-password>
+
+          <!-- ko if: $component.disableResend()-->
+          <div>
+            <a href="#" class="form-button-link" id="resendButton" data-bind="text:$component.locale.resendcode,attr:{'alt':$component.locale.resendcode ,'title':$component.locale.resendCodeTitle ,'aria-label':$component.locale.resendcode}, click:reOTP"></a>
+          </div>
+          <!-- /ko -->
+          <div>
+          </div>
+          <div>
+            <oj-label>
+              <span data-bind="text:$component.locale.allowedAttempts"></span></oj-label>
+          </div>
+          <div>
+            <oj-label>
+              <span data-bind="text:$component.attemptsLeft"></span></oj-label>
+          </div>
+          <div>
+          </div>
+        </div>
+
+        <div data-bind="template:{afterRender: $component.otpShown}"></div>
+        <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1 otp-message-icon">
+          <a href="javascript:void(0)" data-bind="attr:{'alt':$component.locale.togglePassword ,'title':$component.locale.togglePasswordTitle,'aria-label':$component.locale.togglePassword },click:togglePassword">
+            <div id="eyecon" class="icon icon-eye-slash"></div>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+
+          <oj-label><span data-bind="text:$component.locale.referenceNo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-4 oj-md-2 oj-lg-1">
+          <oj-label class="hide-label" :for="[['referenceNo']]"><span data-bind="text:$component.locale.referenceNo"></span></oj-label>
+          <oj-input-text require="" type="number" autocomplete="off" maxlength="5" id="referenceNo" disabled="[[$component.disableReferenceNumber()]]"
+            validators="[[$baseModel.getValidator('NUMBERS',$component.locale.numberMsg,{type:'numberRange',options:{min:0,max:99999}})]]"
+            value="{{$component.referenceNumber}}"></oj-input-text>
+        </div>
+
+        <!-- ko if:scopeType() === 'USER' -->
+        <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1">
+          <input type="checkbox" id="Edit" data-bind="checked: $component.editReferenceNo">
+          <oj-label :for="[['Edit']]"> <span data-bind="text:$component.locale.generic.common.edit"></span></oj-label>
+
+        </div>
+        <!-- /ko -->
+
+      </div>
+    </oj-validation-group>
+  </page-section>
+  <div class="oj-flex button-container">
+    <oj-button class="action-button-primary" id="button" on-click="[[completeOTP]]">
+      <span data-bind="text:$component.locale.generic.common.submit"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" id="button" on-click="[[cancelOTP]]">
+      <span data-bind="text:$component.locale.generic.common.cancel"></span>
+    </oj-button>
+
+
+  </div>
+</div>

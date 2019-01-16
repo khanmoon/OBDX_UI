@@ -1,0 +1,238 @@
+<div class="account-details">
+  <!-- ko if:pageData() -->
+  <div class="oj-panel">
+    <div class="oj-flex account-details__select">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+        <account-input params="baseModel : $baseModel, rootModel: $data ,label : nls.accountDetails.labels.selectAccount,type: 'balance',customURL : 'deposit', account : selectedSettlementAccount ,additionalDetails : additionalDetails, validator:$component.validationTracker,taskCode:'TD_I_AD'"></account-input>
+      </div>
+    </div>
+    <div class="oj-flex account-details__productInfo">
+      <row params="baseModel : $baseModel, rootModel:$parent, label:nls.accountDetails.labels.productName, value:pageData().productDTO.name"></row>
+    </div>
+    <!-- ko if:nicknameAvailable -->
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 account-details__nickname" data-bind="component:{name: 'account-nickname', params:{rootModel:$data,params: nicknameDetails(),editable:true,module:'term-deposits',userSegment:'CORP'}} ">
+      </div>
+    </div>
+    <!-- /ko -->
+  </div>
+  <div class="oj-flex account-details__equalheight account-details-equalheight ">
+    <div class="oj-flex-item oj-sm-12">
+      <div class="outer-container">
+        <div class="wrapped-container">
+          <div class="inner-container">
+            <div class="firstSection">
+              <h3 class="account-details-equalheight__header" data-bind="text: $component.nls.accountDetails.labels.investment"></h3>
+              <!-- ko if:pageData().principalAmount -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item ">
+                  <oj-label class=" "><span data-bind="text:nls.accountDetails.labels.originalPrincipalAmount"></span></oj-label>
+                </div>
+                <div class="oj-flex-item ">
+                  <span class=" " data-bind="text:$baseModel.formatCurrency(pageData().principalAmount.amount,pageData().principalAmount.currency) "></span>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:pageData().depositDate -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item ">
+                  <oj-label class=" "><span data-bind="text:nls.accountDetails.depositDetails.labels.depositDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item ">
+                  <span class=" " data-bind="text:$baseModel.formatDate(pageData().depositDate) "></span>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:pageData().depositDate -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=" "><span data-bind="text:nls.accountDetails.depositDetails.labels.valueDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item ">
+                  <span class=" " data-bind="text:$baseModel.formatDate(pageData().depositDate) "></span>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:pageData().interestRate -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=""><span data-bind="text:$component.tdViewDetails().termDepositDetails.module ==='ISL'?nls.accountDetails.islamicInterestRate:nls.accountDetails.labels.interestRate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <span class="" data-bind="text:$baseModel.formatNumber(pageData().interestRate/100, 'percent',2,1) "></span>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:pageData().branchAddressDTO -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=""><span data-bind="text:nls.accountDetails.depositDetails.labels.depositBranch"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <!-- <span class=" " data-bind="text:pageData().branchAddressDTO.branchName "></span> -->
+                  <span class="" data-bind="text:$baseModel.format(nls.accountDetails.labels.fullBranchDetails,{name:pageData().branchAddressDTO.branchName, line1:pageData().branchAddressDTO.branchAddress.postalAddress.line1?pageData().branchAddressDTO.branchAddress.postalAddress.line1:
+                        '', line2:pageData().branchAddressDTO.branchAddress.postalAddress.line2?pageData().branchAddressDTO.branchAddress.postalAddress.line2: '', country:pageData().branchAddressDTO.branchAddress.postalAddress.country?pageData().branchAddressDTO.branchAddress.postalAddress.country:
+                        ''}) "></span>
+                </div>
+              </div>
+              <!-- /ko -->
+            </div>
+            <div class="secondSection">
+              <h3 class="account-details-equalheight__header" data-bind="text:$component.nls.accountDetails.labels.currentPosition"></h3>
+              <!-- ko if:pageData().availableBalance -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=""><span data-bind="text:nls.accountDetails.labels.currentBalance"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <span class="" data-bind="text:$baseModel.formatCurrency(pageData().availableBalance.amount,pageData().availableBalance.currency) "></span>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:pageData().tenure -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=""><span data-bind="text:nls.accountDetails.depositDetails.labels.depositTerm"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <span class="" data-bind="text:$baseModel.format(nls.accountDetails.labels.tenure,{years:pageData().tenure.years,months:pageData().tenure.months,days:pageData().tenure.days}) "></span>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:pageData().holdAmount -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=""><span data-bind="text:nls.accountDetails.depositDetails.labels.holdAmount"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <span class="" data-bind="text:$baseModel.formatCurrency(pageData().holdAmount.amount,pageData().holdAmount.currency) "></span>
+                </div>
+              </div>
+              <!-- /ko -->
+
+
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.accountDetails.depositDetails.labels.depositCertificateNumber"></span></oj-label>
+                </div>
+                <div class="oj-flex-item" data-bind="css : !$baseModel.small() ? 'right' : '' ">
+                  <!-- <span data-bind="text:$baseModel.formatCurrency(pageData().unclearFund.amount,pageData().unclearFund.currency) "></span> -->
+                </div>
+              </div>
+              <!-- ko if:pageData().accrualDetails.accruedInterest -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=""><span data-bind="text:nls.accountDetails.labels.accruedInterest"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <span class="" data-bind="text:$baseModel.formatCurrency(pageData().accrualDetails.accruedInterest.amount,pageData().accrualDetails.accruedInterest.currency)"></span>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:pageData().accrualDetails.lastInterestAccrualDate -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=""><span data-bind="text:nls.accountDetails.labels.lastInterestAccrualDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <span class="" data-bind="text:$baseModel.formatDate(pageData().accrualDetails.lastInterestAccrualDate)"></span>
+                </div>
+              </div>
+              <!-- /ko -->
+            </div>
+            <div class="thirdSection">
+              <h3 class="account-details-equalheight__header" data-bind="text:$component.nls.accountDetails.labels.maturity"></h3>
+              <!-- ko if:pageData().maturityAmount -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=""><span data-bind="text:nls.accountDetails.maturityDetails.labels.maturityAmount"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <span class="" data-bind="text:$baseModel.formatCurrency(pageData().maturityAmount.amount,pageData().maturityAmount.currency) "></span>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:pageData().maturityDate -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=""><span data-bind="text:nls.accountDetails.maturityDetails.labels.maturityDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <span class="" data-bind="text:$baseModel.formatDate(pageData().maturityDate) "></span>
+                </div>
+              </div>
+              <!-- /ko -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=""><span data-bind="text:nls.accountDetails.maturityDetails.labels.maturityInstruction"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <span class="" data-bind="text:$baseModel.format($component.nls.accountDetails.maturityInstructions.codes[$component.tdViewDetails().termDepositDetails.rollOverType],{interestType:$component.tdViewDetails().termDepositDetails.module === 'ISL'?$component.nls.accountDetails.profit:$component.nls.accountDetails.amountType.I})"></span>
+
+                </div>
+              </div>
+              <!-- ko if:pageData().rollOverAmount -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label class=""><span data-bind="text:nls.accountDetails.maturityDetails.labels.rolloverAmount"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <span class="" data-bind="text:$baseModel.formatCurrency(pageData().rollOverAmount.amount,pageData().rollOverAmount.currency) "></span>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:payToData() -->
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item label">
+                  <oj-label><span data-bind="text:nls.accountDetails.maturityDetails.labels.payTo"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                    <div class="oj-flex-item">
+                      <!-- ko if: payToData().accountId -->
+                      <span data-bind="text: payToData().accountId.displayValue"></span>
+                      <!-- /ko -->
+                      <!-- ko if: payToData().account -->
+                      <span data-bind="text: payToData().account"></span>
+                      <!-- /ko -->
+                    </div>
+                    <div class="oj-flex-item "><span data-bind="text:nls.accountDetails.payOutOption[payToData().type] "></span></div>
+                    <!-- ko if:branchDetailsFetched() -->
+                    <!-- ko if:branchDetails().branchName -->
+                    <div class="oj-flex-item "><span data-bind="text:branchDetails().branchName "></span></div>
+                    <!-- /ko -->
+                    <!-- ko if:branchDetails().branchAddress.postalAddress.line1 -->
+                    <div class="oj-flex-item "><span data-bind="text:branchDetails().branchAddress.postalAddress.line1 "></span></div>
+                    <!-- /ko -->
+                    <!-- ko if:branchDetails().branchAddress.postalAddress.line2 -->
+                    <div class="oj-flex-item "><span data-bind="text:branchDetails().branchAddress.postalAddress.line2 "></span></div>
+                    <!-- /ko -->
+                    <!-- ko if:branchDetails().branchAddress.postalAddress.city -->
+                    <div class="oj-flex-item "><span data-bind="text:branchDetails().branchAddress.postalAddress.city "></span></div>
+                    <!-- /ko -->
+                    <!-- ko if:branchDetails().branchAddress.postalAddress.country -->
+                    <div class="oj-flex-item "><span data-bind="text:branchDetails().branchAddress.postalAddress.country "></span></div>
+                    <!-- /ko -->
+                    <!-- ko if:payToData.payoutComponentType -->
+                    <div class="oj-flex-item "><span data-bind="text:$baseModel.format(nls.accountDetails.payToMessage,{percentage:payToData().percentage,amountType:nls.accountDetails.amountType[payToData().payoutComponentType]}) "></span></div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                  </div>
+                </div>
+              </div>
+              <!-- /ko -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-bind="component:{name: 'quick-links',params:{rootModel:$component,data:$data,type: 'term-deposits-details'}} "></div>
+
+  <div class="account-details__transactionWidget">
+    <account-transactions params="baseModel : $baseModel, dashboard: $dashboard, rootModel : $data,type: 'TRD' ">
+    </account-transactions>
+  </div>
+  <!-- /ko -->
+</div>

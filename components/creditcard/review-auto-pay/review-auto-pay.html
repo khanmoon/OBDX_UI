@@ -1,0 +1,35 @@
+<div class="form-main-container">
+
+  <!-- ko if:verifyCancel() -->
+  <!-- ko if:loadScreen() -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+  <!-- /ko -->
+  <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 label ">
+        <oj-label for="cardNumber" class=""><span data-bind="text:resource.autopay.cardNumber"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <span data-bind="text:$component.creditCardIdDisplay"></span>
+      </div>
+    </div>
+    <div class="row-group">
+      <row params="baseModel : $baseModel, rootModel : $parent, label :resource.autopay.payAmtType, value: resource.autopay[$component.payAmtType()]"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :resource.autopay.sourceAccount, value :$component.params.confData.accountId.displayValue"></row>
+    </div>
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="autoPayConfirmButton" class="action-button-primary " on-click="[[autoPayConfirm]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:resource.autopay.confirm"></span>
+    </oj-button>
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button id="autoPayReviewCancelButton" class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:resource.autopay.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button id="autoPayReviewBackButton" class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:resource.autopay.back"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+</div>

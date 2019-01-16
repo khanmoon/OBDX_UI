@@ -1,0 +1,137 @@
+<!-- ko if:$baseModel.large() -->
+<div id="viewDetails" class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <!--header section-->
+    <!-- ko if:upcomingPaymentsLoaded() -->
+    <div class="oj-sm-12 oj-md-8 oj-lg-7" data-bind="component: {
+             name: 'search-box',
+             params: {searchFields : ['name'], rootModel:$component ,data:$component.datasource,
+               searchBy:$component.resource.upcomingPayments.description}
+         }">
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-7">
+        <!-- ko if:upcomingPaymentsLoaded() -->
+        <div class="oj-flex-item oj-sm-12">
+            <oj-table id="UpcomingPaymenttable" :aria-label="[[$component.resource.upcomingPayments.header]]" columns="[[[
+            {headerText:$component.resource.upcomingPayments.date,template:'date',sortProperty:'date'},
+            {headerText:$component.resource.upcomingPayments.description,template:'description',sortable:'none'},
+            {headerText:$component.resource.upcomingPayments.amount,template:'formatted-amount',sortProperty:'amount'},
+            {headerText:$component.resource.upcomingPayments.transferType,template:'repeat',sortable:'none'},
+            {headerText:$component.resource.upcomingPayments.action,template:'action-icons',sortable:'none'}
+            ]]]" selection-mode="[[{column:'none',row:'none'}]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.datasource]]">
+                <caption class="hide-label" data-bind="text:$component.resource.upcomingPayments.header"></caption>
+                <template slot="date">
+                    <td>
+                        <date-box params="baseModel : $baseModel, date:$current.row.date"></date-box>
+                    </td>
+                </template>
+                <template slot="description">
+                    <td>
+                        <div class="oj-sm-12" data-bind="text : $current.row.name"></div>
+                        <div class="oj-sm-12" data-bind="text : $current.row.description"></div>
+                    </td>
+                </template>
+                <template slot="formatted-amount">
+                    <td>
+                        <div data-bind="text:$baseModel.formatCurrency($current.row.amount,$current.row.currency)"></div>
+                    </td>
+                </template>
+                <template slot="repeat">
+                    <td>
+                        <!-- ko if:$current.row.type==='REC' -->
+                        <div data-bind="text:$component.resource.upcomingPayments.repeat"></div>
+                        <!-- /ko -->
+                        <!-- ko if:$current.row.type==='NONREC' -->
+                        <div data-bind="text:$component.resource.upcomingPayments.onetime"></div>
+                        <!-- /ko -->
+                    </td>
+                </template>
+                <template slot="action-icons">
+                    <td>
+                        <a href="#" class="oj-sm-2 oj-flex-item form-button-link" data-bind="attr:{ title: $baseModel.format($component.resource.common.title,{reference: $component.resource.generic.common.cancel}), alt : $baseModel.format($component.resource.common.alt,{reference: $component.resource.generic.common.cancel}) },text : $component.resource.generic.common.cancel,click:$component.cancelSI.bind($data, $current.row)"></a>
+                    </td>
+                </template>
+            </oj-table>
+        </div>
+        <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.datasource]]">
+        </oj-paging-control>
+        <!-- /ko -->
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'scheduled-payments'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko ifnot:$baseModel.large() -->
+<!-- ko if:upcomingPaymentsLoaded() && $component.upcomingPaymentsData.length>0 -->
+<div id="viewDetails" class="form-main-container">
+    <a href="#" data-bind="click: $component.showFloatingPanel">
+        <div class="floating-button">
+            <span class="icons icon-more-vertical"></span>
+        </div>
+    </a>
+    <floating-panel params="baseModel : $baseModel, panelId: 'scheduled-payment-options', rootModel: $component">
+        <ul>
+            <li>
+                <a href="#" data-bind="attr:{alt:$component.resource.upcomingPayments.viewsi,title:$component.resource.upcomingPayments.viewsititle},click: $component.openTab.bind($data,'standing-instructions', 'standing-instructions-list')">
+                        <span class="icons icon-view-statement"></span>
+                        <span data-bind="text:$component.resource.upcomingPayments.viewsi"></span>
+                    </a>
+            </li>
+            <li>
+                <a href="#" data-bind="attr:{alt:$component.resource.upcomingPayments.setSI,title:$component.resource.upcomingPayments.createsititle},click: $component.openTab.bind($data,'standing-instructions', 'payments-money-transfer')">
+                        <span class="icons icon-subscription"></span>
+                        <span data-bind="text:$component.resource.upcomingPayments.setSI"></span>
+                    </a>
+            </li>
+        </ul>
+    </floating-panel>
+    <div class="oj-sm-12" data-bind="component: {
+             name: 'search-box',
+             params: {searchFields : ['name'], rootModel:$component ,data:$component.datasource,
+               searchBy:$component.resource.upcomingPayments.description}
+         }">
+    </div>
+    <oj-list-view id="listview_dashboard" :aria-label="[[$component.resource.upcomingPayments.smalltitle]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[datasource]]"></oj-list-view>
+    <oj-paging-control id="paging-small" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[$component.datasource]]"></oj-paging-control>
+    <script type="text/html" id="content_template">
+        <li data-bind="attr: {id:externalReferenceNumber}" class="upcomingpayments-sm">
+            <div class="oj-flex">
+                <label class="oj-flex-item oj-sm-8" data-bind="text: $baseModel.formatDate(date)"> </label>
+                <a href="#" class="form-button-link oj-flex-item oj-sm-4 right" data-bind="attr:{ title: $baseModel.format($component.resource.common.title,{reference: $component.resource.generic.common.cancel}), alt : $baseModel.format($component.resource.common.alt,{reference: $component.resource.generic.common.cancel}) },text : $component.resource.generic.common.cancel,click:$component.cancelSI.bind($data)"></a>
+                <label class="oj-flex-item oj-sm-12" data-bind="text:name"> </label>
+                <div class="oj-flex-item oj-sm-12 " data-bind="text:description"></div>
+                <div class="oj-flex-item oj-sm-4" data-bind="text: $component.resource.upcomingPayments.amount"></div>
+                <div class="oj-flex-item oj-sm-8 upcomingpayments-sm__amount right" data-bind="text:$baseModel.formatCurrency(amount,currency)"></div>
+                <!-- ko if:$data.type==='REC' -->
+                <label class="oj-flex-item oj-sm-12 ref-no-text right" data-bind="text : $component.resource.upcomingPayments.repeat"> </label>
+                <!-- /ko -->
+            </div>
+        </li>
+    </script>
+</div>
+<!-- /ko -->
+<!-- ko if:upcomingPaymentsLoaded() && !$component.upcomingPaymentsData.length>0 -->
+<div class="oj-flex-item">
+    <div data-bind="text: $component.resource.upcomingPayments.noupcomingpayments"></div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if:$baseModel.large() -->
+<modal-window params="baseModel : $baseModel, rootModel : $component,id:'menuButtonDialog', header : $component.resource.upcomingPayments.cancelTitle,closeHandler:$component.closeHandler">
+    <!-- ko if:$component.cancelSIClicked() -->
+    <div data-bind="
+          component:{
+          name:'cancel-standing-instruction',
+          params:{
+          rootModel: $data,
+          data:currentUpcomingPaymentData,
+          callback:getData}
+          }">
+    </div>
+    <!-- /ko -->
+</modal-window>
+<!-- /ko -->

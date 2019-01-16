@@ -1,0 +1,16 @@
+<div>
+  <!-- ko if:!renderPaymentcard() -->
+  <div data-bind="component: {name: 'action-card',
+                  params:{ data:cardData,
+                  image:image,clickHandler:actionCardClick
+                  }}">
+  </div>
+<!-- /ko -->
+<!-- ko if:renderPaymentcard() -->
+  <div data-bind="component: {name: 'list-card',
+                  params:{rootModel: $component, data:cardData,
+                  image:image
+                  }}">
+  </div>
+  <!-- /ko -->
+</div>

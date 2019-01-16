@@ -1,0 +1,245 @@
+<!-- ko if:dealCreationAllowed -->
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+        <page-section params="baseModel : $baseModel, rootModel : $data, dashboard
+        : $dashboard, heading : $component.nls.forexDeal.partyDetails">
+            <div class="oj-flex-items-pad oj-lg-12">
+                <div class="oj-flex oj-sm-12">
+                    <oj-label for="partyId" class="oj-flex-item oj-lg-12">
+                        <span data-bind="text:$component.nls.forexDeal.partyId"></span>
+                    </oj-label>
+                    <div id="partyId" class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+                        <span data-bind="text:$dashboard.userData.userProfile.partyId.displayValue"></span>
+                    </div>
+                </div>
+                <div class="oj-flex  oj-sm-12">
+                    <oj-label for="partyName" class="oj-flex-item oj-lg-12">
+                        <span data-bind="text:$component.nls.forexDeal.partyName"></span>
+                    </oj-label>
+                    <!-- ko if:$component.partyName() -->
+                    <div id="partyName" class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+                        <span data-bind="text:$component.partyName"></span>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </page-section>
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.forexDeal.transactionDetails">
+            <!-- ko if:dealTypeArray().length -->
+            <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                <oj-label for="dealType" class="oj-flex-item oj-lg-12">
+                    <span data-bind="text:$component.nls.forexDeal.dealType"></span>
+                </oj-label>
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-radioset id="dealType" class="payments-money-transfer__radiosetSpacing oj-choice-direction-row" value="{{selectedDealType}}" on-value-changed="[[$component.dealTypeArrayChanged]]" :aria-label="[[$component.nls.forexDeal.dealType]]">
+                        <!-- ko foreach: dealTypeArray -->
+                        <oj-option value="{{id}}">
+                            <span data-bind="text:label"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-radioset>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:selectedDealType() === "F" && frequencyList().length -->
+            <div class="oj-flex oj-flex-items-pad oj-lg-6">
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-label for="selectDuration" class="oj-flex-item oj-lg-12">
+                        <span data-bind="text:$component.nls.forexDeal.duration"></span>
+                    </oj-label>
+                    <div class="oj-flex-item oj-lg-6 oj-sm-12">
+                        <oj-select-one id="selectDuration" class="oj-flex-item oj-lg-4 oj-sm-12" value="{{$component.forwardFrequency}}" on-value-changed="[[forwardFreqHandler]]" :aria-label="[[$component.nls.forexDeal.duration]] " required>
+                            <!-- ko foreach:$component.frequencyList -->
+                            <oj-option data-bind="attr:{id: value, 'aria-label':value}" value="[[value]]"><span data-bind="text:text"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                </div>
+                <!-- ko if:forwardFrequency() -->
+                <div class="oj-flex-item  oj-sm-12">
+                    <oj-label for="displayValidity" class="oj-flex-item oj-lg-12">
+                        <span data-bind="text:$component.nls.forexDeal.validity"></span>
+                    </oj-label>
+                    <div class="oj-flex-item oj-sm-12">
+                        <oj-input-text id="displayValidity" class="oj-flex-item oj-sm-12" value="{{$baseModel.format($component.nls.forexDeal.totalNoDays,{bookingDate:$baseModel.formatDate($component.createForexDealModel.forexDealDTO.bookingDate()),valueDate:$baseModel.formatDate($component.createForexDealModel.forexDealDTO.valueDate()),noOfDays:parseInt($component.createForexDealModel.forexDealDTO.forwardPeriod())})}}" readonly>
+                        </oj-input-text>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+        </page-section>
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.forexDeal.currencyDetails">
+            <oj-validation-group id="tracker" valid="{{groupValid}}">
+                <!-- ko if:currComboArray().length -->
+                <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                    <oj-label for="selectCurrencyCombination" class="oj-flex-item oj-lg-12">
+                        <span data-bind="text:$component.nls.forexDeal.selectCurrencyCombination"></span>
+                    </oj-label>
+                    <oj-select-one id="selectCurrencyCombination" class="oj-flex-item oj-lg-3 oj-sm-12" placeholder="[[$component.nls.forexDeal.pleaseSelect]]" value="{{$component.currencyForeign}}" :aria-label="[[$component.nls.forexDeal.selectCurrencyCombination]] " on-value-changed="[[changeCurrencyPair]]" required>
+                        <!-- ko foreach:currComboArray() -->
+                        <oj-option data-bind="attr:{id: value, 'aria-label':value}" value="[[value]]"><span data-bind="text:text"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:currencyForeign() -->
+                <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                    <oj-label for="dealType" class="oj-flex-item oj-lg-12">
+                        <span data-bind="text:$component.nls.forexDeal.transType"></span>
+                    </oj-label>
+                    <div class="oj-flex-item oj-sm-12">
+                        <oj-radioset id="rateType" class="payments-money-transfer__radiosetSpacing oj-choice-direction-row" value="{{$component.createForexDealModel.forexDealDTO.rateType}}" on-value-changed="[[$component.rateTypeChangeHandler]]" :aria-label="[[$component.nls.forexDeal.transType]]">
+                            <!-- ko foreach: rateTypeArray -->
+                            <oj-option value="[[id]]">
+                                <span data-bind="text:label"></span>
+                            </oj-option>
+                            <!-- /ko -->
+                        </oj-radioset>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad oj-lg-10 oj-sm-12">
+                    <!-- ko if:rateCurrencyArray().length >0 -->
+                    <div class="oj-flex-item oj-sm-12 oj-lg-8" data-bind="component: {
+                            name: 'amount-input', params: {
+                            currencyParser : $component.currencyParser,
+                            amount :$component.rateAmount,
+                            label : $component.createForexDealModel.forexDealDTO.rateType() === 'B' ? $component.nls.forexDeal.buy : $component.nls.forexDeal.sell,
+                            isLabelHidden:false,
+                            currency: $component.rateCurrency,
+                            converter:$baseModel.formatCurrency,
+                            currencyListRequired : true,
+                            validator:$component.validationTracker,
+                            isMandatory:true,
+                            rootId:'forex-amount'+$baseModel.incrementIdCount(),
+                            currencyURL : '',
+                            rootClass:'form-input'
+                            }
+                         }">
+                        <div class="oj-flex-item">
+                            <a data-id="viewLimits" href="javascript:void(0)" data-bind="attr:{for : 'button' + $baseModel.incrementIdCount(), 'alt':$baseModel.format($data.nls.forexDeal.alt, {reference : $data.nls.forexDeal.viewlimits}),'title':$baseModel.format($data.nls.forexDeal.title, {reference : $data.nls.forexDeal.viewlimits})},click:$data.viewLimits, text:$data.nls.forexDeal.viewlimits">
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <modal-window params="baseModel : $baseModel, rootModel : $component,header:$component.nls.forexDeal.viewlimits,id:'forex-view-limit'">
+                    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                        <!-- ko if: $component.loadAccessPointList() -->
+                        <div class="oj-flex oj-flex-items-pad">
+                          <div class="oj-flex-item oj-sm-12">
+                            <span data-bind="text:$component.nls.forexDeal.channel"></span>
+                            <a class="oj-label-inline" id="channel-disclaimer" href="javascript:void(0)" data-bind="attr:{title:$component.nls.forexDeal.showInformation},click:$component.channelPopup.bind($data,true)">
+                    <span class="icons icon-2x icon-information iconStyling"></span></a>
+                          </div>
+                        </div>
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4">
+                                <oj-select-one id="channel" value="{{selectedChannelIndex}}" on-value-changed="[[channelTypeChangeHandler]]" :placeholder="[[$component.nls.forexDeal.pleaseSelect]]">
+                                    <!-- ko foreach:$component.channelList -->
+                                    <oj-option value="[[$index]]"><span data-bind="text:description"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: showLimits() && $component.selectedChannel() -->
+                        <div data-bind="component:{name:'transfer-view-limits', params:{rootModel: $component,type:'FX_M_CFX',accessPointValue:$component.selectedChannelType}}">
+                        </div>
+                        <!-- /ko -->
+                    </page-section>
+                    <div class="button-container">
+                        <oj-button class="action-button-primary" id="button-ok" on-click="[[done]]"><span slot="startIcon" class="icons icon-ok"></span>
+                            <span data-bind="text:$component.nls.generic.common.ok"></span>
+                        </oj-button>
+                    </div>
+                </modal-window>
+                <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                    <div class="oj-flex-item oj-sm-12">
+                        <oj-label for="exchangeRate" class="oj-label-inline">
+                            <span data-bind="text:$component.nls.forexDeal.exchangeRate"></span>
+                        </oj-label>
+                        <a class="oj-label-inline" id="exchange-rate-disclaimer" href="javascript:void(0)" data-bind="attr:{alt:$component.nls.forexDeal.openDiscPopup,title:$component.nls.forexDeal.openDiscPopupTitle},click:$component.exchangeRateDiscPopUp.bind($data,true)">
+                            <span slot="startIcon" class="icons icon-information"></span>
+                        </a>
+                    </div>
+                    <div class="oj-flex-item">
+                        <oj-input-text id="exchangeRate" value="[[$component.createForexDealModel.forexDealDTO.rate]]" converter="{{exchangeAmountConverter}}" readonly></oj-input-text>
+                    </div>
+                </div>
+                <oj-popup id="exchangeRate-popup" modality="modeless" tail="simple" position.my.horizontal="start" position.my.vertical="top" position.at.horizontal="right" position.at.vertical="bottom">
+                    <div class="payments-money-transfer-container">
+                        <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                            <div class=" oj-sm-12" data-bind="text:$component.nls.forexDeal.exchangeRateDisclaimer"></div>
+                        </div>
+                    </div>
+                </oj-popup>
+                <!-- /ko -->
+                <!-- /ko -->
+            </oj-validation-group>
+        </page-section>
+        <div id="button-container1" class="oj-flex-item button-container">
+            <oj-button class="action-button-primary" id="initiateButton" on-click="[[initiateForexDeal]]">
+                <span slot="startIcon" class="icons icon-add"></span>
+                <span data-bind="text: $component.nls.forexDeal.initiate"></span>
+            </oj-button>
+            <!-- ko if: $baseModel.large() -->
+            <oj-button class="action-button-secondary" id="cancelButton" on-click="[[$dashboard.openDashBoard]]">
+                <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text: $component.nls.forexDeal.cancel"></span>
+            </oj-button>
+            <!-- /ko -->
+            <!-- ko if: $component.params && $component.params.retainedData -->
+            <oj-button class="action-button-tertiary" id="backButton" on-click="[[$dashboard.hideDetails]]">
+                <span slot="startIcon" class="icons icon-back-arrow"></span>
+                <span data-bind="text: $component.nls.generic.common.back"></span>
+            </oj-button>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'forex-deal-create'"></help>
+    </div>
+    <!-- /ko -->
+    <modal-window params="baseModel : $baseModel, rootModel : $component,id:'custom-frequency', header : $component.nls.forexDeal.customFrequency, closeHandler : $component.closeModal">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.nls.forexDeal.selectDateRange">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-lg-4 oj-sm-12">
+                    <oj-label for="fromDate" class="oj-flex-item oj-sm-12">
+                        <span data-bind="text:$component.nls.forexDeal.fromDate"></span>
+                    </oj-label>
+                    <oj-input-date id="fromDate" class="oj-flex-item oj-lg-12 oj-sm-12" value="{{$component.createForexDealModel.forexDealDTO.bookingDate}}" converter="[[$baseModel.dateConverter]]" min="[[minBookingDate]]" on-value-changed="[[customDateHandler]]" readonly required>
+                    </oj-input-date>
+                </div>
+                <div class="oj-flex-item oj-lg-4 oj-sm-12">
+                    <oj-label for="toDate" class="oj-flex-item oj-sm-12">
+                        <span data-bind="text:$component.nls.forexDeal.toDate"></span>
+                    </oj-label>
+                    <oj-input-date id="toDate" class="oj-flex-item oj-lg-12 oj-sm-12" value="{{$component.createForexDealModel.forexDealDTO.valueDate}}" converter="[[$baseModel.dateConverter]]" min="[[minValueDate]]" on-value-changed="[[customDateHandler]]" required>
+                    </oj-input-date>
+                </div>
+                <div class="oj-flex-item oj-lg-4 oj-sm-12">
+                    <oj-label for="validity" class="oj-flex-item oj-sm-12">
+                        <span data-bind="text:$component.nls.forexDeal.totalDays"></span>
+                    </oj-label>
+                    <oj-input-text id="validity" value="[[$baseModel.format($component.nls.forexDeal.customDays,{noOfDays:parseInt($component.createForexDealModel.forexDealDTO.forwardPeriod())})]]" readonly></oj-input-text>
+                </div>
+            </div>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary" id="ok" on-click="[[$component.customDateSelected]]">
+                <span slot="startIcon" class="icons icon-ok"></span>
+                <span data-bind="text:$component.nls.generic.common.ok"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" id="cancel" on-click="[[$component.closeModal]]">
+                <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.nls.generic.common.cancel"></span>
+            </oj-button>
+        </div>
+    </modal-window>
+</div>
+<!-- /ko -->
+<oj-popup id="channel-popup" modality="modeless" tail="simple" position.my.horizontal="start" position.my.vertical="top" position.at.horizontal="right" position.at.vertical="bottom">
+  <span data-bind="text:$component.nls.forexDeal.showInformation"></span>
+</oj-popup>

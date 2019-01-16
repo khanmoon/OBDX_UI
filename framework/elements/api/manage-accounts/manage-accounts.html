@@ -1,0 +1,36 @@
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'manageAccountsAccountNumberDropdown', closeHandler: $component.modalCloseHandler, header: $component.locale.tabs[$component.params.applicationType][$component.menuSelection()]">
+  <div class="form-main-container">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading: ''">
+      <!-- ko if: $component.params.moduleURL -->
+      <account-input params="baseModel : $baseModel, rootModel: $data,
+                    account : $component.accountNumberSelected,
+                    type: 'nodeValue',
+                    additionalDetails : $component.additionalDetails,
+                    accountsParser: $component.params.applicationType === 'creditcard' ? $component.creditCardParser : null,
+                    customURL : $component.params.moduleURL,
+                    validator: $component.validationTracker">
+      </account-input>
+      <!-- /ko -->
+      <div data-bind="template:{afterRender: $component.afterRender}"></div>
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary " on-click="[[$component.selectAccount]]">
+        <span slot="startIcon" class="icons icon-forward-arrow"></span>
+        <span data-bind="text:$component.locale.generic.common.proceed"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary " on-click="[[$dashboard.hideDetails]]">
+        <span slot="startIcon" class="icons icon-cancel"></span>
+        <span data-bind="text:$component.locale.generic.common.cancel"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+<!-- ko if: $component.isReady -->
+<!-- ko ifnot: $baseModel.small() -->
+<div data-bind='component: {name: "nav-bar", params:{menuOptions: menuOptions, uiOptions: uiOptions, navBarDescription: $component.locale.navBarDescription}}'></div>
+<!-- /ko -->
+<div class="menu-option" data-bind="component: {name: $component.menuSelection(), params : {rootModel : {params : $component.params, previousState: $component.previousState}, options : {metaData : $component.selectedTabData, data: $component.defaultData }, changeView: $component.changeView}}"></div>
+<!-- ko ifnot: $baseModel.small() -->
+<a class="back-link" href="#" data-bind="text: $component.locale.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->
+<!-- /ko -->

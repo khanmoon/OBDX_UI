@@ -1,0 +1,44 @@
+<div class="rates">
+    <action-widget params="baseModel : $baseModel, controls : {  ctrl1: function(){},
+                                       ctrl2: function(){},
+                                       ctrl3: function(){}
+                                    },rootModel:$data,
+                                    header:$component.nls.termDepositRates.labels.tdRatesHeader,
+                                    onDashboard: true,
+                                    expandComponent:'td-rates',
+                                    validator:$component.validationTracker">
+
+        <!--<page-section params="rootModel : $data"> -->
+        <!-- ko if:datasource() && tdRatesLoaded()-->
+        <!-- ko if:!$baseModel.small() -->
+
+        <div id="tdRates" class="widget-table">
+            <oj-table id="TdRatesTable" columns="[[[{headerText:nls.termDepositRates.labels.period,field:'period'},{headerText:nls.termDepositRates.labels.interestRate,field:'interestRate'}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[datasource()]]">
+              <caption class="hide-label" data-bind="text:$component.nls.termDepositRates.details"></caption>
+            </oj-table>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$baseModel.small() -->
+        <!-- ko if:datasource() -->
+        <div class="grid-main-container" params="rootModel : $data, heading : ''">
+            <oj-list-view id="listview" selection-mode="[['none']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('rate-template',true)}]]" data="[[datasource()]]">
+            </oj-list-view>
+        </div>
+
+
+        <script type="text/html" id="rate-template">
+            <li>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-6 product-card-title" data-bind="text : period"></div>
+
+                    <div class="oj-flex-item oj-sm-6 product-card-name right" data-bind="text : interestRate"></div>
+                </div>
+
+            </li>
+        </script>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!--</page-section> -->
+    </action-widget>
+</div>

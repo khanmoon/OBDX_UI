@@ -1,0 +1,56 @@
+<oj-checkboxset class="map-accounts-row" value="{{$component.mapAllTransactionsTdFlag}}" on-click="[[$component.setMapAllTransactionsToAllAccount.bind($data,'TRD')]]" disabled="[[$component.showEditableForm]]" >
+  <oj-option id="td_transaction_map_all" value="{{'MAP_ALL'}}">
+    <span for="td_transaction_map_all" data-bind="text: $component.nls.headings.mapAllTransactionToAllAccnts"></span>
+  </oj-option></oj-checkboxset>
+<!-- ko if: $component.reloadTDTable() -->
+<oj-table id="tdTransactionAccesstable" :aria-label="[[$component.nls.headers.tdAccounts]]"
+columns="[[[{headerText:$component.nls.headers.AccountNumber,field:'accountID'},
+{headerText:$component.nls.headers.currency,field:'currency'},
+{headerText:$component.nls.headers.displayName,field:'displayName'},
+{headerText:$component.nls.headers.accountStatus,field:'accountStatus'}]]]"
+ row-renderer='[[$oj.KnockoutTemplateUtils.getRenderer("td_template", true)]]' data="[[$component.tdTransactionDatasource]]">
+    <caption class="hide-label" data-bind="text:$component.nls.headers.tdAccounts"></caption>
+</oj-table>
+<!-- /ko -->
+
+
+
+<script type="text/html" id="td_template">
+    <tr class="map-accounts-row-expander">
+        <!-- ko if:$context.rowContext.depth===1  -->
+        <td>
+            <!-- ko if: ($component.selectedTdAccounts()).indexOf(accountNumber.value) > -1 -->
+              <oj-row-expander class="trd-token" context="[[$context.rowContext]]"></oj-row-expander>
+            <!-- /ko -->
+            <input type="checkbox" name="tdTransaction"
+            data-bind="attr:{'aria-label':$component.nls.headers.tdcheckbox+id,
+            id: $component.nls.headers.tdcheckbox+id },
+            checked: $component.selectedTdAccounts,
+            disable:($component.showEditableForm && $component.disableAccountSelection),
+            value : accountNumber.value ">
+           <span data-bind="attr:{ 'for':$component.nls.headers.tdcheckbox+id}, text: $context.row.accountNumber.displayValue"></span>
+         </td>
+        <td>
+            <span data-bind="text:$context.row.currency"></span>
+        </td>
+        <td>
+            <span data-bind="text: $context.row.displayName"></span>
+        </td>
+        <td>
+            <span data-bind="text: $context.row.accountStatus"></span>
+        </td>
+        <!-- /ko -->
+        <!-- ko if:$context.rowContext.depth===2 -->
+        <td colspan="4" class="map-accounts-row-contents">
+          <div data-bind="component:{name: 'transaction-selection',
+          params:{rootModel: $component,
+            key:'TRD'+id,data: $data,resoureTaskList : $component.resourceListTD,
+             selectedResourceTaskList : $data.selectedTask ,
+             mapAllTransactionsToAllAccounts:$component.mapAllTransactionsToAllAccountTrd,
+             indicatorArray:$component.trdMapAllTransactionIndicatorArray,
+             tempTaskArray:$component.tmpTransactionCodeTrdArray}}">
+            </div>
+        </td>
+        <!-- /ko -->
+    </tr>
+</script>

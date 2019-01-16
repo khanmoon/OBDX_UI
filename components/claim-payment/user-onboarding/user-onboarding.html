@@ -1,0 +1,122 @@
+
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+<!-- ko if:stageOne() -->
+<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <div class="row-group" data-bind="with:onBoardingModel">
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                  <oj-label for="firstName"><span data-bind="text:$component.resource.payments.peertopeer.globalpayee.firstName"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12">
+                  <oj-input-text id="firstName" maxlength="40" required :invalidcomponenttracker="[[$component.validationTracker]]" value="{{firstName}}"></oj-input-text>
+              </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                  <oj-label for="lastName"><span data-bind="text:$component.resource.payments.peertopeer.globalpayee.lastName"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12">
+                  <oj-input-text id="lastName" maxlength="40" required :invalidcomponenttracker="[[$component.validationTracker]]" value="{{lastName}}"></oj-input-text>
+              </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                  <oj-label for="email"><span data-bind="text:$component.resource.payments.peertopeer.globalpayee.email"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12">
+                  <oj-input-text id="email" maxlength="40" required :invalidcomponenttracker="[[$component.validationTracker]]" value="{{emailId}}"></oj-input-text>
+              </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                  <oj-label for="password"><span data-bind="text:$component.resource.payments.peertopeer.globalpayee.password"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12">
+                <oj-input-password id="password" type="password" autocomplete="off" required value="{{password}}"></oj-input-password>
+                <virtual-keyboard params="{baseModel : $baseModel,value: password, element: 'password'}"></virtual-keyboard>
+                    </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 label">
+                  <oj-label for="confirmPassword"><span data-bind="text:$component.resource.payments.peertopeer.globalpayee.confirmPassword"></span></oj-label>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12">
+                <oj-input-password id="confirmPassword" type="password" autocomplete="off" required validators="[[[$component.equalToPassword]]]" value="{{$component.confirmPassword}}"></oj-input-password>
+                <virtual-keyboard params="{baseModel : $baseModel,value: $component.confirmPassword, element: 'confirmPassword'}"></virtual-keyboard>
+                  </div>
+          </div>
+      </div>
+
+  </page-section>
+
+    <div class="button-container claim-payment__button-left">
+          <oj-button class="action-button-primary " id="button-submit" on-click="[[createUser]]"><span slot="startIcon" class="icons icon-submit"></span>
+      <span data-bind="text:$component.resource.common.submit"></span>
+</oj-button>
+
+          <oj-button class="action-button-secondary " id="button-cancel" on-click="[[cancel]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.common.cancel"></span>
+</oj-button>
+    </div>
+
+
+  </div>
+
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="rootModel : $component, transaction: 'user-onboarding'"></help>
+    </div>
+    <!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if:stageTwo() -->
+<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <div class="row-group">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.payments.peertopeer.globalpayee.firstName ,
+                         value :onBoardingModel.firstName"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.payments.peertopeer.globalpayee.lastName ,
+                         value :onBoardingModel.lastName"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.payments.peertopeer.globalpayee.email ,
+                         value :onBoardingModel.emailId"></row>
+      </div>
+</page-section>
+
+<div class="button-container claim-payment__button-left">
+
+        <oj-button class="action-button-primary" id="button-verify" on-click="[[verifyUser]]">
+      <span data-bind="text:$component.resource.common.submit"></span>
+</oj-button>
+
+        <oj-button class="action-button-secondary" id="button-cancel" on-click="[[cancelUser]]">
+      <span data-bind="text:$component.resource.common.cancel"></span>
+</oj-button>
+</div>
+</div>
+<!-- /ko -->
+
+<!-- ko if:stageThree() -->
+<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 success-bar">
+        <span class="success-icon icons" data-bind="css: 'icon-success'">
+        </span>
+        <span class="success-msg" id="confirm" data-bind="text:$component.resource.payments.peertopeer.globalpayee.userCreatedMsg">
+        </span>
+      </div>
+
+</page-section>
+
+<div class="button-container claim-payment__button-left">
+    <oj-button class="action-button-primary" id="button_confirm" on-click="[[done]]">
+      <span data-bind="text:$component.resource.common.login"></span>
+</oj-button>
+</div>
+
+</div>
+<!-- /ko -->
+
+</div>

@@ -1,0 +1,272 @@
+$accounts-financial-tab-color: #FECA00;
+$payment-transactions-tab-color: #13B6CF;
+$bulk-file-tab-color: #0A6C99;
+$payee-biller-tab-color: #13B6CF;
+$bulk-record-tab-color: #FF7D0E;
+$trade-finance-approval-tab-color: #09A276;
+$forex-deal-tab-color: #EE82EE;
+$other-transactions-tab-color: #f64747;
+$activity-status-text-size: 1.3rem;
+@import "utils";
+.work-box-maker {
+  &-header {
+    &__title {
+      display: inline-block;
+    }
+    &__selectBox{
+      padding:0.4rem;
+    }
+  }
+
+  &__search {
+    @include single-border(left, 0.05rem solid var(--base-border-default));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-search {
+    &__icon {
+      font-size: 1.3rem;
+    }
+  }
+  &__searchButton{
+    padding:1rem;
+  }
+
+  &__flex-container {
+
+    display: -moz-box;
+    display: -ms-flexbox;
+
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+    width: 100%;
+
+    flex-flow: row wrap;
+    -webkit-align-items: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  &-flex-container {
+    &__flex-item {
+      flex-grow: 1;
+      flex-shrink: 0;
+      flex-basis: 2em;
+
+      margin: 0 0 0.6rem;
+      @include single-border(right,0.05rem solid var(--base-border-default));
+      @include padding(0, 0.6rem, 0, 0);
+
+      &:last-child {
+        @include single-border(right, 0);
+      }
+      @include mq(small) {
+        min-width: calc(100% / 2);
+
+        &:nth-child(2) {
+          @include single-border(right, 0);
+        }
+      }
+    }
+  }
+
+  .colorLoader {
+    position: relative;
+    height: 0.6rem;
+    margin: 0 0.6rem;
+    &.animate{
+
+      animation: easeInTop 1.5s 1;
+    }
+  }
+
+  &-list {
+    &__listView {
+    }
+
+    &-listView {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      &__items {
+        padding: 1rem 0.6rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        border-bottom: 0.05rem solid rgba(44,50,81,0.1);
+      }
+
+      &-items {
+        &__activity {
+          color: var(--base-text-primary) !important;
+        }
+
+        &-activity {
+          &__listItem {
+            @include float(right);
+            display: inline-block;
+          }
+
+          &-listItem {
+            &__count {
+              @include single-padding(right,0.6rem);
+              color: var(--link-base);
+              @include mq(small) {
+                color: var(--color-white);
+                background-color: var(--link-base);
+                border-radius: var(--base-font-size-default);
+                padding: 0.3rem 0.6rem;
+                font-size: var(--base-font-size-default);
+                vertical-align: middle;
+              }
+              @include mq(medium) {
+                color: var(--color-white);
+                background-color: var(--link-base);
+                border-radius: var(--base-font-size-default);
+                padding: 0.3rem 0.6rem;
+                font-size: var(--base-font-size-default);
+                vertical-align: middle;
+              }
+            }
+
+            &__icon {
+              display: inline-block;
+              color: var(--link-base);
+              @include padding(0, 0, 0, 0.3rem);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .account_financial {
+    border-top: 0.2rem solid $accounts-financial-tab-color;
+  }
+
+  .account_non_financial {
+    border-top: 0.2rem solid $accounts-financial-tab-color;
+  }
+
+  .payments {
+    border-top: 0.2rem solid $payment-transactions-tab-color;
+  }
+
+  .bulk_file {
+    border-top: 0.2rem solid $bulk-file-tab-color;
+  }
+
+  .non_financial_bulk_file {
+    border-top: 0.2rem solid $bulk-file-tab-color;
+  }
+
+  .payee_biller {
+    border-top: 0.2rem solid $payee-biller-tab-color;
+  }
+
+  .bulk_record {
+    border-top: 0.2rem solid $bulk-record-tab-color;
+  }
+
+  .non_financial_bulk_record {
+    border-top: 0.2rem solid $bulk-record-tab-color;
+  }
+
+  .trade_finance {
+    border-top: 0.2rem solid $trade-finance-approval-tab-color;
+  }
+
+  .forex_deal {
+    border-top: 0.2rem solid $forex-deal-tab-color;
+  }
+
+  .other_transaction {
+    border-top: 0.2rem solid $other-transactions-tab-color;
+  }
+}
+
+.work-box {
+
+  margin: auto;
+
+  &__headerCount {
+    color: var(--link-base);
+    font-size: calc(#{var(--base-font-size-default)} - 0.1rem);
+    margin: 0.3rem 0 0.6rem;
+    height: 1.2rem;
+  }
+
+  &.borderAlign {
+    width: 90%;
+  }
+
+  &__list {
+    padding: 0;
+  }
+
+  &-list {
+    &__item {}
+
+    &-item {
+      line-height: $activity-status-text-size;
+      border: none;
+
+      &:first-child {
+        border-top: none;
+      }
+    }
+  }
+
+  &.account_financial {
+    border-top: 0.2rem solid $accounts-financial-tab-color;
+  }
+
+  &.account_non_financial {
+    border-top: 0.2rem solid $accounts-financial-tab-color;
+  }
+
+  &.payments {
+    border-top: 0.2rem solid $payment-transactions-tab-color;
+  }
+
+  &.bulk_file {
+    border-top: 0.2rem solid $bulk-file-tab-color;
+  }
+
+  &.non_financial_bulk_file {
+    border-top: 0.2rem solid $bulk-file-tab-color;
+  }
+
+  &.payee_biller {
+    border-top: 0.2rem solid $payee-biller-tab-color;
+  }
+
+  &.bulk_record {
+    border-top: 0.2rem solid $bulk-record-tab-color;
+  }
+
+  &.non_financial_bulk_record {
+    border-top: 0.2rem solid $bulk-record-tab-color;
+  }
+
+  &.trade_finance {
+    border-top: 0.2rem solid $trade-finance-approval-tab-color;
+  }
+
+  .forex_deal {
+    border-top: 0.2rem solid $forex-deal-tab-color;
+  }
+
+  &.other_transaction {
+    border-top: 0.2rem solid $other-transactions-tab-color;
+  }
+}
+@keyframes         easeInTop { from { width: 0;left: 50%; } to { width: 100%;left: 0px; } }

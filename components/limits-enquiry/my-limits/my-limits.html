@@ -1,0 +1,326 @@
+<div class="oj-flex oj-flex-items-pad">
+  <!-- ko ifnot:$component.isRetailUser() -->
+  <div class="oj-flex-item oj-sm-12 oj-md-12" data-bind='component: {name: "nav-bar", params:{rootModel: $data,
+      menuOptions: menuOptions,
+      uiOptions:$baseModel.large()? uiOptions:uiMobileOptions,
+      navBarDescription: $component.nls.limitsInquiry.messages.navBarDescription}}'></div>
+  <!-- /ko -->
+
+</div>
+<div class="form-main-container">
+
+  <div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-sm-12 oj-md-12 oj-lg-12 oj-label section-divider">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+        <!-- ko if: $component.loadAccessPointList() -->
+
+        <div class="oj-flex oj-flex-items-pad oj-lg-12">
+
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="channelInfo" class="oj-label-inline">
+              <span data-bind="text:$component.nls.limitsInquiry.messages.channel"></span>
+            </oj-label>
+            <a class="oj-label-inline" id="channel-disclaimer" href="javascript:void(0)" data-bind="attr:{title:$component.nls.limitsInquiry.messages.channel},click:$component.channelPopup.bind($data,true)">
+                    <span class="icons icon-2x icon-information"></span></a>
+          </div>
+
+          <div class="oj-flex-item oj-sm-7 oj-md-3 oj-lg-2">
+            <oj-select-one :id="[['channel']]" required="[[true]]" value="{{selectedChannelIndex}}" :placeholder="[[$component.nls.limitsInquiry.messages.please_select]]">
+              <!-- ko foreach:$component.channelList -->
+              <oj-option value="{{id}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: $component.dataLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-label">
+            <oj-label for="transactions" id="transactions">
+              <span data-bind="text:$component.nls.limitsInquiry.messages.transactions"></span>
+            </oj-label>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-select-one :id="[['transactions']]" required="[[true]]" value="{{selectedTransactionType}}" :placeholder="[[$component.nls.limitsInquiry.messages.please_select]]">
+              <!-- ko foreach:$component.taskCodeList -->
+              <oj-option value="{{id}}"><span data-bind="text:name"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- /ko -->
+
+      </page-section>
+    </div>
+  </div>
+
+    <!-- ko if: $component.showNavigation() -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+      <div class="oj-flex oj-flex-items-pad header-spacing">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-9">
+          <!-- ko if: $baseModel.small() || $baseModel.medium()-->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="channelInfo" class="oj-label-inline header-width">
+                <a href="#" data-bind="click:$component.floatingMenuSelection">
+                        <span class="mobile-header" data-bind="text:$component.limitsHeader()"></span>
+                      </a>
+
+              </oj-label>
+
+              <a class="oj-label-inline" href="#" data-bind="attr:{title:$component.hoverText()},css:($component.selectedTransactionData() && $component.showGroupInfo() && $component.isRetailUser())? 'edit-limit':'',click:$component.floatingMenuSelection">
+                              <span class="icons icon-2x icon-arrow-down"></span>
+                            </a>
+
+              <!-- ko if: $component.isRetailUser() && $component.selectedTransactionData()-->
+              <a href="#" data-bind="attr:{title:$component.nls.limitsInquiry.messages.editLimitMessage}, click:$component.editLimit">
+                                <span class="icons icon-2x icon-remarks">
+                                </span>
+                                <span data-bind="text:$component.nls.limitsInquiry.buttons.editLimits"></span>
+                              </a>
+              <!-- /ko -->
+            </div>
+
+            <!-- ko if: $component.showGroupInfo()-->
+            <div class="oj-flex-item oj-sm-12 info-style">
+              <a id="group-view" class="oj-flex-item" href="#" data-bind="click:$component.groupViewPopUp.bind($data,true)">
+                  <span data-bind="text:$component.nls.limitsInquiry.messages.groupInfo"></span>
+                </a>
+            </div>
+            <!-- /ko -->
+          </div>
+
+          <!-- /ko -->
+
+
+          <!-- ko ifnot: $baseModel.small() || $baseModel.medium()-->
+          <div class="oj-flex oj-flex-items-pad">
+
+            <div class="limit-header">
+              <h3 class="" data-bind="text:$component.limitsHeader()"></h3>
+            </div>
+
+            <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-4">
+              <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-md-12 oj-lg-8 icon-style">
+
+
+                <!-- ko if: $component.showGroupInfo() && $baseModel.large()-->
+                <div class="oj-flex-item oj-lg-3 oj-sm-3 oj-md-3" data-bind="attr:{title:$component.hoverText()},css:($component.isRetailUser() && $component.selectedTransactionData() && $baseModel.large())? 'edit-limit':''">
+                  <a id="group-view" class="oj-label-inline" href="#" data-bind="click:$component.groupViewPopUp.bind($data,true)">
+                    <div class="icons icon-information"></div>
+                  </a>
+                </div>
+                <!-- /ko -->
+
+                <!-- ko if: $component.isRetailUser() && $component.selectedTransactionData() && $baseModel.large()-->
+                <div class="oj-flex-item">
+                  <a class="action-icon" href="#" data-bind="attr:{title:$component.nls.limitsInquiry.messages.editLimitMessage}, click:$component.editLimit">
+                    <div><span class="icons icon-remarks"></span>
+                      <span data-bind="text:$component.nls.limitsInquiry.buttons.editLimits"></span>
+                    </div>
+                  </a>
+                </div>
+                <!-- /ko -->
+
+              </div>
+            </div>
+
+
+          </div>
+          <!-- /ko -->
+
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+          <!-- ko if: $component.selectedTransactionData().transactionalLimitData && $baseModel.large() -->
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6">
+
+              <oj-label for="channel" id="channel">
+                <span data-bind="text:$component.nls.limitsInquiry.messages.minAmount"></span>
+              </oj-label>
+
+              <div class="amount" data-bind="text:$baseModel.formatCurrency($component.selectedTransactionData().transactionalLimitData.miniAmount,$component.selectedTransactionData().transactionalLimitData.miniCurrency)"></div>
+
+            </div>
+            <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6">
+
+              <oj-label for="channel" id="channel">
+                <span data-bind="text:$component.nls.limitsInquiry.messages.maxAmount"></span>
+              </oj-label>
+
+              <div class="amount" data-bind="text:$baseModel.formatCurrency($component.selectedTransactionData().transactionalLimitData.maxAmount,$component.selectedTransactionData().transactionalLimitData.maxCurrency)"></div>
+
+            </div>
+          </div>
+          <!-- /ko -->
+
+          <!-- ko if: $component.selectedTransactionData().transactionalLimitData && ($baseModel.small() || $baseModel.medium())-->
+
+          <div class="oj-flex oj-flex-items-pad">
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12">
+              <oj-label for="minAmount" class="oj-label-inline">
+                <span data-bind="text:$component.nls.limitsInquiry.messages.minAmount"></span>
+              </oj-label>
+              <span class="amount oj-label-inline" data-bind="text:$baseModel.formatCurrency($component.selectedTransactionData().transactionalLimitData.miniAmount,$component.selectedTransactionData().transactionalLimitData.miniCurrency)"></span>
+
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12">
+              <oj-label for="maxAmount" class="oj-label-inline">
+                <span data-bind="text:$component.nls.limitsInquiry.messages.maxAmount"></span>
+              </oj-label>
+              <span class="amount oj-label-inline" data-bind="text:$baseModel.formatCurrency($component.selectedTransactionData().transactionalLimitData.maxAmount,$component.selectedTransactionData().transactionalLimitData.maxCurrency)"></span>
+
+            </div>
+
+          </div>
+
+          <!-- /ko -->
+
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad  oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+        <!-- ko if: $baseModel.large() -->
+
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 limit-nav oj-navigationlist-item-text-wrap">
+          <div data-bind='component: {name: "nav-bar", params:{rootModel: $data, menuOptions : menuCountLimitOptions, uiOptions: uiLimitOptions,navBarDescription: $component.nls.limitsInquiry.messages.navBarDescription}}'></div>
+
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: $baseModel.small() || $baseModel.medium()-->
+        <floating-panel params="baseModel : $baseModel, panelId: 'panelLimits', rootModel: $component">
+
+          <ul>
+            <!-- ko foreach:$component.tabs -->
+            <li>
+              <a href="#" data-bind="click: $component.setMenuData.bind($data,$data.id)">
+                  <span data-bind="css:$data.icon"></span>
+              <span data-bind="text:$data.label"></span>
+            </a>
+            </li>
+            <!-- /ko -->
+
+          </ul>
+        </floating-panel>
+        <!-- /ko -->
+
+
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-9">
+          <!-- ko if: $component.showGraph() -->
+          <div class="oj-flex oj-flex-items-pad oj-flex-item " data-bind='component:{name: "limits-graph", params:{rootModel: $component, data: ($component.effectiveSameDayFlag() === "Y")? $component.selectedTransactionData():$component.selectedTransactionDataForGraph(),accessPointValue : $component.selectedChannelTypeName()}}'></div>
+          <!-- /ko -->
+        </div>
+      </div>
+    </page-section>
+
+    <!-- /ko -->
+
+    <!-- ko if: $component.dataLoaded() && !$component.showNavigation() -->
+
+    <div class="oj-flex oj-flex-items-pad center">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <img class="no-limit-image" data-bind="loadImage:'dashboard/reports.svg'">
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 center-note">
+        <div data-bind="text:$component.nls.limitsInquiry.messages.nolimits">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- /ko -->
+
+</div>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component , id:'confirmDialog' , header : $component.nls.limitsInquiry.messages.confirmHeader, , closeHandler: $component.closeSwitchDialog">
+  <div class="form-main-container message-text">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <!-- ko if:$component.effectiveSameDayFlag() === 'Y' -->
+        <span data-bind="text: $component.nls.limitsInquiry.messages.saveMessageEffective"></span>
+        <!-- /ko -->
+        <!-- ko if:$component.effectiveSameDayFlag() === 'N' -->
+        <span data-bind="text: $baseModel.format($component.nls.limitsInquiry.messages.saveMessage,{date:$baseModel.formatDate($component.tomorrowDate())})"></span>
+        <!-- /ko -->
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="yesMyLimitData" class="action-button-primary " on-click="[[$component.saveMyLimits]]"><span slot="startIcon" class="icons icon-yes"></span>
+        <span data-bind="text:$component.nls.limitsInquiry.buttons.yes"></span>
+      </oj-button>
+      <oj-button id="noMyLimitData" class="action-button-secondary " on-click="[[$component.closeSwitchDialog]]"><span slot="startIcon" class="icons icon-no"></span>
+        <span data-bind="text:$component.nls.limitsInquiry.buttons.no"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+
+<!-- ko if:$component.showEditLimit() -->
+<modal-window params="baseModel : $baseModel, rootModel : $component,header:$component.nls.limitsInquiry.messages.editLimits, id:'editLimitViewModal'">
+  <div data-bind="component:{name:'my-target-linkages',params:{
+       rootModel:$component,
+       effectiveSameDayFlag:$component.effectiveSameDayFlag(),
+       myLimitTransactionModel:$component.editModeData()}}"> </div>
+</modal-window>
+<!-- /ko -->
+
+<!-- ko if:$component.showTransactionGroupInfo() -->
+<oj-popup id="transactionGroupView-popup" modality="modeless" tail="simple" position.my.horizontal="start" position.my.vertical="top" position.at.horizontal="end" position.at.vertical="bottom">
+  <div class="my-limits-container">
+    <div class="oj-flex oj-flex-items-pad popup-width">
+      <span data-bind="text:$component.nls.limitsInquiry.messages.groupNameMessage"></span>
+      <span data-bind="text:$component.transactionGroupDetails().transactionGroupDescription"></span>
+    </div>
+    <div class="oj-flex oj-flex-items-pad popup-width">
+      <span data-bind="text:$component.nls.limitsInquiry.messages.groupListMessage"></span>
+      <ul class="list-align">
+        <!-- ko foreach:$component.transactionGroupDetails().taskList -->
+        <li>
+          <span data-bind="text:$data.name"></span>
+        </li>
+        <!-- /ko -->
+      </ul>
+    </div>
+
+  </div>
+
+</oj-popup>
+<!-- /ko -->
+
+<!-- ko if:$component.showChannelGroupInfo() -->
+<oj-popup id="channelGroupView-popup" modality="modeless" tail="simple" position.my.horizontal="start" position.my.vertical="top" position.at.horizontal="end" position.at.vertical="bottom">
+  <div class="my-limits-container">
+
+    <div class="oj-flex oj-flex-items-pad popup-width">
+      <span data-bind="text:$component.nls.limitsInquiry.messages.groupNameMessage"></span>
+      <span data-bind="text:$component.channelGroupDetails().channelGroupDescription"></span>
+    </div>
+    <div class="oj-flex oj-flex-items-pad popup-width">
+
+      <span data-bind="text:$component.nls.limitsInquiry.messages.groupListMessage"></span>
+      <ul class="list-align">
+        <!-- ko foreach:$component.channelGroupDetails().channelGroupList -->
+        <li>
+          <span data-bind="text:$data.description"></span>
+        </li>
+        <!-- /ko -->
+      </ul>
+    </div>
+  </div>
+
+</oj-popup>
+<!-- /ko -->
+
+<oj-popup id="channel-popup" modality="modeless" tail="simple" position.my.horizontal="start" position.my.vertical="top" position.at.horizontal="right" position.at.vertical="bottom">
+  <span data-bind="text:$component.nls.limitsInquiry.messages.showInformation"></span>
+</oj-popup>

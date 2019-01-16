@@ -1,0 +1,51 @@
+<div class="batch-approvals oj-sm-12 oj-flex-items-pad button-container">
+  <oj-button id="" class="action-button-primary" on-click="[[showModalWindow.bind($data,'approve')]]">
+    <span data-bind="text:$component.resource.serviceRequest.approve"></span>
+  </oj-button>
+  <oj-button id="" class="action-button-secondary" on-click="[[showModalWindow.bind($data,'reject')]]">
+    <span data-bind="text:$component.resource.serviceRequest.reject"></span>
+  </oj-button>
+
+</div>
+<!-- ko if:transactionSuccess() -->
+
+<div role="alert" class="oj-flex oj-sm-12 oj-flex-items-pad">
+  <div class="oj-flex-item batch-approvals__approver-status batch-approvals-approver-status" data-bind="css:  $component.approvalStatus === 'CO' ? 'batch-approvals-approver-status__approved' : 'batch-approvals-approver-status__rejected'">
+    <span class="success-icon icons" data-bind="css: 'icon-success'"></span>
+    <span class="batch-approvals-approver-status__status-message" data-bind="text:$baseModel.format($component.erroneousTransaction() > 0 ? ($component.resource.serviceRequest.batchProcessApprovals['someSuccessText']) : ($component.resource.serviceRequest.batchProcessApprovals['allSuccessText']), {successCount:$component.successfulTransactions(), failureCount:$component.erroneousTransaction(), status : $component.resource.serviceRequest.status[$component.approvalStatus]})"></span>
+    <a href="#" data-bind="attr:{'alt':$component.resource.serviceRequest.batchProcessApprovals.removeMessage ,'title':$component.resource.serviceRequest.batchProcessApprovals.removeMessageTitle, 'aria-label':$component.resource.serviceRequest.batchProcessApprovals.removeMessage },click:close"><span class="batch-approvals-approver-status__icon icon icon-close"></span></a>
+  </div>
+</div>
+<!-- /ko -->
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component, id:'otherTransactionsApproval',  header: $component.resource.serviceRequest[$component.natureOfTask()]">
+  <!-- ko if: $component.showModal() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <!-- ko ifnot: $component.showApprovalButtonset -->
+      <div data-bind="text: $baseModel.format($component.resource.serviceRequest.batchProcessApprovals.selectedTransactions, {count: $component.transactions().length})"></div>
+      <!-- /ko  -->
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <div data-bind="text: $component.resource.serviceRequest.batchProcessApprovals.remarksMandatory"></div>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-md-4 oj-lg-3 oj-sm-12">
+      <oj-label for="remarksBox"><span data-bind="text:$component.resource.serviceRequest.batchProcessApprovals.remarks"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-md-8 oj-lg-8 oj-sm-12 ">
+      <oj-text-area id="remarksBox" maxlength="100" required translations="[[{'required':{messageDetail:$component.resource.serviceRequest.messages.remarks}}]]" value="{{remarks}}"></oj-text-area>
+    </div>
+  </div>
+  <div class="message-btn button-container">
+    <oj-button id="confirm" class="action-button-primary" on-click="[[submit]]">
+      <span data-bind="text:$component.resource.serviceRequest.batchProcessApprovals[$component.natureOfTask()]" disabled="[[$component.disableApproveRejectButton()]]"></span>
+    </oj-button>
+    <oj-button id="cancel" class="action-button-secondary" on-click="[[function(){$component.disableApproveRejectButton(true);$('#otherTransactionsApproval').hide().trigger('closeModal');}]]">
+      <span data-bind="text:$component.resource.serviceRequest.batchProcessApprovals.cancel"></span>
+    </oj-button>
+  </div>
+  <!-- /ko  -->
+</modal-window>

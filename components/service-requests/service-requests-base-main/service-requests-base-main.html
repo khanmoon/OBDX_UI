@@ -1,0 +1,86 @@
+<div class="form-main-container">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex">
+      <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-md-8 oj-lg-8">
+        <!-- ko if: showSearch -->
+        <div class="oj-flex-item">
+          <oj-combobox-one id="combobox" :aria-label="[[$component.resource.serviceRequest.searchByName]]" on-value-changed="[[callView]]"
+            placeholder="{{$component.resource.serviceRequest.searchByName}}">
+            <span slot="end" class="icons icon-search"></span>
+            <!-- ko foreach: $component.SRNameList -->
+            <oj-option value="[[srid]]">
+              <span data-bind="text: name"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-combobox-one>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-sm-12 sr-list-items">
+          <div class="oj-flex-item oj-md-12 sr-list-items__banner info-text-small">
+            <span data-bind="text:$component.resource.serviceRequest.srList"></span>
+          </div>
+          <!-- ko if: $component.productData().length -->
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+            <oj-navigation-list id="nav-list" selection="{{selectedItem}}" class="list-product-item" :aria-label="[[$component.resource.serviceRequest.raiseNewHeader]]">
+              <ul>
+                <!-- ko foreach: productData -->
+                <li data-bind="attr: { id: 'product'+'_'+($index()) }">
+                  <a href="#" data-bind="click: $component.getCategory">
+                    <span data-bind="text: label"></span>
+                  </a>
+                </li>
+                <!-- /ko -->
+              </ul>
+            </oj-navigation-list>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot: $baseModel.small() -->
+          <!-- ko if:$component.categoryHandle -->
+          <!-- ko if:$component.refreshSRList -->
+          <div class="oj-flex oj-sm-12 oj-md-9 oj-lg-9">
+            <div class="oj-flex-item oj-sm-12 sr-accordian-container">
+              <oj-accordion id="sr-group-accordian" multiple="true" class="oj-lg-12">
+                <!-- ko foreach:SRCategoryList-->
+                <oj-collapsible :id="[['c1'+$index()]]">
+                  <span slot="header">
+                    <span data-bind="text:categoryName"></span>
+                  </span>
+                  <div>
+                    <oj-navigation-list aria-label=[[SRAriaLabel]]>
+                      <ul>
+                        <!-- ko foreach:srList-->
+                        <li data-bind="id:reqName">
+                          <div class="sr-request-list">
+                            <a href="#" data-bind="text:reqName, click: $component.callView"></a>
+                          </div>
+                        </li>
+                        <!-- /ko -->
+                      </ul>
+                    </oj-navigation-list>
+                  </div>
+                </oj-collapsible>
+                <!-- /ko -->
+              </oj-accordion>
+            </div>
+            <div class="oj-flex-item button-container">
+              <oj-button class="action-button-secondary" on-click="[[$dashboard.hideDetails]]">
+                <span data-bind="text:$component.resource.serviceRequest.back"></span>
+              </oj-button>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+      </div>
+      <!-- ko ifnot: $baseModel.small() -->
+      <div class="oj-sm-12 oj-lg-4">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'service-requests'"></help>
+      </div>
+      <!-- /ko -->
+    </div>
+  </page-section>
+</div>
+<!-- ko ifnot: $baseModel.small() -->
+<a class="back-link" href="#" data-bind="text: $component.resource.serviceRequest.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

@@ -1,0 +1,423 @@
+$list-card-height: 35.3rem;
+$activity-amt-size:1.3rem;
+$activity-identifier-name:1.1rem;
+$activity-identifier-sub:0.9rem;
+$form-row-highlighted:var(--base-border-default);
+$form-row-highlighted-height:4.5rem;
+$btn-activity-text-color:var(--base-text-primary);
+$last-activity-color:var(--link-base);
+$activity-date-size:0.9rem;
+$activity-desc-size:0.9rem;
+$activity-desc-color:var(--base-text-primary);
+$ref-no-size:0.9rem;
+$ref-no:var(--base-text-primary);
+$bal-amt-size:1rem;
+$bal-amt:var(--base-text-primary);
+$sch-desc-color:var(--base-text-primary);
+$sch-desc-size:0.9rem;
+$sch-date-size:0.9rem;
+$sch-amt-size:1.1rem;
+$sch-amt-color:var(--base-text-primary);
+$dis-amt-size:1.3rem;
+$maturity-desc-color:var(--base-text-primary);
+$maturity-desc-size:0.9rem;
+$maturity-period-size:1rem;
+$maturity-period:var(--base-text-primary);
+$grid-sub-header-bg:var(--base-border-default);
+$grid-table-header-height:3.7rem;
+$grid-table-header-bg:var(--base-border-default);
+$grid-sub-header-border:var(--form-input-border-color);
+$pagination-text-size:0.9rem;
+//$highlight-grid-text: ( small: 1.1rem, medium: 1.1rem, large: 1.3rem);
+.activity-history {
+	padding:1.2rem 0 !important;
+	&-title {
+		@include panel-title;
+		margin-bottom: 1.9rem;
+	}
+	max-height:$list-card-height;
+	ul {
+		margin-bottom: 1.3rem;
+	}
+	ul li {
+		min-height: 5.9rem;
+		position: relative;
+		.activity-date {
+			padding: 0;
+			color: var(--base-text-primary);
+			font-size: $activity-identifier-sub;
+		}
+		.activity-desc {
+			padding: 0;
+			color: var(--base-text-primary);
+			font-size: $activity-identifier-sub;
+		}
+		.activity-amt {
+			position: absolute;
+			bottom: 0.7rem;
+			font-size: $activity-amt-size;
+			width: 97%;
+		}
+		.credit {
+			color: var(--base-text-primary);
+		}
+		.debit {
+			color: var(--base-color-danger);
+		}
+	}
+	.oj-listview {
+		border-bottom: 0;
+		overflow: hidden;
+	}
+	.oj-select-choice {
+		font-size: $activity-identifier-name;
+		color: var(--base-text-primary);
+
+
+		border: 0;
+		height: 2.1rem;
+		border: 0.05rem solid $grid-sub-header-border !important;
+        line-height: 2.1rem;
+        margin-bottom: 0.6rem;
+        &:focus{
+            outline:-webkit-focus-ring-color auto;
+        }
+	}
+
+
+
+	.account {
+		font-size: $activity-identifier-sub;
+		padding-bottom: 0.5rem;
+	}
+	.activity-row-margin {
+		margin: 2.2rem 0;
+	}
+	.view-all {
+		@include view-all;
+        cursor: pointer;
+	}
+	.toggleview {
+		margin-bottom: 2.5rem;
+	}
+	.activity-btn-container {
+		button {
+			margin-top: -0.6rem;
+		}
+	}
+}
+
+.grid-main-container {
+	background: var(--base-background-primary);
+	padding-bottom: 4.4rem;
+	max-width: 75rem;
+	margin: 0 auto;
+	font-size: 1rem;
+	// @include panel-box-shadow;
+	.form-row-highlighted {
+		background: $form-row-highlighted;
+		height: $form-row-highlighted-height;
+
+		padding: 0.6rem 0 0.3rem;
+		@include mq(medium) {
+			height: 3.1rem;
+		}
+		.activity-btn-container img {
+			height: 1.5rem;
+			width:1.5rem;
+			cursor: pointer;
+		}
+		.oj-select-choice,
+		.oj-inputtext,
+		.oj-inputdatetime,
+		.oj-inputdatetime-input-container,
+		.oj-button {
+			font-size: 1rem;
+			border-bottom: 0 !important;
+			@include mq(medium) {
+				font-size: 0.9rem;
+			}
+		}
+		.oj-listbox-results li {
+			font-size: 1rem;
+			@include mq(medium) {
+				font-size: 0.9rem;
+			}
+		}
+	}
+	.grid-sub-header {
+		padding: 0.6rem 0;
+		border-bottom: 0.05rem solid $grid-sub-header-border;
+		background: $grid-sub-header-bg;
+	}
+	.grid-table-header {
+		padding: 1.2rem 0;
+
+		font-weight: var(--base-font-weight-bold);
+		height: $grid-table-header-height;
+		.icon {
+			color: var(--base-text-primary);
+			@include single-padding(left,0.2rem);
+			font-size: 100%;
+		}
+	}
+	.grid-row-group {
+		padding: 0.6rem 0;
+		a{
+			cursor: pointer;
+		}
+        .icon{
+            cursor:pointer;
+        }
+	}
+	.highlight-text {
+		font-size: var(--base-font-size-larger);
+	}
+	.oj-listview-item.oj-selected {
+		background: transparent;
+	}
+	.oj-listview:first-child {
+		border-width: 0 !important;
+	}
+	.ref-no-text,
+	.bal-amt-text {
+		color: $ref-no;
+		@include mq(small) {
+			font-size: $ref-no-size;
+		}
+	}
+	.status {
+		@include mq(small) {
+			font-size: $ref-no-size;
+		}
+	}
+	.credit {
+		color: var(--base-text-primary);
+	}
+	.debit {
+		color: var(--base-color-danger);
+	}
+	.activity-amt {
+        font-size: 1.3rem;
+		.debit,
+		.credit {
+			font-size: 1.3rem;
+		}
+	}
+	ul li {
+		min-height: 5.9rem;
+		position: relative;
+		padding: 0.6rem 0;
+		&:first-child {
+			border-top: 0;
+		}
+		@include mq(small) {
+			min-height: 6.9rem;
+			.last-activity {
+				position: absolute;
+				bottom: 0;@include right(0)
+			}
+		}
+	}
+	.oj-table-container {
+		width: 100%;
+		margin: 0;
+	}
+	table.oj-table-element {
+		width: 100%;
+	}
+	.oj-table-body {
+		background: var(--base-background-primary);
+		padding-bottom: 4.4rem;
+		max-width: 75rem;
+		margin: 0 auto;
+		color: var(--base-text-primary);
+	}
+	.oj-table-header {
+		padding: 1.2rem 0;
+		height: 3.7rem;
+
+		font-weight: var(--base-font-weight-bold);
+		.icon {
+			color: var(--base-text-primary);
+		}
+	}
+	.oj-table-column-header-cell {
+		@include text-align(right);
+		color: var(--base-text-primary);
+		font-weight: var(--base-font-weight-bold);
+	}
+	th.oj-table-column-header-cell {
+		&:nth-child(2) {
+			@include text-align(left);
+		}
+		&:nth-child(3) {
+			text-align: center !important;
+		}
+	}
+	&.small {
+		width: 50%;
+		th.oj-table-column-header-cell {
+			&:nth-child(2) {
+				@include text-align(left);
+			}
+			&:nth-child(3) {
+				@include text-align(right);
+			}
+		}
+		.oj-table-header {
+			background: transparent;
+		}
+		.oj-table-data-cell {
+			&:nth-child(3) {
+				@include text-align(right);
+				font-size: $dis-amt-size;
+			}
+		}
+		.dateBlock.oj-row {
+			padding-bottom: 0;
+		}
+	}
+	@include mq(medium) {
+		font-size: 0.9rem;
+		margin: 0.6rem;
+	}
+	@include mq(small) {
+		margin: 0.6rem;
+		.last-activity {@include padding(0, 0, 0.6rem, 0);
+			.label {
+				color: $last-activity-color;
+			}
+			img {
+				height: 1.9rem;
+				width:1.9rem;
+				@include mq(small) {
+					height: 1.5rem;
+					width:1.5rem;
+				}
+				.icon-filter {
+					height: 1.9rem;
+					width:1.9rem;
+				}
+			}
+		}
+		.balance-header {
+
+			padding: 0.6rem 0;
+			div:first-child {
+				padding-bottom: 0.6rem;
+			}
+			@include mq(small) {
+				font-size: 0.9rem;
+			}
+		}
+		.activity-date {
+			font-size: $activity-date-size;
+		}
+		.activity-desc {
+			font-size: $activity-desc-size;
+			color: $activity-desc-color;
+		}
+		.activity-amt {
+			.debit,
+			.credit {
+				font-size: 1.3rem;
+			}
+		}
+		.sch-desc {
+			color: $sch-desc-color;
+			font-size: $sch-desc-size;
+		}
+		.sch-date {
+			font-size: $sch-date-size;
+		}
+		.sch-amt {
+			font-size: $sch-amt-size;
+			color: $sch-amt-color;
+		}
+		.bal-amt {
+			color: $bal-amt;
+			font-size: $bal-amt-size;
+		}
+		.dis-amt {
+			font-size: $dis-amt-size;
+			position: absolute;
+			bottom: 0.6rem;@include right(0.6rem)
+		}
+		.maturity-desc {
+			color: $maturity-desc-color;
+			font-size: $maturity-desc-size;
+		}
+		.maturity-period {
+			color: $maturity-period;
+			font-size: $maturity-period-size;
+		}
+	}
+}
+
+.statement-container {
+	.modalDialog {
+		@include mq(small) {
+			top: 3.4rem;
+			background: var(--base-background-primary);
+			&Window {
+				margin: 0 auto;
+				width: 96%;
+				padding: 0 0.6rem 0.3rem;
+				position: relative;
+				top: -1.7rem;
+			}
+		}
+	}
+	.form-main-container {
+
+
+
+
+		.dialog-text-heading {
+			font-size: 1.3rem;
+			padding-bottom: 0.9rem;
+		}
+	}
+	.dialog-text {
+		color: var(--base-text-primary);
+	}
+}
+
+.filter-container {
+	.modalDialog {
+		@include mq(small) {
+			top: 3.4rem;
+			background: var(--base-background-primary);
+			&Window {
+				margin: 0 auto;
+				width: 96%;
+				padding: 0 0.6rem 0.3rem;
+				position: relative;
+				top: -1.7rem;
+			}
+		}
+	}
+	.form-title-heading {
+		margin: 0.9rem 0 0;
+	}
+	.form-main-container {
+		padding-top: 0.8rem;
+		webkit-box-shadow: 0 0.1rem 0.1rem 0 rgba(0, 0, 0, 0.4) !important;
+
+		box-shadow: 0 0.1rem 0.1rem 0 rgba(0, 0, 0, 0.4) !important;
+		.form-container {
+			margin: 0.9rem auto 0;
+		}
+	}
+}
+
+.modalDialog-window {
+	@include mq(small) {
+		margin: 0 auto;
+		width: 96%;
+		padding: 0 0.6rem 0.3rem;
+		position: relative;
+		top: -1.7rem;
+	}
+}

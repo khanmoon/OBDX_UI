@@ -1,0 +1,103 @@
+<div class="oj-panel service-advisors-container">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <h3 class="service-advisors__heading" data-bind="text:$component.resource.advisorHeading"></h3>
+    </div>
+  </div>
+  <!-- ko if:advisorsReponse() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- ko if: $data.sortedAdvisor.length > 1 -->
+    <!-- ko foreach: $data.sortedAdvisor -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 service-advisors-group">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+          <span class="icons icon-user"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-10 oj-md-10 oj-lg-10">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <span data-bind="text:$data.fullName"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 service-advisors-type">
+              <span data-bind="text:$component.resource.serviceAdvisorTyep[$data.relationship]"></span>
+            </div>
+
+            <!-- ko foreach: $data.phones -->
+            <!-- ko ifnot: $baseModel.small() -->
+            <div class="oj-flex-item oj-sm-12">
+              <span data-bind="text:$data.contactNumber"></span>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $baseModel.small() -->
+            <div class="oj-flex-item oj-sm-12">
+              <a href="#" data-bind="text: $data.contactNumber, attr: {href: 'tel:'+$data.contactNumber, 'alt':$component.resource.call.alt,'title':$component.resource.call.title,'aria-label':$component.resource.call.alt}">
+                                      </a>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko foreach: $data.emails -->
+            <div class="oj-flex-item oj-sm-12">
+              <span data-bind="html:$data.address"></span>
+            </div>
+            <!-- /ko -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <!-- ko if: $data.sortedAdvisor.length === 1 -->
+    <!-- ko foreach: $data.sortedAdvisor -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 service-advisors-group">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1 right">
+          <span class="icons icon-user"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-10 oj-md-10 oj-lg-10">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <span data-bind="text:$data.fullName"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 service-advisors-type">
+              <span data-bind="text:$component.resource.serviceAdvisorTyep[$data.relationship]"></span>
+            </div>
+            <!-- ko foreach: $data.phones -->
+            <!-- ko ifnot: $baseModel.small() -->
+            <div class="oj-flex-item oj-sm-12">
+              <span data-bind="text:$data.contactNumber"></span>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $baseModel.small() -->
+            <div class="oj-flex-item oj-sm-12">
+              <a href="#" data-bind="text: $data.contactNumber, attr: {href: 'tel:'+$data.contactNumber, 'alt':$component.resource.call.alt,'title':$component.resource.call.title,'aria-label':$component.resource.call.alt}">
+                                      </a>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko foreach: $data.emails -->
+            <div class="oj-flex-item oj-sm-12">
+              <span data-bind="html:$data.address"></span>
+            </div>
+            <!-- /ko -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot:advisorsReponse() -->
+  <div class="oj-flex service-advisors-sub-container">
+      <div class="oj-flex-item oj-sm-12 service-advisors-sub-container__noData">
+        <span data-bind="html:$component.resource.info"></span>
+        <a href="#" data-bind="attr:{href: 'tel:'+$component.resource.bankContact, 'aria-label':$component.resource.bankContact,'alt':$component.resource.bankContactAlt ,'title':$component.resource.bankContactTitle }">
+          <span data-bind="text:$component.resource.bankContact"></span>
+        </a>
+      </div>
+
+  </div>
+  <!-- /ko -->
+
+</div>

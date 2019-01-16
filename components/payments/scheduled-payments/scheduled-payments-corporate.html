@@ -1,0 +1,133 @@
+<div class="form-main-container">
+    <!-- ko if:stageOne() -->
+    <!-- ko if:upcomingPaymentsLoaded() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label ">
+                <label for="acc-no" data-bind="text:$component.resource.upcomingPayments.selectAccount"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <!-- ko if:accountFetched() -->
+                <oj-select-one id="acc-no" required on-value-changed="[[categoryChangeHandler]]" :invalidcomponenttracker="[[validator]]" value="{{accountId}}">
+                    <!-- ko foreach: accountList -->
+                    <oj-option value="{{id.value}}"><span data-bind="text:id.displayValue"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+                <modal-window params="baseModel : $baseModel, rootModel : $component,id:'noaccount'">
+                    <div class="center" data-bind="text:$component.resource.upcomingPayments.noCASAAccount"></div>
+                    <div class="oj-flex oj-flex-items-pad button-container">
+                        <oj-button class="action-button-primary" on-click="[[closeDialog]]">
+                            <span class="icons icon-ok" slot="startIcon"></span><span data-bind="text:$component.resource.generic.common.ok">
+                                    </span>
+                        </oj-button>
+                    </div>
+                </modal-window>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "nav-bar",
+                            params:{rootModel: $data,menuOptions : menuCountOptions, uiOptions:uiOptions(),navBarDescription:$component.resource.upcomingPayments.smalltitle}}'>
+        </div>
+        <!-- ko if : $baseModel.large() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-table id="table" :aria-label="[[$component.resource.upcomingPayments.header]]" columns="[[[
+            {headerText:$component.resource.upcomingPayments.date,template:'date',sortProperty:'date'},
+            {headerText:$component.resource.upcomingPayments.beneficiaryName,field:'name',sortProperty:'name'},
+            {headerText:$component.resource.upcomingPayments.transType,field:'descforTable'},
+            {headerText:$component.resource.upcomingPayments.accountDetails,field:'creditAccount'},
+            {headerText:$component.resource.upcomingPayments.paymentType,field:'payType'},
+            {headerText:$component.resource.upcomingPayments.amount,field:'formatAmount',sortProperty:'amount'},
+            {headerText:$component.resource.upcomingPayments.action,template:'delete2'}
+            ]]]" selection-mode="[[{row:'none'}]]" data="[[$component.datasource]]">
+                <caption class="hide-label" data-bind="text:$component.resource.upcomingPayments.header"></caption>
+                <template slot="delete2">
+                    <td>
+                        <a class="payments" href="#" data-bind="attr:{'alt':$component.resource.reviewScheduledPayments.alt,'title':$component.resource.reviewScheduledPayments.title},click:$component.delete.bind($data,$current.row)">
+                        <span class="icons action-icon icon-delete"></span>
+                    </a>
+                    </td>
+                </template>
+                <template slot="date">
+                    <td>
+                        <date-box params="baseModel : $baseModel, date:$current.row.date"></date-box>
+                    </td>
+                </template>
+            </oj-table>
+            <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.datasource]]">
+            </oj-paging-control>
+        </div>
+        <!-- /ko -->
+    </page-section>
+    <!-- ko if:!$baseModel.large() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <oj-list-view class="payments" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('scheduledPayments-Corp',true)}]]" data="[[datasource]]">
+        </oj-list-view>
+        <script type="text/html" id="scheduledPayments-Corp">
+            <li class="payments-list__listItem" data-bind="attr: {id: $data['externalReferenceNumber']}">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-10 oj-md-6">
+                        <label data-bind="text:$component.resource.upcomingPayments.date"></label>
+                        <div data-bind="text: $baseModel.formatDate(date)"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-2 oj-md-6 payments">
+                        <a href="#" class="action-button-secondary delete" data-bind="attr:{'alt':$component.resource.reviewScheduledPayments.alt,'title':$component.resource.reviewScheduledPayments.title}, click:$component.delete">
+                            <div class="icons action-icon icon-delete"></div>
+                        </a>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item">
+                        <label data-bind="text:$component.resource.upcomingPayments.beneficiaryName"></label>
+                        <div data-bind="text: name"></div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.upcomingPayments.transType"></label>
+                        <div data-bind="text: desc"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.upcomingPayments.accountDetails"></label>
+                        <div data-bind="text: creditAccount || '—'"></div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.upcomingPayments.paymentType"></label>
+                        <div data-bind="text: payType"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-6">
+                        <label data-bind="text:$component.resource.upcomingPayments.amount"></label>
+                        <div data-bind="text: formatAmount"></div>
+                    </div>
+                </div>
+            </li>
+        </script>
+        <oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[$component.datasource]]">
+        </oj-paging-control>
+    </page-section>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-secondary" id="button" on-click="[[$dashboard.hideDetails]]">
+            <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resource.generic.common.cancel">
+                    </span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>
+<!-- ko if:stageTwo() -->
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.upcomingPayments.reviewDelete">
+    <div data-bind="template: { name: 'payments/review-scheduled-payments' }"></div>
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" id="button" on-click="[[confirmDelete]]">
+        <span class="icons icon-confirm" slot="startIcon"></span><span data-bind="text:$component.resource.generic.common.confirm">
+                </span>
+    </oj-button>
+    <oj-button class="action-button-secondary" id="cancel" on-click="[[back]]">
+        <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resource.generic.common.cancel">
+                </span>
+    </oj-button>
+</div>
+<!-- /ko -->

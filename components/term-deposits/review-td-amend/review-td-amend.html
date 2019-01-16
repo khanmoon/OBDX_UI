@@ -1,0 +1,58 @@
+<div class="form-main-container">
+  <!-- ko if: $component.params.mode ==='review' -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+  <!-- /ko -->
+  <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="row-group">
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.amendTD.tdAccountNumber , dataClass : 'highlight-text',value :$component.params.data.id.displayValue()"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.common.maturityInstructions.revisedMaturityInstruction, value :resource.common.maturityInstructions[$component.params.data.module()][$component.params.data.rollOverType()]"></row>
+      <!-- ko ifnot:$component.params.data.rollOverType()==='I'-->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.payTo , dataClass : 'highlight-text',value : resource.transactions.termDepositDetails.payoutInstructions.payoutType[$component.params.data.payoutInstructions()[0].type()]"></row>
+      <!-- ko if:$component.params.data.rollOverType()==='S' -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.renewAmount, value:$baseModel.formatCurrency($component.params.data.rollOverAmount.amount(),$component.params.data.rollOverAmount.currency())"></row>
+      <!-- /ko -->
+      <!-- ko if:$component.params.data.payoutInstructions() && $component.params.data.payoutInstructions().length -->
+      <!-- ko if:$component.params.data.payoutInstructions()[0].type()==='O' -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.transferAccount, value :[$component.params.data.payoutInstructions()[0].beneficiaryName(),$component.params.data.payoutInstructions()[0].accountId.displayValue(),$component.params.data.payoutInstructions()[0].bankName(),$component.params.data.payoutInstructions()[0].address.line1,$component.params.data.payoutInstructions()[0].address.line2,$component.params.data.payoutInstructions()[0].address.city,$component.params.data.payoutInstructions()[0].address.country]"></row>
+
+      <!-- /ko -->
+
+      <!-- ko if:$component.params.data.payoutInstructions()[0].type()==='I' -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.account, value :$component.params.data.payoutInstructions()[0].account"></row>
+      <!-- /ko -->
+
+      <!-- ko if:$component.params.data.payoutInstructions()[0].type()==='E' -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.branch ,
+          value :[$component.params.data.payoutInstructions()[0].beneficiaryName(),
+          $component.params.data.payoutInstructions()[0].account(),
+          $component.params.data.payoutInstructions()[0].networkType ? $component.params.data.payoutInstructions()[0].networkType() : '' ,
+          $component.params.data.payoutInstructions()[0].clearingCode ? $component.params.data.payoutInstructions()[0].clearingCode() : '',
+          $component.params.data.payoutInstructions()[0].bankName(),
+          $component.params.data.payoutInstructions()[0].address.line1(),
+          $component.params.data.payoutInstructions()[0].address.line2(),
+          $component.params.data.payoutInstructions()[0].address.city(),
+          $component.params.data.payoutInstructions()[0].address.country()]"></row>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+  </page-section>
+  <!-- ko if:$component.params.mode ==='review'-->
+  <div class="button-container">
+    <oj-button id="dialogtopupButton" class="action-button-primary " on-click="[[confirmAmendTD]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.locale.generic.common.confirm"></span>
+</oj-button>
+
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.locale.generic.common.cancel"></span>
+</oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.locale.generic.common.back"></span>
+</oj-button>
+
+  </div>
+  <!-- /ko -->
+</div>

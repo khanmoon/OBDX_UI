@@ -1,0 +1,31 @@
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <search-report params='baseModel : $baseModel, rootParams: $component,readOnly:true,report:"openToday"'></search-report>
+</page-section>
+<!-- ko if:stageThree() -->
+    <div class="grid-main-container">
+      <!-- ko if:reportData().length>0 -->
+        <div class="right">
+           <img title="Download" class="downloadimg" data-bind="loadImage:'wallet/download-statement.svg',click:$component.downloadPDF.bind($data,'openToday')">
+        </div>
+        <div class="oj-flex oj-flex-items-pad oj-flex grid-table-header">
+              <div class="oj-lg-4  oj-flex-item" data-bind="text:$component.wallet.report.name"></div>
+              <div class="oj-lg-4  oj-flex-item" data-bind="text:$component.wallet.report.emailid"></div>
+              <div class="oj-lg-4  oj-flex-item" data-bind="text:$component.wallet.report.mobilenumber"></div>
+        </div>
+      <!-- /ko -->
+        <oj-list-view selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.datasource()]]">
+        </oj-list-view>
+        <div class="oj-flex oj-flex-items-pad">
+          <oj-paging-control class="oj-lg-11 oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.datasource()]]"></oj-paging-control>
+        </div>
+        <script type="text/html" id="content_template">
+          <li>
+              <div class="oj-flex oj-flex-items-pad oj-flex grid-row-group">
+                    <div class="oj-flex-item oj-lg-4" data-bind="text:firstName+lastName"></div>
+                    <div class="oj-flex-item oj-lg-4" data-bind="text:emailId"></div>
+                    <div class="oj-flex-item oj-lg-4" data-bind="text:mobileNo"></div>
+              </div>
+          </li>
+        </script>
+    </div>
+<!-- /ko -->

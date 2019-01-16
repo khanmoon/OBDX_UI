@@ -1,0 +1,19 @@
+<div class="form-main-container">
+	<page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+		<div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+		<div data-bind="template: { name: 'common/review/address',data:$component.addressDetails }"></div>
+		<div class="oj-flex button-container">
+			<oj-button class="action-button-primary " on-click="[[$component.requestPin]]"><span slot="startIcon" class="icons icon-confirm"></span>
+				<span data-bind="text:$component.locale.common.confirm"></span>
+			</oj-button>
+			<!-- ko if: !$baseModel.small() -->
+			<oj-button class="action-button-secondary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-cancel"></span>
+				<span data-bind="text:$component.locale.common.cancel"></span>
+			</oj-button>
+			<!-- /ko -->
+			<oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+				<span data-bind="text:$component.locale.generic.common.back"></span>
+			</oj-button>
+		</div>
+	</page-section>
+</div>

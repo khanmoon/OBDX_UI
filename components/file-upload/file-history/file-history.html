@@ -1,0 +1,116 @@
+<page-section params="baseModel : $baseModel, rootModel : $data, heading: $component.Nls.fileDetails">
+    <div data-bind="with:$component.selectedFile()">
+        <div class="oj-flex oj-flex-items-pad label">
+            <label data-bind="text : $component.Nls.fileName" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            </label>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3 label">
+                <span id="fileName" data-bind="text: fileName"></span>
+                <!-- ko if:$component.allowAccess -->
+                <a href="" class="oj-padding icons icon-download" data-bind="click:$component.downloadFile , attr: { alt: $component.Nls.downloadFileText, title:  $component.Nls.downloadFile }"></a>
+                <!-- /ko -->
+            </div>
+            <!-- ko if:$baseModel.large() -->
+            <label class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label" data-bind="text : $component.Nls.transactionType">
+            </label>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3 label">
+                <span data-bind="text : paymentType"></span>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot:$baseModel.large() -->
+            <div class="oj-flex-item oj-md-6 oj-sm-12">
+                <label data-bind="text : $component.Nls.transactionType"></label>
+                <div data-bind="text : paymentType"></div>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad label">
+            <label class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label" data-bind="text : $component.Nls.referenceId">
+            </label>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3 label">
+                <span data-bind="text : fileId"></span>
+            </div>
+            <!-- ko if:$baseModel.large() -->
+            <label class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label" data-bind="text : $component.Nls.noOfRecordds">
+            </label>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3 label">
+                <span data-bind="text : totalRecords"></span>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot:$baseModel.large() -->
+            <div class="oj-flex-item oj-md-6 oj-sm-12">
+                <label data-bind="text : $component.Nls.noOfRecordds"></label>
+                <div data-bind="text : totalRecords"></div>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad label">
+            <label class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label" data-bind="text : $component.Nls.status">
+            </label>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3 label">
+                <span id="fileStatus" data-bind="text : fileStatusDesc">
+            </span></div>
+            <!-- ko if:$baseModel.large() -->
+            <!-- ko if:('txnRefId' in $data) -->
+            <label class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label" data-bind="text : $component.Nls.txnRefId">
+            </label>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3 label">
+                <span id="txnId" data-bind="text : txnRefId">
+            </span></div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot:$baseModel.large() -->
+            <!-- ko if:('txnRefId' in $data) -->
+            <div class="oj-flex-item oj-md-6 oj-sm-12">
+                <label data-bind="text : $component.Nls.txnRefId"></label>
+                <div id="txnId" data-bind="text : txnRefId"></div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad label">
+            <!-- ko if:fileStatus==="ERROR" || filePartiallyProcessed-->
+            <label id="errorFile" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label" data-bind="text: $component.Nls.errorReport">
+            </label>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3 label">
+                <a href="#" class="icons icon-download" data-bind="click: $component.downloadErrorFile  , attr: { alt: $component.Nls.downloadErrorFileText, title: $component.Nls.downloadErrorFile }"></a>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:$component.allowAccess -->
+            <!-- ko if:fileStatus==="PROCESSED" || $component.historyMap["PROCESSED"]-->
+            <label id="responseFile" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label" data-bind="text: $component.Nls.responseFile">
+            </label>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3 label">
+                <a href="#" class="icons icon-download" data-bind="click: $component.downloadResponseFile , attr: { alt: $component.Nls.downloadResponseFileText, title: $component.Nls.downloadResponseFile }"></a>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- ko if: $component.fileWorkFlowStagesListLoaded() && $component.recordLabelRendered() -->
+    <div>
+        <div class="oj-flex oj-flex-items-pad label">
+            <div class="oj-flex-item">
+                <oj-label for="history"><span data-bind="text:$component.Nls.fileWorkFlow"></span></oj-label>
+            </div>
+        </div>
+        <!-- ko if:$baseModel.large() -->
+        <div class="oj-flex oj-flex-items-pad main-train">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-train id="train2" class="oj-train-stretch oj-flex-item" selected-step="{{currentStepValue}}" steps="[[statusArray]]">
+                </oj-train>
+                <div class="oj-flex-item oj-md-6 oj-sm-12" data-bind="template:{afterRender: $component.renderLabels}"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$baseModel.large() -->
+        <div class="oj-flex oj-flex-items-pad main-train">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-train id="train2" class="oj-train-stretch oj-flex-item" selected-step="{{currentStepValue}}" steps="[[statusArray]]">
+                </oj-train>
+                <div class="oj-flex-item oj-md-6 oj-sm-12" data-bind="template:{afterRender: $component.renderLabels}"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+</page-section>

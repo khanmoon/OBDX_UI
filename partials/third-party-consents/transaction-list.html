@@ -1,0 +1,28 @@
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <ul class="third-party-consents__account-list__task-list">
+            <li class="third-party-consents__account-list__task-list__task">
+                <oj-checkboxset :id="[[displayId+'mapAllTransactions']]" value="{{mapAllTransactions}}" on-value-changed="[[selectAllTasks]]" disabled="[[$component.disabled()]]">
+                    <oj-option :id="[[displayId+'mapAllTransactionsOptions']]" value="checked"><span data-bind="text : $component.nls.labels.mapAllTransactions"></span></oj-option>
+                </oj-checkboxset>
+            </li>
+            <!-- ko foreach: tasks -->
+            <li class="third-party-consents__account-list__task-list__task">
+                <oj-checkboxset :id="[[displayId]]" value="{{checked}}" on-value-changed="[[selectAllChildTasks]]" disabled="[[$component.disabled()]]">
+                    <oj-option :id="[[displayId+'option']]" value="checked"><span data-bind="text : name"></span></oj-option>
+                </oj-checkboxset>
+                <div class="oj-flex oj-flex-items-pad third-party-consents__account-list__task-list__task__child-task-list">
+                    <!-- ko foreach: childTasks() -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+                        <oj-checkboxset :id="[[displayId]]" value="{{checked}}" disabled="[[$component.disabled()]]">
+                            <oj-option :id="[[displayId+'option']]" value="checked"><span data-bind="text : name"></span></oj-option>
+                        </oj-checkboxset>
+
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </li>
+            <!-- /ko -->
+        </ul>
+    </div>
+</div>

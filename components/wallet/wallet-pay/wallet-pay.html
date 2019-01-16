@@ -1,0 +1,127 @@
+<!-- ko if: showBalanceInfo -->
+<div data-bind="component:{name: 'wallet-info-panel', params:{rootModel: $parent }}"></div>
+<!-- /ko -->
+<div class=" wallets_container">
+
+  <!-- ko if: stageOne() -->
+<div class="oj-panel form-main-container card-action-container customizedinput">
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+  <div class="section">
+    <div class="wallets-action-label">
+          <oj-label for="payeeId"><span data-bind="text:$component.wallet.pay.pay_who"></span></oj-label>
+    </div>
+    <div class="oj-row">
+      <oj-input-text id="payeeId" required maxlength="50" value="{{walletPayee}}" on-setisselected="[[setIsSelected]]" translations="[[{'required':{messageDetail:$component.wallet.pay.invalidrecipient}}]]" :placeholder="[[$component.wallet.pay.pay_who_placeholder]]" validators="[[[validateRecepient]]]"></oj-input-text>
+        <div data-bind="visible: showPayee">
+          <!-- ko foreach: filteredPayee -->
+          <a href="javascript:void(0)" data-bind="click:$parent.selectPayee">
+          <div class="walletpayeelist">
+            <div class="walletpayee oj-row">
+              <div class="oj-sm-5 oj-col">
+                <span data-bind="text:$data.firstName+$data.lastName"></span>
+              </div>
+
+              <div class="oj-sm-5 oj-col">
+                <!-- ko if: $data.mobileNo -->
+                <span data-bind="text:$data.mobileNo"></span>
+                <!-- /ko -->
+                <!-- ko if: !$data.mobileNo -->
+                <span data-bind="text:$data.emailId"></span>
+                <!-- /ko -->
+              </div>
+            </div>
+          </div></a>
+
+          
+          <!-- /ko -->
+        </div>
+    </div>
+    <div class="oj-row" data-bind="component: {
+           name: 'amount-input', params: {
+               amount : transactionDetails.amount.amount,
+               label : $component.common.amount,
+               currency:walletCurrency(),
+               validator:$component.validationTracker,
+               isMandatory:true,
+               currencyListRequired:false,
+               rootId:'transferAmount',
+               rootClass:'form-input'
+           }
+       }"></div>
+
+    <div class="oj-row" data-bind="component:{name: 'comment-box',
+          params:{
+          rootModel: $root,
+          maxlength:40,
+          label:$component.wallet.pay.comment,
+          rootId:'payComment',
+          rootClass:'form-input',
+          required:true,
+          validator:$component.validationTracker,
+          comment:payComment}}"></div>
+
+    <div class="oj-row button-container">
+        <oj-button id="button" class="action-button-primary" on-click="[[initiateTransaction]]">
+      <span data-bind="text:$component.wallet.pay.pay_now"></span>
+</oj-button>
+        <img data-bind="loadImage:'wallet/wallet-farward-white.png'">
+    </div>
+</div>
+</page-section>
+</div>
+  <!-- /ko -->
+  <!-- ko if: stageTwo() -->
+  <div class="oj-panel form-main-container card-action-container customizedinput">
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+          <div class="section">
+              <div class="oj-row">
+                <div class=" wallets-action-label">
+                  <oj-label for="otp"><span data-bind="text:$component.wallet.pay.paying"></span></oj-label>
+                </div>
+                <div class=" wallets-review-label">
+                    <oj-label><span data-bind="text:payeeName"></span></oj-label>
+                </div>
+              </div>
+              <div class="oj-row">
+                <div class=" wallets-action-label">
+                  <oj-label for="otp"><span data-bind="text:$component.common.amount"></span></oj-label>
+                </div>
+                <div class=" wallets-review-label">
+                    <oj-label><span data-bind="text:$baseModel.formatCurrency(transactionDetails.amount.amount(),walletCurrency())"></span></oj-label>
+                </div>
+              </div>
+              <div class="oj-row">
+                <div class=" wallets-action-label">
+                  <oj-label for="otp"><span data-bind="text:$component.wallet.pay.comment"></span></oj-label>
+                </div>
+                <div class=" wallets-review-label">
+                    <oj-label><span data-bind="text:payComment()"></span></oj-label>
+                </div>
+              </div>
+          <div class="oj-row button-container">
+              <oj-button id="dialogtopupButton" class="action-button-primary" on-click="[[checkOTPConfiguration]]">
+      <span data-bind="text:$component.common.confirm"></span>
+</oj-button>
+              <img data-bind="loadImage:'wallet/wallet-farward-white.png'">
+              
+               <oj-button class="action-button-secondary" id="button-cancel" on-click="[[cancelTransfer]]">
+      <span data-bind="text:$component.common.cancel"></span>
+</oj-button>
+          </div>
+          </div>
+        </page-section>
+      </div>
+  <!-- /ko -->
+  <!-- ko if: stageThree() -->
+      <div class="otpscreen">
+          <div class="oj-panel form-main-container card-action-container">
+              <otp-verification params="baseModel : $baseModel, 
+                           rootModel : $component,
+                           callback:verifyOTP,
+                           baseUrl:baseURL
+                           ">
+               </otp-verification>
+          </div>
+      </div>
+<!-- /ko -->
+</div>

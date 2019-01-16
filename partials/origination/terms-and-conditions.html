@@ -1,0 +1,44 @@
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item">
+    <h4 class="form-heading" id="termsAndConditionsTitle" data-bind="text: $component.resource.termsAndConditions"></h4>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad oj-lg-offset-1">
+  <div class="oj-option-row">
+    <div class="oj-flex-item oj-sm-12">
+      <oj-label class="hide-label" for="termsAndConditions"><span data-bind="text:$component.resource.termsAndConditionsText"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12">
+      <oj-checkboxset id="termsAndConditions" value="{{$component.termsAndConditions}}" aria-labelledby="termsAndConditionsTitle" translations="[[{'required':{messageDetail:$component.resource.messages.termsAndConditions}}]]" required>
+        <oj-option value="accept">
+          <span class="text oj-choice-row-inline">
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-lg-12">
+                    <span class="text" data-bind="text:$component.resource.termsAndConditionsText">
+                  </div>
+                </div>
+              </span></oj-option>
+      </oj-checkboxset>
+    </div>
+    <div class="oj-flex-item">
+      <a class="link" href="#" data-bind="click: $component.viewTermAndConditions, text: $component.resource.termsAndConditionsText2, attr:{alt: $component.resource.termsAndConditionsClick, title: $component.resource.termsAndConditionsClickTitle}"></a>
+    </div>
+  </div>
+</div>
+<modal-window class="origination-popup message" params="baseModel : $baseModel, rootModel : $component, id:'termsAndConditionsPopup', header:$component.resource.termsAndConditions">
+  <div class="message-text scroll text user-login-configuration__terms-conds-scroll information-wrapper" data-bind="template: { name:
+      'help/terms-and-conditions'}"></div>
+  <div class="message-btn button-container">
+    <oj-button id="termsAndConditionsButton" class="toUpperCase oj-button form-button-primary" on-click="[[$component.closeTermAndConditions]]">
+      <span data-bind="text:$component.resource.generic.common.ok"></span>
+    </oj-button>
+  </div>
+</modal-window>
+<modal-window class="origination-popup message" params="baseModel : $baseModel, rootModel: $component, id: 'readtermsAndConditionsPopup', header: $component.resource.generic.common.info">
+  <div class="message-text scroll" data-bind="text: $component.resource.messages.readTermAndConditions"></div>
+  <div class="message-btn button-container">
+    <oj-button id="readtermsAndConditionsButton" class="toUpperCase oj-button form-button-primary" on-click="[[function(){$('#readtermsAndConditionsPopup').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.generic.common.ok"></span>
+    </oj-button>
+  </div>
+</modal-window>

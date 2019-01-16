@@ -1,0 +1,49 @@
+<div class="form-main-container">
+    <!-- ko if: $component.showActivitySuccessMsg() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 payee-accordian__success-bar">
+            <span class="success-icon icons" data-bind="css: 'icon-success'"></span>
+            <span class="success-msg" id="confirm" data-bind="text:$component.limitSetMessage()"></span>
+        </div>
+    </page-section>
+    <!-- /ko -->
+    <!-- ko if:$component.showPayeeDetails() -->
+    <div data-bind="template: { name: 'payee/payee-view-edit', data: $component.payeeData() }"></div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary " on-click="[[$component.paySelectedPayee]]"><span slot="startIcon" class="icons icon-pay"></span>
+            <span data-bind="text:$component.payments.payee.labels.pay"></span>
+        </oj-button>
+        <!-- ko if: $component.newLimitAmount() || $component.newMonthlyLimitAmount() -->
+        <oj-button class="action-button-secondary " on-click="[[$component.removeLimits]]"><span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.payments.payee.labels.removeLimits"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary " id="back" on-click="[[$component.backButtonHandler || $dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.payments.generic.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- ko if: $baseModel.small() -->
+    <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'remove-limits', header : $component.payments.payee.labels.removeLimits, closeHandler : $component.removeLimitCloseHandler">
+        <!-- ko if: $component.showActivitySuccessMsg() -->
+        <div class="pfm">
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 success-bar">
+                    <span class="success-icon icons" data-bind="css: 'icon-success'"></span>
+                    <span class="success-msg" id="confirm" data-bind="text:$component.limitSetMessage()"></span>
+                </div>
+            </page-section>
+        </div>
+        <!-- /ko -->
+        <oj-checkboxset class="oj-choice-direction-row" value="{{$component.removeLimit}}">
+            <oj-option id="daily" disabled="[[$component.newLimitAmount()?false:true]]" value="{{$component.payments.payee.labels.dailylimit}}"><span for="daily" data-bind="text:$component.payments.payee.labels.dailylimit"></span></oj-option>
+            <oj-option id="monthly" disabled="[[$component.newMonthlyLimitAmount()?false:true]]" value="{{$component.payments.payee.labels.monthlylimit}}"><span for="monthly" data-bind="text:$component.payments.payee.labels.monthlylimit"></span></oj-option>
+        </oj-checkboxset>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary " on-click="[[$component.done]]"><span slot="startIcon" class="icons icon-ok"></span>
+                <span data-bind="text:$component.payments.common.ok"></span>
+            </oj-button>
+        </div>
+    </modal-window>
+    <!-- /ko -->
+</div>

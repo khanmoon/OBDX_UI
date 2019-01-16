@@ -1,0 +1,171 @@
+<!-- ko if : dataLoaded() -->
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-9">
+    <div class="form-main-container">
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <oj-validation-group id="tracker" valid="{{groupValid}}">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="accessPointId">
+                <span data-bind="text:$component.nls.accessPoint.accessPointId"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-input-text id="accessPointId" value="{{accessPointId}}" disabled="{{params.mode==='editAfterUpdate'}}" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.nls.accessPoint.invalidAccessPoint,{type: 'length',options: {min: 1, max: 20}})]]"
+                aria-labelledby="accessPointId" required></oj-input-text>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="accessPointDescription">
+                <span data-bind="text:$component.nls.accessPoint.accessPointName"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-input-text id="accessPointDescription" value="{{accessPointDescription}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.nls.accessPoint.invalidAccessPointName,{type: 'length',options: {min: 1, max: 40}})]]" aria-labelledby="accessPointDescription"
+                required></oj-input-text>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="accessType" id="accessTypeLabel">
+                <span data-bind="text:$component.nls.accessPoint.accessType"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-radioset class="oj-choice-direction-row" id="accessType" labelled-by="accessTypeLabel" value="{{accessType}}" on-value-changed="[[accessTypeChangeHandler]]" required>
+                <!-- ko foreach: accessTypeOptions -->
+                <oj-option :id="{{code}}" value="{{code}}"><span data-bind="text:  description"></span></oj-option>
+                <!-- /ko -->
+              </oj-radioset>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="clientId">
+                <span data-bind="text:$component.nls.accessPoint.clientId"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-input-text id="clientId" value="{{clientId}}" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.nls.accessPoint.invalidClientId,{type: 'length',options: {min: 0, max: 255}})]]" aria-labelledby="clientId"></oj-input-text>
+            </div>
+          </div>
+          <!-- ko if : isExternal -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="scopes">
+                <span data-bind="text:$component.nls.accessPoint.scope"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-8">
+              <oj-combobox-many id="scopes" value="{{selectedScopes}}" required>
+                <!-- ko foreach: scopeOptions -->
+                <oj-option :id="{{id}}" value="{{description}}"><span data-bind="text:  description"></span></oj-option>
+                <!-- /ko -->
+              </oj-combobox-many>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="logo">
+                <span data-bind="text:$component.nls.accessPoint.selectImage"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <a href="javascript:void(0)" data-bind="attr: {'aria-label':$component.nls.accessPoint.attachFile,'alt':$component.nls.accessPoint.attachFile ,'title':$component.nls.accessPoint.selectImage}">
+                <oj-file-picker class="oj-filepicker-custom" selection-mode="single" selecton="click" on-oj-select="[[imageSelectListener]]" data-bind="attr: {alt:$component.nls.accessPoint.attachFile,'id': 'document-upload'}" accept='[".jpg",".png",".jpge"]'>
+                  <div class="icons icon-upload oj-sm-2" slot="trigger">
+                  </div>
+                </oj-file-picker>
+              </a>
+              <span data-bind="text:$component.uploadedImage"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="statusSwitch" id="statusSwitchLabel">
+                <span data-bind="text:$component.nls.accessPoint.accessPointStatus"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-switch id="statusSwitch" value="{{statusSwitch}}" required></oj-switch>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="headlessMode" id="headlessModeLabel">
+                <span data-bind="text:$component.nls.accessPoint.headlessMode"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-switch id="isHeadlessMode" value="{{isHeadlessMode}}" required></oj-switch>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="twoFARequired" id="twoFARequiredLabel">
+                <span data-bind="text:$component.nls.accessPoint.twoFARequired"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-switch id="twoFARequired" value="{{twoFARequired}}" required></oj-switch>
+            </div>
+          </div>
+          <!-- ko ifnot : isExternal -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="defaultSelect" id="defaultSelectLabel">
+                <span data-bind="text:$component.nls.accessPoint.defaultSelect"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-switch id="defaultSelect" value="{{defaultSelect}}" required></oj-switch>
+            </div>
+          </div>
+          <!-- /ko -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="selfOnboard" id="selfOnboardLabel">
+                <span data-bind="text:$component.nls.accessPoint.selfOnboard"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-switch id="selfOnboard" value="{{selfOnboard}}" required></oj-switch>
+            </div>
+          </div>
+		  
+		  <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="skipLoginFlow" id="skipLoginFlow">
+                <span data-bind="text:$component.nls.accessPoint.skipLoginFlow"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-switch id="skipLoginFlow" value="{{skipLoginFlow}}" required></oj-switch>
+            </div>
+          </div>
+
+        </oj-validation-group>
+
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-primary" id="submitbtn" on-click="[[submit]]">
+            <span data-bind="text:$component.nls.generic.common.save"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" id="cancelbtn" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" id="backbtn" on-click="[[back]]">
+            <span data-bind="text:$component.nls.generic.common.back"></span>
+          </oj-button>
+        </div>
+
+      </page-section>
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'access-point'"></help>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->

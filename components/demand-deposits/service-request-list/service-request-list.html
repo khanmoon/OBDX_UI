@@ -1,0 +1,96 @@
+<!-- ko if: !$baseModel.small() -->
+<div class="grid-main-container">
+
+	<div class="oj-flex oj-flex-items-pad  grid-table-header">
+		<div class="oj-lg-2 oj-md-2 oj-sm-12 oj-flex-item">
+			<span data-bind="text : nls.serviceRequest.date"></span>
+		</div>
+
+
+
+		<div class="oj-lg-5 oj-md-4 oj-sm-12 oj-flex-item">
+			<span data-bind="text : nls.serviceRequest.description.description"></span>
+		</div>
+
+
+		<div class="oj-lg-3 oj-md-3 oj-sm-12 oj-flex-item">
+			<span data-bind="text : nls.serviceRequest.refNo"></span>
+		</div>
+
+		<div class="oj-lg-2 oj-md-3 oj-sm-12 oj-flex-item">
+			<span data-bind="text : nls.serviceRequest.status.status"></span>
+		</div>
+
+	</div>
+
+<oj-label for="listview" class="hide-label"><span data-bind="text:$component.nls.accountActivity.accountInfo"></span></oj-label>
+	<oj-list-view id="listview" selection-mode="[['single']]">
+
+		<!-- ko foreach: serviceRequests() -->
+		<li>
+			<div class="oj-flex oj-flex-items-pad grid-row-group">
+				<div class="oj-lg-2 oj-md-2 oj-sm-12 oj-flex-item">
+					<div data-bind="component:{name: $component.componentName, params:{date: creationDate }}"></div>
+				</div>
+
+
+
+				<div class="oj-lg-5 oj-md-4 oj-sm-12 oj-flex-item activity-desc">
+					<span data-bind="text : $data.requestType ?$component.nls.serviceRequest.description[$data.requestType] : ' '"></span>
+				</div>
+
+
+				<div class="oj-lg-3 oj-md-3 oj-sm-12 oj-flex-item">
+					<span data-bind="text : $data.id ? $data.id : ' '"></span>
+				</div>
+
+				<div class="oj-lg-2 oj-md-3 oj-sm-12 oj-flex-item">
+					<span data-bind="text : $data.status ?$component.nls.serviceRequest.status[$data.status] : ' '"></span>
+				</div>
+
+			</div>
+		</li>
+		<!-- /ko -->
+	</oj-list-view>
+	<div class="oj-flex oj-flex-items-pad">
+		<div id="content" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+	</div>
+</div>
+<a class="back-link" href="#" data-bind="text: $component.nls.generic.common.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->
+
+
+
+<!-- ko if: $baseModel.small() -->
+
+<div class="oj-panel grid-main-container">
+	<oj-label for="listview" class="hide-label"><span data-bind="text:$component.nls.accountActivity.accountInfo"></span></oj-label>
+	<oj-list-view id="listview" selection-mode="[['single']]">
+		<!-- ko foreach: serviceRequests() -->
+		<li>
+			<div class="oj-flex oj-flex-items-pad grid-row-group">
+
+				<div class="oj-flex-item oj-sm-12 activity-date" data-bind="text: $baseModel.formatDate(creationDate)"></div>
+
+
+				<div class="oj-flex-item activity-desc" data-bind="text : $data.requestType ?$component.nls.serviceRequest.description[$data.requestType]: ' '"></div>
+
+				<div class="oj-flex-item oj-sm-12 right break-word ref-no-text" data-bind="text  : $data.id ? $data.id : ' '"></div>
+
+				<div class="oj-flex-item right bal-amt">
+					<span data-bind="text : $data.status ?$component.nls.serviceRequest.status[$data.status] : ' '"></span>
+				</div>
+			</div>
+
+		</li>
+		<!-- /ko -->
+
+	</oj-list-view>
+
+	<div class="oj-flex oj-flex-items-pad button-container">
+		<oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.nls.serviceRequest.back"></span>
+</oj-button>
+	</div>
+</div>
+<!-- /ko -->

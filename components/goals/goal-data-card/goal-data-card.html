@@ -1,0 +1,59 @@
+<div class="goal-data-card" data-bind="with:cardData">
+
+	<div class="oj-flex oj-flex-items-pad goal-data-card__goalData goalData">
+		<div class="oj-flex-item oj-sm-10  goalData__goalInfo goalInfo">
+			<div class="goalInfo__image image">
+				<img class="image__highlight" data-bind="attr:{'src':'data:image/gif;base64,'+content,alt:$component.resource.pfm.goalcategoryImg,title:$component.resource.pfm.goalcategoryImgAlt}">
+			</div>
+			<div class="goalInfo__goalName">
+			 <strong><span data-bind="text:name"></span></strong>
+		</div>
+		</div>
+
+		<div class="oj-flex-item oj-sm-2 goalData__icon goalData-icon">
+					<a href="#" openprofile="true" data-bind="attr:{id:'myLauncher12'+categoryName+data.categoryId,'alt':$component.resource.pfm.modify,'title':$component.resource.pfm.modifyText},click:$dashboard.loadComponent.bind($data,'manage-goal',$data,$component)">
+							<span class="icons icon-eye goalData-icon__link"></span>
+					</a>
+	 </div>
+
+	</div>
+    <div class="oj-flex oj-flex-items-pad goal-data-card__goalAmount amount">
+			<!-- ko if:$data.targetAmount -->
+			<span class="amount__goal" data-bind="text :$baseModel.format($component.resource.pfm.goalAmount,
+			 {goalAmountt : $baseModel.formatCurrency(targetAmount,$component.baseCurrency())}) "></span>
+			 <!-- /ko -->
+			 <!-- ko if:$data.closingAmount -->
+ 			<span class="amount__goal" data-bind="text :$baseModel.format($component.resource.pfm.TargetAmount,
+ 			 {finalAmountRedeemed : $baseModel.formatCurrency(closingAmount,$component.baseCurrency())}) "></span>
+ 			 <!-- /ko -->
+		</div>
+	<!-- ko if:!$data.closingDate -->
+	<div class="oj-flex oj-flex-items-pad goal-data-card__percentage">
+		<div class="oj-flex oj-flex-items-pad" data-bind="   component:{
+                                name:'percentage-graph',
+                                params:{
+                                  rootModel: $component,
+                                  data : {
+                                        label:$baseModel.format($component.resource.pfm.achieved, {percent : percentAchieved}),
+                                        showLabel:true,
+                                        uniqueId:'goal-data-card-label-'+id,
+                                        max:data.targetAmount.amount,
+                                        thresholdValues:thresholdValues,
+                                        value:data.availableBalance.amount,
+                                        toolTipCallBack:$component.goalTooltipCallback
+                                    }
+                                }
+
+                          }">
+                          </div>
+
+	</div>
+	<!-- /ko -->
+	<!-- ko if:$data.closingDate -->
+				<div class="oj-flex oj-flex-items-pad details">
+						<div class="oj-flex-item oj-sm-12">
+							<span class="details__label" data-bind="text:$baseModel.format($component.resource.pfm.closingDate, {date : $baseModel.formatDate(closingDate)})"></span>
+						</div>
+				</div>
+	<!-- /ko -->
+</div>

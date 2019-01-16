@@ -1,0 +1,142 @@
+<div class="form-main-container">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div id="train-container" class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8  ">
+        <oj-train id="train" class="oj-train-stretch" on-selected-step-changed="[[$component.backToCreate]]" selected-step="{{selectedStepValue}}" steps="[[stepArray]]">
+        </oj-train>
+      </div>
+    </div>
+    <oj-validation-group id="tracker" valid="{{validationTracker}}">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+          <oj-label for="moduleName"><span data-bind="text:$component.nls.common.moduleName"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
+          <!-- ko if: $component.isModuleFetched() -->
+          <oj-combobox-many id="moduleName" value="{{selectedModuleName}}" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="{{disabled}}" :aria-label="[[$component.nls.common.moduleName]]" on-value-changed="[[$component.comboBoxChangeHandler]]">
+            <!-- ko foreach: $component.moduleName() -->
+            <oj-option value="[[value]]"><span data-bind="text: text"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-combobox-many>
+          <!-- /ko -->
+        </div>
+      </div>
+      <!-- ko if: $component.isAccessPointFetched() -->
+      <!-- ko if: $component.selectedAccessType()==="INT"  -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label for="mapTransaction"><span data-bind="text:$component.nls.common.accessPoint"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <oj-checkboxset id="accessPoint" :aria-label="[[$component.nls.common.accessPoint]]" name="accessPoint" class="oj-choice-direction-row" value="{{selectedAccessPoint}}" disabled="{{disabled}}" required>
+            <!-- ko foreach: accessPoint() -->
+            <oj-option value="[[value]]">
+              <span data-bind="text: text"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </oj-validation-group>
+    <!-- ko ifnot: isNext()-->
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.mapEntitlements]]">
+        <span data-bind="text:$component.nls.common.next"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$component.clear]]">
+        <span data-bind="text:$component.nls.generic.common.clear"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.generic.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.backToCreate]]">
+        <span data-bind="text:$component.nls.generic.common.back"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: isNext() -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.clear]]">
+        <span data-bind="text:$component.nls.generic.common.edit"></span>
+      </oj-button>
+    </div>
+    <!-- ko if : dataSourceLoaded -->
+    <!-- ko if : selectedAccessType()==="INT" -->
+    <div class="oj-flex oj-flex-items-pad tabs-container">
+      <div class="oj-flex-item oj-lg-12">
+        <oj-tab-bar id="tabGroups" selection="{{selectedItem}}" :aria-label="[[$component.nls.common.accessPointTab]]" on-selection-changed="[[$component.accessPointTabChangeHandler]]" edge="top">
+          <ul class="tab-list">
+            <!-- ko foreach: accessPointTabs -->
+            <li data-bind="attr:{ id: id}">
+              <span data-bind="text : name"></span>
+            </li>
+            <!-- /ko -->
+          </ul>
+        </oj-tab-bar>
+      </div>
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex-item" data-bind='component:{name: "transaction-mapping",
+    params:{rootModel: $data, datasource : $component.dataSourceToBePassed() }}'>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.save]]">
+        <span data-bind="text:$component.nls.generic.common.save"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.generic.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.backToCreate]]">
+        <span data-bind="text:$component.nls.generic.common.back"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+  </page-section>
+</div>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'tabChangeModal',header: $component.nls.common.copyDataHeader">
+  <div class="form-main-container message-text">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <span data-bind="text:$component.nls.common.copyDataMessage"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="copyDataYes" class="action-button-primary" on-click="[[$component.openModal]]">
+        <span data-bind="text:$component.nls.generic.common.yes"></span>
+      </oj-button>
+      <oj-button id="copyDataNo" class="action-button-secondary" on-click="[[$component.cancelDatasourceReplication]]">
+        <span data-bind="text:$component.nls.generic.common.no"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'accessPointModal',header: $component.nls.common.copyDataHeader">
+  <div class="form-main-container message-text">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+        <oj-label for="userSegment"><span data-bind="text:$component.nls.headings.select"></span></oj-label>
+      </div>
+      <!-- ko if: $component.destinedAccessPoints().length > 0 -->
+      <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-5">
+        <oj-select-one id="accessPoint" value="{{selectedAccessPointToCopy}}" :invalidcomponenttracker="[[$component.validationTracker]]" placeholder="{{nls.headings.select}}" required>
+          <!-- ko foreach: $component.destinedAccessPoints -->
+          <oj-option value="[[id]]"><span data-bind="text: name"></span>
+          </oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="apply" class="action-button-primary" on-click="[[$component.replicateDatasource]]">
+        <span data-bind="text:$component.nls.common.apply"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>

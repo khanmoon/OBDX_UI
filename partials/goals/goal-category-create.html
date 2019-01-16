@@ -1,0 +1,117 @@
+<oj-validation-group id="goalCreateTracker">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-label for="goalCode" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <span data-bind="text:$component.goal.category.goalCode"></span>
+            </oj-label>
+            <oj-input-text id="goalCode" required class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('APPLICATION_CODE')]]" disabled="[[$component.isRead()]]" value="{{$component.categoryDetails().categoryCode}}" :placeholder="[[$component.goal.category.enterCode]]"></oj-input-text>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-label for="goalCategory" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <span data-bind="text:$component.goal.category.goalCategory"></span>
+            </oj-label>
+            <oj-input-text id="goalCategory" class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3" required :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.categoryDetails().categoryName}}" validators="[[$baseModel.getValidator('APPLICATION_NAME')]]" :placeholder="[[$component.goal.category.enterCategory]]"></oj-input-text>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-label for="expDate" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <span data-bind="text:$component.goal.category.expiryDate"></span>
+            </oj-label>
+            <oj-input-date id="expDate" class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3" :aria-label="[[$component.goal.category.expiryDate]]" value="{{$component.categoryDetails().categoryExpiryDate}}" min="[[$component.minDate()]]" converter="[[$baseModel.dateConverter]]" required></oj-input-date>
+        </div>
+        <image-upload params="baseModel : $baseModel, rootModel:$component,
+                          label:$component.goal.category.image,
+                          preview:$component.preview,
+                          fileId:$component.fileId,
+                          imageId:$component.imageId,
+                          imageUploaded : !$component.isImageExist(),
+                          file:$component.file">
+        </image-upload>
+    </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.goal.category.productMapping">
+        <!-- ko if:productList().length>0 -->
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-label for="prod" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <span data-bind="text:$component.goal.category.product"></span>
+            </oj-label>
+            <oj-select-one id="prod" class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5" required :aria-label="[[$component.goal.category.product]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.common.select]]" value="{{$component.productId}}">
+                <!-- ko foreach: productList -->
+                <oj-option :id="[[id]]" value="{{id}}">
+                    <span data-bind="text:name"></span>
+                </oj-option>
+                <!-- /ko -->
+            </oj-select-one>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:productSelected() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item" data-bind="text:$component.goal.category.productDetails">
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="with:productDetails">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                        <label data-bind="text:$component.goal.category.initialFunding"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3" data-bind="text: product.initialFunding">
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                        <label data-bind="text:$component.goal.category.tenure"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3" data-bind="text: product.tenure">
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                        <label data-bind="text:$component.goal.category.currency"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3" data-bind="text: product.currency">
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                        <label data-bind="text:$component.goal.category.interestRate"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                        <a href="javascript:void(0)" class="form-button-link" data-bind="text:$component.goal.category.interestlink, click:$component.openInterestSlabs">
+          </a>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                        <label data-bind="text:$component.goal.category.topUpAllowed"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3" data-bind="text: product.topUpAllowed">
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                        <label data-bind="text:$component.goal.category.partialWithdrawalAllowed"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3" data-bind="text: product.partialAllowed">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </page-section>
+</oj-validation-group>
+<modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'intrestslabs', header:$component.goal.interestslab.title">
+    <!-- ko if:$component.interestSlabsLoaded() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <oj-label for="amountrange3" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <span data-bind="text:$component.goal.interestslab.amount"></span>
+        </oj-label>
+        <oj-select-one id="amountrange3" class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7" :aria-label="[[$component.goal.interestslab.amount]]" required :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$component.amountChangeHandler]]" :placeholder="[[$component.common.select]]" value="{{$component.selectedAmountRange()}}">
+            <!-- ko foreach: $component.amountRangeList() -->
+            <oj-option id="[[value]]" value="{{value}}">
+                <span data-bind="text:text"></span>
+            </oj-option>
+            <!-- /ko -->
+        </oj-select-one>
+    </div>
+    <oj-table id="table3" :aria-label="[[$component.goal.interestslab.caption]]" columns="[[[{headerText:$component.goal.interestslab.tenure,field:'range'},{headerText:$component.goal.interestslab.rate,field:'rate'}]]]" columns-default="[[{sortable:'disabled'}]]" selection-mode="[[{row:'none',column:'none'}]]" data="[[$component.interestSlabsDataSource()]]">
+    </oj-table>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" id="button-ok" on-click="[[$component.closeModelWindow]]">
+            <span data-bind="text:$component.goal.interestslab.ok"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+</modal-window>

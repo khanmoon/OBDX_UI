@@ -1,0 +1,67 @@
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label :for="[['address1'+id]]"><span data-bind="text:$component.resource.address1"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+		<oj-input-text required maxlength="35" autocomplete="off" spellcheck="false" :id="[['address1'+ id]]" translations="[[{'required':{messageDetail:$component.resource.messages.address}}]]" value="{{postalAddress.line1}}" disabled="[[$component.disableInputs()]]"></oj-input-text>
+	</div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<div class="oj-label ">
+			<oj-label :for="[['address2'+ id]]"><span data-bind="text:$component.resource.address2"></oj-label>
+		</div>
+	</div>
+	<div class="oj-flex-item label oj-sm-12 oj-md-6 oj-lg-5">
+		<oj-input-text maxlength="35" autocomplete="off" spellcheck="false" :id="[['address2'+ id]]" translations="[[{'required':{messageDetail:$component.resource.messages.address}}]]" value="{{postalAddress.line2}}" disabled="[[$component.disableInputs()]]"></oj-input-text>
+	</div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2">
+		<oj-label :for="[['city'+ id]]"><span data-bind="text:$component.resource.city"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+		<oj-input-text maxlength="35" autocomplete="off" spellcheck="false" required :id="[['city'+ id]]" translations="[[{'required':{messageDetail:$component.resource.messages.city}}]]" validators="[[$component.getValidator('CITY')]]" value="{{postalAddress.city}}" disabled="[[$component.disableInputs()]]"></oj-input-text>
+	</div>
+</div>
+<!-- ko if: $component.id === '1'-->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label class="oj-label" :for="[['states'+ id]]"><span data-bind="text:$component.resource.state"></span></oj-label>
+	</div>
+	<div class="oj-flex-item label oj-sm-12 oj-md-6 oj-lg-4">
+		<!-- ko if: $component.disableInputs()-->
+		<oj-label :for="[['states'+ id]]"><span data-bind="text:$component.selectedStateText()"></span></oj-label>
+		<!-- /ko -->
+		<!-- ko ifnot: $component.disableInputs()-->
+		<span class="state span-text" data-bind="text:$component.selectedStateText(), attr:{'for':'states' + id}
+											 "></span>
+		<!-- /ko -->
+	</div>
+</div>
+<!-- /ko -->
+<!-- ko if: $component.id === '2'-->
+<!-- ko if: $component.statesChanged() -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label :for="[['states'+ id]]"><span data-bind="text:$component.resource.state"></span></oj-label>
+	</div>
+	<div id="" class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+		<oj-select-one required :id="[['states'+ id]]" translations="[[{'required':{messageDetail:$component.resource.messages.state}}]]" :invalidcomponenttracker="[[$component.validator]]" on-value-changed="[[$component.updateState]]" value="{{postalAddress.state}}" disabled="[[$component.disableInputs()]]" :placeholder="">
+			<!-- ko foreach: $component.stateOptions -->
+			<oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+			<!-- /ko -->
+		</oj-select-one>
+	</div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label class="text line-height-2" :for="[['zipCode'+ id]]"><span data-bind="text:$component.resource.zipCode"></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+		<oj-input-text class="zipCodeUS" required maxlength="10" autocomplete="off" spellcheck="false" :id="[['zipCode'+ id]]" translations="[[{'required':{messageDetail:$component.resource.messages.zipcode}}]]" validators="[[$component.getValidator('POSTAL_CODE')]]" value="{{postalAddress.postalCode}}" disabled="[[$component.disableInputs()]]"></oj-input-text>
+	</div>
+</div>

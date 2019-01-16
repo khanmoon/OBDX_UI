@@ -1,0 +1,36 @@
+<div class="form-main-container">
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.generic.common.review , reviewHeader : $component.resource.header.reviewHeader}}"></div>
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.redemptionDetails.accountNumber, value : $component.redeemRDModel.accountId.displayValue"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.redemptionDetails.redeemableAmount, value : $baseModel.formatCurrency($component.redeemRDModel.redemptionAmount.amount(), $component.redeemRDModel.redemptionAmount.currency())"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.redemptionDetails.redemptionType, value :$component.resource.redemptionDetails.redeemType[$component.redeemRDModel.typeRedemption()]"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.redemptionDetails.penalty, value : $baseModel.formatCurrency($component.redeemRDModel.charges.amount(), $component.redeemRDModel.charges.currency())"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.redemptionDetails.finalRedemptionAmount, value :$baseModel.formatCurrency($component.redeemRDModel.netCreditAmt.amount(),$component.redeemRDModel.netCreditAmt.currency())"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.payoutDetails.payTo, value :$component.resource.payoutDetails.payoutType[redeemRDModel.payoutInstructions()[0].type()]"></row>
+            <!-- ko if:redeemRDModel.payoutInstructions()[0].type() ==='O' -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.payoutDetails.creditAccountNum, value :[$component.redeemRDModel.payoutInstructions()[0].accountId.displayValue,$component.redeemRDModel.payoutInstructions()[0].beneficiaryName,$component.redeemRDModel.payoutInstructions()[0].bankName,$component.redeemRDModel.payoutInstructions()[0].address.line1,$component.redeemRDModel.payoutInstructions()[0].address.line2,$component.redeemRDModel.payoutInstructions()[0].address.city,$component.redeemRDModel.payoutInstructions()[0].address.country]"></row>
+            <!-- /ko -->
+            <!-- ko if:redeemRDModel.payoutInstructions()[0].type() ==='I' -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.payoutDetails.creditAccountNum, value :[$component.redeemRDModel.payoutInstructions()[0].account()]"></row>
+            <!-- /ko -->
+            <!-- ko if:redeemRDModel.payoutInstructions()[0].type() ==='E' -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.payoutDetails.creditAccountNum, value :[$component.redeemRDModel.payoutInstructions()[0].account(),$component.redeemRDModel.payoutInstructions()[0].beneficiaryName,$component.redeemRDModel.payoutInstructions()[0].bankName,$component.redeemRDModel.payoutInstructions()[0].address.line1,$component.redeemRDModel.payoutInstructions()[0].address.line2,$component.redeemRDModel.payoutInstructions()[0].address.city,$component.redeemRDModel.payoutInstructions()[0].address.country]"></row>
+            <!-- /ko -->
+
+        </div>
+    </page-section>
+    <div class="oj-flex-item button-container">
+        <oj-button id="redeemButton" class="action-button-primary " on-click="[[$component.confirmRedeemRD.bind($data,true)]]"><span slot="startIcon" class="icons icon-redeem"></span>
+            <span data-bind="text:$component.resource.generic.common.confirm"></span>
+        </oj-button>
+        <!-- ko ifnot: $baseModel.small() -->
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]"><span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.resource.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.resource.generic.common.back"></span>
+        </oj-button>
+    </div>
+</div>

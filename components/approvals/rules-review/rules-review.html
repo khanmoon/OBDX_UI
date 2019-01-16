@@ -1,0 +1,180 @@
+<!-- ko if: isRulesdataLoaded() -->
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+    <!-- ko if: rulesData.type!=='ADMIN' -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <oj-label for="PartyID"><span data-bind="text:$component.resourceBundle.rules.partyid"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+        <span id="PartyID" data-bind="text:rulesData.party.displayValue()"></span>
+      </div>
+    </div>
+
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <oj-label for="PartyName"><span data-bind="text:$component.resourceBundle.rules.partyname"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+        <span id="PartyName" data-bind="text:partyName()"></span>
+      </div>
+    </div>
+    <!-- /ko -->
+
+
+    <!-- Rule Code -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <oj-label for="ruleCode"><span data-bind="text:$component.resourceBundle.rules.ruleCode"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+        <span id="ruleCode" data-bind="text:ruleCode"></span>
+      </div>
+    </div>
+
+
+
+    <!-- Rule Description -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <oj-label for="ruleDescription"><span data-bind="text:$component.resourceBundle.rules.ruleDescription"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+        <span id="ruleDescription" data-bind="text:ruleDescription"></span>
+      </div>
+    </div>
+
+
+  </page-section>
+
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.rules.initiator">
+       <div data-bind="component: {name: 'user-input', params:{rootModel:$component,userInputModel:$component.userInputModel()[0],nodeId:nodeId,multipleCall:false,validationTracker:$component.validationTracker}},attr:{'id':'steps_'+0}">        </div>
+
+</page-section>
+
+<div class="oj-flex oj-flex-items-pad" data-bind="component: {name: 'user-input', params:{rootModel:$component,userInputModel:userInputModel,nodeId:nodeId,multipleCall:false,validationTracker:$component.validationTracker}},attr:{'id':'steps_'+0}"></div>
+
+ <!-- Transaction -->
+
+   <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.rules.transactions">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <oj-label id="Accounts" for="transactionName"><span data-bind="text:$component.resourceBundle.rules.transactions"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+        <span id="transactionName" data-bind="text:transactionName"></span>
+      </div>
+    </div>
+  </page-section>
+
+
+
+     <!-- ko if: rulesData.type!=='ADMIN' -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.rules.accounts">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="accounts"><span data-bind="text:$component.resourceBundle.rules.accounts"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <span id="accounts" data-bind="text:account()"></span>
+          </div>
+        </div>
+    </page-section>
+
+     <!-- ko if: isCurrencyLoaded -->
+      <!-- ko if : currency -->
+      <page-section params="rootModel : $data, heading : $component.resourceBundle.rules.currency">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label id="amountCurrency" for="amountCurrency"><span data-bind="text:$component.resourceBundle.rules.currency"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <span id="amountCurrency" data-bind="text :$component.currency()"></span>
+          </div>
+        </div>
+      </page-section>
+      <!-- /ko -->
+     <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.rules.amountRange">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="fromAmount"><span data-bind="text:$component.resourceBundle.rules.fromAmount"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <span id="fromAmount" data-bind="text:$baseModel.formatCurrency(fromAmount(), currency())"></span>
+          </div>
+        </div>
+
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="toAomunt"><span data-bind="text:$component.resourceBundle.rules.toAmount"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <span id="toAomunt" data-bind="text:$baseModel.formatCurrency(toAmount(), currency())"></span>
+          </div>
+        </div>
+
+    </page-section>
+ <!-- /ko -->
+    <!-- /ko -->
+
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.rules.workflowDetails">
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <oj-label :for="[['approvalRequiredLabelRules']]"><span data-bind="text:$component.resourceBundle.rules.approvalsRequired"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 ">
+        <oj-buttonset-one :id="[['approvalRequiredLabelRules']]" value="{{$component.approvalRequired}}"><oj-option value="{{'YES'}}" disabled="[[!$component.userInputModel()[0].editable()]]" :id="[['YES']]" :name="[['approval']]"><span data-bind="attr: {for: 'YES'},text:$component.resourceBundle.common.yes"></span></oj-option><oj-option value="{{'NO'}}" disabled="[[!$component.userInputModel()[0].editable()]]" :id="[['NO']]" :name="[['approval']]"><span data-bind="attr: {for: 'NO'},text:$component.resourceBundle.common.no"></span></oj-option></oj-buttonset-one>
+      </div>
+    </div>
+
+  <!-- ko if:workFlowLoaded -->
+  <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label id="workFlowNameLabel" for="workFlowNameRules"><span data-bind="text:$component.resourceBundle.rules.ruleWorkflow"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                    <span data-bind="text:selectedWorkflowName"></span>
+                </div>
+            </div>
+        <!-- ko if:workFlowDetailsLoaded -->
+        <!-- ko foreach:$component.workflowDetails().workFlowDetails.steps -->
+        <!-- ko if: userGroup.unary -->
+        <!-- ko foreach:userGroup.users -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-label for="workflowUnary"><span data-bind="text:$baseModel.format($component.resourceBundle.rules.appLevel,{level:$parent.sequenceNo})"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9 label">
+              <span id="workflowUnary" data-bind="text:$baseModel.format($component.resourceBundle.rules.userName,{firstName:firstName,lastName:lastName,userName:userId})"></span>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: !userGroup.unary -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+              <oj-label for="workflowNotUnary"><span data-bind="text:$baseModel.format($component.resourceBundle.rules.appLevel,{level:sequenceNo})"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+              <span id="workflowNotUnary" data-bind="text:userGroup.name"></span>
+            </div>
+        </div>
+        <!-- /ko -->
+      <!-- /ko -->
+    <!-- /ko -->
+    </div>
+    </div>
+<!-- /ko -->
+
+
+
+  </page-section>
+
+<!-- /ko -->

@@ -1,0 +1,53 @@
+<!-- ko ifnot:updateKYC() -->
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <search-report params='baseModel : $baseModel, rootParams: $component,readOnly:false,report:"kyc"'></search-report>
+</page-section>
+<!-- ko if:stageThree() -->
+    <div class="grid-main-container">
+      <!-- ko if:reportData().length>0 -->
+        <div class="right">
+           <img title="Download" class="downloadimg" data-bind="loadImage:'wallet/download-statement.svg',click:$component.downloadPDF.bind($data,'kyc')">
+        </div>
+        <div class="oj-flex oj-flex-items-pad oj-flex grid-table-header">
+              <div class="oj-lg-3  oj-flex-item" data-bind="text:$component.wallet.report.name "></div>
+              <div class="oj-lg-3  oj-flex-item" data-bind="text:$component.wallet.report.emailid "></div>
+              <div class="oj-lg-2  oj-flex-item" data-bind="text: $component.wallet.report.mobilenumber"></div>
+              <div class="oj-lg-2  oj-flex-item " data-bind="text: $component.wallet.report.openeddate"></div>
+              <div class="oj-lg-2  oj-flex-item" data-bind="text: $component.wallet.report.kycstatus"></div>
+        </div>
+      <!-- /ko -->
+        <oj-list-view selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.datasource()]]">
+        </oj-list-view>
+        <div class="oj-flex oj-flex-items-pad">
+          <oj-paging-control class="oj-lg-11 oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.datasource()]]"></oj-paging-control>
+        </div>
+        <script type="text/html" id="content_template">
+          <li>
+              <div class="oj-flex oj-flex-items-pad oj-flex grid-row-group">
+                    <div class="oj-flex-item oj-lg-3" data-bind="text: $baseModel.format($component.wallet.report.nameValue,{first:firstName,last:lastName})"></div>
+                    <div class="oj-flex-item oj-lg-3" data-bind="text:emailId"></div>
+                    <div class="oj-flex-item oj-lg-2" data-bind="text:mobileNo"></div>
+                    <div class="oj-flex-item oj-lg-2" data-bind="text:$baseModel.formatDate($data.accountOpeningDate)"></div>
+                    <!-- ko ifnot:$component.kycManagement() -->
+                        <div class="oj-flex-item oj-lg-2" data-bind="text:$component.wallet.report[kycStatus]"></div>
+                    <!-- /ko -->
+                    <!-- ko if:$component.kycManagement() -->
+                      <!-- ko if:$data.kycStatus==='PEN' -->
+                        <div class="oj-lg-1 oj-flex-item">
+                            <a href="javascript:void(0)" data-bind="click:$component.fetchKYCReport.bind($data),text:$component.wallet.report[kycStatus]"></a>
+                        </div>
+                      <!-- /ko -->
+                      <!-- ko ifnot:$data.kycStatus==='PEN' -->
+                        <div class="oj-lg-2 oj-flex-item" data-bind="text:$component.wallet.report[kycStatus]"></div>
+                      <!-- /ko -->
+                    <!-- /ko -->
+
+              </div>
+          </li>
+        </script>
+    </div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if:updateKYC() -->
+    <div data-bind="template: { name:'wallet/kyc-management'}"></div>
+<!-- /ko -->

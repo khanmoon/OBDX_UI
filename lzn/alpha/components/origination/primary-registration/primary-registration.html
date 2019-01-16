@@ -1,0 +1,274 @@
+<!-- ko if: $component.primaryDataLoaded() -->
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1">
+      <span class="text" data-bind="text:$component.resource.infoPrivate"></span>
+      <span><a class="link text" href="#" data-bind="click: function(){$('#privacyAndSecurityPolicy').trigger('openModal')},text:$component.resource.privacyAndSecurityPolicy ,attr:{alt: $component.resource.privacyClick, title: $component.resource.privacyClickTitle}"></a></span>
+    </div>
+  </div>
+  <oj-validation-group id="tracker" valid="{{groupValid}}">
+    <div class="" data-bind="with:applicantObject().primaryInfo">
+      <div data-bind="with:primaryInfo">
+
+        <div class="oj-flex oj-flex-items-pad margin-top-20">
+          <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+            <h4 class="form-heading" data-bind="text:$component.resource.legalName"></h4>
+          </div>
+        </div>
+        <!-- ko if : $component.salutationsLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label for="salutation" :for="[['salutation'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.salutation"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+            <oj-select-one id="salutation" required :id="[['salutation'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.salutation}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$component.salutionChanged]]"
+              value="{{salutation}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]" :placeholder="">
+              <!-- ko foreach: $component.salutations -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+
+        </div>
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label :for="[['firstName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.firstName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+            <oj-input-text required maxlength="35" name="firstName" :id="[['firstName'+($baseModel.currentIdCount())]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL',$component.resource.messages.firstName,{
+                                    type:'length',options:{
+                                      min:1,max:80}})]]" value="{{firstName}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1  oj-lg-offset-2">
+            <div class="oj-label ">
+              <oj-label :for="[['middleName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.middleName"></span></oj-label>
+            </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+            <oj-input-text maxlength="20" name="middleName" autocomplete="off" spellcheck="false" :id="[['middleName'+($baseModel.currentIdCount())]]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL',$component.resource.messages.middleName,{
+                                    type:'length',options:{
+                                      min:1,max:80}})]]" value="{{middleName}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label :for="[['lastName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.lastName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+            <oj-input-text required maxlength="35" name="lastName" :id="[['lastName'+($baseModel.currentIdCount())]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL',$component.resource.messages.lastName,{
+                                    type:'length',options:{
+                                      min:1,max:80}})]]" value="{{lastName}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"></oj-input-text>
+          </div>
+        </div>
+
+
+        <div class="oj-flex oj-flex-items-pad oj-lg-12">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label><span data-bind="text:$component.resource.alternateName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-flex-item oj-sm-12 oj-med-6 oj-lg-5">
+            <oj-radioset class="oj-choice-direction-row" :aria-label="[[$component.resource.alternateName]]" value="{{$component.isAlternateName}}" on-value-changed="[[$component.alternateNameChangeHandler]]" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]">
+              <oj-option value="YES" :id="[['ALTERNATE_NAME_YES'+($component.coApplicant?'_coapp':'')]]"><span for="casa" data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+              <oj-option value="NO" :id="[['ALTERNATE_NAME_NO'+($component.coApplicant?'_coapp':'')]]"><span for="td" data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+            </oj-radioset>
+          </div>
+        </div>
+
+        <!-- ko if : $component.isAlternateNameFlag() -->
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label :for="[['alternateFirstName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.firstName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+            <oj-input-text required maxlength="35" name="alternateFirstName" :id="[['alternateFirstName'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.firstName}}]]" validators="[[$baseModel.getValidator('NAME')]]"
+              disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]" value="{{aliasName.firstName}}"></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1  oj-lg-offset-2">
+            <oj-label :for="[['alternateMiddleName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.middleName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+            <oj-input-text maxlength="20" name="alternateMiddleName" autocomplete="off" spellcheck="false" :id="[['alternateMiddleName'+($baseModel.currentIdCount())]]" validators="[[$baseModel.getValidator('NAME')]]" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"
+              value="{{aliasName.middleName}}"></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label :for="[['alternateLastName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.lastName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+            <oj-input-text required maxlength="35" name="alternateLastName" :id="[['alternateLastName'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.lastName}}]]" validators="[[$baseModel.getValidator('NAME')]]"
+              disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]" value="{{aliasName.lastName}}"></oj-input-text>
+          </div>
+        </div>
+
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad margin-top-20">
+          <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+            <h4 class="form-heading" data-bind="text:$component.resource.otherDetails"></h4>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label :for="[['dateOfBirth'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.dateOfBirth"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-input-date required :id="[['dateOfBirth'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.dob}}]]" converter="[[$baseModel.dateConverter]]" value="{{birthDate}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"
+              datepicker="[[{yearRange:'c-100:c'}]]" max="[[$component.todayIsoDate]]"></oj-input-date>
+          </div>
+
+        </div>
+        <!-- ko if : $component.genderLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label for="gender" :for="[['gender'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.gender"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-select-one id="gender" :id="[['gender'+($baseModel.currentIdCount())]]" value="{{gender}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]" :placeholder="">
+              <!-- ko foreach: $component.genderOptions -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if : $component.maritalStatusLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label for="maritalStatus" :for="[['maritalStatus'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.maritalStatus"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-select-one id="maritalStatus" required :id="[['maritalStatus'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.maritalStatus}}]]" :placeholder="" :invalidcomponenttracker="[[$component.validationTracker]]"
+              value="{{maritalStatus}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]">
+              <!-- ko foreach: $component.maritalStatus -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label for="noOfDependants" :for="[['noOfDependants'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.noOfDependents"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
+            <oj-select-one id="noOfDependants" required :id="[['noOfDependants'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.dependants}}]]" :placeholder="" :invalidcomponenttracker="[[$component.validationTracker]]"
+              value="{{noOfDependants}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]">
+
+
+              <!-- ko foreach: $component.noOfDeps -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+
+        </div>
+
+
+
+        <div class="oj-flex oj-flex-items-pad">
+          <!-- ko if : $component.countriesLoaded() -->
+          <div class="tooltip-section oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1  oj-lg-offset-2">
+            <oj-label class="span-label" :for="[['countryOfCitizenship'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.countryOfCitizenship"></span>
+
+              <!-- ko if: $baseModel.large() -->
+              <div class="tooltip message-text" id="countryOfCitizenship_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.citizenshipRequirement,toolTipId:'countryOfCitizenship_tooltip'}}">
+              </div>
+              <span class="icon-help" id="tool-tip-holder" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'countryOfCitizenship_tooltip','tool-tip-holder'), mouseout: $component.hideToolTip.bind($data,'countryOfCitizenship_tooltip') }"></span>
+              <!-- /ko -->
+              <!-- ko ifnot: $baseModel.large() -->
+
+              <a class="icon-help" href="javascript:void(0)" aria-hidden="true" data-bind="click: function(){$('#countryOfCitizenship').trigger('openModal')} ,attr:{alt: $component.resource.countryOfCitizenshipClick, title: $component.resource.countryOfCitizenshipClickTitle}"></a>
+              <!-- /ko -->
+
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+            <oj-select-one required :id="[['countryOfCitizenship'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.citizenship}}]]" :placeholder="" :invalidcomponenttracker="[[$component.validationTracker]]"
+              value="{{citizenship}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]">
+              <!-- ko foreach: $component.countries() -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+
+          </div>
+          <!-- /ko -->
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <div class="oj-label ">
+              <oj-label :for="[['applicationTypes'+($component.coApplicant?'_coapp':'')]]"><span data-bind="text:$component.resource.isPermanentResident"></span></oj-label>
+            </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+            <oj-buttonset-one :id="[['applicationTypes'+($component.coApplicant?'_coapp':'')]]" :aria-label="[[$component.resource.isPermanentResident]]" on-value-changed="[[$component.savePermanentResidence]]" value="{{$component.permanentResident}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]">
+              <oj-option class="undefined" value="{{'OPTION_YES'}}" :id="[['OPTION_YES'+($component.coApplicant?'_coapp':'')]]" :name="[['applicationTypes'+($component.coApplicant?'_coapp':'')]]">
+                <span :for="[['OPTION_YES'+($component.coApplicant?'_coapp':'')]]" ,="" data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+              <oj-option class="undefined " value="{{ 'OPTION_NO'}} " :id="[[ 'OPTION_NO'+($component.coApplicant? '_coapp': '')]] " :name="[[ 'applicationTypes'+($component.coApplicant? '_coapp': '')]] "><span :for="[[ 'OPTION_NO'+($component.coApplicant? '_coapp': '')]]" ,="" data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+            </oj-buttonset-one>
+          </div>
+        </div>
+
+        <!-- ko ifnot: isPermanentResidence() -->
+        <div class="oj-flex oj-flex-items-pad ">
+          <!-- ko if : $component.countriesLoaded() -->
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label for="countryOfResidence " :for="[['countryOfResidence'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.countryOfResidence"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5 ">
+            <oj-select-one id="countryOfResidence " required :id="[[ 'countryOfResidence'+($baseModel.currentIdCount())]] " translations="[[{ 'required':{messageDetail:$component.resource.messages.residentCountry}}]] " :placeholder=" ''
+              " :invalidcomponenttracker="[[$component.validationTracker]] " value="{{residentCountry}} " disabled="[[$component.applicantObject().primaryInfo.disableInputs()]] ">
+              <!-- ko foreach: $component.countries() -->
+              <oj-option value="{{code}} "><span data-bind="text:description "></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+          <!-- /ko -->
+        </div>
+        <!-- /ko -->
+
+      </div>
+
+
+    </div>
+  </oj-validation-group>
+</page-section>
+
+<div class="oj-flex oj-flex-items-pad button-container ">
+  <div class="oj-flex-item oj-lg-10 oj-md-10 ">
+    <oj-button id="submitPrimary " class="form-button-secondary " :aria-label="[[$component.resource.submitPrimary]] " on-click="[[$component.submitApplicant]] ">
+      <span data-bind="text:$component.resource.generic.common.continue "></span>
+    </oj-button>
+  </div>
+</div>
+
+
+
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad ">
+  <div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6 ">
+    <modal-window class="origination-popup message " params="baseModel : $baseModel, rootModel : $component,id: 'countryOfCitizenship', header: $component.resource.generic.common.info ">
+      <div class="message-text scroll " data-bind="text:$component.resource.citizenshipRequirement "></div>
+    </modal-window>
+  </div>
+</div>

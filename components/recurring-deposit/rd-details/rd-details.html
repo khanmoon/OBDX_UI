@@ -1,0 +1,111 @@
+<!-- ko if:$component.detailsLoaded() -->
+<div data-bind="component:{name: 'account-nickname', params:{rootModel:$component, params: $component.rdViewDetails(), editable:true,module:'recurring-deposit'}}"></div>
+<div>
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-lg-4 oj-md-4 oj-sm-12">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.rdDepositDetails.pageHeader.accountDetails">
+            <div class="row-group">
+                <!-- ko if:$component.rdViewDetails().partyId.displayValue -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.accountDetails.custId, value :$component.rdViewDetails().partyId.displayValue"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().holdingPattern -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.accountDetails.holdingPattern , value :$component.resource.rdDepositDetails.accountDetails.holdingPatternStatus[$component.rdViewDetails().holdingPattern]"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().holdingPattern === 'JOINT' -->
+          <!-- ko foreach:$component.rdViewDetails().parties -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $baseModel.format($component.resource.rdDepositDetails.accountDetails.jointAccHolder , {count : $index() + 1}) , value :partyName"></row>
+          <!-- /ko -->
+          <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().status -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.accountDetails.status , value :$component.resource.rdDepositDetails.accountDetails.cardStatus[$component.rdViewDetails().status]"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().branchAddressDTO -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.accountDetails.branch , value :[rdViewDetails().branchAddressDTO.branchAddress.postalAddress.line1,rdViewDetails().branchAddressDTO.branchAddress.postalAddress.line2,rdViewDetails().branchAddressDTO.branchAddress.postalAddress.city,rdViewDetails().branchAddressDTO.branchAddress.postalAddress.country]"></row>
+                <!-- /ko -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.accountDetails.nomination ,
+          value :$component.resource.rdDepositDetails.accountDetails.nomineeStatus[$component.rdViewDetails().nomineeRegistered]"></row>
+            </div>
+        </page-section>
+    </div>
+    <div class="oj-flex-item oj-lg-4 oj-md-4 oj-sm-12">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading :$component.resource.rdDepositDetails.pageHeader.depositDetails">
+            <div class="row-group">
+                <!-- ko if:$component.rdViewDetails().openingDate -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.depositDetails.depositStartDate , value :$baseModel.formatDate(($component.rdViewDetails().openingDate))"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().tenure -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.depositDetails.depositTerm , value :$component.formatTenure()"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().interestRate -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.depositDetails.rateOfInterest, value : $baseModel.formatNumber(rdViewDetails().interestRate/100, 'percent')"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().valueDate -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.depositDetails.valueDate , value :$baseModel.formatDate($component.rdViewDetails().valueDate)"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().installmentDetails -->
+                <!-- ko if:$component.rdViewDetails().installmentDetails.installmentAmount -->
+                <row params="baseModel : $baseModel, rootModel : $root, label : $component.resource.rdDepositDetails.depositDetails.installmentAmount , value :$baseModel.formatCurrency($component.rdViewDetails().installmentDetails.installmentAmount.amount, $component.rdViewDetails().installmentDetails.installmentAmount.currency)"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().installmentDetails.noOfPaidInstallments -->
+                <row params="baseModel : $baseModel, rootModel : $root, label : $component.resource.rdDepositDetails.depositDetails.totalInstallments , value :$component.rdViewDetails().installmentDetails.noOfPaidInstallments"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().status !== "CLOSED" -->
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.depositDetails.nextInstallmentDate , value :$baseModel.formatDate(($component.rdViewDetails().installmentDetails.nextInstallmentDate))|| '-'"></row>
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().charges -->
+                <row params="baseModel : $baseModel, rootModel : $root, label : $component.resource.rdDepositDetails.depositDetails.penalty , value :$baseModel.formatCurrency($component.rdViewDetails().charges.amount, $component.rdViewDetails().charges.currency)"></row>
+                <!-- /ko -->
+            </div>
+        </page-section>
+    </div>
+    <div class="oj-flex-item oj-lg-4 oj-md-4 oj-sm-12">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading :$component.resource.rdDepositDetails.pageHeader.maturityDetails">
+            <div class="row-group">
+                <!-- ko if:$component.rdViewDetails().maturityAmount -->
+                <row params="baseModel : $baseModel, rootModel : $root, label :$component.rdViewDetails().status === 'CLOSED'?$component.resource.rdDepositDetails.maturityDetails.closeMaturityAmount: $component.resource.rdDepositDetails.maturityDetails.maturityAmount , value :$baseModel.formatCurrency($component.rdViewDetails().maturityAmount.amount, $component.rdViewDetails().maturityAmount.currency)"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().maturityDate -->
+                <row params="baseModel : $baseModel, rootModel : $component, label :$component.rdViewDetails().status === 'CLOSED'?$component.resource.rdDepositDetails.maturityDetails.closingDate: $component.resource.rdDepositDetails.maturityDetails.maturityDate , value :$baseModel.formatDate(($component.rdViewDetails().maturityDate))"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().rollOverType -->
+                <row params="baseModel : $baseModel, rootModel : $root, label : $component.resource.rdDepositDetails.maturityDetails.maturityInstruction , value :$component.resource.rdDepositDetails.maturityDetails.rollOverType[$component.rdViewDetails().rollOverType]"></row>
+                <!-- /ko -->
+                <!-- ko if:$component.rdViewDetails().status !== "CLOSED" -->
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item">
+                    <oj-button class="action-button-secondary" on-click="[[$dashboard.loadComponent.bind($data,'rd-amend',$component.params, null)]]">
+                      <span slot="startIcon" class="icons icon-remarks"></span>
+                      <span data-bind="text:$component.resource.rdDepositDetails.generic.common.edit"></span></oj-button>
+                    </div>
+                </div>
+                   <!-- /ko -->
+        <!-- ko if:viewDetails -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 ">
+            <div class="oj-flex oj-flex-items-pad">
+              <!-- ko if:viewDetails -->
+              <!-- ko foreach:payoutInstructions -->
+              <row params="baseModel : $baseModel, rootModel : $root, label : $component.resource.rdDepositDetails.maturityDetails.payTo , value :$component.resource.rdDepositDetails.maturityDetails.payOutOption[type]"></row><!-- ko if:type ==='O' -->
+             <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.maturityDetails.creditAccountNum, value :[$data.accountId.displayValue,$data.beneficiaryName,$data.branchName,$data.branchAddress.line1,$data.branchAddress.line2,$data.branchAddress.city,$data.branchAddress.country].concat($data.payoutComponentType ? [$baseModel.format($component.resource.rdDepositDetails.maturityDetails.payToMessage,
+             {percentage:percentage,amountType:$component.resource.rdDepositDetails.maturityDetails.amountType[payoutComponentType]})]:[])"></row>
+              <!-- /ko -->
+              <!-- ko if:type ==='I' || type ==='E' -->
+             <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.rdDepositDetails.maturityDetails.creditAccountNum, value :[$data.account,$data.beneficiaryName,$data.branchName,$data.branchAddress.line1,$data.branchAddress.line2,$data.branchAddress.city,$data.branchAddress.country].concat($data.payoutComponentType ? [$baseModel.format($component.resource.rdDepositDetails.maturityDetails.payToMessage,
+             {percentage:percentage,amountType:$component.resource.rdDepositDetails.maturityDetails.amountType[payoutComponentType]})]:[])"></row>
+              <!-- /ko -->
+              <!-- /ko -->
+              <!-- /ko -->
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+            </div>
+        </page-section>
+    </div>
+</div>
+</div>
+<!-- ko if: $component.rdViewDetails().status === 'CLOSED' -->
+        <a class="back-link" href="#" data-bind="text: $component.resource.rdDepositDetails.generic.common.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+        <!-- /ko -->
+<!-- /ko -->

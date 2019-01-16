@@ -1,0 +1,50 @@
+<div data-bind="css : ($component.params && $component.params.isNomineeRequired && $component.params.isNomineeRequired()) ? '' : 'form-main-container'">
+    <!-- ko ifnot:$component.params && $component.params.isNomineeRequired && $component.params.isNomineeRequired() -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.generic.common.review , reviewHeader : $component.params.iseditable ? $component.resource.reviewNominee.editReviewHeaderMsg :$component.resource.reviewNominee.addReviewHeaderMsg}}"></div>
+    <!-- /ko -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.params.isNomineeRequired ? $component.resource.reviewNominee.nominationDetails : ''">
+        <!-- ko if:$component.nomineeDetailsLoaded() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-8">
+            <!-- ko ifnot:$component.params && $component.params.isNomineeRequired && $component.params.isNomineeRequired() -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.reviewNominee.accountNumber, value : $component.nominee.accountId.displayValue()"></row>
+            <!-- /ko -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.reviewNominee.nomineeName, value : $component.nominee.name()"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.reviewNominee.nomineeDOB, value : $baseModel.formatDate($component.nominee.dateOfBirth())"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.reviewNominee.relationShip, value : $component.relationDescription()"></row>
+            <div data-bind="css : ($component.params && $component.params.isNomineeRequired && $component.params.isNomineeRequired()) ? 'oj-lg-12' : 'oj-lg-4'">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.reviewNominee.nomineeAddress, value : [$component.nominee.address.line1(),$component.nominee.address.line2(),$component.countryMap[$component.nominee.address.country()],$component.nominee.address.state(),$component.nominee.address.city(),$component.nominee.address.zipCode()]"></row>
+            </div>
+            <!-- ko if:$component.nominee.minor() -->
+            <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                <span class="oj-flex-item checkbox-option__label" data-bind="text:$component.resource.reviewNominee.minorText"></span>
+            </div>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.reviewNominee.guardianName, value : $component.nominee.guardian.name()"></row>
+            <!-- ko if: $component.nominee.guardian && $component.nominee.guardian.address -->
+            <div data-bind="css : ($component.params && $component.params.isNomineeRequired && $component.params.isNomineeRequired()) ? 'oj-lg-12' : 'oj-lg-4'">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.reviewNominee.guardianAddress, value : [$component.nominee.guardian.address.line1(),$component.nominee.guardian.address.line2(),$component.countryMap[$component.nominee.guardian.address.country()],$component.nominee.guardian.address.state(), $component.nominee.guardian.address.city(),$component.nominee.guardian.address.zipCode()]"></row>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+    </page-section>
+    <!-- cancel confirm buttons -->
+    <!-- ko ifnot:$component.params && $component.params.isNomineeRequired && $component.params.isNomineeRequired() -->
+    <div class="oj-flex-item button-container">
+        <oj-button class="action-button-primary" id="confirmButton" on-click="[[confirmNominee]]">
+            <span slot="startIcon" class="icons icon-confirm"></span>
+            <span data-bind="text: $component.resource.generic.common.confirm"></span>
+        </oj-button>
+        <!-- ko if: $baseModel.large() -->
+        <oj-button class="action-button-secondary" id="cancelButton" on-click="[[$dashboard.openDashBoard]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>   
+            <span data-bind="text: $component.resource.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary" id="backButton" on-click="[[$dashboard.hideDetails]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text: $component.resource.generic.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+</div>

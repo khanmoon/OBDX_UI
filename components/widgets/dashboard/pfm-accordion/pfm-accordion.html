@@ -1,0 +1,28 @@
+<!-- ko ifnot : $baseModel.large()  -->
+  <oj-accordion class="dashboard-accordian-container">
+    <!-- ko foreach: {data :items , afterRender : refreshWidget} -->
+    <div data-bind="css : $data.type">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 ">
+                <div class="dashboard-accordian-container-heading" data-bind="text:$component.resource.labels[type]"></div>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+                <div class="dashboard-accordian-container-sub-heading" data-bind="text:value"></div>
+            </div>
+        </div>
+        <div class="oj-flex dashboard-accordian-list">
+            <!-- <flip-account params="rootModel : $component, type: type"></flip-account> -->
+            <!-- ko if: $data.type==="GOL" -->
+            <goals-dashboard-card params="baseModel : $baseModel, rootModel : $component"></goals-dashboard-card>
+            <!-- /ko -->
+            <!-- ko if: $data.type==="SPN" -->
+            <spend-summary params="baseModel : $baseModel, rootModel : $component,data:{type:'cards'}"></spend-summary>
+            <!-- /ko -->
+            <!-- ko if: $data.type==="BDG" -->
+            <budgets-dashboard-card params="baseModel : $baseModel, rootModel : $component"></budgets-dashboard-card>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+</oj-accordion>
+<!-- /ko -->

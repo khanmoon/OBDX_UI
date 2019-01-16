@@ -1,0 +1,131 @@
+<div class="oj-flex-item oj-sm-9">
+  <div class="form-main-container">
+    <!-- ko if:stageOne() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+      <div class="label">
+        <!-- ko if: $component.partyDetail -->
+        <div data-bind="template: { name: 'file-upload/party-detail', data:$component.partyDetail}"></div>
+        <!-- /ko -->
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.Nls.details">
+        </action-header>
+        <div class="row-group" data-bind="with:$component.FUIDUpdateModel">
+          <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.fileIdentifier , value :fileIdentifier"></row>
+          <div class="oj-flex oj-flex-items-pad ">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 ">
+              <oj-label for="description"> <span data-bind="text:$component.Nls.description"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9 ">
+              <oj-input-text autofocus required id="description" maxlength="40" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" value="{{description}}"></oj-input-text>
+            </div>
+          </div>
+
+          <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.fileformat, value :$component.selectedFUID().fileTemplateDTO.description"></row>
+
+          <div class="oj-flex oj-flex-items-pad ">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 ">
+              <oj-label for="maxNoOfRecords"> <span data-bind="text:$component.Nls.maxNoOfRecords"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+              <oj-input-text id="maxNoOfRecords" maxlength="9" value="{{maxNoOfRecords}}" validators="[[$baseModel.getValidator('NUMBER_VALIDATION')]]"></oj-input-text>
+            </div>
+          </div>
+          <!-- ko if:'fileTemplateDTO' in $component.selectedFUID() &&  $component.selectedFUID().fileTemplateDTO.accountingType !== 'SDMC' -->
+          <div class="oj-flex oj-flex-items-pad ">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 ">
+              <oj-label for="ppTolerance" :title="[[$component.Nls.ppDescription]]" :alt="[[$component.Nls.ppDescription]]"> <span data-bind="text:$component.Nls.ppTolerance"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+              <oj-input-text id="ppTolerance" maxlength="3" value="{{partialProcessingTolerance}}" validators="[[$baseModel.getValidator('PERCENTAGE_NUMBER_RANGE')]]"></oj-input-text>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if:'fileTemplateDTO' in $component.selectedFUID() &&  $component.selectedFUID().fileTemplateDTO.fiLevelAcct === 'Y' -->
+          <!-- ko if:$component.FUIDUpdateModel.debitAccountNumber()+'' !== null -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 ">
+              <oj-label for="debitAccountNumber"> <span data-bind="text:$component.Nls.debitAccountNumber"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+              <!-- ko if:$component.isDebitAccountsLoaded() -->
+              <oj-select-one required id="debitAccountNumber" maxlength="100" value="{{$component.FUIDUpdateModel.debitAccountNumber}}" :placeholder="[[$component.Nls.select]]">
+                <!-- ko foreach:$component.debitAccountNumbers -->
+                <oj-option value="{{code}}"><span data-bind="text:displayValue"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+              <!-- /ko -->
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+        <!-- ko if:'fileTemplateDTO' in $component.selectedFUID() -->
+        <div data-bind="template: { name: 'file-upload/template-details',data:$component.selectedFUID().fileTemplateDTO}"></div>
+        <!-- /ko -->
+        <div data-bind="template: { name: 'file-upload/approval-type',data:$component.FUIDUpdateModel}"></div>
+      </div>
+    </page-section>
+    <div class="button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.save]]">
+        <span data-bind="text:$component.Nls.save"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.Nls.cancelTransaction)]]">
+        <span data-bind="text:$component.Nls.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+        <span data-bind="text:$component.Nls.back"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:stageTwo() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component">
+      <div class="oj-sm-12">
+        <div class="oj-flex oj-flex-items-pad review-banner">
+          <div class="oj-flex-item oj-sm-12">
+            <span class="review-banner__image"><img data-bind="loadImage:'dashboard/info.svg'"></span>
+            <span class="review-banner__content review-banner-content">
+                        <span class="review-banner-content__header" data-bind="text: $component.Nls.review"></span>
+            <div class="review-banner-content__message" data-bind="text: $component.Nls.reviewSummary"></div>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="label">
+        <!-- ko if: $component.partyDetail -->
+        <div data-bind="template: { name: 'file-upload/party-detail', data:$component.partyDetail}"></div>
+        <!-- /ko -->
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.Nls.details">
+        </action-header>
+        <div class="row-group" data-bind="with:$component.FUIDUpdateModel">
+          <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.fileIdentifier , value :fileIdentifier"></row>
+          <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.description , value :description"></row>
+          <!-- ko if:'fileTemplateDTO' in $component.selectedFUID() -->
+          <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.fileformat , value :$component.selectedFUID().fileTemplateDTO.description"></row>
+          <!-- /ko -->
+          <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.maxNoOfRecords , value :($component.FUIDUpdateModel.maxNoOfRecords()?maxNoOfRecords():'-')"></row>
+          <!-- ko if:'fileTemplateDTO' in $component.selectedFUID() &&  $component.selectedFUID().fileTemplateDTO.accountingType !== 'SDMC' -->
+          <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.ppTolerance , value :($component.FUIDUpdateModel.partialProcessingTolerance()?partialProcessingTolerance():'-')"></row>
+          <!-- /ko -->
+          <!-- ko if:'fileTemplateDTO' in $component.selectedFUID() &&  $component.selectedFUID().fileTemplateDTO.fiLevelAcct === 'Y' -->
+          <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.debitAccountNumber , value :$component.debitAccountsMap[debitAccountNumber()]"></row>
+          <!-- /ko -->
+        </div>
+        <!-- ko if:'fileTemplateDTO' in $component.selectedFUID() -->
+        <div data-bind="template: { name: 'file-upload/template-details',data:$component.selectedFUID().fileTemplateDTO}"></div>
+        <!-- /ko -->
+        <div data-bind="template: { name: 'file-upload/approval-type',data:$component.FUIDUpdateModel}"></div>
+      </div>
+    </page-section>
+    <div class="button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.confirm]]">
+        <span data-bind="text:$component.Nls.confirm"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.Nls.cancelTransaction)]]">
+        <span data-bind="text:$component.Nls.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+        <span data-bind="text:$component.Nls.back"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+  </div>
+</div>

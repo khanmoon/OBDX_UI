@@ -1,0 +1,290 @@
+$casa: #FCB300;
+$credit-cards: #ff7b6d;
+$rd : #FF669E;
+$loans: #5fefef;
+$td: #14BA92;
+$budget: #ca589d;
+$goals: #3caf85;
+$spends: #13b6cf;
+.financial-summary {
+
+  &.oj-panel {
+    background: transparent;
+    padding: 0;
+
+    position: relative;
+    @include mq(medium) {
+
+    }
+
+    .total-account {
+      padding: 0 0.6rem;
+    }
+
+    .cardface {
+      padding: 0;
+      position: relative;
+      background: var(--base-background-primary);
+      height: 100%;
+      width: 100%;
+
+      &__sub-heading {
+        margin: 0.6rem 0;
+        font-weight: var(--base-font-weight-regular);
+        outline: none;
+      }
+
+      ul li {
+        min-height: 3.6rem;
+        @include padding(0.6rem,0.6rem,0.6rem,1.3rem);
+        display: flex;
+        justify-content: center;
+        width: 100%;
+
+        flex-direction: column;
+        background: transparent;
+
+        &.CSA .vertical-line {
+          position: absolute;
+          @include left(0);
+          width: 0.4rem;
+          height: 2.8rem;
+          background: $casa;
+        }
+
+        &.TRD .vertical-line {
+          position: absolute;
+          @include left(0);
+          width: 0.4rem;
+          height: 2.8rem;
+          background: $td;
+        }
+
+        &.RD .vertical-line {
+          position: absolute;
+          @include left(0);
+          width: 0.4rem;
+          height: 2.8rem;
+          background: $rd;
+        }
+
+        &.LON .vertical-line {
+          position: absolute;
+          @include left(0);
+          width: 0.4rem;
+          height: 2.8rem;
+          background: $loans;
+        }
+
+        &.CCA .vertical-line {
+          position: absolute;
+          @include left(0);
+          width: 0.4rem;
+          height: 2.8rem;
+          background: $credit-cards;
+        }
+      }
+      &__noData{
+        height:90%;
+      }
+      &-noData{
+        &__content{
+          height:inherit;
+          display:flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+
+    .backside {
+      position: absolute;
+    }
+
+    .account {
+      &-title {
+        color: var(--base-text-primary);
+      }
+
+      &-value {
+        color: var(--base-text-primary);
+      }
+    }
+  }
+}
+
+.dashboard-accordian{
+&-container {
+  position: relative;
+
+  background: var(--base-background-primary);
+  @include mq(medium){
+  top: 0;
+  border:0.05rem solid var(--base-border-default);
+  margin-bottom: 1.1rem;
+ }
+  &-heading {
+    font-size: var(--base-font-size-default);
+  }
+
+  &-sub-heading {
+    font-size: var(--base-font-size-large);
+    line-height:var(--form-line-height);
+  }
+  .oj-accordion-collapsible > {
+    .oj-collapsible-header {
+      background: var(--base-background-primary);
+      border: 0;
+      border-bottom: 0.05rem solid var(--base-border-default);
+      padding-bottom: 0.3rem;
+
+      > .oj-collapsible-header-icon {
+        @include float(right);
+        padding: 0 0.6rem;
+      }
+
+    }
+
+
+
+    .oj-collapsible-wrapper > .oj-collapsible-content {
+      border-top: 0;
+      padding: 0;
+
+      .bottom-nav{
+        position: relative;
+        background: var(--base-background-secondary);
+        border-top: 0.05rem solid var(--base-border-default);
+        height: 2.6rem;
+        line-height: 2.6rem;
+        .oj-flex-item:first-child div{
+          @include single-border(right, 0.05rem solid var(--base-border-default));
+        }
+      }
+
+    }
+  }
+
+  .oj-collapsible-header {
+    display: block;
+    padding: 0.6rem;
+    height: 3.8rem;
+    margin: 0.1rem 0;
+  }
+  .account {
+    &-name {
+      font-size: var(--base-font-size-default);
+      font-weight: var(--base-font-weight-bold);
+    }
+
+    &-no {
+      font-size: var(--base-font-size-default);
+      font-weight: var(--base-font-weight-regular);
+    }
+
+    &-type {
+      font-size: var(--base-font-size-default);
+      font-weight: var(--base-font-weight-regular);
+      color: var(--base-text-secondary);
+    }
+  }
+
+  .balance-amount {
+    @include text-align(right);
+    font-size: var(--base-font-size-large);
+  }
+  .account-details{
+      position: relative;
+  }
+  .menu-icon{
+      position:absolute;
+      width:100%;
+      height:100%;
+@include right(0)
+  }
+  .CSA:before {
+    height: 3.6rem;
+    position: absolute;
+    z-index: 1;
+    content: "";
+    @include single-border(left, 0.4rem solid $casa);
+  }
+
+  .TRD:before {
+    height: 3.6rem;
+    position: absolute;
+    z-index: 1;
+    content: "";
+    @include single-border(left, 0.4rem solid $td);
+  }
+
+  .RD:before {
+    height: 3.6rem;
+    position: absolute;
+    z-index: 1;
+    content: "";
+    @include single-border(left, 0.4rem solid $rd);
+  }
+
+  .LON:before {
+    height: 3.6rem;
+    position: absolute;
+    z-index: 1;
+    content: "";
+    @include single-border(left, 0.4rem solid $loans);
+  }
+
+  .CCA:before {
+    height: 3.6rem;
+    position: absolute;
+    z-index: 1;
+    content: "";
+    @include single-border(left, 0.4rem solid $credit-cards);
+  }
+
+  .BDG:before {
+    height: 3.6rem;
+    position: absolute;
+    z-index: 1;
+    content: "";
+    @include single-border(left, 0.4rem solid $budget);
+  }
+
+  .GOL:before {
+    height: 3.6rem;
+    position: absolute;
+    z-index: 1;
+    content: "";
+    @include single-border(left, 0.4rem solid $goals);
+  }
+
+  .SPN:before {
+    height: 3.6rem;
+    position: absolute;
+    z-index: 1;
+    content: "";
+    @include single-border(left, 0.4rem solid $spends);
+  }
+}
+&-list{
+  ul li{
+  padding:0.6rem 0;
+  width:calc(100% - 2.2rem);
+  &:last-child{
+    border-bottom:0;
+  }
+  }
+  &-links{
+  .form-button-link{
+      padding:0.6rem 1.3rem;
+      line-height:1.3rem;
+      }
+  .oj-flex-item{
+  margin-top:0.6rem;
+  &:first-child{
+  @include single-border(right, 0.05rem solid var(--base-border-default));
+  }
+  }
+  }
+}
+}

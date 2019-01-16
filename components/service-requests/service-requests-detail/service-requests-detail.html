@@ -1,0 +1,178 @@
+<div data-bind="template: $component.getTemplate()"></div>
+<script type="text/html" id="template">
+  <!-- ko if:$component.detailsLoaded -->
+  <div class="oj-flex">
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9 form-main-container service-requests">
+      <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="row-group">
+          <div class="oj-flex page-section-container__header page-section-header">
+            <div class="oj-flex-item page-section-header__container page-section-heading">
+              <h3 for="usernamesearch2 heading" class="page-section-heading__text" data-bind="text: $component.requestDetailsTemplate.detail.reqDetails"></h3>
+            </div>
+          </div>
+        </div>
+        <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetailsTemplate.detail.refNumber"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.id_ref().id"></span></oj-label>
+            </div>
+          </div>
+        </div>
+        <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetailsTemplate.detail.dateRequested"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$baseModel.formatDate($component.id_ref().creationDate)"></span></oj-label>
+            </div>
+          </div>
+        </div>
+        <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetailsTemplate.detail.reqType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.id_ref().requestTypeDescription"></span></oj-label>
+            </div>
+          </div>
+        </div>
+        <div data-bind="template:{name:'service-request/'+$component.partialName, data:{requestDetails:$component.requestDetails}}"></div>
+        <div class="row-group">
+          <div class="oj-flex page-section-container__header page-section-header">
+            <div class="oj-flex-item page-section-header__container page-section-heading">
+              <h3 for="usernamesearch2 heading" class="page-section-heading__text" data-bind="text: $component.requestDetailsTemplate.detail.userDetails"></h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetailsTemplate.detail.userName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.id_ref().status ==='PE'? $component.id_ref().userName:$component.id_ref_history()[0].userName"></span></oj-label>
+            </div>
+          </div>
+        </div>
+        <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetailsTemplate.detail.userId"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.id_ref().status ==='PE'? $component.id_ref().userID:$component.id_ref_history()[0].userID"></span></oj-label>
+            </div>
+          </div>
+        </div>
+        <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.requestDetailsTemplate.detail.partyName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10">
+              <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.id_ref().status ==='PE'? $component.id_ref().party.displayValue:$component.id_ref_history()[0].party.displayValue"></span></oj-label>
+            </div>
+          </div>
+        </div>
+        <div class="row-group">
+          <div class="oj-flex page-section-container__header page-section-header">
+            <div class="oj-flex-item page-section-header__container page-section-heading">
+              <h3 for="usernamesearch2 heading" class="page-section-heading__text" data-bind="text: $component.requestDetailsTemplate.detail.statusHistory"></h3>
+            </div>
+          </div>
+        </div>
+        <div class="row-group">
+          <div id="train-container">
+            <oj-train id="train" class="oj-train-stretch" selected-step="{{currentStepValue}}" steps="[[stepArray]]">
+            </oj-train>
+            <div data-bind="template:{afterRender: $component.renderLabels}"></div>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <!-- ko if:$component.id_ref().status === 'PE'  -->
+          <oj-button class="action-button-primary" on-click="[[$component.showModalWindow.bind($data,'approve')]]">
+            <span data-bind="text:$component.resource.serviceRequest.approve"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" on-click="[[$component.showModalWindow.bind($data,'reject')]]">
+            <span data-bind="text:$component.resource.serviceRequest.reject"></span>
+          </oj-button>
+          <!-- /ko -->
+          <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+            <span data-bind="text:$component.resource.serviceRequest.back"></span>
+          </oj-button>
+        </div>
+      </page-section>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 help-panel">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'service-request-create-info'"></help>
+    </div>
+  </div>
+  <!-- /ko  -->
+
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component, id:'otherTransactionsApproval',  header: $component.resource.serviceRequest[$component.natureOfTask()]">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading: ''">
+      <!-- ko if: $component.showModal() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <div data-bind="text: $component.resource.serviceRequest.batchProcessApprovals.remarksMandatory"></div>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-md-4 oj-lg-3 oj-sm-12">
+          <oj-label for="remarksBox"><span data-bind="text:$component.resource.serviceRequest.batchProcessApprovals.remarks"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-md-8 oj-lg-8 oj-sm-12 ">
+          <oj-text-area id="remarksBox" maxlength="100" required translations="[[{'required':{messageDetail:$component.resource.serviceRequest.messages.remarks}}]]" value="{{remarks}}"></oj-text-area>
+        </div>
+      </div>
+      <div class="message-btn button-container">
+        <oj-button id="confirm" class="action-button-primary" on-click="[[submit]]">
+          <span data-bind="text:$component.resource.serviceRequest.batchProcessApprovals[$component.natureOfTask()]"></span>
+        </oj-button>
+        <oj-button id="cancel" class="action-button-secondary" on-click="[[function(){$component.disableApproveRejectButton(true);$('#otherTransactionsApproval').hide().trigger('closeModal');}]]">
+          <span data-bind="text:$component.resource.serviceRequest.batchProcessApprovals.cancel"></span>
+        </oj-button>
+      </div>
+      <!-- /ko  -->
+    </page-section>
+  </modal-window>
+</script>
+<script type="text/html" id="retailTemplate">
+  <!-- ko if:$component.detailsLoaded -->
+  <div class="form-main-container service-requests">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+        <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.refNumber, value : $component.id_ref().id"></row>
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.dateRequested, value : $baseModel.formatDate($component.id_ref().creationDate)"></row>
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.reqType, value : $component.id_ref().requestTypeDescription"></row>
+          <div data-bind="template:{name:'service-request/retail/'+$component.partialName, data:{requestDetails:$component.requestDetails}}"></div>
+          <div id="train-container">
+            <oj-train id="train" class="oj-train-stretch" selected-step="{{currentStepValue}}" steps="[[stepArray]]">
+            </oj-train>
+            <div data-bind="template:{afterRender: $component.renderLabels}"></div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+              <span slot="startIcon" class="icons icon-back-arrow"></span>
+              <span data-bind="text:$component.resource.serviceRequest.back"></span>
+            </oj-button>
+          </div>
+        </page-section>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'service-requests'"></help>
+      </div>
+    </div>
+  </div>
+  <!-- ko ifnot: $baseModel.small() -->
+  <a class="back-link" href="#" data-bind="text: $component.resource.serviceRequest.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+  <!-- /ko -->
+  <!-- /ko -->
+</script>

@@ -1,0 +1,248 @@
+<div class="oj-flex">
+  <div data-bind="css: $component.mode() === 'REVIEW' ? 'oj-flex-item oj-sm-12' : 'oj-flex-item oj-sm-9'">
+    <div class="form-main-container add-ext-bank-review">
+    <!-- ko if:$component.mode() === "REVIEW" -->
+    <div  data-bind="template: { name: 'review-screen/review-banner-template', data: {header: $component.resourceBundle.heading.reviewExtBank,reviewHeader:$component.resourceBundle.messages.reviewDetails}}">
+          </div>
+      <!-- /ko -->
+
+
+
+  <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+
+
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.heading.bankDetails">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label for="bankName"><span data-bind="text:$component.resourceBundle.labels.bankName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+              <div id="bankName" data-bind="text:$component.bankDetails.bankName"></div>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label for="addressline1"><span data-bind="text:$component.resourceBundle.labels.bankaddress"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="addressline1" data-bind="text:$component.bankDetails.address.line1"></div>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label class="hide-label" for="address2" ><span data-bind="text:$component.resourceBundle.labels.address"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="address2" data-bind="text:$component.bankDetails.address.line2"></div>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label class="hide-label" for="address3"><span data-bind="text:$component.resourceBundle.labels.address"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+              <div id="address3" data-bind="text:$component.bankDetails.address.line3"></div>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label for="url"><span data-bind="text:$component.resourceBundle.labels.bankurl"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="url" data-bind="text:$component.bankDetails.url"></div>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad uploadImage">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+            <oj-label><span data-bind="text:$component.resourceBundle.labels.bankLogo"></span></oj-label>
+          </div>
+          <!-- ko if: $component.isLogoExist() -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3 uploadImage-fileUpload__maxwidth">
+              <img data-bind="attr:{'id': $component.imageId2(), 'alt':$component.resourceBundle.labels.bankLogoTitle, 'title':$component.resourceBundle.labels.bankLogo, 'src': $component.previewLogo()}">
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot: $component.isLogoExist() -->
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3 uploadImage-fileUpload__maxwidth">
+              <div id="logo" data-bind="text:$component.resourceBundle.labels.notAvailable"></div>
+          </div>
+          <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label for="bankIdentifier"><span data-bind="text:$component.resourceBundle.labels.bankIdentifier"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+              <div id="bankIdentifier" data-bind="text:$component.bankDetails.bankIdentifier"></div>
+            </div>
+        </div>
+      </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.heading.authDetails">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label  for="switch"><span data-bind="text:$component.resourceBundle.labels.status"></span></oj-label>
+            </div>
+            <!-- ko if: $component.bankDetails.oauth_enabled  -->
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+              <span data-bind="text:$component.resourceBundle.labels.enabled"></span>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: $component.bankDetails.oauth_enabled  -->
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+              <span data-bind="text:$component.resourceBundle.labels.disabled"></span>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label for="authurl"><span data-bind="text:$component.resourceBundle.labels.authurl"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="authurl" data-bind="text:$component.bankDetails.authorizationDetail.authurl"></div>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label for="tokenurl"><span data-bind="text:$component.resourceBundle.labels.tokenurl"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="tokenurl" data-bind="text:$component.bankDetails.authorizationDetail.tokenurl"></div>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label for="revokeurl"><span data-bind="text:$component.resourceBundle.labels.revokeurl"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="revokeurl" data-bind="text:$component.bankDetails.authorizationDetail.revokeurl"></div>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label for="redirecturl"><span data-bind="text:$component.resourceBundle.labels.redirecturl"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="redirecturl" data-bind="text:$component.bankDetails.authorizationDetail.redirecturl"></div>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label for="client_id"><span data-bind="text:$component.resourceBundle.labels.clientid"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="client_id" data-bind="text:$component.bankDetails.authorizationDetail.client_id"></div>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label for="client_secret"><span data-bind="text:$component.resourceBundle.labels.clientsecret"></span></oj-label>
+            </div>
+            <!-- ko if: $component.bankDetails.oauth_enabled  -->
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div class="hide" id="client_secret" data-bind="text:$component.bankDetails.authorizationDetail.client_secret"></div>
+                <span data-bind="text:$component.resourceBundle.labels.clientsecretpwd">
+            </div>
+            <!-- /ko -->
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+              <oj-label for="scope"><span data-bind="text:$component.resourceBundle.labels.scope"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="scope" data-bind="text:$component.bankDetails.authorizationDetail.scope"></div>
+            </div>
+        </div>
+        </page-section>
+ <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.heading.externalApi">
+        <!-- ko foreach: $component.bankDetails.authorizationDetail.externalAPIs  -->
+        <!-- ko if: $data.api_url-->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-2 oj-md-6 oj-sm-12">
+              <div data-bind="attr:{'id': 'externalapiType'+$index()},text:$component.resourceBundle.labels[$data.api_name]"></div>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+              <div data-bind="attr:{'id': 'externalapiLabel'+$index()},text:$data.api_url"></div>
+            </div>
+        </div>
+          <!-- /ko -->
+        <!-- /ko -->
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <!-- ko if:mode() === 'REVIEW' -->
+            <!-- ko ifnot : $component.editFromView -->
+                <oj-button id="confirmButton" class="action-button-primary" on-click="[[uploadImages]]">
+                  <span data-bind="text:$component.resourceBundle.generic.common.confirm"></span>
+                </oj-button>
+                <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.messages.cancelOperation)]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                </oj-button>
+                <oj-button id="backbutton" class="action-button-tertiary" on-click="[[editAll]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+                </oj-button>
+            <!-- /ko -->
+            <!-- ko if : $component.editFromView -->
+                <oj-button id="confirmButton" class="action-button-primary" on-click="[[uploadImages]]">
+                  <span data-bind="text:$component.resourceBundle.generic.common.confirm"></span>
+                </oj-button>
+                <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.messages.cancelOperation)]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                </oj-button>
+                <oj-button id="backbutton" class="action-button-tertiary" on-click="[[updateAll]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+                </oj-button>
+            <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if:mode() === 'VIEW' -->
+               <oj-button id="editButton" class="action-button-primary" on-click="[[updateAll]]">
+                <span data-bind="text:$component.resourceBundle.generic.common.edit"></span>
+               </oj-button>
+               <oj-button id="deleteButton" class="action-button-tertiary" on-click="[[confirmDeleteBank]]">
+                  <span data-bind="text:$component.resourceBundle.generic.common.delete"></span>
+               </oj-button>
+               <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.messages.cancelOperation)]]">
+                   <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+               </oj-button>
+               <oj-button class="action-button-secondary btn proceed-main-btn" on-click="[[backToSearch]]">
+                 <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+               </oj-button>
+        <!-- /ko -->
+
+  </div>
+
+</div>
+
+</div>
+
+
+</div>
+</div>
+<!-- ko if:mode() === 'VIEW' -->
+<!-- ko if: $baseModel.large() -->
+<div class="oj-sm-12 oj-md-12 oj-lg-3 oj-sm-only-hide oj-md-only-hide pull-right help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'add-ext-bank-create'"></help>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+</div>
+
+<modal-window params="baseModel : $baseModel, rootModel : $data,id:'deleteBank',header: $component.resourceBundle.labels.deleteExtBank">
+    <div class="confirm-dialog">
+        <div class="confirm-dialog__container confirm-dialog-container">
+            <div class="oj-flex oj-flex-items-pad confirm-dialog-container__message">
+                <div class="oj-flex-item j-sm-12" data-bind="text: $baseModel.format($component.resourceBundle.labels.deleteBankMsg,{bankName:$component.bankDetails.bankName})"></div>
+            </div>
+            <div class="confirm-dialog-container__buttons button-container">
+                <oj-button class="action-button-primary" on-click="[[$component.deleteBank]]">
+                    <span class="icons icon-confirm" slot="startIcon"></span><span data-bind="text:$component.resourceBundle.generic.common.yes"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" on-click="[[function(){$('#deleteBank').hide();}]]">
+                    <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resourceBundle.generic.common.no"></span>
+                </oj-button>
+            </div>
+        </div>
+    </div>
+</modal-window>

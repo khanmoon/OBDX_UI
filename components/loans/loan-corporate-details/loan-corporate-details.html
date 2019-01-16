@@ -1,0 +1,180 @@
+<div class="account-details">
+  <!-- ko if:$component.outstandingData () && $component.scheduleData() -->
+  <div class="oj-panel">
+    <div class="oj-flex account-details__select">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+        <account-input params="baseModel : $baseModel, rootModel: $data ,label : nls.loanDetails.labels.selectAccount,type: 'balance', customURL : 'loan',moduleName:'loans',
+            account : selectedSettlementAccount ,additionalDetails : additionalDetails,validator:$component.validationTracker,taskCode:'LN_I_LD'">
+        </account-input>
+      </div>
+    </div>
+    <div class="oj-flex account-details__productInfo">
+      <row params="baseModel : $baseModel, rootModel:$parent, label:nls.loanDetails.labels.productName, value:loanViewDetails().productDTO.name"></row>
+    </div>
+    <!-- ko if:nicknameAvailable -->
+    <div class="oj-flex-item oj-sm-12 oj-md-4 account-details__nickname" data-bind="component:{name: 'account-nickname',
+                           params:{rootModel:$data,params: nicknameDetails(),editable:true,module:'loans',userSegment:'CORP'}}">
+    </div>
+    <!-- /ko -->
+  </div>
+  <div class="oj-flex account-details__equalheight">
+    <div class="oj-flex-item oj-sm-12">
+      <div class="outer-container">
+        <div class="wrapped-container">
+          <div class="inner-container">
+            <div class="firstSection">
+              <h3 class="account-details-equalheight__header" data-bind="text: nls.loanDetails.borrowing.labels.header"></h3>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.borrowing.labels.sanctionedAmount"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatCurrency(loanViewDetails().approvedAmount.amount,loanViewDetails().approvedAmount.currency)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.borrowing.labels.openingDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatDate(loanViewDetails().openingDate)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.borrowing.labels.maturityDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatDate(loanViewDetails().maturityDate)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.borrowing.labels.interestRate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatNumber(loanViewDetails().interestRate/100,'percent',2,1)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.borrowing.labels.disbursedAmount"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatCurrency(loanViewDetails().disbursedAmount.amount,loanViewDetails().disbursedAmount.currency)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.borrowing.labels.loanBranch"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:loanViewDetails().branchAddressDTO.branchName"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.borrowing.labels.accountStatus"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:nls.loanDetails.status.labels[loanViewDetails().status]"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <!-- ko if:$component.loanViewDetails().noOfLinkage -->
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.borrowing.labels.facilityId"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <span data-bind="text:$component.loanViewDetails().noOfLinkage"></span>
+                </div>
+                <!-- /ko -->
+              </div>
+            </div>
+            <div class="secondSection">
+              <h3 class="account-details-equalheight__header" data-bind="text: nls.loanDetails.arrears.labels.header"></h3>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.arrears.labels.amountPrepaid"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatCurrency(outstandingData ().prepaymentAmount.amount,outstandingData ().prepaymentAmount.currency)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.arrears.labels.outstandingAmount"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatCurrency(outstandingData ().outstandingAmount.amount,outstandingData ().outstandingAmount.currency)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.arrears.labels.principalArrears"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatCurrency(outstandingData ().principalBalance.amount,outstandingData ().principalBalance.currency)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.arrears.labels.interestArrears"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatCurrency(outstandingData ().interestArrears.amount,outstandingData ().interestArrears.currency)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.arrears.labels.latePaymentCharges"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatCurrency(outstandingData ().lateRepaymentCharges.amount,outstandingData ().lateRepaymentCharges.currency)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.arrears.labels.fees"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatCurrency(outstandingData ().serviceCharges.amount,outstandingData ().serviceCharges.currency)"></span></div>
+              </div>
+            </div>
+            <div class="thirdSection">
+              <h3 class="account-details-equalheight__header" data-bind="text: nls.loanDetails.repayments.labels.header"></h3>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.repayments.labels.loanTerm"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.format(nls.loanDetails.dataLabels.loanTenure,{months:loanViewDetails().tenure.months,days:loanViewDetails().tenure.days})"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.repayments.labels.totalInstallments"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:scheduleData().loanScheduleItemDTO.length"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.repayments.labels.remainingInstallments"></span></oj-label>
+                </div>
+                <div class="oj-flex-item">
+                  <!-- ko if:$component.loanViewDetails().loanScheduleDTO -->
+                  <span data-bind="text:$component.loanViewDetails().loanScheduleDTO.installementDueCount"></span>
+                  <!-- /ko -->
+                </div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.repayments.labels.nextInstallmentDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatDate(loanViewDetails().loanScheduleDTO.nextDueDate)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.installments.labels.nextInstallmentAmount"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatCurrency(loanViewDetails().loanScheduleDTO.nextInstallmentAmount.amount,loanViewDetails().loanScheduleDTO.nextInstallmentAmount.currency)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.repayments.labels.latePaymentPenalty"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatCurrency(outstandingData ().lateRepaymentCharges.amount,outstandingData ().lateRepaymentCharges.currency)"></span></div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column account-details-equalheight__seperator">
+                <div class="oj-flex-item">
+                  <oj-label><span data-bind="text:nls.loanDetails.repayments.labels.prePaymentPenalty"></span></oj-label>
+                </div>
+                <div class="oj-flex-item"><span data-bind="text:$baseModel.formatCurrency(outstandingData ().prepaymentPenaltyAmount.amount,outstandingData ().prepaymentPenaltyAmount.currency)"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div data-bind="component:{name:'quick-links',params:{rootModel:$component,data:$data,type:'loans'}}"></div>
+
+  <div class="account-details__transactionWidget">
+    <account-transactions params="baseModel : $baseModel,dashboard: $dashboard, rootModel : $data,type:'LON'">
+    </account-transactions>
+  </div>
+  <!-- /ko -->
+</div>

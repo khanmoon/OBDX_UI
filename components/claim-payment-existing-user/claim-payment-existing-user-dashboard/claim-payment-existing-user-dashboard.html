@@ -1,0 +1,57 @@
+<!-- ko template : { afterRender: $component.fetchQueryParams.bind($data, $root) } --> <!-- /ko -->
+<!-- ko if:stageOne() && isExistingGlobalPayee() -->
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">  
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading :''">
+          <div class="row-group">
+              <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                      <oj-label for="accountValue"><span data-bind="text:$component.payments.peertopeer.globalpayee.transferTo"></span></oj-label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                      <div data-bind="text:srcAccount()"></div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- ko if:accountType()==='DOMESTIC' -->
+          <div class="row-group">
+              <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                      <oj-label for="selectedBranch"><span data-bind="text:$component.payments.peertopeer.globalpayee.ifsc"></span></oj-label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                      <div data-bind="text:ifscCode()"></div>
+                  </div>
+              </div>
+          </div>
+          <!-- /ko -->
+    </page-section>
+
+    <div class="button-container">
+      <oj-button class="action-button-primary" id="button_confirm" on-click="[[confirmPayment]]">
+        <span slot="startIcon" class="icons icon-submit"></span>
+        <span data-bind="text:$component.common.submit"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" id="button_cancel" on-click="[[cancelPayment]]">
+        <span slot="startIcon" class="icons icon-cancel"></span>
+        <span data-bind="text:$component.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-primary" id="button_update" on-click="[[updateDetails]]">
+        <span slot="startIcon" class="icons icon-update"></span>
+        <span data-bind="text:$component.common.update"></span>
+      </oj-button>
+    </div>
+  </div>
+
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="rootModel : $component, transaction: 'claim-payment-existing-user'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+
+<!-- ko if:stageOne() && !(isExistingGlobalPayee())-->
+<div data-bind='component:{name:"bank-details", params:{rootModel: $component }}'></div>
+<!-- /ko -->

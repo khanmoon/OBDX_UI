@@ -1,0 +1,234 @@
+<div class="form-main-container card-statement">
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 card-statement__left card-statement-left">
+			<!-- ko if: $component.moduleURL() && $baseModel.small() -->
+			<account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.resource.statements.cardNumber,
+        account : $component.selectedCardValue,
+        type: 'nodeValue',
+        validator:$component.validationTracker,
+        customURL : $component.moduleURL,
+        accountsParser: $component.creditCardParser,
+        additionalDetails : $component.cardObject,
+        readOnly: !!$component.params.id">
+			</account-input>
+			<!-- /ko -->
+			<!-- ko if:creditCardLoaded -->
+			<div class="card-statement-left__viewInfo label">
+				<oj-label><span data-bind="text:$component.resource.statements.cardNumber"></span></oj-label>
+		  </div>
+
+			<div class="card-statement-left__selectAccount">
+				<label class="hide-label" data-bind="attr:{for: 'accountSelect' + ($baseModel.incrementIdCount())},text:$component.resource.statements.creditCardNumber"></label>
+			<oj-select-one :id="[['accountSelect'+($baseModel.currentIdCount())]]" :aria-label="[[$component.resource.statements.creditCardNumber]]" on-value-changed="[[accountChanged]]" value="{{$component.selectedCardValue()}}">
+				<!-- ko foreach: primaryCreditCard -->
+				<oj-option value="{{primaryCardId.value}}"><span data-bind="text:primaryCardId.displayValue"></span></oj-option>
+				<!-- /ko -->
+			</oj-select-one>
+		</div>
+			<!-- /ko -->
+			<div class="card-statement-left__viewInfo label">
+				<oj-label><span data-bind="text:$component.resource.statements.view"></span></oj-label>
+			</div>
+
+			<div class="account-statement-left__selectAccountType">
+				<label class="hide-label" data-bind="attr:{for: 'accountSelect' + ($baseModel.incrementIdCount())},text:$component.resource.statements.view"></label>
+				<oj-select-one :aria-label="[[$component.resource.statements.view]]" value="{{$component.txnType}}" on-value-changed="[[txnTypeChangedHandler]]">
+					<oj-option value="{{'UBT'}}"><span data-bind="text:$component.resource.statements.UBT"></span></oj-option>
+					<oj-option value="{{'BT'}}"><span data-bind="text:$component.resource.statements.BT"></span></oj-option>
+				</oj-select-one>
+			</div>
+
+			<div class="account-statement-left__selectPeriod">
+				<!-- ko if:$component.showBillingMonthDropdown() -->
+				<label class="hide-label" data-bind="attr:{for:'monthSelect' +($baseModel.incrementIdCount())},text:$component.resource.statements.date"></label>
+				<oj-select-one :id="[['monthSelect'+($baseModel.currentIdCount())]]" on-value-changed="[[txnMonthChangeHandler]]">
+					<!-- ko foreach:$component.availableMonths -->
+					<oj-option value="{{$data.value}}"><span data-bind="text:$data.text"></span></oj-option>
+					<!-- /ko -->
+				</oj-select-one>
+				<!-- /ko -->
+			</div>
+
+			<a class="left-link account-statement-left__link account-statement-left-link" href="#" data-bind="click: eStatementSubsciption,attr:{alt:$component.resource.statements.estatementText,title:$component.resource.statements.estatement,'aria-label':$component.resource.estatement}">
+			<span class="icons icon-subscription account-statement-left-link__icon"></span>
+			<span class="account-statement-left-link__statement" data-bind="text:$component.resource.statements.estatement"></span>
+		</a>
+
+			<a class="left-link account-statement-left__link account-statement-left-link" href="#" data-bind="click: downloadPregenerated,attr:{alt:$component.resource.statements.downloadPre,title:$component.resource.statements.downloadPre,'aria-label':$component.resource.downloadPre}">
+			<span class="icons icon-subscription account-statement-left-link__icon"></span>
+			<span class="account-statement-left-link__statement" data-bind="text:$component.resource.statements.downloadPre"></span>
+		</a>
+
+		</div>
+
+		<div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9 account-statement__details account-statement-details">
+			<div class="oj-flex oj-flex-items-pad account-statement-details__balances account-statement-details-balances">
+
+				<!-- ko if:$component.txnType() === 'BT' -->
+				<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 account-statement-details-balances__openBal account-statement-details-balances-openBal">
+					<span data-bind="text:$component.resource.statements.amountDue"></span>
+					<span class="account-statement-details-balances-openBal__openAmount" data-bind="text:$baseModel.formatCurrency(cardObject().due.billedAmount.amount,cardObject().due.billedAmount.currency)"></span>
+				</div>
+
+				<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 account-statement-details-balances__closingBal account-statement-details-balances-closingBal">
+					<span data-bind="text:$component.resource.statements.availCredit"></span>
+					<span class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 account-statement-details-balances-closingBal__closedAmount" data-bind="text:$baseModel.formatCurrency(cardObject().limits[0].available.amount,cardObject().limits[0].available.currency)"></span>
+				</div>
+
+
+				<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 account-statement-details-balances__closingBal account-statement-details-balances-closingBal">
+					<span data-bind="text:$component.resource.statements.dueDate"></span>
+					<span class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 account-statement-details-balances-closingBal__closedAmount" data-bind="text:$baseModel.formatDate(cardObject().due.expectedPaymentDate)"></span>
+				</div>
+				<!-- /ko -->
+
+				<div data-bind="css: $component.txnType() === 'BT' ? 'oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 right' : 'oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 right'">
+					<a href="#" data-bind="attr:{alt:$component.resource.statements.statementText,title:$component.resource.statements.statement,'aria-label':$component.resource.save},click:downloadStatement">
+							<span class="icons icon-download"></span>
+							<span class="" data-bind="text:$component.resource.statements.statement"></span>
+					</a>
+				</div>
+			</div>
+
+			<!-- ko if:cardStatementFetched() -->
+			<!-- ko ifnot:$baseModel.small() -->
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item">
+					<oj-table :aria-label="[[$component.resource.statements.creditCardStatement]]" columns="[[[{headerText:$component.resource.statements.date,field:'transactionDate',template:'sendDate'},{headerText:$component.resource.statements.description,field:'cardDet',style:'width : 30%'},{headerText:$component.resource.statements.amount,field:'amount',template:'amountWithCurrencyField',headerClassName:'right',style:'float : right'}]]]"
+					  columns-default="[[{sortable:'enabled'}]]" data="[[$component.datasource]]">
+
+						<caption class="hide-label" data-bind="text:$component.resource.statements.transactionList"></caption>
+						<template slot="sendDate">
+								<td>
+					    		<div data-bind="attr:{'aria-label':$baseModel.formatDate($current.row.transactionDate)},text:$baseModel.formatDate($current.row.transactionDate)"></div>
+								</td>
+					</template>
+						<template slot="amountWithCurrencyField">
+								<!-- ko if: $current.row.crdrFlag -->
+									<!-- ko if: $current.row.crdrFlag==="D" -->
+					        	<td class="account-statement-details__amount">
+											<span class="debit highlight-text" data-bind="attr:{'aria-label':$baseModel.formatCurrency($current.row.amount.amount, $current.row.amount.currency)}, text : $baseModel.formatCurrency($current.row.amount.amount, $current.row.amount.currency)"></span>
+											<span class="debit highlight-text" data-bind="text:$component.resource.statements.dr"></span>
+										</td>
+									<!-- /ko -->
+						      <!-- ko if: $current.row.crdrFlag=== "C" -->
+										<td class="account-statement-details__amount">
+											<span class="credit highlight-text" data-bind="attr:{'aria-label':$baseModel.formatCurrency($current.row.amount.amount, $current.row.amount.currency)},text : $baseModel.formatCurrency($current.row.amount.amount, $current.row.amount.currency)"></span>
+											<span class="credit highlight-text" data-bind="text:$component.resource.statements.cr"></span>
+										</td>
+									<!-- /ko -->
+								<!-- /ko -->
+					</template>
+					</oj-table>
+					<oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.datasource]]">
+					</oj-paging-control>
+				</div>
+			</div>
+			<!-- /ko -->
+			<!-- ko if:$baseModel.small() -->
+			<div class="grid-main-container" params="rootModel : $data, heading : ''">
+				<label class="hide-label" data-bind="attr:{'for':'listview'},text:$component.resource.statements.transactionList"></label>
+				<oj-list-view id="listview" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.datasource]]">
+
+				</oj-list-view>
+
+				<div class="center">
+					<oj-paging-control id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.datasource]]"></oj-paging-control>
+				</div>
+
+				<script type="text/html" id="content_template">
+
+					<li data-bind="attr: {id: ('credit-card-statement-item'+$data.uniqueId)}">
+
+						<div class="oj-flex oj-flex-items-pad">
+
+							<div class="oj-flex-item oj-sm-5 activity-date" data-bind="text: $baseModel.formatDate($data.transactionDate )"></div>
+
+							<div class="oj-flex-item activity-desc" data-bind="text : $data.cardDet"></div>
+							<div class="oj-flex-item activity-desc" data-bind="text : $data.transactionDescription"></div>
+
+							<!-- ko if: $data.crdrFlag -->
+							<div class="last-activity">
+								<div class="oj-flex-item right activity-amt">
+									<!-- ko if: crdrFlag==="D" -->
+									<span class="debit" data-bind="text : $baseModel.formatCurrency($data.amount.amount, $data.amount.currency)"></span>
+									<span class="debit">Dr</span>
+									<!-- /ko -->
+
+									<!-- ko if: crdrFlag==="C" -->
+									<span class="credit" data-bind="text :$baseModel.formatCurrency($data.amount.amount, $data.amount.currency)"></span>
+									<span class="credit">Cr</span>
+									<!-- /ko -->
+
+									<div class="oj-lg-3 oj-md-2 oj-sm-12 oj-flex-item"></div>
+								</div>
+
+
+							</div>
+							<!-- /ko -->
+						</div>
+						<div class="oj-flex oj-flex-items-pad">
+							<div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+						</div>
+					</li>
+				</script>
+			</div>
+			<!-- /ko -->
+			<!-- /ko -->
+		</div>
+	</div>
+	<!-- ko if: $baseModel.small() -->
+  <a href="#" data-bind="click: $component.showFloatingPanel">
+    <div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+  </a>
+  <floating-panel params="baseModel : $baseModel, panelId: 'panelCreditCard2', rootModel: $component">
+    <ul>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'card-statement',cardObject(),$data)">
+          <span class="icons icon-view-statement"></span>
+          <span data-bind="text: $component.resource.cardLinks.viewStatement"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'card-pay',cardObject(),$data)">
+          <span class="icons icon-limit"></span>
+          <span data-bind="text: $component.resource.cardLinks.cardPayment"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'request-pin',cardObject(),$data)">
+          <span class="icons icon-request-pin"></span>
+          <span data-bind="text: $component.resource.cardLinks.requestPin"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'block-card',cardObject(),$data)">
+          <span class="icons icon-cancel-card"></span>
+          <span data-bind="text: $component.resource.cardLinks.blockCard"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'auto-pay',cardObject(),$data)">
+          <span class="icons icon-pay"></span>
+          <span data-bind="text: $component.resource.cardLinks.autoPay"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reset-pin',cardObject(),$data)">
+          <span class="icons icon-refresh"></span>
+          <span data-bind="text: $component.resource.cardLinks.resetPin"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'add-on-card',cardObject(),$data)">
+          <span class="icons icon-card-preference"></span>
+          <span data-bind="text: $component.resource.cardLinks.addOnCard"></span></a>
+      </li>
+    </ul>
+  </floating-panel>
+  <!-- /ko -->
+</div>
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'statementDialog',  header : showeStatement() ?  $component.resource.statements.estatementHeading : $component.resource.statements.downloadPre">
+	<!-- ko if:showeStatement() -->
+	<div class="account-statement__eStatement account-statement-eStatement" data-bind="component: {name:'e-statement', params: {rootModel:$data} }"></div>
+
+	<!-- /ko -->
+	<!-- ko if:showDownloadPregenerated() -->
+	<div class="account-statement__cardStatement account-statement-cardStatement" data-bind="component: {name:'download-statement', params: {rootModel:$data} }"></div>
+	<!-- /ko -->
+</modal-window>

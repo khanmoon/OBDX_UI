@@ -1,0 +1,285 @@
+<!-- ko ifnot:($component.params && $component.params.iseditable) || ($component.iseditable) -->
+<div class="oj-flex oj-flex-items-pad" data-bind="css:($component.params && $component.params.isNomineeRequired) ?'':'cust-details'">
+    <!-- ko if:$component.params && $component.params.isNomineeRequired -->
+    <oj-label for="nomineeAccount" class="oj-flex-item oj-lg-12">
+        <span data-bind="text:$component.resource.nominee.nomineeDetails.nominationType"></span>
+    </oj-label>
+    <!-- /ko -->
+    <div class="oj-flex-item oj-sm-12">
+        <oj-radioset id="radiosetNominee" class="oj-choice-direction-row" value="{{manageNominee}}" :aria-label="[[$component.resource.nominee.nomineeDetails.nominationDetails]]" on-value-changed="[[$component.nomineeArrayChanged]]">
+            <!-- ko foreach: nomineeArray -->
+            <oj-option value="[[id]]">
+                <span data-bind="text:label"></span>
+            </oj-option>
+            <!-- /ko -->
+        </oj-radioset>
+    </div>
+</div>
+<!-- /ko -->
+<div data-bind="css : ($component.params && $component.params.isNomineeRequired) ? '' : 'form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between'">
+    <div data-bind="css : ($component.params && $component.params.isNomineeRequired) ? 'oj-sm-12 oj-md-6 oj-lg-12' : 'oj-flex-item oj-sm-12 oj-md-6 oj-lg-8'">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <!-- ko if:dataLoaded() -->
+            <!-- Nominee Details -->
+            <div>
+                <oj-validation-group id="nomineeTracker" valid="{{groupValid}}">
+                    <!-- ko ifnot:$component.params && $component.params.isNomineeRequired -->
+                    <div class="oj-flex-items-pad oj-lg-12 oj-sm-12">
+                        <account-input params="baseModel : $baseModel, rootModel: $component ,label : $component.resource.nominee.nomineeDetails.accountNumber,
+                            account : addNomineeModel.accountId.value,
+                            type: 'balance',
+                            additionalDetails : $component.additionalDetails,
+                            customURL : $component.customURLmap[$component.addNomineeModel.accountType()+($component.addNomineeModel.accountModule() || '')],
+                            validator:$component.validationTracker,
+                            readOnly: true"></account-input>
+                    </div>
+                    <!-- /ko -->
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="nomineeName" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.nomineeDetails.name"></span>
+                        </oj-label>
+                        <oj-input-text id="nomineeName" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{addNomineeModel.name}}" validators="[[$baseModel.getValidator('NAME')]]" required>
+                        </oj-input-text>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="date" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.nomineeDetails.dob"></span>
+                        </oj-label>
+                        <oj-input-date id="date" class="oj-flex-item oj-lg-4 oj-sm-12" value="{{addNomineeModel.dateOfBirth}}" converter="[[$baseModel.dateConverter]]" max="[[maxDate]]" min="[[$oj.IntlConverterUtils.dateToLocalIso(new Date('1800-01-01T00:00:00'))]]" required>
+                        </oj-input-date>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="nomineeRelationship" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.nomineeDetails.relationship"></span>
+                        </oj-label>
+                        <oj-select-one id="nomineeRelationship" :aria-label="[[$component.resource.nominee.nomineeDetails.relationship]]" class="oj-flex-item oj-lg-5 oj-sm-7" placeholder="[[$component.resource.nominee.pleaseSelect]]" value="{{addNomineeModel.relation}}" required>
+                            <!-- ko foreach:relationshipList -->
+                            <oj-option value="[[value]]"><span data-bind="text:text"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="nomineeAddress" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.addressDetails.address"></span>
+                        </oj-label>
+                        <div class="oj-flex-item oj-lg-12">
+                            <oj-input-text id="nomineeAddress" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{addNomineeModel.address.line1}}" validators="[[$baseModel.getValidator('ADDRESS',$component.resource.nominee.nomineeDetails.errorMessage.addressError)]]" required>
+                            </oj-input-text>
+                        </div>
+                        <div class="oj-flex-item oj-lg-12">
+                            <oj-input-text id="nomineeAddress2" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{addNomineeModel.address.line2}}" :aria-label="[[$component.resource.nominee.addressDetails.address]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resource.nominee.nomineeDetails.errorMessage.addressError,{type: 'length',options: {min: 0, max: 35}})]]">
+                            </oj-input-text>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="nomineeCountry" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.addressDetails.country"></span>
+                        </oj-label>
+                        <oj-select-one id="nomineeCountry" :aria-label="[[$component.resource.nominee.addressDetails.country]]" class="oj-flex-item oj-lg-5 oj-sm-12" placeholder="[[$component.resource.nominee.pleaseSelect]]" value="{{addNomineeModel.address.country}}" required>
+                            <!-- ko foreach:countries -->
+                            <oj-option value="[[value]]"><span data-bind="text:text"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="nomineeState" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.addressDetails.state"></span>
+                        </oj-label>
+                        <oj-input-text id="nomineeState" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{addNomineeModel.address.state}}" validators="[[$baseModel.getValidator('CITY',$component.resource.nominee.nomineeDetails.errorMessage.state)]]" required>
+                        </oj-input-text>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="nomineeCity" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.addressDetails.city"></span>
+                        </oj-label>
+                        <oj-input-text id="nomineeCity" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{addNomineeModel.address.city}}" validators="[[$baseModel.getValidator('CITY')]]" required>
+                        </oj-input-text>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="nomineeZip" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.addressDetails.zip"></span>
+                        </oj-label>
+                        <oj-input-text id="nomineeZip" class="oj-flex-item oj-lg-4 oj-sm-7" value="{{addNomineeModel.address.zipCode}}" validators="[[$baseModel.getValidator('POSTAL_CODE',$component.resource.nominee.nomineeDetails.errorMessage.zip)]]" required>
+                        </oj-input-text>
+                    </div>
+                    <!-- ko if: $component.isMinor -->
+                    <!-- Nominee Minor label-->
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="conditionForMinor" class="oj-flex-item oj-lg-12 oj-sm-12 checkbox-option">
+                            <span class="checkbox-option__label" data-bind="text:$component.resource.nominee.minorCondition"></span>
+                        </oj-label>
+                    </div>
+                    <!-- Guardian Details -->
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="guardianName" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.guardianDetails.name"></span>
+                        </oj-label>
+                        <oj-input-text id="guardianName" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{addNomineeModel.guardian.name}}" validators="[[$baseModel.getValidator('NAME')]]" required>
+                        </oj-input-text>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="guradianAddress" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.addressDetails.address"></span>
+                        </oj-label>
+                        <div class="oj-flex-item oj-lg-12">
+                            <oj-input-text id="guradianAddress" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{addNomineeModel.guardian.address.line1}}" validators="[[$baseModel.getValidator('ADDRESS',$component.resource.nominee.nomineeDetails.errorMessage.addressError)]]" required>
+                            </oj-input-text>
+                        </div>
+                        <div class="oj-flex-item oj-lg-12">
+                            <oj-input-text id="guradianAddress2" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{addNomineeModel.guardian.address.line2}}" :aria-label="[[$component.resource.nominee.addressDetails.address]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resource.nominee.nomineeDetails.errorMessage.addressError,{type: 'length',options: {min: 0, max: 35}})]]">
+                            </oj-input-text>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="guardianNomineeCountry" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.addressDetails.country"></span>
+                        </oj-label>
+                        <oj-select-one id="guardianNomineeCountry" :aria-label="[[$component.resource.nominee.addressDetails.country]]" class="oj-flex-item oj-lg-5 oj-sm-12" placeholder="[[$component.resource.nominee.pleaseSelect]]" value="{{addNomineeModel.guardian.address.country}}" required>
+                            <!-- ko foreach:countries -->
+                            <oj-option value="[[value]]"><span data-bind="text:text"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="guardianState" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.addressDetails.state"></span>
+                        </oj-label>
+                        <oj-input-text id="guardianState" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{addNomineeModel.guardian.address.state}}" validators="[[$baseModel.getValidator('CITY',$component.resource.nominee.nomineeDetails.errorMessage.state)]]" required>
+                        </oj-input-text>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="guardianCity" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.addressDetails.city"></span>
+                        </oj-label>
+                        <oj-input-text id="guardianCity" class="oj-flex-item oj-lg-6 oj-sm-12" value="{{addNomineeModel.guardian.address.city}}" validators="[[$baseModel.getValidator('CITY')]]" required>
+                        </oj-input-text>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <oj-label for="guardianZip" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.nominee.addressDetails.zip"></span>
+                        </oj-label>
+                        <oj-input-text id="guardianZip" class="oj-flex-item oj-lg-4 oj-sm-12" value="{{addNomineeModel.guardian.address.zipCode}}" validators="[[$baseModel.getValidator('POSTAL_CODE',$component.resource.nominee.nomineeDetails.errorMessage.zip)]]" required>
+                        </oj-input-text>
+                    </div>
+                    <!-- /ko -->
+                </oj-validation-group>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $baseModel.large() -->
+            <modal-window params="baseModel : $baseModel, rootModel : $component, id:'replicate-nominee', header: $component.resource.nominee.selectNominee, closeHandler : $component.closeModal">
+                <div class="oj-flex oj-flex-items-pad">
+                    <oj-table id='nomineeTable' :aria-label="[[$component.resource.nominee.nomineeListTable]]" data="[[accountsListDataSource]]" columns-default='{"sortable": "disabled"}' columns='[[[
+                    {
+                "headerText": "",
+                "template": "nominee_selection",
+                "className" : "replicate-nominee__radio-column"
+            }, {
+                "headerText": resource.nominee.nomineeDetails.name,
+                "field": "nomineeName",
+                "className" : "replicate-nominee__vertical-middle"
+            },
+            {
+                "headerText": resource.nominee.accountType,
+                "field": "accountType",
+                "className" : "replicate-nominee__vertical-middle"
+            },
+            {
+                "headerText": resource.nominee.nomineeDetails.accountNumber,
+                "field": "accountNumber",
+                "className" : "replicate-nominee__vertical-middle"
+            }
+        ]]]'>
+                        <template slot="nominee_selection">
+                            <oj-radioset :id="[['replicateNomineeList' + $baseModel.incrementIdCount()]]" class="oj-choice-direction-row" value="{{$component.selectedNominee}}" :aria-label="[[$component.resource.nominee.nomineeListTable]]">
+                                <oj-option name="nominee" value="[[$current.row.accountNumberValue]]" data-bind="attr:{id: $current.row.accountNumberValue, 'aria-label':$current.row.accountNumberValue}"></oj-option>
+                            </oj-radioset>
+                        </template>
+                        <oj-paging-control id="paging" data="[[accountsListDataSource]]" page-size="[[5]]" slot="bottom">
+                        </oj-paging-control>
+                    </oj-table>
+                </div>
+                <div class="oj-flex-item button-container">
+                    <oj-button class="action-button-primary" id="okButton" on-click="[[$component.replicateNominee]]">
+                        <span slot="startIcon" class="icons icon-ok"></span>
+                        <span data-bind="text: $component.resource.nominee.generic.common.ok"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" id="closeButton" on-click="[[$component.closeModal]]">
+                        <span slot="startIcon" class="icons icon-cancel"></span>
+                        <span data-bind="text: $component.resource.nominee.generic.common.cancel"></span>
+                    </oj-button>
+                </div>
+            </modal-window>
+            <!-- /ko -->
+            <!-- ko if: $component.listLoaded() && !$baseModel.large() -->
+            <script type="text/html" id="replicateNominee_template">
+                <li data-bind="attr: {id:$data[accountNumberValue]}">
+                    <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                        <div class="oj-flex-item oj-sm-1 no-pad-cols">
+                            <oj-radioset id="nomineeList" value="{{$component.selectedNominee}}" class="oj-choice-direction-row" :aria-label="[[$component.resource.nominee.nomineeListTable]]">
+                                <oj-option name="nominee" value=[[$context.data.accountNumberValue]] data-bind="attr:{id: $context.data.accountNumberValue}"></oj-option>
+                            </oj-radioset>
+                        </div>
+                        <div class="oj-flex-item oj-sm-10 no-pad-cols">
+                            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.nominee.nomineeDetails.name, value : nomineeName"></row>
+                            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.nominee.accountType, value : accountType"></row>
+                            <!-- <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.nominee.accountName, value : accountName"></row> -->
+                            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.nominee.nomineeDetails.accountNumber, value : accountNumber"></row>
+                        </div>
+                    </div>
+                </li>
+            </script>
+            <oj-list-view id="replicate_nominee" :aria-label="[[$component.resource.nominee.accountListTable]]" data="[[accountsListDataSource]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('replicateNominee_template', true)]]" selection-mode="single">
+            </oj-list-view>
+            <oj-paging-control id="paging-small" class="center" data="[[accountsListDataSource]]" page-size="[[5]]" page-options="[[{layout:['nav']}]]" slot="bottom">
+            </oj-paging-control>
+            <div class="oj-flex-item button-container">
+                <oj-button class="action-button-primary" id="okButton" on-click="[[$component.replicateNominee]]">
+                    <span slot="startIcon" class="icons icon-ok"></span>
+                    <span data-bind="text: $component.resource.nominee.generic.common.ok"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="closeButton" on-click="[[$component.openNomineeForm]]">
+                    <span slot="startIcon" class="icons icon-cancel"></span>
+                    <span data-bind="text: $component.resource.nominee.generic.common.cancel"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+        </page-section>
+        <!-- ko if: !($component.params && $component.params.isNomineeRequired) -->
+        <!-- ko if: $baseModel.large() || (!$baseModel.large() && !$component.listLoaded()) -->
+        <div class="oj-flex-item button-container">
+            <!-- ko if:($component.params && $component.params.iseditable) || $component.iseditable -->
+            <oj-button class="action-button-primary" id="saveButton" on-click="[[addNominee]]">
+                <span slot="startIcon" class="icons icon-save"></span>
+                <span data-bind="text: $component.resource.nominee.generic.common.save"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" id="resetButton" on-click="[[reset]]">
+                <span slot="startIcon" class="icons icon-refresh"></span>
+                <span data-bind="text: $component.resource.nominee.generic.common.reset"></span>
+            </oj-button>
+            <!-- /ko -->
+            <!-- ko ifnot:($component.params && $component.params.iseditable) || ($component.iseditable) -->
+            <oj-button class="action-button-primary" id="createButton" on-click="[[addNominee]]">
+                <span slot="startIcon" class="icons icon-add"></span>
+                <span data-bind="text: $component.resource.nominee.generic.common.create"></span>
+            </oj-button>
+            <!-- /ko -->
+            <!-- ko if: $baseModel.large() -->
+            <oj-button class="action-button-secondary" id="cancelButton" on-click="[[$dashboard.openDashBoard]]">
+                <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text: $component.resource.nominee.generic.common.cancel"></span>
+            </oj-button>
+            <!-- /ko -->
+            <oj-button class="action-button-tertiary" id="backButton" on-click="[[$dashboard.hideDetails]]">
+                <span slot="startIcon" class="icons icon-back-arrow"></span>
+                <span data-bind="text: $component.resource.nominee.generic.common.back"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+    <!-- ko if: $baseModel.large() && !($component.params && $component.params.isNomineeRequired) -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'add-edit-nominee'"></help>
+    </div>
+    <!-- /ko -->
+</div>

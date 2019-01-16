@@ -1,0 +1,1333 @@
+{
+  "name": "oj-diagram",
+  "version": "5.0.0",
+  "jetVersion": "5.0.0",
+  "displayName": "Diagram",
+  "preview": true,
+  "roles": [
+    "application"
+  ],
+  "description": "Displays a set of nodes and the links between them. The node positions and link paths are specified by an application-provided layout function.",
+  "properties": {
+    "animationOnDataChange": {
+      "description": "Specifies the animation that is applied on data changes.",
+      "type": "string",
+      "displayName": "Animation On Data Change",
+      "value": "none",
+      "enumValues": [
+        "auto",
+        "none"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "none": {
+          "displayName": "None"
+        }
+      }
+    },
+    "animationOnDisplay": {
+      "description": "Specifies the animation that is shown on initial display.",
+      "type": "string",
+      "displayName": "Animation On Display",
+      "value": "none",
+      "enumValues": [
+        "auto",
+        "none"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "none": {
+          "displayName": "None"
+        }
+      }
+    },
+    "data": {
+      "description": "Specifies data source for the component.",
+      "type": "Object",
+      "displayName": "Data",
+      "value": null
+    },
+    "dnd": {
+      "description": "Used to customize the drag and drop features.",
+      "type": "Object",
+      "displayName": "Dnd",
+      "value": {
+        "drag": null,
+        "drop": null
+      },
+      "properties": {
+        "drag": {
+          "description": "Used to customize drag functionality.",
+          "type": "Object",
+          "value": null,
+          "properties": {
+            "nodes": {
+              "description": "Used to customize the drag features for nodes.",
+              "type": "Object",
+              "properties": {
+                "dataTypes": {
+                  "description": "Specifies MIME type for dragged data.",
+                  "type": "string|Array<string>"
+                },
+                "drag": {
+                  "description": "Optional handler for drag event.",
+                  "type": "function"
+                },
+                "dragEnd": {
+                  "description": "Optional handler for dragend event.",
+                  "type": "function"
+                },
+                "dragStart": {
+                  "description": "Optional handler for dragstart event.",
+                  "type": "function"
+                }
+              }
+            },
+            "ports": {
+              "description": "Defines link creation functionality.",
+              "type": "Object",
+              "value": {},
+              "properties": {
+                "dataTypes": {
+                  "description": "Specifies MIME type for dragged data.",
+                  "type": "string|Array<string>"
+                },
+                "drag": {
+                  "description": "Optional handler for drag event.",
+                  "type": "function"
+                },
+                "dragEnd": {
+                  "description": "Optional handler for dragend event.",
+                  "type": "function"
+                },
+                "dragStart": {
+                  "description": "Optional handler for dragstart event.",
+                  "type": "function"
+                },
+                "linkStyle": {
+                  "description": "Specifies link creation feedback.",
+                  "type": "function"
+                },
+                "selector": {
+                  "description": "Specifies DOM element selector used to start link creation.",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "drop": {
+          "description": "An object that describes drop functionality.",
+          "type": "Object",
+          "value": null,
+          "properties": {
+            "background": {
+              "description": "Allows dropping on the diagram background.",
+              "type": "Object",
+              "properties": {
+                "dataTypes": {
+                  "description": "Specifies MIME types of objects that can be dropped on the Diagram background.",
+                  "type": "string|Array<string>"
+                },
+                "dragEnter": {
+                  "description": "Optional handler for dragenter event.",
+                  "type": "function"
+                },
+                "dragLeave": {
+                  "description": "Optional handler for dragleave event.",
+                  "type": "function"
+                },
+                "dragOver": {
+                  "description": "Optional handler for dragover event.",
+                  "type": "function"
+                },
+                "drop": {
+                  "description": "Handler for drop event.",
+                  "type": "function"
+                }
+              }
+            },
+            "links": {
+              "description": "Allows dropping on diagram links.",
+              "type": "Object",
+              "properties": {
+                "dataTypes": {
+                  "description": "Specifies MIME types of objects that can be dropped on the Diagram links.",
+                  "type": "string|Array<string>"
+                },
+                "dragEnter": {
+                  "description": "Optional handler for dragenter event.",
+                  "type": "function"
+                },
+                "dragLeave": {
+                  "description": "Optional handler for dragleave event.",
+                  "type": "function"
+                },
+                "dragOver": {
+                  "description": "Optional handler for dragover event.",
+                  "type": "function"
+                },
+                "drop": {
+                  "description": "Handler for drop event.",
+                  "type": "function"
+                }
+              }
+            },
+            "nodes": {
+              "description": "Allows dropping on diagram nodes.",
+              "type": "Object",
+              "properties": {
+                "dataTypes": {
+                  "description": "Specifies MIME types of objects that can be dropped on the Diagram nodes.",
+                  "type": "string|Array<string>"
+                },
+                "dragEnter": {
+                  "description": "Optional handler for dragenter event.",
+                  "type": "function"
+                },
+                "dragLeave": {
+                  "description": "Optional handler for dragleave event.",
+                  "type": "function"
+                },
+                "dragOver": {
+                  "description": "Optional handler for dragover event.",
+                  "type": "function"
+                },
+                "drop": {
+                  "description": "Handler for drop event.",
+                  "type": "function"
+                }
+              }
+            },
+            "ports": {
+              "description": "Allows dropping a link end on a port.",
+              "type": "Object",
+              "properties": {
+                "dataTypes": {
+                  "description": "Specifies MIME types of objects that can be dropped on the Diagram ports.",
+                  "type": "string|Array<string>"
+                },
+                "dragEnter": {
+                  "description": "Optional handler for dragenter event.",
+                  "type": "function"
+                },
+                "dragLeave": {
+                  "description": "Optional handler for dragleave event.",
+                  "type": "function"
+                },
+                "dragOver": {
+                  "description": "Optional handler for dragover event.",
+                  "type": "function"
+                },
+                "drop": {
+                  "description": "Handler for drop event.",
+                  "type": "function"
+                },
+                "selector": {
+                  "description": "Specifies DOM element selector used for link creation end.",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "expanded": {
+      "description": "Specifies the key set of ids for expanded diagram nodes.",
+      "type": "KeySet",
+      "displayName": "Expanded",
+      "value": "new ExpandedKeySet()",
+      "writeback": true
+    },
+    "focusRenderer": {
+      "description": "Specifies custom renderer for the diagram nodes used for focus updates.",
+      "type": "null|function",
+      "displayName": "Focus Renderer",
+      "value": null
+    },
+    "hiddenCategories": {
+      "description": "Specifies categories used for filtering.",
+      "type": "Array<string>",
+      "displayName": "Hidden Categories",
+      "value": [],
+      "writeback": true
+    },
+    "highlightMatch": {
+      "description": "Specifies matching condition used for category highlighting.",
+      "type": "string",
+      "displayName": "Highlight Match",
+      "value": "all",
+      "enumValues": [
+        "all",
+        "any"
+      ],
+      "propertyEditorValues": {
+        "all": {
+          "displayName": "All"
+        },
+        "any": {
+          "displayName": "Any"
+        }
+      }
+    },
+    "highlightedCategories": {
+      "description": "Specifies categories used for highlighting.",
+      "type": "Array<string>",
+      "displayName": "Highlighted Categories",
+      "value": [],
+      "writeback": true
+    },
+    "hoverBehavior": {
+      "description": "Defines the behavior applied when hovering over diagram nodes and links.",
+      "type": "string",
+      "displayName": "Hover Behavior",
+      "value": "none",
+      "enumValues": [
+        "dim",
+        "none"
+      ],
+      "propertyEditorValues": {
+        "dim": {
+          "displayName": "Dim"
+        },
+        "none": {
+          "displayName": "None"
+        }
+      }
+    },
+    "hoverRenderer": {
+      "description": "Specifies custom renderer for the diagram nodes used for hover updates.",
+      "type": "null|function",
+      "displayName": "Hover Renderer",
+      "value": null
+    },
+    "layout": {
+      "description": "Specifies layout callback used to position nodes and links.",
+      "type": "function",
+      "displayName": "Layout"
+    },
+    "linkHighlightMode": {
+      "description": "Defines link highlighting mode.",
+      "type": "string",
+      "displayName": "Link Highlight Mode",
+      "value": "link",
+      "enumValues": [
+        "link",
+        "linkAndNodes"
+      ],
+      "propertyEditorValues": {
+        "link": {
+          "displayName": "Link"
+        },
+        "linkAndNodes": {
+          "displayName": "Link And Nodes"
+        }
+      }
+    },
+    "linkProperties": {
+      "description": "Optional callback for customizing link appearance based on link data.",
+      "type": "null|function",
+      "displayName": "Link Properties",
+      "value": null,
+      "properties": {
+        "labelStyle": {
+          "description": "The CSS style object defining the style of the link label. The CSS max-width property can be used to truncate labels.",
+          "type": "object"
+        },
+        "color": {
+          "description": "Link color.",
+          "type": "string"
+        },
+        "svgStyle": {
+          "description": "The SVG CSS style object defining link style. The style class and style object will be applied directly on the link and override any other styling specified through the properties.",
+          "type": "object"
+        },
+        "svgClassName": {
+          "description": "The SVG CSS style class defining link style. The style class and style object will be applied directly on the link and override any other styling specified through the properties.",
+          "type": "string"
+        },
+        "width": {
+          "description": "Link width in pixels.",
+          "type": "number"
+        },
+        "startConnectorType": {
+          "description": "Specifies the type of start connector on the link. Supported values are \"arrowOpen\", \"arrow\", \"arrowConcave\", \"circle\", \"rectangle\", \"rectangleRounded\", \"none\". Default value is \"none\".",
+          "type": "string"
+        },
+        "endConnectorType": {
+          "description": "Specifies the type of end connector on the link. Supported values are \"arrowOpen\", \"arrow\", \"arrowConcave\", \"circle\", \"rectangle\", \"rectangleRounded\", \"none\". Default value is \"none\".",
+          "type": "string"
+        }
+      }
+    },
+    "maxZoom": {
+      "description": "Specifies the maximum zoom level for this diagram.",
+      "type": "number",
+      "displayName": "Max Zoom",
+      "value": 1
+    },
+    "minZoom": {
+      "description": "Specifies the minimum zoom level for this diagram.",
+      "type": "number",
+      "displayName": "Min Zoom",
+      "value": 0
+    },
+    "nodeHighlightMode": {
+      "description": "Defines node highlighting mode.",
+      "type": "string",
+      "displayName": "Node Highlight Mode",
+      "value": "node",
+      "enumValues": [
+        "node",
+        "nodeAndIncomingLinks",
+        "nodeAndLinks",
+        "nodeAndOutgoingLinks"
+      ],
+      "propertyEditorValues": {
+        "node": {
+          "displayName": "Node"
+        },
+        "nodeAndIncomingLinks": {
+          "displayName": "Node And Incoming Links"
+        },
+        "nodeAndLinks": {
+          "displayName": "Node And Links"
+        },
+        "nodeAndOutgoingLinks": {
+          "displayName": "Node And Outgoing Links"
+        }
+      }
+    },
+    "nodeProperties": {
+      "description": "Optional callback for customizing node appearance based on node data.",
+      "type": "null|function",
+      "displayName": "Node Properties",
+      "value": null,
+      "properties": {
+        "labelStyle": {
+          "description": "The CSS style object defining the style of the link label. The CSS max-width property can be used to truncate labels.",
+          "type": "object"
+        },
+        "color": {
+          "description": "Link color.",
+          "type": "string"
+        },
+        "svgStyle": {
+          "description": "The SVG CSS style object defining link style. The style class and style object will be applied directly on the link and override any other styling specified through the properties.",
+          "type": "object"
+        },
+        "svgClassName": {
+          "description": "The SVG CSS style class defining link style. The style class and style object will be applied directly on the link and override any other styling specified through the properties.",
+          "type": "string"
+        },
+        "width": {
+          "description": "Link width in pixels.",
+          "type": "number"
+        },
+        "startConnectorType": {
+          "description": "Specifies the type of start connector on the link. Supported values are \"arrowOpen\", \"arrow\", \"arrowConcave\", \"circle\", \"rectangle\", \"rectangleRounded\", \"none\". Default value is \"none\".",
+          "type": "string"
+        },
+        "endConnectorType": {
+          "description": "Specifies the type of end connector on the link. Supported values are \"arrowOpen\", \"arrow\", \"arrowConcave\", \"circle\", \"rectangle\", \"rectangleRounded\", \"none\". Default value is \"none\".",
+          "type": "string"
+        }
+      }
+    },
+    "panDirection": {
+      "description": "Specifies if panning allowed in horizontal and vertical directions.",
+      "type": "string",
+      "displayName": "Pan Direction",
+      "value": "auto",
+      "enumValues": [
+        "auto",
+        "x",
+        "y"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "x": {
+          "displayName": "X"
+        },
+        "y": {
+          "displayName": "Y"
+        }
+      }
+    },
+    "panning": {
+      "description": "Specifies whether panning is allowed in Diagram.",
+      "type": "string",
+      "displayName": "Panning",
+      "value": "none",
+      "enumValues": [
+        "auto",
+        "none"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "none": {
+          "displayName": "None"
+        }
+      }
+    },
+    "promotedLinkBehavior": {
+      "description": "Defines promoted link behavior for the component.",
+      "type": "string",
+      "displayName": "Promoted Link Behavior",
+      "value": "lazy",
+      "enumValues": [
+        "full",
+        "lazy",
+        "none"
+      ],
+      "propertyEditorValues": {
+        "full": {
+          "displayName": "Full"
+        },
+        "lazy": {
+          "displayName": "Lazy"
+        },
+        "none": {
+          "displayName": "None"
+        }
+      }
+    },
+    "renderer": {
+      "description": "Specifies custom renderer for the diagram nodes used for initial rendering.",
+      "type": "null|function",
+      "displayName": "Renderer",
+      "value": null
+    },
+    "selection": {
+      "description": "An array containing the ids of the selected nodes and links.",
+      "type": "Array<string>",
+      "displayName": "Selection",
+      "value": null,
+      "writeback": true
+    },
+    "selectionMode": {
+      "description": "Specifies the selection mode.",
+      "type": "string",
+      "displayName": "Selection Mode",
+      "value": "none",
+      "enumValues": [
+        "multiple",
+        "none",
+        "single"
+      ],
+      "propertyEditorValues": {
+        "multiple": {
+          "displayName": "Multiple"
+        },
+        "none": {
+          "displayName": "None"
+        },
+        "single": {
+          "displayName": "Single"
+        }
+      }
+    },
+    "selectionRenderer": {
+      "description": "Specifies custom renderer for the diagram nodes used for selection updates.",
+      "type": "null|function",
+      "displayName": "Selection Renderer",
+      "value": null
+    },
+    "styleDefaults": {
+      "description": "An object defining the style defaults for this diagram.",
+      "type": "Object",
+      "displayName": "Style Defaults",
+      "value": {
+        "hoverBehaviorDelay": 200,
+        "nodeDefaults": {
+          "labelStyle": {},
+          "showDisclosure": "on",
+          "icon": {
+            "pattern": "none",
+            "shape": "circle",
+            "width": 10,
+            "height": 10,
+            "svgClassName": ""
+          }
+        },
+        "linkDefaults": {
+          "width": 1,
+          "labelStyle": {},
+          "startConnectorType": "none",
+          "endConnectorType": "none",
+          "svgClassName": ""
+        },
+        "promotedLink": {
+          "width": 1,
+          "startConnectorType": "none",
+          "endConnectorType": "none",
+          "svgClassName": ""
+        }
+      },
+      "properties": {
+        "animationDuration": {
+          "description": "Defines animation duration in milliseconds.",
+          "type": "number",
+          "units": "milliseconds"
+        },
+        "hoverBehaviorDelay": {
+          "description": "Specifies initial hover delay in ms for highlighting data items.",
+          "type": "number",
+          "value": 200,
+          "units": "milliseconds"
+        },
+        "linkDefaults": {
+          "description": "Default link styles",
+          "type": "Object",
+          "value": "{\"labelStyle: {}, \"\"startConnectorType\": \"none\", \"endConnectorType\": \"none\", \"width\": 1.0}",
+          "properties": {
+            "color": {
+              "description": "Default link color. The default value comes from the CSS and varies based on theme.",
+              "type": "string"
+            },
+            "endConnectorType": {
+              "description": "Specifies the type of end connector on the link.",
+              "type": "string",
+              "enumValues": [
+                "arrow",
+                "arrowConcave",
+                "arrowOpen",
+                "circle",
+                "none",
+                "rectangle",
+                "rectangleRounded"
+              ],
+              "propertyEditorValues": {
+                "arrow": {
+                  "displayName": "Arrow"
+                },
+                "arrowConcave": {
+                  "displayName": "Arrow Concave"
+                },
+                "arrowOpen": {
+                  "displayName": "Arrow Open"
+                },
+                "circle": {
+                  "displayName": "Circle"
+                },
+                "none": {
+                  "displayName": "None"
+                },
+                "rectangle": {
+                  "displayName": "Rectangle"
+                },
+                "rectangleRounded": {
+                  "displayName": "Rectangle Rounded"
+                }
+              }
+            },
+            "labelStyle": {
+              "description": "Specifies CSS styles for the link label.",
+              "type": "Object"
+            },
+            "startConnectorType": {
+              "description": "Specifies the type of start connector on the link.",
+              "type": "string",
+              "enumValues": [
+                "arrow",
+                "arrowConcave",
+                "arrowOpen",
+                "circle",
+                "none",
+                "rectangle",
+                "rectangleRounded"
+              ],
+              "propertyEditorValues": {
+                "arrow": {
+                  "displayName": "Arrow"
+                },
+                "arrowConcave": {
+                  "displayName": "Arrow Concave"
+                },
+                "arrowOpen": {
+                  "displayName": "Arrow Open"
+                },
+                "circle": {
+                  "displayName": "Circle"
+                },
+                "none": {
+                  "displayName": "None"
+                },
+                "rectangle": {
+                  "displayName": "Rectangle"
+                },
+                "rectangleRounded": {
+                  "displayName": "Rectangle Rounded"
+                }
+              }
+            },
+            "svgClassName": {
+              "description": "The default SVG CSS style class to apply to the link.",
+              "type": "Object",
+              "value": "\"\""
+            },
+            "svgStyle": {
+              "description": "Specifies SVG CSS styles for the link.",
+              "type": "Object",
+              "value": {}
+            },
+            "width": {
+              "description": "Default link width in pixels.",
+              "type": "number",
+              "units": "pixels"
+            }
+          }
+        },
+        "nodeDefaults": {
+          "description": "Default node styles",
+          "type": "Object",
+          "properties": {
+            "icon": {
+              "description": "Default style for the node icon.",
+              "type": "Object",
+              "value": {
+                "width": 10,
+                "height": 10,
+                "fillPattern": "none",
+                "shape": "circle"
+              },
+              "properties": {
+                "borderColor": {
+                  "description": "Default border color of the icon.",
+                  "type": "string"
+                },
+                "borderRadius": {
+                  "description": "Specifies default border radius of the icon.",
+                  "type": "string"
+                },
+                "borderWidth": {
+                  "description": "Default border width of the icon in pixels.",
+                  "type": "number",
+                  "units": "pixels"
+                },
+                "color": {
+                  "description": "Default color of the icon.",
+                  "type": "string"
+                },
+                "height": {
+                  "description": "Default icon height.",
+                  "type": "number",
+                  "value": 10,
+                  "units": "pixels"
+                },
+                "pattern": {
+                  "description": "Default fill pattern of the icon.",
+                  "type": "string",
+                  "value": "none",
+                  "enumValues": [
+                    "largeChecker",
+                    "largeCrosshatch",
+                    "largeDiagonalLeft",
+                    "largeDiagonalRight",
+                    "largeDiamond",
+                    "largeTriangle",
+                    "none",
+                    "smallChecker",
+                    "smallCrosshatch",
+                    "smallDiagonalLeft",
+                    "smallDiagonalRight",
+                    "smallDiamond",
+                    "smallTriangle"
+                  ],
+                  "propertyEditorValues": {
+                    "largeChecker": {
+                      "displayName": "Large Checker"
+                    },
+                    "largeCrosshatch": {
+                      "displayName": "Large Crosshatch"
+                    },
+                    "largeDiagonalLeft": {
+                      "displayName": "Large Diagonal Left"
+                    },
+                    "largeDiagonalRight": {
+                      "displayName": "Large Diagonal Right"
+                    },
+                    "largeDiamond": {
+                      "displayName": "Large Diamond"
+                    },
+                    "largeTriangle": {
+                      "displayName": "Large Triangle"
+                    },
+                    "none": {
+                      "displayName": "None"
+                    },
+                    "smallChecker": {
+                      "displayName": "Small Checker"
+                    },
+                    "smallCrosshatch": {
+                      "displayName": "Small Crosshatch"
+                    },
+                    "smallDiagonalLeft": {
+                      "displayName": "Small Diagonal Left"
+                    },
+                    "smallDiagonalRight": {
+                      "displayName": "Small Diagonal Right"
+                    },
+                    "smallDiamond": {
+                      "displayName": "Small Diamond"
+                    },
+                    "smallTriangle": {
+                      "displayName": "Small Triangle"
+                    }
+                  }
+                },
+                "shape": {
+                  "description": "Specifies default shape of the icon.",
+                  "type": "string",
+                  "value": "circle",
+                  "enumValues": [
+                    "circle",
+                    "diamond",
+                    "ellipse",
+                    "human",
+                    "plus",
+                    "rectangle",
+                    "square",
+                    "star",
+                    "triangleDown",
+                    "triangleUp"
+                  ],
+                  "propertyEditorValues": {
+                    "circle": {
+                      "displayName": "Circle"
+                    },
+                    "diamond": {
+                      "displayName": "Diamond"
+                    },
+                    "ellipse": {
+                      "displayName": "Ellipse"
+                    },
+                    "human": {
+                      "displayName": "Human"
+                    },
+                    "plus": {
+                      "displayName": "Plus"
+                    },
+                    "rectangle": {
+                      "displayName": "Rectangle"
+                    },
+                    "square": {
+                      "displayName": "Square"
+                    },
+                    "star": {
+                      "displayName": "Star"
+                    },
+                    "triangleDown": {
+                      "displayName": "Triangle Down"
+                    },
+                    "triangleUp": {
+                      "displayName": "Triangle Up"
+                    }
+                  }
+                },
+                "source": {
+                  "description": "The URI of the node image",
+                  "type": "string"
+                },
+                "sourceHover": {
+                  "description": "The optional URI of the node hover image.",
+                  "type": "string"
+                },
+                "sourceHoverSelected": {
+                  "description": "The optional URI of the selected image on hover.",
+                  "type": "string"
+                },
+                "sourceSelected": {
+                  "description": "The optional URI of the selected image.",
+                  "type": "string"
+                },
+                "svgClassName": {
+                  "description": "The SVG CSS style class to apply to the node icon.",
+                  "type": "string",
+                  "value": ""
+                },
+                "svgStyle": {
+                  "description": "The default SVG CSS style object defining the style of the icon.",
+                  "type": "Object",
+                  "value": {}
+                },
+                "width": {
+                  "description": "Default icon width.",
+                  "type": "number",
+                  "value": 10,
+                  "units": "pixels"
+                }
+              }
+            },
+            "labelStyle": {
+              "description": "Specifies CSS styles for the node label.",
+              "type": "Object",
+              "value": {}
+            },
+            "showDisclosure": {
+              "description": "Determines when to display the expand/collapse button.",
+              "type": "string",
+              "value": "on",
+              "enumValues": [
+                "off",
+                "on"
+              ],
+              "propertyEditorValues": {
+                "off": {
+                  "displayName": "Off"
+                },
+                "on": {
+                  "displayName": "On"
+                }
+              }
+            }
+          }
+        },
+        "promotedLink": {
+          "description": "Promoted link styles",
+          "type": "Object",
+          "value": "{\"\"startConnectorType\": \"none\", \"endConnectorType\": \"none\", \"width\": 1.0}",
+          "properties": {
+            "color": {
+              "description": "Default promoted link color. The default value varies based on theme.",
+              "type": "string"
+            },
+            "endConnectorType": {
+              "description": "Specifies the type of end connector on the promoted link.",
+              "type": "string",
+              "enumValues": [
+                "arrow",
+                "arrowConcave",
+                "arrowOpen",
+                "circle",
+                "none",
+                "rectangle",
+                "rectangleRounded"
+              ],
+              "propertyEditorValues": {
+                "arrow": {
+                  "displayName": "Arrow"
+                },
+                "arrowConcave": {
+                  "displayName": "Arrow Concave"
+                },
+                "arrowOpen": {
+                  "displayName": "Arrow Open"
+                },
+                "circle": {
+                  "displayName": "Circle"
+                },
+                "none": {
+                  "displayName": "None"
+                },
+                "rectangle": {
+                  "displayName": "Rectangle"
+                },
+                "rectangleRounded": {
+                  "displayName": "Rectangle Rounded"
+                }
+              }
+            },
+            "startConnectorType": {
+              "description": "Specifies the type of start connector on the promoted link.",
+              "type": "string",
+              "enumValues": [
+                "arrow",
+                "arrowConcave",
+                "arrowOpen",
+                "circle",
+                "none",
+                "rectangle",
+                "rectangleRounded"
+              ],
+              "propertyEditorValues": {
+                "arrow": {
+                  "displayName": "Arrow"
+                },
+                "arrowConcave": {
+                  "displayName": "Arrow Concave"
+                },
+                "arrowOpen": {
+                  "displayName": "Arrow Open"
+                },
+                "circle": {
+                  "displayName": "Circle"
+                },
+                "none": {
+                  "displayName": "None"
+                },
+                "rectangle": {
+                  "displayName": "Rectangle"
+                },
+                "rectangleRounded": {
+                  "displayName": "Rectangle Rounded"
+                }
+              }
+            },
+            "svgClassName": {
+              "description": "The SVG CSS style class to apply to the promoted link.",
+              "type": "Object",
+              "value": "\"\""
+            },
+            "svgStyle": {
+              "description": "The promoted style object represents the CSS style of the link. User defined custom CSS Styles will be applied directly on the link.",
+              "type": "Object",
+              "value": {}
+            },
+            "width": {
+              "description": "Default link width in pixels.",
+              "type": "number",
+              "units": "pixels"
+            }
+          }
+        }
+      }
+    },
+    "tooltip": {
+      "description": "An object containing an optional callback function for tooltip customization.",
+      "type": "Object",
+      "displayName": "Tooltip",
+      "value": {
+        "renderer": null
+      },
+      "properties": {
+        "renderer": {
+          "description": "Specifies a function for a custom tooltip.",
+          "type": "function",
+          "value": null
+        }
+      }
+    },
+    "touchResponse": {
+      "description": "Specifies touch response behavior.",
+      "type": "string",
+      "displayName": "Touch Response",
+      "value": "auto",
+      "enumValues": [
+        "auto",
+        "touchStart"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "touchStart": {
+          "displayName": "Touch Start"
+        }
+      }
+    },
+    "trackResize": {
+      "description": "Defines whether the element will automatically render in response to changes in size. If set to off, then the application is responsible for calling refresh to render the element at the new size.",
+      "type": "string",
+      "displayName": "Track Resize",
+      "value": "on",
+      "enumValues": [
+        "off",
+        "on"
+      ],
+      "propertyEditorValues": {
+        "off": {
+          "displayName": "Off"
+        },
+        "on": {
+          "displayName": "On"
+        }
+      }
+    },
+    "translations": {
+      "description": "A collection of translated resources from the translation bundle, or null if this\ncomponent has no resources. Resources may be accessed and overridden individually or collectively, as seen in the examples. If the component does not contain any translatable resource, the default value of this attribute will be \nnull. If not, an object containing all resources relevant to the component.\n\nIf this component has translations, their documentation immediately follows this doc entry.",
+      "type": "Object|null",
+      "displayName": "Translations",
+      "translatable": true,
+      "properties": {
+        "componentName": {
+          "description": "Used to describe the data visualization type for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Diagram"
+        },
+        "labelAndValue": {
+          "description": "Used to display a label and its value.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "{0}: {1}"
+        },
+        "labelClearSelection": {
+          "description": "Text shown for clearing multiple selection on touch devices.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Clear Selection"
+        },
+        "labelCountWithTotal": {
+          "description": "Used to display a count out of a total.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "{0} of {1}"
+        },
+        "labelDataVisualization": {
+          "description": "Label for data visualizations used for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Data Visualization"
+        },
+        "labelInvalidData": {
+          "description": "Text shown when the component receives invalid data.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Invalid data"
+        },
+        "labelNoData": {
+          "description": "Text shown when the component receives no data.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "No data to display"
+        },
+        "promotedLink": {
+          "description": "Used for the promoted link tooltip - promoted link consists a single link.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "{0} link"
+        },
+        "promotedLinkAriaDesc": {
+          "description": "Used to describe promoted link type for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Indirect"
+        },
+        "promotedLinks": {
+          "description": "Used for the promoted link tooltip - promoted link consists multiple links.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "{0} links"
+        },
+        "stateCollapsed": {
+          "description": "Used to describe the collapsed state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Collapsed"
+        },
+        "stateDrillable": {
+          "description": "Used to describe a drillable object for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Drillable"
+        },
+        "stateExpanded": {
+          "description": "Used to describe the expanded state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Expanded"
+        },
+        "stateHidden": {
+          "description": "Used to describe the hidden state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Hidden"
+        },
+        "stateIsolated": {
+          "description": "Used to describe the isolated state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Isolated"
+        },
+        "stateMaximized": {
+          "description": "Used to describe the maximized state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Maximized"
+        },
+        "stateMinimized": {
+          "description": "Used to describe the minimized state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Minimized"
+        },
+        "stateSelected": {
+          "description": "Used to describe the selected state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Selected"
+        },
+        "stateUnselected": {
+          "description": "Used to describe the unselected state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Unselected"
+        },
+        "stateVisible": {
+          "description": "Used to describe the visible state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Visible"
+        }
+      }
+    },
+    "zoomRenderer": {
+      "description": "Specifies custom renderer for the diagram nodes used for zoom updates.",
+      "type": "null|function",
+      "displayName": "Zoom Renderer",
+      "value": null
+    },
+    "zooming": {
+      "description": "Specifies whether zooming is allowed in Diagram.",
+      "type": "string",
+      "displayName": "Zooming",
+      "value": "none",
+      "enumValues": [
+        "auto",
+        "none"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "none": {
+          "displayName": "None"
+        }
+      }
+    }
+  },
+  "methods": {
+    "getNodeCount": {
+      "description": "Returns number of diagram nodes",
+      "return": "Number"
+    },
+    "getNode": {
+      "description": "Returns an object with the following properties for automation testing verification of the diagram node at the specified index.",
+      "params": [
+        {
+          "name": "nodeIndex",
+          "description": "Node index",
+          "type": "String"
+        }
+      ],
+      "return": "Object|null"
+    },
+    "getLinkCount": {
+      "description": "Returns number of diagram links",
+      "return": "Number"
+    },
+    "getLink": {
+      "description": "Returns an object with the following properties for automation testing verification of the diagram link at the specified index.",
+      "params": [
+        {
+          "name": "linkIndex",
+          "description": "Link index",
+          "type": "number"
+        }
+      ],
+      "return": "Object|null"
+    },
+    "getPromotedLink": {
+      "description": "Returns an object with the following properties for automation testing verification of the promoted link between specified nodes.",
+      "params": [
+        {
+          "name": "startNodeIndex",
+          "description": "Start node index",
+          "type": "number"
+        },
+        {
+          "name": "endNodeIndex",
+          "description": "End node index",
+          "type": "number"
+        }
+      ],
+      "return": "Object|null"
+    },
+    "getContextByNode": {
+      "description": "Returns an object with context for the given child DOM node. This will always contain the subid for the node,\ndefined as the 'subId' property on the context object. Additional component specific information may also be included.\n\nFor more details on returned objects, see context objects.",
+      "params": [
+        {
+          "name": "node",
+          "description": "The child DOM node",
+          "type": "Element"
+        }
+      ],
+      "return": "Object|null"
+    },
+    "refresh": {
+      "description": "Refreshes the component.",
+      "return": "void"
+    },
+    "setProperty": {
+      "description": "Sets a property or a single subproperty for complex properties and notifies the component\nof the change, triggering a [property]Changed event.",
+      "params": [
+        {
+          "name": "property",
+          "description": "The property name to set. Supports dot notation for subproperty access.",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "description": "The new value to set the property to.",
+          "type": "*"
+        }
+      ],
+      "return": "void"
+    },
+    "getProperty": {
+      "description": "Retrieves a value for a property or a single subproperty for complex properties.",
+      "params": [
+        {
+          "name": "property",
+          "description": "The property name to get. Supports dot notation for subproperty access.",
+          "type": "string"
+        }
+      ],
+      "return": "*"
+    },
+    "setProperties": {
+      "description": "Performs a batch set of properties.",
+      "params": [
+        {
+          "name": "properties",
+          "description": "An object containing the property and value pairs to set.",
+          "type": "Object"
+        }
+      ],
+      "return": "void"
+    }
+  },
+  "events": {
+    "ojBeforeExpand": {
+      "description": "Event handler for when a node is about to expand.",
+      "cancelable": true,
+      "detail": {
+        "nodeId": {
+          "description": "the id of the expanding object",
+          "type": "string"
+        }
+      }
+    },
+    "ojExpand": {
+      "description": "Event handler for after a node has expanded.",
+      "detail": {
+        "nodeId": {
+          "description": "the id of the expanded object",
+          "type": "string"
+        }
+      }
+    },
+    "ojBeforeCollapse": {
+      "description": "Event handler for when a node is about to collapse.",
+      "cancelable": true,
+      "detail": {
+        "data": {
+          "description": "the id of the collapsing object",
+          "type": "string"
+        },
+        "nodeId": {
+          "description": "the id of the collapsing object",
+          "type": "string"
+        }
+      }
+    },
+    "ojCollapse": {
+      "description": "Event handler for after a node has collapsed.",
+      "detail": {
+        "data": {
+          "description": "the id of the collapsed object",
+          "type": "string"
+        },
+        "nodeId": {
+          "description": "the id of the collapsed object",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "slots": {
+    "contextMenu": {
+      "description": "The contextMenu slot is set on the oj-menu within this element. \nThis is used to designate the JET Menu that this component should launch as a context menu on right-click, Shift-F10, Press & Hold, or component-specific gesture. \nIf specified, the browser's native context menu will be replaced by the JET Menu specified in this slot.\n\nThe application can register a listener for the Menu's ojBeforeOpen event. The listener can cancel the launch via event.preventDefault(), \nor it can customize the menu contents by editing the menu DOM directly, and then calling refresh() on the Menu.\n\nTo help determine whether it's appropriate to cancel the launch or customize the menu, the ojBeforeOpen listener can use component API's to determine which \ntable cell, chart item, etc., is the target of the context menu. See the JSDoc and demos of the individual components for details. \n\nKeep in mind that any such logic must work whether the context menu was launched via right-click, Shift-F10, Press & Hold, or component-specific touch gesture."
+    }
+  }
+}

@@ -1,0 +1,91 @@
+<div class="oj-flex locator-maintenance-read">
+    <div class="oj-flex-item oj-sm-9 oj-lg-9">
+        <div class="form-main-container">
+
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+                <!-- ko if:dataLoaded -->
+
+                <row params="baseModel : $baseModel, rootModel : $parent , label :$component.type()==='BRANCH' ? $component.nls.fieldname.branchId:$component.nls.fieldname.atmId , value :id"></row>
+                <row params="baseModel : $baseModel, rootModel : $parent , label :$component.type()==='BRANCH' ? $component.nls.fieldname.branchName:$component.nls.fieldname.atmName, value :atmBranchName"></row>
+                <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.latitude , value :latitude"></row>
+                <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.longitude , value :longitude"></row>
+                <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.line1 , value :postalAddress().line1"></row>
+                <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.line2 , value :postalAddress().line2"></row>
+                <!-- ko if:postalAddress().line3 !== undefined -->
+                <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.line3 , value :postalAddress().line3"></row>
+                <!-- /ko -->
+                <!-- ko if:postalAddress().line4 !== undefined -->
+                <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.line4 , value :postalAddress().line4"></row>
+                <!-- /ko -->
+
+                <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.city , value :postalAddress().city"></row>
+                <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.country , value :postalAddress().country"></row>
+                <!-- ko if:locationDetails().type === "BRANCH" -->
+                <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.workTimings , value :renderTimings()"></row>
+                <!-- ko if: $component.weekendDays() !== null -->
+                <row params="baseModel : $baseModel, rootModel : $parent, value :renderWeekendTimings()"></row>
+                <!-- /ko -->
+                <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.additionalDetails , value : showAddInfo !== null? showAddInfo: ''"></row>
+
+                <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.phoneNo , value :phoneNo"></row>
+                <!-- /ko -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label><span data-bind="text:$component.nls.fieldname.supportedservices"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+                        <!-- ko if: supportedServicesLoaded -->
+                        <oj-checkboxset id="checkboxSetId" :aria-label="checkboxSetId" disabled="[[true]]" value="{{selectedServices}}">
+                            <!-- ko foreach: supportedServices -->
+                            <oj-option value="{{name}}" :id="[['Services_'+ $index()]]">
+                                <span data-bind="text: name, attr : {'for' :'Services_' + $index()}"></span>
+                            </oj-option>
+                            <!-- /ko -->
+                        </oj-checkboxset>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <!-- /ko -->
+
+
+
+                <div class="oj-flex-item button-container">
+                    <oj-button class="action-button-primary" on-click="[[$component.edit]]">
+                        <span data-bind="text:$component.nls.buttons.edit"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[$component.showModalWindow]]">
+                        <span data-bind="text:$component.nls.buttons.delete"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                        <span data-bind="text:$component.nls.buttons.cancel"></span>
+                    </oj-button>
+                    <oj-button class="action-button-tertiary" on-click="[[$component.backOnView]]">
+                        <span data-bind="text:$component.nls.buttons.back"></span>
+                    </oj-button>
+                </div>
+            </page-section>
+        </div>
+    </div>
+
+    <div class="oj-flex-item oj-lg-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'atm-branch-maintenance-view'"></help>
+    </div>
+</div>
+<modal-window params="baseModel : $baseModel, rootModel : $data,id:'deleteLocation',header:$component.nls.headers.deleteHeader">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <div class="dialog-text">
+
+        <span data-bind="text:$component.nls.messages.deleteLocation"></span>
+    </div>
+  </div>
+</div>
+    <div class="oj-flex-item button-container">
+        <oj-button class="action-button-primary" on-click="[[deleteLocation]]">
+            <span data-bind="text:$component.nls.buttons.yes"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[hideModalWindow]]">
+            <span data-bind="text:$component.nls.buttons.no"></span>
+        </oj-button>
+    </div>
+</modal-window>

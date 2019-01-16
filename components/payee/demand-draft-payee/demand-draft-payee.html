@@ -1,0 +1,124 @@
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+        <!-- ko if:stageOne() -->
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading :(userSegment === 'CORP')?$component.payments.payee.demanddraft:''">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label ">
+                    <label for="name" data-bind="text: $component.payments.payee.recipientname"></label>
+                </div>
+                <!-- ko if:isNew() -->
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-validation-group id="dd-payee-name-tracker">
+                        <oj-input-text required id="name" validators="[[$baseModel.getValidator('NAME')]]" value="{{payeeName}}"></oj-input-text>
+                    </oj-validation-group>
+                </div>
+                <!-- /ko -->
+                <!-- ko ifnot:isNew() -->
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-12" data-bind="text:$component.payeeName()"></div>
+                <!-- /ko -->
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label ">
+                    <label class="oj-label" for="accType" data-bind="text: $component.payments.payee.drafttype"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 ">
+                    <oj-buttonset-one id="accType" value="{{currentAccountType}}" on-value-changed="[[accountTypeChanged]]">
+                        <oj-option id="domestic" name="acc" value="{{'DOMESTIC'}}"><span for="domestic" data-bind="text:$component.payments.payee.accdomestic"></span></oj-option>
+                        <oj-option id="international" name="acc" value="{{'INTERNATIONAL'}}"><span for="international" data-bind="text:$component.payments.payee.accinternational"></span></oj-option>
+                    </oj-buttonset-one>
+                </div>
+            </div>
+            <!-- ko if:isComponentLoaded() -->
+            <div data-bind="component:{name: $component.selectedComponent(),
+       params:{rootModel: $component,model:$component.model(),
+         addressDetails:$component.addressDetails,
+         validator:$component.validationTracker}}">
+            </div>
+            <!-- /ko -->
+            <!-- ko if:userSegment === "CORP" -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label">
+                    <label class="oj-label" data-bind="text : $component.payments.payee.payeeaccesstype"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-buttonset-one id="accessType" value="{{accessType}}">
+                        <!-- ko foreach: accessTypes -->
+                        <oj-option name="accessType" value="{{id}}" :id="[[id]]"><span data-bind="attr: {for: id},text: label"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-buttonset-one>
+                </div>
+            </div>
+            <!-- /ko -->
+        </page-section>
+        <div data-bind='component:{name:"warning-message-dialog", params:{rootModel: $component }}'></div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary " on-click="[[createPayeeGroup]]"><span slot="startIcon" class="icons icon-add"></span>
+                <span data-bind="text:$component.payments.payee.add"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary " id="cancelbutton" on-click="[[$component.cancel]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.payments.common.cancel"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: isCollingPeriodSlot() && userSegment!=="CORP" -->
+        <div class="payments">
+            <label class="oj-flex oj-flex-items-pad message" data-bind="text: $component.payments.coolingPeriodmsz"></label>
+        </div>
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading:$component.payments.coolingPeriod">
+            <div class="oj-flex oj-flex-items-pad">
+                <div clas="oj-flex-item">
+                    <oj-table id="table" :aria-label="[[$component.payments.coolingPeriod]]" columns="[[[{
+                        headerText:$component.payments.duration,field:'duration',sortable:'none'},{
+                        headerText:$component.payments.cumulativeAmount,field:'amount',sortable:'none'}]]]" selection-mode="[[{row:'none',column:'none'}]]" columns-default="[[{sortable:'disabled'}]]" data="[[$component.CoolingPeriodDataSource]]">
+                        <caption class="hide-label" data-bind="text:$component.payments.coolingPeriod"></caption>
+                    </oj-table>
+                </div>
+            </div>
+        </page-section>
+        <!-- /ko -->
+        <!-- ko if:stageFour() -->
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <div data-bind="component: {
+         name: 'amount-input', params: {
+         amount :$component.payeeLimit,
+         label : $component.payments.payee.setlimit,
+         currency: $component.tempcurrency(),
+         converter:$baseModel.formatCurrency,
+         currencyListRequired : false,
+         validator:$component.validationTracker,
+         isMandatory:true,
+         rootId:'payee-limit',
+         currencyURL : '',
+         currencyParser :'',
+         rootClass:'form-input'
+         }
+         }"></div>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary " on-click="[[reviewLimit]]"><span slot="startIcon" class="icons icon-update"></span>
+                <span data-bind="text:$component.payments.common.update"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:stageFive() -->
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.payments.payee.review">
+            <row params="baseModel : $baseModel, rootModel : $component,
+    label : $component.payments.payee.setlimit ,
+    value :$baseModel.formatCurrency($component.payeeLimit(),$component.tempcurrency())"></row>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary " on-click="[[confirmLimit]]"><span slot="startIcon" class="icons icon-confirm"></span>
+                <span data-bind="text:$component.payments.common.confirm"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary " on-click="[[cancelReviewLimit]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.payments.common.cancel"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'demand-draft-payee'"></help>
+    </div>
+    <!-- /ko -->
+</div>

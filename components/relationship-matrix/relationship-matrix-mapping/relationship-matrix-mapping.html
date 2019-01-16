@@ -1,0 +1,68 @@
+<div data-bind="css: $component.screen() === 'review' ? 'form-main-container' : ''">
+  <!-- ko if: $component.taskListLoaded -->
+  <!-- ko if: $component.screen() === "review" -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+  <div class="oj-flex oj-flex-items-pad relationship-matrix">
+    <div class="oj-flex-item oj-sm-12 info-strip">
+      <span class="icons icon-information"></span>
+      <span class="info-text-small" data-bind="text: $component.resource.reviewHeader2"></span>
+    </div>
+  </div>
+  <!-- /ko -->
+  <div data-bind='component: {name: "nav-bar", params:{menuOptions: menuOptions, uiOptions: uiOptions, navBarDescription: $component.resource.taskTable}}'></div>
+  <div id="relationshipMatrixTableP" class="demo-padding demo-container relationship-matrix form-main-container" data-oj-context>
+    <div id="componentDemoContent">
+      <oj-table id="relationshipMatrixTable" class="relationship-matrix-table" :aria-label="[[$component.resource.taskTable]]" data="[[datasource]]" row-renderer='[[$oj.KnockoutTemplateUtils.getRenderer("row_template", true)]]' columns='[[columns]]'>
+      </oj-table>
+
+      <script type="text/html" id="relationship_header">
+        <th data-bind="html: $component.columns()[$context.columnIndex].columnText"></th>
+      </script>
+      <script type="text/html" id="row_template">
+        <tr>
+          <td>
+            <oj-row-expander on-expanded-changed="[[$component.rowExpandListener]]" context="[[$context.rowContext]]" expanded="[[false]]"></oj-row-expander>
+            <span class="word-nowrap" data-bind="text: name"></span>
+          </td>
+          <!-- ko foreach: $parent.columns -->
+          <!-- ko if: $index() > 0 -->
+          <td>
+            <oj-checkboxset :id="[['checkboxSet' + $parent.id + $data.columnId]]" aria-hidden='true' disabled="[[$component.disableCheckboxes]]" value="{{$context.row.selectionMap[$index()-1].selected}}" on-value-changed="[[$component.checkboxOptionChangeHandler.bind($data, $parent.id, $data.columnId)]]">
+              <oj-option :id="[[$parent.id + $data.columnId]]" value="true"></oj-option>
+            </oj-checkboxset>
+          </td>
+          <!-- /ko -->
+          <!-- /ko -->
+        </tr>
+      </script>
+    </div>
+  </div>
+  <!-- ko ifnot:$component.transactionId-->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <!-- ko if: $component.screen() === "unsaved" || $component.screen() === "edit" -->
+    <oj-button class="action-button-primary" on-click="[[$component.saveDetails]]">
+      <span data-bind="text:$component.resource.generic.common.save"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if: $component.screen() === "view" -->
+    <oj-button class="action-button-primary" on-click="[[$component.editDetails]]">
+      <span data-bind="text:$component.resource.generic.common.edit"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if: $component.screen() === "review" -->
+    <oj-button class="action-button-primary" on-click="[[$component.confirm]]" disabled="[[$component.clicked]]">
+      <span data-bind="text:$component.resource.generic.common.confirm"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+    </oj-button>
+    <!-- ko if: $component.screen() === "edit" || $component.screen() === "review" -->
+    <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+      <span data-bind="text:$component.resource.generic.common.back"></span>
+    </oj-button>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+</div>

@@ -1,0 +1,89 @@
+<div class="form-main-container">
+
+  <!-- ko if: $component.reviewDataLoaded() && $component.orderDataLoaded() -->
+  <oj-validation-group id="tracker">
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+    <div class="review">
+      <div class="row-group">
+        <!-- ko foreach: $component.sectionOrder -->
+        <!-- ko if: $component.applicantDetails()[0][$data.object] || $component.productDetails()[$data.object] -->
+        <div class="card ">
+          <div class="oj-flex oj-flex-items-pad card-header">
+            <div class="">
+              <div class="oj-sm-only-hide card-icon-container"><img class="card-icon" data-bind="loadImage:'origination/accordion/'+ $data.id + '.png', attr:{alt:$baseModel.format($component.resource.image,{accordionLogo:$component.getAccordionLabel($data.name, $index())})}"></div>
+            </div>
+            <h3 class="card-title oj-flex-item oj-sm-8 oj-md-9 oj-lg-9" data-bind="text: $component.getAccordionLabel($data.name, $index())"></h3>
+            <!-- ko if: $component.applicantDetails()[0].applicantType() !== 'customer' -->
+            <div class="pull-right oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+              <a href="#" class="icon-remarks pull-right edit-info" data-bind="click : $component.editPersonalDetails.bind($data, $data.id) ,attr:{alt: $component.resource.edit, title: $component.resource.editTitle}">
+                        </a>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $component.applicantDetails()[0].applicantType() === 'customer' && $data.isEditableForCustomer-->
+            <div class="pull-right oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+              <a href="#" class="icon-remarks pull-right edit-info" data-bind="click : $component.editPersonalDetails.bind($data, $data.id) ,attr:{alt: $component.resource.edit, title: $component.resource.editTitle}">
+                        </a>
+            </div>
+            <!-- /ko -->
+          </div>
+
+          <!-- ko if: $data.id === 'requirements' || $data.id === 'vehicle-info' -->
+          <div class="oj-flex-item section-info" data-bind="template: { name: 'origination/review/' + $data.id, data: {data: $component.productDetails()[$data.object], resource: $data.id === 'vehicle-info' ? $component.resource.vehicleInfo : $component.resource[$data.object]} }"></div>
+          <!-- /ko -->
+          <!-- ko ifnot: $data.id === 'requirements' || $data.id === 'vehicle-info' -->
+          <!-- ko ifnot: $data.id === 'contact-info' -->
+          <!-- ko if: $data.id === 'income-info' -->
+          <!-- ko foreach : $component.applicantDetails()[0].incomeInfo.incomeList() -->
+          <div class="form-heading-strip oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top">
+              <!-- ko if : $index()===0 -->
+              <span class="form-heading additional-label" data-bind="text: $component.resource.incomeInfo.primaryIncome"></span>
+              <!-- /ko -->
+              <!-- ko if : $index()>0 -->
+              <span class="form-heading additional-label" data-bind="text: $component.resource.incomeInfo.additionalIncome"></span>
+              <!-- /ko -->
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad section-info">
+            <div class="oj-flex-item" data-bind="template: { name: 'origination/review/income-info', data:{data: $data, resource: $component.resource.incomeInfo} }"></div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko ifnot: $data.id === 'income-info' -->
+          <div class="oj-flex-item section-info" data-bind="template: { name: 'origination/review/' + $data.id, data: {data: $component.applicantDetails()[0][$data.object], resource: $component.resource[$data.object]} }"></div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if: $data.id === 'contact-info' -->
+          <div class="oj-flex-item section-info" data-bind="template: { name: 'origination/review/' + $data.id, data: {data: {contactInfo: $component.applicantDetails()[0].contactInfo, previousContactInfo: $component.applicantDetails()[0].previousContactInfo}, resource: $component.resource[$data.object]} }"></div>
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <div class="card  disclosures">
+          <div>
+            <div class="oj-flex oj-flex-items-pad card-header">
+              <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1">
+                <div class="oj-sm-only-hide card-icon-container"><img class="card-icon" data-bind="loadImage:'origination/accordion/disclosure.png', attr:{alt:$baseModel.format($component.resource.image,{accordionLogo: $component.resource.disclosuresAndConsents})}"></div>
+              </div>
+              <h3 class="card-title" data-bind="text: $component.resource.disclosuresAndConsents"></h3>
+            </div>
+          </div>
+          <div class="page-container">
+            <div data-bind='component:{name: "disclosures", params:{rootModel: $component}}'></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </oj-validation-group>
+  <!-- /ko -->
+
+</div>
+<div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+  <oj-button raised="" id="personalInfoSubmit" class="action-button-primary first-3" on-click="[[$component.submitApplication]]" disabled="[[$component.disableSubmit]]">
+    <span data-bind="text:$component.resource.generic.common.submit"></span></oj-button>
+  <oj-button raised="" id="cancel" class="action-button-secondary last-3" on-click="[[$component.showPluginComponent.bind($data,'cancel-application')]]">
+    <span data-bind="text:$component.resource.generic.common.cancel"></span></oj-button>
+  <oj-button raised="" id="saveForLater" class="action-button-secondary " on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]">
+    <span data-bind="text:$component.resource.generic.common.saveLater"></span></oj-button>
+</div>

@@ -1,0 +1,41 @@
+<div class="product-card oj-panel">
+<div class="oj-row">
+	  <div class="oj-col oj-sm-10 left product-card-name">
+		<span class="" data-bind="text:$component.data.firstName"></span>
+		<span class="" data-bind="text:$component.data.lastName"></span>
+  </div>
+  <div class="oj-col oj-sm-2 no-pad-cols right-col-icons">
+	  <div class="entity-triangle"></div>
+		<!-- ko if : imageSrc() -->
+		<div class="notification-bell">
+			<img data-bind="loadImage:imageSrc()">
+		</div>
+		<!-- /ko -->
+  </div>
+</div>
+<div class="oj-row">
+	<!-- ko if:$component.data.comments -->
+	<div class="oj-col oj-lg-10 product-card-feature" data-bind="text: $component.data.comments"></div>
+	<!-- /ko -->
+	<!-- ko ifnot:$component.data.comments -->
+	<div class="oj-col" data-bind="text: $component.wallet.notification.noComment"></div>
+	<!-- /ko -->
+	</div>
+<div class="oj-row product-card-bottom-panel">
+	<div class="oj-col">
+		<div class="value" data-bind="text: $component.data.formattedAmount"></div>
+</div>
+</div>
+
+<div class="oj-row wallet-card-button">
+	<oj-button-one id="buttonSet" class="buttonSet"></oj-button-one>
+</div>
+
+</div>
+<modal-window params="baseModel : $baseModel, rootModel :$component,id:'searchErrorDialog'">
+
+   <div class="oj-row">
+      <div data-bind="text:$component.searchErrorMsg()"></div>
+   </div>
+
+</modal-window>

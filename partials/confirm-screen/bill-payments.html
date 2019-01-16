@@ -1,0 +1,63 @@
+<div class="payments-confirm-template">
+
+<!-- ko if: $component.params.confirmScreenExtensions && $component.params.confirmScreenExtensions.confirmScreenDetails && $component.params.confirmScreenExtensions.confirmScreenDetails.length > 0 -->
+<page-section params="baseModel : $baseModel, rootModel : $component,heading : ''">
+<div class="oj-lg-6">
+    <!-- ko foreach: $component.params.confirmScreenExtensions.confirmScreenDetails -->
+    <div class="oj-flex oj-flex-items-pad">
+        <!-- ko foreach: $data -->
+        <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-6">
+            <oj-label><span data-bind="text:$data.label"></span></oj-label>
+            <!-- ko if:Array.isArray($data.value) -->
+            <div class="cust-name" data-bind="text:($data.value.filter(function(n){ return (n && n.trim() !== '')})).join(', ')">
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot:Array.isArray($data.value) -->
+            <div class="cust-name" data-bind="text:$data.value">
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+    </div>
+     <!-- /ko -->
+</div>
+</page-section>
+<!-- /ko -->
+
+
+    <div class="oj-flex-item">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item" data-bind="text:$component.confirmScreenResources.confirm.actions.nextAction">
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad ">
+            <ul class="confirm-screen__list">
+              <li>
+                  <a href="#" data-bind="click:$component.openTransaction.bind($data,'manage-bill-payments','billPayments','')">
+                    <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.payBills}),'title':$component.confirmScreenResources.confirm.actions.payBills},loadImage:'dashboard/quick-access/pay-now.svg'">
+                    <div data-bind="text:$component.confirmScreenResources.confirm.actions.payBills"></div>
+                  </a>
+              </li>
+              <li>
+                  <a href="#" data-bind="click:$component.openTransaction.bind($data,'manage-bill-payments','billPayments','')">
+                    <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.viewBills}),'title':$component.confirmScreenResources.confirm.actions.viewBills},loadImage:'dashboard/quick-access/limits.svg'">
+                    <div data-bind="text:$component.confirmScreenResources.confirm.actions.viewBills"></div>
+                  </a>
+              </li>
+              <li>
+                  <a href="#" data-bind="click:$component.openTransaction.bind($data,'register-biller','billPayments','')">
+                    <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.addBiller}),'title':$component.confirmScreenResources.confirm.actions.addBiller},loadImage:'nominee/add-another-nominee.svg'">
+                    <div data-bind="text:$component.confirmScreenResources.confirm.actions.addBiller"></div>
+                  </a>
+              </li>
+              <li>
+                  <a href="#" data-bind="click:$dashboard.openDashBoard">
+                    <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToDashboard},loadImage:'dashboard/quick-access/dashboard.svg'">
+                    <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToDashboard"></div>
+                  </a>
+              </li>
+            </ul>
+
+        </div>
+    </div>
+</div>

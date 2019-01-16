@@ -1,0 +1,93 @@
+<div class="manage-spend-categories pfm">
+    <!-- ko ifnot: $baseModel.small() -->
+    <div class="form-main-container oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+                <!-- ko if: $component.requestSuccessful() -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item success-bar">
+                        <span class="success-icon icons" data-bind="css: 'icon-success'"></span>
+                        <span class="success-msg" id="confirm" data-bind="text:$baseModel.format($component.resource.successmsg,{action : $component.loadCreateTemplate()?$component.resource.added:($component.loadEditTemplate()?$component.resource.edited:'')})"></span>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <!-- ko if: $component.loadTable() -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                        <oj-table class="manage-spend-categories__table table" id="table" :aria-label="[[$component.resource.tableheader.caption]]" columns="[[[{headerText:$component.resource.tableheader.category,headerClassName:'left',field:'categoryName'},{headerText:$component.resource.tableheader.subcategories,headerClassName:'left',field:'subcategories'},{headerText:$component.resource.tableheader.action,headerClassName:'left',template:'action-icons'}]]]" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'none',column:'none'}]]" data="[[$component.categoriesDataSource()]]">
+                            <template slot="action-icons">
+                                <td>
+                                    <div class="icon-link">
+                                        <a href="#" data-bind="attr:{'alt':$component.resource.alt.editAlt ,'title':$component.resource.alt.editTitle },click:$component.edit.bind($data,$current.row)">
+                                            <div class="icons icon-link__editIcon" data-bind="css: 'icon-remarks'"></div>
+                                        </a>
+                                    </div>
+                                </td>
+                            </template>
+                        </oj-table>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </page-section>
+            <div class="button-container">
+                <oj-button class="help-button" id="button-add" on-click="[[$component.createCategory]]">
+                    <span class="icons icon-add" slot="startIcon"></span>
+                    <span data-bind="text:$component.resource.add"></span>
+                </oj-button>
+            </div>
+            <div class="button-container">
+                <oj-button class="action-button-tertiary " id="button-back" on-click="[[$dashboard.hideDetails]]">
+                    <span slot="startIcon" class="icons icon-back-arrow"></span>
+                    <span data-bind="text:$component.resource.back"></span>
+                </oj-button>
+            </div>
+        </div>
+        <!-- ko if: $baseModel.large() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'manage-spend-category'"></help>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <a class="back-link" href="#" data-bind="text: $component.resource.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+    <!-- /ko -->
+    <!-- </div> -->
+    <!-- /ko -->
+    <!-- ko if: $component.loadTable() && $baseModel.small() -->
+    <oj-list-view id="listview-category-card" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('user-category-card-template',true)}]]" selection-mode="[['none']]" data="[[categoriesDataSource]]">
+    </oj-list-view>
+    <div class="button-container">
+        <oj-button class="help-button" id="add" on-click="[[$component.createCategory]]">
+            <span class="icons icon-add" slot="startIcon"></span><span data-bind="text:$component.resource.add"></span>
+        </oj-button>
+    </div>
+    <div class="button-container">
+        <oj-button class="action-button-tertiary " id="back-button" on-click="[[$dashboard.hideDetails]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.resource.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+    <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'managecategory', header : $component.resource.spendCategory.addcategory">
+        <!-- ko if: $component.loadCreateTemplate() -->
+        <div data-bind="component:{name:'spend-category-create', params:{rootModel: $component, data: $data}},css : $baseModel.large()?'modal-window-container':''">
+        </div>
+        <!-- /ko -->
+    </modal-window>
+    <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'editSpendCategory', header : $component.resource.spendCategory.edit">
+        <!-- ko if: $component.loadEditTemplate() -->
+        <div data-bind="component:{name:'spend-category-edit', params:{rootModel: $component, data: $component.categoryData()}},css : $baseModel.large()?'modal-window-container':''">
+        </div>
+        <!-- /ko -->
+    </modal-window>
+    <script type="text/html" id="user-category-card-template">
+        <li data-bind="attr: {id: categoryId}">
+            <div data-bind="component:{name:'user-spend-category-card',params:{rootModel: $component, data : $data}}"></div>
+        </li>
+    </script>
+    <!-- Delete Icon snippet to be included in script tag above (<script type="text/html" id="action-icons">)
+        <a href="#" data-bind="click:$component.deletecategory.bind($data)">
+            <div class="icons icon-link__deleteIcon" data-bind="css: 'icon-delete'"></div>
+        </a>
+    -->
+</div>

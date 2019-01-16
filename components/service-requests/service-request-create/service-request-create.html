@@ -1,0 +1,228 @@
+<div class="form-main-container service-request-create">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad service-request-create__section">
+      <div class=" oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+        <oj-validation-group id="fbtracker" valid="{{groupValid}}">
+          <div class="oj-flex oj-flex-items-pad  ">
+            <div class="oj-flex-item label oj-lg-3">
+              <oj-label for="requestName">
+                <span data-bind="text:$component.resource.requestName"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-5">
+              <oj-input-text id="requestName" value="{{$component.addRequestName}}" placeholder="{{$component.resource.requestNamePlaceholder}}"
+                validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.resource.requiredMessage,{
+                               type: 'length',
+                               options: {
+                                   min: 0,
+                                   max: 40
+                               }})]]" required></oj-input-text>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-lg-3">
+              <oj-label for="requestDescription">
+                <span data-bind="text:$component.resource.requestDescription"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-5">
+              <oj-input-text id="requestDescription" value="{{$component.addDescription}}" placeholder="{{$component.resource.requestDescriptionPlaceholder}}"
+                validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.resource.requiredMessage,{
+                               type: 'length',
+                               options: {
+                                   min: 0,
+                                   max: 80
+                               }})]]" required></oj-input-text>
+            </div>
+          </div>
+          <!-- ko if:moduleTypesLoaded -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-lg-3">
+              <oj-label for="moduleName" class="oj-flex-item oj-lg-12">
+                <span data-bind="text:$component.resource.moduleName"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex oj-lg-5">
+              <div class="oj-flex-item oj-lg-12">
+                <oj-select-one id="moduleName" value="{{$component.addModuleType}}" on-value-changed="[[showCategoriesList]]" placeholder="{{$component.resource.moduleNamePlaceholder}}"
+                  required="true">
+                  <!-- ko foreach: $component.moduleData -->
+                  <oj-option value="[[code]]">
+                    <span data-bind="text: label"></span>
+                  </oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+              </div>
+              <div class="oj-flex-item">
+                <oj-label for="requestProductNameHint">
+                  <span data-bind="html:$component.resource.requestProductNameHint"></span>
+                  <b>
+                    <a href="#" data-bind="html:$component.resource.addNew, click:$component.addNewProduct"></a>
+                  </b>
+                </oj-label>
+                <!-- ko if: showAddNewProduct -->
+                <div>
+                  <oj-input-text id="requestProductNameHint" value="{{$component.newProductName}}" placeholder="{{$component.resource.typeProductName}}"
+                    validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.resource.requiredMessage,{
+                                     type: 'length',
+                                     options: {
+                                         min: 0,
+                                         max: 30
+                                     }})]]"></oj-input-text>
+                  <oj-button class="help-button" id="save-product" type="submit" on-click="[[$component.addSRProduct]]">
+                    <span data-bind="text:$component.resource.save"></span>
+                  </oj-button>
+                </div>
+                <!-- /ko -->
+              </div>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if:$component.categoryTypesLoaded() -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-lg-3">
+              <oj-label for="requestCategoryName" class="oj-flex-item oj-lg-12">
+                <span data-bind="text:$component.resource.requestCategoryName"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex oj-lg-5">
+              <div class="oj-flex-item oj-lg-12">
+                <oj-select-one id="requestCategoryName" value="{{$component.addCategoryType}}" placeholder="{{$component.resource.requestCategoryNamePlaceholder}}"
+                  required="true">
+                  <!-- ko foreach: $component.categoryData() -->
+                  <oj-option value="[[label]]">
+                    <span data-bind="text: label"></span>
+                  </oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+              </div>
+              <div class="oj-flex-item">
+                <oj-label for="requestCategoryNameHint">
+                  <span data-bind="html:$component.resource.requestCategoryNameHint"></span>
+                  <b>
+                    <a href="#" data-bind="html:$component.resource.addNew, click:$component.showAddNew"></a>
+                  </b>
+                </oj-label>
+                <!-- ko if: showAddButton -->
+                <div>
+                  <oj-input-text id="requestCategoryNameHint" value="{{$component.newCategoryName}}" placeholder="{{$component.resource.typeCategoryName}}"
+                    validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.resource.requiredMessage,{
+                                     type: 'length',
+                                     options: {
+                                         min: 0,
+                                         max: 40
+                                     }})]]"></oj-input-text>
+                  <oj-button class="help-button" id="save-button" type="submit" on-click="[[$component.addSRCategory]]">
+                    <span data-bind="text:$component.resource.save"></span>
+                  </oj-button>
+                </div>
+                <!-- /ko -->
+              </div>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if:transactionTypesLoaded -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-lg-3">
+              <oj-label for="requestType" class="oj-flex-item oj-lg-12">
+                <span data-bind="text:$component.resource.requestType"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-5">
+              <oj-select-one id="requestType" value="{{$component.addRequestType}}" placeholder="{{$component.resource.requestTypePlaceholder}}"
+                required="true">
+                <!-- ko foreach: $component.transactionTypeData -->
+                <oj-option value="[[code]]">
+                  <span data-bind="text: label"></span>
+                </oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if:statusesLoaded -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-lg-3">
+              <oj-label for="applicableStatus" class="oj-flex-item oj-lg-12">
+                <span data-bind="text:$component.resource.applicableStatus"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-5">
+              <oj-select-many id="applicableStatus" options="[[$component.statusesData]]" value="{{$component.addApplicableStatus}}" placeholder="{{$component.resource.applicableStatusPlaceholder}}"
+                required="true">
+              </oj-select-many>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if:severityLoaded -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-lg-3">
+              <oj-label for="severity" class="oj-flex-item oj-lg-12">
+                <span data-bind="text:$component.resource.severity"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-5">
+              <oj-select-one id="severity" value="{{$component.addSeverity}}" placeholder="{{$component.resource.severityPlaceholder}}"
+                required="true">
+                <!-- ko foreach: $component.severityData -->
+                <oj-option value="[[code]]">
+                  <span data-bind="text: label"></span>
+                </oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <!-- /ko -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-3">
+              <oj-label for="switch" class="oj-flex-item oj-lg-12">
+                <span data-bind="text:$component.resource.activationStatus"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex oj-lg-5">
+              <div class="oj-flex-item oj-lg-2">
+                <oj-switch id="switch" value="{{$component.isActive}}"></oj-switch>
+              </div>
+              <div class="oj-flex-item">
+                <span data-bind="text: ((isActive()) ? $component.resource.active : $component.resource.inactive)"></span>
+              </div>
+            </div>
+          </div>
+        </oj-validation-group>
+      </div>
+    </div>
+  </page-section>
+  <div class="oj-flex button-container">
+    <oj-button class="action-button-primary" id="next-button" type="submit" on-click="[[$component.loadNextScreen]]">
+      <span data-bind="text:$component.resource.next"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" id="cancel-button" type="submit" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.resource.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" id="back-button" type="submit" on-click="[[$component.onBack]]">
+      <span data-bind="text:$component.resource.back"></span>
+    </oj-button>
+  </div>
+</div>
+<modal-window class="message form-main-container" params="baseModel : $baseModel, rootModel : $component,id:'createCategory', header: $component.resource.confirmation">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item message-text label scroll" data-bind="html:$component.resource.confirmMessage">
+    </div>
+  </div>
+  <div class="message-btn button-container">
+    <oj-button class="action-button-primary" :id="[['okButton1']]" on-click="[[$component.closePopUp]]">
+      <span data-bind="text:$component.resource.ok"></span>
+    </oj-button>
+  </div>
+</modal-window>
+<modal-window class="message form-main-container" params="baseModel : $baseModel, rootModel : $component,id:'createProduct', header: $component.resource.confirmation">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item message-text label scroll" data-bind="html:$component.resource.confirmProductSave">
+    </div>
+  </div>
+  <div class="message-btn button-container">
+    <oj-button class="action-button-primary" :id="[['okButton2']]" on-click="[[$component.closeProductPopUp]]">
+      <span data-bind="text:$component.resource.ok"></span>
+    </oj-button>
+  </div>
+</modal-window>

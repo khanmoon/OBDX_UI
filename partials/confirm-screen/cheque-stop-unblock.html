@@ -1,0 +1,24 @@
+<page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <!-- ko if:$component.additionalDetails && $component.additionalDetails().account-->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $data.resourceBundle.stopUnblockCheque.accountNumber , value : $component.additionalDetails().account.id.displayValue"></row>
+    <!-- /ko -->
+    <!-- ko if: $data.data.accountId-->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $data.resourceBundle.stopUnblockCheque.accountNumber , value :$data.data.accountId.displayValue()"></row>
+    <!-- /ko -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $data.resourceBundle.stopUnblockCheque.actionOnly , value : $data.data.chequeInstructionType"></row>
+    <!-- ko if:$data.data.reason -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $data.resourceBundle.common.reason , value :$data.data.reason"></row>
+    <!-- /ko -->
+    <!-- ko if:$data.data.endChequeNumber -->
+    <!-- ko if:$data.data.endChequeNumber() === null-->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $data.resourceBundle.chequeDetails.chequeNumber , value :$data.data.startChequeNumber()"></row>
+    <!-- /ko -->
+    <!-- ko if: $data.data.endChequeNumber() !== null -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $data.resourceBundle.common.from , value :$data.data.startChequeNumber()"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $data.resourceBundle.common.to , value :$data.data.endChequeNumber()"></row>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko ifnot:$data.data.endChequeNumber -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $data.resourceBundle.chequeDetails.chequeNumber , value :$data.data.startChequeNumber()"></row>
+    <!-- /ko -->
+</page-section>

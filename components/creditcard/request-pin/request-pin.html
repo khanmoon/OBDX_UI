@@ -1,0 +1,118 @@
+<div class="form-main-container">
+  <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+      <!-- ko if: $baseModel.small -->
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <!-- ko if: $component.moduleURL() -->
+        <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.resource.requestPin.selectedCard,
+        account : $component.creditCardId,
+        type: 'nodeValue',
+        additionalDetails : $component.additionalCardDetails,
+        validator:$component.validationTracker,
+        customURL : $component.moduleURL,
+        accountsParser: $component.creditCardParser,
+        readOnly: !!$component.params.id">
+        </account-input>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.moduleURL() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label ">
+            <oj-label for="cardNumber" class=""><span data-bind="text:resource.requestPin.cardNumber"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <span data-bind="text:$component.creditCardIdDisplay"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+      </page-section>
+      <!-- /ko -->
+
+      <!-- ko ifnot: $baseModel.small -->
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label ">
+            <oj-label for="cardNumber" class=""><span data-bind="text:resource.requestPin.cardNumber"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <span data-bind="text:$component.creditCardIdDisplay"></span>
+          </div>
+        </div>
+      </page-section>
+      <!-- /ko -->
+
+      <!-- ko if:isDataLoaded() -->
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''" data-bind="visible:initiateAddOn()">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label class=""><span data-bind="text:$component.resource.common.DeliveryLocation"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <div id="DeliveryLocation" data-bind="component: {name: 'address', params:{rootModel: $parent, data:$data,validator:$component.validationTracker,address:$component.addressDetails}}">
+            </div>
+          </div>
+        </div>
+      </page-section>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button id="dialogtopupButton" class="action-button-primary " on-click="[[addOnVerify]]"><span slot="startIcon" class="icons icon-submit"></span>
+          <span data-bind="text:$component.resource.requestPin.submit"></span>
+        </oj-button>
+        <!-- ko if: !$baseModel.small() -->
+        <oj-button class="action-button-secondary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.resource.requestPin.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+      </div>
+      <!-- /ko -->
+    </div>
+
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'request-pin'"></help>
+    </div>
+    <!-- /ko -->
+  </div>
+  <!-- ko if: $baseModel.small() -->
+  <a href="#" data-bind="click: $component.showFloatingPanel">
+    <div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+  </a>
+  <floating-panel params="baseModel : $baseModel, panelId: 'panelCreditCard4', rootModel: $component">
+    <ul>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'card-statement',cardObject,$data)">
+          <span class="icons icon-view-statement"></span>
+          <span data-bind="text: $component.resource.cardLinks.viewStatement"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'card-pay',cardObject,$data)">
+          <span class="icons icon-limit"></span>
+          <span data-bind="text: $component.resource.cardLinks.cardPayment"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'request-pin',cardObject,$data)">
+          <span class="icons icon-request-pin"></span>
+          <span data-bind="text: $component.resource.cardLinks.requestPin"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'block-card',cardObject,$data)">
+          <span class="icons icon-cancel-card"></span>
+          <span data-bind="text: $component.resource.cardLinks.blockCard"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'auto-pay',cardObject,$data)">
+          <span class="icons icon-pay"></span>
+          <span data-bind="text: $component.resource.cardLinks.autoPay"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reset-pin',cardObject,$data)">
+          <span class="icons icon-refresh"></span>
+          <span data-bind="text: $component.resource.cardLinks.resetPin"></span></a>
+      </li>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'add-on-card',cardObject,$data)">
+          <span class="icons icon-card-preference"></span>
+          <span data-bind="text: $component.resource.cardLinks.addOnCard"></span></a>
+      </li>
+    </ul>
+  </floating-panel>
+  <!-- /ko -->
+</div>

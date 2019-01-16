@@ -1,0 +1,102 @@
+<!-- ko if: currenciesLoaded()  -->
+<div class="requirements" data-bind="with:productDetails().requirements">
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-10 ">
+
+      <h3 class=" primary-heading" data-bind="text:$component.resource.loan.header"></h3>
+
+    </div>
+  </div>
+  <oj-validation-group id="requirementsTracker" valid="{{$component.groupValid}}">
+    <div class="">
+      <div data-bind="component: {
+                name: 'amount-input', params: {
+                    amount :requestedAmount.amount,
+                    label : $component.resource.loan.loanAmount,
+                    currency: $component.transferCurrency,
+                    labelClasses : 'oj-lg-3 oj-md-4 oj-lg-offset-1 oj-md-offset-1',
+                    valueClasses : 'oj-lg-7 oj-md-7 amount-input',
+                    currencyListRequired : true,
+                    currencyParser : $component.currencyParser,
+                    converter:$baseModel.formatCurrency,
+                    validator:$component.validationTracker,
+                    isMandatory:true,
+                    maxlength:15,
+                    rootId:'loan-amount',
+                    rootClass:'form-input',
+                    inline:true,
+                    formattedAmount: ko.observable()
+                }
+            }"></div>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+      <!-- ko if: $component.loanPurposeLoaded() -->
+      <div class="oj-flex-item label oj-sm-12 oj-md-4  oj-lg-3 oj-lg-offset-1 oj-md-offset-1">
+        <oj-label class="main-label" for="purpose-type"><span data-bind="text:$component.resource.loan.purpose"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-7  oj-lg-6 label">
+        <div class="oj-flex oj-flex-items-pad">
+          <oj-select-one id="purpose-type" required translations="[[{'required':{messageDetail:$component.resource.messages.purpose}}]]" on-value-changed="[[$component.purposeChangedHandler]]" :placeholder="" value="{{purpose.code}}">
+            <!-- ko foreach: $component.purposeData -->
+            <!-- ko if:type==="PURCHASE_OWNER_OCCUPIED" || type==="PURCHASE_INVESTMENT" -->
+            <oj-optgroup label="[[name]]">
+              <!-- ko foreach: purposeList -->
+              <oj-option value="{{code}}"><span data-bind="text:name"></span></oj-option>
+              <!-- /ko -->
+            </oj-optgroup>
+            <!-- /ko -->
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+
+    <div class="">
+      <div data-bind='component: {
+        name: "loan-tenure", params: {
+            tenureYears :requestedTenure.years,
+            tenureMonths :requestedTenure.months,
+            maxVal: $component.years,
+            label: $component.resource.loan.tenure,
+            labelClasses: "oj-lg-offset-1 oj-md-offset-1",
+            validator:$component.validationTracker,
+            isMandatory:true,
+            rootId:"tenureSelectYears",
+            rootClass:"form-input",
+            yearsId:"tenure-years",
+            monthsId:"tenure-months",
+        }
+    }'></div>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class=" oj-flex-item oj-sm-12 oj-md-4  oj-lg-3 oj-lg-offset-1 text oj-md-offset-1">
+        <oj-label class="span-label" for="firstHomeFlag"><span data-bind="text:$component.resource.loan.firstHome"></span></oj-label>
+        <div class="tooltip-section">
+          <!-- ko if: $baseModel.large() -->
+          <div class="tooltip message-text" id="firstHome_toolTip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.loan.firstHome_toolTip,toolTipId:'firstHome_toolTip'}}">
+          </div>
+          <span class="icon-help" id="tool-tip-holder-loans" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'firstHome_toolTip','tool-tip-holder-loans'), mouseout: $component.hideToolTip.bind($data,'firstHome_toolTip') }"></span>
+          <!-- /ko -->
+          <!-- ko ifnot: $baseModel.large() -->
+          <a class="icon-help" href="javascript:void(0)" data-bind="click: function(){$('#isYourFirstHomeToolTip').trigger('openModal')},attr:{alt: $component.resource.loan.firstHome_toolTipAltMessage, title: $component.resource.loan.firstHome_toolTipTitle}"></a>
+          <!-- /ko -->
+          <modal-window class="origination-popup message" params="baseModel : $baseModel, rootModel : $component,id:'isYourFirstHomeToolTip'">
+            <div class="message-text label" data-bind="html:$component.resource.loan.firstHome_toolTip"></div>
+
+          </modal-window>
+        </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+
+        <oj-buttonset-one id="firstHomeFlag" :aria-label="[[$component.resource.loan.firstHome]]" on-value-changed="[[$component.firstHomeStatus]]" value="{{$component.isYourFirstHome}}">
+          <oj-option name="firstHomeStatus" class="firstHomeStatus" value="{{'OPTION_YES'}}" :id="[['firstHomeFlagYes']]"><span data-bind="attr: {for: 'firstHomeFlagYes'},text:$component.resource.generic.common.yes"></span></oj-option>
+          <oj-option name="firstHomeStatus" class="firstHomeStatus" value="{{'OPTION_NO'}}" :id="[['firstHomeFlagNo']]"><span data-bind="attr: {for: 'firstHomeFlagNo'},text:$component.resource.generic.common.no"></span></oj-option>
+        </oj-buttonset-one>
+      </div>
+    </div>
+  </oj-validation-group>
+</div>
+<!-- /ko -->

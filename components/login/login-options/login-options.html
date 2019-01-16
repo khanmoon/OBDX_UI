@@ -1,0 +1,31 @@
+<modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'loginMethod',header:$component.resource.selectLoginMethod,closeHandler:$component.hideWarning">
+      <!-- ko if:$component.firstTimeLoginFlow() -->
+        <div class="oj-flex-items-pad">
+          <div data-bind="text:$parent.resource.doYouWishTosetupAltenateLogin"></div>
+        </div>
+      <!-- /ko -->
+      <!-- ko if: $component.dataLoaded() -->
+      <oj-navigation-list class="product-quick-links" selection="{{$parent.selectedLoginType}}">
+          <ul class="oj-flex oj-flex-items-pad product-quick-links-flex-container oj-sm-flex-wrap-nowrap">
+            <!-- ko foreach:$component.listItem -->
+            <li data-bind="attr: {id: id}" class="oj-flex-item oj-sm-4 product-quick-links-flex-container__listItems">
+              <a href="#" data-bind="attr:{'alt':$parent.resource[id]  }">
+                <img class="icons" data-bind="loadImage: $data.iconImage">
+                <div class="icon-title" data-bind="text:$parent.resource[id]"></div>
+              </a>
+            </li>
+            <!-- /ko -->
+          </ul>
+
+
+        <div data-bind="template : {afterRender : $component.showLoginOptionsDialog}"></div>
+      </oj-navigation-list>
+      <!-- ko if:$component.firstTimeLoginFlow() -->
+      <div class="button-container">
+        <oj-button class="action-button-secondary" on-click="[[$parent.hideWarning]]">
+      <span data-bind="text:resource.cancel"></span>
+</oj-button>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+ </modal-window>

@@ -1,0 +1,137 @@
+
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+     <row params="baseModel : $baseModel,rootModel:$parent,label:$component.resourceBundle.transaction.transactionName, value : $component.transactionName()"></row>
+    <div class="oj-flex oj-flex-items-pad row-group">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label><span data-bind="text:$component.nls.common.userType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+            <!-- ko if: showuserTypeList()  -->
+            <oj-checkboxset class="oj-choice-direction-column"
+                            disabled="[[disabledState]]" value="{{userType}}">
+                <!-- ko foreach: userTypeOptions  -->
+                <oj-option value="{{value}}" :id="[['purpose_'+ $index()]]">
+                    <span data-bind="text:label, attr : {'for' :'purpose_' + $index()}"></span>
+                </oj-option>
+                <!-- /ko -->
+            </oj-checkboxset>
+            <!-- /ko -->
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for=""><span data-bind="text:$component.nls.transaction.blackoutType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-10 oj-md-6 oj-lg-4">
+            <oj-buttonset-one disabled="[[disabledState]]" value="{{selectedTypes}}"><oj-option name="selectedTypeButton" value="{{'FULL'}}" disabled="[[!'']]" :id="[['full']]"><span data-bind="attr: {for: 'full'},text: $component.nls.transaction.full"></span></oj-option><oj-option name="selectedTypeButton" value="{{'DAILY'}}" :id="[['recurring']]"><span data-bind="attr: {for: 'recurring'},text: $component.nls.transaction.recurring"></span></oj-option></oj-buttonset-one>
+        </div>
+    </div>
+
+    <!-- ko if: !recurring() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for=""><span data-bind="text:$component.nls.datetime.startOn"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-2 label">
+            <span data-bind="text:$baseModel.formatDate(startDate)"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-3 label">
+            <span data-bind="text:$component.blackoutTime()[0].startTime()"></span>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for=""><span data-bind="text:$component.nls.datetime.endOn"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-2 label">
+            <span data-bind="text:$baseModel.formatDate(endDate)"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-3 label">
+            <span data-bind="text:$component.blackoutTime()[0].endTime()"></span>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: recurring() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for=""><span data-bind="text:$component.nls.datetime.dateRange"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-5 label">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+                    <oj-label><span data-bind="text:$component.nls.datetime.from"></span></oj-label>
+                </div>
+                <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text:$baseModel.formatDate(rstartDate)"></span>
+                </div>
+
+                <div class="oj-sm-12 oj-md-8 oj-lg-1">
+                    <oj-label><span data-bind="text:$component.nls.datetime.to"></span></oj-label>
+                </div>
+                <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text:$baseModel.formatDate(rendDate)"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- ko foreach :$component.blackoutTime -->
+        <!-- ko if: $index() === 0 -->
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <oj-label><span data-bind="text:$component.nls.datetime.time"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-5 label">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+                        <oj-label><span data-bind="text:$component.nls.datetime.from"></span></oj-label>
+                    </div>
+                    <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                        <span data-bind="text:startTime()"></span>
+                    </div>
+
+                    <div class="oj-sm-12 oj-md-8 oj-lg-1">
+                        <oj-label><span data-bind="text:$component.nls.datetime.to"></span></oj-label>
+                    </div>
+                    <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                        <span data-bind="text:endTime()"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- /ko -->
+
+        <!-- ko if: $index() > 0 -->
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        </div>
+
+        <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-5 label">
+            <div class="oj-flex oj-flex-items-pad">
+
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+                    <oj-label><span data-bind="text:$component.nls.datetime.from"></span></oj-label>
+                </div>
+                <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text:startTime()"></span>
+                </div>
+                <div class="oj-sm-12 oj-md-8 oj-lg-1">
+                    <oj-label><span data-bind="text:$component.nls.datetime.to"></span></oj-label>
+                </div>
+                <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text:endTime()"></span>
+                </div>
+
+            </div>
+        </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- /ko -->
+
+    <!-- /ko -->
+    <row params="baseModel : $baseModel,rootModel:$parent,label:$component.nls.transaction.statusType, value : $component.nls.transaction.frequency[$component.blackoutDetails.transactionBlackoutStatusType()]"></row>
+
+</page-section>

@@ -1,0 +1,77 @@
+<div class="oj-panel activity-history">
+	<!-- ko if:activityAccountsLoaded -->
+
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item activity-history-title">
+			<span data-bind="text:$component.resource.miniStatement"></span>
+		</div>
+	</div>
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item">
+			<oj-label class="hide-label" :for="[['accountSelectionDropDown'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.accountNumber"></span></oj-label>
+			<oj-select-one class="account-list" :id="[['accountSelectionDropDown'+($baseModel.currentIdCount())]]" options="[[displayAccountList]]" on-value-changed="[[searchForAccount]]" value="{{accountID}}">
+			</oj-select-one>
+		</div>
+
+	</div>
+
+
+	<!-- /ko -->
+
+
+	<!-- ko if:detailsFetched -->
+
+
+	<!-- <label class="hide-label" data-bind="attr:{'for':'listview'+ ($baseModel.incrementIdCount())},text:$component.resource.accountInfo"></label> -->
+	<oj-list-view :id="[['listview'+($baseModel.currentIdCount())]]" :aria-label="[[$component.resource.accountInfo]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[dataSource]]">
+
+	</oj-list-view>
+
+	<div class="hide">
+		<oj-paging-control id="paging" slot="bottom" :page-size="[[4]]" data="[[dataSource]]">
+		</oj-paging-control>
+	</div>
+	<script type="text/html" id="content_template">
+
+		<li data-bind="attr: {id: key.transactionReferenceNumber + key.subSequenceNumber}">
+
+			<div class="oj-flex oj-flex-items-pad">
+
+				<div class="oj-flex-item oj-sm-12 activity-date" data-bind="text: $baseModel.formatDate(transactionDate)"></div>
+				<!-- ko if: $data.description -->
+
+				<div class="oj-flex-item oj-sm-12 activity-desc" data-bind="text : description"></div>
+				<!-- /ko -->
+
+				<div class="oj-flex-item oj-sm-12 right activity-amt">
+					<!-- ko if: $data.transactionType -->
+
+					<!-- ko if: transactionType === "D" -->
+					<span class="debit" data-bind="text : $baseModel.formatCurrency(amountInAccountCurrency.amount, amountInAccountCurrency.currency)"></span>
+					<span class="debit" data-bind="text:$component.resource.Dr"></span>
+					<!-- /ko -->
+					<!-- ko if: transactionType === "C" -->
+
+					<span class="credit" data-bind="text : $baseModel.formatCurrency(amountInAccountCurrency.amount, amountInAccountCurrency.currency)"></span>
+					<span class="credit" data-bind="text:$component.resource.Cr"></span>
+
+
+					<!-- /ko -->
+					<!-- /ko -->
+				</div>
+			</div>
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+			</div>
+		</li>
+	</script>
+	<!-- /ko -->
+
+
+	<a href="#" data-bind="attr:{'alt':$component.resource.moreDetailsText,'title':$component.resource.moreDetails},click : showDashboardView">
+		<div class="view-all pointer">
+			<span class="pull-left" data-bind="text:$component.resource.moreDetails"></span>
+			<span class="pull-right"><span class="icon icon-forward-arrow"></span>
+		</span></div>
+	</a>
+</div>

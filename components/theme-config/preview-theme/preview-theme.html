@@ -1,0 +1,103 @@
+<!-- ko if: $component.modelInit() -->
+<div class="oj-flex oj-sm-12 preview-theme">
+
+  <header class="oj-sm-12" id="preview-header" data-bind="style:{'background-color':$component.themeData.styleAsset.components['--header-background-color'](), 'color':$component.themeData.styleAsset.components['--header-foreground-color']()}">
+    <ul class="preview-theme__menu">
+      <li class="preview-theme__list" data-bind="text:$component.resourceBundle.sampleTxt.home"></li>
+      <li class="preview-theme__list" data-bind="text:$component.resourceBundle.sampleTxt.aboutUs"></li>
+    </ul>
+  </header>
+
+  <div class="oj-flex oj-sm-12 preview-theme__body">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.sampleTxt.form">
+    <div class="oj-flex oj-sm-12 preview-theme__form">
+      <div class="oj-flex oj-sm-12">
+        <div class="oj-flex-item oj-sm-4 preview-theme__form__element">
+          <oj-label><span data-bind="text:$component.resourceBundle.sampleTxt.font"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-4" data-bind="style:{'color':$component.themeData.styleAsset['base-colors']['--base-text-primary']()}">
+          <span data-bind="text:$component.resourceBundle.sampleTxt.sampleTxt"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-sm-12">
+        <div class="oj-flex-item oj-sm-4 preview-theme__form__element">
+          <oj-label><span data-bind="text:$component.resourceBundle.sampleTxt.anchorTxt"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-4" data-bind="style:{'color':$component.themeData.styleAsset.link['--link-base']()}">
+          <span class="anchroTxt" data-bind="text:$component.resourceBundle.sampleTxt.anchorTxt"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-sm-12">
+        <div class="oj-flex-item oj-sm-4 preview-theme__form__element">
+          <oj-label><span data-bind="text:$component.resourceBundle.sampleTxt.label"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-4">
+          <span data-bind="text:$component.resourceBundle.sampleTxt.label,style:{color:$component.themeData.styleAsset['base-colors']['--base-text-secondary']()}"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-sm-12">
+        <div class="oj-flex-item oj-sm-4 preview-theme__form__element">
+          <oj-label for="input_props"><span data-bind="text:$component.resourceBundle.sampleTxt.input"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-6">
+          <oj-input-text :id="[['input_props']]" value="{{$component.resourceBundle.sampleTxt.sampleTxt}}"></oj-input-text>
+        </div>
+      </div>
+      <div class="oj-flex oj-sm-12">
+        <div class="oj-flex-item oj-sm-4 preview-theme__form__element">
+          <oj-label for="primary_btn"><span data-bind="text:$component.resourceBundle.sampleTxt.primaryBtn"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-6">
+          <oj-button class="action-button-primary" id="primary-button" data-bind="style:{'height':$component.themeData.styleAsset['button-variables']['--button-height']()+$component.sizeUnit}">
+            <span data-bind="text:$component.resourceBundle.labels.primaryBtn"></span>
+          </oj-button>
+        </div>
+      </div>
+      <div class="oj-flex oj-sm-12">
+        <div class="oj-flex-item oj-sm-4 preview-theme__form__element">
+          <oj-label for="secondary_btn"><span data-bind="text:$component.resourceBundle.sampleTxt.secondaryBtn"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-6">
+          <oj-button class="action-button-secondary" id="secondary-button" data-bind="style:{'height':$component.themeData.styleAsset['button-variables']['--button-height']()+$component.sizeUnit}">
+            <span data-bind="text:$component.resourceBundle.labels.secondaryBtn"></span>
+          </oj-button>
+        </div>
+      </div>
+      <div class="oj-flex oj-sm-12">
+        <div class="oj-flex-item oj-sm-4 preview-theme__form__element">
+          <oj-label for="tertiary_btn"><span data-bind="text:$component.resourceBundle.sampleTxt.tertiaryBtn"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-6">
+          <oj-button class="action-button-tertiary" id="tertiary-button" data-bind="style:{'height':$component.themeData.styleAsset['button-variables']['--button-height']()+$component.sizeUnit}">
+            <span data-bind="text:$component.resourceBundle.labels.tertiaryBtn"></span>
+          </oj-button>
+        </div>
+      </div>
+      <div class="oj-flex oj-sm-12">
+        <div class="oj-flex-item oj-sm-4 preview-theme__form__element">
+          <oj-label for="tertiary_btn"><span data-bind="text:$component.resourceBundle.sampleTxt.helpBtn"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-6">
+          <oj-button class="help-button" id="help-button" data-bind="style:{'height':$component.themeData.styleAsset['button-variables']['--button-height']()+$component.sizeUnit}">
+            <span data-bind="text:$component.resourceBundle.labels.helpBtn"></span>
+          </oj-button>
+        </div>
+      </div>
+      <!-- ko foreach:Object.keys($component.resourceBundle.labels.fontSize) -->
+      <div class="oj-flex oj-sm-12">
+        <div class="oj-flex-item oj-sm-4">
+          <oj-label><span data-bind="text:$component.resourceBundle.labels.fontSize[$data]"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-8" data-bind="style:{'font-size':$baseModel.format($component.resourceBundle.setFont,{size:$component.themeData.styleAsset.fontSize[$data](),unit:$component.sizeUnit})}">
+          <span data-bind="text:$component.resourceBundle.sampleTxt.sampleTxt"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+  </page-section>
+  </div>
+  <footer class="oj-sm-12 center" id="preview-footer" data-bind="style:{'background-color':$component.themeData.styleAsset.components['--footer-background-color'](), 'color':$component.themeData.styleAsset.components['--footer-foreground-color']()}">
+      <span data-bind="text:$component.resourceBundle.sampleTxt.footer"></span>
+    </footer>
+</div>
+<!-- /ko -->

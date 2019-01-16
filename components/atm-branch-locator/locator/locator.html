@@ -1,0 +1,227 @@
+<div class="form-main-container locator" data-bind="css:$dashboard.application()==='login'?'justify-overlap-locator':''">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-offcanvas-outer-wrapper">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12" id="mapComponent" data-bind="attr:{'aria-label': $component.nls.headings.mapForuse},
+                  component:{name: 'map', params:{rootModel: $data }}" aria-hidden="true">
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5 locator-search-box">
+                <div class="oj-flex">
+                    <div class="oj-flex-item oj-sm-4 locator-menu">
+                      <oj-menu-button id="menuButton" :label="[[$component.searchTypeSelected()]]">
+                        <span data-bind="text:$component.searchTypeSelected()"></span>
+                         <oj-menu id="selectSearchOption" slot="menu" on-oj-action="[[menuItemSelect]]" >
+                           <oj-option id="ATM" >
+                             <span data-bind="text:$component.nls.headings.atm"></span>
+                             </oj-option>
+                             <oj-option id="BRANCH" >
+                               <span data-bind="text:$component.nls.headings.branch"></span>
+                               </oj-option>
+                         </oj-menu>
+                         </oj-menu-button>
+                    </div>
+                    <div class="oj-flex-item oj-sm-8 no-pad-cols locator-search">
+                        <oj-label class="hide-label" for="pac-input"><span data-bind="text:$component.nls.headings.locator"></span></oj-label>
+                        <span>
+                     <oj-input-text placeholder="Search ATM / Branch Locator" :id="[['pac-input']]"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <a href="javascript:void(0)" data-bind="attr:{'alt':$component.nls.headings.nearestLocationAlt,'title':$component.nls.headings.nearestLocation,'aria-label':$component.nls.headings.nearestLocationAlt}, click:$component.searchNearestLocation">
+                    <div class="margin-down form-button-link pull-left" data-bind="text:$component.nls.headings.nearestLocation"> </div>
+                </a>
+            </div>
+            <div id="infowindow-content">
+                <img alt="" src="" id="place-icon">
+                <span id="place-name" class="title"></span>
+                <br>
+                <span id="place-address"></span>
+            </div>
+        </div>
+
+        <!-- ko if: $component.searchDone() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5 locator-search-details">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 locator-search-details-nav">
+                        <!-- ko if: $baseModel.large() -->
+                        <a href="javascript:void(0)" class="pull-right icons icon-cancel" data-bind="attr:{'alt':$component.nls.headings.closeAlt,'title':$component.nls.headings.close,'aria-label':$component.nls.headings.closeAlt}, click:$component.closeWindow">
+                        </a>
+                        <!-- /ko -->
+                        <!-- ko ifnot: $baseModel.large() -->
+                        <!-- ko ifnot: $component.hideList() -->
+                        <a href="javascript:void(0)" class="pull-right" data-bind="attr:{'alt':$component.nls.headings.closeAlt,'title':$component.nls.headings.showhidelists,'aria-label':$component.nls.headings.showhidelists}, click:$component.hidelists">
+                            <span class="form-button-link" data-bind="text:$component.nls.headings.showhidelists"> </span>
+                            <span class="icons icon-arrow-down"></span>
+                        </a>
+                        <!-- /ko -->
+                        <!-- ko if: $component.hideList() -->
+                        <a href="javascript:void(0)" class="pull-right" data-bind="attr:{'alt':$component.nls.headings.viewDetails,'title':$component.nls.headings.showSearchResult,'aria-label':$component.nls.headings.showSearchResult}, click:$component.showlists">
+                            <span class="form-button-link" data-bind="text:$component.nls.headings.showSearchResult"> </span>
+                            <span class="icons icon-arrow-up"></span>
+                        </a>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                    <!-- ko if: $component.noRecord() -->
+                    <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+                        <oj-label class=""><span data-bind="text:$baseModel.format(nls.headings.noRecord,{selectedCritera:($component.searchTypeSelected()==='ATM'?$component.nls.headings.atm:$component.nls.headings.branch)})"></span></oj-label>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: isDistanceDataFetched -->
+                    <!-- ko ifnot: $component.noRecord() -->
+                    <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+                        <oj-label class="">
+                            <span data-bind="text:$baseModel.format(nls.headings.count,{filter:($component.searchTypeSelected()==='ATM'?$component.nls.headings.atm:$component.nls.headings.branch),nearbycount:$component.nearbycount()})"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4 right">
+                        <!-- ko if: servicesOfferedLoaded -->
+                        <a href="javascript:void(0)" class="filter-launcher" id="myLauncher" data-bind="attr:{'alt':$component.nls.headings.refine,'title':$component.nls.headings.refineSearch,'aria-label':$component.nls.headings.refineSearch},click: launch">
+                            <div class="icons icon-filter"></div>
+                        </a>
+                        <oj-menu id="myMenu" aria-labelledby="myLauncher" on-oj-action="[[menuItemSelect]]" on-oj-close="[[menuClose]]" open-options.launcher="myLauncher">
+
+                            <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" value="{{selectedServices}}" on-value-changed="[[ $component.refineSearch]]" required>
+
+                                <!-- ko foreach: servicesOffered -->
+                                <li class="filter-launcher-lists">
+                                    <div data-bind="attr:{id: 'checkboxoption_' + $index()}">
+                                        <span class="oj-choice-item">
+                                          <oj-label :for="[['servicesOffered_'+ $index()]]"><span data-bind="text:name"></span></oj-label>
+                                        <input type="checkbox" data-bind="value:name,  attr : {'id' :'servicesOffered_' + $index()}">
+                                        </span>
+                                    </div>
+                                </li>
+                                <!-- /ko -->
+                            </oj-checkboxset>
+                        </oj-menu>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko if: isDistanceDataFetched() -->
+                    <!-- ko if: $component.nearbycount() > 0 -->
+                    <div class="oj-flex-item oj-sm-12">
+                        <oj-list-view id="listview" :aria-label="[[$component.nls.headings.tablesource]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('locationTemplate',true)}]]" data="[[$parent.tableDataSource]]">
+                        </oj-list-view>
+                        <script type="text/html" id="locationTemplate">
+                            <li data-bind="">
+                                <div class="oj-flex">
+                                    <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8 location">
+                                        <oj-label><span data-bind="text:name"></span></oj-label>
+                                    </div>
+
+                                    <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4 distance">
+                                        <oj-label><span data-bind="text:distanceFromUser"></span></oj-label>
+                                    </div>
+                                </div>
+                                <div class="oj-flex">
+                                    <div class="oj-flex-item oj-sm-12 locator-map-address">
+                                        <div data-bind="text: $baseModel.format($component.nls.headings.addressDisplay, {add1:  $data.postalAddress.line1 , separator:',' , add2: $data.postalAddress.line2})"></div>
+                                        <div data-bind="text: $data.postalAddress.line3"></div>
+                                        <div data-bind="text: $data.postalAddress.line4"></div>
+                                        <div data-bind="text: $baseModel.format($component.nls.headings.addressDisplay, {add1: $data.postalAddress.city , separator:',' , add2: $data.postalAddress.country})"></div>
+                                    </div>
+                                </div>
+
+                                <div class="oj-flex locator-map-details">
+                                    <div class="oj-flex-item oj-sm-12 locator-map-details-links">
+                                        <a href="javascript:void(0)" data-bind="click:$component.getDirection.bind($data)">
+                                            <div class="form-button-link icons icon-split" data-bind="text:$component.nls.headings.getDirection"></div>
+                                        </a>
+
+                                        <span data-bind="attr:{id:'blocktoshow_'+$data.id}">
+                                    <a href="javascript:void(0)" data-bind="click:$component.viewDetails">
+                                      <div class="form-button-link icons icon-eye" data-bind="text:$component.nls.headings.viewDetails"></div>
+                                    </a>
+                                </span>
+
+                                        <span data-bind="attr:{id:'block_'+$data.id}" class="hide">
+                                    <a href="javascript:void(0)" data-bind="click:$component.hideLoadedDetails">
+                                      <div class="form-button-link icons icon-eye-slash" data-bind="text:$component.nls.headings.hideDetails"></div>
+                                    </a>
+                                </span>
+                                    </div>
+                                    <div data-bind="attr:{id:'blockdetails_'+$data.id}" class="hide">
+                                        <!-- ko if: $component.searchTypeSelected() === 'BRANCH' -->
+                                        <oj-label><span data-bind="text:$component.nls.headings.phoneno"></span></oj-label>
+                                        <div class="oj-flex">
+                                            <div class="oj-flex-item oj-sm-12 locator-map-phoneno">
+                                                <!-- ko if: $baseModel.small() -->
+                                                <!-- ko foreach: $component.phoneNumber() -->
+                                                <div>
+                                                    <a href="#" data-bind="text: $data, attr: {href: 'tel:'+$data, 'alt':$component.nls.headings.callMe,'title':$component.nls.headings.callMe,'aria-label':$component.nls.headings.callMe}">
+                                                    </a>
+                                                </div>
+                                                <!-- /ko -->
+                                                <!-- /ko -->
+
+
+                                                <!-- ko ifnot: $baseModel.small() -->
+                                                <div class="oj-flex-item oj-sm-12 locator-map-phoneno">
+                                                    <div data-bind="text:$baseModel.format($component.nls.headings.addressDisplay, {add1:  $component.primaryphoneNumber() ,separator:($component.alternatePhoneNumber() ? ',' : ''), add2: $component.alternatePhoneNumber() ? $component.alternatePhoneNumber() : ''})"></div>
+                                                </div>
+                                                <!-- /ko -->
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <oj-label><span data-bind="text:$component.nls.headings.workTimings"></span></oj-label>
+                                        <div class="oj-flex">
+                                            <div class="oj-flex-item oj-sm-12 locator-map-phoneno">
+                                              <div data-bind="text:$baseModel.format($component.nls.headings.timingDisplay, {timing1:  $component.workDays()[0] ,timing11:$component.mainTiming()[0], timing22: $component.mainTiming()[1]})"></div>
+                                                 <!-- ko if: $component.workDays()[1] !== null && $component.workTimings()[1] !==null -->
+                                                 <div data-bind="text:$baseModel.format($component.nls.headings.timingDisplay, {timing1:  $component.workDays()[1] ,timing11:$component.additionalTiming()[0], timing22: $component.additionalTiming()[1]})"></div>
+                                                 <!-- /ko -->
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="oj-flex">
+                                            <div class="oj-flex-item oj-sm-12">
+                                                <div data-bind="text:$component.additionalDetails"></div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <!-- /ko -->
+
+                                        <!-- ko if: $component.servicesOffered() -->
+                                        <oj-label><span data-bind="text:$component.nls.headings.services"></span></oj-label>
+
+                                        <!-- ko foreach: $component.servicesOffered() -->
+                                        <div class="oj-flex">
+                                            <div class="oj-flex-item oj-sm-12 locator-map-services">
+
+                                                <!-- ko if: ($component.supportedServicesShown().indexOf(name)) !== -1 -->
+                                                <span class="icons icon-check"></span>
+                                                <!-- /ko -->
+
+                                                <!-- ko if: ($component.supportedServicesShown().indexOf(name)) === -1 -->
+                                                <span class="icons icon-close"></span>
+                                                <!-- /ko -->
+
+
+                                                <span class="locator-map-services-details" data-bind="text:name"></span>
+                                            </div>
+                                        </div>
+                                        <!-- /ko -->
+                                        <!-- /ko -->
+                                    </div>
+
+
+
+                                </div>
+                            </li>
+                        </script>
+                    </div>
+
+
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+</div>
+</page-section>
+</div>

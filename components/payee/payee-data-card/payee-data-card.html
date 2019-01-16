@@ -1,0 +1,43 @@
+<a href="#" id="payee-data-link-access" data-bind="click: clickHandler">
+<div class="payee-data-card oj-panel">
+<div class="oj-flex oj-flex-items-pad oj-flex">
+  <div class="oj-flex-item">
+		  <div class="payee-data-card-title" data-bind="text:cardData.title"></div>
+	</div>
+
+</div>
+    <div class="oj-flex oj-flex-items-pad payee-data-card-features">
+        <!-- ko  if: cardData.featureList[0] -->
+		<div class="oj-flex-item oj-sm-8 feature-group">
+			<div class="oj-flex-item no-pad-cols feature-list">
+				<!-- ko foreach : cardData.featureList[0].features -->
+				<div class="feature">
+					<div class="label" data-bind="text:$data"></div>
+				</div>
+				<!-- /ko -->
+			</div>
+
+		</div>
+
+		<div class="oj-flex-item oj-sm-4 no-pad-cols right payee-data-card-icons">
+		<!-- ko if : imageSrc() -->
+			<img data-bind="attr:{'alt':cardData.alt,'title':cardData.title},loadImage:imageSrc()">
+		<!-- /ko -->
+	  </div>
+    <!-- /ko -->
+    <!-- ko if : cardData.featureList[1] -->
+		<div class="oj-flex-item feature-group">
+			<div class="oj-flex-item no-pad-cols feature-list">
+				<!-- ko foreach : cardData.featureList[1].features -->
+				<div class="feature">
+					<div class="label" data-bind="text:$data"></div>
+				</div>
+				<!-- /ko -->
+			</div>
+
+		</div>
+    <!-- /ko -->
+
+    </div>
+</div>
+</a>

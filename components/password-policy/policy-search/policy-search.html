@@ -1,0 +1,53 @@
+<div class="oj-flex search-policy ">
+  <div class="oj-flex-item oj-sm-9 oj-lg-9">
+    <div class="form-main-container">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+            <oj-label for="policyName"><span data-bind="text:$component.resourcebundle.fieldname.policyName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+            <oj-input-text id="policyName" :aria-label="[[$component.resourcebundle.fieldname.policyName]]" maxlength="20" value="{{policyName}}"></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+            <oj-label for="policyDesc"><span data-bind="text:$component.resourcebundle.fieldname.policyDesc"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+            <oj-input-text id="policyDesc" :aria-label="[[$component.resourcebundle.fieldname.policyDesc]]" maxlength="40" value="{{policyDesc}}"></oj-input-text>
+          </div>
+        </div>
+
+        <div class="oj-flex-item button-container">
+          <oj-button class="action-button-primary" on-click="[[$component.search]]">
+            <span data-bind="text:$component.resourcebundle.buttons.search"></span>
+          </oj-button>
+          <!-- ko ifnot:showResults -->
+          <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.resourcebundle.buttons.cancel"></span>
+          </oj-button>
+          <!-- /ko -->
+          <oj-button class="action-button-secondary" on-click="[[$component.clear]]">
+            <span data-bind="text:$component.resourcebundle.buttons.clear"></span>
+          </oj-button>
+
+        </div>
+        <!-- ko if:showResults -->
+        <div data-bind='component:{name: "search-results", params:{rootModel: $data}}'>
+        </div>
+
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+          <span data-bind="text:$component.resourcebundle.buttons.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+      </page-section>
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <div class="help-panel">
+      <help params="baseModel : $baseModel, rootModel : $data, transaction: 'password-policy-template-search'"></help>
+    </div>
+  </div>
+</div>

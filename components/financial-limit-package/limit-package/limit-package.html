@@ -1,0 +1,222 @@
+<!-- <action-widget params="rootModel:$data,header:'CREATE'"> -->
+<!-- ko if:limitPackageInput() -->
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-9">
+
+<div class="form-main-container financialLimitPackage">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <package-create params="baseModel : $baseModel, rootModel:$data,dashboard:$dashboard"></package-create>
+    <!-- ko if:showCurrencies -->
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+        <oj-label class="" :for="[['currency']]"><span data-bind="text:$component.nls.review_limit_package.currency"></span></oj-label>
+      </div>
+      <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3">
+        <!-- ko if: $component.params.action==='CREATE' || $component.params.action === "cloneAfterEdit"|| $component.params.action === "editAfterSave"-->
+        <oj-select-one class="oj-flex-item  oj-lg-8" :id="[['currency']]" required="[[true]]" translations="[[{'required':{messageDetail:nls.review_limit_package.selectCurrency}}]]" value="{{selectedCurrency}}" on-value-changed="[[$component.currencyOptionChangeHandler]]" :placeholder="[[$component.nls.review_limit_package.select_currency]]">
+          <!-- ko foreach:limitsData().currencies -->
+          <oj-option value="{{code}}"><span data-bind="text:code"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+        <!-- /ko -->
+        <!-- ko if: $component.params.action==='EDIT' -->
+        <span data-bind="text:selectedCurrency"></span>
+        <!-- /ko -->
+      </div>
+
+    </div>
+    <!-- /ko -->
+    <!-- ko if:$data.transactionLimitsFlag -->
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading :$component.nls.btns.TransNLimits" class="oj-sm-12">
+      <!-- <a href="javascript:void(0)" data-bind="click:">
+                <span class="icon icon-close pull-right"></span>
+            </a> -->
+    </action-header>
+    <!-- ko foreach:createPackageData().targetLimitLinkages() -->
+    <!-- ko if:$data.editable -->
+    <!-- ko if:$component.createPackageData().targetLimitLinkages().length>1-->
+
+    <div class="oj-lg-12">
+      <a href="javascript:void(0);" class="linkageDelete" data-bind="click:$component.removeTransactionFromPackage.bind($data,$index())">
+              <span class="icons icon-delete"></span>
+
+              <span class="deleteTransaction" data-bind="text:$component.nls.review_limit_package.deleteTransaction"></span>
+
+            </a>
+      <a href="javascript:void(0);" class="pull-right linkageUndo" data-bind="click:$component.undoTransactionFromPackage.bind($data,$index()),css:{'hide':$data.editable}">
+              <span data-bind="text:$component.nls.review_limit_package.undo"></span>
+            </a>
+    </div>
+    <!-- /ko -->
+
+    <!-- /ko -->
+
+    <!-- ko if:!$data.editable-->
+    <!-- ko if: (!$data.expiryDate()) || (new Date($data.expiryDate().substring(0,10)) > $baseModel.getDate())-->
+    <div class="oj-lg-12">
+      <a href="javascript:void(0);" class="linkageDelete" data-bind="click:$component.removeTransactionFromPackage.bind($data,$index())">
+                <span class="icons icon-delete"></span>
+              </a>
+      <a href="javascript:void(0);" class="pull-right linkageUndo" data-bind="click:$component.undoTransactionFromPackage.bind($data,$index()),css:{'hide':$data.editable}">
+                <span data-bind="text:$component.nls.review_limit_package.undo"></span>
+              </a>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if:!$data.editable-->
+    <!-- ko if:($data.expiryDate()) && (new Date($data.expiryDate().substring(0,10)) < $baseModel.getDate())-->
+    <div class="oj-flex-item  oj-lg-12"><span data-bind="text:$component.nls.review_limit_package.expired" class="pull-right"></span></div>
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <div class="oj-flex-item  oj-sm-12" data-bind="component:{name:'limits',
+          params:{rootModel:$component,index:$index,editable:editable,mode:$component.packageMode}}"></div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad">
+
+      <a href="javascript:void(0)" class="pull-left addTransaction" data-bind="click:$component.addTask">
+              <span class="form-button-link" data-bind="text:$component.nls.btns.addTrans">	</span>
+          </a>
+
+      <!--  <oj-button class="action-button-secondary addTransaction" on-click="[[addTask]]">
+      <span data-bind="text:$component.nls.btns.addTrans"></span>
+</oj-button>-->
+      <a href="javascript:void(0)" class="pull-right addTransactionGroup" data-bind="click:$component.addTransactionGroup">
+    <span class="form-button-link" data-bind="text:$component.nls.btns.addTransGroup">	</span>
+</a>
+      <!-- <oj-button class="action-button-secondary addTransaction" on-click="[[addTransactionGroup]]">
+      <span data-bind="text:$component.nls.btns.addTransGroup"></span>
+</oj-button>-->
+    </div> 
+    <!-- /ko -->
+	<div class="oj-flex oj-flex-items-pad   button-container">
+      <!-- ko if:isNewLimitGroup() -->
+	  <!-- ko if:$data.transactionLimitsFlag -->
+      <oj-button class="action-button-primary" on-click="[[$component.createNewPackage]]">
+        <span data-bind="text:$component.nls.btns.save"></span>
+      </oj-button>
+	      <!-- /ko -->
+      <oj-button class="action-button-tertiary" on-click="[[cancel]]">
+        <span data-bind="text:$component.nls.btns.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[back]]">
+        <span data-bind="text:$component.nls.common.back"></span>
+      </oj-button>
+      <!-- /ko -->
+      <!-- ko ifnot:isNewLimitGroup() -->
+	  <!-- ko if:$data.transactionLimitsFlag -->
+      <oj-button class="action-button-primary" on-click="[[$component.updatePackage]]">
+        <span data-bind="text:$component.nls.btns.save"></span>
+      </oj-button>
+	    <!-- /ko -->
+      <oj-button class="action-button-secondary" on-click="[[cancel]]">
+        <span data-bind="text:$component.nls.btns.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[back]]">
+        <span data-bind="text:$component.nls.common.back"></span>
+      </oj-button>
+      <!-- /ko -->
+    </div>
+  </page-section>
+</div>
+</div>
+<div class="oj-flex-item oj-sm-3 help-panel">
+  <!-- ko if: $component.params.action==='CREATE' || $component.params.action === "cloneAfterEdit"-->
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'financial-limit-package-create'"></help>
+  <!-- /ko -->
+
+  <!-- ko if: $component.params.action==='EDIT' || $component.params.action === "editAfterSave"-->
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'financial-limit-package-edit'"></help>
+  <!-- /ko -->
+</div>
+</div>
+
+<!-- /ko -->
+<!-- </action-widget> -->
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'deleteDateDialog', header:$component.nls.review_limit_package.limitPackageError ">
+  <div class="form-main-container message-text">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+
+          <!-- ko if:$component.templateLoadingFlag() ==="transactionGroup" -->
+        <span data-bind="text:$component.nls.review_limit_package.duplicationErrorTransactionGroup"></span>
+          <!-- /ko -->
+          <!-- ko ifnot:$component.templateLoadingFlag() ==="transactionGroup" -->
+          <span data-bind="text:$component.nls.review_limit_package.duplicationError"></span>
+          <!-- /ko -->
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="errorOkButton" class="action-button-primary" on-click="[[closeDateDialog]]">
+        <span data-bind="text:$component.nls.btns.ok"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'deleteDateDialogTransactionGroup', header:$component.nls.review_limit_package.limitPackageError ">
+  <div class="form-main-container message-text">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <span data-bind="text:$component.nls.review_limit_package.duplicationErrorTransactionGroup"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="errorOkButtonTransactionGroup" class="action-button-primary" on-click="[[closeDateDialogTransactionGroup]]">
+        <span data-bind="text:$component.nls.btns.ok"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+
+<modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'cancelDialog',header:$component.nls.review_limit_package.cancelWarning">
+  <div class="message-box">
+    <div class="dialog-text" data-bind="text:$component.nls.review_limit_package.cancelMessage">
+    </div>
+    <div class="button-container">
+      <oj-button class="action-button-primary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.common.yes"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$component.closeDialogBox]]">
+        <span data-bind="text:$component.nls.common.no"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'gapDetected', header:$component.nls.review_limit_package.limitAvailability ">
+  <div class="form-main-container message-text">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <span data-bind="text:$component.nls.review_limit_package.gapDetected"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="gapErrorYesButton" class="action-button-primary" on-click="[[userOkWithGap]]">
+        <span data-bind="text:$component.nls.btns.yes"></span>
+      </oj-button>
+      <oj-button id="gapErrorNoButton" class="action-button-secondary" on-click="[[closegapDetected]]">
+        <span data-bind="text:$component.nls.btns.no"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+
+<modal-window params="baseModel : $baseModel, rootModel : $component,id:'abruptEndDetected', header:$component.nls.review_limit_package.limitAvailability ">
+  <div class="form-main-container message-text">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <span data-bind="text:$component.nls.review_limit_package.abruptEndDetected"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="abruptErrorYesButton" class="action-button-primary" on-click="[[userOkWithAbruptEnd]]">
+        <span data-bind="text:$component.nls.btns.yes"></span>
+      </oj-button>
+      <oj-button id="abruptErrorNoButton" class="action-button-secondary" on-click="[[closeabruptEndDetected]]">
+        <span data-bind="text:$component.nls.btns.no"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>

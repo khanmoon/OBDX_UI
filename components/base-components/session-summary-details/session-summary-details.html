@@ -1,0 +1,39 @@
+<!-- ko if:!$baseModel.small() -->
+<div class="expandedData">
+  <!-- ko if:txnDataLoaded -->
+  <oj-table id="TxnTable" :aria-label="[[$component.nls.header.sessionSummary]]" :id="[[$context.rowContext.parentKey]]" columns="[[[{headerText:$component.nls.labels.transactionName,field:'activity',style:'width: 40%'},{headerText:$component.nls.labels.status,field:'status',style:'width: 30%'},{headerText:$component.nls.labels.transactionDate,field:'startTime',style:'width:30%'}]]]" columns-default="[[{sortable:'none'}]]" data="[[$component.datasource]]">
+    <caption class="hide-label" data-bind="text:$component.nls.header.sessionSummary"></caption>
+  </oj-table>
+  <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko if: $baseModel.small() -->
+<!-- ko if:txnDataLoaded -->
+ <div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item">
+    <oj-list-view id="listview_TxnTable" :aria-label="[[$component.nls.header.sessionSummary]]" :id="[[$data.sessionId]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('requesttype_template',true)}]]" data="[[datasource]]"></oj-list-view>
+   </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<script type="text/html" id="requesttype_template">
+  <li>
+    <div class="oj-flex oj-flex-items-pad">
+    	<div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+      <label class="oj-flex-item oj-sm-12" data-bind="text:$component.nls.labels.transactionName"> </label>
+      <div class="oj-flex-item oj-sm-12" data-bind="text:activity"> </div>
+      </div>
+      <br>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+      <label class="oj-flex-item oj-sm-12" data-bind="text:$component.nls.labels.status"> </label>
+      <div class="oj-flex-item oj-sm-12" data-bind="text:status"> </div>
+      </div>
+      <br>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+      <label class="oj-flex-item oj-sm-12" data-bind="text:$component.nls.labels.transactionDate"> </label>
+       <div class="oj-flex-item oj-sm-12" data-bind="text:startTime"> </div>
+      </div>
+      <br>
+    </div>
+  </li>
+</script>

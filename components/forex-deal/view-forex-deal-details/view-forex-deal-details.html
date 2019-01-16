@@ -1,0 +1,51 @@
+<div class="form-main-container">
+    <!-- ko if:$component.params.reviewMode -->
+    <div class="review-text-heading">
+        <span slot="startIcon" class="icons icon-information oj-sm-2 oj-flex-item"></span>
+        <span class="oj-sm-10 oj-flex-item" data-bind="text: $component.resource.viewForexDeal.header"></span>
+    </div>
+    <!-- /ko -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.dealNumHeader">
+        <page-section params="baseModel : $baseModel, rootModel : $component, dashboard : $dashboard, heading : $component.resource.viewForexDeal.partyDetails">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.viewForexDeal.partyId, value : $dashboard.userData.userProfile.partyId.displayValue"></row>
+                <!-- ko if:$component.isPartyName -->
+                <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.viewForexDeal.partyName, value : $component.partyName"></row>
+                <!-- /ko -->
+            </div>
+        </page-section>
+        <!-- ko if:$component.dataSourceLoaded -->
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.viewForexDeal.transactionDetails">
+            <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-md-5 oj-lg-12">
+                <div class="oj-sm-12 oj-lg-4">
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.viewForexDeal.status, value : $component.status"></row>
+                    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.viewForexDeal.dealType, value : $component.dealTyAndVal"></row>
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.viewForexDeal.duration, value : $component.duration"></row>
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.viewForexDeal.currCombo, value : $component.currCombo"></row>
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.viewForexDeal.trnscType, value : $component.rateType"></row>
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.viewForexDeal.exchgRate, value : $component.exchgRate"></row>
+                </div>
+                <div class="oj-sm-12 oj-lg-4">
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.viewForexDeal.bookedAmount, value : $component.bookedAmount"></row>
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.viewForexDeal.utilizedAmount, value : $component.utilizedAmount"></row>
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.viewForexDeal.availableAmount, value : $component.availableAmount"></row>
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.viewForexDeal.bookingDate, value : $component.bookingDate"></row>
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.viewForexDeal.expiryDate, value : $component.expiryDate"></row>
+                </div>
+            </div>
+        </page-section>
+        <!-- /ko -->
+        <div class="button-container">
+            <!-- ko if: $baseModel.large() -->
+            <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+                <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resource.viewForexDeal.cancel"></span>
+            </oj-button>
+            <!-- /ko -->
+            <oj-button class="action-button-tertiary" id="button-back" on-click="[[back]]">
+                <span slot="startIcon" class="icons icon-back-arrow"></span>
+                <span data-bind="text: $component.resource.viewForexDeal.back"></span>
+            </oj-button>
+        </div>
+    </page-section>
+</div>

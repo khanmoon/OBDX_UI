@@ -1,0 +1,51 @@
+<form>
+    <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+            <oj-label for="partyId"> <span data-bind="text:$component.Nls.partyId"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+            <oj-input-text id="partyId" name="partyId" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+        </div>
+         <!-- ko if:isEnterpriseRolesLoaded() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label ">
+            <oj-label for="userSegment"> <span data-bind="text:$component.Nls.userType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+            <oj-select-one id="userSegment" name="userSegment" :placeholder="[[$component.Nls.select]]"   on-value-changed="[[userSegmentSelected]]">
+               
+                <!-- ko foreach:$component.enterpriseRoles -->
+                <oj-option value="{{enterpriseRoleId}}"><span data-bind="text:enterpriseRoleName"></span></oj-option>
+                <!-- /ko -->
+            </oj-select-one>
+        </div>
+        <!-- /ko -->
+    </div>
+     <!-- ko  if:$component.reportGenerationPayload.reportFreq()+"" ==="ADHOC" ||  $component.reportGenerationPayload.reportSchFreq()+'' ==="ONCE"-->
+     
+    <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+            <oj-label for="startDate"> <span data-bind="text:$component.Nls.duration"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2 ">
+            <oj-input-date required id="startDate" name="startDate" :placeholder="[[$component.Nls.dateFrom]]" max="[[$component.today]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+        </div>
+          <oj-label for="endDate" class="hide-label"> <span data-bind="text:$component.Nls.dateTo"></span></oj-label>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2 ">
+
+            <oj-input-date required id="endDate" name="endDate" :placeholder="[[$component.Nls.dateTo]]" max="[[$component.today]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+        </div>
+
+    </div>
+     <!-- /ko -->
+      <!-- ko  if:$component.reportGenerationPayload.reportFreq()+"" !=="ADHOC" &&  $component.reportGenerationPayload.reportSchFreq()+'' !=="ONCE"-->   
+       <input type="hidden" id="fromScheduledDate" name="startDate">
+       <input type="hidden" id="toScheduledDate" name="endDate">
+       
+            
+      
+
+     <!-- /ko -->
+   
+
+     <input type="hidden" id="userType" name="userType">
+</form>

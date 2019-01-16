@@ -1,0 +1,34 @@
+<!-- ko if: $component.params.additionalDetails -->
+<page-section params="baseModel : $baseModel, rootModel : $component,heading : ''">
+<div class="oj-flex oj-flex-items-pad cust-details oj-sm-flex-items-initial" data-bind="with : $component.params.additionalDetails">
+    <!-- ko foreach: items -->
+    <row class="oj-lg-2" params="baseModel : $baseModel, rootModel : $component, label : $data.label, value : $data.value"></row>
+    <!-- /ko -->
+</div>
+</page-section>
+<!-- /ko -->
+
+<div class="oj-flex-item">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item" data-bind="text:$component.confirmScreenResources.confirm.actions.nextAction">
+  </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad ">
+    <ul class="confirm-screen__list">
+      <li>
+        <a href="#" data-bind="click:$dashboard.switchModule.bind($data)">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToDashboard},loadImage:'dashboard/quick-access/dashboard.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToDashboard"></div>
+        </a>
+      </li>
+
+      <li>
+        <a href="#" data-bind="click:$component.loadGoalList">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.listGoals}),'title':$component.confirmScreenResources.confirm.actions.listGoals},loadImage:'dashboard/quick-access/goal-list.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.listGoals"></div>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</div>

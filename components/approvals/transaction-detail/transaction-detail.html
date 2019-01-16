@@ -1,0 +1,23 @@
+<!-- ko if: $component.transactionDetailsLoaded() -->
+<div class="form-main-container transactionDetail">
+	<div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "batch-process-approvals", params:{rootModel: $data}}'></div>
+	<!-- ko if:hideOnSuccess() -->
+	<!-- ko if:transactionDetails().processingDetails.currentStep === 'exec' && transactionDetails().processingDetails.status === 'S' && enableEReceipt() -->
+
+	<a href="#" class="transactionDetail__eReceipt form-button-link" data-bind="attr:{'alt':$component.Nls.labels.eReceiptDownloadAlt ,'title':$component.Nls.labels.eReceiptDownload, 'aria-label':$component.Nls.labels.eReceiptDownload },click: downloadEreceipt ">
+		<span class="icons transactionDetail__eReceipt-icon icon-claim-money"></span>
+		<span class="transactionDetail__eReceipt-text" data-bind="text:Nls.labels.downloadEreceipt"></span>
+	</a>
+
+	<!-- /ko -->
+	<div data-bind="component: { name:$component.loadComponentName() ,params:{rootModel:$component}}"></div>
+	<div data-bind='component:{name: "transaction-journey", params:{rootModel: $data}}'></div>
+	<div class="oj-flex oj-flex-items-pad button-container">
+
+		<oj-button id="deleteYes" class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:Nls.labels.back"></span>
+</oj-button>
+	</div>
+	<!-- /ko -->
+</div>
+<!-- /ko -->

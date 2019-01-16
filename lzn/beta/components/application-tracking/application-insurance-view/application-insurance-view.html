@@ -1,0 +1,29 @@
+<!-- ko if:dataLoaded() -->
+<div class="oj-flex oj-flex-items-pad" data-bind="with : insuranceSummary()">
+    <div class="oj-flex-item oj-sm-6">
+        <div class="pull-left" data-bind="text : $component.resource.policyDetails"></div>
+    </div>
+    <div class="oj-flex-item oj-sm-6">
+        <div class="pull-right application-status-text">
+            <div class="pull-right" data-bind="text :firstName+lastName"></div><br>
+            <div class="pull-right" data-bind="text :applicantRole"></div><br>
+            <div class="pull-right" data-bind="text :policyName "></div>
+        </div>
+    </div>
+	<div class="oj-flex-item oj-sm-12">
+        <div class="pull-left" data-bind="text : $component.resource.premiumDetails"></div>
+    </div>
+    <div class="oj-flex-item oj-sm-12">
+        <div>
+            <div class="pull-left" data-bind="text :$component.resource.amount"></div>
+
+			<div class="pull-right application-status-text" data-bind="text :$baseModel.formatCurrency(insuranceDetails.premiumAmount.amount,insuranceDetails.premiumAmount.currency)"></div><br>
+
+			<div class="pull-left" data-bind="text :$component.resource.periodicity"></div>
+
+			<div class="pull-right application-status-text" data-bind="text :insuranceDetails.periodicity"></div><br>
+
+        </div>
+    </div>
+</div>
+<!-- /ko -->

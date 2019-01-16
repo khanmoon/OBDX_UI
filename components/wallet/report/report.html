@@ -1,0 +1,26 @@
+<div class="form-main-container">
+  <action-header params="baseModel : $baseModel, rootModel : $data, heading : reportHeading()"></action-header>
+  <!-- ko if:stageOne() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+         <div class="oj-flex oj-flex-items-pad">
+           <!-- ko foreach:reportsListArray() -->
+            <div class="oj-lg-4 oj-md-6 oj-sm-12 oj-flex-item">
+               <div data-bind="component:{name: 'action-card', params:{data:{card_text:name} ,clickHandler:actionCardClick}}"></div>
+            </div>
+            <!-- /ko -->
+         </div>
+    </page-section>
+
+    <!-- /ko -->
+    <!-- ko if:stageTwo() -->
+        <div data-bind="template: { name:templateName}"></div>
+    <!-- /ko -->
+</div>
+
+<modal-window params="baseModel : $baseModel, rootModel :$component,id:'searchErrorDialog'">
+   <!-- ko if:searchError -->
+   <div class="oj-flex oj-flex-items-pad">
+      <div data-bind="text:$component.searchErrorMsg()"></div>
+   </div>
+   <!-- /ko -->
+</modal-window>

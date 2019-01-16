@@ -1,0 +1,103 @@
+<!-- ko if:displayList() -->
+
+<!-- ko if: !$baseModel.small() -->
+<div class="grid-main-container">
+
+    <div class="oj-flex oj-flex-items-pad  grid-table-header">
+        <div class="oj-lg-1 oj-md-1 oj-sm-12 oj-flex-item">
+            <span data-bind="text : $component.resource.serviceRequest.date"></span>
+        </div>
+        <div class="oj-lg-6 oj-md-5 oj-sm-6 oj-flex-item">
+            <span data-bind="text : $component.resource.serviceRequest.description"></span>
+        </div>
+        <div class="oj-lg-3 oj-md-3 oj-sm-6 oj-flex-item">
+            <span data-bind="text : $component.resource.serviceRequest.refNo"></span>
+        </div>
+        <div class="oj-lg-2 oj-md-3 oj-sm-6 oj-flex-item">
+            <span data-bind="text : $component.resource.serviceRequest.status"></span>
+        </div>
+    </div>
+
+    <oj-label class="hide-label" :for="[['listview']]"><span data-bind="text:$component.resource.serviceRequest.srList"></span></oj-label>
+    <oj-list-view id="listview" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.datasource]]">
+
+    </oj-list-view>
+
+    <div class="oj-flex-item">
+        <oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.datasource]]"></oj-paging-control>
+    </div>
+</div>
+
+<script type="text/html" id="content_template">
+
+    <li data-bind="attr: {id: ('cc-service-request-list'+$data.uniqueId)}">
+
+        <div class="oj-flex oj-flex-items-pad grid-row-group">
+            <div class="oj-lg-1 oj-md-1 oj-sm-12 oj-flex-item">
+                <div data-bind="component:{name: $component.componentName, params:{date: ($baseModel.formatDate(creationDate)) }}"></div>
+            </div>
+            <div class="oj-lg-6 oj-md-5 oj-sm-6 oj-flex-item">
+                <span data-bind="text : $data.requestType ?  $component.resource.serviceRequest[$data.requestType] : ' '"></span>
+            </div>
+            <div class="oj-lg-3 oj-md-3 oj-sm-6 oj-flex-item ref-no-text">
+                <span data-bind="text : $data.id ? $data.id : '-'"></span>
+            </div>
+
+            <div class="oj-lg-2 oj-md-3 oj-sm-6 oj-flex-item">
+                <span data-bind="text : $data.status ? $component.resource.serviceRequest[$data.status] : ' '"></span>
+            </div>
+
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+        </div>
+    </li>
+</script>
+<!-- /ko -->
+
+<!-- ko if: $baseModel.small() -->
+
+<div class="oj-panel grid-main-container">
+  <oj-label class="hide-label" :for="[['listview']]"><span data-bind="text:$component.resource.serviceRequest.srList"></span></oj-label>
+    <oj-list-view id="listview" selection-mode="[['none']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.datasource]]">
+
+
+    </oj-list-view>
+    <hr>
+    <div class="center">
+        <oj-paging-control id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.datasource]]"></oj-paging-control>
+    </div>
+
+    <!--ko foreach: { data: ['1'], afterRender: etaPiSigma } -->
+    <!-- /ko -->
+</div>
+
+<script type="text/html" id="content_template">
+
+    <li data-bind="attr: {id: ('cc-service-request-list'+$data.uniqueId)}">
+
+        <div class="oj-flex oj-flex-items-pad">
+
+            <div class="oj-flex-item oj-sm-12 activity-date" data-bind="text: $baseModel.formatDate(creationDate)"></div>
+
+
+            <div class="oj-flex-item activity-desc" data-bind="text : $data.requestType ?$component.resource.serviceRequest[$data.requestType] : '-'"></div>
+            <div class="oj-flex-item last-activity">
+                <div class="oj-flex-item oj-sm-12 right ref-no-text" data-bind="text  : $data.id ? '#'+$data.id : '-'"></div>
+
+                <div class="oj-flex-item right status">
+                    <span data-bind="text : $data.status ?$component.resource.serviceRequest[$data.status] : '-'"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+        </div>
+
+    </li>
+</script>
+<!-- /ko -->
+
+<!-- /ko -->

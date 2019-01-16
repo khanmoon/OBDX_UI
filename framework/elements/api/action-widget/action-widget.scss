@@ -1,0 +1,98 @@
+$action-widget-header-line-height: var(--form-line-height);
+$widget-nav-icons: var(--base-text-secondary);
+$panel-border-color: var(--base-border-default);
+$action-widget-header-bg : transparent;
+$action-widget-header-border : none;
+$action-widget-container-border : 0.1rem;
+
+.action-widget {
+	&__header {
+		background: $action-widget-header-bg;
+		line-height: $action-widget-header-line-height;
+		padding-bottom: 0;
+		border:$action-widget-header-border;
+
+	}
+
+	&-header {
+		&__content {
+			//border-width: $action-widget-header-content-border-width;
+			//border-left:$action-widget-header-content-border-width-color;
+		}
+
+		&-content {
+			&__heading {}
+
+			&__navigation {
+				position: relative;
+				bottom: 0.3rem;
+				@include float(right);
+			}
+		}
+	}
+
+	&-heading {
+		&__title {
+			@include panel-title;
+			font-weight: var(--base-font-weight-regular);
+			margin: 0 0 0.3rem;
+			position: relative;
+			@include float(left);
+			@include mq(small) {
+				font-weight: var(--base-font-weight-regular);
+				//bottom: -0.6rem;
+			}
+			@include mq(medium) {
+				font-weight: var(--base-font-weight-regular);
+				//bottom: -0.6rem;
+			}
+		}
+
+		&__caption {
+			font-size: var(--base-font-size-large);
+			font-weight: var(--base-font-weight-regular);
+			padding: 0;
+			margin: 0 0 0.6rem;
+			display: none;
+		}
+	}
+
+	&-navigation {
+		&__item {}
+
+		&-item {
+			&__icon {
+				color: $widget-nav-icons;
+				border-radius: 50%;
+				background: var(--base-background-primary);
+				height: 2.5rem;
+				width: 2.5rem;
+				text-align: center;
+				line-height: 2.5rem;
+				padding: 0.6rem 0.8rem;
+				@include margin(0, 0, 0, 0.6rem);
+				box-shadow: 0 0.1rem 0.1rem rgba(0,0,0,0.18);
+				@include mq(small) {
+					height: 1.9rem;
+					width: 1.9rem;
+					line-height: 1.9rem;
+				}
+			}
+		}
+	}
+
+	&__container {
+		padding: 1.2rem 0.6rem;
+		border-radius: 0.2rem;
+		overflow: visible;
+		//box-shadow: 0 0.1rem 0.1rem rgba(0,0,0,0.18);
+		border-width: $action-widget-container-border;
+
+		.txn-type {
+			display: block;
+			margin: 0 0.6rem;
+			text-align: center;
+			padding-bottom: 1.9rem;
+		}
+	}
+}

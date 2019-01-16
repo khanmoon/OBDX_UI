@@ -1,0 +1,37 @@
+
+<div class="oj-flex oj-flex-pad">
+    <!-- ko if: $component.productDetails().productClassName!=='TERM_DEPOSITS' -->
+    <oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item pull-left"><span data-bind="text:resource.initialAmount"></span></oj-label>
+    <!-- /ko -->
+
+    <!-- ko if: $component.productDetails().productClassName==='CASA' -->
+    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: $baseModel.formatCurrency($component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.txnAmount.amount, $component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.txnAmount.currency)"></span>
+    <!-- /ko -->
+</div>
+
+
+<div class="oj-flex oj-flex-pad">
+    <oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item pull-left"><span data-bind="text:resource.fundthrough"></span></oj-label>
+    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='CARD' -->
+    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.cardDetails.cardType==='DEBIT' -->
+    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: $baseModel.format(resource.fundThrough, {networkProvider : $component.applicantDetails()[0].accountFunding.selectedValues.cardType, cardType: resource.debit, card: resource.card, aanNumber: $component.applicantDetails()[0].accountFunding.selectedValues.aanNumber})">
+        </span>
+    <!-- /ko -->
+    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.cardDetails.cardType==='CREDIT' -->
+    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: $baseModel.format(resource.fundThrough, {networkProvider : $component.applicantDetails()[0].accountFunding.selectedValues.cardType, cardType: resource.credit, card: resource.card, aanNumber: $component.applicantDetails()[0].accountFunding.selectedValues.aanNumber})">
+        </span>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='COLL' -->
+    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: $baseModel.format(resource.fundThroughAcct, {accountNoText: resource.accountNo, accountNo: data.savingsAccountConfiguration.settlementMode.collectionDetails.counterPartyAccountNo.displayValue})">
+        </span>
+    <!-- /ko -->
+    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='DDAO' -->
+    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: $baseModel.format(resource.fundThroughAcct, {accountNoText: resource.accountNo, accountNo: data.savingsAccountConfiguration.settlementMode.internalAccountSettlementDetailDTO.accountNo.displayValue})">
+        </span>
+    <!-- /ko -->
+    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='LATER' -->
+    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: resource.fundingOption.LATER">
+        </span>
+    <!-- /ko -->
+</div>

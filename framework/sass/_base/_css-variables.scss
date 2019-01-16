@@ -1,0 +1,211 @@
+$properties : (
+base : (
+  dimension :(
+    header-height : 3.4rem,
+    footer-height : 2rem,
+    docked-menu-height : 5.5rem,
+    menu-width : 18rem
+  ),
+  color : (
+    primary: #6C5A9C,
+    secondary : #2ca25d,
+    secondary-text : #fff,
+    secondary-darken : #232840,
+    success: #2E7D32,
+    warning: #9F6B3F,
+    warning-light : #fdf4e3,
+    success-light: #e7f6e8,
+    danger-light: #fdefef,
+    danger: #e42323
+  ),
+  border : (
+    default :  rgba(#2c3251, .1)
+  ),
+  background : (
+    primary :  #fff,
+    tertiary :#e7e7e9,
+    secondary : #fafafa,
+    disable : rgba(#2c3251, .2)
+  ),
+  text : (
+    primary : #2c3251,
+    secondary : rgba(#2c3251,.8),
+    tertiary  : #2c3251,
+  ),
+  font : (
+    family: #{'Roboto, sans-serif'},
+    url: 'https://fonts.googleapis.com/css?family=Roboto:300,400,700',
+    weight : (
+      regular : 400,
+      light : 300,
+      bold : 700
+    ),
+    size : (
+      small: 0.7rem,
+      large: 1rem,
+      larger: 1.1rem,
+      default : 0.9rem,
+      medium : 0.8rem,
+      h1: 1.8rem,
+      h2: 1.1rem,
+      h3: 1.1rem,
+      h4: 1.1rem,
+      h5: 1rem,
+      h6: 0.8rem
+    )
+  )
+),
+link : (
+  base : #006ab5,
+  hover : darken(#006ab5, 15%)
+),
+
+button : (
+  height: 2.3rem,
+  padding: 0 0.5rem,
+  align: flex-start,
+  border : (
+    radius: 0.1rem,
+    width : 0.055rem
+  ),
+  icon: none,
+  font-size : (
+  text : 0.9rem,
+  icon : 1.1rem
+  ),
+  primary : (
+    background : #ffc000,
+    foreground :#fff,
+    border-color :#00838f
+  ),
+  secondary : (
+    background :rgba(#2c3251, .8),
+    foreground :#fff,
+    border-color : rgba(#2c3251, .8)
+  ),
+  tertiary : (
+    background : rgba(#2c3251, 0.7),
+    foreground : #fff,
+    border-color : rgba(#2c3251, 0.7)
+  ),
+  help : (
+   background : #fff,
+   color: #0070BF,
+   border-color: #0070BF
+   )
+  ),
+form : (
+  line-height : 1.8rem,
+  padding : 1.3rem 0.6rem 0,
+  padding-small : 0.6rem 0 0,
+  border-width : 0.1rem,
+  shadow : none,
+  title-text-transform :none,
+  input : (
+    background : (
+      base : transparent,
+      hover :transparent,
+      focus :transparent,
+      disable :transparent
+    ),
+    text : 0.9rem,
+    color : (
+      base : #2c3251,
+      hover :#fff,
+      focus :#2c3251,
+      disable :rgba(#2c3251, 0.7)
+    ),
+    border : (
+      radius :0,
+      color :darken(#fff, 20%)
+  ),
+  button : (
+    height :2.3rem,
+    border-radius :0.3rem,
+    border-width: 0
+  )
+  )
+),
+banner : (
+  padding : 0.6rem,
+  background:rgba(#e6e6e6,.8),
+  text : (
+    primary : rgba(#2c3251,.8),
+    secondary :#2c3251
+  )
+),
+nav : (
+  hover : (
+    text: #006c75,
+    border: #006c75,
+    background: #e7e7e9
+  ),
+  selected : (
+    text: #00838f,
+    border: #00838f,
+    background: #fff
+  ),
+  default : (
+  text: #2c3251,
+  border: none,
+  background: #fff
+  )
+),
+table : (
+  header :(
+    background: darken(#fff, 4%),
+    font-weight :600,
+    color : #333
+  ),
+  tr:(
+    hover:(
+      color:rgba(231,231,231,0.6)
+    )
+  )
+),
+scroll : (
+  track : #e6e6e6,
+  thumb : #999
+),
+menu : (
+  background : #fff
+  // color : '',
+  // color-hover ;
+
+),
+color : (
+  "white" : #fff,
+  deep-yellow : #fbce4a,
+  deep-yellow-darken : #F3b705
+),
+header:(
+  background-color:#227c32,
+  foreground-color:#fff
+),
+footer:(
+  background-color:#227c32,
+  foreground-color:#fff
+)
+);
+$var : '--';
+:root {
+  @each $prefix, $property in $properties {
+    @if type-of($property) == "map" {
+      @each $nameLevel1, $mapLevel1 in $property {
+          @if type-of($mapLevel1) == "map" {
+              @each $nameLevel2, $mapLevel2 in $mapLevel1 {
+                @if type-of($mapLevel2) == "map" {
+                   @each $nameLevel3, $mapLevel3 in $mapLevel2 {
+                   #{$var}#{$prefix}-#{$nameLevel1}-#{$nameLevel2}-#{$nameLevel3}: $mapLevel3;
+                   }
+                }@else {
+                  #{$var}#{$prefix}-#{$nameLevel1}-#{$nameLevel2}: $mapLevel2;
+                }
+              }
+          } @else {
+          #{$var}#{$prefix}-#{$nameLevel1}: $mapLevel1;
+          }
+      }
+    }
+  }
+}

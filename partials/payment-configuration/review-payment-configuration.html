@@ -1,0 +1,129 @@
+
+    <!-- ko if: $component.searchResultLoaded() -->
+
+
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : resource.payeeCount.summary"></action-header>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                <oj-label for="cummulative"><span data-bind="text:resource.payeeCount.totalpyeecount"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 center">
+            <span id="payeeCountStatus" data-bind="text:$data.changedTotalPayeeCountLimitStatus==='Y'?$component.resource.common.yes:$component.resource.common.no"></span>
+           </div>
+
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+                <oj-label for="totalpayeecount"><span data-bind="text:$component.resource.payeeCount.totalpayeepermittedperday"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-1">
+
+                <span id="totalpayeecount" data-bind="text:totalPayeesPerDay"></span>
+            </div>
+
+        </div><br>
+
+
+        <!-- ko foreach: $component.searchResult -->
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.payeeCount[payeeType]"></action-header>
+
+        <!-- ko if: accountPayee.length >0 -->
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item" data-bind="html:$component.resource.payeeCount.accountpayee"></div></div>
+        <!-- /ko -->
+
+        <!-- ko if: payeeType === "DOMESTIC" -->
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+               <oj-label><span data-bind="text:$component.resource.payeeCount.payeeRestriction"></span></oj-label>
+            </div></div>
+
+        <!-- ko foreach: accountPayee -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 center">
+                <oj-label><span data-bind="text:$component.resource.payeeCount[type]"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 center">
+            <span id="payeeCountStatus" data-bind="text:$data.payeeCountLimitStatus==='Y'?$component.resource.common.yes:$component.resource.common.no"></span>
+           </div>
+
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+                <oj-label for="payeecount"><span data-bind="text:$component.resource.payeeCount.payeepermittedperday"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-1">
+
+                <span id="payeecount" data-bind="text:payeesPerDay"></span>
+
+
+            </div>
+
+
+        </div>
+
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: payeeType !== "DOMESTIC" -->
+        <!-- ko foreach: accountPayee -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                <oj-label><span data-bind="text:$component.resource.payeeCount.payeeRestriction"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 center">
+            <span id="payeeCountStatus" data-bind="text:$data.payeeCountLimitStatus==='Y'?$component.resource.common.yes:$component.resource.common.no"></span>
+           </div>
+
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+                <oj-label for="payeecount"><span data-bind="text:$component.resource.payeeCount.payeepermittedperday"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-1">
+
+                <span id="payeecount" data-bind="text:payeesPerDay"></span>
+
+            </div>
+
+
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: draftpayee.length > 0 -->
+        <div class="oj-flex oj-flex-items-pad">
+       <div class="oj-flex-item" data-bind="html:$component.resource.payeeCount.draftpayee"></div></div>
+        <!-- /ko -->
+         <!-- ko foreach: draftpayee -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                <oj-label :id="[['draftPayeeRestriction_'+ $data.type]]"><span data-bind="text:$component.resource.payeeCount.payeeRestriction"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 center">
+            <span id="payeeCountStatus" data-bind="text:$data.payeeCountLimitStatus==='Y'?$component.resource.common.yes:$component.resource.common.no"></span>
+           </div>
+
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+                <oj-label for="payeecount"><span data-bind="text:$component.resource.payeeCount.payeepermittedperday"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-1">
+                  <span id="payeecount" data-bind="text:payeesPerDay"></span>
+            </div>
+
+
+        </div>
+        <!-- /ko -->
+        <br>
+        <!-- /ko -->
+
+
+
+
+    <!-- /ko -->

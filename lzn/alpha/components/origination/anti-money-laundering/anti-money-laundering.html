@@ -1,0 +1,95 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <div class="margin-top-20">
+    <oj-validation-group id="additionalInfoTracker" valid="{{groupValid}}">
+      <!-- ko if: $component.dataLoaded() -->
+      <!-- ko if: $component.sourceOfFundsLoaded() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+          <oj-label for="sourceOfFunds">
+            <span data-bind="text:$component.resource.sourceOfFund"></span>
+          </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+          <oj-combobox-many id="sourceOfFunds" value="{{selectedSourceOfFunds}}">
+            <!-- ko foreach: sourceOfFunds -->
+            <oj-option value="{{id}}">
+              <span data-bind="text:description"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-combobox-many>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.sourceOfWealthLoaded() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+          <oj-label for="sourceOfWealth">
+            <span data-bind="text:$component.resource.sourceOfWealth"></span>
+          </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+          <oj-combobox-many id="sourceOfWealth" value="{{selectedSourceOfWeath}}">
+            <!-- ko foreach: wealthSources -->
+            <oj-option value="{{id}}">
+              <span data-bind="text:description"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-combobox-many>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.purposeOfRelationshipLoaded() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+          <oj-label for="purposeOfRelationship">
+            <span data-bind="text:$component.resource.purposeOfRelationship"></span>
+          </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+          <oj-combobox-many id="purposeOfRelationship" value="{{selectedPurposeOfRelationship}}">
+            <!-- ko foreach: relationshipPurposes -->
+            <oj-option value="{{id}}">
+              <span data-bind="text:description"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-combobox-many>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <div class="oj-flex oj-flex-items-pad margin-top-20">
+        <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+          <h4 class="form-heading" data-bind="text:$component.resource.consents"></h4>
+        </div>
+      </div>
+      <!-- ko foreach:$component.consentList -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-6 label">
+          <oj-label class="main-label" :for="{{'consent' + $index()}}">
+            <span data-bind="html:$data.consentDisplayText"></span>
+          </oj-label>
+        </div>
+        <div class="oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-radioset :id="{{'consent' + $index()}}" labelled-by="inlineLabelId" class="oj-choice-direction-row" value="{{$data.answer}}">
+            <!-- ko foreach: $component.consentOption -->
+            <oj-option value="{{id}}">
+              <span data-bind="text:$data.description"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-radioset>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </oj-validation-group>
+  </div>
+
+</page-section>
+<div class="button-container oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-md-10 oj-lg-10">
+    <oj-button raised="" id="submit-additional" class="form-button-secondary" :aria-label="[[$component.resource.submitAdditionalInfo]]"
+      on-click="[[$component.submitAdditionalInfo.bind($data)]]">
+      <span data-bind="text:$component.resource.origination.common.continue"></span>
+    </oj-button>
+  </div>
+</div>

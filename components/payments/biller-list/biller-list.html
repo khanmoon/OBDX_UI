@@ -1,0 +1,151 @@
+<!-- ko if:isBillersLoaded() -->
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <!-- ko if: $component.showActivitySuccessMsg() -->
+            <div class="oj-flex-item oj-sm-12 pfm">
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 success-bar">
+                        <span class="success-icon icons" data-bind="css: 'icon-success'"></span>
+                        <span class="success-msg" id="confirm" data-bind="text:$component.successMessage"></span>
+                    </div>
+                </page-section>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot:$baseModel.large() -->
+            <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'add-biller-main',{},$component)">
+                <div class="floating-button"><span class="icons icon-plus"></span></div>
+            </a>
+            <!-- /ko -->
+            <!-- ko ifnot:groupedBillersInfo().length>0 -->
+            <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                <div class="oj-flex-item" data-bind="text : $component.resource.message.nobiller"></div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:billerList().length === 0 -->
+            <div class="oj-flex oj-flex-items-pad center">
+                <div data-bind="text:$component.resource.billerListMessage"></div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:groupedBillersInfo().length>0 -->
+            <div class="oj-flex biller-accordian-container">
+                <oj-accordion id="biller-group-accordian" multiple="true" expanded="{{$component.expandedAccordians()}}" class="oj-sm-12">
+                    <!-- ko foreach:groupedBillersInfo-->
+                    <oj-collapsible :id="[['biller-' + $index()]]" class="payment-element">
+                        <span slot="header">
+                           <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-sm-12">
+                                    <div class="biller-accordian-container-heading" data-bind="text:category"></div>
+                                </div>
+                            </div>
+                    </span>
+                        <div class="oj-flex-item oj-sm-12 oj-lg-12 biller-accordian-list">
+                            <oj-list-view :id="[[category]]" :aria-label="[[$component.resource.category]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('biller_list_template',true)}]]" data="[[dataSource]]">
+                            </oj-list-view>
+                        </div>
+                    </oj-collapsible>
+                    <!-- /ko -->
+                </oj-accordion>
+            </div>
+            <!-- /ko -->
+        </page-section>
+        <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'view-biller', header : $component.resource.labels.view">
+            <!-- ko ifnot:$component.isEdit()-->
+            <!-- ko if:$component.billerData()-->
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : $baseModel.format($component.resource.labels.billername,{name : $component.billerData().billerName})">
+                <div data-bind="with : $component.billerData()">
+                    <div class="oj-flex">
+                        <div data-bind="css:$baseModel.large()?'oj-flex-item oj-sm-12':''">
+                            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.labels.category, value :categoryType"></row>
+                        </div>
+                    </div>
+                    <!-- ko if:$component.billerData().relationshipNumber -->
+                    <div class="oj-flex">
+                        <div data-bind="css:$baseModel.large()?'oj-flex-item oj-sm-12':''">
+                            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.labels.relno1, value :relationshipNumber"></row>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if:$component.billerData().consumerNumber -->
+                    <div class="oj-flex">
+                        <div data-bind="css:$baseModel.large()?'oj-flex-item oj-sm-12':''">
+                            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.labels.relno2, value :consumerNumber"></row>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if:$component.billerData().accountRelationshipNumber -->
+                    <div data-bind="css:$baseModel.large()?'oj-flex':''">
+                        <div data-bind="css:$baseModel.large()?'oj-flex-item oj-sm-12':''">
+                            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.labels.relno3, value :accountRelationshipNumber"></row>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </page-section>
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button class="action-button-primary" on-click="[[$component.payBill]]">
+                    <span class="icons icon-pay" slot="startIcon"></span><span data-bind="text:$component.resource.labels.pay"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" on-click="[[$component.editBiller]]">
+                    <span class="icons icon-edit" slot="startIcon"></span><span data-bind="text:$component.resource.labels.edit"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="back" on-click="[[$component.closeModal.bind($data,false)]]">
+                    <span class="icons icon-back-arrow" slot="startIcon"></span><span data-bind="text:$component.resource.generic.common.back"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:$component.isEdit()-->
+            <div data-bind="component: {
+                            name: 'biller-details-edit',
+                            params: {
+                                billerDetails : $component.billerData(),
+                                rootModel : $component,
+                                closeModal:$component.closeModal
+                            }
+                         }"></div>
+            <!-- /ko -->
+        </modal-window>
+        <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'delete-biller', header : $component.resource.labels.deletebiller">
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                <!-- ko if:$component.billerData()-->
+                <div data-bind="text : $baseModel.format($component.resource.message.delete, { name : $component.billerData().billerName})"></div>
+                <!-- /ko -->
+            </page-section>
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button class="action-button-primary" on-click="[[$component.confirmDeleteBiller]]">
+                    <span class="icons icon-delete" slot="startIcon"></span><span data-bind="text:$component.resource.generic.common.proceed"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" on-click="[[$component.closeModal.bind($data,false)]]">
+                    <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resource.generic.common.cancel"></span>
+                </oj-button>
+            </div>
+        </modal-window>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'manage-billers'"></help>
+    </div>
+    <!-- /ko -->
+    <script type="text/html" id="biller_list_template">
+        <li data-bind="attr: {id:  billerId + relationshipNumber}" id="menuLauncher-billerlist">
+            <div class="oj-flex">
+                <div class="oj-flex-item oj-sm-6" data-bind="text : billerName"></div>
+                <div class="oj-flex-item oj-sm-4" data-bind="text : relationshipNumber"></div>
+                <div class="oj-flex-item oj-sm-2 right" data-bind="attr:{id:'menuLauncher-' + newBillerId + relationshipNumber}">
+                    <a href="#" openprofile="true" data-bind="attr:{id : 'menuLauncher-billerlist-' + newBillerId + relationshipNumber , alt : $component.resource.openmenualt , title : $component.resource.openmenutitle},  click: $component.openMenu">
+                        <div class="icons icon-more-vertical"></div>
+                    </a>
+                    <oj-menu :id="[['menuLauncher-billerlist-contents-' + newBillerId + relationshipNumber]]" on-oj-action="[[$component.menuItemSelect.bind($data,$data)]]" open-options.launcher="[['menuLauncher-billerlist-' + newBillerId + relationshipNumber]]" open-options.display="dropDown" class="accounts-overview-launcher">
+                        <!-- ko foreach: $component.menuItems -->
+                        <oj-option value="[[id]]" data-bind="attr:{id: $baseModel.format($component.resource.common.title,{reference: label}), 'aria-label':$baseModel.format($component.resource.common.title,{reference: label})}">
+                            <span data-bind="text : label"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-menu>
+                </div>
+            </div>
+        </li>
+    </script>
+</div>
+<!-- /ko -->

@@ -1,0 +1,100 @@
+<div class="form-main-container">
+
+
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading: $component.nls.headers.review"></action-header>
+
+
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.userType , value : userFullData().userType.enterpriseRoleName ? userFullData().userType.enterpriseRoleName: userFullData().userType"></row>
+
+        <!-- ko ifnot: (userFullData().userType.enterpriseRoleName ==="Administrator" || userFullData().userType ==="administrator")-->
+
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.partyid , value :userFullData().partyId.displayValue"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.partyname , value :userFullData().partyName"></row>
+        <!-- /ko -->
+        <!-- ko if: userFullData().userType.enterpriseRoleName ==="Administrator"  || userFullData().userType ==="administrator" -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.organization , value :userFullData().organization"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.manager , value :userFullData().manager"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.empno , value :userFullData().employeeNumber"></row>
+
+        <!-- /ko -->
+
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.profileinfo">
+        </action-header>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.username , value :userFullData().username"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.title , value :userFullData().title"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.firstname , value :userFullData().firstName"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.middlename , value :userFullData().middleName"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.lastname , value :userFullData().lastName"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.dob , value :$baseModel.formatDate(userFullData().dateOfBirth)"></row>
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.contactDetails">
+        </action-header>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.emailid , value :userFullData().emailId"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.contactmobile , value :userFullData().mobileNumber"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.contactlandline , value :userFullData().phoneNumber"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.address1 , value :userFullData().address.line1"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.address2 , value :userFullData().address.line2"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.address3 , value :userFullData().address.line3"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.country , value :userFullData().address.country"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.city , value :userFullData().address.city"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.pincode , value :userFullData().address.zipCode"></row>
+
+
+        <!-- ko if: userFullData().userType.enterpriseRoleName ==="Administrator"  || userFullData().userType ==="administrator" -->
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.fieldname.role">
+        </action-header>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label><span data-bind="text:$component.nls.fieldname.role"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+                <!-- ko if: childRoleEnumsLoaded -->
+                <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" disabled="[[true]]" value="{{userFullData().userGroups}}"><!-- ko foreach: childRoleEnums --><oj-option value="{{applicationRoleName}}" :id="[['rolesadmin_'+ $index()]]"><span data-bind="text:applicationRoleName , attr : {'for' :'rolesadmin_' + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+                <!-- /ko -->
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: userFullData().userType.enterpriseRoleName ==="Administrator"  || userFullData().userType ==="administrator" -->
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.limitnRoles">
+        </action-header>
+
+        <!-- ko if: isLimitsLoaded -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.limit , value : limitGroupName()"></row>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label><span data-bind="text:$component.nls.fieldname.role"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+                <!-- ko if: childRoleEnumsLoaded -->
+                <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" disabled="[[true]]" value="{{userFullData().userGroups}}"><!-- ko foreach: childRoleEnums --><oj-option value="{{applicationRoleName}}" :id="[['roles_'+ $index()]]"><span data-bind="text:applicationRoleName , attr : {'for' :'roles_' + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+                <!-- /ko -->
+            </div>
+        </div>
+        <!-- /ko -->
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.status">
+        </action-header>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label>
+                <span data-bind="text:$component.nls.headers.lockUser"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                <oj-switch id="id" value="{{$component.statusOptionValue}}" disabled="[[true]]"></oj-switch>
+                <span data-bind="text: ($component.statusOptionValue() ? $component.nls.fieldname.lock : $component.nls.fieldname.unlock)"></span>
+            </div>
+        </div>
+        <!-- ko ifnot: (userFullData().userType.enterpriseRoleName ==="Administrator" || userFullData().userType ==="administrator")-->
+        <!-- ko if:$component.deviceDataLoaded() -->
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.others">
+        </action-header>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.uuid , value : userFullData().deviceUUIDDescription"></row>
+        <!-- /ko -->
+        <!-- /ko -->
+
+
+    </page-section>
+
+
+</div>

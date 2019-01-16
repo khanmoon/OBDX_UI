@@ -1,0 +1,27 @@
+<div class="system-configuration form-main-container">
+  <div>
+       <oj-conveyor-belt class="oj-lg-12 oj-md-12 oj-sm-12">
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 ">
+      <oj-buttonset-one :id="[['entitiesBelt']]" disabled="{{!($component.hostFetched() && $component.entityDataLoaded())}}" value="{{$component.currentEntity}}" on-value-changed="[[$component.optionChangedHandlerButtonset]]"><!-- ko foreach: $component.entities --><oj-option name="entities" value="{{businessUnitCode}}" :id="[[businessUnitCode]]"><span data-bind="attr: {for: businessUnitCode}, text:businessUnitName"></span></oj-option><!-- /ko --></oj-buttonset-one>
+    </div>
+  </oj-conveyor-belt>
+  </div>
+  <!-- ko if:$component.hostListLoaded() -->
+  <div class="oj-flex oj-flex-items-pad system-configuration-image">
+    <div class="oj-flex-item oj-sm-6 oj-md-3 oj-lg-2 ">
+      <oj-label for="host"><span data-bind="text:nls.fieldname.selectHost"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-6 oj-md-3 oj-lg-4 ">
+      <oj-select-one id="host" disabled="[[$component.disableSelection()]]" on-value-changed="[[parentOptionChangedHandler]]" value="{{selectedHost}}" :placeholder="[[nls.fieldname.selectHost]]">
+          <!-- ko foreach: $component.tempObj.options() -->
+          <oj-option value="{{key}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+          </oj-select-one>
+    </div>
+  </div>
+
+  <!-- /ko -->
+  <!-- ko if: $component.hostSelected() && $component.currentEntity() && $component.modeSelected() -->
+  <div class="oj-panel oj-panel-alt2 layout" data-bind="component: {name: 'system-configuration-start', params:{rootModel: $component}}"></div>
+  <!-- /ko -->
+</div>

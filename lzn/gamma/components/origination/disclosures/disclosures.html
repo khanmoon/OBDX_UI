@@ -1,0 +1,138 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+<!-- ko if: $component.disclosuresLoaded() -->
+<!-- ko if: $component.productDetails().disclosures.eSignDocRefId -->
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.resource.eSignTitle"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <span class="text" data-bind="text:$component.resource.eSignInfo1">
+      </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <span class="text" data-bind="text:$component.resource.eSignInfo2">
+                </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <span class="text" data-bind="text:$component.resource.eSignInfo3">
+        </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text-label cust-label">
+    <span>
+        <a href="#" class="link" data-bind="click: $component.downloadDisclosure.bind($data, $component.productDetails().disclosures.eSignDocRefId,$component.productDetails().disclosures.contentIdEsign), text: $component.resource.eSignTitle ,attr:{alt: $component.resource.eSignatureClick, title: $component.resource.eSignatureDownloadClick}"></a>
+    </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text-label cust-label">
+    <oj-checkboxset id="checkboxSetAgreeId_esign" aria-labelledby="agreeId" translations="[[{'required':{messageDetail:$component.resource.messages.eSignAlert}}]]" required="[[true]]" on-value-changed="[[$component.checkDisclosureType]]"><oj-option id="agree_esign" value="{{$component.productDetails().disclosures.documentsList[$component.productDetails().disclosures.eSignIndex].disclosureCode}}"><span for="agree_esign" data-bind="text:$component.resource.eSignConsent">
+              </span></oj-option></oj-checkboxset>
+</div>
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.resource.wirelessPolicy"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <span class="text" data-bind="text:$component.resource.wirelessPolicy1">
+      </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text-label cust-label">
+    <oj-checkboxset id="checkboxSetAgreeId_wireless" aria-labelledby="agreeId" translations="[[{'required':{messageDetail:$component.resource.messages.wirelessAgreement}}]]" required="[[true]]" on-value-changed="[[$component.checkDisclosureType]]"><oj-option id="agree_wireless" value="{{$component.productDetails().disclosures.wireless}}"><span for="agree_wireless" data-bind="text:$component.resource.wirelessPolicyConsent">
+              </span></oj-option></oj-checkboxset>
+</div>
+
+<!-- ko if: $component.productDetails().disclosures.privacyDocRefId -->
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.resource.privacyPolicy"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <span class="text" data-bind="text:$component.resource.privacyPolicy1">
+      </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text-label cust-label">
+    <span>
+        <a href="#" class="link" data-bind="click: $component.downloadDisclosure.bind($data,$component.productDetails().disclosures.privacyDocRefId,$component.productDetails().disclosures.contentIdPrivacyDoc), text: $component.resource.privacyPolicy ,attr:{alt: $component.resource.privacyDocRefIdClick, title: $component.resource.privacyDocRefIdOnClick}"></a>
+    </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text-label cust-label">
+    <oj-checkboxset id="checkboxSetAgreeId_privacy" aria-labelledby="agreeId" translations="[[{'required':{messageDetail:$component.resource.messages.privacyAlert}}]]" required="[[true]]" on-value-changed="[[$component.checkDisclosureType]]"><oj-option id="agree_privacy" value="{{$component.productDetails().disclosures.documentsList[$component.productDetails().disclosures.privacyValueIndex].disclosureCode}}"><span for="agree_privacy" data-bind="text: $component.resource.privacyPolicyConsent">
+              </span></oj-option></oj-checkboxset>
+</div>
+<!-- /ko -->
+
+<!-- ko if: $component.productDetails().disclosures.accountDocRefId -->
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.resource.loanAgreement"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <span class="text" data-bind="text:$component.resource.loanAgreement1">
+      </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <span class="text" data-bind="text:$component.resource.loanAgreement2">
+      </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text-label cust-label">
+    <span>
+        <a href="#" class="link" data-bind="click: $component.downloadDisclosure.bind($data,$component.productDetails().disclosures.accountDocRefId,$component.productDetails().disclosures.contentIdLoanAccountAgreement), text: $component.resource.loanAccountAgreement ,attr:{alt: $component.resource.accountRefIdClick, title: $component.resource.accountForRefIdClick}"></a>
+    </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text-label cust-label">
+    <oj-checkboxset id="checkboxSetAgreeId_loanAgreement" aria-labelledby="agreeId" translations="[[{'required':{messageDetail:$component.resource.messages.loanAgreement}}]]" required="[[true]]" on-value-changed="[[$component.checkDisclosureType]]"><oj-option id="agree_loanAgreement" value="{{$component.productDetails().disclosures.documentsList[$component.productDetails().disclosures.accountAgreementIndex].disclosureCode}}"><span for="agree_loanAgreement" data-bind="text:$component.resource.loanAgreementConsent">
+              </span></oj-option></oj-checkboxset>
+</div>
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.resource.promiseToPay"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <span class="text" data-bind="text:$component.resource.promiseToPay1">
+      </span>
+</div>
+
+<!-- ko ifnot: $baseModel.small() -->
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.federalResource.federalTruth"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+  <oj-table id="table" :aria-label="[[$component.federalResource.tableHeading]]" columns="[[[{headerText:$component.federalResource.annualPercentageRate,field:'annualPercentageRate',style:'width: 25%'},{headerText:$component.federalResource.financeCharge,field:'financeCharge',style:'width: 25%'},{headerText:$component.federalResource.amountFinanced,field:'amountFinanced',style:'width: 25%'},{headerText:$component.federalResource.totalOfPayments,field:'totalOfPayments',style:'width: 25%'}]]]" selection-mode="[[{row:'none',column:'none'}]]" display="[['grid']]" data="[[$component.dataSource]]">
+                <caption class="hide-label" data-bind="text:$component.federalResource.tableHeading"></caption>
+</oj-table>
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-sm-12 oj-md-4 oj-lg-3 oj-flex-item">
+        <label data-bind="text: $component.federalResource.paymentSchedule"></label>
+    </div>
+    <div class="oj-sm-12 oj-md-8 oj-lg-9 oj-flex-item">
+        <span data-bind="text: $component.federalResource.paymentScheduleText"></span>
+    </div>
+</div>
+</div>
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.resource.equalCreditOpportunity"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <span class="text" data-bind="text:$component.resource.equalCreditOpportunity1">
+      </span>
+</div>
+
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.resource.addlnDisclosures"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <ol class="text">
+        <li data-bind="text:$component.resource.addlnDisclosures1"></li>
+        <li data-bind="text:$component.resource.addlnDisclosures2"></li>
+        <li data-bind="text:$component.resource.addlnDisclosures3"></li>
+        <li data-bind="text:$component.resource.addlnDisclosures4"></li>
+        <li data-bind="text:$component.resource.addlnDisclosures5"></li>
+    </ol>
+</div>
+
+<div class="oj-flex oj-flex-items-pad card-text-label cust-label">
+    <oj-checkboxset id="checkboxSetAgreeId_all" aria-labelledby="agreeId" translations="[[{'required':{messageDetail:$component.resource.messages.acceptAll}}]]" required="[[true]]" on-value-changed="[[$component.checkDisclosureType]]"><oj-option id="agree_all" value="{{$component.productDetails().disclosures.acceptAll}}"><span for="agree_all" data-bind="text:$component.resource.acceptance">
+              </span></oj-option></oj-checkboxset>
+</div>
+<!-- /ko -->
+</page-section>

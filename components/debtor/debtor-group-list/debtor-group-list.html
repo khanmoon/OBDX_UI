@@ -1,0 +1,109 @@
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+	<!-- ko if:isDebtorsListLoaded() -->
+	<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-7">
+		<page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.debtors.labels.header">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-lg-12" data-bind="component: {
+                    name:'search-box',
+                    params:{
+                      searchFields : ['name'],
+                      data:$component.debtorListDataSource(),
+                      searchBy:$component.debtors.labels.searchBy
+                      }}">
+                    </div>
+                    </div>
+                <oj-list-view :id="[['debtor-list']]" :aria-label="[[$component.debtors.labels.header]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('debtor_list_template',true)}]]" data="[[debtorListDataSource()]]">
+                </oj-list-view>
+        </page-section>
+    </div>
+    <!-- ko ifnot:$baseModel.large() -->
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'add-new-debtor',{},$component)">
+                        <div class="floating-button"><span class="icons icon-plus"></span></div>
+        </a>
+    <!-- /ko -->
+    <!-- ko if: $baseModel.large() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'debtor-group-list'"></help>
+        </div>
+    <!-- /ko -->
+	<script type="text/html" id="debtor_list_template">
+                    <li data-bind="attr: {id: id}">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-lg-10" data-bind="text : name"></div>
+
+                            <div class="oj-flex-item oj-lg-2 right" data-bind="attr:{id:'menuLauncher-' + id}">
+                                <a href="#" openprofile="true" data-bind="click: $component.openMenu, attr:{id : 'menuLauncher-debtorlist-' + id, 'alt': $component.debtors.moreOptions, 'title': $component.debtors.options}">
+                                  <div class="icons icon-more-vertical"></div>
+                                </a>
+                                    <oj-menu :id="[['menuLauncher-debtorlist-contents-' + id]]" on-oj-action="[[$component.menuItemSelect.bind($data,$data)]]" open-options.launcher="[['menuLauncher-debtorlist-' + id]]" open-options.display="dropDown" :aria-label="[[$component.debtors.moreOptions]]">
+                                <!-- ko foreach: $component.menuItems -->
+                                <oj-option :id="[[id]]" :value="[[id]]">
+                                    <span data-bind="text : label"></span>
+                                </oj-option>
+                                <!-- /ko -->
+                            </oj-menu>
+                              </div>
+                        </div>
+                    </li>
+                </script>
+
+	<!-- /ko -->
+
+
+	<modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'view-debtor', header : $component.debtors.labels.details">
+                <!-- ko if:$component.debtorData()-->
+
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : $baseModel.format($component.debtors.labels.debtorname,{name : $component.debtorData().name})">
+                    <div data-bind="with : $component.debtorData()">
+                    <div class="oj-flex oj-flex-items-pad">
+                    	<div class="oj-flex-item oj-lg-4">
+                            <row params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.labels.iban, value :accountNumber"></row>
+                        </div>
+
+                        <div class="oj-flex-item oj-lg-4" data-bind="with : $data.bankDetails">
+                            <row params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.labels.biccode, value :[code, name, address, ($data.city || ''), ($data.country || '') ]"></row>
+                        </div>
+                    </div>
+                    </div>
+                </page-section>
+
+                <!-- /ko -->
+                <div class="oj-flex oj-flex-items-pad button-container">
+
+                    <oj-button class="action-button-primary" on-click="[[$component.requestSelectedDebtor]]">
+      <span class="icons icon-request" slot="startIcon"></span><span data-bind="text:$component.debtors.labels.request"></span>
+</oj-button>
+                </div>
+
+                </modal-window>
+
+
+
+        <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'delete-debtor', header : $component.debtors.labels.deleteDebtor">
+
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                    <!-- ko if:$component.debtorData()-->
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12">
+                        <div data-bind="text : $baseModel.format($component.debtors.message.delete, {name : $component.debtorData().name})"></div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </page-section>
+
+                <div class="oj-flex oj-flex-items-pad button-container">
+
+                    <oj-button class="action-button-primary" on-click="[[$component.confirmDeleteDebtor]]">
+      <span class="icons icon-delete" slot="startIcon"></span><span data-bind="text:$component.debtors.generic.common.proceed"></span>
+</oj-button>
+
+                    <oj-button class="action-button-secondary" on-click="[[$component.closeModal]]">
+      <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.debtors.generic.common.cancel"></span>
+</oj-button>
+
+
+                </div>
+
+                </modal-window>
+
+</div>

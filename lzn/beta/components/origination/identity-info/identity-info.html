@@ -1,0 +1,92 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <oj-validation-group id="identityInfoTracker">
+    <div class="row-group">
+    </div>
+    <!-- ko if: $component.existingIdentitiesLoaded() -->
+    <div class="row-group"></div>
+    <div class="" data-bind="with:applicantObject().identityInfo">
+      <div data-bind="with:identityInfo">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="tooltip-section oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label class="span-label" :for="[['ssn'+($component.coAppNo)]]"><span data-bind="text:$component.resource.ssn"></span></oj-label>
+            <!-- ko if: $baseModel.large() -->
+
+
+            <div class="tooltip message-text" id="SSNRequirement_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.SSNtext,toolTipId:'SSNRequirement_tooltip'}}">
+            </div>
+
+            <span class="icon-help" id="tool-tip-holder3" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'SSNRequirement_tooltip','tool-tip-holder3'), mouseout: $component.hideToolTip.bind($data,'SSNRequirement_tooltip') }"></span>
+            <!-- /ko -->
+            <!-- ko ifnot: $baseModel.large() -->
+            <span aria-hidden="true"><a href="#" class="icon-help" data-bind="click: function(){$('#SSNRequirement').show().trigger('openModal')} ,attr:{alt: $component.resource.SSNClick, title: $component.resource.SSNClickInfo}"></a></span>
+            <!-- /ko -->
+
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+            <oj-input-text required maxlength="11" on-focusout="[[$component.ssnNumberFocusOut]]" on-focusin="[[$component.ssnNumberFocusIn]]" autocomplete="off" spellcheck="false" :id="[['ssn'+($component.coAppNo)]]" translations="[[{'required':{messageDetail:$component.resource.messages.ssn}}]]"
+              :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$component.ssnValidate]]" :disabled="[[$component.applicantObject().identityInfo.disableInputs]]" :placeholder="[[$component.resource.ssnformat]]" value="{{$component.ssnNumber}}"></oj-input-text>
+          </div>
+
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label :for="[['idType'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.idType"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+            <oj-select-one required :id="[['idType'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.type}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$component.identitytypeChanged]]"
+              :disabled="[[$component.applicantObject().identityInfo.disableInputs]]" :placeholder="" value="{{$data[1].type}}">
+              <!-- ko foreach: $component.identificationTypes -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- ko if: $component.stateofIssueRequired() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label class="oj-label" :for="[['states'+($baseModel.currentIdCount())]]"><span data-bind="text:$component.resource.placeOfIssue"></span></oj-label>
+          </div>
+          <div id="" class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+            <oj-select-one required :id="[['states'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.confirmEmail}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :disabled="[[$component.applicantObject().identityInfo.disableInputs]]"
+              value="{{$data[1].placeOfIssue}}" :placeholder="">
+              <!-- ko foreach: $component.stateOptions -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2">
+            <oj-label :for="[['idNum'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.idNumber"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-input-text required maxlength="30" id="idNum" autocomplete="off" spellcheck="false" :id="[['idNum'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.idNumberError}}]]" :invalidcomponenttracker="[[$component.validationTracker]]"
+              validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resource.messages.idNumberError,$component.validateIdNum)]]" :disabled="[[$component.applicantObject().identityInfo.disableInputs]]" value="{{$data[1].id}}"></oj-input-text>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label :for="[['expiryDate'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.expiryDate"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-input-date required :id="[['expiryDate'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.validExpiryDate}}]]" validators="[[$component.validateExpirydate]]" converter="[[$component.dateConverter]]"
+              :disabled="[[$component.applicantObject().identityInfo.disableInputs]]" value="{{$data[1].expiryDate}}" datepicker="[[{yearRange:'c:c+100'}]]"></oj-input-date>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+</page-section>
+</oj-validation-group>
+<div class="button-container oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-md-10 oj-lg-10">
+    <oj-button raised="" id="submit-identity" class="form-button-secondary" :aria-label="[[$component.resource.submitIdentity]]" on-click="[[$component.submitIdentityInfo.bind($data)]]"><span data-bind="text:$component.resource.generic.common.continue"></span></oj-button>
+  </div>
+</div>
+
+<modal-window class="origination-popup message" params="baseModel : $baseModel, rootModel : $component,id:'SSNRequirement'">
+  <div class="message-text scroll" data-bind="text:$component.resource.SSNtext"></div>
+
+</modal-window>

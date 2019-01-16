@@ -1,0 +1,34 @@
+<div class="form-main-container">
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.generic.common.review , reviewHeader :$component.nls.info.channelAccessReviewHeaderMsg}}"></div>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.fullName , value : $baseModel.format($component.nls.fieldname.displayFullName, {firstname:userSearchResponse().firstName ,lastname: userSearchResponse().lastName})"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.email , value : userSearchResponse().emailId"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.mobNumber , value : userSearchResponse().mobileNumber"></row>
+        <!-- ko if: $component.userSearchResponse().partyId-->
+        <!-- ko if: $component.userSearchResponse().partyId.value !== null -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.partyId , value :  userSearchResponse().partyId.displayValue"></row>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="lockstatus">
+            <span data-bind="text:$component.nls.header.channelAccess"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <oj-switch id="lockstatus" value="{{$component.channelAccessValue}}" disabled="[[true]]"></oj-switch>
+            <span data-bind="text: $component.userChannelAccess() === $component.nls.header.granted ? $component.nls.header.granted : $component.nls.header.revoked"></span>
+          </div>
+        </div>
+    </page-section>
+    <!-- ko if: $component.transactionId === undefined -->
+    <div class="oj-flex button-container">
+        <oj-button id="submit" class="action-button-primary" on-click="[[$component.confirm]]">
+      <span data-bind="text:$component.nls.buttons.confirm"></span>
+</oj-button>
+        <oj-button id="cancel" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+      <span data-bind="text:$component.nls.buttons.cancel"></span>
+</oj-button>
+    </div>
+    <!-- /ko -->
+</div>

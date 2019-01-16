@@ -1,0 +1,145 @@
+<div class="form-main-container trade-finance">
+
+  <page-section params="baseModel : $baseModel, rootModel : $data ,heading : $baseModel.small() === false ?$baseModel.format($component.resourceBundle.labels.billNumber,{billNumber:$component.billReferenceNumber}):''">
+
+  <!-- ko if:$baseModel.small() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 trade-heading-banner">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12">
+            <span for="billNumber" data-bind="text:$baseModel.format($component.resourceBundle.labels.billNumber,{billNumber:$component.billReferenceNumber})"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+
+      <!-- ko if: $component.discrepanciesData() -->
+      <!-- ko if:$baseModel.large() -->
+  <div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 grid-row-group">
+
+    <oj-table id="printTable" class="discrepanciesTable" :aria-label="[[$component.resourceBundle.heading.billTables]]" columns="[[[{headerText:$component.resourceBundle.labels.srNo},{headerText:$component.resourceBundle.common.labels.description},{headerText:$component.resourceBundle.viewBills.discrepancies.receivedDate},{headerText:$component.resourceBundle.viewBills.discrepancies.resolvedDate},{headerText:$component.resourceBundle.labels.resolution}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('discrepancies_template', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.discrepanciesData]]">
+
+    </oj-table>
+
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot:$baseModel.large() -->
+  <div class="oj-flex grid-main-container">
+    <div class="oj-flex-item oj-sm-12">
+        <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('template_list_card',true)}]]" selection-mode="[['single']]" data="[[$component.discrepanciesData]]">
+        </oj-list-view>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+</page-section>
+
+<div class="button-container">
+    <!-- ko ifnot: $component.approvalFlag() -->
+   <oj-button id="initiate" class="action-button-primary" on-click="[[$component.initiateCustomerAcceptance]]">
+     <span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.resourceBundle.button.initiate"></span>
+</oj-button>
+   <!-- ko ifnot:$baseModel.small() -->
+   <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.tradeFinanceErrors.messages.cancelOperation)]]">
+     <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+</oj-button>
+   <!-- /ko -->
+   <oj-button id="back" class="action-button-tertiary" on-click="[[$component.goBack]]">
+     <span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+</oj-button>
+    <!-- /ko -->
+</div>
+
+</div>
+<script type="text/html" id="discrepancies_template">
+    <tr>
+      <td data-bind="text: $component.getRowId($context.rowContext.status.rowIndex)">
+      </td>
+      <td>
+        <span data-bind="text:description"></span>
+      </td>
+       <td>
+        <span data-bind="text:$baseModel.formatDate(receivedDate)"></span>
+      </td>
+      <td>
+        <!-- ko if: $data.resolved === 'false' -->
+        <span data-bind="text:$component.resourceBundle.labels.notresolved"></span>
+        <!-- /ko -->
+        <!-- ko if: $data.resolved !== 'false' -->
+      <span data-bind="text:$baseModel.formatDate(resolvedDate)"></span>
+        <!-- /ko -->
+
+      </td>
+      <td>
+        <!-- ko if: $data.resolved === 'false' -->
+        <oj-radioset class="oj-choice-direction-row" required="[[true]]" :id="[[discrepancyCode]]" disabled="[[$component.approvalFlag()]]" on-value-changed="[[$component.onChangeHandler]]" value="{{resolved}}"><oj-option value="true" name="discrepancyStatus" :id="[['accept_'+  $context.rowContext.status.rowIndex]]"><span for="accept" data-bind="text:$component.resourceBundle.labels.accept, attr : {'for' :'accept_' +  $context.rowContext.status.rowIndex}"></span></oj-option><oj-option value="false" name="discrepancyStatus" :id="[['reject_'+  $context.rowContext.status.rowIndex]]"><span for="reject" data-bind="text:$component.resourceBundle.labels.reject, attr : {'for' :'reject_' +  $context.rowContext.status.rowIndex}"></span></oj-option></oj-radioset>
+      <!-- /ko -->
+      <!-- ko if: $data.resolved !== 'false' -->
+      <oj-radioset class="oj-choice-direction-row" required="[[true]]" :id="[[discrepancyCode]]" disabled="[[true]]" value="{{resolved}}"><oj-option value="true" name="discrepancyStatus" :id="[['accept_'+  $context.rowContext.status.rowIndex]]"><span for="accept" data-bind="text:$component.resourceBundle.labels.accept, attr : {'for' :'accept_' +  $context.rowContext.status.rowIndex}"></span></oj-option><oj-option value="false" name="discrepancyStatus" :id="[['reject_'+  $context.rowContext.status.rowIndex]]"><span for="reject" data-bind="text:$component.resourceBundle.labels.reject, attr : {'for' :'reject_' +  $context.rowContext.status.rowIndex}"></span></oj-option></oj-radioset>
+     <!-- /ko -->
+      </td>
+  </tr>
+</script>
+
+<script type="text/html" id="template_list_card">
+  <li data-bind="attr: {id: $data.description}">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-9 description">
+            <div data-bind="text: $data.description"></div>
+          </div>
+        </div>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 oj-md-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.viewBills.discrepancies.receivedDate"></label>
+            <div data-bind="text: $baseModel.formatDate(receivedDate)"></div>
+          </div>
+        </div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <label data-bind="text: $component.resourceBundle.viewBills.discrepancies.resolvedDate"></label>
+          <!-- ko if: $data.resolved === 'false' -->
+          <div data-bind="text:$component.resourceBundle.labels.notresolved"></div>
+          <!-- /ko -->
+          <!-- ko if: $data.resolved !== 'false' -->
+        <div data-bind="text:$baseModel.formatDate(resolvedDate)"></div>
+          <!-- /ko -->
+        </div>
+      </div>
+      </div>
+
+    <!-- ko if: $data.resolved === 'false' -->
+    <div class="oj-flex-item" data-bind="css: { 'no-pad-cols': $baseModel.medium()}">
+      <div class="oj-flex-item oj-md-12">
+      <label data-bind="text: $component.resourceBundle.labels.resolution"></label>
+      </div>
+      <div class="oj-flex-item oj-md-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+      <oj-radioset class="oj-flex-item oj-sm-12 oj-md-6 oj-choice-direction-row" required="[[true]]" :id="[[discrepancyCode]]" disabled="[[$component.approvalFlag()]]" on-value-changed="[[$component.onChangeHandler]]" value="{{resolved}}"><oj-option value="true" name="discrepancyStatus" :id="[['accept_'+  $context.index]]"><span for="accept" data-bind="text:$component.resourceBundle.labels.accept, attr : {'for' :'accept_' +  $context.index}"></span></oj-option><oj-option value="false" name="discrepancyStatus" :id="[['reject_'+  $context.index]]"><span for="reject" data-bind="text:$component.resourceBundle.labels.reject, attr : {'for' :'reject_' +  $context.index}"></span></oj-option></oj-radioset>
+  </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if: $data.resolved !== 'false' -->
+    <div class="oj-flex-item" data-bind="css: { 'no-pad-cols': $baseModel.medium()}">
+      <div class="oj-flex-item oj-md-12">
+      <label data-bind="text: $component.resourceBundle.labels.resolution"></label>
+    </div>
+      <oj-radioset class="oj-flex-item oj-sm-12 oj-md-6 oj-choice-direction-row" ,="" "css:="" {="" 'no-pad-cols':="" $basemodel.medium()}"="" required="[[true]]" :id="[[discrepancyCode]]" disabled="[[true]]" value="{{resolved}}"><oj-option value="true" name="discrepancyStatus" :id="[['accept_'+  $context.index]]"><span for="accept" data-bind="text:$component.resourceBundle.labels.accept, attr : {'for' :'accept_' +  $context.index}"></span></oj-option><oj-option value="false" name="discrepancyStatus" :id="[['reject_'+  $context.index]]"><span for="reject" data-bind="text:$component.resourceBundle.labels.reject, attr : {'for' :'reject_' +  $context.index}"></span></oj-option></oj-radioset>
+    </div>
+ <!-- /ko -->
+   </div>
+  </li>
+</script>

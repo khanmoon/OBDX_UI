@@ -1,0 +1,56 @@
+<div class="form-main-container">
+  <!-- ko if: $component.verifyBlock() -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+  <page-section class="review" ="" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="row-group">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="totalDue"><span data-bind="text:resource.blockCard.cardNo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:creditCardDisplayId"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="totalDue"><span data-bind="text:resource.blockCard.action"></span></oj-label>
+        </div>
+        <!-- ko if:$component.replaceConfirmationType() === 'OPTION_NO' -->
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$component.params.actionType"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.replaceConfirmationType() === 'OPTION_YES' -->
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$baseModel.format($component.resource.blockCard.replace,{action:$component.params.actionType})"></span>
+        </div>
+        <!-- /ko -->
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="totalDue"><span data-bind="text:resource.blockCard.reason"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:resource.blockCard[$component.params.reasonType]"></span>
+        </div>
+      </div>
+      <!-- ko if:$component.replaceConfirmationType() === 'OPTION_YES' -->
+      <div class="" data-bind="template: { name: 'common/review/address',data:$component.addressDetails }"></div>
+      <!-- /ko -->
+    </div>
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="blockConfirmButton" class="action-button-primary " on-click="[[blockConfirm]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:resource.genericCard.confirm"></span>
+    </oj-button>
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button id="cancelButton" class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:resource.genericCard.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button id="backButton" class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:resource.genericCard.back"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+</div>

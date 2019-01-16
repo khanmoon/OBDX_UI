@@ -1,0 +1,100 @@
+<!-- ko if: $component.params.mode ==='review' -->
+<div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+<!-- /ko -->
+
+<div class="form-main-container review-top-pad">
+  <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div data-bind="css:'oj-flex-item oj-sm-12 oj-md-12 oj-lg-12'">
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text:$component.resource.labels.linkedAccount"></label>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad oj-lg-12">
+          <div class="oj-flex-item oj-sm-12 ">
+            <oj-radioset class="oj-choice-direction-row" :aria-label="[[$component.resource.labels.linkedAccount]]" value="{{accountType}}" on-value-changed="[[accountTypeChangeHandler]]" disabled="[[radioSetDisabled]]">
+              <oj-option value="casa" id="casa"><span for="casa" data-bind="text:$component.resource.labels.casa"></span></oj-option>
+              <oj-option value="td" id="td"><span for="td" data-bind="text:$component.resource.labels.td"></span></oj-option>
+            </oj-radioset>
+          </div>
+          <!-- ko ifnot: $baseModel.small() && $component.linkedaccountsDataproviderLoaded()-->
+          <div class="oj-flex-item oj-lg-8">
+            <oj-table id="table" data="[[$parent.linkedaccountsPagingDataprovider]]" columns="[[$parent.linkedAccountscolumnData]]">
+              <caption class="hide-label" data-bind="text:$component.resource.labels.linkedAccount"></caption>
+            </oj-table>
+
+            <script type="text/html" id="new_account">
+              <td>
+                <!-- ko if:  $context.row.flag-->
+                <div class="new-tag oj-label-inline" data-bind="text: $context.row.flag"></div>
+                <!-- /ko -->
+              </td>
+            </script>
+            <oj-paging-control id="paging" data='[[$parent.linkedaccountsPagingDataprovider]]' page-size='5' slot='bottom'>
+            </oj-paging-control>
+          </div>
+
+          <!-- /ko -->
+          <!-- ko if: $baseModel.small()-->
+          <div class="oj-flex oj-flex-items-pad oj-sm-12">
+
+            <oj-list-view id="listview_AccountTable" class="oj-sm-12" data="[[$parent.linkedaccountsPagingDataprovider]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('reviewAccountTable_template', true)]]" selection-mode="multiple">
+            </oj-list-view>
+            <oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[$parent.linkedaccountsPagingDataprovider]]">
+            </oj-paging-control>
+            <script type="text/html" id="reviewAccountTable_template">
+              <li>
+                <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+                  <label data-bind="text:$component.resource.labels.accountNo"></label>
+                  <!-- ko if:  $context.data.flag-->
+                  <div class="new-tag oj-label-inline" data-bind="text: $context.data.flag"></div>
+                  <!-- /ko -->
+                  <div class="list-bottom-pad" data-bind="text:accountId"> </div>
+                </div>
+
+                <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+                  <label data-bind="text:$component.resource.labels.partyName"></label>
+                  <div class="list-bottom-pad" data-bind="text:partyName"> </div>
+                </div>
+                <!-- ko if:  $component.accountType() === 'casa'-->
+                <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+                  <label data-bind="text:$component.resource.labels.balance"></label>
+                  <div data-bind="text:balance ,css: { 'list-bottom-pad': $context.data.maturityDate }"> </div>
+                </div>
+                <!-- /ko -->
+
+              </li>
+            </script>
+          </div>
+
+          <!-- /ko -->
+
+        </div>
+        <!-- ko if:$component.params.mode ==='review'-->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="button-container">
+            <oj-button id="confirmInstructions" class="action-button-primary " on-click="[[confirmInstructions]]"><span slot="startIcon" class="icons icon-confirm"></span>
+              <span data-bind="text:$component.resource.generic.common.confirm"></span>
+            </oj-button>
+            <!-- ko if: !$baseModel.small() -->
+            <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+              <span data-bind="text:$component.resource.generic.common.cancel"></span>
+            </oj-button>
+            <!-- /ko -->
+            <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+              <span data-bind="text:$component.resource.generic.common.back"></span>
+            </oj-button>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+
+  </page-section>
+
+
+
+</div>

@@ -1,0 +1,244 @@
+<div class="form-main-container">
+  <div class="oj-flex oj-flex-items-pad service-request-approval-view">
+    <div class="oj-sm-12 oj-lg-12 oj-panel">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading :$component.resource.firstStep">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="requestName" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.requestName"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <oj-input-text id="requestName" value="{{$component.SRDefinitionDTO.name}}" readonly></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="requestDescription" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.requestDescription"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <oj-input-text id="requestDescription" value="{{$component.SRDefinitionDTO.description}}" readonly></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="moduleName" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.moduleName"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <oj-input-text id="moduleName" value="{{$component.SRDefinitionDTO.product}}" readonly></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="requestType" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.requestType"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <oj-input-text id="requestType" value="{{$component.requestType}}" readonly></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="requestCategoryName" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.requestCategoryName"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <oj-input-text id="requestCategoryName" value="{{$component.SRDefinitionDTO.categoryType}}" readonly></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="applicableStatus" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.applicableStatus"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <oj-input-text id="applicableStatus" value="{{$component.applicableStatuses}}" readonly></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="severity" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.severity"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <oj-input-text id="severity" value="{{$component.priorityType}}" readonly></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="activationStatus" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.activationStatus"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <oj-switch id="switch" value="{{$component.SRDefinitionDTO.isActive}}" disabled="true"></oj-switch>
+            <span data-bind="text: (($component.SRDefinitionDTO.isActive) ? $component.resource.active : $component.resource.inactive)"></span>
+          </div>
+        </div>
+      </page-section>
+    </div>
+    <div class="oj-sm-12 oj-lg-12 oj-panel">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading :$component.resource.buildForm">
+        <div class="oj-sm-12 oj-lg-12 build-form oj-flex">
+          <div class="oj-flex-item oj-sm-8 oj-lg-8">
+            <div class="center">
+              <h3 data-bind="text:$component.SRDefinitionDTO.form.header"></h3>
+            </div>
+            <!-- ko if: $component.formArray().length -->
+            <oj-list-view id="listview" data="[[dataProvider]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('Comp_temp', true)]]">
+            </oj-list-view>
+            <script type="text/html" id="Comp_temp">
+              <!-- ko if: type === "FFTB" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.selectedComponent(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "PDAD" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.accountNumberDebitCard(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "PDCS" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.countryStates(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "FFDL" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.dropList(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "PDAN" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.accountNumber(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "FFTC" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.toggle(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "FFMS" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.multiSelect(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "FFMC" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.checkBox(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "FFFU" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.upload(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "FFRB" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.radioButton(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "PDGS" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.gender(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "PDSS" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.salutation(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "PDDP" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: $component.datePicker(), params:{rootModel: $data,id:type+'_'+($context.key+1)}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "SCH" -->
+              <li class="oj-listview-item">
+                <div class="center">
+                  <span data-bind="text:$data.values[0].description"></span>
+                </div>
+                <!-- <div data-bind="component:{name: $component.sectionHeader(), params:{rootModel: $data}}"></div> -->
+              </li>
+              <!-- /ko -->
+              <!-- ko if: type === "SBH" -->
+              <li class="oj-listview-item">
+                <div class="center">
+                  <span data-bind="text:$data.values[0].description"></span>
+                </div>
+                <!-- <div data-bind="component:{name: $component.subHeader(), params:{rootModel: $data}}"></div> -->
+              </li>
+              <!-- /ko -->
+            </script>
+            <!-- /ko -->
+          </div>
+          <div class="oj-flex-item oj-sm-3 oj-lg-3 oj-md-3 oj-panel oj-sm-margin-3x demo-panel-customizations">
+            <div class="oj-flex oj-flex-items-pad information-wrapper">
+              <div class="oj-flex-item oj-lg-5 oj-sm-5 oj-md-5"></div>
+              <div class="icons icon-upload upload-font-size service-request-size center">
+              </div>
+              <!-- ko if: $component.fileUploaded -->
+              <div class="oj-flex-item oj-sm-12 information-wrapper-heading center">
+                <span class="icon icon-success"></span>
+                <span data-bind="text:$component.resource.fileUploadSuccessful"></span>
+              </div>
+              <!-- /ko -->
+              <div class="oj-flex-item oj-sm-12 information-wrapper-heading center">
+                <h4 data-bind="text:$component.SRDefinitionDTO.form.infoNote.header"></h4>
+              </div>
+              <div class="oj-flex-item oj-sm-12 information-wrapper-contents ">
+                <oj-text-area :aria-label="[[$component.SRDefinitionDTO.form.infoNote.description]]" value="{{$component.SRDefinitionDTO.form.infoNote.description}}"
+                  readonly></oj-text-area>
+              </div>
+            </div>
+          </div>
+          <!-- ko if: confirmExists -->
+          <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-lg-12 oj-md-12">
+            <div class="oj-flex-item oj-lg-3 label">
+              <oj-label for="confirmMsg" class="oj-flex-item oj-lg-12">
+                <span data-bind="text:$component.resource.confirmationMessage"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-8">
+              <oj-input-text id="confirmMsg" value="{{$component.SRDefinitionDTO.form.confirmMessage}}" readonly></oj-input-text>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if: approvalConfirmMsg -->
+          <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-lg-12 oj-md-12">
+            <div class="oj-flex-item oj-lg-3 label">
+              <oj-label for="confirmMsg" class="oj-flex-item oj-lg-12">
+                <span data-bind="text:$component.resource.confirmationMessage"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-8">
+              <oj-input-text id="confirmMsg" value="{{$component.data.form.confirmMessage}}" readonly></oj-input-text>
+            </div>
+          </div>
+          <!-- /ko -->
+        </div>
+      </page-section>
+    </div>
+    <!-- ko if: showButtons -->
+    <div class="oj-flex button-container">
+      <oj-button class="action-button-primary" id="edit-button" type="submit" on-click="[[$component.editBasicDetails]]">
+        <span data-bind="text:$component.resource.edit"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text: $component.resource.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.onBack]]">
+        <span data-bind="text: $component.resource.back"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+  </div>
+</div>

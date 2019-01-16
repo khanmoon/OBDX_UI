@@ -1,0 +1,73 @@
+<div class="form-main-container">
+  <!-- ko if: $component.params.mode ==='review' -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+  <!-- /ko -->
+  <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="row-group">
+      <!--          <div data-bind="text:redeemDetails().redemptionDetailDTO.maturityAmount.currency"></div>-->
+      <!-- ko if: params.data.accountId -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.redeem.tdAccountNumber , dataClass : 'highlight-text',value :params.data.accountId.displayValue"></row>
+      <!-- /ko -->
+      <!-- ko if: params.data.netCreditAmt -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.redeem.redeemableAmount , dataClass : 'highlight-text',value :$baseModel.formatCurrency($component.additionalDetails().account.currentPrincipalAmount.amount,$component.additionalDetails().account.currentPrincipalAmount.currency)"></row>
+      <!-- /ko -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.redeem.redemptionType , value : resource.transactions.redeem.type[ko.utils.unwrapObservable(params.data.typeRedemption)]"></row>
+      <!-- ko if: params.data.charges -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.redeem.charges , dataClass : 'highlight-text',value :$baseModel.formatCurrency(params.data.charges.amount(),params.data.charges.currency())"></row>
+      <!-- /ko -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.redeem.redemptionAmount , dataClass : 'highlight-text',value :$baseModel.formatCurrency(params.data.netCreditAmt.amount(),params.data.netCreditAmt.currency())"></row>
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.payTo , dataClass : 'highlight-text',value : resource.transactions.termDepositDetails.payoutInstructions.payoutType[params.data.payoutInstructions()[0].type()]"></row>
+      <!-- ko if: params.data.payoutInstructions()[0].type()==='O' -->
+      <div class="row-group">
+        <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.transferAccount, value : [params.data.payoutInstructions()[0].beneficiaryName(),params.data.payoutInstructions()[0].accountId.displayValue(),params.data.payoutInstructions()[0].bankName(),params.data.payoutInstructions()[0].address.line1(),params.data.payoutInstructions()[0].address.line2(),params.data.payoutInstructions()[0].address.city(),params.data.payoutInstructions()[0].address.country()]"></row>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko if: params.data.payoutInstructions()[0].type()==='I' -->
+      <div class="row-group">
+        <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.transferAccount, value : params.data.payoutInstructions()[0].account"></row>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko if: params.data.payoutInstructions()[0].type()==='E' -->
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.branch ,
+
+          value :[params.data.payoutInstructions()[0].beneficiaryName(),
+          params.data.payoutInstructions()[0].account,
+          params.data.payoutInstructions()[0].networkType ? params.data.payoutInstructions()[0].networkType() : '',
+		      params.data.payoutInstructions()[0].clearingCode() ? params.data.payoutInstructions()[0].clearingCode() : '',
+          params.data.payoutInstructions()[0].bankName(),
+   		  params.data.payoutInstructions()[0].address.line1(),
+   		  params.data.payoutInstructions()[0].address.line2(),
+   		  params.data.payoutInstructions()[0].address.city(),
+   		  params.data.payoutInstructions()[0].address.country()
+
+          ]"></row>
+      <!-- /ko -->
+
+
+      <!-- ko if:params.data.typeRedemption() === 'P' -->
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.depositDetails.revisedMaturity, dataClass : 'highlight-text',value :$baseModel.formatCurrency(params.data.revisedMaturityAmount.amount(),params.data.revisedMaturityAmount.currency())"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label : params.data.module()==='ISL'?resource.transactions.redeem.islamicRevisedInterestRate: resource.transactions.redeem.revisedInterestRate, dataClass : 'highlight-text',value :$baseModel.formatNumber((params.data.revisedInterestRate())/100, 'percent')"></row>
+      <!-- /ko -->
+    </div>
+  </page-section>
+  <!-- ko if:$component.params.mode ==='review'-->
+  <div class="button-container">
+    <oj-button id="dialogtopupButton" class="action-button-primary " on-click="[[$component.redeemTransactionConfirm]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.locale.generic.common.confirm"></span>
+</oj-button>
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.locale.generic.common.cancel"></span>
+</oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.locale.generic.common.back"></span>
+</oj-button>
+
+  </div>
+  <!-- /ko -->
+</div>

@@ -1,0 +1,88 @@
+<div class="container-record">
+  <!-- ko ifnot: showReviewComponent() -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading :''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+        <label data-bind="text: nls.fieldname.partyId"></label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <span data-bind="text:partyDisplayName"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+        <label data-bind="text: nls.fieldname.partyName"></label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <span data-bind="text:partyName"></span>
+      </div>
+    </div>
+  </page-section>
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.linkedparties">
+    <!-- ko if: showAddedLinkedPartiesTable()  -->
+    <oj-table :aria-label="[[$component.nls.headers.linkedparties]]" columns="[[columnsArray]]" data="[[$component.linkedPartiesDatasource]]">
+      <caption class="hide-label" data-bind="text:$component.nls.headers.linkedparties"></caption>
+    </oj-table>
+    <script type="text/html" id="delete_record">
+      <td>
+        <a href="#" class="icon icon-delete" data-bind="attr:{'aria-label':$component.nls.common.deleteIcon}, click:$component.removeChildParty.bind($data,$context)"></a>
+      </td>
+    </script>
+    <!-- <script type="text/html" id="name_template">
+            <td>
+                <span data-bind="text: $baseModel.format($component.nls.fieldvalues.fullname, {firstName: ($data.relatedPartyFirstName ? $data.relatedPartyFirstName : ''),lastName:($data.relatedPartyLastName ? $data.relatedPartyLastName : '')})"></span>
+            </td>
+        </script>-->
+
+
+    <!-- /ko -->
+  </page-section>
+  <!-- ko ifnot: showChildPartyValidateComponent  -->
+  <div class="oj-flex-item button-container">
+    <oj-button class="help-button" on-click="[[$component.addMoreRecords]]">
+      <span data-bind="text:$component.nls.buttons.addMore"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+  <!-- ko if: showChildPartyValidateComponent  -->
+  <div class="oj-flex oj-flex-items-pad" data-bind="component: {
+           name: 'child-party-validate', params:{
+           rootModel: $data, partyDetails: createLinkageModelInstance().partyDetails, additionalDetails: createLinkageModelInstance().partyDetails.additionalDetails
+           }} ">
+  </div>
+  <!-- /ko -->
+  <br>
+  <div class="oj-flex-item button-container">
+    <oj-button class="action-button-primary" on-click="[[loadLinkageReviewComponent]]">
+      <span data-bind="text:$component.nls.generic.common.save"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.cancelOnUpdate]]">
+      <span data-bind="text:$component.nls.generic.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[$component.onBack]]">
+      <span data-bind="text:$component.nls.common.back"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+  <!-- ko if: showReviewComponent() -->
+  <div data-bind="component: {name:'linkage-review' , params:{rootModel:$data }}">
+  </div>
+  <!-- /ko -->
+</div>
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'backConfirmationModal',header:$component.nls.common.back">
+  <div class="form-main-container message-text">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <span data-bind="text: nls.popupMessages.backMessage"></span>
+      </div>
+    </div>
+    <div class="oj-flex-item button-container">
+      <oj-button id="backNo" class="action-button-secondary" on-click="[[$component.hideModal]]">
+        <span data-bind="text:$component.nls.common.no"></span>
+      </oj-button>
+      <oj-button id="backYes" class="action-button-primary" on-click="[[$component.back]]">
+        <span data-bind="text:$component.nls.common.yes"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>

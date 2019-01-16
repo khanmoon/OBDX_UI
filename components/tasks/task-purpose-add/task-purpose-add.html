@@ -1,0 +1,90 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div data-bind="css:reviewLoaded() ? 'oj-flex-item oj-lg-12':'oj-flex-item oj-lg-9'" class="">
+      <div class="form-main-container">
+<!-- ko  if : taskLoaded() -->
+   <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <div class="oj-flex oj-flex-items-pad">
+         <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label for="taskList"><span data-bind="text:$component.resource.taskPurpose.taskCodes"></span></oj-label>
+         </div>
+         <div class="oj-flex-item oj-lg-offset-3 oj-lg-6 oj-md-6 oj-sm-12   ">
+            <oj-select-one required id="taskList" :placeholder="[[$component.resource.common.select]]" on-value-changed="[[$component.taskChanged]]" value="{{taskSelected}}">
+               <!-- ko foreach: $component.allTaskList -->
+               <oj-option value="{{taskCode}}"><span data-bind="text:taskDescription"></span></oj-option>
+               <!-- /ko -->
+            </oj-select-one>
+         </div>
+         <!-- /ko -->
+      </div>
+      <!-- ko if : purposeLoaded() -->
+      <div class="oj-flex oj-flex-items-pad">
+         <div class="oj-flex-item oj-lg-offset-3 oj-lg-6 oj-md-6 oj-sm-12  ">
+            <oj-checkboxset id="purposeList" :aria-label="[[$component.resource.taskPurpose.purposeCode]]" value="{{mappedPurpose}}"><!-- ko foreach : $component.allPurposeList() --><oj-option value="{{purposeCode}}" :id="[['purpose_'+ $index()]]"><span data-bind="text:purposeDesc, attr : {'for' :'purpose_' + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+         </div>
+      </div>
+
+      <!-- /ko -->
+   </page-section>
+
+      <!-- /ko -->
+   <!-- ko  if : taskLoaded() && purposeLoaded() -->
+      <div class="button-container">
+         <oj-button id="review" class="action-button-primary" on-click="[[review]]">
+      <span data-bind="text:$component.resource.taskPurpose.mapPurposeCodes"></span>
+</oj-button>
+            
+         <oj-button id="cancel" class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+      <span data-bind="text:$component.resource.common.cancel"></span>
+</oj-button>
+<oj-button id="back" class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:$component.resource.common.back"></span>
+</oj-button>
+         
+      </div>
+    <!-- /ko -->
+   <modal-window params="baseModel : $baseModel, rootModel : $component,id:'mapPurpose', header:$component.resource.taskPurpose.mapPurposeCodes">
+      <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+         <oj-label><span data-bind="text:$component.resource.taskPurpose.mapPurpose"></span></oj-label>
+      </div>
+      </div>
+      <div class="button-container">
+         <oj-button id="confirm" class="form-button-primary" on-click="[[hide]]">
+      <span data-bind="text:$component.resource.common.done"></span>
+</oj-button>
+      </div>
+   </modal-window>
+   <!-- ko if :reviewLoaded() -->
+   <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.common.review , reviewHeader : $component.resource.taskPurpose.reviewHeaderMsg}}"></div>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading :''">
+    <div class="oj-flex oj-flex-items-pad">
+            <oj-label for="taskList" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label"><span data-bind="text:$component.resource.taskPurpose.taskCodes"></span></oj-label>
+         <div class="oj-flex-item oj-lg-offset-3 oj-lg-6 oj-md-6 oj-sm-12 label" data-bind="text:$component.reviewTask">
+      </div>
+    </div>
+      <div class="oj-flex oj-flex-items-pad">
+         <div class="oj-flex-item oj-lg-offset-2 oj-lg-12 oj-md-6 oj-sm-12  ">
+            <oj-checkboxset id="purposeList" disabled="[[true]]" value="{{mappedPurpose}}" :aria-label="[[$component.resource.taskPurpose.purposeCode]]"><!-- ko foreach : $component.allPurposeList() --><oj-option value="{{purposeCode}}" :id="[['purpose_'+ $index()]]"><span data-bind="text:purposeDesc, attr : {'for' :'purpose_' + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+         </div>
+      </div>
+   </page-section>
+   <div class="button-container">
+      <oj-button id="saveMapping" class="action-button-primary" on-click="[[$component.saveMapping]]">
+      <span data-bind="text:$component.resource.common.confirm"></span>
+</oj-button>
+<oj-button id="cancelSaveMapping" class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+      <span data-bind="text:$component.resource.common.cancel"></span>
+</oj-button>
+<oj-button id="backSaveMapping" class="action-button-tertiary" on-click="[[back]]">
+      <span data-bind="text:$component.resource.common.back"></span>
+</oj-button>
+      </div>
+   <!-- /ko -->
+</div>
+</div>
+<!-- ko if: $baseModel.large() && !reviewLoaded() -->
+    <div class="oj-flex-item oj-lg-3 oj-sm-only-hide oj-md-only-hide help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'task-purpose-add'"></help>
+    </div>
+    <!-- /ko -->
+</div>

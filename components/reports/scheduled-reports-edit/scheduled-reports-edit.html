@@ -1,0 +1,114 @@
+<div class="form-main-container">
+  <page-section params="rootModel : $data, heading:''">
+
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+        <oj-label for="reportName"> <span data-bind="text:$component.Nls.reportName"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+        <span data-bind="text :$component.reportName "></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+        <oj-label for="reportId"> <span data-bind="text:$component.Nls.reportId"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+        <span data-bind="text :$component.scheduledEdit.reportRequestIdentifier "></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+      <!-- ko if:$component.isReportFormatListLoaded() -->
+
+      <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2">
+        <oj-label for="reportFormat"> <span data-bind="text:$component.Nls.reportFormat"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-2 ">
+        <oj-select-one id="reportFormat" :placeholder="[[$component.Nls.selectReportFormat]]" value="{{$component.scheduledEdit.formatType}}">
+          <!-- ko foreach:$component.reportFormatList -->
+          <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+      <!-- ko if:$component.isScheduledFrequencyListLoaded() -->
+
+      <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2">
+        <oj-label for="reportFrequency"> <span data-bind="text:$component.Nls.reportFrequency"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-2 ">
+        <oj-select-one id="reportFrequency" value="{{$component.scheduledEdit.reportSchFreq}}">
+          <!-- ko foreach:$component.scheduledFrequencyList -->
+          <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+      <!-- /ko -->
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad ">
+      <!-- ko if:$component.dateCompare() -->
+
+      <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+        <oj-label for="startDateScheduled"> <span data-bind="text:$component.Nls.startDate"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4">
+        <span data-bind="text :$baseModel.formatDate($component.scheduledEdit.startTime,'dateTimeStampFormat')"></span>
+      </div>
+      <!-- /ko -->
+
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad ">
+      <!-- ko if:! $component.dateCompare() -->
+      <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+        <oj-label for="startDateScheduled"> <span data-bind="text:$component.Nls.startDate"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4">
+        <oj-input-date required :id="[['startDateScheduled']]" value="{{$component.scheduledEdit.startTime}}" min="[[$component.params.todayDate]]"></oj-input-date>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+      <!-- ko  if:$component.scheduledEdit.reportSchFreq()+'' !=='ONCE' -->
+
+      <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 ">
+        <oj-label for="endDateScheduled"> <span data-bind="text:$component.Nls.endDate"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4">
+        <oj-input-date required :id="[['endDateScheduled']]" value="{{$component.scheduledEdit.endTime}}"></oj-input-date>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+        <oj-label for="scheduledBy"> <span data-bind="text:$component.Nls.scheduledBy"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+        <span data-bind="text :$component.scheduledBy "></span>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.save]]">
+      <span data-bind="text:$component.Nls.save"></span>
+</oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+      <span data-bind="text:$component.Nls.back"></span>
+</oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.Nls.cancel"></span>
+</oj-button>
+
+
+
+
+
+
+
+
+
+  </div>
+</page-section></div>

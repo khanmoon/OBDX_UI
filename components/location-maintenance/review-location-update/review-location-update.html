@@ -1,0 +1,52 @@
+<div class="form-main-container">
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.headings.reviewAtmBranch , reviewHeader :$component.nls.fieldname.addReviewHeaderMsg}}"></div>
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.reviewData.type==='BRANCH' ? $component.nls.fieldname.branchId:$component.nls.fieldname.atmId , value: $component.reviewData.id"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.reviewData.type==='BRANCH' ? $component.nls.fieldname.branchName:$component.nls.fieldname.atmName , value: $component.reviewData.name"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.coordinates , value :$component.reviewData.geoCoordinate.latitude+', '+$component.reviewData.geoCoordinate.longitude"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.line1 , value: $component.reviewData.postalAddress.line1"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.line2 , value: $component.reviewData.postalAddress.line2"></row>
+        <!-- ko if: $component.reviewData.postalAddress.line3 !== undefined -->
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.line3 , value: $component.reviewData.postalAddress.line3"></row>
+        <!-- /ko -->
+        <!-- ko if: $component.reviewData.postalAddress.line4 !== undefined -->
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.line4 , value: $component.reviewData.postalAddress.line4"></row>
+        <!-- /ko -->
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.city , value: $component.reviewData.postalAddress.city"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.country , value: $component.reviewData.postalAddress.country"></row>
+        <!-- ko if: $component.reviewData.type !== 'ATM' -->
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.workTimings , value: $component.workTimings()"></row>
+        <!-- ko if: $component.reviewData.workDays[1] -->
+        <row params="baseModel : $baseModel, rootModel : $parent , value: $component.workTimings1()"></row>
+        <!-- /ko -->
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.additionalDetails , value: $component.reviewData.additionalDetails"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.phoneNum , value: $component.reviewData.branchPhone[0].number"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent , label :$component.nls.fieldname.alternatephoneNum , value: $component.reviewData.branchPhone[1].number"></row>
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="checkboxSetId"><span data-bind="text:$component.nls.fieldname.servicesOffered"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-8">
+                <!-- ko if: supportedServicesLoaded -->
+                <oj-checkboxset id="checkboxSetId" :aria-label="[[$component.nls.fieldname.servicesOffered]]" class="oj-choice-direction-row" disabled="[[true]]" value="{{selectedServices}}"><!-- ko foreach: supportedServices --><oj-option value="{{name}}" :id="[['Services_'+ $index()]]"><span data-bind="text: name, attr : {'for' :'Services_' + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+                <!-- /ko -->
+            </div>
+        </div>
+    </page-section>
+    <div class="oj-flex-item button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.confirm]]">
+    <span data-bind="text:$component.nls.buttons.confirm"></span>
+</oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+      <span data-bind="text:$component.nls.buttons.cancel"></span>
+</oj-button>
+        <oj-button class="action-button-tertiary" on-click="[[$component.edit]]">
+      <span data-bind="text:$component.nls.buttons.back"></span>
+</oj-button>
+
+    </div>
+
+</div>

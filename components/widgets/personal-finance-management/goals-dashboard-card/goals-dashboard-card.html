@@ -1,0 +1,29 @@
+<div class="oj-panel goals-card">
+	<div class="oj-flex oj-flex-items-pad goals-card-contents">
+		<div class="oj-flex-item oj-sm-6">
+			<h3 class="goals-card-contents-title" data-bind="text:$component.resource.goals"></h3>
+		</div>
+		<div class="oj-flex-item oj-sm-6 right goals-card-contents-link">
+			<a href="#" openprofile="true" id="menuLauncher-goals" data-bind="attr:{'aria-label':$component.resource.menuLabel, alt : $component.resource.menualt , 'title':$component.resource.menuTitle},click: $component.openMenu">
+				<div class="icons icon-more-vertical"></div>
+			</a>
+			<oj-menu :id="[['menuLauncher-goals-container']]" on-oj-action="[[$component.menuItemSelect.bind($data,$data)]]" open-options.launcher="[['menuLauncher-goals']]" open-options.display="dropDown">
+					<!-- ko foreach: $component.menuItems -->
+					<oj-option :id="[[id]]" :value="[[id]]">
+						<span data-bind="text : label"></span>
+					</oj-option>
+					<!-- /ko -->
+				</oj-menu>
+		</div>
+	</div>
+	<!-- ko if: $component.dataLoaded() -->
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-3">
+			<img data-bind="attr:{alt:$component.resource.goalalt,title:$component.resource.goaltitle},loadImage:'goals/goals.svg'">
+		</div>
+		<div class="oj-flex-item oj-sm-9">
+			<div data-bind="text:$baseModel.format($component.resource.goalsActive,{totalGoals:$component.countOfGoals()})"></div>
+		</div>
+	</div>
+	<!-- /ko -->
+</div>

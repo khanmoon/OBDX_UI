@@ -1,0 +1,441 @@
+<!-- ko if: $component.tommDailyLimitAmount() ||  $component.tommMonthlyLimitAmount() -->
+<div class="multiple-payments">
+    <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-md-12 oj-lg-12 warning-bar">
+        <span class="warning-icon action-icon icons icon-alert"></span>
+        <!-- ko if: $component.tommDailyLimitAmount() -->
+        <div class="oj-flex oj-flex-items-pad oj-lg-6">
+            <div class="oj-flex-item oj-sm-7 oj-lg-7">
+                <oj-label for="daily"><span data-bind="text:$component.payments.payee.labels.dailylimit"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-5">
+                <div data-bind="text:$baseModel.formatCurrency($component.tommDailyLimitAmount(),$component.limitCurrency())"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: $component.tommMonthlyLimitAmount() -->
+        <div class="oj-flex oj-flex-items-pad oj-lg-6">
+            <div class="oj-flex-item oj-sm-7 oj-lg-7">
+                <oj-label for="monthly"><span data-bind="text:$component.payments.payee.labels.monthlylimit"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-5">
+                <div data-bind="text:$baseModel.formatCurrency($component.tommMonthlyLimitAmount(),$component.limitCurrency())"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <span class="warning-msg" id="confirm" data-bind="text:$component.payments.efflimitMsz"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /ko -->
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ($component.userSegment==='RETAIL' && $baseModel.small()) ?'':$baseModel.format($component.payments.payee.labels.payeename,{name : name})">
+    <!-- ko if : $baseModel.large() -->
+    <div class="oj-flex oj-flex-items-pad" data-bind="with : $parent">
+        <!-- For all except DD and P2P -->
+        <!-- ko if : $data.accountName -->
+        <div class="oj-flex-item oj-lg-4">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.accountName"></span></oj-label>
+            <div data-bind="text:accountName">
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex-item oj-lg-4">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.nickname"></span></oj-label>
+            <div data-bind="text:nickName">
+            </div>
+        </div>
+        <div class="oj-flex-item oj-lg-4">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.acctype"></span></oj-label>
+            <div data-bind="text:$component.payments.payee.type[payeeType]">
+            </div>
+        </div>
+        <!-- For DD -->
+        <!-- ko if : $data.demandDraftPayeeType -->
+        <div class="oj-flex-item oj-lg-4">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.drafttype"></span></oj-label>
+            <div data-bind="text:$component.payments.payee.type[demandDraftPayeeType]">
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <div class="oj-flex oj-flex-items-pad" data-bind="with : $parent">
+        <!-- For Domestic -->
+        <!-- ko if : $data.network -->
+        <div class="oj-flex-item oj-lg-4">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.payvia"></span></oj-label>
+            <div data-bind="text:$component.payments.payee.network[network]">
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- For SEPA Domestic -->
+        <!-- ko if : $data.sepaType -->
+        <div class="oj-flex-item oj-lg-4">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.payvia"></span></oj-label>
+            <div data-bind="text:$component.payments.payee.network[sepaType]">
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- For Domestic -->
+        <!-- ko if : $data.bankDetails -->
+        <div class="oj-flex-item oj-lg-4" data-bind="with: bankDetails">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.bnkdetails"></span></oj-label>
+            <div data-bind="text:($data.code || '')">
+            </div>
+            <div data-bind="text:name">
+            </div>
+            <!-- ko if:name !== $data.branch -->
+            <div data-bind="text:$data.branch">
+            </div>
+            <!-- /ko -->
+            <div data-bind="text:address">
+            </div>
+            <div data-bind="text:($data.city || '')">
+            </div>
+            <div data-bind="text:(($component.countryCodeMap && $component.countryCodeMap[$data.country]) || $data.country || '')">
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if : $data.accountNumber -->
+        <div class="oj-flex-item oj-lg-4">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.accountNumber"></span></oj-label>
+            <div data-bind="text:accountNumber">
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- For P2P -->
+        <!-- ko if : $data.transferMode && $data.transferValue -->
+        <div class="oj-flex-item oj-lg-4">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.transferMode"></span></oj-label>
+            <div data-bind="text:$component.payments.payee.type[transferMode]">
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- For P2P -->
+        <!-- ko if : $data.transferValue -->
+        <div class="oj-flex-item oj-lg-4">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.transferValue"></span></oj-label>
+            <div data-bind="text:transferValue">
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- For DD -->
+        <!-- ko if : $data.payAtCity -->
+        <div class="oj-flex-item oj-lg-4">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.payAtCity"></span></oj-label>
+            <div data-bind="text:payAtCity">
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- For International DD -->
+        <!-- ko if : $data.payAtCountry -->
+        <div class="oj-flex-item oj-lg-4">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.payAtCountry"></span></oj-label>
+            <div data-bind="text:$component.countryCodeMap ? $component.countryCodeMap[payAtCountry]:payAtCountry">
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if : $data.postalAddress -->
+        <div class="oj-flex-item oj-lg-4" data-bind=" with:$data.postalAddress">
+            <oj-label>
+            <span data-bind="text:$component.payments.payee.labels.deliveryLocation"></span></oj-label>
+            <div data-bind="text:$data.addressType">
+            </div>
+            <div data-bind="text:$data.branchName">
+            </div>
+            <!-- ko if : $data.line1 -->
+            <div data-bind="text:$data.line1">
+            </div>
+            <!-- /ko -->
+            <!-- ko if : $data.line2 -->
+            <div data-bind="text:$data.line2">
+            </div>
+            <!-- /ko -->
+            <!-- ko if : $data.line3 -->
+            <div data-bind="text:$data.line3">
+            </div>
+            <!-- /ko -->
+            <!-- ko if : $data.city -->
+            <div data-bind="text:$data.city">
+            </div>
+            <!-- /ko -->
+            <!-- ko if : $data.postalCode -->
+            <div data-bind="text:$data.postalCode">
+            </div>
+            <!-- /ko -->
+            <div data-bind="text:$component.countryCodeMap ?
+            $component.countryCodeMap[$data.country]: $data.country">
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <div class="oj-flex oj-flex-items-pad" data-bind="with : $parent">
+        <!-- ko ifnot:$component.setLimitClicked() -->
+        <div class="oj-flex-item oj-lg-4">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-8 oj-lg-12">
+                    <oj-label>
+                    <span data-bind="text:$component.payments.payee.labels.dailylimit"></span></oj-label>
+                    <div>
+                        <span data-bind="text:((limitDetails && limitDetails.DAILY.maxAmount.amount())?(limitDetails.DAILY.isEffectiveFromTomorrow?$baseModel.format($component.payments.payee.message.efffromtom, {amount : $baseModel.formatCurrency(limitDetails.DAILY.maxAmount.amount(), limitDetails.DAILY.maxAmount.currency)}):$baseModel.formatCurrency(limitDetails.DAILY.maxAmount.amount(), limitDetails.DAILY.maxAmount.currency)):$component.payments.payee.labels.notset)">
+                        </span>
+                        <a href="#" class="form-button-link" data-bind="attr:{ title: $baseModel.format($component.payments.common.title,{reference: $component.payments.payee.labels.edit}), alt : $baseModel.format($component.payments.common.alt,{reference: $component.payments.payee.labels.edit}) }, click:$component.setLimit">
+                        <span class="icons icon-remarks"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.setLimitClicked() -->
+        <div class="oj-flex-item oj-lg-4">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-8 oj-lg-8" data-bind="component: {
+                            name: 'amount-input', params: {
+                            amount :$component.newLimitAmount,
+                            label : $component.payments.payee.labels.dailylimit,
+                            currency: $component.limitCurrency(),
+                            converter:$baseModel.formatCurrency,
+                            currencyListRequired : false,
+                            validator:$component.validationTracker,
+                            isMandatory:true,
+                            rootId:'bill-amount',
+                            currencyURL : '',
+                            currencyParser :'',
+                            rootClass:'form-input'
+                        }
+                         }">
+                </div>
+                <div class="oj-flex-item oj-sm-4 oj-lg-4">
+                    <br>
+                    <br>
+                    <a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.common.title,{reference: $component.payments.common.save}), alt : $baseModel.format($component.payments.common.alt,{reference: $component.payments.common.save}) },click: $component.confirmEditPayeeDetails.bind($data, $data,'DAILY')">
+                    <span class="icons icon-save"></span>
+                    </a>
+                    <!-- back button -->
+                    <a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.common.title,{reference: $component.payments.common.cancel}), alt : $baseModel.format($component.payments.common.alt,{reference: $component.payments.common.cancel}) },click: $component.cancelDailyLimit ">
+                    <span class="icons icon-close"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$component.setMonthlyLimitClicked() -->
+        <div class="oj-flex-item oj-lg-4">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-8 oj-lg-12">
+                    <oj-label>
+                    <span data-bind="text:$component.payments.payee.labels.monthlylimit"></span></oj-label>
+                    <div>
+                        <span data-bind="text:(limitDetails && limitDetails.MONTHLY.maxAmount.amount()?(limitDetails.MONTHLY.isEffectiveFromTomorrow?$baseModel.format($component.payments.payee.message.efffromtom, {amount : $baseModel.formatCurrency(limitDetails.MONTHLY.maxAmount.amount(), limitDetails.MONTHLY.maxAmount.currency)}):$baseModel.formatCurrency(limitDetails.MONTHLY.maxAmount.amount(), limitDetails.MONTHLY.maxAmount.currency)):$component.payments.payee.labels.notset)">
+                        </span>
+                        <a class="action-icon" href="#" data-bind="attr:{'alt':$component.payments.common.alt ,'title':$component.payments.common.title },click:$component.setMonthlyLimit">
+                        <span class="icons icon-remarks"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.setMonthlyLimitClicked() -->
+        <div class="oj-flex-item oj-lg-4">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-8 oj-lg-8" data-bind="component: {
+                            name: 'amount-input', params: {
+                            amount :$component.newMonthlyLimitAmount,
+                            label : $component.payments.payee.labels.monthlylimit,
+                            currency: $component.limitCurrency(),
+                            converter:$baseModel.formatCurrency,
+                            currencyListRequired : false,
+                            validator:$component.validationTracker,
+                            isMandatory:true,
+                            rootId:'bill-amount',
+                            currencyURL : '',
+                            currencyParser :'',
+                            rootClass:'form-input'
+                        }
+                         }">
+                </div>
+                <div class="oj-flex-item oj-sm-4 oj-lg-4">
+                    <br>
+                    <br>
+                    <a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.common.title,{reference: $component.payments.common.save}), alt : $baseModel.format($component.payments.common.alt,{reference: $component.payments.common.save}) },click: $component.confirmEditPayeeDetails.bind($data, $data, 'MONTHLY')">
+                    <span class="icons icon-save"></span>
+                    </a>
+                    <!-- back button -->
+                    <a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.common.title,{reference: $component.payments.common.cancel}), alt : $baseModel.format($component.payments.common.alt,{reference: $component.payments.common.cancel}) },click: $component.cancelMonthlyLimit ">
+                    <span class="icons icon-close"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <!-- ko if : $baseModel.small() -->
+    <div class="oj-flex oj-flex-items-pad" data-bind="with : $parent">
+        <!-- For all except DD and P2P -->
+        <!-- ko if : $data.accountName -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.accountName, value :accountName"></row>
+        <!-- /ko -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.nickname, value :nickName"></row>
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.acctype, value :$component.payments.payee.type[payeeType]"></row>
+        <!-- ko if : $data.accountNumber -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.accountNumber, value :accountNumber"></row>
+        <!-- /ko -->
+        <!-- For DD -->
+        <!-- ko if : $data.demandDraftPayeeType -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.drafttype, value :$component.payments.payee.type[demandDraftPayeeType]"></row>
+        <!-- /ko -->
+        <!-- For Domestic -->
+        <!-- ko if : $data.network -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.payvia, value :$component.payments.payee.network[network]"></row>
+        <!-- /ko -->
+        <!-- For SEPA Domestic -->
+        <!-- ko if : $data.sepaType -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.payvia, value :$component.payments.payee.network[sepaType]"></row>
+        <!-- /ko -->
+        <!-- For Domestic -->
+        <!-- ko if : $data.bankDetails -->
+        <div data-bind="with : bankDetails">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.bnkdetails, value :[($data.code || ''),name,($data.branch || ''),address,($data.city || ''), ($component.countryCodeMap[$data.country] || $data.country || '')]"></row>
+        </div>
+        <!-- /ko -->
+        <!-- For P2P -->
+        <!-- ko if : $data.transferMode && $data.transferValue -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.transferMode, value :$component.payments.payee.type[transferMode]"></row>
+        <!-- /ko -->
+        <!-- For P2P -->
+        <!-- ko if : $data.transferValue -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.transferValue, value :transferValue"></row>
+        <!-- /ko -->
+        <!-- For DD -->
+        <!-- ko if : $data.payAtCity -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.payAtCity, value :payAtCity"></row>
+        <!-- /ko -->
+        <!-- For International DD -->
+        <!-- ko if : $data.payAtCountry -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.payAtCountry,
+        value:$component.countryCodeMap ? $component.countryCodeMap[payAtCountry]:payAtCountry"></row>
+        <!-- /ko -->
+        <!-- ko if : $data.postalAddress -->
+        <div data-bind=" with:$data.postalAddress">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.deliveryLocation, value :[($data.addressType || ''),($data.branchName || ''), ($data.line1 || ''), ($data.line2 || ''), ($data.line3 || ''), ($data.city || ''), ($data.postalCode || ''), ($component.countryCodeMap?$component.countryCodeMap[$data.country]: ($data.country?$data.country:''))]"></row>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$component.setLimitClicked() -->
+        <div class="oj-sm-12">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-8">
+                    <oj-label>
+                    <span data-bind="text:$component.payments.payee.labels.dailylimit"></span></oj-label>
+                    <div class="">
+                        <span data-bind="text:((limitDetails && limitDetails.DAILY.maxAmount.amount())?(limitDetails.DAILY.isEffectiveFromTomorrow?$baseModel.format($component.payments.payee.message.efffromtom, {amount : $baseModel.formatCurrency(limitDetails.DAILY.maxAmount.amount(), limitDetails.DAILY.maxAmount.currency)}):$baseModel.formatCurrency(limitDetails.DAILY.maxAmount.amount(), limitDetails.DAILY.maxAmount.currency)):$component.payments.payee.labels.notset)">
+                        </span>
+                        <a href="#" class="form-button-link" data-bind="attr:{ title: $baseModel.format($component.payments.common.title,{reference: $component.payments.payee.labels.edit}), alt : $baseModel.format($component.payments.common.alt,{reference: $component.payments.payee.labels.edit}) }, click:$component.setLimit">
+                        <span class="icons icon-remarks"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.setLimitClicked() -->
+        <div class="oj-sm-12">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-8" data-bind="component: {
+                            name: 'amount-input', params: {
+                            amount :$component.newLimitAmount,
+                            label : $component.payments.payee.labels.dailylimit,
+                            currency: $component.limitCurrency(),
+                            converter:$baseModel.formatCurrency,
+                            currencyListRequired : false,
+                            validator:$component.validationTracker,
+                            isMandatory:true,
+                            rootId:'bill-amount',
+                            currencyURL : '',
+                            currencyParser :'',
+                            rootClass:'form-input'
+                        }
+                         }">
+                </div>
+                <div class="oj-flex-item oj-sm-4">
+                    <br>
+                    <br>
+                    <a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.common.title,{reference: $component.payments.common.save}), alt : $baseModel.format($component.payments.common.alt,{reference: $component.payments.common.save}) },click: $component.confirmEditPayeeDetails.bind($data, $data,'DAILY')">
+                                <span class="icons icon-save"></span>
+                            </a>
+                    <!-- back button -->
+                    <a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.common.title,{reference: $component.payments.common.cancel}), alt : $baseModel.format($component.payments.common.alt,{reference: $component.payments.common.cancel}) },click: $component.cancelDailyLimit ">
+                                <span class="icons icon-close"></span>
+                            </a>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$component.setMonthlyLimitClicked() -->
+        <div class="oj-sm-12">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-8">
+                    <oj-label>
+                    <span data-bind="text:$component.payments.payee.labels.monthlylimit"></span></oj-label>
+                    <div class="">
+                        <span data-bind="text:(limitDetails && limitDetails.MONTHLY.maxAmount.amount()?(limitDetails.MONTHLY.isEffectiveFromTomorrow?$baseModel.format($component.payments.payee.message.efffromtom, {amount : $baseModel.formatCurrency(limitDetails.MONTHLY.maxAmount.amount(), limitDetails.MONTHLY.maxAmount.currency)}):$baseModel.formatCurrency(limitDetails.MONTHLY.maxAmount.amount(), limitDetails.MONTHLY.maxAmount.currency)):$component.payments.payee.labels.notset)">
+                        </span>
+                        <a class="action-icon" href="#" data-bind="attr:{'alt':$component.payments.common.alt ,'title':$component.payments.common.title },click:$component.setMonthlyLimit">
+                        <span class="icons icon-remarks"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.setMonthlyLimitClicked() -->
+        <div class="oj-sm-12">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-8" data-bind="component: {
+                            name: 'amount-input', params: {
+                            amount :$component.newMonthlyLimitAmount,
+                            label : $component.payments.payee.labels.monthlylimit,
+                            currency: $component.limitCurrency(),
+                            converter:$baseModel.formatCurrency,
+                            currencyListRequired : false,
+                            validator:$component.validationTracker,
+                            isMandatory:true,
+                            rootId:'bill-amount',
+                            currencyURL : '',
+                            currencyParser :'',
+                            rootClass:'form-input'
+                        }
+                         }">
+                </div>
+                <div class="oj-flex-item oj-sm-4">
+                    <br>
+                    <br>
+                    <a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.common.title,{reference: $component.payments.common.save}), alt : $baseModel.format($component.payments.common.alt,{reference: $component.payments.common.save}) },click: $component.confirmEditPayeeDetails.bind($data, $data, 'MONTHLY')">
+                    <span class="icons icon-save"></span>
+                    </a>
+                    <!-- back button -->
+                    <a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.common.title,{reference: $component.payments.common.cancel}), alt : $baseModel.format($component.payments.common.alt,{reference: $component.payments.common.cancel}) },click: $component.cancelMonthlyLimit">
+                    <span class="icons icon-close"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+</page-section>

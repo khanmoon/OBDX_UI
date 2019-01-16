@@ -1,0 +1,63 @@
+<div class="oj-flex cust-details oj-sm-flex-items-initial">
+  <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+    <div class="label" data-bind="text:$component.locale.debitCards.customerName">
+    </div>
+    <div class="cust-name" data-bind="text:$baseModel.format($component.locale.debitCards.fullName, {firstName: $dashboard.userData.userProfile.firstName, middleName: $dashboard.userData.userProfile.middleName, lastName: $dashboard.userData.userProfile.lastName})">
+    </div>
+  </div>
+  <!-- ko if: $data.cardHolderName -->
+  <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-1">
+    <div class="label" data-bind="text:$component.locale.debitCards.nameOnCard">
+    </div>
+    <div class="cust-name" data-bind="text:cardHolderName">
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+    <div class="label" data-bind="text:$component.locale.debitCards.accountNo">
+    </div>
+    <div class="cust-name" data-bind="text:accountId.displayValue">
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+    <div class="label" data-bind="text:$component.locale.debitCards.CardNumber">
+    </div>
+    <div class="cust-name" data-bind="text:cardNo.displayValue">
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1">
+    <div class="label" data-bind="text:$component.locale.debitCards.CardType">
+    </div>
+    <div class="cust-name" data-bind="text:cardType">
+    </div>
+  </div>
+  <!-- ko if:$data.expiryDate -->
+  <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-1">
+    <div class="label" data-bind="text:$component.locale.debitCards.vaidThorugh">
+    </div>
+    <div class="cust-name" data-bind="text:$baseModel.formatDate(expiryDate)">
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1">
+    <div class="label" data-bind="text:$component.locale.common.status">
+    </div>
+    <div class="cust-name" data-bind="text:cardStatus">
+    </div>
+  </div>
+  <!-- ko if:$component.internationalTransactionsValue()===true ||  $component.internationalTransactionsValue()===false -->
+  <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-3">
+        <oj-label for="switch" class="oj-label oj-label-inline hide-label">
+          <span data-bind="text: $component.locale.debitCards.internationalTransactions"></span>
+        </oj-label>
+        <oj-switch id="switch" value="{{$component.internationalTransactionsValue}}" on-click="{{$component.internationalTransactionsChanged}}"></oj-switch>
+      </div>
+      <div class="oj-flex-item oj-sm-9">
+        <span data-bind="text: $component.locale.debitCards.internationalTransactions"></span>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+</div>

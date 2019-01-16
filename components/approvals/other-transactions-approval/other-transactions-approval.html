@@ -1,0 +1,108 @@
+<!-- ko if:transactionListLoaded() -->
+<!-- ko if:$baseModel.large() -->
+<div id="pagingControlDemo" class="full-width">
+  <oj-table :id="[[$component.Nls.labels.otherTransactionsList +($baseModel.incrementIdCount())]]" :aria-label="[[$component.Nls.labels.otherTransactionsList]]" columns-default="[[{sortable:'enabled'}]]" columns="[[[{headerText:$component.Nls.labels.date,template:('date-time-others'+$baseModel.currentIdCount()),style:'width:10%',field:'creationDate'},{headerText:$component.Nls.labels.initiatedBy,field:'createdBy'},{headerText:$component.Nls.labels.transactionType,field:'taskDTO',template:'transaction-type'},{headerText:$component.Nls.labels.description,field:'description'},{headerText:$component.Nls.labels.referenceNo,field:'transactionId',template:($baseModel.currentIdCount() +'_approval_link_pending')},{headerText:$component.Nls.labels.status,template:'approvalStatusOthers',field:'status'}]]]" data="[[arrayDataSource]]">
+    <caption class="hide-label" data-bind="text:$component.Nls.labels.otherTransactionsList"></caption>
+    <template :slot="[[$baseModel.currentIdCount() + '_approval_link_pending']]">
+
+        <a href="#" data-bind="attr:{ title:  $baseModel.format($component.Nls.labels.details,{transactionId : $current.row.transactionId}), alt :  $baseModel.format($component.Nls.labels.detailText,{transactionId : $current.row.transactionId}) },text:$current.row.transactionId,click:$dashboard.loadComponent.bind($data,'transaction-detail', $current.row)"></a>
+
+    </template>
+
+    <template :slot="[['date-time-others'+ $baseModel.currentIdCount()]]">
+
+        <div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "date-time", params:{rootModel: $component,date:$current.row.creationDate}}'></div>
+
+    </template>
+    <template slot="transaction-type">
+
+        <div class="oj-flex oj-flex-items-pad" data-bind="text:$component.Nls.labels[$current.row.taskDTO.id]"></div>
+
+    </template>
+    <template slot="approvalStatusOthers">
+
+        <div data-bind="template : {name : 'approvals/status', data : {status :$current.row.processingStatus ,noOfApprovalSteps: $current.row.noOfApprovalSteps, nls : $component.Nls.status}}"></div>
+
+    </template>
+  </oj-table>
+  <oj-paging-control class="oj-flex-item" slot="bottom" :id="[[$component.Nls.labels.otherTransactionsList +($baseModel.currentIdCount())]]" :page-size="[[10]]" data="[[paginationDataSource]]"></oj-paging-control>
+</div>
+
+<!-- /ko -->
+<!-- ko if: !$baseModel.large() -->
+<div class="form-main-container grid-main-container">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <h3 class="heading" data-bind="text:$baseModel.format($component.Nls.labels.OTHER_TRANSACTION_COUNT, {count: $component.countForHeader})"></h3>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <oj-list-view id="searchRuleListView" data="[[arrayDataSource]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('rulesSearch_template',true)}]]" selection-mode="[['single']]">
+      </oj-list-view>
+      <!-- ko if: $baseModel.small() -->
+      <oj-paging-control class="oj-flex-item center" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[arrayDataSource]]">
+      </oj-paging-control>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- ko if: !$baseModel.small() -->
+  <oj-paging-control class="oj-flex-item" slot="bottom" :page-size="[[10]]" data="[[arrayDataSource]]">
+  </oj-paging-control>
+  <!-- /ko -->
+  <script type="text/html" id="rulesSearch_template">
+    <li data-bind="attr: {id: $data['transactionId']}">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-2 oj-md-1">
+          <input type="checkbox" name="selection" data-bind="attr : {id : 'childCheckBox' + $context.index} , value: transactionId">
+          <label data-bind="attr : {for : 'childCheckBox' + $context.index}" class="oj-checkbox-label"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-10 oj-md-11 no-pad-cols grid-row-group">
+          <a href="#" data-bind="attr:{ title:  $baseModel.format($component.Nls.labels.details,{transactionId : transactionId}), alt :  $baseModel.format($component.Nls.labels.detailText,{transactionId : transactionId}) },click:$component.showDetails.bind($data,'transaction-detail', $data,$parent)">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <label data-bind="text: $component.Nls.labels.date"></label>
+                <div class="date" data-bind='component:{name: "date-time", params:{rootModel: $component,date:creationDate}}'></div>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-6">
+                <label data-bind="text: $component.Nls.labels.initiatedBy"></label>
+                <div data-bind="text:initiatedBy"></div>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-6">
+                <label data-bind="text: $component.Nls.labels.transactionType"></label>
+                <div data-bind="text:$component.Nls.labels[taskDTO.id]"></div>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6">
+                <label data-bind="text: $component.Nls.labels.description"></label>
+                <div data-bind="text:description"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-6">
+                <label data-bind="text: $component.Nls.labels.referenceNo"></label>
+                <div class="ref-no-text" data-bind="text:transactionId"></div>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6">
+                <label data-bind="text: $component.Nls.labels.status"></label>
+                <div data-bind="template : {name : 'approvalStatusOthers'}"></div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </div>
+
+    </li>
+  </script>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<script type="text/html" id="approvalStatusOthers">
+  <td>
+    <div data-bind="template : {name : 'approvals/status', data : {status :processingStatus ,noOfApprovalSteps: noOfApprovalSteps, nls : $component.Nls.status}}"></div>
+  </td>
+</script>

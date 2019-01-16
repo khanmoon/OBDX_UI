@@ -1,0 +1,340 @@
+<div class="form-main-container">
+    <!-- ko if:showReviewPage() -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div>
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resourceBundle.labels.themeId , value : $component.theme.brandId"></row>
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resourceBundle.labels.themeName , value : $component.theme.brandName"></row>
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resourceBundle.labels.themeDesc , value : $component.theme.brandDescription"></row>
+        </div>
+    </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-sm-12">
+            <div class="oj-flex-item oj-sm-4">
+                <oj-accordion id="accordionThemeReviewPage">
+                    <oj-collapsible id="assets">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.logo"></h4>
+                        <div class="oj-flex oj-flex-items-pad ">
+                            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                <span data-bind="text:$component.resourceBundle.labels.brandLogo"></span>
+                            </div>
+                            <div class="oj-flex-item  oj-sm-4 oj-md-3 oj-lg-4">
+                                <a href="javascript:void()" data-bind="text:$component.resourceBundle.labels.downloadImg,click: $component.downloadImageAssets.bind($data, $component.theme), attr:{'alt':$component.resourceBundle.labels.downloadImg,
+            'title':$baseModel.format($component.resourceBundle.generic.common.clickHere,{action:$component.resourceBundle.labels.downloadImg})}"></a>
+                            </div>
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="typography">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.typo"></h4>
+                        <div>
+                            <!-- ko foreach:Object.keys($component.theme.styleAsset.fontDetails) -->
+                            <div class="oj-flex oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                                    <span data-bind="text:$component.resourceBundle.labels.colors[$data]"></span>
+                                </div>
+                                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                                    <span data-bind="text:$component.theme.styleAsset.fontDetails[$data]"></span>
+                                </div>
+                            </div>
+                            
+                            <!-- /ko -->
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="font-size">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.fontSize"></h4>
+                        <div>
+                            <!-- ko foreach:Object.keys($component.theme.styleAsset.fontSize) -->
+                            <div class="oj-flex oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                    <span data-bind="text:$component.resourceBundle.labels.fontSize[$data]"></span>
+                                </div>
+                                <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-4">
+                                    <span data-bind="text:$component.appendSizeUnit($component.theme.styleAsset.fontSize[$data]())"></span>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="font-weights">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.fontWeights"></h4>
+                        <div>
+                            <!-- ko foreach:Object.keys($component.theme.styleAsset['font-weights']) -->
+                            <div class="oj-flex oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                    <span data-bind="text:$component.resourceBundle.labels['font-weights'][$data]"></span>
+                                </div>
+                                <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-4">
+                                    <span data-bind="text:$component.theme.styleAsset['font-weights'][$data]()"></span>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="components">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.component"></h4>
+                        <div>
+                            <!-- ko foreach:{data:Object.keys($component.theme.styleAsset.components)} -->
+                            <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                    <oj-label>
+                                        <span data-bind="text:$component.resourceBundle.labels.components[$data]"></span>
+                                    </oj-label>
+                                </div>
+                                <div class="oj-flex-item  oj-sm-4 oj-md-3 oj-lg-4">
+                                    <div class="review-theme__colorBox">
+                                        <div class="review-theme__selectedColor" data-bind="style:{'background-color':$component.theme.styleAsset.components[$data]()}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- /ko -->
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="base-colors">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.baseColors"></h4>
+                        <div>
+                            <!-- ko foreach:{data:Object.keys($component.theme.styleAsset['base-colors'])} -->
+                            <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                    <oj-label>
+                                        <span data-bind="text:$component.resourceBundle.labels['base-colors'][$data]"></span>
+                                    </oj-label>
+                                </div>
+                                <div class="oj-flex-item  oj-sm-4 oj-md-3 oj-lg-4">
+                                    <div class="review-theme__colorBox">
+                                        <div class="review-theme__selectedColor" data-bind="style:{'background-color':$component.theme.styleAsset['base-colors'][$data]()}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="base-variables">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.baseVariables"></h4>
+                        <div>
+
+                            <!-- ko foreach:{data:Object.keys($component.theme.styleAsset['base-variables'])} -->
+                            <div class="oj-flex oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-8">
+                                    <oj-label :for="[[$data]]">
+                                        <span data-bind="text:$component.resourceBundle.labels['base-variables'][$data]"></span>
+                                    </oj-label>
+                                </div>
+                                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+                                    <span data-bind="text:$component.appendSizeUnit($component.theme.styleAsset['base-variables'][$data]())"></span>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="button-colors">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.buttonColors"></h4>
+                        <div>
+                            <!-- ko foreach:{data:Object.keys($component.theme.styleAsset['button-colors'])} -->
+                            <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                    <oj-label>
+                                        <span data-bind="text:$component.resourceBundle.labels['button-colors'][$data]"></span>
+                                    </oj-label>
+                                </div>
+                                <div class="oj-flex-item  oj-sm-4 oj-md-3 oj-lg-4">
+                                    <div class="review-theme__colorBox">
+                                        <div class="review-theme__selectedColor" data-bind="style:{'background-color':$component.theme.styleAsset['button-colors'][$data]()}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-bind="template : {afterRender: $component.afterColorRender.bind($data,$data,$component.theme.styleAsset['button-colors'][$data](),'button-colors')}"></div>
+                            <!-- /ko -->
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="button-variables">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.buttonVariables"></h4>
+                        <div>
+
+                            <!-- ko foreach:{data:Object.keys($component.theme.styleAsset['button-variables'])} -->
+                            <div class="oj-flex oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-8">
+                                    <oj-label :for="[[$data]]">
+                                        <span data-bind="text:$component.resourceBundle.labels['button-variables'][$data]"></span>
+                                    </oj-label>
+                                </div>
+                                <div class="oj-flex-item oj-sm-4">
+                                    <span data-bind="text:$component.appendSizeUnit($component.theme.styleAsset['button-variables'][$data]())"></span>
+                                </div>
+                            </div>
+                            <div data-bind="template : {afterRender: $component.afterColorRender.bind($data,$data,$component.theme.styleAsset['button-variables'][$data](),'button-variables')}"></div>
+                            <!-- /ko -->
+                            
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="navigation-bar">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.navBar"></h4>
+                        <div>
+                            <!-- ko foreach:{data:Object.keys($component.theme.styleAsset['navigation-bar'])} -->
+                            <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                    <oj-label>
+                                        <span data-bind="text:$component.resourceBundle.labels['navigation-bar'][$data]"></span>
+                                    </oj-label>
+                                </div>
+                                <div class="oj-flex-item  oj-sm-4 oj-md-3 oj-lg-4">
+                                    <div class="review-theme__colorBox">
+                                        <div class="review-theme__selectedColor" data-bind="style:{'background-color':$component.theme.styleAsset['navigation-bar'][$data]()}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="table">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.tableColors"></h4>
+                        <div>
+                            <!-- ko foreach:{data:Object.keys($component.theme.styleAsset.table)} -->
+                            <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                    <oj-label>
+                                        <span data-bind="text:$component.resourceBundle.labels.table[$data]"></span>
+                                    </oj-label>
+                                </div>
+                                <div class="oj-flex-item  oj-sm-4 oj-md-3 oj-lg-4">
+                                    <div class="review-theme__colorBox">
+                                        <div class="review-theme__selectedColor" data-bind="style:{'background-color':$component.theme.styleAsset.table[$data]()}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="banner-colors">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.bannerColors"></h4>
+                        <div>
+                            <!-- ko foreach:{data:Object.keys($component.theme.styleAsset['banner-colors'])} -->
+                            <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-8">
+                                    <oj-label>
+                                        <span data-bind="text:$component.resourceBundle.labels['banner-colors'][$data]"></span>
+                                    </oj-label>
+                                </div>
+                                <div class="oj-flex-item  oj-sm-4 oj-md-3 oj-lg-4">
+                                    <div class="review-theme__colorBox">
+                                        <div class="review-theme__selectedColor" data-bind="style:{'background-color':$component.theme.styleAsset['banner-colors'][$data]()}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="banner-variables">
+                        <h4 slot="header" data-bind="text:$component.resourceBundle.heading.bannerVariables"></h4>
+                        <div>
+
+                            <!-- ko foreach:{data:Object.keys($component.theme.styleAsset['banner-variables'])} -->
+                            <div class="oj-flex oj-flex-items-pad ">
+                                <div class="oj-flex-item oj-sm-8">
+                                    <oj-label :for="[[$data]]">
+                                        <span data-bind="text:$component.resourceBundle.labels['banner-variables'][$data]"></span>
+                                    </oj-label>
+                                </div>
+                                <div class="oj-flex-item oj-sm-4">
+                                    <span data-bind="text:$component.appendSizeUnit($component.theme.styleAsset['banner-variables'][$data]())"></span>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+
+                        </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="link">
+                            <h4 slot="header" data-bind="text:$component.resourceBundle.heading.linkColors"></h4>
+                            <div>
+                                <!-- ko foreach:{data:Object.keys($component.theme.styleAsset.link)} -->
+                                <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                                    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                        <oj-label>
+                                            <span data-bind="text:$component.resourceBundle.labels.link[$data]"></span>
+                                        </oj-label>
+                                    </div>
+                                    <div class="oj-flex-item  oj-sm-4 oj-md-3 oj-lg-4">
+                                            <div class="review-theme__colorBox">
+                                                <div class="review-theme__selectedColor" data-bind="style:{'background-color':$component.theme.styleAsset.link[$data]()}"></div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </oj-collapsible>
+                        <oj-collapsible id="form-colors">
+                            <h4 slot="header" data-bind="text:$component.resourceBundle.heading.formColors"></h4>
+                            <div>
+                                <!-- ko foreach:{data:Object.keys($component.theme.styleAsset['form-colors'])} -->
+                                <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                                    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                                        <oj-label>
+                                            <span data-bind="text:$component.resourceBundle.labels['form-colors'][$data]"></span>
+                                        </oj-label>
+                                    </div>
+                                    <div class="oj-flex-item  oj-sm-4 oj-md-3 oj-lg-4">
+                                            <div class="review-theme__colorBox">
+                                                <div class="review-theme__selectedColor" data-bind="style:{'background-color':$component.theme.styleAsset['form-colors'][$data]()}"></div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </oj-collapsible>
+                        <oj-collapsible id="form-variables">
+                            <h4 slot="header" data-bind="text:$component.resourceBundle.heading.formVariables"></h4>
+                            <div>
+                                <!-- ko foreach:{data:Object.keys($component.theme.styleAsset['form-variables'])} -->
+                                <div class="oj-flex oj-flex-items-pad ">
+                                    <div class="oj-flex-item oj-sm-8">
+                                        <oj-label :for="[[$data]]">
+                                            <span data-bind="text:$component.resourceBundle.labels['form-variables'][$data]"></span>
+                                        </oj-label>
+                                    </div>
+                                    <div class="oj-flex-item oj-sm-4">
+                                            <span data-bind="text:$component.appendSizeUnit($component.theme.styleAsset['form-variables'][$data]())"></span>
+                                        </div>
+                                </div>
+                                <!-- /ko -->
+    
+                            </div>
+                        </oj-collapsible>
+                </oj-accordion>
+            </div>
+            <div class="oj-flex-item oj-sm-8">
+                <div data-bind="component:{name:'preview-theme', params: {themeData : $component.theme , sizeUnit: $component.sizeUnit, modelInit: $component.showReviewPage}}"></div>
+            </div>
+        </div>
+    </page-section>
+    <!-- /ko -->
+    <div class="button-container">
+        <!-- ko if:$component.parameters.mode ==='view'-->
+        <oj-button class="action-button-primary " on-click="[[$component.editTheme.bind($data,$component.theme)]]">
+            <span slot="startIcon" class="icons icon-edit"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.edit"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary " on-click="[[$component.deleteTheme.bind($data,$component.theme,false)]]">
+            <span slot="startIcon" class="icons icon-delete"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.delete"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+        </oj-button>
+        <!-- /ko -->
+    </div>
+</div>
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'confirmDelete', header: $component.resourceBundle.generic.common.delete">
+    <div class="form-main-container">
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading: ''">
+            <div data-bind="html:$component.resourceBundle.deleteConfirmationMessage"></div>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button id="confirm" class="action-button-primary" on-click="[[$component.deleteTheme.bind($data,$component.theme,true)]]">
+                <span data-bind="text:$component.resourceBundle.generic.common.delete"></span>
+            </oj-button>
+            <oj-button id="cancel" class="action-button-secondary" on-click="[[function(){$('#confirmDelete').hide().trigger('closeModal');}]]">
+                <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+            </oj-button>
+        </div>
+    </div>
+</modal-window>

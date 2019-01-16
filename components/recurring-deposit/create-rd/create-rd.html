@@ -1,0 +1,243 @@
+<div class="form-main-container oj-flex  oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+            <div class="oj-flex-items-pad oj-sm-12 oj-md-12 oj-lg-6">
+                <oj-validation-group id="RdTracker" valid="{{groupValid}}">
+                    <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.pageHeader.depositDetails">
+                        <div class="oj-flex-item oj-lg-12">
+                            <account-input params="baseModel : $baseModel,
+            rootModel: $component ,
+            label : $component.resource.depositDetail.selectAccount,
+            type : 'balance' ,
+            showHoldingPattern : true,
+            account :$component.createRDModel.payInInstruction()[0].accountId.value,
+            additionalDetails :$component.additionalDetailsAccount,
+            taskCode:'TD_F_CRT_RD'" class="oj-flex oj-sm-12 oj-md-7 oj-lg-7"></account-input>
+             <oj-validation-group id="maturityTracker" valid="{{maturityValid}}">
+                        <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                            <oj-label for="product" class="oj-flex-item oj-lg-12 oj-sm-12">
+                                <span data-bind="text:$component.resource.depositDetail.selectProduct"></span>
+                            </oj-label>
+                            <!-- ko if:productsLoaded() -->
+                            <oj-select-one id="product" :aria-label="[[$component.resource.depositDetail.selectProduct]]" class="oj-flex-item oj-md-6 oj-lg-7 oj-sm-12" placeholder="[[$component.resource.pleaseSelect]]" value="{{createRDModel.productDTO.productId}}" on-value-changed="[[productChangeHandler]]" required>
+                                <!-- ko foreach:productList -->
+                                <oj-option :id="[[productId+$baseModel.incrementIdCount()]]" value="[[productId]]"><span data-bind="text:name"></span></oj-option>
+                                <!-- /ko -->
+                            </oj-select-one>
+                            <!-- /ko -->
+                                    <div class="oj-flex-item oj-md-12 oj-lg-12 oj-sm-12">
+                                        <a href="javascript:void(0)" data-bind="attr:{alt:$component.resource.depositDetail.link.viewInterestRate,title:$component.resource.depositDetail.alt.viewInterestRate},text:$component.resource.depositDetail.link.viewInterestRate,click:$component.openInterestSlabs"></a>
+                                    </div>
+                        </div>
+                        <div data-bind="component: {
+      name: 'amount-input', params: {
+      amount :$component.createRDModel.principalAmount.amount,
+      label : $component.resource.depositDetail.depositAmount,
+      currency: $component.createRDModel.principalAmount.currency,
+      currencyListRequired : true,
+      validator:$component.validationTracker,
+      isMandatory:true,
+      rootId:'rd-amount',
+      currencyURL : $component.url(),
+      currencyParser : $component.currencyParser,
+      rootClass:'form-input',
+      valueClasses : 'oj-lg-6 oj-md-6'
+  }
+}">
+<!-- ko if:isProductSelected -->
+<div class="oj-flex-item">
+    <div class="info-text-small" data-bind="text:$data.depositMessage()"></div>
+</div>
+<!-- /ko -->
+                        </div>
+                        <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                                <oj-label for="tenureYear" class="oj-flex-item oj-lg-12">
+                                    <span data-bind="text:$component.resource.depositDetail.depositTenure"></span>
+                                </oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 goal-tenure-select">
+                                <div class="oj-flex oj-flex-items-pad">
+                                    <!-- ko if:$component.isTenureListLoaded() -->
+                                    <div class="oj-flex-item oj-sm-6 oj-md-3 oj-lg-3">
+                                        <oj-select-one id="tenureYear" :aria-label="[[$component.resource.depositDetail.label.years]]" class="oj-flex-item oj-lg-4" placeholder="[[$component.resource.depositDetail.label.years]]" value="{{createRDModel.tenure.years}}" required>
+                                            <!-- ko foreach:tenureYears -->
+                                            <oj-option :id="[[year+$baseModel.incrementIdCount()]]" value="[[year]]"><span data-bind="text:value"></span></oj-option>
+                                            <!-- /ko -->
+                                        </oj-select-one>
+                                    </div>
+                                    <div class="oj-flex-item oj-sm-6 oj-md-3 oj-lg-3">
+                                        <oj-select-one id="tenureMonth" class="oj-flex-item oj-lg-4" placeholder="[[$component.resource.depositDetail.label.months]]" value="{{createRDModel.tenure.months}}" :aria-label="[[$component.resource.depositDetail.label.months]]" required>
+                                            <!-- ko foreach:tenureMonths -->
+                                            <oj-option :id="[[month+$baseModel.incrementIdCount()]]" value="[[month]]"><span data-bind="text:value"></span></oj-option>
+                                            <!-- /ko -->
+                                        </oj-select-one>
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- ko if:isTenureLoaded -->
+                                    <oj-label for="tenure" class="oj-flex-item oj-lg-12 oj-md-12">
+                                        <div class="info-text-small" data-bind="text:tenureMessage"></div>
+                                    </oj-label>
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+                        </div>
+                        </oj-validation-group>
+                        <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-md-12">
+                            <a href="javascript:void(0)" data-bind="attr:{alt:$component.resource.depositDetail.link.calculateMaturity,title:$component.resource.depositDetail.link.calculateMaturity},text:$component.resource.depositDetail.link.calculateMaturity" on-click="[[calculateMaturity]]" class="oj-flex-item oj-md-12 oj-lg-12 oj-sm-12"></a>
+                        </div>
+                        <!-- ko if:$component.isMaturityCalculated() -->
+                        <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.depositDetail.maturityAmount , value :$baseModel.formatCurrency(createRDModel.maturityAmount.amount(), createRDModel.maturityAmount.currency())">
+                        </row>
+                        <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.depositDetail.rateOfInterest , value :$baseModel.formatNumber($component.createRDModel.interestRate()/100, 'percent')">
+                        </row>
+                        <div class="buttons-container oj-lg-2 oj-md-2 oj-sm-2 oj-flex oj-flex-items-pad">
+                            <oj-button class="action-button-secondary oj-flex-item" id="resetButton">
+                                <span slot="startIcon" class="icons icon-refresh"></span>
+                                <span data-bind="text: $component.resource.generic.common.reset" on-click="[[resetMaturity]]"></span>
+                            </oj-button>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if:ischeckBoxVisible -->
+                        <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-md-12">
+                            <div for="holdingPattern" class="recurringDeposit__holdingPattern oj-flex-item oj-lg-12 oj-md-12" data-bind="text:$component.resource.depositDetail.currentHoldingPattern"></div>
+                            <oj-label for="holdingPattern" class="oj-flex-item oj-lg-12 oj-md-12"><span data-bind="text:$component.resource.depositDetail.modifyHoldingPattern"></span></oj-label>
+                            <oj-checkboxset id="holdingPattern" value="{{holdingPattern}}" on-value-changed="[[holdingPatternChangeHandler]]" class="oj-flex-item">
+                                <oj-option value="SINGLE">
+                                    <span data-bind="text:$component.resource.depositDetail.label.single">
+              </span></oj-option>
+                            </oj-checkboxset>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                    </page-section>
+                    <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.pageHeader.maturityDetails">
+                        <div class="oj-lg-12 oj-md-12">
+                        <!-- ko if:payOutOptionsLoaded() -->
+                          <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.maturityDetail.maturityInstruction , value :$component.resource.maturityDetail.rollOverType[$component.createRDModel.rollOverType()]"></row>
+                        <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                            <oj-label for="payTo" class="oj-flex-item oj-lg-12 oj-sm-12">
+                                <span data-bind="text:$component.resource.maturityDetail.payTo"></span>
+                            </oj-label>
+                            <oj-select-one id="payTo" :aria-label="[[$component.resource.maturityDetail.payTo]]" class="oj-flex-item oj-lg-6" placeholder="[[$component.resource.pleaseSelect]]" value="{{createRDModel.payoutInstructions()[0].type}}" required on-value-changed="[[payOutOptionChanged]]">
+                                <!-- ko foreach:payOutOptionList -->
+                                <oj-option :id="[[code+$baseModel.incrementIdCount()]]" value="[[code]]"><span data-bind="text:description"></span></oj-option>
+                                <!-- /ko -->
+                            </oj-select-one>
+                        </div>
+                        <!-- ko if:createRDModel.payoutInstructions()[0].type() ==='O' -->
+                        <div class="oj-lg-7 oj-md-7">
+                       <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.resource.maturityDetail.creditAccountNum,type : 'address' , account :$component.createRDModel.payoutInstructions()[0].accountId.value ,additionalDetails : $component.additionalDetailsTransfer,validator:$component.validationTracker"></account-input>
+                   </div>
+                        <!-- /ko -->
+                        <!-- ko if:createRDModel.payoutInstructions()[0].type() ==='E' -->
+                        <div class="oj-flex oj-flex-items-pad oj-md-12 oj-lg-12">
+                            <oj-label for="maturityAccount" class="oj-flex-item oj-lg-12 oj-md-12">
+                                <span data-bind="text:$component.resource.maturityDetail.creditAccountNum"></span>
+                            </oj-label>
+                            <oj-input-text id="maturityAccount" class="oj-flex-item oj-lg-6 oj-md-5" value="{{createRDModel.payoutInstructions()[0].account}}" required validators="[[$baseModel.getValidator('ACCOUNT')]]">
+                            </oj-input-text>
+                        </div>
+                        <div class="oj-flex oj-flex-items-pad oj-md-12 oj-lg-12">
+                            <oj-label for="maturityAccountBeneficiaryName" class="oj-flex-item oj-lg-12 oj-md-12">
+                                <span data-bind="text:$component.resource.maturityDetail.accountName"></span>
+                            </oj-label>
+                            <oj-input-text id="maturityAccountBeneficiaryName" class="oj-flex-item oj-lg-6 oj-md-5" value="{{createRDModel.payoutInstructions()[0].beneficiaryName}}" required validators="[[$baseModel.getValidator('NAME')]]">
+                            </oj-input-text>
+                        </div>
+                        <oj-validation-group id="codeTracker" valid="{{codeValid}}">
+                            <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-md-12">
+                                <oj-label for="maturityAccountBankCode" class="oj-flex-item oj-lg-12 oj-md-12">
+                                    <span data-bind="text:$component.resource.maturityDetail.bankCode"></span>
+                                </oj-label>
+                                <oj-input-text id="maturityAccountBankCode" class="oj-flex-item oj-lg-6 oj-md-5" value="{{createRDModel.payoutInstructions()[0].clearingCode}}" required validators="[[$baseModel.getValidator('BANK_CODE')]]">
+                                </oj-input-text>
+                            </div>
+                        </oj-validation-group>
+                        <div class="oj-flex oj-flex-items-pad oj-lg-8 oj-md-8 oj-sm-12">
+                             <div class="oj-flex oj-flex-item oj-lg-3 oj-md-3 oj-sm-5">
+                                <oj-button id="bankCodeOpener" class="action-button-secondary" on-click="[[bankDetails]]">
+                                    <span slot="startIcon" class="icons icon-confirm"></span>
+                                    <span data-bind="text:$component.resource.generic.common.verify"></span>
+                                </oj-button>
+                            </div>
+                             <div class="recurringDeposit__bankLookUp" data-bind="text:$component.resource.maturityDetail.or">
+                            </div>
+                            <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-6 recurringDeposit__bankLookUp">
+                                <a href="#" class="form-button-link" data-bind="text:$component.resource.maturityDetail.lookUpBankCode,click:bankLookupHandler"></a>
+                            </div>
+                            <!-- ko if:$component.branchDetailsLoaded() -->
+                        <div data-bind="text:$component.createRDModel.payoutInstructions()[0].bankName" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+                        <div data-bind="text:$component.createRDModel.payoutInstructions()[0].address.line1" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+                        <div data-bind="text:$component.createRDModel.payoutInstructions()[0].address.line2" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+                        <div data-bind="text:$component.createRDModel.payoutInstructions()[0].address.city" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+                        <!-- /ko -->
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if:createRDModel.payoutInstructions()[0].type() ==='I' -->
+                        <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-md-12">
+                            <oj-label for="maturityAccountPayout" class="oj-flex-item oj-lg-12 oj-md-12">
+                                <span data-bind="text:$component.resource.maturityDetail.creditAccountNum"></span>
+                            </oj-label>
+                            <oj-input-text id="maturityAccountPayout" class="oj-flex-item oj-lg-6 oj-md-5" value="{{createRDModel.payoutInstructions()[0].account}}" required validators="[[$baseModel.getValidator('ACCOUNT')]]">
+                            </oj-input-text>
+                        </div>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        </div>
+                    </page-section>
+                </oj-validation-group>
+                <div data-bind="component: {name: 'bank-look-up', params:{rootModel: $component,clearingCodeType:$component.createRDModel.payoutInstructions()[0].networkType,accountType:'Domestic',networkCode :createRDModel.payoutInstructions()[0].clearingCode,additionalBankDetails:$component.additionalBankDetails}}"></div>
+                <!-- ko if:!$component.ischeckBoxVisible() || ($component.ischeckBoxVisible() && holdingPattern().length) -->
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.pageHeader.nominationDetails">
+                    <div class="oj-flex oj-flex-items-pad oj-lg-8 recurringDeposit__nomineeRadio">
+                        <oj-label for="nominationDetails" class="oj-flex-item oj-lg-12">
+                            <span data-bind="text:$component.resource.nominationDetails.addNominee"></span>
+                        </oj-label>
+                        <div class="oj-flex-item oj-sm-12">
+                            <oj-radioset id="nominationDetails" class="oj-choice-direction-row" value="{{manageNominee}}" :aria-label="[[$component.resource.nominationDetails.addNominee]]" on-value-changed="[[$component.nomineeDetailsChanged]]">
+                                <!-- ko foreach: nomineeDetails -->
+                                <oj-option value="[[id]]">
+                                    <span data-bind="text:label"></span>
+                                </oj-option>
+                                <!-- /ko -->
+                            </oj-radioset>
+                        </div>
+                    </div>
+                    <!-- ko if:isNomineeRequired() -->
+                <div data-bind="component:{name:component(),params:{rootModel:{
+                        params:{
+                        addNomineeModel : $component.addNomineeModel,
+                        isNomineeRequired : $component.isNomineeRequired,
+                        minor : $component.isMinor,
+                        selectedAccountType: 'TRD',
+                        selectedAccountModule: 'RD'},
+                    reset : $component.reset}}
+                }"></div>
+                <!-- /ko -->
+                </page-section>
+                <!-- /ko -->
+                <div class="oj-flex-item button-container">
+                    <oj-button id="createButton" class="action-button-primary " on-click="[[$component.newRdDeposit.bind($data,true)]]"><span slot="startIcon" class="icons icon-add"></span>
+                        <span data-bind="text:$component.resource.generic.common.create"></span>
+                    </oj-button>
+                    <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+                        <span data-bind="text:$component.resource.generic.common.back"></span>
+                    </oj-button>
+                </div>
+            </div>
+            <!-- ko if: $baseModel.large() -->
+            <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+                <help params="baseModel : $baseModel, rootModel : $component, transaction: 'create-rd'"></help>
+            </div>
+            <!-- /ko -->
+        </div>
+        <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'intrestslabs',header:$component.resource.depositDetail.link.viewInterestRate">
+            <!-- ko if:$component.viewInterest() -->
+            <div data-bind='component:{name: "view-rd-interest-rate", params:{rootModel: {params : {
+        productId:$component.createRDModel.productDTO.productId(),
+        closeModelWindow:$component.closeModelWindow
+      }}}}'></div>
+      <!-- /ko -->
+        </modal-window>
+        <!-- ko ifnot: $baseModel.small() -->
+        <a class="back-link" href="#" data-bind="text: $component.resource.generic.common.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+        <!-- /ko -->

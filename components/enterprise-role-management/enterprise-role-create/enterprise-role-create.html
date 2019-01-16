@@ -1,0 +1,116 @@
+<div class="form-main-container">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.create">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                <label data-bind="text: $component.nls.fieldname.roleName"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text required validators="[[$baseModel.getValidator('ALPHABETS',$component.nls.message.invalidRoleName,{
+                type:'length',options:{
+                    min:1,max:20}})]]" :invalidcomponenttracker="[[$component.validationTrackerParent]]" value="{{roleName}}"></oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                <label data-bind="text: $component.nls.fieldname.roleDescription"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text required validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.nls.message.invalidRoleName,{
+    type:'length',options:{
+        min:1,max:40}})]]" :invalidcomponenttracker="[[$component.validationTrackerParent]]" value="{{roleDesc}}"></oj-input-text>
+            </div>
+        </div>
+        <!-- ko ifnot:$component.addChildRolesFlag() -->
+
+        <a href="javascript:void(0)" data-bind="click:$component.addRow">
+            <span data-bind="text:$component.nls.headers.addChildRoles">
+        </span></a>
+        <!-- /ko -->
+        <!-- ko if:$component.addChildRolesFlag() -->
+        <!-- ko if:$component.childAdded() -->
+        <action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.nls.headers.addChildRoles">
+        </action-header>
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-table id="roleTableCreate" :aria-label="[[$component.nls.headers.addChildRoles]]" columns-default="[[{sortable:'enabled'}]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('row_tmpl', true)]]" columns="[[[{headerText:nls.fieldname.roleName,style:'width: 30%'},{headerText:nls.fieldname.roleDescription,style:'width: 40%'},{headerText:nls.fieldname.action,style:'width: 30%'}]]]" data="[[datasource]]">
+                <caption class="hide-label" data-bind="text:$component.nls.headers.addChildRoles"></caption>
+            </oj-table>
+
+            <script type="text/html" id="row_tmpl">
+                <!-- ko ifnot:action -->
+                <tr class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-8">
+                    <td data-bind="text: childRoleName">
+                    </td>
+                    <td data-bind="text: childRoleDesc">
+                    </td>
+                    <td>
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div id="remarks" class="remarks oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                                <a href="javascript:void(0)" data-bind="click:$component.editChild.bind($data)">
+                                    <span class="enterpriseRoleIcon icons icon-remarks">
+                                </span></a>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                                <a href="javascript:void(0)" data-bind="click:$component.removeChild.bind($data)">
+                                    <span class="enterpriseRoleIcon icons icon-delete">
+                                </span></a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                <!-- ko if:action -->
+                <tr class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-8">
+
+                    <td>
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-10">
+                        <oj-input-text id="childRoleName" maxlength="80" required validators="[[$baseModel.getValidator('ALPHABETS',$component.nls.message.invalidRoleName,{
+            type:'length',options:{
+                min:1,max:20}})]]" :invalidcomponenttracker="[[$component.validationTrackerChild]]" value="{{childRoleName}}"></oj-input-text>
+        </div>
+                    </td>
+                    <td>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-10">
+                        <oj-input-text id="childRoleDesc" maxlength="80" required validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.nls.message.invalidRoleName,{
+            type:'length',options:{
+                min:1,max:40}})]]" :invalidcomponenttracker="[[$component.validationTrackerChild]]" value="{{childRoleDesc}}"></oj-input-text>
+        </div>
+                    </td>
+                    <td>
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="remarks oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                                <a id="action" href="javascript:void(0)" data-bind="click:$component.addChild.bind($data)">
+                                    <span id="addSave" class="enterpriseRoleIcon icons icon-save">
+                                </span></a>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                                <a href="javascript:void(0)" data-bind="click:$component.removeRow">
+                                    <span class="enterpriseRoleIcon icons icon-delete">
+                                </span></a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!-- /ko -->
+
+            </script>
+        </div>
+        <a href="javascript:void(0)" data-bind="click:$component.addRow.bind()">
+            <span data-bind="text:$component.nls.headers.addAnother">
+        </span></a>
+        <!-- /ko -->
+        <!-- /ko -->
+    </page-section>
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" on-click="[[$component.save]]">
+      <span data-bind="text:$component.nls.buttons.save"></span>
+</oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.nls.buttons.cancel"></span>
+</oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:$component.nls.buttons.back"></span>
+</oj-button>
+    </div>
+
+</div>

@@ -1,0 +1,136 @@
+<div class="page-section-content">
+<oj-validation-group id="insturctionsValidationTracker" valid="{{instructionsGroupValid}}">
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: {'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label class="align-right" for="advBankSwiftCode"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.advBankSwiftCode"></span></oj-label>
+      </div>
+      <!-- ko if:$component.additionalBankDetails()===null || $component.additionalBankDetails()=== undefined -->
+      <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-4">
+        <oj-input-text id="advBankSwiftCode" maxlength="11" :invalidcomponenttracker="[[$component.insturctionsValidationTracker]]" validators="[[[validateInterCode]]]" value="{{$component.letterOfCreditDetails.swiftId}}"></oj-input-text>
+
+      </div>
+      <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+        <oj-button class="form-button-secondary verify-button" on-click="[[verifyCode]]">
+      <span data-bind="text:$component.resourceBundle.common.labels.verify"></span>
+</oj-button>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:$component.additionalBankDetails() !== null && $component.additionalBankDetails() !== 'undefined'-->
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8" data-bind="with:$component.additionalBankDetails">
+          <div data-bind="text:('code' in $data)?code:''"></div>
+          <div data-bind="text:('name' in $data)?name:''"></div>
+          <div data-bind="text:('line1' in branchAddress)?branchAddress.line1:''"></div>
+          <div data-bind="text:('city' in branchAddress)?branchAddress.city:''"></div>
+          <div data-bind="text:('country' in branchAddress)?branchAddress.country:''"></div>
+          <div class="padding-tb">
+              <oj-button class="action-button-tertiary" on-click="[[$component.resetCode]]">
+                <span slot="startIcon" class="icons icon-refresh"></span>
+      <span data-bind="text:$component.resourceBundle.common.labels.reset"></span>
+</oj-button>
+          </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:$component.additionalBankDetails()===null || $component.additionalBankDetails()=== undefined -->
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 padding-tb">
+          <a href="#" class="form-button-link" data-bind="attr:{'alt':$component.resourceBundle.common.labels.lookupswiftcodeTitle,'title':$component.resourceBundle.common.labels.commonlookupswiftcodeAlt},
+            text:$component.resourceBundle.common.labels.lookupswiftcode,click:$component.openLookup">
+          </a>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label class="align-right" for="modeOfDelivery"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.modeOfDelivery"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-radioset class="oj-choice-direction-row" id="modeOfDelivery" required value="{{$component.letterOfCreditDetails.deliveryMode}}">
+            <oj-option value="SWIFT" id="swift" name="swift"><span for="swift" data-bind="text:$component.resourceBundle.instructionsDetails.labels.SWIFT"></span></oj-option>
+            <oj-option value="MAIL" id="mail" name="mail"><span for="mail" data-bind="text:$component.resourceBundle.instructionsDetails.labels.MAIL"></span></oj-option></oj-radioset>
+      </div>
+  </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="chargesBorneByType" class="align-left"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.chargesBorneBy"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                <oj-select-one id="chargesBorneByType" required="[[true]]" :invalidcomponenttracker="[[$component.insturctionsValidationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" on-value-changed="[[chargesBorneByChangeHandler]]" value="{{$component.chargesBorneBy}}">
+
+                            <!-- ko foreach: $component.chargesBorneByTypeOptions -->
+                                  <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+                                  <!-- /ko -->
+                </oj-select-one>
+      </div>
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label class="align-right" for="chargesAccountType"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.chargesAccount"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-select-one id="chargesAccountType" required="[[true]]" :invalidcomponenttracker="[[$component.insturctionsValidationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[chargesAccountType]]" on-value-changed="[[chargesAccountChangeHandler]]" value="{{chargesAccountValue}}">
+
+          </oj-select-one>
+          <!-- ko if:availableBalance()-->
+          <span class="align-right info-text-small" data-bind="text: $baseModel.format($component.resourceBundle.instructionsDetails.labels.availableBalance,{
+                availableBalance:$component.availableBalance()
+          })"></span>
+          <!-- /ko -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="oj-flex oj-flex-items-pad">
+  <!-- ko if:$component.letterOfCreditDetails.confirmationInstruction()=== 'BYCOUNTERPARTY' -->
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="chargesFromBeneficiary" class="align-left"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.chargesFromBeneficiary"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+        <oj-text-area id="chargesFromBeneficiary" type="text" maxlength="210" required="[[true]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.instructionDetails.invalidBeneCharges,{type:'length',options:{
+                                      min:1,max:210}})]]" value="{{$component.letterOfCreditDetails.chargesFromBeneficiary}}"></oj-text-area>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+</div>
+
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="instructionsToBank" class="align-left"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.instructionsToBank"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+        <oj-text-area id="instructionsToBank" type="text" maxlength="780" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.instructionDetails.invalidInstructions,{type:'length',options:{
+                                      min:0,max:780}})]]" value="{{$component.letterOfCreditDetails.instructionDescription}}"></oj-text-area>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ko if : $component.mode() === 'CREATE' -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <oj-button id="continueButtonInstructions" class="action-button-secondary" on-click="[[continueFunc]]">
+      <span slot="startIcon" class="icons icon-submit"></span>
+      <span data-bind="text:$component.resourceBundle.common.labels.continue"></span>
+</oj-button>
+  </div>
+</div>
+<!-- /ko -->
+</oj-validation-group>
+</div>

@@ -1,0 +1,32 @@
+<div class="oj-flex-item financial-position">
+  <action-widget params="baseModel : $baseModel, rootModel:$data,
+                                      header: $component.nls.financialPositionDetails.labels.financialPositionCurrency,
+                                      onDashboard: $dashboard.isDashboard()">
+
+
+
+    <div class="oj-flex oj-flex-items-pad financial-position__party-id">
+      <label data-bind="attr:{for: $baseModel.incrementIdCount()}, text:$component.nls.financialPositionDetails.labels.partyDropDown"></label>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+        <oj-select-one :id="[[$baseModel.currentIdCount()]]" value="{{$component.selectedPartyID}}">
+          <!-- ko foreach: $component.segregatedData -->
+          <oj-option value="{{id}}"><span data-bind="text:name"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <!-- ko if: showChart()-->
+
+      <div id="chart-container" class="oj-flex-item oj-sm-12 financial-position__chart financial-position-chart">
+        <oj-chart class="financial-position-chart__barChart" id="financialPositionCurrencyChart" type="bar" orientation="horizontal" stack="[[stackValueChart]]" stack-label="on" tooltip="[[tooltip]]" series="[[barSeriesValue]]" groups="[[barGroupsValue]]" animation-on-data-change="auto"
+          hover-behavior="dim" y-axis="[[{tickLabel: {rendered: 'off'}, majorTick: {baselineWidth: 1, lineWidth:0}}]]" x-axis="[[{axisLine: {rendered: 'off'}}]]" hide-and-show-behavior="withRescale" style-defaults="[[{barGapRatio: 0.7}]]" legend="[[{sections: legendSections, position: 'bottom'}]]">
+        </oj-chart>
+
+
+      </div>
+      <!-- /ko -->
+    </div>
+
+  </action-widget>
+</div>

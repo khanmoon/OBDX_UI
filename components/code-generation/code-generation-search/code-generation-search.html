@@ -1,0 +1,38 @@
+<div class="form-main-container">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <oj-validation-group id="tracker" valid="{{groupValid}}">
+            <action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.generic.common.search">
+            </action-header>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-label">
+                    <oj-label for="restUrl">
+                        <span data-bind="text:$component.nls.labels.restUrl"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+                    <oj-input-text id="restUrl" value="{{uri}}" required></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 oj-label">
+                    <oj-label for="methodType">
+                        <span data-bind="text:$component.nls.labels.methodType"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+                    <oj-input-text id="methodType" value="{{methodType}}" validators="[[$baseModel.getValidator('ALPHABETS',$component.nls.labels.invalidMethodType,{type: 'length',options: {min: 1, max: 5}})]]" required></oj-input-text>
+                </div>
+            </div>
+        </oj-validation-group>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item  button-container">
+                <oj-button class="action-button-primary" on-click="[[search]]">
+                    <span data-bind="text:$component.nls.generic.common.search"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                    <span data-bind="text:$component.nls.generic.common.back"></span>
+                </oj-button>
+            </div>
+        </div>
+    </page-section>
+</div>

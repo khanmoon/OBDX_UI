@@ -1,0 +1,295 @@
+<div class="oj-flex locator-maintenance-update ">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+
+        <div class="form-main-container">
+
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="id">
+                            <span data-bind="text:$component.type()==='BRANCH'? $component.nls.fieldname.branchId:$component.nls.fieldname.atmId"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+                        <oj-input-text value="{{$component.id}}" :aria-label="[[$component.nls.fieldname.branchId]]" disabled=true></oj-input-text>
+                    </div>
+                </div>
+                <!-- <row params="baseModel : $baseModel, rootModel : $parent , label :$component.type()==='BRANCH' ? $component.nls.fieldname.branchId:$component.nls.fieldname.atmId , value :id"></row> -->
+
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="name"><span data-bind="text:$component.type()==='BRANCH'? $component.nls.fieldname.branchName:$component.nls.fieldname.atmName"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                        <oj-input-text required id="name" validators="[[$baseModel.getValidator('BANK_NAME',$component.nls.fieldname.nameValidation)]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.atmBranchName}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="latitude"><span data-bind="text:$component.nls.fieldname.coordinates"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+                        <oj-input-text required id="latitude" :aria-label="[[nls.fieldname.latitude]]" maxlength="20" validators="[[$baseModel.getValidator('LATITUDE')]]" converter="[[{
+                type:'number'}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[nls.fieldname.latitude]]" value="{{$component.latitude}}"></oj-input-text>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+                        <oj-input-text required id="longitude" :aria-label="[[nls.fieldname.longitude]]" maxlength="20" validators="[[$baseModel.getValidator('LONGITUDE')]]" converter="[[{
+              type:'number'}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[nls.fieldname.longitude]]" value="{{$component.longitude}}"></oj-input-text>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+                        <a href="javascript:void(0)" class="form-button-link" data-bind="text:$component.nls.fieldname.searchLocation,click:searchLocation"></a>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="line1"><span data-bind="text:$component.nls.fieldname.line1"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                        <oj-input-text id="line1" required maxlength="70" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ADDRESS')]]" value="{{postalAddress().line1}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="line2"><span data-bind="text:$component.nls.fieldname.line2"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                        <oj-input-text id="line2" required maxlength="70" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ADDRESS')]]" value="{{postalAddress().line2}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="line3"><span data-bind="text:$component.nls.fieldname.line3"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                        <oj-input-text id="line3" maxlength="70" value="{{$component.addline3}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="line4"><span data-bind="text:$component.nls.fieldname.line4"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                        <oj-input-text id="line4" maxlength="70" value="{{$component.addline4}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="city"><span data-bind="text:$component.nls.fieldname.city"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                        <oj-input-text required id="city" maxlength="70" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ADDRESS')]]" value="{{postalAddress().city}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="country"><span data-bind="text:$component.nls.fieldname.country"></span></oj-label>
+                    </div>
+                    <!-- ko if: countryEnumsLoaded -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+                        <oj-select-one required id="country" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[nls.fieldname.select]]" value="{{postalAddress().country}}">
+                            <!-- ko foreach: countryEnums -->
+                            <oj-option value="{{$data.description}}"><span data-bind="text:$data.description"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <!-- ko if:locationDetails().type === "BRANCH" -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="dayFrom"><span data-bind="text:$component.nls.fieldname.workTimings"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2">
+                                <oj-select-one id="dayFrom" :placeholder="[[nls.fieldname.select]]" required="[[true]]" value="{{startDay}}">
+                                    <!-- ko foreach:$component.days -->
+                                    <oj-option value="{{value}}"><span data-bind="text:value"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1">
+                                <oj-label class="label" for="daysTo"><span data-bind="text:$component.nls.fieldname.to"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2">
+                                <oj-select-one id="daysTo" :placeholder="[[nls.fieldname.select]]" required="[[true]]" value="{{endDay}}">
+                                    <!-- ko foreach:$component.days -->
+                                    <oj-option value="{{value}}"><span data-bind="text:value"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2">
+                                <oj-label class="label"><span data-bind="text:$component.nls.fieldname.days"></span></oj-label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="hide-label" for="hrsFrom"><span data-bind="text:$component.nls.fieldname.operatingHrs"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
+                                <oj-select-one id="hrsFrom" required="[[true]]" value="{{selectedFrom}}">
+                                    <!-- ko foreach:$component.hours() -->
+                                    <oj-option value="{{value}}"><span data-bind="text:value"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-1">
+                                <oj-label class="label" for="hrsTo"><span data-bind="text:$component.nls.fieldname.to"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
+                                <oj-select-one id="hrsTo" required="[[true]]" value="{{selectedTo}}">
+                                    <!-- ko foreach:$component.hours() -->
+                                    <oj-option value="{{value}}"><span data-bind="text:value"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2">
+                                <oj-label class="label"><span data-bind="text:$component.nls.fieldname.hrs"></span></oj-label>
+                            </div>
+                            <a href="javascript:void(0)" id="additionalTimings" data-bind="attr:{'alt': $component.nls.fieldname.workTimings,'title':$component.nls.fieldname.addAdditionalTiming,'aria-label':$component.nls.fieldname.addAdditionalTiming},click: additionalTimings">
+                                <div class="icons icon-add"></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ko if: showAdditionalTimings -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="weekenddayFrom"><span data-bind="text:$component.nls.fieldname.workTimings1"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2">
+                                <oj-select-one id="weekenddayFrom" :placeholder="[[nls.fieldname.select]]" required="[[true]]" value="{{weekendStartDay}}">
+                                    <!-- ko foreach:$component.days -->
+                                    <oj-option value="{{value}}"><span data-bind="text:value"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1">
+                                <oj-label class="label" for="weekenddaysTo"><span data-bind="text:$component.nls.fieldname.to"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2">
+                                <oj-select-one id="weekenddaysTo" :placeholder="[[nls.fieldname.select]]" required="[[true]]" value="{{weekendEndDay}}">
+                                    <!-- ko foreach:$component.days -->
+                                    <oj-option value="{{value}}"><span data-bind="text:value"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2">
+                                <oj-label class="label"><span data-bind="text:$component.nls.fieldname.days"></span></oj-label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="hide-label" for="weekendhrsFrom"><span data-bind="text:$component.nls.fieldname.workTimings"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2">
+                                <oj-select-one id="weekendhrsFrom" required="[[true]]" value="{{hoursSelectedFrom}}">
+                                    <!-- ko foreach:$component.hours() -->
+                                    <oj-option value="{{value}}"><span data-bind="text:value"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1">
+                                <oj-label class="label" for="weekendhrsTo"><span data-bind="text:$component.nls.fieldname.to"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2">
+                                <oj-select-one id="weekendhrsTo" required="[[true]]" value="{{hoursSelectedTo}}">
+                                    <!-- ko foreach:$component.hours() -->
+                                    <oj-option value="{{value}}"><span data-bind="text:value"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2">
+                                <oj-label class="label"><span data-bind="text:$component.nls.fieldname.hrs"></span></oj-label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="additionalDetails"><span data-bind="text:$component.nls.fieldname.additionalDetails"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                        <oj-input-text id="additionalDetails" maxlength="70" value="{{$component.showAddInfo}}"></oj-input-text>
+                    </div>
+                </div>
+
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="phone1"><span data-bind="text:$component.nls.fieldname.phoneNo"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                        <oj-input-text required id="phone1" maxlength="15" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('PHONE_NO')]]" value="{{$component.phoneNo}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label" for="phone2"><span data-bind="text:$component.nls.fieldname.alternatephoneNo"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                        <oj-input-text id="phone2" maxlength="15" validators="[[$baseModel.getValidator('PHONE_NO')]]" value="{{$component.alternatephoneNo}}"></oj-input-text>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <oj-label class="label"><span data-bind="text:$component.nls.fieldname.supportedservices"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+                        <!-- ko if: supportedServicesLoaded -->
+                        <oj-checkboxset id="checkboxSetId" :aria-label="[[$component.nls.fieldname.services]]" value="{{selectedServices}}">
+                            <!-- ko foreach: supportedServices -->
+                            <oj-option value="{{name}}" :id="[['Services_'+ $index()]]"><span data-bind="text: name, attr : {'for' :'Services_' + $index()}"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-checkboxset>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <div class="oj-flex-item button-container">
+                    <oj-button class="action-button-primary" on-click="[[$component.save]]">
+                        <span data-bind="text:$component.nls.buttons.save"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+                        <span data-bind="text:$component.nls.buttons.cancel"></span>
+                    </oj-button>
+                    <oj-button class="action-button-tertiary" on-click="[[$component.backOnUpdate]]">
+                        <span data-bind="text:$component.nls.buttons.back"></span>
+                    </oj-button>
+
+                </div>
+            </page-section>
+        </div>
+    </div>
+
+    <div class="oj-flex-item oj-lg-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'atm-branch-maintenance-edit'"></help>
+    </div>
+</div>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'searchLocation',header: $component.nls.fieldname.search">
+    <div class="form-main-container">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-9 oj-md-3 oj-lg-3">
+                <oj-label class="label" for="pac-input"><span data-bind="text:$component.nls.fieldname.location"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-9 oj-md-3 oj-lg-9">
+                <oj-input-text :id="[['pac-input']]" :placeholder="[[$component.nls.fieldname.search]]"></oj-input-text>
+            </div>
+        </div>
+    </div>
+</modal-window>

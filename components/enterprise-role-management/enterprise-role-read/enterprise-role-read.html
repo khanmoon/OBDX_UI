@@ -1,0 +1,56 @@
+<div class="form-main-container">
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <!-- ko if:roleDataLoaded -->
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading :nls.view">
+    </action-header>
+    <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.roleName , value :$component.roleFullData().enterpriseRoleName"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.roleDescription , value :$component.roleFullData().enterpriseRoleDesc"></row>
+    <!-- ko if:$component.addChildRolesFlag() -->
+
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.fieldname.childRoles">
+    </action-header>
+    <oj-table id="childRoleTable" columns-default="[[{sortable:'enabled'}]]" columns="[[[{headerText:nls.fieldname.name,field:'enterpriseRoleName'},{headerText:nls.fieldname.description,field:'enterpriseRoleDesc'}]]]" data="[[childdatasource]]">
+      <caption class="hide-label" data-bind="text:$component.nls.roleDescription"></caption>
+    </oj-table>
+    <!-- /ko -->
+    <!-- /ko -->
+  </page-section>
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+      <!-- ko if:factoryShipped -->
+    <oj-button class="action-button-primary" on-click="[[$component.edit]]">
+      <span data-bind="text:nls.buttons.edit"></span>
+</oj-button>
+    <oj-button class="action-button-primary" on-click="[[$component.delete]]">
+      <span data-bind="text:nls.buttons.delete"></span>
+</oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:nls.buttons.cancel"></span>
+</oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.goBack]]">
+      <span data-bind="text:$component.nls.buttons.back"></span>
+</oj-button>
+  </div>
+
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'deleteConfirmationModal' ,header : nls.header ">
+      <div class="form-main-container message-text">
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                  <span data-bind="html :nls.message.deleteRoleMessage"></span>
+              </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad button-container">
+              <oj-button id="backNo" class="action-button-secondary" on-click="[[$component.closeModal]]">
+      <span data-bind="text:nls.buttons.no"></span>
+</oj-button>
+              <oj-button id="backYes" class="action-button-primary" on-click="[[$component.deleteRole.bind($data)]]">
+      <span data-bind="text:nls.buttons.yes"></span>
+</oj-button>
+          </div>
+      </div>
+  </modal-window>
+
+  <div>
+</div></div>

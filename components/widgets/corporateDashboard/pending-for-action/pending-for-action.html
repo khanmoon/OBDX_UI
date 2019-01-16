@@ -1,0 +1,28 @@
+<div class="oj-panel pending-for-action">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-6">
+      <h3 class="pending-for-action__title" data-bind="text:$component.Nls.header"></h3>
+    </div>
+    <!-- ko if: $component.dataUpdated -->
+    <div class="oj-flex-item oj-sm-6 pending-for-action__selectBox">
+      <oj-label class="hide" :for="[['pendingAction'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.Nls.dropDown"></span></oj-label>
+      <oj-select-one value="{{$component.txnType}}" data-bind="attr:{id:'pendingAction'+ $baseModel.currentIdCount(),'aria-label':$component.Nls.dropDown}">
+        <!-- ko foreach: txnListData -->
+         <oj-option value="[[$data]]"><span data-bind="text: $component.Nls[$data]"></span></oj-option>
+         <!-- /ko -->
+       </oj-select-one>
+    </div>
+    <!-- /ko -->
+  </div>
+  <div class="oj-flex oj-flex-items-pad pending-for-action__chart pending-for-action-chart">
+      <!-- ko if: $component.dataUpdated -->
+          <!-- pie chart -->
+          <oj-chart class="oj-flex-item oj-sm-12 pending-for-action-chart__graph" id="pieChart" type="pie" series="[[pieSeriesValue]]" tooltip="[[tooltip]]" animation-on-display="auto" animation-on-data-change="auto" hover-behavior="dim"></oj-chart>
+     <!-- /ko -->
+     <!-- ko ifnot: $component.dataUpdated -->
+     <div class="oj-flex-item oj-sm-12 center">
+       <div data-bind="text:$component.Nls.noData"></div>
+     </div>
+    <!-- /ko -->
+  </div>
+</div>

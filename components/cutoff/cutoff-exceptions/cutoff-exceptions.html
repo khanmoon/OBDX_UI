@@ -1,0 +1,121 @@
+<div class="oj-flex">
+    <div class="oj-flex-item oj-sm-9">
+        <div class="form-main-container">
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-10" data-bind="component:{name: 'cutoff-nav-bar', params:{rootModel:$data}}">
+                    </div>
+                </div>
+            </page-section>
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+              <oj-validation-group id="tracker" valid="{{groupValid}}">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+                        <oj-label for="dateOfExceptions">
+                            <span data-bind="text:$component.nls.labels.exceptionDate"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                        <oj-input-date id="dateOfExceptions" value="{{exceptionDateForException}}" converter="[[$component.dateInputConverter]]" :placeholder="[[$component.nls.labels.selectDate]]" min="[[minEffectiveDate]]"></oj-input-date>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-lg-1 "></div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+                        <oj-label for="usersType">
+                            <span data-bind="text:$component.nls.labels.userType"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                        <!-- ko if:showuserTypeOptions() -->
+                        <oj-select-one id="usersType" class="listbox-drop" :placeholder="[[$component.nls.labels.select]]" value="{{$component.selectedUser}}" options="[[userTypeOptions]]">
+                        </oj-select-one>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+                        <oj-label for="tranType">
+                            <span data-bind="text:$component.nls.labels.transaction"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <!-- ko if: showDropDownTransactions() -->
+                        <oj-select-one class="listbox-drop" id="tranType" :placeholder="[[$component.nls.labels.select]]" value="{{selectedTransactionForException}}" options="[[searchTransactions]]" required>
+                        </oj-select-one>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                </oj-validation-group>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item button-container">
+                    <oj-button id="searchButton" class="action-button-primary" on-click="[[search]]">
+                        <span data-bind="text:$component.nls.generic.common.search"></span>
+                    </oj-button>
+                    <!-- ko ifnot: showSearchData() -->
+                    <oj-button id="cancelButton" class="action-button-secondary " on-click="[[$dashboard.openDashBoard]]">
+                        <span data-bind="text:$component.nls.generic.common.cancel"></span>
+                    </oj-button>
+                    <!-- /ko -->
+                    <oj-button id="clearButton" class="action-button-tertiary" on-click="[[reset]]">
+                        <span data-bind="text:$component.nls.generic.common.clear"></span>
+                    </oj-button>
+
+                    </div>
+                </div>
+            </page-section>
+            <!-- ko if: showSearchData() -->
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                        <oj-table id="table" :aria-label="[[$component.nls.labels.cutoffTable]]" columns="[[[{headerText:$component.nls.labels.exceptionDate},{headerText:$component.nls.labels.userType},{headerText:$component.nls.labels.transaction},{headerText:$component.nls.labels.remark}]]]" selection-mode="[[{row:'single',column:'single'}]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('cutoff_template', true)]]" data="[[$component.datasource]]">
+                            <caption class="hide-label" data-bind="text:$component.nls.labels.details"></caption>
+                        </oj-table>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item button-container">
+                    <oj-button id="cancelButton" class="action-button-secondary " on-click="[[$dashboard.openDashBoard]]">
+                        <span data-bind="text:$component.nls.generic.common.cancel"></span>
+                    </oj-button>
+                    </div>
+                </div>
+            </page-section>
+            <!-- /ko -->
+    </div>
+    </div>
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'cutoff-exceptions'"></help>
+    </div>
+</div>
+
+<script type="text/html" id="cutoff_template">
+  <tr>
+      <td>
+          <!-- ko if: endDate && endDate !== effectiveDate -->
+          <a href="javascript:void(0)" data-bind="click:$component.onExceptionSelected.bind($data)">
+          <span data-bind="text:$component.nls.labels.dateRange"></span><br>
+          <span data-bind="text:effectiveDate"></span> <span> - </span> <span data-bind="text:endDate"></span></a>
+          <!-- /ko -->
+          <!-- ko ifnot: endDate && endDate !== effectiveDate -->
+          <a href="javascript:void(0)" data-bind="click:$component.onExceptionSelected.bind($data)">
+          <span data-bind="text:$component.nls.labels.specificDate"></span><br>
+          <span data-bind="text:effectiveDate"></span></a>
+          <!-- /ko -->
+      </td>
+      <td>
+          <span data-bind="text:userTypes"></span>
+      </td>
+      <td>
+          <!-- ko if: transactionName -->
+          <span data-bind="text:transactionName"></span>
+          <!-- /ko -->
+          <!-- ko ifnot: transactionName -->
+          <span data-bind="text:$component.nls.labels.all"></span>
+          <!-- /ko -->
+      </td>
+      <td>
+        <!-- ko if: remark -->
+          <span data-bind="text:remark"></span>
+        <!-- /ko -->
+      </td>
+  </tr>
+</script>

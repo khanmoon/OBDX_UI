@@ -1,0 +1,126 @@
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+    <!-- ko if: dataSourceCreated() -->
+
+    <!-- ko if: templateList().length > 0 -->
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="component: {
+                   name: 'search-box',
+                   params: {rootModel:$component,
+                          data:templateDatasource(),
+                          searchFields : ['template_name'],
+                          searchBy:$component.resourceBundle.templates.labels.templateName}}">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ko if:$baseModel.large() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <oj-table id="table" :aria-label="[[$component.resourceBundle.templates.labels.listofTemplates]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('template_row', true)]]" columns="[[[{headerText:$component.resourceBundle.templates.labels.templateName,sortProperty:'template_name',style:'width: 20%'},{headerText:$component.resourceBundle.templates.labels.beneficiary,style:'width: 10%'},{headerText:$component.resourceBundle.templates.labels.product,style:'width: 25%'},{headerText:$component.resourceBundle.templates.labels.createdBy,style:'width: 15%'},{headerText:$component.resourceBundle.templates.labels.updatedOn,style:'width: 15%'},{headerText:$component.resourceBundle.templates.labels.access_type,style:'width: 20%'}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[templateDatasource]]">
+          <caption class="hide-label" data-bind="text:$component.resourceBundle.templates.labels.templateName"></caption>
+        </oj-table>
+        <oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[templateDatasource]]">
+        </oj-paging-control>
+      </div>
+      <script type="text/html" id="template_row">
+        <tr>
+          <td>
+            <a href="#" data-bind="attr:{ title:  $baseModel.format('TemplateName',{template_name : template_name}), alt :  $baseModel.format('TemplateNameText',{template_name : template_name}) },text:template_name,click:$component.onTemplateNameSelected.bind($data)"></a>
+          </td>
+          <td>
+            <span data-bind="text:beneficiary"></span>
+          </td>
+          <td>
+            <span data-bind="text:product"></span>
+          </td>
+          <td>
+            <span data-bind="text:customer_id"></span>
+          </td>
+          <td>
+            <span data-bind="text:updated_on"></span>
+          </td>
+          <td>
+            <span data-bind="text:access_type"></span>
+          </td>
+        </tr>
+      </script>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko ifnot:$baseModel.large() -->
+    <div class="oj-flex grid-main-container">
+      <div class="oj-flex-item oj-sm-12">
+          <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('template_list_card',true)}]]" selection-mode="[['single']]" data="[[templateDatasource]]">
+          </oj-list-view>
+          <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.templateDatasource]]">
+          </oj-paging-control>
+      </div>
+    </div>
+    <script type="text/html" id="template_list_card">
+      <li data-bind="attr: {id: $data.templateId}">
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item oj-sm-12">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-9 description">
+                  <a href="#" data-bind="attr:{ title:  $data.template_name, alt : $data.template_name },text:$data.template_name,
+                  click:$component.onTemplateNameSelected.bind($data)"></a>
+                </div>
+
+                <div class="oj-flex-item oj-sm-3 right" data-bind="text: $data.access_type">
+                </div>
+              </div>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 grid-row-group">
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <label data-bind="text: $component.resourceBundle.templates.labels.beneficiary"></label>
+                <div data-bind="text: $data.beneficiary"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <label data-bind="text: $component.resourceBundle.templates.labels.product"></label>
+                <div data-bind="text: $data.product"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <label data-bind="text: $component.resourceBundle.templates.labels.createdBy"></label>
+                <div data-bind="text: $data.customer_id"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <label data-bind="text: $component.resourceBundle.templates.labels.updatedOn"></label>
+                <div data-bind="text: $data.updated_on"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </li>
+    </script>
+    <!-- /ko -->
+
+    <!-- /ko -->
+
+    <!-- ko ifnot: templateList().length > 0 -->
+    <div class="oj-flex oj-flex-items-pad padding-tb">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.resourceBundle.messages.noTemplateCreated">
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- /ko -->
+</page-section>

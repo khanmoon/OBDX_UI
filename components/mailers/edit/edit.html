@@ -1,0 +1,203 @@
+<div class="form-main-container create-mailer">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading: $component.nls.headers.edit">
+    </action-header>
+    <row params="baseModel : $baseModel, rootModel : $data , label :$component.nls.fieldname.mailerId , value: code"></row>
+
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <oj-label class="" for="mailerName"><span data-bind="text:$component.nls.fieldname.mailerName"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <oj-input-text id="mailerName" required :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" value="{{description}}"></oj-input-text>
+      </div>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+        <oj-label for="send"><span data-bind="text:$component.nls.fieldname.sendDate"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2">
+        <oj-input-date id="send" required :aria-label="[[$component.nls.fieldname.sendDate]]" min="[[$component.todayDate()]]" value="{{$component.activationDate}}" datepicker="[[{changeMonth:'none',changeYear:'none'}]]"></oj-input-date>
+      </div>
+
+    </div>
+
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <oj-label class="" id="Priority" for="priority"><span data-bind="text:$component.nls.fieldname.priority"></span></oj-label>
+      </div>
+      <oj-radioset class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9 oj-choice-direction-row" id="priority" value="{{priority}}">
+        <oj-option value="L" id="low" name="priorityType"><span data-bind="text:$component.nls.fieldname.low" for="low">
+                    </span></oj-option>
+        <oj-option value="M" id="medium" name="priorityType"><span data-bind="text:$component.nls.fieldname.medium" for="medium">
+                    </span></oj-option>
+        <oj-option value="H" id="high" name="priorityType"><span data-bind="text:$component.nls.fieldname.high" for="high">
+                    </span></oj-option>
+      </oj-radioset>
+    </div>
+
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading: $component.nls.headers.Mail">
+    </action-header>
+
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <oj-label class="" for="emailSubject"><span data-bind="text:$component.nls.fieldname.subject"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <oj-input-text id="emailSubject" required maxlength="50" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" value="{{emailSubject}}"></oj-input-text>
+      </div>
+    </div>
+
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+        <oj-label><span data-bind="text:$component.nls.fieldname.mailBody"></span></oj-label>
+      </div>
+
+      <text-editor params="baseModel : $baseModel, rootModel:$data,id:'contentemail'+'index',data:emailContent,containerClass:'oj-sm-12',height:'200px',validator:$component.validationTracker,required: true,label:$component.nls.fieldname.emailContent,validate:$component.validateEmail">
+      </text-editor>
+    </div>
+
+
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading: $component.nls.headers.recepients">
+    </action-header>
+
+
+
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+        <oj-label id="sendTo"><span data-bind="text:$component.nls.fieldname.sendTo"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+        <!-- ko if: recipientsListLoaded -->
+        <oj-checkboxset id="checkboxSetId" aria-labelledby="sendTo" on-value-changed="[[recipientsChangeHandler]]" value="{{selectedRecipients}}">
+          <!-- ko foreach: recipientsList -->
+          <oj-option value="{{enterpriseRoleId}}" :id="[['Role_'+ $index()]]"><span data-bind="text: enterpriseRoleName, attr : {'for' :'Role_' + $index()}"></span></oj-option>
+          <!-- /ko -->
+        </oj-checkboxset>
+        <!-- /ko -->
+      </div>
+    </div>
+
+    <!-- ko if:recipientsListLoaded -->
+
+    <!-- ko if:showUserInput -->
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <oj-label for="usersList" class="hide-label"><span data-bind="text:nls.buttons.addUser"></span></oj-label>
+      </div>
+
+      <div class="addRecipientBlock  oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+
+        <span data-bind="text : nls.roles.user"></span>
+        <!-- ko if: showUserClose -->
+        <a href="#" data-bind="click: showUserCloseInput,attr:{title:nls.buttons.close,'aria-label':nls.buttons.close}"> <span class="pull-right" data-bind="text : nls.buttons.close"></span></a>
+        <!-- /ko -->
+        <br>
+        <br>
+        <oj-text-area id="usersList" maxlength="500" rows="5" value="{{manualEnteredUsers}}" :placeholder="[[nls.errorMsg.placeHolderAddUser]]"></oj-text-area>
+
+        <span data-bind="text : nls.errorMsg.message"></span>
+
+      </div>
+
+    </div>
+
+    <!-- /ko -->
+
+    <!-- ko ifnot:showUserInput -->
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 blank"></div>
+
+      <!-- ko if:$component.recipientsList().length !== $component.selectedRecipients().length -->
+
+      <oj-button class="action-button-tertiary" on-click="[[$component.showAddUserComponent]]">
+        <span data-bind="text:nls.buttons.addUser"></span>
+      </oj-button>
+      <!-- /ko -->
+
+      <!-- ko if:$component.recipientsList().length === $component.selectedRecipients().length -->
+
+      <oj-button class="action-button-secondary">
+        <span data-bind="text:nls.buttons.addUser"></span>
+      </oj-button>
+      <!-- /ko -->
+    </div>
+
+    <!-- /ko -->
+
+    <!-- /ko -->
+
+
+
+    <!-- ko if:recipientsListLoaded -->
+    <!-- ko if:showPartyInput -->
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+        <oj-label for="partyList" class="hide-label"><span data-bind="text:$component.nls.fieldname.sendTo"></span></oj-label>
+      </div>
+
+      <div class="addRecipientBlock  oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+
+        <span data-bind="text : nls.roles.party"></span>
+        <!-- ko if: showPartyClose -->
+        <a href="#" data-bind="click: showPartyCloseInput,attr:{title:nls.buttons.close,'aria-label':nls.buttons.close}"> <span class="pull-right" data-bind="text : nls.buttons.close"></span></a>
+        <!-- /ko -->
+        <br>
+        <br>
+        <oj-text-area id="partyList" maxlength="500" rows="5" value="{{manualEnteredParties}}" :placeholder="[[nls.errorMsg.placeHolderAddParty]]"></oj-text-area>
+
+        <span data-bind="text : nls.errorMsg.message"></span>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko ifnot:showPartyInput -->
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 blank"></div>
+
+      <!-- ko if:$component.recipientsList().length !== $component.selectedRecipients().length -->
+
+      <oj-button class="action-button-tertiary" on-click="[[$component.showPartyAddComponent]]">
+        <span data-bind="text:nls.buttons.addParty"></span>
+      </oj-button>
+      <!-- /ko -->
+      <!-- ko if:$component.recipientsList().length === $component.selectedRecipients().length -->
+
+      <oj-button class="action-button-secondary">
+        <span data-bind="text:nls.buttons.addParty"></span>
+      </oj-button>
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+
+
+  </page-section>
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[$component.updateMailer]]">
+      <span data-bind="text:$component.nls.buttons.save"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+      <span data-bind="text:$component.nls.buttons.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:$component.nls.buttons.back"></span>
+    </oj-button>
+
+  </div>
+
+</div>

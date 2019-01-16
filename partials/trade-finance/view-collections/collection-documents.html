@@ -1,0 +1,154 @@
+<div class="page-section-content">
+  <!-- ko if: $component.documentsLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <!-- ko ifnot:$baseModel.small() -->
+        <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-table id="docTable" :aria-label="[[$component.resourceBundle.documents.labels.documentList]]" columns="[[[{headerText:$component.resourceBundle.documents.labels.docName,field:'name',sortProperty:'name'},{headerTemplate:'orginal_first_mail',field:'originals'},{headerTemplate:'copies_first_mail',field:'copies'},{headerTemplate:'orginal_second_mail',field:'secondOriginals'},{headerTemplate:'copies_second_mail',field:'secondCopies'}]]]" data="[[$component.datasourceForDocReview]]">
+              <caption class="hide-label" data-bind="text:$component.resourceBundle.documents.labels.documentsRequired"></caption>
+              <template slot="orginal_first_mail">
+                    <span data-bind="text: $component.resourceBundle.documents.labels.original"></span><br>
+                    <span class="align-right info-text-small" data-bind="text: $component.resourceBundle.documents.labels.firstMailInfo"></span>
+              </template>
+              <template slot="copies_first_mail">
+                    <span data-bind="text: $component.resourceBundle.documents.labels.copies"></span><br>
+                    <span class="align-right info-text-small" data-bind="text: $component.resourceBundle.documents.labels.firstMailInfo"></span>
+              </template>
+              <template slot="orginal_second_mail">
+                    <span data-bind="text: $component.resourceBundle.documents.labels.original"></span><br>
+                    <span class="align-right info-text-small" data-bind="text: $component.resourceBundle.documents.labels.secondMailInfo"></span>
+              </template>
+              <template slot="copies_second_mail">
+                    <span data-bind="text: $component.resourceBundle.documents.labels.copies"></span><br>
+                    <span class="align-right info-text-small" data-bind="text: $component.resourceBundle.documents.labels.secondMailInfo"></span>
+              </template>
+          </oj-table>
+          <oj-paging-control id="paging" slot="bottom" :page-size="[[5]]" data="[[$component.datasourceForDocReview]]">
+          </oj-paging-control>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$baseModel.small() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('document_list_card',true)}]]" selection-mode="[['single']]" data="[[$component.datasourceForDocReview]]">
+            </oj-list-view>
+            <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[$component.datasourceForDocReview]]">
+            </oj-paging-control>
+          </div>
+        </div>
+        <!-- /ko -->
+
+    </div>
+  </div>
+  <!-- ko ifnot:$baseModel.small() -->
+  <!-- ko foreach: $component.clauseTableArrayForReview -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 grid-row-group">
+      <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <h5 for="clauseTable" class="align-left" data-bind="text: docName"></h5>
+      </div>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+      <oj-table id="clauseTable" columns="[[[{headerText:$component.resourceBundle.documents.labels.clauseDesc,field:'description',sortProperty:'clauseDesc',style:'width: 100%'}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[datasourceForClause]]">
+          <caption class="hide-label" data-bind="text:$component.resourceBundle.documents.labels.clauses"></caption>
+
+      </oj-table>
+      <oj-paging-control id="paging" slot="bottom" :page-size="[[5]]" data="[[datasourceForClause]]">
+            </oj-paging-control>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <label for="incoterm" data-bind="text: $component.resourceBundle.documents.labels.incoterm"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7 content" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <span id="incoterm" data-bind="text: $component.dropdownLabels.incoterm()"></span>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<script type="text/html" id="document_list_card">
+  <li>
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-9 description" data-bind="text: $data.name">
+          </div>
+        </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 grid-row-group">
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.documents.labels.original"></label>
+            <div data-bind="text: $data.originals"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.documents.labels.copies"></label>
+            <div data-bind="text: $data.copies"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <a href="javascript:void(0)" data-bind="text: $component.resourceBundle.documents.labels.viewClause, click: $component.viewClauses.bind()"></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </li>
+</script>
+<script type="text/html" id="clause_list_card">
+  <li>
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.documents.labels.clauseDesc"></label>
+            <div data-bind="text: $data.description"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </li>
+</script>
+<modal-window params="baseModel : $baseModel, rootModel:$component, id:'documentClauses', header:$component.clauseModalHeading, display:'full-screen'">
+  <!-- ko if: $component.selectedClauses -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+        <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('clause_list_card',true)}]]" selection-mode="[['single']]" data="[[$component.selectedClauses().datasourceForClause]]">
+        </oj-list-view>
+        <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[$component.selectedClauses().datasourceForClause]]">
+        </oj-paging-control>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-secondary" on-click="[[function(){$('#documentClauses').hide();}]]">
+        <span slot="startIcon" class="icons icon-done"></span>
+        <span data-bind="text:$component.resourceBundle.generic.common.ok"></span>
+      </oj-button>
+  </div>
+  <!-- /ko -->
+</modal-window>

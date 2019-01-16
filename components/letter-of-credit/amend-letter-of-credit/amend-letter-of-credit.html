@@ -1,0 +1,106 @@
+<div class="form-main-container amendLC">
+  <!-- ko if:$component.dataLoaded() -->
+
+  <!-- ko if: $baseModel.small() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 trade-heading-banner">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12">
+          <oj-label for="amendments"><span data-bind="text:$component.resourceBundle.labels.lcNo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12">
+          <span for="amendments" data-bind="text:$component.letterOfCreditDetails.id"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : $baseModel.small() === false ? $component.sectionHeading : ''">
+
+    <oj-accordion id="tradeFinanceAccordion">
+      <!-- ko foreach:amendStages -->
+      <oj-collapsible expanded="[['true']]" disabled="[['true']]">
+        <h3 slot="header">
+          <!-- ko if:$component.mode() === 'EDIT' || $component.mode() ==='CREATE' -->
+
+            <!-- ko if:editable -->
+
+              <!-- ko ifnot:validated() === true || validated() === false -->
+              <span class="acc-icon icons icon-edit"></span>
+              <!-- /ko -->
+
+              <!-- ko if:validated() === false -->
+              <span class="acc-icon icons icon-alert"></span>
+              <!-- /ko -->
+
+              <!-- ko if:validated() === true -->
+              <span class="acc-icon icons icon-ok validated"></span>
+              <!-- /ko -->
+
+            <!-- /ko -->
+
+            <!-- ko ifnot:editable -->
+              <span class="acc-icon icons icon-ok"></span>
+            <!-- /ko -->
+
+          <!-- /ko -->
+           <span>
+             <span data-bind="text: stageName"></span>
+           </span>
+        </h3>
+        <div class="stage-content" data-bind="template: templateName"> </div>
+      </oj-collapsible>
+      <!-- /ko -->
+      </oj-accordion>
+
+      <!-- ko if: $component.mode() ==='EDIT' || $component.mode() ==='CREATE' -->
+      <oj-validation-group id="tncTracker" valid="{{tncGroupValid}}">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 tnc-div">
+            <oj-label class="hide-label" for="checkboxSetAgreeId"><span data-bind="text:$component.resourceBundle.common.tnc.tncLabel"></span></oj-label>
+            <oj-checkboxset id="checkboxSetAgreeId" :invalidcomponenttracker="[[$component.tncValidationTracker]]"
+                            :aria-label="[[$component.resourceBundle.common.tnc.tncLink]]"
+                            value="{{tncValue}}"
+                            translations="[[{'required':{messageDetail:$component.resourceBundle.tradeFinanceErrors.instructionDetails.invalidTnC}}]]" required="[[true]]">
+              <oj-option id="agree" value="agree" class="oj-checkbox-label hide-label"><span data-bind="text:$component.resourceBundle.common.tnc.tncLink"></span></oj-option>
+              <a href="javascript:void(0)" class="oj-choice-row-inline" data-bind="attr:{ title: $component.resourceBundle.common.tnc.tncLink},text:$component.resourceBundle.common.tnc.tncLink,click:$component.termsAndConditions.bind()"></a>
+            </oj-checkboxset>
+         </div>
+         </div>
+      </oj-validation-group>
+      <!-- /ko -->
+
+
+      <div class="button-container">
+        <oj-button id="amendLCButton" class="action-button-primary" on-click="[[amendLC]]">
+          <span slot="startIcon" class="icons icon-confirm"></span>
+            <span data-bind="text:$component.resourceBundle.lcDetails.amendments.amendButton"></span>
+          </oj-button>
+        <!-- ko ifnot: $baseModel.small() -->
+          <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.tradeFinanceErrors.messages.cancelOperation)]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+          </oj-button>
+        <!-- /ko -->
+        <oj-button id="backButton" class="action-button-tertiary" on-click="[[goBack]]">
+          <span slot="startIcon" class="icons icon-back-arrow"></span>
+          <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+        </oj-button>
+      </div>
+
+
+
+</page-section>
+<!-- /ko -->
+
+<modal-window class="full-width-modal" params="baseModel : $baseModel, rootModel:$component, id:'tncDialog', header:$component.resourceBundle.common.tnc.tncLabel,display:'full-screen'">
+  <span class="tncContent" data-bind="html:$component.resourceBundle.tnc.tncContent"></span>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-secondary" on-click="[[$component.hideTncDialog]]">
+      <span data-bind="text:$component.resourceBundle.generic.common.ok"></span>
+</oj-button>
+  </div>
+</modal-window>
+
+</div>

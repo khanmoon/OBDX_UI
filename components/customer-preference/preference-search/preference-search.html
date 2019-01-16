@@ -1,0 +1,75 @@
+
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-9">
+<div class="form-main-container">
+
+	<!-- ko ifnot: customerPreferenceValidated -->
+
+	<div data-bind="component: {name: 'party-validate', params:{rootModel: $data,partyDetails:$component.rootModelInstance().partyDetails,additionalDetails:$component.additionalDetails}}"></div>
+
+	<!-- /ko -->
+
+	<!-- ko if: done -->
+
+	<div data-bind="component: {name: 'party-validate', params:{rootModel: $data,partyDetails:$component.rootModelInstance().partyDetails,additionalDetails:$component.additionalDetails}}"></div>
+
+	<!-- /ko -->
+
+	<!-- ko if: customerPreferenceValidated -->
+	<div data-bind="template: { name: 'admin/read-customer-preferences'}"></div>
+	<!-- /ko -->
+
+	<!-- ko if: isDataReceived -->
+	<!-- ko ifnot: customerPreferenceValidated -->
+	<!-- ko if: partyValidated -->
+	<div class="oj-flex oj-flex-items-pad button-container">
+		<!-- ko if:!isCorpAdmin() -->
+		<oj-button id="menuButton3" class="action-button-primary" on-click="[[$dashboard.loadComponent.bind($data,'create-customer-preference',{},$component)]]">
+			<span data-bind="text:nls.common.createNew"></span>
+		</oj-button>
+
+		<!-- /ko -->
+
+
+		<oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+			<span data-bind="text:nls.common.cancel"></span>
+		</oj-button>
+		<!-- ko if:!isCorpAdmin() -->
+		<oj-button class="action-button-tertiary" on-click="[[$component.goBack]]">
+			<span data-bind="text:nls.common.back"></span>
+		</oj-button>
+		<!-- /ko -->
+	</div>
+	<!-- /ko -->
+	<!-- /ko -->
+	<!-- /ko -->
+
+
+
+
+	<!-- ko if: customerPreferenceValidated -->
+
+	<div class="oj-flex oj-flex-items-pad button-container">
+		<!-- ko if:!isCorpAdmin() -->
+		<oj-button class="action-button-primary" on-click="[[$component.editPartyPreference]]">
+			<span data-bind="text:nls.common.edit"></span>
+		</oj-button>
+		<!-- /ko -->
+		<oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+			<span data-bind="text:nls.common.cancel"></span>
+		</oj-button>
+		<!-- ko if:!isCorpAdmin() -->
+		<oj-button class="action-button-tertiary" on-click="[[$component.goBack]]">
+			<span data-bind="text:nls.common.back"></span>
+		</oj-button>
+		<!-- /ko -->
+	</div>
+
+	<!-- /ko -->
+
+</div>
+</div>
+<div class="oj-flex-item oj-sm-3 help-panel">
+<help params="baseModel : $baseModel, rootModel : $component, transaction: 'preference-search'"></help>
+</div>
+</div>

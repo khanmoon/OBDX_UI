@@ -1,0 +1,55 @@
+<div class="user-list-search">
+  <div class="oj-flex mailers-base">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+  <div class="form-main-container">
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 label">
+          <oj-label for="mailerId"><span data-bind="text:$component.nls.fieldname.mailerId"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+          <oj-input-text id="mailerId" type="text" :aria-label="[[$component.nls.fieldname.mailerId]]" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.nls.fieldname.mailerIdValidation,{type:'length',options:{min:5,max:20}})]]" value="{{$component.code}}"></oj-input-text>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 label">
+          <oj-label for="mailerName" class="talign-left"><span data-bind="text:$component.nls.fieldname.mailerName"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.mailerName]]" id="mailerName" maxlength="50" validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" value="{{$component.description}}"></oj-input-text>
+        </div>
+      </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="dialogtopupButtonsearch" class="action-button-primary" on-click="[[fetchMailersList]]">
+        <span data-bind="text:$component.nls.buttons.search"></span>
+      </oj-button>
+      <!-- ko ifnot:mailersListFetched -->
+      <oj-button id="dialogtopupButtoncancel" class="action-button-secondary" on-click="[[$component.cancel]]">
+        <span data-bind="text:$component.nls.buttons.cancel"></span>
+      </oj-button>
+        <!-- /ko -->
+      <oj-button id="dialogtopupButtonclear" class="action-button-tertiary" on-click="[[clear]]">
+        <span data-bind="text:$component.nls.genericMailer.clear"></span>
+      </oj-button>
+    </div>
+    <!-- ko if:searchFlag -->
+    <div data-bind='component:{name: "search-list", params:{rootModel: $data, dataSource:searchedMailerList()}}'>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:mailersListFetched -->
+    <oj-button id="dialogtopupButtoncancel" class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:$component.nls.buttons.cancel"></span>
+    </oj-button>
+      <!-- /ko -->
+
+    </div>
+  </div>
+
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 help-panel">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'mailers'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+</div>

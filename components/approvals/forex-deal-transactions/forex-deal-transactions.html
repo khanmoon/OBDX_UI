@@ -1,0 +1,84 @@
+<!-- ko if:$baseModel.large() -->
+<div class="full-width">
+    <!-- ko if:$component.dataSourceLoaded() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <oj-table id='table' aria-label=$component.nls.labels.forexDealList data='[[forexDataSource]]' columns-default='{"sortable": "disabled"}' columns='{{columnArray}}'>
+            <oj-paging-control id="paging" data='[[forexDataSource]]' page-size='10' slot='bottom'>
+            </oj-paging-control>
+            <template type="text/html" slot="reference_No">
+
+                    <a href="javascript:void(0)" data-bind="text:$current.row.transactionId, click:$component.onTransactionRowClicked.bind($data,$current.row)"></a>
+
+            </template>
+            <template type="text/html" slot="creation_Date">
+
+                    <div class="date" data-bind='component:{name: "date-time", params:{rootModel: $component,date:$current.row.date}}'></div>
+
+            </template>
+            <template slot="approvalStatus">
+
+                    <div data-bind="template : {name : 'approvals/status', data : {status :$current.row.processingStatus ,noOfApprovalSteps: $current.row.noOfApprovalSteps, nls : $component.nls.status}}"></div>
+          
+            </template>
+        </oj-table>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko if: !$baseModel.large() -->
+<div class="form-main-container grid-main-container ">
+    <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item ">
+            <h3 class="heading " data-bind="text:$baseModel.format($component.nls.labels.FOREX_DEAL, {count:$component.countForHeader}) "></h3>
+        </div>
+    </div>
+    <oj-list-view id="listview " aria-label=$component.nls.labels.forexDealListTable data="[[forexDataSource]] " item.renderer="[[oj.KnockoutTemplateUtils.getRenderer( 'card_template', true)]] " selection-mode="single">
+        <oj-paging-control id="paging " data='[[forexDataSource]]' page-size='5' slot='bottom'>
+        </oj-paging-control>
+    </oj-list-view>
+    <script type="text/html " id="card_template ">
+        <li data-bind="attr: {id: $data[ 'type']} ">
+            <a href="# " data-bind="attr:{ title: $component.nls.labels.referenceNo , alt : $component.nls.labels.referenceNo },click:$component.onTransactionRowClicked.bind(type) ">
+                <div class="oj-flex oj-flex-items-pad grid-row-group ">
+                    <div class="oj-flex oj-sm-12 oj-md-4 oj-flex-items-pad ">
+                        <div class="oj-flex-item ">
+                            <label data-bind="text: $component.nls.labels.date "></label>
+                            <div class="date " data-bind='component:{name: "date-time ", params:{rootModel: $component,date:$context.row.date}}'></div>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 ">
+                            <label data-bind="text: $component.nls.labels.referenceNo "></label>
+                            <div class="ref-no-text " data-bind="text:transactionId "></div>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 ">
+                            <label data-bind="text: $component.nls.labels.dealType "></label>
+                            <div data-bind="text:dealType "></div>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 ">
+                            <label data-bind="text: $component.nls.labels.currencyCombination "></label>
+                            <div data-bind="text:currencyCombination "></div>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 ">
+                            <label data-bind="text: $component.nls.labels.amount "></label>
+                            <div data-bind="text:amount "></div>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-sm-12 oj-flex-items-pad ">
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 ">
+                            <label data-bind="text: $component.nls.labels.status "></label>
+                            <div data-bind="text:status "></div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </li>
+    </script>
+</div>
+<!-- /ko -->

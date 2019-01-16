@@ -1,0 +1,108 @@
+<!-- ko if:loadPartyValidate() -->
+<div id="partyValidateSearchRules" class="oj-flex oj-flex-items-pad" data-bind="component: {name: 'party-validate', params:{rootModel: $component,partyDetails:$component.rootModelInstance().approvals,additionalDetails:$component.rootModelInstance().approvals.additionalDetails}}"></div>
+<!-- /ko -->
+
+<!-- ko if:$component.rootModelInstance().approvals.partyDetailsFetched() -->
+
+<div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="userGroup_btnCreate" class="action-button-primary" on-click="[[createNew]]">
+        <span data-bind="text:$component.nls.rules.createNew"></span>
+    </oj-button>
+    <!-- ko ifnot:ruleSearch() -->
+    <oj-button class="action-button-secondary" on-click="[[cancelSearch]]">
+        <span data-bind="text:$component.nls.common.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if: !$component.partyIdAvailable -->
+    <oj-button class="action-button-tertiary" on-click="[[back]]">
+        <span data-bind="text:$component.nls.common.back"></span>
+    </oj-button>
+    <!-- /ko -->
+</div>
+
+<!-- ko if:ruleSearch() -->
+<!-- ko if:!$baseModel.small() -->
+
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+    <oj-table id="table" :aria-label="[[$component.nls.rules.details]]" columns="[[columnArray]]" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'single',column:'single'}]]" data="[[$component.datasource]]">
+        <caption class="hide-label" data-bind="text:$component.nls.rules.details"></caption>
+    </oj-table>
+    <script type="text/html" id="rule_code">
+        <td>
+            <a href="javascript:void(0)" data-bind="text:$context.row.ruleName,click:$component.viewRule.bind($data,$context.row)"></a>
+        </td>
+    </script>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-secondary" on-click="[[cancelSearch]]">
+            <span data-bind="text:$component.nls.common.cancel"></span>
+        </oj-button>
+    </div>
+</page-section>
+<!-- /ko -->
+
+<!-- ko if:$baseModel.small() -->
+<div class="grid-main-container">
+    <div class="oj-flex oj-flex-items-pad grid-table-header">
+
+        <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+            <span data-bind="text : nls.rules.ruleCode"></span>
+        </div>
+
+        <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+            <span data-bind="text : nls.rules.maker"></span>
+        </div>
+
+
+        <div class="oj-lg-2 oj-md-2 oj-sm-2 oj-flex-item">
+            <span data-bind="text : nls.rules.approvalsRequired"></span>
+        </div>
+
+        <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+            <span data-bind="text : nls.rules.workflowCode"></span>
+        </div>
+        <div class="oj-lg-1 oj-md-1 oj-sm-1 oj-flex-item pull-right"></div>
+
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad grid-main-container">
+        <oj-list-view id="searchRuleListView" data="[[datasource]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('rulesSearch_template',true)}]]" selection-mode="[['single']]"></oj-list-view>
+        <script type="text/html" id="rulesSearch_template">
+            <li data-bind="attr: {id: $data['ruleId']}">
+                <div class="oj-flex oj-flex-items-pad grid-row-group">
+                    <a href="javascript:void(0)" data-bind="click:$component.viewRule.bind(ruleId)">
+                        <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                            <span data-bind="text: ruleName"></span>
+                        </div>
+                        <!-- ko with:initiatorUserGroup-->
+
+                        <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                            <span data-bind="text: name"></span>
+                        </div>
+                        <!-- /ko -->
+                        <div class="oj-lg-2 oj-md-2 oj-sm-2 oj-flex-item">
+                            <span data-bind="text:approvalRequired"></span>
+                        </div>
+
+
+
+
+                        <!-- ko if:$data.approvalRequired==='OPTION_YES' -->
+
+                        <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                            <span data-bind="text:workflowCode"></span>
+                        </div>
+
+                        <!-- /ko -->
+
+
+                    </a>
+                </div><a href="javascript:void(0)" data-bind="click:$component.viewRule.bind(ruleId)">
+            </a></li><a href="javascript:void(0)" data-bind="click:$component.viewRule.bind(ruleId)">
+        </a></script><a href="javascript:void(0)" data-bind="click:$component.viewRule.bind(ruleId)">
+    </a></div><a href="javascript:void(0)" data-bind="click:$component.viewRule.bind(ruleId)">
+</a></div><a href="javascript:void(0)" data-bind="click:$component.viewRule.bind(ruleId)"></a>
+<!-- /ko -->
+
+<!-- /ko -->
+<!-- /ko -->

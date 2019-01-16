@@ -1,0 +1,139 @@
+<div class="list-budget pfm">
+    <div class="form-main-container oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+        <div class="oj-sm-12 oj-md-12 oj-lg-8">
+            <div id="listview-container" class="pfm__container pfm-container">
+                <!-- ko if:dataLoaded() -->
+                <!-- ko if:confirmMessage() -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item success-bar">
+                        <span class="success-icon icons" data-bind="css: 'icon-success'"></span>
+                        <span class="success-msg" id="confirm" data-bind="text:$component.successMsg"></span>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <oj-list-view class="pfm-container__listView pfm-listView" id="listview" :aria-label="[[$component.resource.budget.title]]" selection-mode="[['single']]" translations="[[{msgNoData:$component.resource.budget.subheader}]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('server_template',true)}]]" data="[[$component.budgetListDataSource]]">
+                </oj-list-view>
+                <script type="text/html" id="server_template">
+                    <li class="pfm-listView__items listView-items" data-bind="attr: {id: $data['categoryName']}">
+                        <!-- ko if: !$baseModel.small() -->
+                        <div class="oj-flex oj-flex-items-pad listView-items__listContent listContent">
+                            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 listContent__pfmName pfmName">
+                                <div class="pfmName__name" data-bind="text:categoryName "></div>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4 listContent__amount amount">
+                                <span class="amount__pfmAmount" data-bind="text :$baseModel.format($component.resource.budget.budgetset, {amount : $baseModel.formatCurrency(amount.amount,amount.currency)})"></span>
+                            </div>
+                            <div class="oj-flex-item oj-sm-3 oj-md-3 oj-lg-3 listContent__svg svg" data-bind="attr:{id : 'budget-progress-div_'+data.budgetId}">
+                                <div class="" data-bind="component:{name:'percentage-graph',
+                                params:{
+                                  rootModel: $component,
+                                  data : {
+                                        label: (consumed>100)?$baseModel.format($component.resource.budget.exceeded,{percentage : (consumed-100).toFixed(2)}):$baseModel.format($component.resource.budget.consumed,{percentage : consumed.toFixed(2)}),
+                                        showLabel:true,
+                                        uniqueId:'budget-progress_'+data.budgetId,
+                                        max:data.amount.amount,
+                                        thresholdValues:thresholdValues,
+                                        value:consumedAmount,
+                                        toolTipCallBack:$component.budgetTooltipCallback
+                                    }
+                                }
+                          }">
+                                </div>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2 listContent__launcher launcher">
+                                <a class="launcher__link" href="#" openprofile="true" data-bind="attr:{id : 'budgetmenulauncher_' + data.budgetId ,'alt':$component.resource.budget.alt ,'title':$component.resource.budget.imgTitle,'aria-label':$component.resource.budget.imgalt},click: $component.openMenu">
+                                <span class="icons icon-more-vertical"></span>
+                            </a>
+                            </div>
+                            <oj-menu :id="[['budgetmenulauncher_' + data.budgetId + '-container']]" on-oj-action="[[$component.menuItemSelect.bind($data,$data)]]" open-options.launcher="[['budgetmenulauncher_' + data.budgetId]]" open-options.display="dropDown">
+                                <!-- ko foreach: $component.menuItems -->
+                                <oj-option :id="[[id]]" :value="[[id]]">
+                                    <span data-bind="text : label"></span>
+                                </oj-option>
+                                <!-- /ko -->
+                            </oj-menu>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: $baseModel.small() -->
+                        <div data-bind="component:{name:'budget-data-card',params:{rootModel: $component, data : $data}}"></div>
+                        <!-- /ko -->
+                    </li>
+                </script>
+                <!-- /ko -->
+                <!-- ko if:noBudgets() -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item">
+                        <span id="nobudget" data-bind="text:$component.resource.budget.nobudget"></span>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex oj-flex-items-pad list-budget__create list-budget-create">
+                    <!-- ko if: !$baseModel.large() -->
+                    <div class="oj-flex-item oj-sm-10 list-budget-create__info budget-info">
+                        <span data-bind="text:$component.resource.budget.quotation"></span>
+                        <a class="" href="#" data-bind="attr:{alt:$component.resource.budget.createbudget,title:$component.resource.budget.createBudgetTitle},text:$component.resource.budget.controlYourExpenses, click: $component.createBudgetInitiate"></a>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+        <!-- ko if: $baseModel.large() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'create-budget'"></help>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <a class="back-link" href="#" data-bind="text: $component.resource.budget.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+    <!-- /ko -->
+    <!--Create budget modal window-->
+    <modal-window params="baseModel : $baseModel, rootModel : $component,id:'createbudget', header : $component.resource.budget.create.header, closeHandler : $component.createBudgetCloseHandler">
+        <div data-bind="css : !$baseModel.small()?'modal-window-container':''">
+            <!-- ko if: $component.showCreateBudgetWindow() -->
+            <div data-bind="template: { name:'pfm/budget/set-budget'}"></div>
+            <!-- /ko -->
+            <div class="button-container ">
+                <oj-button class="action-button-primary" id="button-save" on-click="[[$component.createBudgetConfirm]]">
+                    <span class="icons icon-save" slot="startIcon"></span><span data-bind="text:$component.resource.generic.common.save"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$component.cancelModalWindow]]">
+                    <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resource.generic.common.cancel"></span>
+                </oj-button>
+            </div>
+        </div>
+    </modal-window>
+    <!--Update budget modal window-->
+    <modal-window params="baseModel : $baseModel, rootModel : $component,id:'updatebudget' ,header : $baseModel.small()?$component.resource.budget.update.header.small:$component.resource.budget.update.header.large, closeHandler : $component.updateBudgetCloseHandler">
+        <div data-bind="css : !$baseModel.small()?'modal-window-container':''">
+            <!-- ko if: $component.showUpdateBudgetWindow() -->
+            <div data-bind="template: { name:'pfm/budget/set-budget'}"></div>
+            <!-- /ko -->
+            <div class="button-container ">
+                <oj-button class="action-button-primary" id="save" on-click="[[$component.updateBudgetConfirm]]">
+                    <span class="icons icon-save" slot="startIcon"></span><span data-bind="text:$component.resource.generic.common.save"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="cancel" on-click="[[$component.cancelModalWindow]]">
+                    <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resource.generic.common.cancel"></span>
+                </oj-button>
+            </div>
+        </div>
+    </modal-window>
+    <!--Delete budget modal window-->
+    <modal-window params="baseModel : $baseModel, rootModel : $component,id:'deletebudget',header :$component.resource.budget.delete.header, closeHandler : $component.deleteBudgetCloseHandler()">
+        <div data-bind="css : !$baseModel.small()?'modal-window-container':''">
+            <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                <div class="oj-flex-item oj-lg-12 oj-sm-12">
+                    <span id="confirmDelete" data-bind="text:$baseModel.format($component.resource.budget.delete.verifyMsg,{categoryName:$component.budgetDetails().categoryName})"></span>
+                </div>
+            </div>
+            <div class="button-container">
+                <oj-button class="action-button-primary" id="button-proceed" on-click="[[$component.deleteBudgetConfirm]]">
+                    <span class="icons icon-forward-arrow" slot="startIcon"></span><span data-bind="text:$component.resource.budget.delete.proceed"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="button-notproceed" on-click="[[$component.cancelModalWindow]]">
+                    <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resource.budget.delete.doNotProceed"></span>
+                </oj-button>
+            </div>
+        </div>
+    </modal-window>
+</div>

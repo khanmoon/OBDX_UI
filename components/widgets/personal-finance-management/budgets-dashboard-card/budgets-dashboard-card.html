@@ -1,0 +1,31 @@
+<div class="oj-panel budget">
+
+    <div class="oj-flex oj-flex-items-pad budget-contents">
+        <div class="oj-flex-item oj-sm-6">
+            <!-- <span class="budget-contents-count" data-bind="text:$component.countOfBudget()"></span> -->
+            <h3 class="budget-contents-title" data-bind="text:$component.resource.budgets"></h3>
+        </div>
+        <div class="oj-flex-item oj-sm-6 right budget-contents-link">
+            <a href="#" openprofile="true" id="menuLauncher-budget" data-bind="attr:{'aria-label':$component.resource.menuLabel, alt : $component.resource.openmenualt , title : $component.resource.openmenutitle},click: $component.openMenu">
+                <div class="icons icon-more-vertical"></div>
+            </a>
+            <oj-menu :id="[['menuLauncher-budget-container']]" on-oj-action="[[$component.menuItemSelect.bind($data,$data)]]" open-options.launcher="[['menuLauncher-budget']]" open-options.display="dropDown">
+                        <!-- ko foreach: $component.menuItems -->
+                        <oj-option :id="[[id]]" :value="[[id]]">
+                            <span data-bind="text : label"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-menu>
+        </div>
+    </div>
+    <!-- ko if: $component.dataLoaded() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-3">
+        <img data-bind="attr:{alt:$component.resource.budgetalt,title:$component.resource.budgettitle},loadImage:'spend/budget.svg'">
+      </div>
+      <div class="oj-flex-item oj-sm-9">
+        <div data-bind="text:$baseModel.format($component.resource.budgetActive,{totalSpend:$component.countOfBudget()})"></div>
+      </div>
+    </div>
+    <!-- /ko -->
+</div>

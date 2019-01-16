@@ -1,0 +1,10 @@
+<div data-bind="css:$baseModel.small()?'form-main-container standing-instructions':''">
+    <!-- ko if: $baseModel.small() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-radioset class="payments-money-transfer__radiosetSpacing oj-choice-direction-row" :aria-label="[[$component.resource.labels.option]]" on-value-changed="[[$component.optionChange]]" value="{{selectedOption}}"><!-- ko foreach: SIoptionsArray --><oj-option name="option" value="{{id}}" :id="[[id]]" :data-id="[[id]]"><span class="label" data-bind="attr: {for: id},text: label"></span></oj-option><!-- /ko --></oj-radioset>
+        </div>
+    </div>
+    <!-- /ko -->
+    <div data-bind="component:{name:selectedOption(),params:{rootModel: $component, isStandingInstruction : selectedOption() === 'payments-money-transfer'}}"></div>
+</div>

@@ -1,0 +1,60 @@
+<div class="oj-panel trade-instruments">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-6">
+      <h3 class="trade-instruments__title" data-bind="text:$component.nls.tempradeInstrumentsDetails.labels.title"></h3>
+    </div>
+    <div class="oj-flex-item oj-sm-6 right">
+      <oj-select-one id="combobox" value="{{dateFilter}}" class="select-box" data-bind="attr:{'aria-label': $component.nls.tempradeInstrumentsDetails.labels.dateDropDown}">
+        <oj-option value="10"><!-- ko text: $component.nls.tempradeInstrumentsDetails.labels.expiryTen --><!-- /ko --></oj-option>
+        <oj-option value="15"><!-- ko text: $component.nls.tempradeInstrumentsDetails.labels.expiryFifteen --><!-- /ko --></oj-option>
+        <oj-option value="30"><!-- ko text: $component.nls.tempradeInstrumentsDetails.labels.expiryThirty --><!-- /ko --></oj-option>
+      </oj-select-one>
+    </div>
+  </div>
+  <div class="oj-flex">
+    <!-- ko if: dataLoaded -->
+    <oj-tab-bar data-bind="attr:{'aria-label':$component.nls.tempradeInstrumentsDetails.labels.tradeList}" class="oj-flex-item oj-sm-5 trade-instruments__tabBar trade-instruments-tabBar" drill-mode="none" display="[[display]]" selection="{{$component.selectedItem}}" edge="[[edge]]">
+      <ul data-bind="attr:{'aria-label': $component.nls.tempradeInstrumentsDetails.labels.specificTradeInfo}">
+        <!-- ko foreach: tradeDetails -->
+        <li class="trade-instruments-tabBar__list" data-bind="attr:{id: id}">
+          <a href="#">
+            <div class="list-container">
+              <div>
+                <span class="list-text" data-bind="text: label"></span>
+                <span class="list-count" data-bind="text: count"></span>
+              </div>
+              <div>
+                <div class="list-footer-text" data-bind="text:$component.nls.tempradeInstrumentsDetails.labels.totalAmount"></div>
+                <div class="list-footer-amount" data-bind="text:amount"></div>
+              </div>
+            </div>
+          </a>
+        </li>
+        <!-- /ko -->
+      </ul>
+    </oj-tab-bar>
+    <div class="oj-flex-item oj-sm-7">
+      <div slot="import">
+        <div class="demo-tab-content">
+          <ul class="oj-flex oj-flex-items-pad" data-bind="attr:{'aria-label': $component.nls.tempradeInstrumentsDetails.labels.specificTradeInfo}">
+            <!-- ko foreach: details -->
+            <li class="oj-flex-item tabList">
+              <div data-bind="text:expiryDate"></div>
+              <div>
+                <span data-bind="text:referenceNo" class="list-referenceNo"></span>
+                <span data-bind="text:amount" class="list-amount"></span>
+              </div>
+            </li>
+            <!-- /ko -->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: dataLoaded -->
+    <div class="oj-flex-item noData">
+      <div data-bind="text: $component.nls.tempradeInstrumentsDetails.labels.noData"></div>
+    </div>
+    <!-- /ko -->
+  </div>
+</div>

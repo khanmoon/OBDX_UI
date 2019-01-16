@@ -1,0 +1,72 @@
+<!-- ko if:$component.isDataLoaded() -->
+<div class="debit-card-details-container" data-bind="template: { name: 'accounts/debit-card-details',data: $component.debitCardDetailsObject }">
+</div>
+
+<div class="debit-card-details form-main-container">
+	<div class="oj-flex">
+		<modal-window class="message" params="baseModel : $baseModel, rootModel : $data, id:'internationalTransactions', header :  $component.popupHeader()">
+			<div class="form-main-container message-text">
+				<div class="oj-flex oj-flex-items-pad">
+					<div class="oj-flex-item">
+						<span data-bind="text: $component.popupMsg()"></span>
+					</div>
+				</div>
+				<div class="oj-flex oj-flex-items-pad button-container">
+					<oj-button id="yes" class="action-button-primary" on-click="[[$component.disableInternationalTransaction]]">
+						<span slot="startIcon" class="icons" data-bind="css: $component.popupIcon()"></span>
+						<span data-bind="text:$component.popupBtn()"></span>
+					</oj-button>
+					<oj-button id="cancel" class="action-button-secondary" on-click="[[$component.closeSwitchDialog]]"><span slot="startIcon" class="icons icon-cancel"></span>
+						<span data-bind="text:$component.locale.generic.common.cancel"></span>
+					</oj-button>
+				</div>
+			</div>
+		</modal-window>
+		<div class="oj-flex-item oj-sm-12 oj-lg-12 oj-md-12">
+			<div data-bind="component:{name: 'debit-card-limits', params:{rootModel:$data}}">
+			</div>
+		</div>
+    <div class="oj-flex oj-flex-items-pad button-container form-main-container">
+      <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+        <span data-bind="text:$component.locale.generic.common.back"></span>
+      </oj-button>
+    </div>
+	</div>
+</div>
+
+<!-- ko ifnot: $baseModel.large() -->
+<a href="#" data-bind="click: $component.showFloatingPanel">
+	<div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+</a>
+<floating-panel params="baseModel : $baseModel, panelId: 'panelDebitCard', rootModel: $component">
+	<ul>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reissue-card',cardObject,$data)">
+        <span class="icons icon-limit"></span>
+        <span data-bind="text: $component.locale.buttons.reissueCard"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'upgrade-card',cardObject,$data)">
+        <span class="icons icon-card-preference"></span>
+        <span data-bind="text: $component.locale.buttons.upgradeCard"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'debit-card-hotlisting',cardObject,$data)">
+        <span class="icons icon-cancel-card"></span>
+        <span data-bind="text: $component.locale.buttons.blockCards"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reset-pin',cardObject,$data)">
+        <span class="icons icon-refresh"></span>
+        <span data-bind="text: $component.locale.buttons.resetPin"></span></a>
+		</li>
+		<li>
+			<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'debit-card-pin-request',cardObject,$data)">
+        <span class="icons icon-request-pin"></span>
+        <span data-bind="text: $component.locale.buttons.pinRequest"></span></a>
+		</li>
+	</ul>
+</floating-panel>
+
+<!-- /ko -->
+<!-- /ko -->

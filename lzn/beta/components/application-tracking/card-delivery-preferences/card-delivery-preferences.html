@@ -1,0 +1,181 @@
+<!-- ko if: $component.deliveryPreferencesLoaded() -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label class="oj-label" :for="[['cardDelivery'+($baseModel.currentIdCount())]]"><span data-bind="text:$component.resource.cardDelivery"></span></oj-label>
+
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+
+		<oj-select-one required="[[true]]" :id="[['cardDelivery'+($baseModel.currentIdCount())]]" :placeholder="" value="{{$component.primaryCardHolder().preferences.cardDeliveryPreferences.cardDeliveryMode}}" on-value-changed="[[$component.cardDeliveryChange]]">
+			<!-- ko foreach: $component.cardDeliveryModes() -->
+			<oj-option value="{{key}}"><span data-bind="text:description"></span></oj-option>
+			<!-- /ko -->
+			</oj-select-one>
+
+	</div>
+</div>
+
+<!-- ko if: $component.cardDeliveryAddressRefreshed() -->
+<!-- ko ifnot :  $component.primaryCardHolder().preferences.cardDeliveryPreferences.cardDeliveryMode === 'CURRENT_ADDRESS' -->
+<!-- ko if :  $component.primaryCardHolder().preferences.cardDeliveryPreferences.cardDeliveryMode === 'BRANCH' -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label class="oj-label" :for="[['selectBranchCard'+($baseModel.currentIdCount())]]"><span data-bind="text:$component.resource.selectBranch"></span></oj-label>
+
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+
+		<oj-select-one required="[[true]]" :id="[['selectBranchCard'+($baseModel.currentIdCount())]]" :placeholder="" on-value-changed="[[$component.cardBranchChange]]" value="{{$component.primaryCardHolder().preferences.cardDeliveryPreferences.cardDeliveryBranch}}">
+			<!-- ko foreach: $component.branchAddresses() -->
+			<oj-option value="{{branchCode}}"><span data-bind="text:branchName"></span></oj-option>
+			<!-- /ko -->
+			</oj-select-one>
+	</div>
+</div>
+
+<!-- /ko -->
+<!-- ko if : $component.primaryCardHolder().preferences.cardDeliveryPreferences.cardDeliveryAddress-->
+<div class="oj-flex oj-flex-items-pad">
+	<div data-bind="with:$component.primaryCardHolder().preferences.cardDeliveryPreferences" class="oj-flex-item oj-md-6 oj-sm-12  oj-lg-4 oj-md-offset-4 oj-lg-offset-5">
+		<!-- ko if : cardDeliveryAddress['line2'] -->
+		<!-- ko if: cardDeliveryAddress.line2 -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress, {line1: cardDeliveryAddress.line1, line2: cardDeliveryAddress.line2, city: cardDeliveryAddress.city,state: selectedValues().cardDeliveryAddress.state, zip: cardDeliveryAddress.postalCode})"></span>
+		<!-- /ko -->
+		<!-- ko ifnot: cardDeliveryAddress.line2 -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress2, {line1: cardDeliveryAddress.line1, city: cardDeliveryAddress.city,state:selectedValues().cardDeliveryAddress.state, zip: cardDeliveryAddress.postalCode})"></span>
+		<!-- /ko -->
+		<!-- /ko -->
+		<!-- ko ifnot : cardDeliveryAddress['line2'] -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress2, {line1: cardDeliveryAddress.line1, city: cardDeliveryAddress.city,state:selectedValues().cardDeliveryAddress.state, zip: cardDeliveryAddress.postalCode})"></span>
+
+		<!-- /ko -->
+	</div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if :  $component.primaryCardHolder().preferences.cardDeliveryPreferences.cardDeliveryMode === 'CURRENT_ADDRESS'-->
+<div id="contactInfo">
+	<div data-bind='component: { name: "address-input", params: { rootModel: $component,
+														id:"2",
+													addressModel: $component.primaryCardHolder().preferences.cardDeliveryPreferences.cardDeliveryAddress,
+													addressValues:$component.primaryCardHolder().preferences.cardDeliveryPreferences.selectedValues().cardDeliveryAddress,
+													validator:$component.validationTracker}}'></div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label class="oj-label" :for="[['pinDelivery'+($baseModel.currentIdCount())]]"><span data-bind="text:$component.resource.pinDelivery"></span></oj-label>
+
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+
+		<oj-select-one required="[[true]]" :id="[['pinDelivery'+($baseModel.currentIdCount())]]" :placeholder="" value="{{$component.primaryCardHolder().preferences.cardDeliveryPreferences.pinDeliveryMode}}" on-value-changed="[[$component.pinDeliveryChange]]">
+			<!-- ko foreach: $component.pinDeliveryModes() -->
+			<oj-option value="{{key}}"><span data-bind="text:description"></span></oj-option>
+			<!-- /ko -->
+			</oj-select-one>
+
+	</div>
+</div>
+
+<!-- ko if: $component.pinDeliveryAddressRefreshed() -->
+<!-- ko ifnot :  $component.primaryCardHolder().preferences.cardDeliveryPreferences.pinDeliveryMode === 'CURRENT_ADDRESS' -->
+<!-- ko if :  $component.primaryCardHolder().preferences.cardDeliveryPreferences.pinDeliveryMode === 'BRANCH' -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label class="oj-label" :for="[['selectBranchPin'+($baseModel.currentIdCount())]]"><span data-bind="text:$component.resource.selectBranch"></span></oj-label>
+
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+
+		<oj-select-one required="[[true]]" :id="[['selectBranchPin'+($baseModel.currentIdCount())]]" :placeholder="" on-value-changed="[[$component.pinBranchChange]]" value="{{$component.primaryCardHolder().preferences.cardDeliveryPreferences.pinDeliveryBranch}}">
+			<!-- ko foreach: $component.branchAddresses() -->
+			<oj-option value="{{branchCode}}"><span data-bind="text:branchName"></span></oj-option>
+			<!-- /ko -->
+			</oj-select-one>
+
+	</div>
+</div>
+<!-- /ko -->
+<!-- ko if : $component.primaryCardHolder().preferences.cardDeliveryPreferences.pinDeliveryAddress-->
+<div class="oj-flex oj-flex-items-pad">
+	<div data-bind="with:$component.primaryCardHolder().preferences.cardDeliveryPreferences" class="oj-flex-item oj-md-6 oj-sm-12  oj-lg-4 oj-md-offset-4 oj-lg-offset-5">
+		<!-- ko if : pinDeliveryAddress['line2'] -->
+		<!-- ko if: pinDeliveryAddress.line2 -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress, {line1: pinDeliveryAddress.line1, line2: pinDeliveryAddress.line2, city: pinDeliveryAddress.city,state: selectedValues().pinDeliveryAddress.state, zip: pinDeliveryAddress.postalCode})"></span>
+		<!-- /ko -->
+		<!-- ko ifnot: pinDeliveryAddress.line2 -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress2, {line1: pinDeliveryAddress.line1, city: pinDeliveryAddress.city,state:selectedValues().pinDeliveryAddress.state, zip: pinDeliveryAddress.postalCode})"></span>
+		<!-- /ko -->
+		<!-- /ko -->
+		<!-- ko ifnot : pinDeliveryAddress['line2'] -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress2, {line1: pinDeliveryAddress.line1, city: pinDeliveryAddress.city,state:selectedValues().pinDeliveryAddress.state, zip: pinDeliveryAddress.postalCode})"></span>
+
+		<!-- /ko -->
+	</div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if :  $component.primaryCardHolder().preferences.cardDeliveryPreferences.pinDeliveryMode === 'CURRENT_ADDRESS'-->
+<div id="contactInfo">
+	<div data-bind='component: { name: "address-input", params: { rootModel: $component,
+														id:"2",
+													addressModel: $component.primaryCardHolder().preferences.cardDeliveryPreferences.pinDeliveryAddress,
+													addressValues:$component.primaryCardHolder().preferences.cardDeliveryPreferences.selectedValues().pinDeliveryAddress,
+													validator:$component.validationTracker}}'></div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+		<oj-label class="oj-label" :for="[['statementDelivery'+($baseModel.currentIdCount())]]"><span data-bind="text:$component.resource.statementDelivery"></span></oj-label>
+
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+
+		<oj-select-one required="[[true]]" :id="[['statementDelivery'+($baseModel.currentIdCount())]]" :placeholder="" on-value-changed="[[$component.statementDeliveryChange]]" value="{{$component.primaryCardHolder().preferences.cardDeliveryPreferences.statementDeliveryMode}}">
+			<!-- ko foreach: $component.statementDeliveryModes() -->
+			<oj-option value="{{key}}"><span data-bind="text:description"></span></oj-option>
+			<!-- /ko -->
+			</oj-select-one>
+
+	</div>
+</div>
+<!-- ko if: $component.statementDeliveryAddressRefreshed() -->
+<!-- ko if : ($component.primaryCardHolder().preferences.cardDeliveryPreferences.statementDeliveryMode === 'BOTH') || ($component.primaryCardHolder().preferences.cardDeliveryPreferences.statementDeliveryMode === 'POST') -->
+<!-- ko if : $component.partyAddresses().POSTAL -->
+<div class="oj-flex oj-flex-items-pad">
+	<div data-bind="with:$component.partyAddresses().POSTAL" class="oj-flex-item oj-md-6 oj-sm-12  oj-lg-4 oj-md-offset-4 oj-lg-offset-5">
+
+		<!-- ko if : $component.partyAddresses().POSTAL['line2'] -->
+		<!-- ko if: line2 -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress, {line1: line1, line2: line2, city: city,state: $component.primaryCardHolder().preferences.cardDeliveryPreferences.selectedValues().statementDeliveryAddress.state, zip: postalCode})"></span>
+		<!-- /ko -->
+		<!-- ko ifnot: line2 -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress2, {line1: line1, city: city,state:$component.primaryCardHolder().preferences.cardDeliveryPreferences.selectedValues().statementDeliveryAddress.state, zip: postalCode})"></span>
+		<!-- /ko -->
+		<!-- /ko -->
+		<!-- ko ifnot : $component.partyAddresses().POSTAL['line2'] -->
+		<span class="addonCard" data-bind="text:$baseModel.format($parent.resource.reviewAddress2, {line1: line1, city: city,state:$component.primaryCardHolder().preferences.cardDeliveryPreferences.selectedValues().statementDeliveryAddress.state, zip: postalCode})"></span>
+
+		<!-- /ko -->
+	</div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if :  ($component.primaryCardHolder().preferences.cardDeliveryPreferences.statementDeliveryMode === 'BOTH')|| ($component.primaryCardHolder().preferences.cardDeliveryPreferences.statementDeliveryMode === 'ONLINE') -->
+<div class="oj-flex oj-flex-items-pad">
+	<span class="oj-flex-item oj-md-6 oj-sm-12  oj-lg-4 oj-md-offset-4 oj-lg-offset-5" data-bind="text:$component.primaryCardHolder().personalInfo.email"></span>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad button-container">
+	<div class="oj-flex-item right oj-lg-10 oj-md-10">
+		<oj-button class="form-button-secondary" on-click="[[updateDeliveryPreferences]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+</oj-button>
+	</div>
+</div>

@@ -1,0 +1,118 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+    <oj-validation-group id="trackerFunding" valid="{{$component.groupValid}}">
+  <!-- ko if: $component.productDetails().productClassName==='CASA' -->
+  <!-- ko if:$component.fundingOtionsListLoaded() -->
+  <div class="oj-flex oj-flex-items-pad margin-top-20">
+    <div class="oj-flex-item term-deposit">
+      <div class="min-width" data-bind="component: {
+         name: 'amount-input', params: {
+         amount :$component.productDetails().productClassName==='TERM_DEPOSITS'?$component.applicantDetails().accountFunding.tdRequirements.termDepositApplicationRequirementDTO.requestedAmount.amount:$component.initialAmount.amount,
+         label:$component.productDetails().productClassName==='TERM_DEPOSITS'?$component.resource.initialAmountTD:$component.resource.initialAmount,
+         currency: $component.productDetails().currency,
+         converter:$baseModel.formatCurrency,
+         validator:$component.validationTracker,
+         isMandatory:true,
+         labelClasses : 'oj-lg-2 label oj-md-4 oj-lg-offset-2 oj-md-offset-1',
+         valueClasses : 'oj-lg-6 oj-md-7',
+         maxlength:15,
+         minimumAmount:$component.minimumAmount,
+         maximumAmount:$component.productDetails().productClassName==='TERM_DEPOSITS'?$component.productDetails().offers.offerAdditionalDetails.termDepositOfferCurrencyParameterResponseDTOs[0].maxDepositAmount.amount:null,
+         rootId:'depositAmount',
+         rootClass:'form-input',
+         inline:'origination',
+         formattedAmount: ko.observable(),
+         translations: {'required': {messageDetail: $component.resource.depositAmountMessage}}
+
+         }
+         }"></div>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-8 oj-lg-8 oj-md-offset-5 oj-lg-offset-5 cust-label">
+          <div data-bind="html:$baseModel.format($component.resource.minAmount, {amount: $baseModel.formatCurrency($component.minimumAmount, $component.productDetails().currency)})">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- /ko  -->
+  <!-- /ko  -->
+  <!-- ko if:$component.fundingOtionsListLoaded() -->
+  <div class="oj-flex oj-flex-items-pad margin-top-20">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-md-offset-1 oj-lg-offset-1 ">
+      <h4 class="form-heading" data-bind="text:$component.resource.urFundingSource"></h4>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item  oj-md-offset-1 oj-lg-offset-1 ">
+      <span class="text" id="mainlabelid" data-bind="text:$component.resource.selectMethod"></span>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class=" oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-md-offset-1 oj-lg-offset-2">
+      <div class="">
+        <div required id="radiosetBasicDemoId" aria-labelledby="mainlabelid">
+          <oj-radioset id="fundingDetails" class="oj-choice-direction-row" value="{{fundingType}}" on-value-changed="[[$component.getAccountFundingList.bind($data, $data)]]">
+            <!-- ko foreach: $component.fundingOptionsList-->
+            <div class="oj-radioset-wrapper">
+              <oj-option value="[[code]]">
+                <span data-bind="text:$component.resource.fundingOption[code]"></span>
+              </oj-option>
+            </div>
+            <!-- ko if:$component.fundingType()==='CARD_CREDIT' && code==='CARD_CREDIT' -->
+            <div class="">
+              <div data-bind="template:{name:'origination/card-payment', data:{fundingOption:$component.fundingType()}}"></div>
+            </div>
+            <!-- /ko  -->
+            <!-- ko if:$component.fundingType()==='CARD_DEBIT'  && code==='CARD_DEBIT'-->
+            <div class="">
+              <div data-bind="template:{name:'origination/card-payment', data:{fundingOption:$component.fundingType()}}"></div>
+            </div>
+            <!-- /ko  -->
+            <!-- ko if:$component.fundingType()==='DDAO'  && code==='DDAO'-->
+            <div class="">
+              <div data-bind="template:{name:'origination/linked-account-payment', data:{fundingOption:$component.fundingType()}}"></div>
+            </div>
+            <!-- /ko  -->
+            <!-- ko if:$component.fundingType()==='COLL'  && code==='COLL'-->
+            <div class="">
+              <div data-bind="template:{name:'origination/linked-account-payment', data:{fundingOption:$component.fundingType()}}"></div>
+            </div>
+            <!-- /ko  -->
+            <!-- ko if:$component.fundingType()==='LATER'  && code==='LATER'-->
+            <div class="oj-flex oj-flex-items-pad-group">
+
+            </div>
+            <!-- /ko  -->
+            <!-- /ko  -->
+          </oj-radioset>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ko  -->
+  </oj-validation-group>
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item oj-md-10 oj-lg-10">
+    <oj-button id="submitAccountFunding" class="form-button-secondary" :aria-label="[[$component.resource.submitAccountFunding]]" on-click="[[$component.checkAccountFundingInfo.bind($data,$component)]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+  </div>
+</div>
+
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'SAVEFUNDINGSOURCE', header: $component.resource.generic.common.info">
+    <div class="message-text scroll" data-bind="html:$component.resource.securityReason"></div>
+    <div class="message-btn button-container">
+      <oj-button id="saveButton" class="action-button-primary" on-click="[[$component.saveAccountFundingInfo.bind($data)]]">
+        <span data-bind="text:$component.resource.generic.common.yes"></span>
+      </oj-button>
+      <oj-button id="hideButton" class="action-button-secondary" on-click="[[function(){$('#SAVEFUNDINGSOURCE').trigger('closeModal')}]]">
+        <span data-bind="text:$component.resource.generic.common.no"></span>
+      </oj-button>
+    </div>
+  </modal-window>
+</div>

@@ -1,0 +1,70 @@
+<div id="viewDetails" class="form-main-container">
+  <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <oj-validation-group id="tdTracker" valid="{{groupValid}}">
+        <div class="row-group">
+          <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.locale.amendTD.selectAccount,
+            account : $component.accountNumberSelected,
+            type: 'balance',
+            customURL : 'deposit',
+            additionalDetails : $component.additionalDetails,
+            validator:$component.validationTracker,
+            readOnly: !!$component.params.id,
+            taskCode:'TD_N_ATD'">
+          </account-input>
+          <!-- ko if:maturityInstructionLoaded -->
+          <div class="oj-flex oj-flex-items-pad">
+
+            <div class="oj-flex-item oj-sm-12 label ">
+              <oj-label for="maturityInstruction"><span data-bind="text:$component.locale.amendTD.maturityInstruction"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+              <oj-select-one id="maturityInstruction" required="[[true]]" :id="[['maturityInstruction']]" value="{{$component.rollOverType}}" on-value-changed="[[maturityInstructionChange]]" :placeholder="[[$component.locale.placeholder.pleaseSelect]]">
+                        <!-- ko foreach: maturityInstructionList -->
+                        <oj-option value="{{code}}"><span data-bind="text:($component.params.module ==='ISL'||$component.module() ==='ISL')?$component.locale.maturityInstructions[code]:description"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if:$component.rootModelInstance.amendData.rollOverType()==='S' -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item" data-bind="component: {
+      name: 'amount-input', params: {
+      amount :$component.rootModelInstance.amendData.rollOverAmount.amount,
+      label :$component.locale.amendTD.renewAmount,
+      currency: $component.rootModelInstance.amendData.rollOverAmount.currency,
+      validator:$component.validationTracker,
+      isMandatory:true,
+      rootId:'newDeposit-amount',
+      rootClass:'form-input'
+  }
+}"></div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if:$component.rootModelInstance.amendData.rollOverType() !== 'I'-->
+          <div data-bind="component: {name: 'td-payout', params:{rootModel: $component,payoutInstructions:$component.rootModelInstance.amendData.payoutInstructions()[0]}}"></div>
+          <!-- /ko -->
+          <div class="button-container">
+            <!-- ko if:$component.dataModel().buttonSection() -->
+            <oj-button id="dialogtopupButton" class="action-button-primary " on-click="[[saveData]]"><span slot="startIcon" class="icons icon-save"></span>
+      <span data-bind="text:$component.locale.generic.common.save"></span>
+</oj-button>
+            <!-- /ko -->
+            <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.locale.generic.common.back"></span>
+</oj-button>
+
+          </div>
+        </div>
+      </oj-validation-group>
+      </page-section>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'td-amend'"></help>
+    </div>
+    <!-- /ko -->
+  </div>
+</div>

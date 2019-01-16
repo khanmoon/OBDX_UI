@@ -1,0 +1,21 @@
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+  <oj-label class="hide-label" :for="[['Categorycode'+$baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.spendCategory.subcatname"></span></oj-label>
+    <oj-input-text maxlength="40" required :id="[['Categorycode'+$baseModel.currentIdCount()]]" validators="[[[$component.validateName]]]" value="{{$data.code}}" disabled="[[$data.isOld]]"></oj-input-text>
+    
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5">
+  <oj-label class="hide-label" :for="[['CategoryName'+$baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.spendCategory.subcatdesc"></span></oj-label>
+    <oj-input-text maxlength="40" required :id="[['CategoryName'+$baseModel.currentIdCount()]]" validators="[[[$component.validateName]]]" value="{{$data.name}}"></oj-input-text>
+    
+  </div>
+  <!-- ko if:!$data.isOld -->
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-1">
+    <a href="javascript:void(0)" data-bind="click:$component.deleteSub">
+    <span class="icons icon-delete"></span>
+    </a>
+  </div>
+  <!-- /ko -->
+
+</div>

@@ -1,0 +1,153 @@
+<div class="template-list-container">
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-9">
+<div class="form-main-container alertheader full-width">
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <!-- optionChange: $component.evaluateActionAndEventId, -->
+
+    <!-- ko if:moduleTypeLoaded -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <label for="moduleType" data-bind="text:$component.nls.alerts.labels.moduleType"></label>
+      </div>
+      <div class="oj-col oj-sm-12 oj-md-8 oj-lg-4">
+
+        <oj-select-one id="moduleType" :invalidcomponenttracker="[[$component.invalidTracker]]" :placeholder="[[$component.nls.genericAlert.select]]" value="{{$component.moduleType}}">
+          <!-- ko foreach : moduleTypeList -->
+          <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if:showDropDown -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <label for="createAlertEventDescription" data-bind="text:$component.nls.alerts.labels.eventDescription"></label>
+      </div>
+      <div class="oj-col oj-sm-12 oj-md-8 oj-lg-6">
+
+        <oj-select-one id="createAlertEventDescription" :invalidcomponenttracker="[[$component.invalidTracker]]" on-value-changed="[[$component.eventOptionChangeHandler]]" :placeholder="[[$component.nls.genericAlert.select]]" value="{{$component.actionAndEventId}}">
+          <!-- ko foreach : eventActivityList -->
+          <oj-option value="{{$data.activityEventDescription}}"><span data-bind="text:activityEventDescription"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+    <!-- /ko -->
+  </page-section>
+  <div class="oj-row button-container">
+    <oj-button class="action-button-primary" on-click="[[fetchSearchAlerts]]">
+      <span data-bind="text:$component.nls.genericAlert.search"></span>
+    </oj-button>
+    <!-- ko ifnot:alertsFetched -->
+    <oj-button class="action-button-secondary" on-click="[[cancelConfirmation]]">
+      <span data-bind="text:$component.nls.genericAlert.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-tertiary" on-click="[[resetForm]]">
+      <span data-bind="text:$component.nls.genericAlert.clear"></span>
+    </oj-button>
+
+  </div>
+
+  <modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'cancelDialog',header:$component.nls.alerts.labels.cancelWarning">
+    <div class="message-box">
+      <div class="dialog-text" data-bind="text:$component.nls.alerts.labels.cancelMessage">
+      </div>
+      <div class="button-container">
+        <oj-button class="action-button-primary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+          <span data-bind="text:$component.nls.genericAlert.yes"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$component.closeDialogBox]]">
+          <span data-bind="text:$component.nls.genericAlert.no"></span>
+        </oj-button>
+      </div>
+    </div>
+  </modal-window>
+
+
+  <!-- ko if:alertsFetched -->
+  <!-- ko if:$baseModel.large() -->
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <oj-table id="table" :aria-label="[[$component.nls.alerts.labels.searchResults]]" columns="[[[
+    {headerText:$component.nls.alerts.labels.eventId,field:'activityEventDescription'},
+    {headerText:$component.nls.alerts.labels.moduleType,field:'moduleType'},
+    {headerText:$component.nls.alerts.labels.alertType,field:'alertType'}]]]" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'single',column:'single'}]]" data="[[$component.datasource]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('alertViewTemplate', true)]]">
+      <caption class="hide-label" data-bind="text:$component.nls.alerts.labels.heading"></caption>
+    </oj-table>
+
+    <div class="oj-row button-container">
+      <oj-button class="action-button-secondary" on-click="[[cancelConfirmation]]">
+        <span data-bind="text:$component.nls.genericAlert.cancel"></span>
+      </oj-button>
+    </div>
+
+    <script type="text/html" id="alertViewTemplate">
+      <tr>
+        <td>
+          <a href="javascript:void(0)" data-bind="text:$context.row.alertDTO.alertName,click:$component.onAlertSelected.bind(alertDTO.alertName)"></a>
+        </td>
+        <td>
+          <div data-bind="text: $component.nls.alerts.moduleType[moduleType]"></div>
+        </td>
+        <td>
+          <div data-bind="text: $component.nls.alerts.alertType[alertDTO.alertType]"></div>
+        </td>
+      </tr>
+    </script>
+  </page-section>
+  <!-- /ko -->
+
+
+  <!-- ko ifnot:$baseModel.large() -->
+  <div class="grid-main-container">
+    <div class="oj-flex oj-flex-items-pad grid-table-header">
+
+      <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+        <span data-bind="text : $component.nls.alerts.labels.eventId"></span>
+      </div>
+
+      <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+        <span data-bind="text : $component.nls.alerts.labels.alertType"></span>
+      </div>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad grid-main-container">
+      <oj-list-view id="searchAlertMobileView" data="[[$component.datasource]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('alertSearch_template',true)}]]" selection-mode="[['single']]"></oj-list-view>
+      <script type="text/html" id="alertSearch_template">
+        <li data-bind="attr: {id: $data['alertName']}">
+          <a href="javascript:void(0)" class="oj-flex oj-flex-items-pad grid-row-group" data-bind="click:$component.onAlertSelected.bind(alertName)">
+            <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+              <span data-bind="text: alertName"></span>
+            </div>
+            <div class="oj-lg-2 oj-md-2 oj-sm-2 oj-flex-item">
+              <span data-bind="text: typeAlert"></span>
+            </div>
+
+          </a>
+        </li>
+      </script>
+    </div>
+    <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[paginationDataSource]]"></oj-paging-control>
+    <div class="oj-row button-container">
+      <oj-button class="action-button-secondary" on-click="[[cancelConfirmation]]">
+        <span data-bind="text:$component.nls.genericAlert.cancel"></span>
+      </oj-button>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+  <!--/action-widget-->
+
+</div>
+</div>
+<div class="oj-flex-item oj-sm-3 help-panel">
+  <help params="baseModel : $baseModel, rootModel : $component, transaction: 'alerts-maintenance'"></help>
+</div>
+</div>
+</div>

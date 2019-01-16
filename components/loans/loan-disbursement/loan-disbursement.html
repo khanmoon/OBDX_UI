@@ -1,0 +1,103 @@
+<div class="form-main-container loan-disbursement">
+	<!-- ko if:!$baseModel.small() -->
+	<div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+			<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+				<account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.locale.disbursement.selectAccount,
+													 account : $component.accountNumberSelected,
+													 additionalDetails : $component.additionalDetails,
+ 													 customURL : 'loan',
+													 validator:$component.validationTracker,
+													 readOnly: !!$component.params.id,
+													 taskCode:'LN_I_DD'">
+				</account-input>
+				<!-- ko if:detailsFetched()-->
+				<div class="row-group">
+					<!-- ko if: loanDetails().module === "CON" -->
+					<row params="baseModel : $baseModel, rootModel : $parent, label : $component.locale.disbursement.sanctionedAmount , value :$baseModel.formatCurrency($component.loanDetails().approvedAmount.amount,$component.loanDetails().approvedAmount.currency)"></row>
+					<row params="baseModel : $baseModel, rootModel : $parent, label : $component.locale.disbursement.disbursedAmount , value :$baseModel.formatCurrency($component.loanDetails().disbursedAmount.amount,$component.loanDetails().disbursedAmount.currency)"></row>
+					<!-- /ko -->
+					<!-- ko if: loanDetails().module === "ISL" -->
+					<row params="baseModel : $baseModel, rootModel : $parent, label : $component.locale.disbursement.FinAmount , value :$baseModel.formatCurrency($component.loanDetails().approvedAmount.amount,$component.loanDetails().approvedAmount.currency)"></row>
+					<row params="baseModel : $baseModel, rootModel : $parent, label : $component.locale.disbursement.finDisbursedAmount , value :$baseModel.formatCurrency($component.loanDetails().disbursedAmount.amount,$component.loanDetails().disbursedAmount.currency)"></row>
+					<!-- /ko -->
+				</div>
+				<oj-table :aria-label="[[$component.locale.disbursement.tableLabel]]" columns="[[[{headerText:$component.locale.disbursement.disbursementDate,field:'date','data-id':'disbursementDate',template:'date',style:'width: 50%'},{headerText:$component.locale.disbursement.amount,field:'amount',headerClassName:'right',style:'width: 50%; text-align:right'}]]]"
+				  columns-default="[[{sortable:'none'}]]" data="[[datasource]]">
+					<caption class="hide-label" data-bind="text:$component.locale.disbursement.tableLabel"></caption>
+					<template slot="date">
+							<span data-bind="text: $baseModel.formatDate($current.row.date)"></span>
+					</template>
+				</oj-table>
+
+			</page-section>
+		</div>
+
+		<!-- ko if: $baseModel.large() -->
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+			<help params="baseModel : $baseModel, rootModel : $component, transaction: 'loan-disbursement'"></help>
+		</div>
+		<!-- /ko -->
+	</div>
+	<!-- /ko -->
+
+	<!-- ko if:$baseModel.small() -->
+	<div class="oj-flex loan-disbursement__content">
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+
+			<account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.locale.disbursement.selectAccount,
+	account : $component.accountNumberSelected,
+	additionalDetails : $component.additionalDetails,
+	customURL : 'loan',readOnly: !($component.params && !$component.params.id),
+	validator:$component.validationTracker,
+	taskCode:'LN_I_DD'">
+			</account-input>
+		</div>
+	</div>
+	<!-- ko if:detailsFetched()-->
+	<div class="oj-flex oj-flex-items-pad loan-disbursement__content">
+		<div class="oj-flex-item oj-sm-12">
+			<label class="" data-bind="text :loanDetails().module === 'CON'? $component.locale.disbursement.sanctionedAmount:$component.locale.disbursement.FinAmount"></label>
+			<div data-id="sanctionedAmount" class="oj-flex-item oj-sm-12" data-bind="text:$baseModel.formatCurrency($component.loanDetails().approvedAmount.amount,$component.loanDetails().approvedAmount.currency)"></div>
+		</div>
+	</div>
+	<div class="oj-flex oj-flex-items-pad loan-disbursement__content">
+		<div class="oj-flex-item oj-sm-12">
+			<label class="" data-bind="text :loanDetails().module === 'CON'? $component.locale.disbursement.disbursedAmount:$component.locale.disbursement.finDisbursedAmount"></label>
+			<div data-id="disbursedAmount" class="oj-flex-item oj-sm-12" data-bind="text:$baseModel.formatCurrency($component.loanDetails().disbursedAmount.amount,$component.loanDetails().disbursedAmount.currency)"></div>
+		</div>
+	</div>
+	<div class="oj-flex oj-flex-items-pad loan-disbursement__content loan-disbursement-content">
+		<oj-list-view class="loan-disbursement-content__listView loan-disbursement-content-listView" id="listview" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('data-template',true)}]]" data="[[datasource]]">
+		</oj-list-view>
+	</div>
+	<div class="oj-flex oj-flex-items-pad button-container">
+		<oj-button class="action-button-primary" on-click="[[$dashboard.hideDetails]]">
+			<span class="icons icon-ok" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.ok"></span>
+		</oj-button>
+	</div>
+	<!-- /ko -->
+
+
+	<script type="text/html" id="data-template">
+		<li class="loan-disbursement-content-listView__listItems" data-bind="attr: {id: 'no'}">
+			<div class="oj-flex oj-flex-items-pad loan-disbursement__content">
+				<div class="oj-flex-item oj-sm-12">
+					<span data-bind="text:$component.locale.disbursement.disbursementDate"></span>
+				</div>
+				<div class="oj-flex-item oj-sm-12">
+					<span data-bind="text:$baseModel.formatDate(date)"></span>
+				</div>
+			</div>
+			<div class="oj-flex oj-flex-items-pad loan-disbursement__content">
+				<div class="oj-flex-item oj-sm-12">
+					<span data-bind="text:$component.locale.disbursement.amount"></span>
+				</div>
+				<div class="oj-flex-item oj-sm-12">
+					<span data-bind="text:amount"></span>
+				</div>
+			</div>
+		</li>
+	</script>
+	<!-- /ko -->
+</div>

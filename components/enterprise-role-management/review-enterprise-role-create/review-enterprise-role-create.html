@@ -1,0 +1,33 @@
+<div class="form-main-container">
+    <!-- ko if:roleDataLoaded -->
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.review">
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.roleName , value :$component.createReviewData().enterpriseRoleName"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.roleDescription , value :$component.createReviewData().enterpriseRoleDesc"></row>
+    <!-- ko if:$component.addChildRolesFlag() -->
+    <action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.nls.headers.addChildRoles">
+     </action-header>
+      <oj-table id="childRoleTable" columns-default="[[{sortable:'enabled'}]]" columns="[[[{headerText:nls.fieldname.roleName,field:'enterpriseRoleName'},{headerText:nls.fieldname.roleDescription,field:'enterpriseRoleDesc'}]]]" data="[[childdatasource]]">
+        <caption class="hide-label" data-bind="text:$component.nls.roleDescription"></caption>
+      </oj-table>
+    <!-- /ko -->
+  </page-section>
+
+      <!-- ko if: $component.transactionId === undefined -->
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.create]]">
+      <span data-bind="text:$component.nls.buttons.confirm"></span>
+</oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$component.edit]]">
+      <span data-bind="text:$component.nls.buttons.edit"></span>
+</oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.nls.buttons.cancel"></span>
+</oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <div>
+</div></div>

@@ -1,0 +1,81 @@
+<!-- ko if:stageOne()-->
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-label class="oj-label" for="accType"><span data-bind="text:$component.payments.payee.accounttype"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-12">
+                    <oj-buttonset-one id="accType" value="{{$component.currentAccountType}}" on-value-changed="[[accountTypeChanged]]"><oj-option id="internal" name="mod" value="{{'INTERNAL'}}"><span for="internal" data-bind="text:$component.payments.payee.accinternal"></span></oj-option><oj-option id="domestic" name="mod" value="{{'DOMESTIC'}}"><span for="domestic" data-bind="text:$component.payments.payee.accdomestic"></span></oj-option><oj-option id="international" name="mod" value="{{'INTERNATIONAL'}}"><span for="international" data-bind="text:$component.payments.payee.accinternational"></span></oj-option></oj-buttonset-one>
+                </div>
+            </div>
+            <!-- ko if:isComponentLoaded() -->
+            <!-- Internal template calls-->
+            <!-- ko if:currentAccountType()==='INTERNAL' -->
+            <div data-bind="template: { name: 'payee/internal-payee' }"></div>
+            <div data-bind="template: { name: 'payments/payments-money-transfer' }"></div>
+            <div data-bind="template: { name: 'payments/payment-internal' }"></div>
+            <!-- /ko -->
+            <!-- International template calls-->
+            <!-- ko if:currentAccountType()==='INTERNATIONAL' -->
+            <div data-bind="template: { name: 'payee/international-payee' }"></div>
+            <div data-bind="template: { name: 'payments/payments-money-transfer' }"></div>
+            <div data-bind="template: { name: 'payments/payment-international'}"></div>
+            <!-- /ko -->
+
+            <!-- India Domestic template calls-->
+            <!-- ko if:currentAccountType()==='DOMESTIC' && region()==="INDIA" -->
+            <div data-bind="template: { name: 'payee/domestic-payee' }"></div>
+            <div data-bind="template: { name: 'payments/payments-money-transfer' }"></div>
+            <div data-bind="template: { name: 'payments/payment-domestic'}"></div>
+            <!-- /ko -->
+
+            <!-- UK Domestic template calls-->
+            <!-- ko if:currentAccountType()=== "DOMESTIC" && region()=== "UK" -->
+            <div data-bind="template: { name: 'payee/uk-payee' }"></div>
+            <div data-bind="template: { name: 'payments/payments-money-transfer' }"></div>
+            <div data-bind="template: { name: 'payments/payment-uk'}"></div>
+            <!-- /ko -->
+
+            <!-- SEPA Domestic template calls-->
+            <!-- ko if:currentAccountType() === "DOMESTIC" && region()=== "SEPA" -->
+            <div data-bind="template: { name: 'payee/sepa-payee' }"></div>
+            <div data-bind="template: { name: 'payments/payments-money-transfer' }"></div>
+            <div data-bind="template: { name: 'payments/payment-sepa'}"></div>
+            <!-- /ko -->
+            <oj-validation-group id="note-validator">
+            <div data-bind="component:{name: 'comment-box',
+                  params:{
+                  rootModel: $root,
+                  maxlength:40,
+                  label:$component.payments.common.note,
+                  rootId:'payComment',
+                  rootClass:'form-input',
+                  required:$component.isCommentRequired,
+                  validator:$component.validationTracker,
+                  comment:note}}"></div>
+            </oj-validation-group>
+            <!-- /ko -->
+        </page-section>
+        <div data-bind='component:{name:"warning-message-dialog", params:{rootModel: $component }}'></div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary" id="pay" on-click="[[wraperFunction]]"><span slot="startIcon" class="icons icon-transfer"></span>
+                <span data-bind="text:$component.payments.common.pay"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" id="cancel" on-click="[[$dashboard.openDashBoard.bind($data,true)]]">
+                <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.payments.common.cancel"></span>
+            </oj-button>
+        </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'adhoc-payments'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko if:stageTwo()-->
+<div data-bind="component:{name: 'review-adhoc-payments', params:{rootModel: $component,readData:$component.readData,paymentTransferData:$component.paymentTransferData,payeeDetails:$component.payeeDetails, confirmScreenDetails:$component.confirmScreenDetails}}"></div>
+<!-- /ko -->

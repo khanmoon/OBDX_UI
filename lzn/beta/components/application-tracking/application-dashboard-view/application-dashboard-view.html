@@ -1,0 +1,105 @@
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item">
+    <h3 class="section-heading " data-bind="text : $component.resource.view"></h3>
+  </div>
+</div>
+<div class="view-list-container  application-view">
+  <oj-accordion id="accordionPage" class="accordion">
+    <oj-collapsible id="statusHistoryDiv" class="card">
+      <span slot="header">
+      <div class="card-header oj-flex oj-flex-items-pad">
+        <div class="">
+          <div class="oj-sm-only-hide card-icon-container"><img class="card-icon" data-bind="loadImage:'origination/app-tracker/icons/application-summary.png',attr:{'alt':$baseModel.format($component.resource.logo,{accordionName:$component.resource.applications})}"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-9 oj-md-8 oj-lg-8">
+          <h4 class="accordion-header-section" data-bind="text : $component.resource.applications"></h4>
+        </div>
+      </div>
+    </span>
+      <div class="oj-flex oj-flex-items-pad bg-white" data-bind='component:{name: "application-details-view", params:{rootModel: $data }}'></div>
+    </oj-collapsible>
+
+
+    <!-- ko if:$component.productClassName() === 'LOANS'|| $component.productClassName() === 'CREDIT_CARD' -->
+    <!-- ko if:$component.productClassName() === 'LOANS' -->
+    <!-- ko ifnot: $component.appDetails().loanSummaryResponse && $component.appDetails().loanSummaryResponse.inPrincipleApproval -->
+    <oj-collapsible id="statusHistoryDiv" class="card">
+      <span slot="header">
+      <div class="card-header oj-flex oj-flex-items-pad">
+        <div class="">
+          <div class="oj-sm-only-hide card-icon-container"><img class="card-icon" data-bind="loadImage:'origination/app-tracker/icons/account-summary.png', attr:{'alt':$baseModel.format($component.resource.logo,{accordionName:$component.resource.accountSummary})}"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-9 oj-md-8 oj-lg-8">
+          <h4 class="accordion-header-section" data-bind="text : $component.resource.accountSummary"></h4>
+        </div>
+      </div>
+      </span>
+      <div class="oj-flex oj-flex-items-pad bg-white" data-bind='component:{name: "account-summary", params:{rootModel: $data }}'></div>
+    </oj-collapsible>
+    <oj-collapsible id="accountSummaryDiv" class="card">
+      <span slot="header">
+      <div class="card-header oj-flex oj-flex-items-pad">
+        <div class="">
+          <div class="oj-sm-only-hide card-icon-container"><img class="card-icon" data-bind="loadImage:'origination/app-tracker/icons/aplication-fees.png',attr:{'alt':$baseModel.format($component.resource.logo,{accordionName:$component.resource.fees})}"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-9 oj-md-8 oj-lg-8">
+          <h4 class="accordion-header-section" data-bind="text : $component.resource.fees"></h4>
+        </div>
+      </div>
+      </span>
+      <div class="bg-white" data-bind='component:{name: "application-fees-view", params:{rootModel: $data }}'></div>
+    </oj-collapsible>
+
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: $component.productClassName() === 'LOANS' || $component.productClassName() === 'CREDIT_CARD' -->
+    <!-- ko if: ($component.appDetails().loanSummaryResponse && !$component.appDetails().loanSummaryResponse.inPrincipleApproval) || ($component.appDetails().creditCardSummaryResponse) -->
+    <oj-collapsible id="accountSummaryDiv" class="card">
+      <span slot="header">
+      <div class="card-header oj-flex oj-flex-items-pad">
+        <div class="">
+          <div class="oj-sm-only-hide card-icon-container"><img class="card-icon" data-bind="loadImage:'origination/app-tracker/icons/Document.png',attr:{'alt': $baseModel.format($component.resource.logo,{accordionName:$component.resource.documents})}"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-9 oj-md-8 oj-lg-8">
+          <h4 class="accordion-header-section" data-bind="text : $component.resource.documents"></h4>
+        </div>
+      </div>
+      </span>
+      <div class="bg-white" data-bind='component:{name: "application-documents", params:{rootModel: $data }}'></div>
+    </oj-collapsible>
+
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if:$component.productClassName() === 'LOANS' -->
+    <oj-collapsible id="accountSummaryDiv" class="card">
+      <span slot="header">
+      <div class="card-header oj-flex oj-flex-items-pad">
+        <div class="">
+          <div class="oj-sm-only-hide card-icon-container"><img class="card-icon" data-bind="loadImage:'origination/app-tracker/icons/offer.png',attr:{'alt': $baseModel.format($component.resource.logo,{accordionName:$component.resource.offer})}"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-9 oj-md-8 oj-lg-8">
+          <h4 class="accordion-header-section" data-bind="text : $component.resource.offer"></h4>
+        </div>
+      </div>
+      </span>
+      <div class="bg-white" data-bind='component:{name: "application-offer", params:{rootModel: $data }}'></div>
+    </oj-collapsible>
+
+    <!-- /ko -->
+    <!-- /ko -->
+    <oj-collapsible id="accountSummaryDiv" class="card">
+      <span slot="header">
+      <div class="card-header oj-flex oj-flex-items-pad">
+        <div class="">
+          <div class="oj-sm-only-hide card-icon-container"><img class="card-icon" data-bind="loadImage:'origination/app-tracker/icons/status-history.png',attr:{'alt': $baseModel.format($component.resource.logo,{accordionName:$component.resource.statusHistory})}"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-9 oj-md-8 oj-lg-8">
+          <h4 class="accordion-header-section" data-bind="text : $component.resource.statusHistory"></h4>
+        </div>
+      </div>
+      </span>
+      <div class="oj-flex oj-flex-items-pad bg-white" data-bind='component:{name: "application-status-history", params:{rootModel: $data }}'></div>
+    </oj-collapsible>
+
+  </oj-accordion>
+</div>

@@ -1,0 +1,56 @@
+<div class="form-main-container multiple-payments oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <!-- ko if: $component.supportingDataLoaded -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <!-- ko foreach:masterBatchArray() -->
+        <!-- ko if: $component.refreshLabel -->
+       <h5 class="heading" data-bind="text:$baseModel.format($component.resource.label.bill,{count : $component.getPlusOne.bind($data,$index())})"></h5>
+        <!-- /ko -->
+        <div class="oj-flex-item oj-sm-12 payment-element" data-bind="component:{name: 'bill-payments',
+                            params:{
+                                rootModel : $component,
+                                referenceHandle : $data
+                            }
+                    }">
+        </div>
+        <!-- /ko -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <div class="oj-flex oj-flex-items-pad ">
+                <div class="oj-flex-item oj-sm-12 ">
+                    <a class="back-link" href="#" data-bind="text: $component.resource.link.addpayment, click: $component.addPayment.bind($data, null)"></a>
+                </div>
+            </div>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary " id="submit-button" on-click="[[$component.initiateMultiplePayment]]"><span slot="startIcon" class="icons icon-submit"></span>
+      <span data-bind="text:$component.resource.generic.submit"></span>
+</oj-button>
+            <oj-button class="action-button-secondary " id="cancel-button" on-click="[[$component.cancel]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.generic.cancel"></span>
+</oj-button>
+        </div>
+        <modal-window params="baseModel : $baseModel, rootModel : $component,id:'warning-unsaved', header : $component.resource.title.warning">
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                <!-- ko if: $component.unsavedTransactionsCount() > 0 -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12" data-bind="text : $baseModel.format($component.resource.msg.unsavedTransactionMsg1, { count : $component.unsavedTransactionsCount()})"></div>
+                    <div class="oj-flex-item oj-sm-12" data-bind="text : $component.resource.msg.unsavedTransactionMsg2"></div>
+                </div>
+                <!-- /ko -->
+            </page-section>
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button class="action-button-primary " on-click="[[$component.postPaymentRequest]]"><span slot="startIcon" class="icons icon-transfer"></span>
+      <span data-bind="text:$component.resource.generic.proceed"></span>
+</oj-button>
+                <oj-button class="action-button-secondary " on-click="[[$component.closeModal]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.generic.cancel"></span>
+</oj-button>
+            </div>
+        </modal-window>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'multiple-bill-payments'"></help>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>

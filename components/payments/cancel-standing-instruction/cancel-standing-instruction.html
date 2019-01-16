@@ -1,0 +1,26 @@
+<div class="form-main-container">
+    <!-- ko if:stageOne() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item" data-bind="text:$baseModel.format($component.payments.standinginstructions.cancelsimessage, {name:SIData().name, transfer:$component.payments.standinginstructions[instructionType()]})">
+        </div>
+    </div>
+    <div class="row-group" data-bind="with:$component.SIData">
+         <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.payments.standinginstructions.transferTo , value :name"></row>
+         <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.payments.standinginstructions.amount , value :$baseModel.formatCurrency(amount,currency)"></row>
+         <!-- ko if:type==='REC' -->
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.standinginstructions.repeat , value :$component.getRepeatData($data)"></row>
+         <!-- /ko -->
+    </div>
+    </page-section>
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" id="button" on-click="[[verify]]"><span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.payments.standinginstructions.yes"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="button" on-click="[[closeDialog]]"><span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.payments.standinginstructions.no"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+</div>

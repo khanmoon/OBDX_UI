@@ -1,0 +1,125 @@
+<div class="preview-dashboard-design-container" id="preViewDashboardDesign">
+    <div class="oj-flex oj-flex-items-pad form-main-container design-dashboard">
+        <div class="oj-sm-12">
+            <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+        </div>
+        <div class="oj-flex-bar-start oj-sm-12 switchView">
+            <oj-navigation-list id="dashboardSwitchView" :aria-label=[[$component.nls.switchView]] drill-mode="none" selection="{{viewType}}" edge="top" display="icons" class="oj-sm-condense pull-right">
+                <ul>
+                    <li id="desktop">
+                        <a href="#">
+                            <span class="icon-auto-pay oj-navigationlist-item-icon"></span>
+                            <span data-bind="text:$component.nls.labels.desktopDesign"></span>
+                        </a>
+                    </li>
+                    <li id="tab">
+                        <a href="#">
+                            <span class="oj-navigationlist-item-icon">
+                                <img data-bind="loadImage:'dashboard-design/UX/tab-icon.png'" alt="[[$component.nls.labels.tabDesign]]/">
+                            </span>
+                            <span data-bind="text:$component.nls.labels.tabDesign"></span>
+                        </a>
+                    </li>
+                    <li id="mobile">
+                        <a href="#">
+                            <span class="oj-navigationlist-item-icon">
+                                <img data-bind="loadImage:'dashboard-design/UX/mobile-icon.png'" alt="[[$component.nls.labels.mobileDesign]]/">
+                            </span>
+                            <span data-bind="text:$component.nls.labels.mobileDesign"></span>
+                        </a>
+                    </li>
+                </ul>
+            </oj-navigation-list>
+        </div>
+        <!-- ko if:$component.showDesktopView() -->
+        <div id="desktop-review-container" class="oj-flex">
+            <img class="desktop-design-frame" data-bind="loadImage:'dashboard-design/UX/desktop-1280.svg'" alt="">
+            <div class="frame-contents oj-sm-12">
+                <!-- ko foreach:params.data.desktop() -->
+                <div class="oj-flex oj-sm-12 oj-flex-items-pad">
+                    <!-- ko foreach:rowComponents() -->
+                    <div class="oj-flex-item" data-bind="css:customGrids">
+                        <!-- ko foreach:myComponents -->
+                        <!-- <div class="oj-flex oj-sm-12" data-bind="text:id"></div> -->
+                        <!-- <img data-bind="loadImage:'dashboard-design/widgets/'+module+'/'+image,attr:{alt:id}" width="100%" /> -->
+                        <div data-bind="component:{name:componentName,params:{rootModel:$component,dashboardBuilder:{'isWidget':true},data:$data}}"></div>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </div>            
+        </div>
+        <div class="center oj-sm-12 editDesktop">
+                <a href="javascript:void(0)" id="stp1">
+                    <span class="icon-edit"></span>
+                    <span data-bind="text:$component.nls.generic.common.edit"></span>
+                </a>
+            </div>
+        <!-- /ko -->
+        <!-- ko if:$component.showTabView() -->
+        <div id="tab-review-container" class="oj-flex">
+            <img class="tab-design-frame" data-bind="loadImage:'dashboard-design/UX/tablet-500.svg'" alt="">
+            <div class="frame-contents oj-sm-12">
+                <!-- ko foreach:params.data.tab() -->
+                <div class="oj-flex oj-sm-12 oj-flex-items-pad">
+                    <!-- ko foreach:rowComponents() -->
+                    <div class="oj-flex-item" data-bind="css:customGrids">
+                        <!-- ko foreach:myComponents -->
+                        <!-- <div class="oj-flex oj-sm-12" data-bind="text:id"></div> -->
+                        <!-- <img data-bind="loadImage:'dashboard-design/widgets/'+module+'/'+image,attr:{'height':height+'px',alt:id}" width="100%" /> -->
+                        <div data-bind="component:{name:componentName,params:{rootModel:$component,dashboardBuilder:{'isWidget':true},data:$data}}"></div>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </div>
+            
+        </div>
+        <div class="center oj-sm-12 editTab">
+                <a href="javascript:void(0)" id="stp3">
+                    <span class="icon-edit"></span>
+                    <span data-bind="text:$component.nls.generic.common.edit"></span>
+                </a>
+            </div>
+        <!-- /ko -->
+        <!-- ko if:$component.showMobileView() -->
+        <div id="mobile-review-container" class="oj-flex">
+            <img class="mobile-design-frame" data-bind="loadImage:'dashboard-design/UX/mobile-320.svg'" alt="">
+            <!-- ko foreach:params.data.mobile() -->
+            <div class="oj-flex oj-sm-12 oj-flex-items-pad frame-contents">
+                <!-- ko foreach:rowComponents() -->
+                <div class="oj-flex-item oj-sm-12">
+                    <!-- ko foreach:myComponents -->
+                    <!-- <div class="oj-flex oj-sm-12" data-bind="text:id"></div> -->
+                    <!-- <img data-bind="loadImage:'dashboard-design/widgets/'+module+'/'+image,attr:{alt:id}" width="100%" /> -->
+                    <div data-bind="component:{name:componentName,params:{rootModel:$component,dashboardBuilder:{'isWidget':true},data:$data}}"></div>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            
+        </div>
+        <div class="center oj-sm-12 editMobile">
+                <a href="javascript:void(0)" id="stp4">
+                    <span class="icon-edit"></span>
+                    <span data-bind="text:$component.nls.generic.common.edit"></span>
+                </a>
+            </div>
+        <!-- /ko -->
+
+        <div class="oj-sm-12 button-container">
+            <oj-button class="action-button-primary " on-click="[[$component.saveDashboardDesign]]">
+                <span data-bind="text:$component.nls.generic.common.confirm"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+                <span data-bind="text:$component.nls.generic.common.cancel"></span>
+            </oj-button>
+            <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+                <span data-bind="text:$component.nls.generic.common.back"></span>
+            </oj-button>
+        </div>
+    </div>
+</div>

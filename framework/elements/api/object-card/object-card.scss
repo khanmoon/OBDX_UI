@@ -1,0 +1,80 @@
+$object-container-card-height: 8rem;
+$link-text-color: var(--base-text-primary);
+$link-arrow-color: var(--base-text-primary);
+
+.object-card.oj-panel {
+	height: $object-container-card-height;
+}
+.object-card {
+	height: $object-container-card-height;
+	&-header {
+		&__title {
+			font-weight: var(--base-font-weight-regular);
+			margin: 0.6rem 0;
+		}
+		&__view-all {
+			padding: 0.6rem;
+		}
+	}
+	&__content {
+		position: absolute;
+		bottom: 0.6rem;
+		width: 100%;
+	}
+	&-content {
+		&__icon {
+			img {
+				position: relative;
+				bottom: -1.2rem;
+				height: 3.6rem;
+				width: 3.6rem;
+			}
+		}
+		&__count {
+			font-size: calc(#{var(--base-font-size-default)} + 0.6rem);
+		}
+		&__description {
+			font-size: calc(#{var(--base-font-size-default)} + 0.1rem);
+			color: var(--base-text-primary);
+		}
+	}
+	&__footer {
+		border-top: 0.05rem solid var(--base-border-default);
+		height: 2.6rem;
+		position: absolute;
+		bottom: 0;
+		@include left(0);
+		width: 100%;
+		line-height: 2.6rem;
+		color: $link-text-color;
+		text-align: center;
+	}
+	&-link {
+		color: $link-text-color;
+		font-weight: var(--base-font-weight-regular);
+		&__text {
+			@include float(left);
+			padding: 0 0.6rem;
+			font-size: calc(#{var(--base-font-size-default)} + 0.1rem);
+		}
+		&__icon {
+			@include float(right);
+			padding: 0 0.6rem;
+			font-size: calc(#{var(--base-font-size-default)} + 0.4rem);
+			color: $link-arrow-color;
+			font-weight: var(--base-font-weight-light);
+			&:active,
+			&:hover,
+			&:link,
+			&:visited {
+				text-decoration: none;
+				color: $link-text-color;
+			}
+			.icon {
+				&:before {
+					line-height: 2.6rem;
+				}
+			}
+		}
+	}
+}

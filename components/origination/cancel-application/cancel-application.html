@@ -1,0 +1,102 @@
+<div class="form-main-container">
+  <page-section params="baseModel : $baseModel, rootModel : $data">
+    <!-- ko ifnot: $component.isApplicationCancelled() -->
+    <div class="  ">
+      <div class="page-container">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 ">
+            <h3 class="primary-heading" data-bind="text: $component.resource.cancelApplication"></h3>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label class="text" :id="[['cancelReason']]"><span data-bind="text:$component.resource.cancelReason"></span></oj-label>
+          </div>
+        </div>
+        <!-- ko if: $component.ReasonsLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-10 oj-lg-offset-1 oj-md-offset-1">
+            <div class="oj-option-row">
+              <oj-checkboxset id="completeApplication" class="" aria-labelledby="cancelReason" on-value-changed="[[$component.changeCancelType]]" value="{{$component.cancelType}}">
+                <!-- ko foreach: $component.Reasons() -->
+                <oj-option :id="[['agree'+($index())]]" value="{{code}}"><span data-bind="attr:{'for':'agree' + ($index())},text:description">  </span></oj-option>
+                <!-- /ko -->
+              </oj-checkboxset>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- /ko -->
+        <!-- ko if: $component.otherReasonsLoaded() -->
+
+        <div class="textarea">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-10 oj-lg-offset-1 oj-md-6 oj-lg-4 label">
+              <oj-label for="resizeBoth" class="textarea-heading"><span data-bind="text:$component.resource.plSpecify"></span></oj-label>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-lg-offset-1 oj-md-8 oj-lg-6 label textarea-margin">
+              <oj-text-area required class="small-text textarea-size" id="resizeBoth" value="{{$component.othersReasonsText}}"></oj-text-area>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <div data-bind="text:$component.resource.infoIcon" class="text"></div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <!-- /ko -->
+
+    <!-- ko if: $component.isApplicationCancelled() -->
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="page-container">
+        <div class="oj-flex oj-flex-items-pad privacy">
+          <!-- ko if: $component.productDetails().offers -->
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 ">
+            <div class="primary-heading" data-bind="html:$baseModel.format($component.resource.cancelText,{offerName :  ($component.productDetails().offers.offerName ? $component.productDetails().offers.offerName : $component.productDetails().offers.offerId)})">
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if: !$component.productDetails().offers -->
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 ">
+            <h3 class="primary-heading" data-bind="html:$component.resource.defaultCancelText">
+          </h3>
+          </div>
+          <!-- /ko -->
+        </div>
+        <div class="form-content oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <div data-bind="text:$component.resource.infoIcon" class="text"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- /ko -->
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <!-- ko if: $component.isApplicationCancelled() -->
+    <oj-button id="homePage" class="action-button-primary " on-click="[[function(){$dashboard.switchModule('home',true);}]]">
+      <span data-bind="text:$component.resource.homepage"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.isApplicationCancelled() -->
+    <oj-button id="cancelApplication" class="action-button-primary first-2" raised="" on-click="[[$component.cancelApplication]]">
+      <span data-bind="text:$component.resource.cancelExit"></span>
+    </oj-button>
+    <oj-button id="return" class="action-button-secondary last-2" raised="" on-click="[[$component.returnToApplication]]">
+      <span data-bind="text:$component.resource.returnApplication"></span>
+    </oj-button>
+    <!-- /ko -->
+  </div>
+</div>

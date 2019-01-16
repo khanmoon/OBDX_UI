@@ -1,0 +1,101 @@
+<div class="collateral">
+    <div class="oj-flex oj-flex-items-pad">
+        <!-- ko if:$component.collateralCategoryLoaded -->
+
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+            <oj-label for="collateralCategory" :for="[['collateralCategory'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.category"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+            <oj-select-one id="collateralCategory" required :id="[['collateralCategory'+($baseModel.currentIdCount())]]" :placeholder="''" value="{{$component.collateralCategoryValue}}">
+                <!-- ko foreach: $component.collateralCategory -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+            </oj-select-one>
+        </div>
+
+        <!-- /ko -->
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-md-offset-1 oj-lg-offset-2 no-pad-cols">
+            <div data-bind="component: {
+                    name: 'amount-input', params: {
+                        amount :$component.ownerEstimatedValue.amount,
+                        label:$component.resource.ownerEstimatedValue,
+                        currency: $component.ownerEstimatedValue.currency,
+                        converter:$baseModel.formatCurrency,
+                        validator:$component.validationTracker,
+                        isMandatory:true,
+                        maxlength:15,
+                        rootId:'ownerEstimatedAmount' + (++$component.idCount),
+                        rootClass:'form-input',
+                        formattedAmount: ko.observable()
+                    }
+                }"></div>
+
+        </div>
+
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+            <oj-label for="type" class="oj-label" :for="[['vehicleMake'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.vehicleMake"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <!-- ko if:$component.vehicleMakeLoaded -->
+            <oj-select-one id="type" required :id="[['vehicleMakeType'+($baseModel.currentIdCount())]]" :placeholder="''" value="{{$component.vehicleMake}}">
+                <!-- ko foreach: $component.vehicleMakeType -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+            </oj-select-one>
+            <!-- /ko -->
+        </div>
+
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+            <oj-label :for="[['vehicleModel'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.vehicleModel"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <oj-input-text required maxlength="20" name="vehicleModel" :id="[['vehicleModel'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$oj.Translations.getTranslatedString('messages.invalidAmount')}}]]" value="{{$component.vehicleModel}}"></oj-input-text>
+        </div>
+
+    </div>
+
+
+    <!-- ko if:$component.isUsedVehicle -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+            <oj-label :for="[['regNum'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.registrationNumber"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+            <oj-input-text required maxlength="30" name="regNum" :id="[['regNum'+($baseModel.currentIdCount())]]" value="{{$component.regNum}}"></oj-input-text>
+        </div>
+    </div>
+    <!-- /ko -->
+
+
+
+    <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+            <oj-label :for="[['vehicleYear'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.vehicleYear"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+            <oj-input-text required maxlength="4" name="vehicleYear" :id="[['vehicleYear'+($baseModel.currentIdCount())]]" validators="[[$baseModel.getValidator('YEAR')]]" value="{{$component.vehicleYear}}"></oj-input-text>
+        </div>
+
+    </div>
+
+    <!-- ko if:$component.isUsedVehicle -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-label :for="[['vinNum'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.vehicleIdentificationNumber"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <oj-input-text maxlength="30" name="vinNum" :id="[['vinNum'+($baseModel.currentIdCount())]]" validators="[[$baseModel.getValidator('REFERENCE_NUMBER')]]" value="{{$component.vinNum}}"></oj-input-text>
+        </div>
+    </div>
+    <!-- /ko -->
+
+</div>

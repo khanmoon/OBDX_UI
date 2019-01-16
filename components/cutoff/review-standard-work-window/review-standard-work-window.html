@@ -1,0 +1,140 @@
+<!-- ko if: $component.displayTemplate -->
+    <page-section params="baseModel : $baseModel, rootModel: $data, heading: ''">
+        <div class="oj-flex oj-flex-items-pad row-group">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+           <oj-label for="effectiveDate">                      
+               <span data-bind="text:$component.nls.workingWindow.effectiveDate"></span>
+            </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <span data-bind="text:$baseModel.formatDate(effectiveDate)"></span>  
+              <span data-bind="text:$component.getDayName(effectiveDate())"></span>
+        </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad row-group">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+            <oj-label for="userType"><span data-bind="text:$component.nls.workingWindow.userType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <!-- ko if: showuserTypeList()  -->
+            <oj-checkboxset id="userType" disabled="[[disabledState]]" value="{{userTypes}}"><!-- ko foreach: userTypeOptions  --><oj-option value="{{value}}" :id="[['purpose_'+ $index()]]"><span data-bind="text:label, attr : {'for' :'purpose_' + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+            <!-- /ko -->
+        </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad row-group">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+                <oj-label for="transaction"><span data-bind="text:$component.nls.common.transaction"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <!-- ko if: $component.selectedTransaction() === "ALL"  -->
+                <span id="transaction" data-bind="text: $component.nls.common[$component.selectedTransaction()]"></span>
+                 <!-- /ko -->
+                 <!-- ko ifnot: $component.selectedTransaction() === "ALL"  -->
+                 <span id="transaction" data-bind="text: $component.selectedTransaction()"></span>
+                 <!-- /ko -->
+            </div>
+        </div>
+    </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''"> 
+        <div class="grid-main-container table-data">
+        <div class="oj-flex oj-flex-items-pad grid-row-group">
+            <div class="oj-lg-2 oj-md-3 oj-sm-3 oj-flex-item border_bottom">
+                <span data-bind="text:$component.nls.common.days"></span>
+            </div>
+            <div class="oj-lg-2 oj-md-3 oj-sm-3 oj-flex-item border_bottom">
+                <span data-bind="text:$component.nls.common.windowType"></span>
+            </div>
+            <div class="oj-lg-2 oj-md-3 oj-sm-3 oj-flex-item border_bottom">
+                <span data-bind="text:$component.nls.common.fromTime"></span>
+            </div>
+            <div class="oj-lg-2 oj-md-3 oj-sm-3 oj-flex-item border_bottom">
+                <span data-bind="text:$component.nls.common.toTime"></span>
+            </div>
+        </div>
+
+        <div class="grid-main-container">
+        <oj-list-view id="searchRuleListView" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('review_template',true)}]]" selection-mode="[['single']]" data="[[datasource]]"></oj-list-view>
+         <script type="text/html" id="review_template">
+            <li data-bind="attr: {id: $data['day']}">
+                <div class="oj-flex oj-flex-items-pad grid-row-group">
+                    <div class="oj-lg-2 oj-md-3 oj-sm-12 oj-flex-item label">
+                        <oj-label>
+                            <span data-bind="text:day()"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-lg-2 oj-md-3 oj-sm-12 oj-flex-item label">
+                        <span data-bind="text: $component.nls.common[transactionWindow()]"></span>
+                    </div>
+                    <!-- ko foreach: workingWindowTimeDTOs() -->
+                    <!-- ko if: $index() === 0 -->
+                    <oj-label data-bind="attr:{'for':'stime_'+$index()}" class="hide-label">
+                        <span data-bind="text:$component.nls.common.fromTime"></span>
+                    </oj-label>
+                    <div class="oj-lg-2 oj-md-3 oj-sm-12 oj-flex-item label">
+                        <oj-input-time data-bind="attr:{'id':'stime_'+$index()}" converter="[[$component.secondConverter]]" disabled="[[true]]" value="{{startTime()}}" time-picker="[[{timeIncrement:'00:01:00:00'}]]">
+                        </oj-input-time>
+                    </div>
+                    <oj-label data-bind="attr:{'for':'etime_'+$index()}" class="hide-label">
+                        <span data-bind="text:$component.nls.common.toTime"></span>
+                    </oj-label>
+                    <div class="oj-lg-2 oj-md-3 oj-sm-12 oj-flex-item label">
+                        <oj-input-time data-bind="attr:{'id':'etime_'+$index()}" converter="[[$component.secondConverter]]" disabled="[[true]]" value="{{endTime()}}" time-picker="[[{timeIncrement:'00:01:00:00'}]]">
+                        </oj-input-time>
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+                <!-- ko foreach: workingWindowTimeDTOs() -->
+                <!-- ko if: $index() > 0 -->
+                <div class="oj-flex oj-flex-items-pad grid-row-group">
+                     <div class="oj-lg-2 oj-md-3 oj-sm-12 oj-flex-item">
+                     </div>
+                    <div class="oj-lg-2 oj-md-3 oj-sm-12 oj-flex-item">
+                    </div>
+                    <oj-label data-bind="attr:{'for':'stime_'+$index()}" class="hide-label">
+                        <span data-bind="text:$component.nls.common.fromTime"></span>
+                    </oj-label>
+                    <div class="oj-lg-2 oj-md-3 oj-sm-12 oj-flex-item">
+                        <oj-input-time data-bind="attr:{'id':'stime_'+$index()}" converter="[[$component.secondConverter]]" disabled="[[true]]" value="{{startTime()}}" time-picker="[[{timeIncrement:'00:01:00:00'}]]">
+                        </oj-input-time>
+                    </div>
+                    <oj-label data-bind="attr:{'for':'etime_'+$index()}" class="hide-label">
+                        <span data-bind="text:$component.nls.common.fromTime"></span>
+                    </oj-label>
+                    <div class="oj-lg-2 oj-md-3 oj-sm-12 oj-flex-item">
+                        <oj-input-time data-bind="attr:{'id':'etime_'+$index()}" converter="[[$component.secondConverter]]" disabled="[[true]]" value="{{endTime()}}" time-picker="[[{timeIncrement:'00:01:00:00'}]]">
+                        </oj-input-time>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+            </li>
+         </script>
+        </div>
+        </div>
+    </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.workingWindow.othersHeading">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+             <oj-label for="processingType">
+             <span data-bind="text:$component.nls.common.processingType"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-7" id="buttons-container">
+              <oj-radioset id="processingType" value="{{$component.processingType}}" disabled="[[disabledState]]" class="oj-choice-direction-row"><oj-option id="Success" name="mod" value="{{'SUCCESS'}}"><span for="Success" data-bind="text:$component.nls.workingWindow.tanks"></span></oj-option><oj-option id="Rejected" name="mod" value="{{'REJECT'}}"><span for="Rejected" data-bind="text:$component.nls.workingWindow.transactionRejected">                     </span></oj-option></oj-radioset>
+          </div>
+        </div>
+    </page-section>
+<!-- /ko -->
+<!-- ko ifnot: $component.approvalFlow -->
+<div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="confirmbutton" class="action-button-primary" on-click="[[$component.confirm]]">
+        <span data-bind="text:$component.nls.generic.common.confirm"></span>
+    </oj-button>
+    <oj-button id="backbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+        <span data-bind="text:$component.nls.generic.common.cancel"></span>
+    </oj-button>
+    <oj-button id="editbutton" class="action-button-tertiary" on-click="[[$component.edit]]">
+        <span data-bind="text:$component.nls.generic.common.back"></span>
+    </oj-button> 
+</div>
+<!-- /ko -->

@@ -1,0 +1,359 @@
+<!-- ko if: viewDetailsLoaded -->
+<div data-bind="component:{name: 'account-nickname', params:{rootModel:$data, params: $component.tdViewDetails(), editable:true,module:'term-deposits'}}"></div>
+<!-- /ko -->
+<div>
+<div class="form-main-container">
+  <div class="oj-flex">
+    <!-- ko if: $baseModel.small() -->
+    <page-section params="baseModel : $baseModel, rootModel: $data, heading: ''">
+      <account-input params="baseModel : $baseModel, rootModel: $data,
+          label: tdDetailsLocale.termDepositDetails.selectAccount,
+          type: 'balance',
+          customURL : 'deposit',
+          readOnly: !!$component.params.id,
+          account : $component.selectedAccount,
+          additionalDetails : $component.additionalDetails,
+          validator:$component.validationTracker,taskCode:'TD_I_AD'">
+      </account-input>
+    </page-section>
+    <!-- /ko -->
+    <!-- ko if:viewDetailsLoaded -->
+    <div class="oj-flex-item oj-lg-4 oj-md-4">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : tdDetailsLocale.termDepositDetails.accountDetails">
+
+
+        <div class="row-group">
+
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.customerId, value :$component.tdViewDetails().partyId.displayValue"></row>
+          <!-- ko if:$component.tdViewDetails().principalAmount.currency -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.originalPrincipal , value :$baseModel.formatCurrency($component.tdViewDetails().principalAmount.amount, $component.tdViewDetails().principalAmount.currency)"></row>
+          <!-- /ko -->
+
+          <!-- ko if:$component.tdViewDetails().holdingPattern -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.customerDetails.holdingPattern , value: tdDetailsLocale.termDepositDetails.holdingPattern[$component.tdViewDetails().holdingPattern]"></row>
+          <!-- /ko -->
+          <!-- ko if:$component.tdViewDetails().holdingPattern === 'JOINT' -->
+          <!-- ko foreach:$component.tdViewDetails().parties -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $baseModel.format($component.tdDetailsLocale.termDepositDetails.customerDetails.jointAccHolder , {count : $index() + 1}) , value :partyName"></row>
+          <!-- /ko -->
+          <!-- /ko -->
+
+          <!-- ko if:!($component.tdViewDetails().status === 'CLOSED') -->
+          <!-- ko if:($component.tdViewDetails().currentPrincipalAmount -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label :$component.tdDetailsLocale.termDepositDetails.currentPrincipal, value :$baseModel.formatCurrency($component.tdViewDetails().currentPrincipalAmount.amount, $component.tdViewDetails().currentPrincipalAmount.currency)"></row>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if:$component.tdViewDetails().status -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.status , value :$component.tdDetailsLocale.termDepositDetails.cardStatus[$component.tdViewDetails().status]"></row>
+          <!-- /ko -->
+
+          <!-- ko if:!($component.tdViewDetails().status === 'CLOSED') -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.holdAmount , value :$baseModel.formatCurrency($component.tdViewDetails().holdAmount.amount, $component.tdViewDetails().holdAmount.currency)"></row>
+          <!-- /ko -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.depositBranch , value :[tdViewDetails().branchAddressDTO.branchName, tdViewDetails().branchAddressDTO.branchAddress.postalAddress.line1,tdViewDetails().branchAddressDTO.branchAddress.postalAddress.line2,tdViewDetails().branchAddressDTO.branchAddress.postalAddress.city,tdViewDetails().branchAddressDTO.branchAddress.postalAddress.country]"></row>
+          <!-- ko if:$component.tdViewDetails().module !== 'ISL' -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.nomination , value : $component.tdDetailsLocale.termDepositDetails.nomineeStatus[$component.tdViewDetails().nomineeRegistered]"></row>
+          <!-- /ko -->
+        </div>
+      </page-section>
+    </div>
+    <div class="oj-flex-item oj-lg-4 oj-md-4">
+      <page-section params="baseModel : $baseModel, rootModel : $data ,heading : tdDetailsLocale.termDepositDetails.depositDetails">
+        <div class="row-group">
+
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.depositDate , value :$baseModel.formatDate(($component.tdViewDetails().valueDate))"></row>
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.depositTerm , value :$component.formatTenure(tdViewDetails().tenure)"></row>
+          <!-- ko if:$component.tdViewDetails().interestRate -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label :$component.tdViewDetails().module === 'ISL'?tdDetailsLocale.termDepositDetails.islamicInterestRate:tdDetailsLocale.termDepositDetails.interestRate, value :$baseModel.formatNumber(($component.tdViewDetails().interestRate)/100, 'percent')"></row>
+          <!-- /ko -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.valueDate , value :$baseModel.formatDate(($component.tdViewDetails().valueDate))"></row>
+
+          <!-- ko if:$component.tdViewDetails().certificate.certificateNo -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.certificateNumber , value :tdViewDetails().certificate.certificateNo"></row>
+          <!-- /ko -->
+          <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.sweepIn , value :$parent.isSweepinProvider"></row>
+
+        </div>
+      </page-section>
+
+    </div>
+    <div class="oj-flex-item oj-lg-4 oj-md-4">
+
+
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : tdDetailsLocale.termDepositDetails.maturityDetails">
+        <!-- ko if:($component.tdViewDetails().module === 'CON') -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.maturityAmount , dataClass : 'highlight-text', value :$baseModel.formatCurrency($component.tdViewDetails().maturityAmount.amount, $component.tdViewDetails().maturityAmount.currency)"></row>
+        <!-- /ko -->
+        <!-- ko if: !isNaN($component.tdViewDetails().accrualDetails.accruedInterest.amount) || !isNaN($component.tdViewDetails().accrualDetails.lastInterestAccrualDate) -->
+        <!-- <div class="row-group"> -->
+        <!-- ko if: !isNaN($component.tdViewDetails().accrualDetails.accruedInterest.amount) -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.tdViewDetails().module === 'ISL' ? tdDetailsLocale.termDepositDetails.islamicAccruedInterest :tdDetailsLocale.termDepositDetails.accruedInterest , value : $baseModel.formatCurrency($component.tdViewDetails().accrualDetails.accruedInterest.amount, $component.tdViewDetails().accrualDetails.accruedInterest.currency)"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.tdViewDetails().accrualDetails.lastInterestAccrualDate -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.lastInterestAccrualDate, value : $baseModel.formatDate(($component.tdViewDetails().accrualDetails.lastInterestAccrualDate))"></row>
+        <!-- /ko -->
+        <!-- </div> -->
+        <!-- /ko -->
+
+        <!-- <div class="row-group"> -->
+        <!-- ko if:$component.tdViewDetails().maturityDate -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.maturityDate , value :$baseModel.formatDate(($component.tdViewDetails().maturityDate))"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.tdViewDetails().status === 'CLOSED' -->
+        <!-- ko if:$component.tdViewDetails().closureDate -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : tdDetailsLocale.termDepositDetails.closedDate , value :$baseModel.formatDate(($component.tdViewDetails().closureDate))"></row>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if:($component.tdViewDetails().status === 'CLOSED') -->
+        <!-- ko if:closeTDdetailsLoaded -->
+        <!-- ko foreach:$component.closeTDdetails().redemptionDetail -->
+        <!-- ko if:typeRedemption==='F' -->
+
+        <!-- ko with:charges -->
+
+        <row params="baseModel : $baseModel, rootModel : $root, label : $component.tdDetailsLocale.termDepositDetails.charges , dataClass : 'highlight-text', value :$baseModel.formatCurrency(amount,currency)"></row>
+
+        <!-- /ko -->
+        <!-- ko if:$component.tdViewDetails().maturityAmount -->
+        <row params="baseModel : $baseModel, rootModel : $root, label : $component.tdDetailsLocale.termDepositDetails.netCreditAmount , dataClass : 'highlight-text', value :$baseModel.formatCurrency($component.tdViewDetails().maturityAmount.amount, $component.tdViewDetails().maturityAmount.currency)"></row>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- </div> -->
+        <!-- <div class="row-group"> -->
+
+        <!-- ko if:!$baseModel.small() -->
+        <row params="baseModel : $baseModel, rootModel : $root, label : $component.tdDetailsLocale.termDepositDetails.maturityInstructions.maturityInstruction , value :$baseModel.format($component.tdDetailsLocale.termDepositDetails.maturityInstructions[$component.tdViewDetails().rollOverType],{interestType:$component.tdViewDetails().module === 'ISL'?$component.tdDetailsLocale.termDepositDetails.profit:$component.tdDetailsLocale.termDepositDetails.amountType.I})"></row>
+        <!-- ko if:!($component.tdViewDetails().status === 'CLOSED')-->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label"></div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <oj-button class="action-button-secondary" on-click="[[$dashboard.loadComponent.bind($data,'td-amend',$component.params)]]">
+              <span slot="startIcon" class="icons icon-remarks"></span>
+              <span data-bind="text:$component.tdDetailsLocale.generic.common.edit"></span>
+            </oj-button>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if:!($component.tdViewDetails().status === 'CLOSED') -->
+        <!-- ko if:$component.tdViewDetails().rollOverType === 'S' -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label ">
+            <oj-label><span data-bind="text:$component.tdDetailsLocale.termDepositDetails.payoutInstructions.renewAmount"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <span data-bind="text:$baseModel.formatCurrency($component.tdViewDetails().rollOverAmount.amount,$component.tdViewDetails().rollOverAmount.currency)"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- </div> -->
+        <!-- ko if:!($component.tdViewDetails().status === 'CLOSED') || !$component.payoutFromRedemptionFetched() -->
+        <!-- ko if:viewDetails -->
+        <!-- ko if:$component.tdViewDetails().rollOverType !== 'I' -->
+
+        <!-- <div class="row-group"> -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 ">
+            <div class="oj-flex oj-flex-items-pad">
+              <!-- ko if:viewDetails -->
+
+              <!-- ko foreach:payoutInstructions -->
+              <div class="oj-flex-item oj-sm-12 label ">
+                <oj-label><span data-bind="text:$component.tdDetailsLocale.termDepositDetails.payoutInstructions.transfer"></span></oj-label>
+              </div>
+              <!-- ko if:type==='N' -->
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$component.tdDetailsLocale.termDepositDetails.maturityInstructions.N"></span>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:type !== 'N' -->
+
+              <!-- ko if:$data.payoutComponentType -->
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$baseModel.format($parent.tdDetailsLocale.termDepositDetails.payToMessage,{percentage:percentage,amountType:$parent.tdDetailsLocale.termDepositDetails.amountType[payoutComponentType]})"></span>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:$data.beneficiaryName -->
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$data.beneficiaryName"></span>
+              </div>
+              <!-- /ko -->
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$parent.tdDetailsLocale.termDepositDetails.payOutOption[type]"></span>
+              </div>
+              <!-- ko if: $data.accountId -->
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text: $data.accountId.displayValue"></span>
+              </div>
+              <!-- /ko -->
+              <!-- ko if: $data.account -->
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text: $data.account"></span>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:$data.branchName -->
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:$data.branchName"></span>
+              </div>
+              <!-- /ko -->
+              <!-- ko with:branchAddress -->
+              <!-- ko if:$data.line1 -->
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:line1"></span>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:$data.line2 -->
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:line2"></span>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:$data.city -->
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:city"></span>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:$data.country -->
+              <div class="oj-flex-item oj-sm-12">
+                <span data-bind="text:country"></span>
+              </div>
+              <!-- /ko -->
+              <!-- /ko -->
+              <div class="oj-flex-item oj-sm-12">
+              <hr>
+              <div class="row-group"></div>
+              </div>
+              <!-- /ko -->
+              <!-- /ko -->
+
+              <!-- /ko -->
+
+              <!-- /ko -->
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if:($component.tdViewDetails().status === 'CLOSED') -->
+        <!-- ko if:closeTDdetailsLoaded -->
+        <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 label ">
+              <oj-label><span data-bind="text:$component.tdDetailsLocale.termDepositDetails.payoutInstructions.paidTo"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 ">
+
+              <div class="oj-flex oj-flex-items-pad">
+                <!-- ko foreach:$component.closeTDdetails().redemptionDetail -->
+
+                <!-- ko if:typeRedemption === 'F' -->
+
+                <!-- ko foreach:payoutInstructions -->
+                <!-- ko if :$data.accountId -->
+                <div class="oj-flex-item oj-sm-12">
+                  <span data-bind="text:$data.accountId.displayValue"></span>
+                </div>
+                <!-- /ko -->
+
+                <!-- ko if: $data.account -->
+                <div class="oj-flex-item oj-sm-12">
+                  <span data-bind="text:$data.account"></span>
+                </div>
+                <!-- /ko -->
+
+                <div class="oj-flex-item oj-sm-12">
+                  <!-- ko if:'branchName' in $data -->
+                  <span data-bind="text:branchName"></span>
+                  <!-- /ko -->
+                </div>
+                <!-- ko if:'branchAddress' in $data -->
+                <!-- ko with:branchAddress -->
+                <!-- ko if:$data.line1 -->
+                <div class="oj-flex-item oj-sm-12">
+                  <span data-bind="text:line1"></span>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:$data.line2 -->
+                <div class="oj-flex-item oj-sm-12">
+                  <span data-bind="text:line2"></span>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:$data.city -->
+                <div class="oj-flex-item oj-sm-12">
+                  <span data-bind="text:city"></span>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:$data.country -->
+                <div class="oj-flex-item oj-sm-12">
+                  <span data-bind="text:country"></span>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- ko if:$data.payoutComponentType -->
+                <div class="oj-flex-item oj-sm-12">
+                  <span data-bind="text:$parent.tdDetailsLocale.termDepositDetails.payToMessage,{percentage:percentage,amountType:$parent.tdDetailsLocale.termDepositDetails.amountType[payoutComponentType]}"></span>
+                  <hr>
+                  <div class="row-group"></div>
+                </div>
+                <!-- /ko -->
+
+
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- /ko -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- /ko -->
+
+      </page-section>
+    </div>
+    <!-- /ko -->
+  </div>
+  <!-- ko if: viewDetailsLoaded -->
+  <!-- ko if: $baseModel.small() && !($component.tdViewDetails().status === 'CLOSED') -->
+  <a href="#" data-bind="click: $component.showFloatingPanel">
+    <div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+  </a>
+  <floating-panel params="baseModel : $baseModel, panelId: 'panelTermDeposit', rootModel: $component">
+    <ul>
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'td-amend',$component.params)">
+          <span class="icons icon-view-statement"></span>
+            <span data-bind="text:$component.tdDetailsLocale.generic.common.edit"></span>
+    </a>
+      </li>
+      <!-- ko if: $component.tdViewDetails().productDTO.facilityParameter.isTopupAllowed -->
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'td-topup',tdViewDetails())">
+            <span class="icons icon-request-chequebook"></span>
+            <span data-bind="text:$component.tdDetailsLocale.termDepositDetails.topUp"></span></a>
+      </li>
+      <!-- /ko -->
+      <li>
+        <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'td-redeem',tdViewDetails())">
+            <span class="icons icon-request-chequebook"></span>
+            <span data-bind="text:$component.tdDetailsLocale.termDepositDetails.redeem"></span></a>
+      </li>
+    </ul>
+  </floating-panel>
+  <!-- /ko -->
+  <!-- /ko -->
+</div>
+</div>
+
+<!-- ko if: viewDetailsLoaded -->
+<!-- ko if: $component.tdViewDetails().status === 'CLOSED' -->
+<a class="back-link" href="#" data-bind="text: $component.tdDetailsLocale.generic.common.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->
+<!-- /ko -->

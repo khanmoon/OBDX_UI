@@ -1,0 +1,52 @@
+<!-- ko if:detailsFetched -->
+<div class="activity-history oj-panel activity-dashboard">
+  <div class="oj-row">
+    <div class="oj-col activity-history-title">
+      <span data-bind="text:$component.wallet.dashboardActivity.miniStatement"></span>
+    </div>
+  </div>
+  <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-col">
+    <oj-list-view id="listview" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[dataSource]]">
+
+    </oj-list-view>
+
+    <div class="oj-lg-12 oj-md-12 oj-sm-12 oj-col hide">
+      <oj-paging-control id="paging" slot="bottom" :page-size="[[4]]" data="[[dataSource]]">
+      </oj-paging-control>
+    </div>
+    <a href="javascript:void(0)" data-bind="click : showDashboardView">
+    <div class="view-all pointer">
+      <div data-bind="text:$component.wallet.dashboardActivity.moreDetails"></div>
+            <img data-bind="loadImage:'wallet/wallet-farward.svg'">
+    </div></a>
+
+    <script type="text/html" id="content_template">
+      <li data-bind="attr: {id: txnRefNumber }">
+        <div class="oj-row">
+          <div class="oj-col activity-date">
+            <div data-bind="text: $baseModel.formatDate(transactionDate)"></div>
+          </div>
+          <!-- ko if: $data["comments"] && $data.comments!=="null" -->
+              <div class="oj-col activity-desc" data-bind="text : comments"></div>
+          <!-- /ko -->
+          <!-- ko if: $data["name"] && $data.name!=="null" -->
+  				    <div class="oj-col activity-desc" data-bind="text : name"></div>
+  				<!-- /ko -->
+          <!-- ko if: $data.transactionType -->
+          <div class="oj-col right activity-amt">
+            <!-- ko if: transactionType==="D" -->
+            <span class="debit" data-bind="text : $baseModel.formatCurrency(amountInTransactionCurrency.amount, amountInTransactionCurrency.currency)"></span>
+            <span class="debit" data-bind="text:$component.wallet.dashboardActivity.dr"></span>
+            <!-- /ko -->
+            <!-- ko if: transactionType=== "C" -->
+            <span class="credit" data-bind="text : $baseModel.formatCurrency(amountInTransactionCurrency.amount, amountInTransactionCurrency.currency)"></span>
+            <span class="credit" data-bind="text:$component.wallet.dashboardActivity.cr"></span>
+            <!-- /ko -->
+          </div>
+          <!-- /ko -->
+        </div>
+      </li>
+    </script>
+  </div>
+</div>
+<!-- /ko -->

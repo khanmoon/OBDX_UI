@@ -1,0 +1,104 @@
+<div class="oj-flex oj-flex-items-pad margin-top-20">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1 label">
+        <div class="oj-label ">
+            <oj-label for="cardDelMode">
+        <span data-bind="text:$component.resource.cardDeliveryMode"></span></oj-label></div>
+    </div>
+    <div class="oj-sm-12 oj-md-6 oj-lg-6 oj-flex-item">
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-buttonset-one id="cardDelivery" name="cardDelMode" required :invalidcomponenttracker="[[$component.validationTracker]]" value="{{cardDelMode}}"><!-- ko foreach: cardDeliveryModes() --><oj-option name="cardDelMode" value="{{key}}" :id="[['cardDelMode_'+key]]"></oj-option><!-- /ko --></oj-buttonset-one>
+        </div>
+
+    </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1 label">
+        <div class="oj-label ">
+            <oj-label for="selectBranchForCardDel">
+        <span data-bind="text:$component.resource.cardDeliveryMode"></span></oj-label></div>
+    </div>
+    <div class="oj-sm-12 oj-md-6 oj-lg-6 oj-flex-item">
+        <!-- ko if: cardDelMode() === 'BRANCH' -->
+        <div class="oj-flex oj-flex-items-pad oj-flex">
+
+
+            <!-- ko if: branches().length > 0 -->
+            <oj-select-one id="selectBranchForCardDel" required value="{{cardAccountModel().cardDelBranch}}">
+
+            <!-- ko foreach : branches() -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+        </oj-select-one>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+
+
+    </div>
+</div>
+
+
+<div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1 label">
+        <div class="oj-label ">
+            <oj-label for="pinDelMode">
+        <span data-bind="text:$component.resource.pinDeliveryMode"></span></oj-label></div>
+    </div>
+
+    <div class="oj-sm-12 oj-md-6 oj-lg-6 oj-flex-item">
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-buttonset-one id="pinDelivery" name="pinDelMode" required :invalidcomponenttracker="[[$component.validationTracker]]" value="{{pinDelMode}}"><!-- ko foreach: pinDeliveryModes() --><oj-option name="pinDelMode" value="{{key}}" :id="[['pinDelMode_'+key]]"></oj-option><!-- /ko --></oj-buttonset-one>
+        </div>
+
+
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1 label">
+        <div class="oj-label ">
+            <oj-label for="selectBranchForPinDel">
+        <span data-bind="text:$component.resource.pinDeliveryMode"></span></oj-label></div>
+    </div>
+    <div class="oj-sm-12 oj-md-6 oj-lg-6 oj-flex-item">
+        <!-- ko if: pinDelMode() === 'BRANCH' -->
+        <div class="oj-flex oj-flex-items-pad oj-flex">
+
+
+
+            <!-- ko if: branches().length > 0 -->
+            <oj-select-one id="selectBranchForPinDel" required value="{{cardAccountModel().pinDelBranch}}">
+        <!-- ko foreach : branches() -->
+        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+    </oj-select-one>
+            <!-- /ko -->
+
+        </div>
+        <!-- /ko -->
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-2 oj-md-offset-1 label">
+        <div class="oj-label ">
+            <oj-label for="stmtDelMode">
+        <span data-bind="text:$component.resource.statementDeliveryMode"></span></oj-label></div>
+    </div>
+
+    <div class="oj-sm-12 oj-md-6 oj-lg-6">
+        <oj-buttonset-one id="statememtDelivery" name="stmtDelMode" required :invalidcomponenttracker="[[$component.validationTracker]]" value="{{stmtDelMode}}"><!-- ko foreach: stmtDeliveryModes() --><oj-option name="stmtDelMode" value="{{key}}" :id="[['stmtDelMode_'+key]]"></oj-option><!-- /ko --></oj-buttonset-one>
+    </div>
+
+</div>
+
+
+<div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item oj-lg-10 oj-md-10">
+
+        <oj-button class="form-button-secondary" on-click="[[saveFunction]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+</oj-button>
+    </div>
+</div>

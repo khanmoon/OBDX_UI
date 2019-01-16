@@ -1,0 +1,82 @@
+<!-- ko if:$component.refreshTransactionLog() -->
+<div class="activityLog" id="approved-txn-log">
+    <action-widget id="approved-txn-widget" params="baseModel : $baseModel, rootModel: $data,header:$dashboard.isDashboard() ? $component.widgetHeading : void 0,controls:$component.controls,expandComponent:$baseModel.large() ? 'approved-log' : null ,onDashboard:$dashboard.isDashboard()">
+        <!-- ko if:!$dashboard.isDashboard() -->
+        <div class="oj-flex-item">
+            <div class="activityLog__widget-nav">
+                <a href="#" data-bind="attr:{'alt':$component.Nls.labels.filterAlt,'title':$component.Nls.labels.filter,'aria-label':$component.Nls.labels.filterAlt},click:function(){$data.filterDateRange(!$data.filterDateRange())}">
+                    <span id="ctrl2" class="icon icon-search"></span>
+                </a>
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if:$component.filterDateRange() -->
+        <div class="form-main-container activityLog__search-container">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-5">
+                  <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4">
+                        <oj-label><span data-bind="text:$component.Nls.labels.dateFrom"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8">
+                        <oj-input-date id="from" value="{{fromDate}}" converter="[[$baseModel.dateConverter]]" max="[[toDate]]" datepicker="[[{
+                                           numberOfMonths:1}]]"></oj-input-date>
+                    </div>
+                  </div>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-5">
+                  <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4">
+                        <oj-label><span data-bind="text:$component.Nls.labels.dateTo"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8">
+                        <oj-input-date id="from" value="{{toDate}}" min="[[fromDate]]" converter="[[$baseModel.dateConverter]]" datepicker="[[{
+                                           numberOfMonths:1}]]"></oj-input-date>
+                    </div>
+                  </div>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-2">
+                    <oj-button class="form-button-primary" on-click="[[$component.dateFilter]]">
+      <span data-bind="text:$component.Nls.labels.search"></span>
+</oj-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- /ko -->
+
+        <!-- ko if:userSegment !== 'ADMIN' && userSegment !== 'CORPADMIN' -->
+        <div class="oj-flex txn-type">
+            <oj-buttonset-one class="oj-flex-item" :aria-label="[[$component.Nls.labels.chooseTxnType]]" value="{{$component.currentSelection}}"><oj-option id="financialTxn_approved" name="typetxn3" value="{{'financialTxn_approved'}}"><span for="financialTxn_approved" data-bind="text : $baseModel.format($component.Nls.labels.financialTxn, {count : $component.financialTxnCount()})"></span></oj-option><oj-option id="nonfinancialTxn_approved" name="typetxn3" value="{{'nonfinancialTxn_approved'}}"><span for="nonfinancialTxn_approved" data-bind="text : $baseModel.format($component.Nls.labels.nonFinancialTxn, {count : $component.nonFinancialTxnCount()})"></span></oj-option></oj-buttonset-one>
+        </div>
+          <!-- /ko -->
+        <!-- ko if:$baseModel.large() -->
+
+        <div data-bind='component:{name: "nav-bar", params:{rootModel: $data,menuOptions : menuCountOptions, uiOptions:uiOptions,navBarDescription:$component.Nls.navBarDescription}}'></div>
+        <!-- ko if:loadModule() -->
+        <div data-bind="component:{name: loadModule, params:{rootModel: $data , data : ko.observable()}}"></div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko ifnot:$baseModel.large() -->
+        <div class="oj-flex oj-flex-items-pad activityLog__approver-tabs-listView activityLog-approver-tabs-listView">
+            <div class="oj-flex-item no-pad-cols  approver-tabs-listView">
+                <!-- left side section giving user input -->
+                <ul data-bind="foreach : menuCountOptions">
+                    <li>
+                        <a href="#" data-bind="attr:{'alt':$baseModel.format($component.Nls.labels.mobileClick, {module: label}) ,'title':$baseModel.format($component.Nls.labels.mobileClickTitle, {module: label}) },click:$parent.showModule">
+                        <span data-bind="text:label"></span>
+                        <div class="activityLog-approver-tabs-listView__items activityLog-approver-tabs-listView-items">
+                            <span class="activityLog-approver-tabs-listView-items__count" data-bind="text: count()"></span>
+                            <div class="icons icon-arrow-right activityLog-approver-tabs-listView-items__icon"></div>
+                        </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /ko -->
+    </action-widget>
+</div>
+<!-- /ko -->

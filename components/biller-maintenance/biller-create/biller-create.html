@@ -1,0 +1,613 @@
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-9">
+  <div class="form-main-container">
+    <!-- ko if:dataLoaded() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+    <oj-validation-group id="tracker" valid="{{groupValid}}">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.heading.billerdetails">
+        <!-- ko if : $component.editFromView-->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-label for="billerId"><span data-bind="text:$component.resourceBundle.labels.billerId"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+              <div id="billerId" data-bind="text:$component.billerDetails().id"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-label for="billerName">
+                  <!-- ko text: $component.resourceBundle.labels.billerName  -->
+                  <!-- /ko -->
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+              <oj-input-text id="billerName" value="{{$component.billerDetails().name}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',
+                                $component.resourceBundle.messages.invalidBillerName,
+                                {type: 'length',
+                                 options: {
+                                   min: 1,
+                                   max: 35}})]]" required>
+                </oj-input-text>
+            </div>
+        </div>
+        <!-- ko ifnot: $component.editFromView -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="billerType">
+                  <!-- ko text: $component.resourceBundle.labels.billerType  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-8 oj-sm-12">
+                <oj-select-one id="billerType" value="{{$component.billerDetails().type}}" placeholder="{{$component.resourceBundle.generic.common.select}}" on-value-changed="[[typeChangedHandler]]" required>
+                    <!-- ko foreach:billerTypes() -->
+                    <oj-option value="[[value]]"><span data-bind="text: label"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if : $component.editFromView -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-label for="billerType"><span data-bind="text:$component.resourceBundle.labels.billerType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="billerType" data-bind="text:$component.resourceBundle.labels[$component.billerDetails().type()]"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot : $component.editFromView -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="billerCategory">
+                  <!-- ko text: $component.resourceBundle.labels.billerCategory  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-8 oj-sm-12">
+                <oj-select-one id="billerCategory" value="{{$component.billerDetails().areaCategoryDetails()[0].categoryId}}" placeholder="{{$component.resourceBundle.generic.common.select}}" minimum-results-for-search="[[5]]" required>
+                    <!-- ko foreach:billerCategoryList() -->
+                    <oj-option value="[[id]]"><span data-bind="text: name"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-8 oj-sm-12">
+                <div class="" data-bind="attr: {title: $component.resourceBundle.disclaimer.categoryInfo}, css: { 'oj-flex-item oj-sm-1': $baseModel.small()}"></div> 
+                <a href="javascript:void(0)" data-bind="text: $component.resourceBundle.disclaimer.manageCategory" on-click="[[manageCategory]]"></a>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if : $component.editFromView -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-label for="billerCategory"><span data-bind="text:$component.resourceBundle.labels.billerCategory"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="billerCategory" data-bind="text:$component.billerDetails().areaCategoryDetails()[0].categoryName()"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot : $component.editFromView -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="billerCurrency">
+                  <!-- ko text: $component.resourceBundle.labels.billerCurrency  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+                <oj-select-one id="billerCurrency" value="{{$component.billerDetails().currency}}" placeholder="{{$component.resourceBundle.generic.common.select}}" required>
+                    <!-- ko foreach:currencyList() -->
+                    <oj-option value="[[code]]"><span data-bind="text: code"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if : $component.editFromView -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+              <oj-label for="billerCurrency"><span data-bind="text:$component.resourceBundle.labels.billerCurrency"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <div id="billerCurrency" data-bind="text:$component.billerDetails().currency()"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="billerStatus">
+                  <!-- ko text: $component.resourceBundle.labels.billerStatus  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+                <oj-select-one id="billerStatus" value="{{$component.billerDetails().status}}" placeholder="{{$component.resourceBundle.generic.common.select}}" required>
+                    <!-- ko foreach:billerStatus() -->
+                    <oj-option value="[[value]]"><span data-bind="text: label"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+        <!-- ko if : displaySampleImage -->
+        <image-upload params="baseModel : $baseModel, rootModel:$component,
+                              label: $component.resourceBundle.labels.billerImage,
+                              preview:$component.preview,
+                              imageId:$component.imageId1,
+                              fileId:$component.fileId1,
+                              imageUploaded : !$component.isImageExist(),
+                              file:$component.file">
+        </image-upload>
+        <!-- /ko -->
+        <image-upload params="baseModel : $baseModel, rootModel:$component,
+                              label: $component.resourceBundle.labels.billerLogo,
+                              preview:$component.previewLogo,
+                              imageId:$component.imageId2,
+                              fileId:$component.fileId2,
+                              imageUploaded : !$component.isLogoExist(),
+                              file:$component.fileLogo">
+        </image-upload>
+
+    </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.heading.billerAddress">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="address1">
+                  <!-- ko text: $component.resourceBundle.labels.address1  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+              <oj-input-text id="address1" value="{{$component.billerDetails().address.line1}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidCategory,{type: 'length',
+                               options: {
+                                   min: 1,
+                                   max: 35}})]]" required>
+                </oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="address2">
+                  <!-- ko text: $component.resourceBundle.labels.address2  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+              <oj-input-text id="address2" value="{{$component.billerDetails().address.line2}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidAddress,{
+                               type: 'length',
+                               options: {
+                                   min: 1,
+                                   max: 35}})]]">
+                </oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="address3">
+                  <!-- ko text: $component.resourceBundle.labels.address3  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+              <oj-input-text id="address3" value="{{$component.billerDetails().address.line3}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidAddress,{
+                               type: 'length',
+                               options: {
+                                   min: 1,
+                                   max: 35}})]]">
+                </oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="city">
+                  <!-- ko text: $component.resourceBundle.labels.city  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+              <oj-input-text id="city" value="{{$component.billerDetails().address.city}}" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.messages.invalidCity,{
+                               type: 'length',
+                               options: {
+                                   min: 1,
+                                   max: 35}})]]" required>
+                </oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="state">
+                  <!-- ko text: $component.resourceBundle.labels.state  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+              <oj-input-text id="state" value="{{$component.billerDetails().address.state}}" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.messages.invalidState,{
+                               type: 'length',
+                               options: {
+                                   min: 1,
+                                   max: 20}})]]" required>
+                </oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="country">
+                  <!-- ko text: $component.resourceBundle.labels.country  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+                <oj-select-one id="country" value="{{$component.billerDetails().address.country}}" placeholder="{{$component.resourceBundle.generic.common.select}}" required>
+                    <!-- ko foreach:countryList() -->
+                    <oj-option value="[[code]]"><span data-bind="text: description"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="zipCode">
+                  <!-- ko text: $component.resourceBundle.labels.zipCode  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+              <oj-input-text id="zipCode" value="{{$component.billerDetails().address.zipCode}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.resourceBundle.messages.invalidZipCode,{
+                               type: 'length',
+                               options: {
+                                   min: 1,
+                                   max: 20}})]]" required>
+                </oj-input-text>
+            </div>
+        </div>
+
+        <!-- ko ifnot : $component.editFromView -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="billerLocation">
+                  <!-- ko text: $component.resourceBundle.labels.billerLocation  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+              <oj-input-text id="billerLocation" value="{{$component.billerDetails().areaCategoryDetails()[0].operationalAreaName}}" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.messages.invalidLocation,{
+                       type: 'length',
+                       options: {
+                           min: 1,
+                           max: 35}})]]" required>
+             </oj-input-text>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if : $component.editFromView -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-label for="billerLocation"><span data-bind="text:$component.resourceBundle.labels.billerLocation"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+              <div id="billerLocation" data-bind="text:$component.billerDetails().areaCategoryDetails()[0].operationalAreaName"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.heading.specifications">
+        <div class="oj-flex oj-flex-items-pad padding-tb info-text-small">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-10">
+            <div data-bind="text: $component.resourceBundle.disclaimer.specification, css: { 'oj-flex-item oj-sm-11 disclaimer': $baseModel.small()}"></div>
+          </div>
+        </div>
+        <!-- ko foreach : specificationsList -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-2 label">
+                <oj-label data-bind="attr:{'for': 'specificationLabel'+$index()}">
+                  <!-- ko text: $baseModel.format($component.resourceBundle.labels.billerLabel,{sequenceId:sequenceId()}) -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-lg-3 oj-md-6 oj-sm-12">
+                <!-- ko if: $index() === 0 -->
+                <oj-input-text data-bind="attr:{'id': 'specificationLabel'+$index()}" value="{{label}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidSpecificationLabel,{
+                               type: 'length',
+                               options: {
+                                   min: minValue(),
+                                   max: 20}})]]" required>
+                </oj-input-text>
+                <!-- /ko -->
+                <!-- ko ifnot: $index() === 0 -->
+                <oj-input-text data-bind="attr:{'id': 'specificationLabel'+$index()}" value="{{label}}" validators="{{[$component.validateSpecification]}}">
+                  </oj-input-text>
+                <!-- /ko -->
+            </div>
+            <!-- ko ifnot : $component.editFromView -->
+            <div class="oj-flex-item oj-lg-2 oj-md-6 oj-sm-12">
+                <!-- ko if: $index() === 0 -->
+                <oj-select-one data-bind="attr:{'id': 'specificationType'+$index()}" value="{{datatype}}" placeholder="{{$component.resourceBundle.billerSpecification.specificationType}}" required>
+                  <!-- ko foreach:$component.billerDataType() -->
+                  <oj-option value="[[value]]"><span data-bind="text: label"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+                <!-- ko ifnot: $index() === 0 -->
+                <oj-select-one data-bind="attr:{'id': 'specificationType'+$index()}" value="{{datatype}}" placeholder="{{$component.resourceBundle.billerSpecification.specificationType}}" required="[[dataTypeRequired]]">
+                  <!-- ko foreach:$component.billerDataType() -->
+                  <oj-option value="[[value]]"><span data-bind="text: label"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+            </div>
+            <div class="oj-flex-item oj-md-6 oj-sm-12 oj-lg-2">
+              <oj-label class="hide-label" data-bind="attr:{'for': 'maxLength'+$index()}">
+                <!-- ko text: $component.resourceBundle.billerSpecification.maxLength  -->
+                <!-- /ko -->
+              </oj-label>
+                <!-- ko ifnot: datatype() === "DATE" -->
+              <oj-input-text data-bind="attr:{'id': 'maxLength'+$index()}" value="{{maxLength}}" placeholder="{{$component.resourceBundle.billerSpecification.maxLength}}" validators="[[$baseModel.getValidator('NUMBERS',$component.resourceBundle.messages.invalidMaxlength,{
+                             type: 'length',
+                             options: {
+                                 min: 1,
+                                 max: 2}})]]" required="[[maxLengthRequired]]">
+              </oj-input-text>
+                <!-- /ko -->
+                <!-- ko if:datatype() === "DATE" -->
+              <oj-input-text data-bind="attr:{'id': 'maxLength'+$index()}" disabled="{{true}}" value="{{null}}" placeholder="{{$component.resourceBundle.billerSpecification.maxLength}}" validators="[[$baseModel.getValidator('NUMBERS',$component.resourceBundle.messages.invalidMaxlength,{
+                             type: 'length',
+                             options: {
+                                 min: 1,
+                                 max: 2}})]]" required="[[maxLengthRequired]]">
+              </oj-input-text>
+                <!-- /ko -->
+            </div>
+            <div class="oj-flex-item oj-lg-2 oj-md-6 oj-sm-12">
+              <oj-select-one data-bind="attr:{'id': 'specificationRequired'+$index()}" value="{{required}}" placeholder="{{$component.resourceBundle.generic.common.select}}" disabled="{{disabled}}" required="[[optionalRequired]]">
+                      <!-- ko foreach:$component.specificationRequired() -->
+                      <oj-option value="[[value]]"><span data-bind="text: label"></span></oj-option>
+                      <!-- /ko -->
+              </oj-select-one>
+            </div>
+            <!-- ko ifnot: $index() === 0 -->
+            <div class="oj-flex-item oj-lg-1 oj-md-6 oj-sm-12">
+              <a href="#" data-bind="click:$component.remove.bind($data,$index())">
+                  <span class="icons icon-delete delete-draft icon-2x" data-bind="attr:{ title: $component.resourceBundle.generic.common.delete}"></span>
+              </a>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if : $component.editFromView-->
+              <!-- ko if : label() !== null -->
+            <div class="oj-flex-item oj-lg-3 oj-md-6 oj-sm-12">
+                <div data-bind="attr:{'id': 'specificationType'+$index()}, text:$component.resourceBundle.billerSpecification[datatype()]"></div>
+            </div>
+            <!-- ko if: $data.maxLength-->
+            <div class="oj-flex-item oj-lg-2 oj-md-6 oj-sm-12">
+              <div data-bind="attr:{'id': 'maxLength'+$index()}, text:maxLength"></div>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: $data.maxLength-->
+            <div class="oj-flex-item oj-lg-2 oj-md-6 oj-sm-12">
+                <div data-bind="text:$component.resourceBundle.labels.notAvailable"></div>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex-item oj-lg-2 oj-md-6 oj-sm-12">
+              <div data-bind="attr:{'id': 'specificationRequired'+$index()}, text:$component.resourceBundle.billerSpecification[required()]"></div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot : $component.editFromView-->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <a href="javascript:void(0)" data-bind="attr:{ title: $component.resourceBundle.labels.addRow},
+                          text:$component.resourceBundle.labels.addRow,
+                          click:$component.addRow.bind()"></a>
+          </div>
+        </div>
+         <!-- /ko -->
+    </page-section>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.heading.paymentTerms">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="accountNumber">
+                  <!-- ko text: $component.resourceBundle.paymentTerms.accountNumber  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+              <oj-input-text id="accountNumber" value="{{$component.billerDetails().creditAccount}}" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resourceBundle.messages.invalidAcccountNumber,{
+                               type: 'length',
+                               options: {
+                                   min: 1,
+                                   max: 20}})]]" required>
+                </oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label" >
+                <oj-label id="fileMenu" for="paymentsAllowed">
+                  <!-- ko text: $component.resourceBundle.paymentTerms.paymentAllowed  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <!-- ko ifnot: $component.billerDetails().type -->
+            <div class="oj-flex-item oj-lg-8 oj-md-6 oj-sm-12">
+                <oj-checkboxset id="paymentsAllowed" value="{{paymentsAllowed}}" class="oj-choice-direction-row" data-bind="attr:{'aria-label': $component.resourceBundle.paymentTerms.paymentAllowed}">
+                    <oj-option id="partPayment" value="PART">
+                        <span data-bind="text:$component.resourceBundle.paymentTerms.partPayment"></span>
+                    </oj-option>
+                    <oj-option id="excessPayment" value="EXCESS">
+                        <span data-bind="text:$component.resourceBundle.paymentTerms.excessPayment"></span>
+                    </oj-option>
+                    <oj-option id="latePayment" value="LATE">
+                        <span data-bind="text:$component.resourceBundle.paymentTerms.latePayment"></span>
+                    </oj-option>
+                    <oj-option id="quickBillPay" value="QUICK_PAY">
+                        <span data-bind="text:$component.resourceBundle.paymentTerms.quickBillPay"></span>
+                    </oj-option>
+                    <oj-option id="quickRecharge" value="QUICK_RECHARGE">
+                        <span data-bind="text:$component.resourceBundle.paymentTerms.quickRecharge"></span>
+                    </oj-option>
+                </oj-checkboxset>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $component.billerDetails().type -->
+            <div class="oj-flex-item oj-lg-8 oj-md-6 oj-sm-12">
+            <!-- ko if: $component.paymentsAllowedValues.presentment -->
+                    <oj-checkboxset id="paymentsAllowed" value="{{paymentsAllowed}}" class="oj-choice-direction-row" data-bind="attr:{'aria-label': $component.resourceBundle.paymentTerms.paymentAllowed}">
+                        <oj-option id="partPayment" value="PART">
+                            <span data-bind="text:$component.resourceBundle.paymentTerms.partPayment"></span>
+                        </oj-option>
+                        <oj-option id="excessPayment" value="EXCESS">
+                            <span data-bind="text:$component.resourceBundle.paymentTerms.excessPayment"></span>
+                        </oj-option>
+                        <oj-option id="latePayment" value="LATE">
+                            <span data-bind="text:$component.resourceBundle.paymentTerms.latePayment"></span>
+                        </oj-option>
+                    </oj-checkboxset>
+            <!-- /ko -->
+            <!-- ko if: $component.paymentsAllowedValues.payment -->
+                    <oj-checkboxset id="paymentsAllowed" value="{{paymentsAllowed}}" class="oj-choice-direction-row" data-bind="attr:{'aria-label': $component.resourceBundle.paymentTerms.paymentAllowed}">
+                        <oj-option id="quickBillPay" value="QUICK_PAY">
+                            <span data-bind="text:$component.resourceBundle.paymentTerms.quickBillPay"></span>
+                        </oj-option>
+                    </oj-checkboxset>
+            <!-- /ko -->
+            <!-- ko if: $component.paymentsAllowedValues.presentmentPayment -->
+                    <oj-checkboxset id="paymentsAllowed" value="{{paymentsAllowed}}" class="oj-choice-direction-row" data-bind="attr:{'aria-label': $component.resourceBundle.paymentTerms.paymentAllowed}">
+                        <oj-option id="partPayment" value="PART">
+                            <span data-bind="text:$component.resourceBundle.paymentTerms.partPayment"></span>
+                        </oj-option>
+                        <oj-option id="excessPayment" value="EXCESS">
+                            <span data-bind="text:$component.resourceBundle.paymentTerms.excessPayment"></span>
+                        </oj-option>
+                        <oj-option id="latePayment" value="LATE">
+                            <span data-bind="text:$component.resourceBundle.paymentTerms.latePayment"></span>
+                        </oj-option>
+                        <oj-option id="quickBillPay" value="QUICK_PAY">
+                            <span data-bind="text:$component.resourceBundle.paymentTerms.quickBillPay"></span>
+                        </oj-option>
+                    </oj-checkboxset>
+            <!-- /ko -->
+            <!-- ko if: $component.paymentsAllowedValues.recharge -->
+                    <oj-checkboxset id="paymentsAllowed" value="{{paymentsAllowed}}" class="oj-choice-direction-row" data-bind="attr:{'aria-label': $component.resourceBundle.paymentTerms.paymentAllowed}">
+                        <oj-option id="quickRecharge" value="QUICK_RECHARGE">
+                            <span data-bind="text:$component.resourceBundle.paymentTerms.quickRecharge"></span>
+                        </oj-option>
+                    </oj-checkboxset>
+            <!-- /ko -->
+            </div>
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 label">
+                <oj-label for="paymentMethod">
+                  <!-- ko text: $component.resourceBundle.paymentTerms.paymentMethods  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-9 oj-md-6 oj-sm-12">
+                <oj-checkboxset id="paymentMethod" value="{{paymentMethods}}" class="oj-choice-direction-row" data-bind="attr:{'aria-label': $component.resourceBundle.paymentTerms.paymentMethods}" required>
+                    <!-- ko foreach: paymentMethodsList -->
+                    <oj-option data-bind="attr:{id: code}" value="[[value]]">
+                        <span data-bind="text:$component.resourceBundle.paymentTerms[description]"></span>
+                    </oj-option>
+                    <!-- /ko -->
+                </oj-checkboxset>
+            </div>
+        </div>
+        <!-- ko ifnot: autoPayDisabled -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="bufferDays">
+                  <!-- ko text: $component.resourceBundle.paymentTerms.bufferDays  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+                <oj-input-text id="bufferDays" value="{{$component.billerDetails().paymentOptions.autoPayBufferDays}}" validators="[[$baseModel.getValidator('NUMBERS',$component.resourceBundle.messages.autoBufferValidation,{
+                  type: 'length',
+                  options: {
+                      min: 0,
+                      max: 2}})]]" converter="{{$component.numberConverter()}}">
+                </oj-input-text>
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="validationType">
+                  <!-- ko text: $component.resourceBundle.labels.validationType  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-9 oj-md-6 oj-sm-12">
+                <oj-radioset id="validationType" value="{{$component.billerDetails().validationType}}" class="oj-choice-direction-row" data-bind="attr:{'aria-label': $component.resourceBundle.labels.validationType}">
+                    <oj-option id="auto" value="AUTO">
+                            <span data-bind="text:$component.resourceBundle.labels.AUTO"></span>
+                    </oj-option>
+                    <oj-option id="offline" value="OFFLINE">
+                        <span data-bind="text:$component.resourceBundle.labels.OFFLINE"></span>
+                    </oj-option>
+                    <oj-option id="online" value="ONLINE">
+                        <span data-bind="text:$component.resourceBundle.labels.ONLINE"></span>
+                    </oj-option>
+                </oj-radioset>
+            </div>
+        </div>
+        <!-- ko if: $component.billerDetails().validationType() === "ONLINE" -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="validationUrl">
+                  <!-- ko text: $component.resourceBundle.labels.validationUrl  -->
+                  <!-- /ko -->
+                </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+                <oj-input-text id="validationUrl" value="{{$component.billerDetails().validationUrl}}" validators="[[$baseModel.getValidator('URL',$component.resourceBundle.messages.invalidUrl,{type: 'length',
+                  options: {
+                      min: 1,
+                      max: 50}})]]" required>
+                </oj-input-text>
+            </div>
+        </div>
+        <!-- /ko -->
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <!-- ko ifnot : $component.editFromView -->
+      <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[save]]">
+        <span data-bind="text:$component.resourceBundle.generic.common.save"></span>
+      </oj-button>
+      <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.messages.cancelOperation)]]">
+        <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary btn proceed-main-btn" on-click="[[back]]">
+        <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+      </oj-button>
+      <!-- /ko -->
+      <!-- ko if : $component.editFromView -->
+      <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[save]]">
+        <span data-bind="text:$component.resourceBundle.generic.common.save"></span>
+      </oj-button>
+      <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.messages.cancelOperation)]]">
+        <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary btn proceed-main-btn" on-click="[[backToView]]">
+        <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+      </oj-button>
+      <!-- /ko -->
+    </div>
+    </oj-validation-group>
+    </div>
+    <!-- /ko -->
+</div>
+</div>
+<!-- ko if: $baseModel.large() -->
+<div class="oj-sm-12 oj-md-12 oj-lg-3 oj-sm-only-hide oj-md-only-hide pull-right help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'biller-create'"></help>
+</div>
+<!-- /ko -->
+</div>

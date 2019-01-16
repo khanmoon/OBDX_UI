@@ -1,0 +1,43 @@
+<div class="form-main-container authentication">
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header: $component.nls.authentication.messages.reviewHeader,reviewHeader: $component.nls.authentication.messages.reviewHeader1}}">
+        </div>
+    <!-- ko if:$component.showMaintenanceData() -->
+    <page-section params="baseModel : $baseModel, rootModel : $data">
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.authentication.labels.userSegments , value :$component.selectedSegmentName"></row>
+        <oj-table id="table" :aria-label="[[$component.nls.authentication.labels.ariaLabel]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('row_tmpl', true)]]" columns="[[[{headerText:$component.nls.authentication.labels.transactionType},{headerText:$component.nls.authentication.labels.level1},{headerText:$component.nls.authentication.labels.level2}]]]" data="[[datasource]]">
+            <caption class="hide-label" data-bind="text:$component.nls.authentication.headers.authentication"></caption>
+        </oj-table>
+        <script type="text/html" id="row_tmpl">
+            <tr>
+                <td data-bind="text: transactionName">
+                </td>
+                <!-- ko foreach:authenticationInfoDTOList-->
+                <td>
+                    <!-- ko if:authType.authTypeKey === 'SEC_QUE' -->
+                    <div data-bind="text:$component.nls.authentication.labels.SEC_QUE"></div>
+                    <span class="label" data-bind="text:$component.nls.authentication.labels.NO_OF_SEC_QUES"></span>
+                    <span class="label" data-bind="text:$data.paramVal1"></span>
+                    <!-- /ko -->
+                    <!-- ko ifnot:authType.authTypeKey === 'SEC_QUE' -->
+                    <div data-bind="text:$component.nls.authentication.labels[authType.authTypeKey]"></div>
+                    <!-- /ko -->
+                </td>
+                <!-- /ko -->
+            </tr>
+        </script>
+    </page-section>
+    <!-- /ko -->
+    <!-- ko if:$component.showButtons -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" on-click="[[save]]">
+            <span data-bind="text:$component.nls.common.save"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($component.nls.authentication.status.cancelConfirm)]]">
+            <span data-bind="text:$component.nls.common.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" on-click="[[back]]">
+            <span data-bind="text:$component.nls.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+</div>

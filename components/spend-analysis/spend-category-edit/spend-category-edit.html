@@ -1,0 +1,79 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="form-main-container spend-category oj-flex-item" data-bind="css : stageTwo()?'oj-sm-12':'oj-sm-9'">
+        <!-- ko if:stageOne() -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                    <oj-label class="label" for="categoryCode"><span data-bind="text:$component.resource.spendCategory.categoryCode"></span></oj-label>
+                </div>
+                <div class="oj-flex-item label oj-sm-12 oj-md-8 oj-lg-5">
+                    <oj-input-text maxlength="40" id="categoryCode" required validators="[[[$component.validateName]]]" disabled="[[true]]" value="{{$component.categoryCode}}"></oj-input-text>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+                    <oj-label class="label" for="categoryName"><span data-bind="text:$component.resource.spendCategory.categoryName"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5">
+                    <oj-input-text maxlength="40" id="categoryName" required value="{{$component.categoryName}}" validators="[[[$component.validateName]]]"></oj-input-text>
+                </div>
+            </div>
+            <action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.spendCategory.subCategoryDetails"></action-header>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-2">
+                    <strong><span data-bind="text:$component.resource.spendCategory.subCategoryCode"></span></strong>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+                    <strong><span data-bind="text:$component.resource.spendCategory.subCategoryName"></span></strong>
+                </div>
+            </div>
+            <div id="subcategory-container">
+                <!-- ko foreach:$component.subCategoryArray() -->
+                <div data-bind="template: { name:'spend-analysis/edit-subcategory-admin'}"></div>
+                <!-- /ko -->
+            </div>
+            <div class="button-container left">
+                <oj-button class="help-button" id="edit" on-click="[[addSub]]">
+                    <span data-bind="text:$component.resource.spendCategory.add"></span>
+                </oj-button>
+            </div>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container right">
+            <oj-button class="action-button-primary" on-click="[[editCategory]]">
+                <span data-bind="text:$component.resource.common.save"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" id="cancel" on-click="[[$dashboard.openDashBoard.bind($data,true)]]">
+                <span data-bind="text:$component.resource.common.cancel"></span>
+            </oj-button>
+            <oj-button class="action-button-tertiary" id="cancel" on-click="[[$dashboard.hideDetails]]">
+                <span data-bind="text:$component.resource.common.back"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:stageTwo() -->
+        <page-section params="baseModel : $baseModel, rootModel:$data ,heading:''">
+            <div data-bind="template: { name: 'review-screen/review-banner-template', data: {
+            header : $component.resource.common.review, 
+            reviewHeader : $component.resource.spendCategory.reviewHeaderMsg
+            }}"></div>
+            <div data-bind="template: { name: 'spend-analysis/view-review-spend-category-create-edit' }"></div>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container right">
+            <oj-button class="action-button-primary" on-click="[[confirmEditCategory]]">
+                <span data-bind="text:$component.resource.common.confirm"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" id="cancel" on-click="[[$dashboard.openDashBoard.bind($data,true)]]">
+                <span data-bind="text:$component.resource.common.cancel"></span>
+            </oj-button>
+            <oj-button class="action-button-tertiary" id="cancel" on-click="[[$component.backReview]]">
+                <span data-bind="text:$component.resource.common.back"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- ko if: $baseModel.large() && stageOne() -->
+    <div class="oj-flex-item oj-lg-3 oj-sm-only-hide oj-md-only-hide help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction:'spend-category-edit'"></help>
+    </div>
+    <!-- /ko -->
+</div>

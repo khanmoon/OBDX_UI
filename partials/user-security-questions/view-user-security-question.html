@@ -1,0 +1,49 @@
+<div class="form-main-container">
+  <div class="oj-flex oj-flex-items-pad  oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-7">
+      <!-- ko if:$component.showCreateScreen -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+          <span id="notMaintained" for="userSegment" data-bind="text:$component.nls.userSecurityQuestion.labels.notMaintained"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot:$component.showCreateScreen -->
+      <!-- ko if:$component.isQuestionListLoaded() && $component.isUserQuestionListLoaded() -->
+      <!-- ko foreach:$component.userQuestionList -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+          <oj-label for="question"> <span data-bind="text:$component.nls.userSecurityQuestion.labels.securityQuestion"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span for="question" data-bind="text: $component.questionListMap[questionId]"> </span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <!-- ko if:$component.showCreateScreen -->
+        <oj-button class="action-button-primary " on-click="[[openCreateMode]]"><span slot="startIcon" class="icons icon-ok"></span>
+          <span data-bind="text:$component.nls.userSecurityQuestion.labels.setUpNow"></span>
+        </oj-button>
+        <!-- /ko -->
+        <!-- ko ifnot:$component.showCreateScreen -->
+        <oj-button class="action-button-primary " on-click="[[showEditScreen]]" disabled="[[$component.showCreateScreen]]"><span slot="startIcon" class="icons icon-edit"></span>
+          <span data-bind="text:$component.nls.common.edit"></span>
+        </oj-button>
+        <!-- /ko -->
+        <!-- ko ifnot: $baseModel.small -->
+        <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.nls.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- ko if:  $baseModel.large() -->  
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'security-notes'"></help>
+    </div>
+     <!-- /ko -->
+  </div>
+</div>

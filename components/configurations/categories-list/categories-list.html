@@ -1,0 +1,30 @@
+<div class="oj-flex oj-flex-items-pad">
+<div class="oj-sm-11 oj-flex-item">
+<!-- ko if: dataFetched -->
+<div class="form-main-container">
+    <!--<div class="oj-flex oj-flex-items-pad " data-bind="component:{name:'header', params:{compName:componentHeader()}}">
+        </div>-->
+
+    <div class="oj-flex oj-flex-items-pad category_row_padding">
+
+        <div class="oj-sm-12 oj-md-12 oj-flex-item text-align-center ">
+          <oj-label class="hide" :id="[['selectOptsLabel']]" :for="[['selectOpts']]"><span data-bind="text:$component.resource.configuration.categories.subCategory"></span></oj-label>
+            <oj-select-one required id="selectOpts" translations="[[{'required':{messageDetail:$component.resource.configuration.categories.selectCategory}}]]" value="{{$component.selectedValue}}" on-value-changed="[[optionChangedHandler]]" :placeholder="[[$component.resource.configuration.categories.subCategory]]">
+            <!-- ko foreach: selectCategories -->
+                <oj-option value="{{value.categoryId+','+value.tableName}}" :id="[['category'+$index()]]"><span data-bind="text:label"></span></oj-option>
+            <!-- /ko -->
+            </oj-select-one>
+            </div>
+    </div>
+
+
+
+    <!-- ko if: showPropertyDiv -->
+
+        <div class="oj-panel oj-panel-alt2 layout" data-bind="component: {name: propertyComponent, params:{rootModel: $parent}}">
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+</div>
+</div>
+</div>

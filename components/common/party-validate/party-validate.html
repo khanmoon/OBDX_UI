@@ -1,0 +1,166 @@
+<div class="party-validate">
+  <!--Input PartyId-->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading :''">
+    <!-- ko ifnot:$component.partyDetails.partyDetailsFetched() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+        <label class="" for="partyIdSearch" data-bind="text:$component.nls.corporateid"></label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5">
+        <oj-input-text maxlength="20" id="partyIdSearch" on-submitifenter="[[submitIfEnter]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('PARTY_ID')]]" value="{{$component.partyId.value}}" :aria-label="[[$component.nls.corporateid]]"></oj-input-text>
+      </div>
+    </div>
+    <!--  party name added -->
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+        <label class="" for="partyNameSearch" data-bind="text:$component.nls.corporatename"></label>
+      </div>
+      <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-5">
+        <oj-input-text maxlength="80" id="partyNameSearch" on-submitifenter="[[submitIfEnter]]" :invalidcomponenttracker="[[$component.validationTrackerForName]]" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.partyDetails.partyName}}" :aria-label="[[$component.nls.corporatename]]"></oj-input-text>
+      </div>
+
+      <!--  party name added -->
+    </div>
+    <!-- /ko -->
+    <!-- ko if:$component.partyDetails.partyDetailsFetched() -->
+    <div class="oj-flex oj-flex-items-pad party-validate__partyDetails">
+      <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+        <label for="partyId" data-bind="text:$component.nls.corporateid"></label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+        <span id="partyId" data-bind="text : $component.partyDetails.party.displayValue"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+        <label for="partyName" data-bind="text:$component.nls.corporatename"></label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+        <span id="partyName" data-bind="text : $component.partyDetails.partyName"></span>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot : $component.partyDetails.partyDetailsFetched() -->
+    <div class="oj-flex-item button-container">
+      <oj-button id="search" class="action-button-primary" on-click="[[validateParty]]">
+        <span data-bind="text:$component.nls.search"></span>
+      </oj-button>
+      <!-- ko ifnot:$component.showPartyList() -->
+      <!-- ko ifnot:$component.showList() -->
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.cancel"></span>
+      </oj-button>
+      <!-- /ko -->
+      <!-- /ko -->
+      <oj-button id="dialogtopupButton" class="action-button-tertiary" on-click="[[reset]]">
+        <span data-bind="text:$component.nls.clear"></span>
+      </oj-button>
+
+    </div>
+    <!-- /ko -->
+  </page-section>
+  <!-- ko if:$component.showList() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.searchResults">
+        <!-- ko if: !$baseModel.small() -->
+        <oj-table id="table" :aria-label="[[$component.nls.details]]" columns-default="[[{sortable:'enabled'}]]" columns="[[[{headerText:$component.nls.corporateid,
+           field:'displayValue',
+           'renderer': $oj.KnockoutTemplateUtils.getRenderer('party_link', true)},
+        {headerText:$component.nls.corporatename,field:'partyName'}]]]" data="[[datasource]]">
+          <caption class="hide-label" data-bind="text:$component.nls.details"></caption>
+        </oj-table>
+        <script type="text/html" id="party_link">
+          <td>
+            <a href="javascript:void(0)" data-bind="text:$context.row.displayValue, click: $component.goToMap.bind($data,$context.row)"></a>
+          </td>
+        </script>
+
+        <!-- /ko -->
+        <!-- ko if: $baseModel.small() -->
+        <div class="oj-panel grid-main-container">
+
+          <div class="oj-flex oj-flex-items-pad  grid-table-header">
+
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+              <span data-bind="text : $component.nls.corporateid"></span>
+            </div>
+
+
+            <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+              <span data-bind="text: $component.nls.corporatename"></span>
+            </div>
+          </div>
+          <div id="partyListDiv" class="oj-flex oj-flex-items-pad">
+            <oj-list-view id="partyListView" data="[[datasource]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('partyDetail_template',true)}]]" selection-mode="[['none']]"></oj-list-view>
+            <script type="text/html" id="partyDetail_template">
+              <li data-bind="attr: {id: $data['id']}">
+                <a href="javascript:void(0)" class="oj-flex oj-flex-items-pad grid-row-group" data-bind="click:$component.fetchApprovalDetailForParty.bind($data)">
+                  <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+                    <span data-bind="text:$data.id"></span>
+                  </div>
+                  <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+                    <span data-bind="text:$data.partyName"></span>
+                  </div>
+                </a>
+              </li>
+            </script>
+          </div>
+        </div>
+        <!-- /ko -->
+      </page-section>
+    </div>
+  </div>
+  <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.cancel"></span>
+      </oj-button>
+  <!-- /ko -->
+
+  <!-- ko if:$component.showPartyList() -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.searchResults">
+    <!-- ko if: !$baseModel.small() -->
+    <oj-table id="table" :aria-label="[[$component.nls.details]]" columns-default="[[{sortable:'enabled'}]]" columns="[[[{headerText:$component.nls.corporateid,field:'displayValue',
+        'renderer': $oj.KnockoutTemplateUtils.getRenderer('party_search_link', true)},{headerText:$component.nls.corporatename,field:'partyName'}]]]" data="[[partyDatasource]]">
+      <caption class="hide-label" data-bind="text:$component.nls.details"></caption>
+    </oj-table>
+    <script type="text/html" id="party_search_link">
+      <td>
+        <a href="javascript:void(0)" data-bind="text:$context.row.displayValue, click: $component.goToMap.bind($data,$context.row)"></a>
+      </td>
+    </script>
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.nls.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if: $baseModel.small() -->
+    <div class="oj-panel grid-main-container">
+      <div class="oj-flex oj-flex-items-pad  grid-table-header">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+          <span data-bind="text : $component.nls.corporateid"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+          <span data-bind="text: $component.nls.corporatename"></span>
+        </div>
+      </div>
+      <div id="partyListDiv" class="oj-flex oj-flex-items-pad">
+        <oj-list-view id="partyListView" data="[[partyDatasource]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('partyDetail_template',true)}]]" selection-mode="[['none']]"></oj-list-view>
+        <script type="text/html" id="partyDetail_template">
+          <li data-bind="attr: {id: $data['id']}">
+            <a href="javascript:void(0)" class="oj-flex oj-flex-items-pad grid-row-group" data-bind="click:$component.fetchApprovalDetailForParty.bind($data)">
+
+              <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+                <span data-bind="text:$data.id"></span>
+              </div>
+              <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+                <span data-bind="text:$data.partyName"></span>
+              </div>
+            </a>
+          </li>
+        </script>
+      </div>
+    </div>
+    <!-- /ko -->
+  </page-section>
+  <!-- /ko -->
+</div>

@@ -1,0 +1,43 @@
+<div data-bind="template:{afterRender:$component.initializeAccordion}">
+  <div class="">
+    <!-- ko if: showComponents() -->
+    <div class="accordion" data-bind="attr:{id:'financialDetailsAccordion'+$index()}">
+      <!-- ko foreach: $component.productDetails().application().currentApplicationStage.stages -->
+      <div class="card">
+        <div class="card-header oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-10 oj-md-9 oj-lg-9">
+            <div class="oj-flex oj-flex-items-pad card-icons-title">
+              <div class="accordion-strip"></div>
+              <div class="card-icon-container">
+                <div class="card-icon icons icon" data-bind="css: 'icon-' + $data.id"></div>
+              </div>
+              <h2 class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.accordionNames.accordionNames[$data.name]"></h2>
+            </div>
+          </div>
+          <div class="card-expander oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+            <!-- ko if: !$data.isComplete() -->
+            <a href="#" class="icon arrow-strip icons pull-right icon-arrow-right section-icon collapse-icon" data-bind="attr:{alt: $component.resource.personalDetails.iconClick, title: $component.resource.personalDetails.iconClickTitle}"></a>
+            <!-- /ko -->
+            <!-- ko if: $data.isComplete() -->
+            <span class="icons icon icon-success section-icon pull-right done-icon"></span>
+            <!-- /ko -->
+          </div>
+        </div>
+        <div class="">
+          <div class="card-body form-main-container" data-bind="component: { name: $data.id, params: { rootModel: $parent,
+                                                    applicantObject :$component.applicantDetails()[$component.finTempSequenceNumber-2],
+                                                    applicantAccordion:$component.productDetails().application().currentApplicationStage.applicantAccordion,
+                                                    applicantStages: $component.productDetails().application().currentApplicationStage.stages[$index()],
+                                                    empProfileIds: $component.employmentProfileIds,
+                                                    index:$index()
+                                              }}">
+          </div>
+        </div>
+
+      </div>
+      <!-- /ko  -->
+
+    </div>
+    <!-- /ko -->
+  </div>
+</div>

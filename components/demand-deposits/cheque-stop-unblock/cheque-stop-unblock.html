@@ -1,0 +1,51 @@
+<div class="form-main-container">
+  <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+      <oj-validation-group id="unblockCheque" valid="{{$component.validationTracker}}">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.chequeStopUnblockLocale.stopUnblockCheque.selectAccount,
+			account : $component.accountNumber,
+      type: 'balance',
+			additionalDetails : $component.additionalDetails,
+      readOnly: !!$component.params.id,
+      taskCode:'CH_N_CIN'">
+        </account-input>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="chequeSet"><span data-bind="text:$component.chequeStopUnblockLocale.stopUnblockCheque.actionToBePerformed"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <oj-radioset id="chequeSet" :aria-label="[[$component.chequeStopUnblockLocale.stopUnblockCheque.actionToBePerformed]]" on-value-changed="[[$component.switchAction]]" value="{{$component.actionSelected}}" class="oj-choice-direction-row"><oj-option value="Stop" id="Stop" name="cheque"><span for="Stop" data-bind="text:$component.chequeStopUnblockLocale.stopUnblockCheque.common.stop"></span></oj-option><oj-option value="Unblock" id="Unblock" name="cheque">
+              <span for="Unblock" data-bind="text:$component.chequeStopUnblockLocale.stopUnblockCheque.common.unblock"></span></oj-option></oj-radioset>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="reason">
+                <span data-bind="text:$component.chequeStopUnblockLocale.stopUnblockCheque.common.reason"></span></oj-label>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12">
+            <oj-input-text data-id="reason" id="reason" required maxlength="40" validators="[[$baseModel.getValidator('COMMENTS')]]" :invalidcomponenttracker="[[validationTracker]]" value="{{$component.stopUnblockChequeModelInstance.stopUnblockCheque.reason}}"></oj-input-text>
+          </div>
+        </div>
+        <div data-bind="component: {name: 'cheque-details', params:{rootModel: $parent,validator:validationTracker,defaultOption:$component.defaultOption,
+																			chequeNo:$component.stopUnblockChequeModelInstance.chequeNo}}"></div>
+      </page-section>
+    </oj-validation-group>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button data-id="submitButton" class="action-button-primary " on-click="[[review]]"><span slot="startIcon" class="icons icon-submit"></span>
+      <span data-bind="text:$component.chequeStopUnblockLocale.generic.common.submit"></span>
+</oj-button>
+        <oj-button class="action-button-secondary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.chequeStopUnblockLocale.generic.common.back"></span>
+</oj-button>
+      </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'cheque-stop-unblock'"></help>
+    </div>
+    <!-- /ko -->
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<template>
+<div class="alerts alerts-details">
+    <action-widget params="baseModel : $baseModel, controls : {  ctrl1: function(){},
+                                         ctrl2: function(){},
+                                         ctrl3: function(){}
+                                      },rootModel:$data,
+                                      header:$baseModel.format($component.nls.accountDetails.labels.alertsHeader, {
+                                          count: $component.listItem().length
+                                      }),
+                                      onDashboard: false">
+
+        <oj-list-view id="listview" contextmenu="itemMenu"
+              selection-mode="[['single']]"  ready="[[handleReady]]" destroy="[[handleDestroy]]">
+            <!-- ko foreach:$component.listItem() -->
+            <div class="oj-offcanvas-outer-wrapper">
+              <div class="oj-offcanvas-inner-wrapper">
+              <li data-bind="attr: {id: id}" class="item-marker">
+                 <!-- ko if: $baseModel.large() -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-sm-12 oj-md-1 oj-lg-1">
+                        <span class="alert-icons icon" data-bind="css: alertType === 'high' ? 'icon-information alert-high' : 'icon-warning alert-low'"></span>
+                    </div>
+                    <div class="oj-sm-12 oj-md-2 oj-lg-2">
+                        <span data-bind="text : date"></span>
+                    </div>
+                    <div class="oj-sm-12 oj-md-5 oj-lg-5">
+                        <span data-bind="text : subject"></span>
+                    </div>
+                    <div class="oj-sm-3 oj-md-3 oj-lg-3">
+                        <span data-bind="text : description"></span>
+                    </div>
+                    <div class="oj-sm-1 oj-md-1 oj-lg-1">
+                        <a data-bind="attr:{ title: $component.nls.accountDetails.labels.delete },click:$component.removeSelected.bind($data,$index())" href="#">
+                          <span class="delete pull-right" id="removeButton"><img data-bind="loadImage :'common/close.svg'"></span>
+                        </a>
+                    </div>
+                </div>
+                <!-- /ko -->
+
+                <!-- ko ifnot: $baseModel.large() -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-sm-12 oj-md-1 oj-lg-1">
+                        <span class="alert-icons icon" data-bind="css: alertType === 'high' ? 'icon-information alert-high' : 'icon-warning alert-low'"></span>
+                    </div>
+                    <div class="oj-sm-12 oj-md-2 oj-lg-2">
+                        <span data-bind="text : date"></span>
+                    </div>
+                    <div class="oj-sm-12 oj-md-5 oj-lg-5">
+                        <span data-bind="text : subject"></span>
+                    </div>
+                    <div class="oj-sm-12 oj-md-3 oj-lg-3">
+                        <span data-bind="text : description"></span>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <div tabindex="-1" class="oj-offcanvas-end delete">
+                  <a data-bind="attr:{ title: $component.nls.accountDetails.labels.delete },click:$component.removeSelected.bind($data,$index())" href="#">
+                    <div class="oj-swipetoreveal-alert oj-swipetoreveal-default">
+                        <div class="oj-flex-bar full-height">
+                            <div class="oj-flex-bar-center-absolute">
+                                <div class="oj-flex oj-flex-items-pad oj-sm-flex-direction-column">
+                                    <div class="oj-flex-item"><span class="icon icon-delete"></span>
+                                     <label data-bind="text:$component.nls.accountDetails.labels.trash"></label>
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </a>
+                </div>
+            </li>
+              </div>
+             </div>
+            <!-- /ko -->
+        </oj-list-view>
+        <oj-menu slot="contextMenu" id="itemMenu" class="hide" on-oj-action="[[handleMenuItemSelect]]" >
+                   <li id="delete"><a href="#" data-bind="attr:{ title: $component.nls.accountDetails.labels.delete }"> <label data-bind="text:$component.nls.accountDetails.labels.delete"></label></a></li>
+          </oj-menu>
+        <div class="oj-flex-item show-counts" data-bind="text: $baseModel.format($component.nls.accountDetails.labels.alertCount,{displayCount:$component.listItem().length ,totalCount:$component.listItem().length })"></div>
+    </action-widget>
+</div>
+</template>

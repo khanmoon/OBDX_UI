@@ -1,0 +1,80 @@
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-9">
+<div class="form-main-container">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+            <oj-label for="groupCode"><span data-bind="text:$component.nls.fieldname.transactionGroupCode"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4">
+            <span id="groupCode" data-bind="text:$component.transactionGroupCode"> </span>
+          </div>
+
+        </div>
+        <oj-validation-group id="tracker" valid="{{groupValid}}">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+              <oj-label for="groupDescription"><span data-bind="text:$component.nls.fieldname.transactionGroupDesc"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-6 label">
+
+              <oj-input-text id="groupDescription" required validators="[[$baseModel.getValidator('APPLICATION_DESCRIPTION')]]" value="{{$component.transactionGroupDesc}}"></oj-input-text>
+
+            </div>
+          </div>
+
+          <!-- ko if:showTransactionList -->
+          <div class="oj-flex oj-flex-items-pad ">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+              <oj-label class="" :for="[['transactions']]"><span data-bind="text:$component.nls.fieldname.transactions"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-9">
+              <oj-select-many id="transactions" required="[[true]]" value="{{selectedTransactionGroupValues}}" placeholder="{{$component.nls.fieldname.select_role}}">
+                <!-- ko foreach: transactionList() -->
+                <oj-option value="[[name]]"><span data-bind="text: name"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-many>
+
+            </div>
+          </div>
+
+          <!-- /ko -->
+        </oj-validation-group>
+
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-primary" id="interestedbutton" on-click="[[$component.updateReviewTransactionGroup]]">
+            <span data-bind="text:$component.nls.common.save"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+            <span data-bind="text:$component.nls.common.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+            <span data-bind="text:$component.nls.common.back"></span>
+          </oj-button>
+
+
+        </div>
+      </page-section>
+</div>
+    </div>
+    <div class="oj-flex-item oj-sm-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'transaction-group-update'"></help>
+  </div>
+
+  <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,header:$component.nls.common.cancel,id:'backWarning1'">
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12" data-bind="text:$component.nls.fieldname.backWarning1">
+      </div>
+    </div>
+    <div class="oj-flex-items-pad button-container">
+      <oj-button class="action-button-secondary" on-click="[[$parent.hideWarning1]]">
+        <span data-bind="text:nls.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-primary" on-click="[[$parent.back1]]">
+        <span data-bind="text:nls.common.ok"></span>
+      </oj-button>
+    </div>
+
+  </modal-window>
+</div>

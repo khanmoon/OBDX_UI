@@ -1,0 +1,221 @@
+<div class="trade-finance">
+    <div class="form-main-container">
+<oj-validation-group id="lineLimitTracker" valid="{{lineLimitValidGroup}}">
+		<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+				<div class="oj-flex oj-flex-items-pad">
+					<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+						<label for="partyID" data-bind="text: $component.resourceBundle.labels.partyId"></label>
+					</div>
+					<div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+						<oj-select-one id="partyID" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" value="{{partyId}}" options="[[$component.customerIdArray]]">
+						</oj-select-one>
+					</div>
+				</div>
+				</div>
+				<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+				<!-- ko if: ($component.partyId() !== 'ALL' && dataSourceCreated()) -->
+				<div class="oj-flex oj-flex-items-pad">
+					<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+						<label for="customerName" data-bind="text: $component.resourceBundle.labels.customerName"></label>
+					</div>
+					<div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+						<span id="customerName" data-bind="text:$component.customerName"></span>
+					</div>
+				</div>
+				<div class="oj-flex oj-flex-items-pad">
+					<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+						<label for="overallLimit" data-bind="text: $component.resourceBundle.labels.overallLimit"></label>
+					</div>
+					<div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+						<span id="overallLimit" data-bind="text:$component.overallLimit() ? $component.overallLimit : $component.resourceBundle.labels.notApplicable "></span>
+					</div>
+				</div>
+				<!-- /ko -->
+				</div>
+			</div>
+		</page-section>
+  </oj-validation-group>
+		<div class="button-container">
+        
+        <oj-button class="action-button-primary" on-click="[[getCreditLimits]]">
+          <span slot="startIcon" class="icons icon-search"></span>
+          <span data-bind="text:$component.resourceBundle.generic.common.search"></span>
+        </oj-button>
+        <!-- ko ifnot:$baseModel.small() -->
+        <!-- ko ifnot: dataSourceCreated() -->
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+          <span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+         <!-- /ko -->
+        <oj-button class="action-button-tertiary" on-click="[[$component.reset]]">
+            <span slot="startIcon" class="icons icon-refresh"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.reset"></span>
+        </oj-button>        
+      </div>
+
+		<!-- ko if: dataSourceCreated() -->
+
+			<!-- ko if: listCreditLines().length > 0 -->
+				<!-- ko if:$baseModel.large() -->
+				<div class="oj-flex oj-flex-items-pad grid-row-group">
+					<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+						  <oj-table id="lineLimitTable" class="import-lc-list" :aria-label="[[$component.resourceBundle.heading.lineLimit]]" columns="[[[{headerText:$component.resourceBundle.labels.lineId},{headerText:$component.resourceBundle.labels.mainLine},{headerText:$component.resourceBundle.labels.startDate},{headerText:$component.resourceBundle.labels.expiryDate},{headerText:$component.resourceBundle.labels.lineAmount,headerClassName:'right',className:'right'},{headerText:$component.resourceBundle.labels.utilizedAmount,headerClassName:'right',className:'right'},{headerText:$component.resourceBundle.labels.outstandingAmount,headerClassName:'right',className:'right'},{headerText:$component.resourceBundle.labels.revolvingValues}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('list_template', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[dataSource]]">
+                <caption class="hide-label" data-bind="text:$component.resourceBundle.heading.lineLimit"></caption>
+            </oj-table>
+
+            <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSource]]"></oj-paging-control>
+					</div>
+				</div>
+                <div class="oj-flex oj-flex-items-pad button-container">
+                    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+                        <span slot="startIcon" class="icons icon-cancel"></span>
+                        <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                    </oj-button>
+                </div>
+			    <!-- /ko -->
+				<!-- ko ifnot:$baseModel.large() -->
+				<div class="oj-flex grid-main-container">
+					<div class="oj-flex-item oj-sm-12">
+                  <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('creditLine_list_card',true)}]]" selection-mode="[['single']]" data="[[dataSource]]">
+                  </oj-list-view>
+                  <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.dataSource]]">
+                  </oj-paging-control>
+				</div>
+                </div>
+				<!-- /ko -->
+
+			<!-- /ko -->
+
+			<!-- ko ifnot: listCreditLines().length > 0 -->
+			<div class="oj-flex oj-flex-items-pad padding-tb">
+			<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text:$component.resourceBundle.tradeFinanceErrors.messages.noRecordFound">
+			</div>
+			</div>
+			<!-- /ko -->
+
+		<!-- /ko -->
+
+
+	</div>
+</div>
+
+<script type="text/html" id="list_template">
+    <tr>
+       <td>
+        <a href="javascript:void(0)" data-bind="text:$data.line_id,click:$component.onLimitSelected.bind($data)"></a>
+      </td>
+      <td>
+        <span data-bind="text:($data.main_line!== undefined)?main_line:$component.resourceBundle.labels.notApplicable"></span>
+      </td>
+      <td>
+        <span data-bind="text:start_date"></span>
+      </td>
+      <td>
+        <span data-bind="text:($data.expiry_date!== '')?expiry_date:$component.resourceBundle.labels.notApplicable"></span>
+      </td>
+      <td>
+        <span data-bind="text:line_amount"></span>
+      </td>
+      <td>
+        <span data-bind="text:utilized_amount"></span>
+      </td>
+      <td>
+        <span data-bind="text:outstanding_amount"></span>
+      </td>
+      <td>
+        <span data-bind="text:revolving_values"></span>
+      </td>
+  </tr>
+</script>
+<script type="text/html" id="creditLine_list_card">
+  <li data-bind="attr: {id: $data.line_id}">
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-9 description">
+              <a href="#" data-bind="attr:{ title:  $data.line_id, alt : $data.line_id },text:$data.line_id,
+              click:$component.onLimitSelected.bind($data)"></a>
+            </div>
+          </div>
+      </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.labels.mainLine"></label>
+            <div data-bind="text: ($data.main_line!== undefined)?main_line:$component.resourceBundle.labels.notApplicable"></div>
+          </div>
+          </div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.labels.startDate"></label>
+            <div data-bind="text: $data.start_date"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.labels.expiryDate"></label>
+            <div data-bind="text: ($data.expiry_date!== '')?expiry_date:$component.resourceBundle.labels.notApplicable"></div>
+          </div>
+        </div>
+      </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-6 oj-md-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+              <label data-bind="text: $component.resourceBundle.labels.lineAmount"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-6 oj-md-12" data-bind="css: { 'right': $baseModel.small() , 'no-pad-cols': $baseModel.medium()}">
+              <span data-bind="text: $data.line_amount"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-6 oj-md-12" data-bind="css: { 'no-pad-cols': $baseModel.medium()}">
+              <label data-bind="text: $component.resourceBundle.labels.utilizedAmount"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-6 oj-md-12" data-bind="css: { 'right': $baseModel.small() , 'no-pad-cols': $baseModel.medium()}">
+              <span data-bind="text: $data.utilized_amount"></span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-6 oj-md-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+              <label data-bind="text: $component.resourceBundle.labels.outstandingAmount"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-6 oj-md-12" data-bind="css: { 'right': $baseModel.small() , 'no-pad-cols': $baseModel.medium()}">
+              <span data-bind="text: $data.outstanding_amount"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.labels.revolvingValues"></label>
+            <div data-bind="text: $data.revolving_values"></div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </li>
+</script>

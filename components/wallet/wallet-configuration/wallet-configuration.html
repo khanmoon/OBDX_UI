@@ -1,0 +1,40 @@
+<div class="form-main-container">
+<action-header params="baseModel : $baseModel, rootModel : $data, heading : heading()"></action-header>
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+<div class="">
+      <!-- ko ifnot:loadTemplate() -->
+        <!-- ko if:Offerexists() -->
+            <div class="oj-flex oj-flex-items-pad ">
+              <div class=" oj-lg-3 oj-flex-item ">
+                  <oj-label for="offercode"><span data-bind="text:$component.wallet.configaration.offercode"></span></oj-label>
+              </div>
+              <div class=" oj-lg-3 oj-flex-item ">
+                  <oj-label for="offername"><span data-bind="text:$component.wallet.configaration.offername"></span></oj-label>
+              </div>
+            </div>
+            <a href="javascript:void(0)" data-bind="click:viewOfferDetails">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class=" oj-lg-3 oj-flex-item ">
+                  <span id="offercode" data-bind="text:$component.details.configModel.configOfferDTO.offerCode"></span>
+              </div>
+              <div class=" oj-lg-3 oj-flex-item ">
+                  <span id="offername" data-bind="text:$component.details.configModel.configOfferDTO.offerName"></span>
+              </div>
+            </div></a>
+        <!-- /ko -->
+        <!-- ko ifnot:Offerexists() -->
+            <div class="button-container">
+                <oj-button class="action-button-primary" id="createoffer" on-click="[[create]]">
+      <span data-bind="text:$component.wallet.configaration.createoffer"></span>
+</oj-button>
+            </div>
+        <!-- /ko -->
+      <!-- /ko -->
+
+        <!-- ko if:loadTemplate() -->
+            <div data-bind="template: { name: $component.templateName()}"></div>
+        <!-- /ko -->
+  </div>
+</page-section>
+</div>
+

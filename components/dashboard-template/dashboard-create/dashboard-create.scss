@@ -1,0 +1,338 @@
+$design-dashboard-row-color:#a58787;
+$design-dashboard-context-menu:#c4c4c4;
+$design-dashboard-caption-bg-color:#e4e4e4;
+$dashboard-design-box-border-color:#e7e7e9;
+.design-dashboard {
+    .container {
+        padding: 0 !important;
+        margin: 0;
+        min-height: 3.1rem;
+        .box {
+            border: 0.05rem solid black;
+            min-height: 3.1rem;
+            margin-bottom: 0.3rem;
+            background-color: aliceblue;
+        }
+    }
+    .highlight {
+        font-weight: bold;
+        background-color: var(--base-background-tertiary);
+    }
+    &__design-step1 {
+        margin-top: 1.9rem;
+        .module {
+            text-transform: capitalize;
+        }
+    }
+    &__design-step2 {
+        &--topPanel {
+            &--panel {
+                min-height: 15.6rem;
+                li {
+                    position: relative;
+                    span.icons {
+                        top: -0.6rem;
+                        @include right(-1.2rem);
+                        position: absolute;
+                    }
+                }
+            }
+            .container>div {
+                padding: 0.3rem 0.6rem;
+                min-height: 2.5rem;
+            }
+            .container>div:last-child {
+                border-width: 0.1rem;
+            }
+            .container:last-child {
+                border-bottom-width: 0.1rem;
+            }
+            .oj-button.action-button-primary {
+                @include single-margin(right, 0);
+            }
+        }
+        &--leftPanel {
+            @include padding(0.3rem, 0.3rem, 0.3rem, 0);
+            &--panel {
+                min-height: 15.6rem;
+                li {
+                    position: relative;
+                    span.icons {
+                        top: -0.6rem;
+                        @include right(-1.2rem);
+                        position: absolute;
+                    }
+                }
+            }
+        }
+        &--middlePanel {
+            padding: 0.3rem;
+            &--panel {
+                min-height: 15.6rem;
+                li {
+                    position: relative;
+                    span.icons {
+                        top: -0.6rem;
+                        @include right(-1.2rem);
+                        position: absolute;
+                    }
+                }
+            }
+        }
+        &--rightPanel {
+            @include padding(0.3rem, 0, 0.3rem, 0.3rem);
+            &--panel {
+                min-height: 15.6rem;
+                li {
+                    position: relative;
+                    span.icons {
+                        top: -0.6rem;
+                        @include right(-1.2rem);
+                        position: absolute;
+                    }
+                }
+            }
+        }
+        &--componentList {
+            padding: 0;
+            border: 0.05rem solid var(--base-border-default);
+            .container {
+                cursor: move;
+            }
+        }
+        .tab-container {
+            max-width: 48rem;
+            margin: auto;
+        }
+        .mobile-container {
+            max-width: 20rem;
+            margin: auto;
+        }
+    }
+    .connectedSortable {
+        padding: 0;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 0;
+        list-style-type: none;
+        /* Safari 6.1+ */
+        -ms-flex: 1;
+        /* IE 10 */
+        flex: 1;
+        li {
+            padding: 0.6rem;
+            margin: 0;
+            cursor: move;
+            @include text-align(left);
+            display: flex;
+            span.icons {
+                font-size: 1.3rem;
+                @include single-padding(right, 0.6rem);
+                cursor: pointer;
+            }
+            span.icons:hover {
+                font-size: 1.3rem !important;
+                animation: none;
+                @include single-padding(right, 0.6rem);
+            }
+            span.name {
+                display: inline-block;
+                width: calc(100% - 1.9rem);
+            }
+        }
+        li:hover {
+            background-color: var(--base-background-tertiary);
+        }
+    }
+    .connectedSortable>li {
+        min-height: 89px;
+    }
+    .selectedLayout {
+        border: 0.05rem solid blue;
+        border-radius: 0.3rem;
+    }
+    .layoutSelection {
+        .layoutOption {
+            height: 7.5rem;
+            width: 6.3rem;
+            padding: 0.3rem;
+            @include float(left);
+        }
+    }
+    .highlightTarget {
+        opacity: 0.99;
+        background-color: #fff !important;
+    }
+    @keyframes fading {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+    .oj-button.addRow {
+        @include single-margin(right, 0rem);
+    }
+    .image-caption {
+        position: relative;
+        overflow: hidden;
+    }
+    .caption-section {
+        padding: 0.6rem;
+        opacity: 0.9;
+        position: absolute;
+        bottom: -6.2rem;
+        width: calc(100% - 1.2rem);
+        background-color: $design-dashboard-caption-bg-color;
+        label {
+            color: black;
+        }
+    }
+    .image-section {
+        overflow: hidden;
+    }
+    .image-section:hover .caption-section {
+        bottom: 0;
+        animation-name: captionAnimation;
+        animation-duration: 1s;
+    }
+    @keyframes captionAnimation {
+        from {
+            bottom: -6.2rem;
+        }
+        to {
+            bottom: 0;
+        }
+    }
+    .caption-section:hover {
+        bottom: 0;
+    }
+    .view-design {
+        .tab-container {
+            max-width: 48rem;
+            margin: auto;
+        }
+        .mobile-container {
+            max-width: 20rem;
+            margin: auto;
+        }
+    }
+    .persona {
+        width: 235px;
+        height: 175px;
+        margin: 10px;
+        cursor: pointer;
+    }
+    &.form-main-container {
+        padding-top: 0px;
+    }
+    .button-container {
+        padding: 20px 0px;
+    }
+    .divider {
+        color: #138CDD;
+        margin: 0 5px 0px 7px;
+    }
+    .tutorialVideo {
+        padding-bottom: 5px;
+        margin-bottom: 1rem;
+    }
+    .searchComponent {
+        width: 100%;
+        margin-bottom: 5px;
+        padding: 4px;
+        @include single-border(left,0px);
+        @include single-border(right,0px);
+        @include single-border(top,0px);
+    }
+    .watchVideo{
+        height: 65vh;
+    }
+}
+
+.template_dashboard_design {
+    .design_row {
+        padding: 0.4rem !important;
+        min-height: 8.1rem;
+        border: 0.05rem solid $design-dashboard-row-color;
+        margin-top: 0.3rem;
+    }
+    .droppable {
+        border: 0.05rem solid var(--base-border-default);
+        margin: 0.3rem;
+        min-height: 6.9rem;
+        background-color: #f9f9f9;
+    }
+    .gridItem {
+        flex: 1;
+    }
+    .customGridErrorMessage {
+        color: red;
+        padding: 0.3rem 0.6rem !important;
+    }
+    .removeMe {
+        position: absolute;
+        @include right(0.4rem);
+        top: 0.6rem;
+        padding: 0 !important;
+        color: black;
+        height: 1.3rem;
+    }
+    .droppable li {
+        position: relative;
+    }
+    .design_header {
+        border: 1px solid #000;
+        padding: 10px;
+    }
+    .helpTxt {
+        margin-bottom: 15px;
+    }
+}
+
+#dashboardContextMenu {
+    .oj-disabled {
+        background-color: $design-dashboard-context-menu;
+    }
+}
+
+.preview-design-dashboard {
+    #desktop-review-container {
+        width: 1024px;
+        margin: 20px auto;
+        position: relative;
+        padding-top: 40px;
+    }
+    #child0 {
+        margin-top: 40px;
+    }
+    #tab-review-container {
+        width: 800px;
+        margin: 20px auto;
+        position: relative;
+        padding-top: 40px;
+    }
+    #mobile-review-container {
+        width: 320px;
+        margin: 0 auto;
+    }
+}
+
+.gridInputContainer {
+    width: 600px;
+}
+
+#componentList li {
+    min-height: 15px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    @include left(0);
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+}

@@ -1,0 +1,30 @@
+<div data-bind="attr:{id:key+$baseModel.incrementIdCount()}" class="checkbox-section">
+    <ul>
+        <li>
+            <input type="checkbox" data-bind="checked:$component.areAllOptionsSelected,disable:$component.showEditableForm, attr: { 'id':$component.key + '_'+$context.rowContext.key, 'class' : $component.areAllOptionsSelected() ? 'oj-selected' :  ''}">
+            <label data-bind="text:nls.headings.mapAllTransactions, attr: { 'for':$component.key + '_'+$context.rowContext.key}">
+            </label>
+
+            <ul class="oj-flex oj-flex-items-pad">
+                <!-- ko foreach:copyResourceTaskKeys()  -->
+                <li class="pull-left oj-flex-item oj-sm-12">
+                    <!-- ko if: childTasks.length > 0 -->
+                    <input type="checkbox" data-bind="checked:$component.areAllOptionsOfModuleSelected($data),disable:$component.showEditableForm,attr: { 'id': $component.key + '__' +$context.rowContext.key+$index(), 'class' : $component.areAllOptionsOfModuleSelected($data) ? 'oj-selected' :  '' }">
+                    <label data-bind="text:name,attr: { 'for':$component.key + '__' +$context.rowContext.key+$index()}"></label>
+                    <!-- /ko -->
+                    <ul>
+                        <!-- ko foreach:childTasks  -->
+                        <li class="pull-left oj-flex-item oj-md-6 oj-sm-12 oj-lg-4">
+                            <input type="checkbox" data-bind="checked:$component.selectedTransactions,value:id,disable:$component.showEditableForm,attr: { 'id':$component.key + '___' +$context.rowContext.key+$parentContext.$index()+$index(), 'class' : $component.selectedTransactions() ? 'oj-selected' :  '' }">
+                            <label class="left" data-bind="text:name,attr: { 'for':$component.key + '___' +$context.rowContext.key+$parentContext.$index()+$index() }"></label>
+                        </li>
+                        <!-- /ko -->
+                    </ul>
+                </li>
+                <!-- /ko -->
+            </ul>
+
+        </li>
+    </ul>
+</div>
+

@@ -1,0 +1,30 @@
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.fileIdentifier , value :fileIdentifier"></row>
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.description , value :description"></row>
+
+<!-- ko if:'fileTemplateDTO' in $data -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.fileformat , value :fileTemplateDTO.description"></row>
+<!-- /ko -->
+
+<!-- ko ifnot:'fileTemplateDTO' in $data -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.fileformat , value :$component.templatesMap[ko.utils.unwrapObservable(templateId)].description"></row>
+<!-- /ko -->
+
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.maxNoOfRecords , value :('maxNoOfRecords' in $data?maxNoOfRecords:'-')  "></row>
+
+<!-- ko if:'fileTemplateDTO' in $data -->
+<!-- ko if:$data.fileTemplateDTO.accountingType !== 'SDMC' -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.ppTolerance , value :('partialProcessingTolerance' in $data?partialProcessingTolerance:'-') "></row>
+<!-- /ko -->
+<!-- ko if: $data.fileTemplateDTO.fiLevelAcct === 'Y' -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.debitAccountNumber , value :debitAccountNumber.displayValue"></row>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot:'fileTemplateDTO' in $data -->
+<!-- ko if:$component.isAccountTypeValid() -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.ppTolerance , value :('partialProcessingTolerance' in $data?partialProcessingTolerance:'-') "></row>
+<!-- /ko -->
+<!-- ko if:$component.isTemplateValid() -->
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.debitAccountNumber , value :$component.debitAccountsMap[ko.utils.unwrapObservable(debitAccountNumber)]"></row>
+<!-- /ko -->
+<!-- /ko -->

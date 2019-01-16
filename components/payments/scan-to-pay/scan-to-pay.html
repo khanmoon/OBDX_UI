@@ -1,0 +1,102 @@
+<!-- ko if:dataLoaded() -->
+<div class="form-main-container oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between page-section-content__data">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+    <div class="oj-flex ">
+      <div class="oj-flex-item oj-sm-12">
+        <row params="baseModel : $baseModel, rootModel : $component, label : resource.transferTo , value :$component.beneName"></row>
+      </div>
+    </div>
+
+    <div class="oj-flex ">
+      <div class="oj-flex-item oj-sm-12">
+        <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.resource.transferFrom,
+          account : $component.scanToPay.debitAccountId.value,
+          type: 'balance',
+          additionalDetails : $component.additionalDetails,
+          validator:$component.validationTracker,
+          readOnly: false">
+        </account-input>
+      </div>
+
+    </div>
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-12">
+        <div data-bind="component: {
+            name: 'amount-input', params: {
+              amount : $component.scanToPay.amount.amount,
+              currency : $component.scanToPay.amount.currency,
+              label :$component.resource.amount,
+              currencyListRequired : true,
+              currencyURL:$component.currencyURL(),
+              validator:$component.validationTracker,
+              currencyParser : $component.currencyParser,
+              currencyList : $component.currencyList,
+              isMandatory:true,
+              rootId:'amountToPay',
+              rootClass:'scan-to-pay'
+            }
+          }">
+
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-items-pad oj-flex-item">
+            <a data-id="viewLimits" href="javascirpt:void(0)" class="form-button-link" id="view-limit-button" data-bind="attr:{for : 'view-limit-button' + $baseModel.incrementIdCount(),'alt':$component.resource.viewlimits,'title':$component.resource.viewlimitsTitle}, click: viewLimits, text:$component.resource.viewlimitsTitle">
+                </a>
+
+          </div>
+        </div>
+      </div>
+      <modal-window params="baseModel : $baseModel, rootModel : $component,header:$component.resource.mylimits,id:'viewlimits-bill-payment'">
+        <!-- ko if : $component.viewLimitsFlag() -->
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+          <div data-bind="component:{name:'transfer-view-limits', params:{rootModel: $component,type:'PC_F_QRC'}}">
+          </div>
+        </page-section>
+        <div class="button-container">
+          <oj-button class="action-button-primary" on-click="[[$component.closeLimitsModal]]">
+      <span data-bind="text:$component.resource.generic.common.ok"></span>
+</oj-button>
+        </div>
+        <!-- /ko -->
+      </modal-window>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <oj-label for="notes"><span data-bind="text:$component.resource.notes"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <oj-input-text id="notes" validators="[[$baseModel.getValidator('COMMENTS')]]" value="{{scanToPay.purposeText}}"></oj-input-text>
+      </div>
+    </div>
+    <div class="oj-flex-item button-container">
+      <oj-button class="action-button-primary " on-click="[[confirm]]"><span slot="startIcon" class="icons icon-ok"></span>
+      <span data-bind="text:$component.resource.generic.common.confirm"></span>
+</oj-button>
+      <oj-button class="action-button-secondary " on-click="[[cancel]]"><span slot="startIcon" class="icons icon-no"></span>
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+</oj-button>
+    </div>
+
+  </div>
+
+</div>
+<!-- /ko -->
+
+<modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'invalidQRPopUp',header:$component.resource.generic.common.ERROR">
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <div class="form-main-container">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12" data-bind="text:$parent.resource.invalidQRCodePopupMessage">
+        </div>
+      </div>
+      <div class="button-container">
+        <oj-button class="action-button-primary " on-click="[[$parent.scan]]"><span slot="startIcon" class="icons icon-yes"></span>
+      <span data-bind="text:$parent.resource.generic.common.yes"></span>
+</oj-button>
+        <oj-button class="action-button-secondary " on-click="[[$parent.cancelAndGoBack]]"><span slot="startIcon" class="icons icon-no"></span>
+      <span data-bind="text:$parent.resource.generic.common.no"></span>
+</oj-button>
+      </div>
+    </div>
+  </page-section>
+</modal-window>

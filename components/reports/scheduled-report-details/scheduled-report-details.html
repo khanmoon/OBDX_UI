@@ -1,0 +1,91 @@
+<div class="form-main-container">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading:''">
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+        <oj-label for="reportName"> <span data-bind="text:$component.Nls.reportName"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+        <span data-bind="text : $component.params.reportData.reportName"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+        <oj-label for="reportId"> <span data-bind="text:$component.Nls.reportId"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+        <span data-bind="text : $component.params.reportData.reportRequestIdentifier"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+        <oj-label for="reportFormat"> <span data-bind="text:$component.Nls.reportFormat"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+        <span data-bind="text : $component.reportFormat"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+        <oj-label for="reportFrequency"> <span data-bind="text:$component.Nls.reportFrequency"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+        <span data-bind="text : $component.params.reportData.reportSchFreq"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+        <oj-label for="startDate"> <span data-bind="text:$component.Nls.startDate"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+        <span data-bind="text : $component.params.reportData.startTime"></span>
+      </div>
+    </div>
+
+
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+        <oj-label for="stopDate"> <span data-bind="text:$component.Nls.stopDate"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+        <span data-bind="text : $component.params.reportData.endTime"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+        <oj-label for="scheduledBy"> <span data-bind="text:$component.Nls.scheduledBy"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+        <span data-bind="text : $component.scheduledBy"></span>
+      </div>
+    </div>
+  </page-section>
+  <div class="button-container">
+    <oj-button class="action-button-primary" id="button" on-click="[[$dashboard.loadComponent.bind($data,'scheduled-reports-edit',{data:$component.params.reportData,reportMapId:$component.params.data,formatMap:$component.params.formatMap,formatType:$component.reportFormat,scheduledBy:$component.scheduledBy,todayDate:$component.params.todayDate},$component)]]">
+      <span data-bind="text:$component.Nls.edit"></span>
+</oj-button>
+    <oj-button class="action-button-secondary" id="button1" data-bind="click:$component.confirmDelete.bind($data)">
+      <span data-bind="text:$component.Nls.delete"></span>
+</oj-button>
+<oj-button class="action-button-secondary" id="button3" on-click="[[cancelReport]]">
+      <span data-bind="text:$component.Nls.cancel"></span>
+</oj-button>
+    <oj-button class="action-button-tertiary" id="button2" on-click="[[backScreen]]">
+      <span data-bind="text:$component.Nls.back"></span>
+</oj-button>
+    
+  </div>
+
+  <modal-window params="baseModel : $baseModel, rootModel : $component,id:'deleteReport',header : $component.Nls.header">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <div class="oj-flex oj-flex-items-pad center">
+        <oj-label><span data-bind="text:$baseModel.format($component.Nls.deletereportmsg,{ reportRequestIdentifier:$component.params.reportData.reportRequestIdentifier})"></span></oj-label>
+      </div>
+    </page-section>
+    <div class="button-container">
+      <oj-button id="confirm" class="form-button-primary" on-click="[[$component.deleteReport]]">
+      <span data-bind="text:$component.Nls.confirm"></span>
+</oj-button>
+    </div>
+  </modal-window>
+
+</div>

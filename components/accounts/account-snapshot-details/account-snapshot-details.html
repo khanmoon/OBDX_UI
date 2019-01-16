@@ -1,0 +1,25 @@
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.balanceDetails">
+  <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.currentBalance , value : $baseModel.formatCurrency($component.accountDetails.currentBalance.amount,$component.accountDetails.currentBalance.currency)"></row>
+  <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.availableBalance , value : $baseModel.formatCurrency($component.accountDetails.availableBalance.amount,$component.accountDetails.availableBalance.currency)"></row>
+</page-section>
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.recentTransaction">
+  <!-- <h3 class="icons icon-save" data-bind="text:$component.resource.recentTransaction"></h3> -->
+  <oj-list-view :aria-label="[[$component.resource.recentTransaction]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('account-snapshot-transaction-list-template',true)}]]" data="[[$component.dataSourceForTransaction]]">
+  </oj-list-view>
+</page-section>
+
+<script type="text/html" id="account-snapshot-transaction-list-template">
+  <li data-bind="attr: {id: $data.id }">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class=" oj-sm-6 oj-flex-item" data-bind="text:$baseModel.formatDate(valueDate)">
+      </div>
+      <div class=" oj-sm-6 oj-flex-item right" data-bind="">
+        <span class="debit" data-bind="text : $baseModel.formatCurrency(amountInAccountCurrency.amount, amountInAccountCurrency.currency)"></span>
+      </div>
+      <div class=" oj-sm-12 oj-flex-item ">
+        <span data-bind="text : $data.description"></span>
+      </div>
+    </div>
+
+  </li>
+</script>

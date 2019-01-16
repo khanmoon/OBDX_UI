@@ -1,0 +1,72 @@
+<div class="oj-flex oj-sm-flex-items-initial">
+<div class="oj-flex-item oj-sm-9">
+    <div class="form-main-container">
+    <!-- ko if:stageOne() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+        <div class="oj-flex oj-flex-items-pad">
+          <oj-label for="merchantId" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+            <span data-bind="text:$component.resource.merchant.merchantid"></span>
+          </oj-label>
+          <oj-input-text id="merchantId" class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5" value="{{$component.merchantId}}">
+          </oj-input-text>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <oj-label for="merchantDescription" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+            <span data-bind="text:$component.resource.merchant.merchantdesc"></span>
+          </oj-label>
+          <oj-input-text id="merchantDescription" class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5" value="{{$component.merchantDescription}}"></oj-input-text>
+        </div>
+
+      </page-section>
+        <div class="oj-flex-item button-container right">
+          <oj-button id="search" class="action-button-primary" on-click="[[$component.search]]">
+            <span data-bind="text:$component.resource.common.search"></span>
+          </oj-button>
+          <!-- ko if:!isSearchClicked() -->
+          <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind()]]">
+            <span data-bind="text:$component.resource.common.cancel"></span>
+          </oj-button>
+          <!-- /ko -->
+          <oj-button id="reset" class="action-button-tertiary" on-click="[[$component.reset]]">
+            <span data-bind="text:$component.resource.common.clear"></span>
+          </oj-button>
+        </div>
+      <!-- /ko -->
+
+        <!-- ko if:stageTwo() -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-lg-10 oj-flex-items-pad">
+
+        <oj-table :aria-label="[[$component.resource.merchant.list]]" columns="[[[{headerText:$component.resource.merchant.merchantid,field:'code',headerClassName : 'alignContentLeft'},{headerText:$component.resource.merchant.merchantdesc,renderer:$oj.KnockoutTemplateUtils.getRenderer('merchant_link',true),headerClassName : 'alignContentLeft'}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.dataSource()]]">
+            <caption class="hide-label" data-bind="text:$component.resource.merchant.list"></caption>
+        </oj-table>
+
+        <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.dataSource()]]">
+        </oj-paging-control>
+
+        <script type="text/html" id="merchant_link">
+            <td>
+                <a href="javascript:void(0)" data-bind="attr:{alt:$component.resource.merchant.alt,title:$component.resource.merchant.title},text:$context.row.description,
+                    click:$component.viewMerchant.bind($data,$context.row)"></a>
+            </td>
+        </script>
+      </div>
+      </page-section>
+      <div class="oj-flex-item button-container right">
+          <!-- ko if:isSearchClicked() -->
+          <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind()]]">
+            <span data-bind="text:$component.resource.common.cancel"></span>
+          </oj-button>
+          <!-- /ko -->
+      </div>
+        <!-- /ko -->
+</div>
+</div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'merchant-onboarding'"></help>
+    </div>
+    <!-- /ko -->
+</div>

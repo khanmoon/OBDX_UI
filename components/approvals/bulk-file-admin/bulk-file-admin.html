@@ -1,0 +1,29 @@
+<div id="pagingControlDemo" class="full-width">
+  <!-- ko if : $component.transactionListLoaded() -->
+  <oj-table id="bulkFileAdminTable" columns="[[[{headerText:$component.Nls.generic.common.date,template:'date-time',field:'creationDate'},{headerText:$component.Nls.bulkFileAdmin.labels.fileIdentifier,field:'fileIdentifier'},{headerText:$component.Nls.bulkFileAdmin.labels.fileName,field:'fileName', template:'fileName'},{headerText:$component.Nls.bulkFileAdmin.labels.initiatedBy,field:'initiatedBy'},{headerText:$component.Nls.bulkFileAdmin.labels.referenceNo,field:'transactionSnapshot.fileRefId',template:'approval_link_pending'},{headerText:$component.Nls.bulkFileAdmin.labels.status,template:'approvalStatus',field:'status'}]]]"
+    data="[[$component.paginationDataSource.dataSource]]">
+    <caption class="hide-label" data-bind="text: $component.Nls.bulkFileAdmin.labels.details"></caption>
+    <template slot="approval_link_pending">
+
+        <a href="javascript:void(0)" data-bind="attr:{title: $baseModel.format($component.Nls.bulkFileAdmin.labels.linkDetails,{transactionId:$current.row.transactionId})},text:$current.row.fileRefId,click:$dashboard.loadComponent.bind($data,'transaction-detail', $current.row , $parent)"></a>
+
+</template>
+    <template slot="fileName">
+
+        <div class="oj-flex oj-flex-items-pad" data-bind="text:$current.row.fileName"></div>
+
+</template>
+    <template slot="date-time">
+
+        <div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "date-time", params:{rootModel: $component,date:$current.row.creationDate}}'></div>
+
+</template>
+    <template slot="approvalStatus">
+
+        <div data-bind="template : {name : 'approvals/status', data : {status :$current.row.approvalDetails.status ,noOfApprovalSteps: $current.row.countOfApprovals, nls : $component.Nls.bulkFileAdmin.status}}"></div>
+      
+</template>
+  </oj-table>
+  <!-- /ko -->
+  <oj-paging-control class="oj-flex-item" slot="bottom" :id="[[$component.Nls.bulkFileAdmin.labels.details + ($baseModel.currentIdCount())]]" :page-size="[[10]]" data="[[$component.arrayDataSource]]"></oj-paging-control>
+</div>

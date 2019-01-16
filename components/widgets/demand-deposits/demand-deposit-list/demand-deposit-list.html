@@ -1,0 +1,96 @@
+
+	<!-- ko if:dataFetched -->
+	<!-- ko if:$baseModel.small() -->
+	<div>
+
+		<oj-film-strip arrowPlacement = "adjacent" maxItemsPerPage="1" arrowVisibility="visible">
+
+			<!-- ko foreach: $component.accountInfo -->
+			<!-- ko if: $data.status==='ACTIVE' -->
+
+
+			<div class="oj-sm-12" data-bind="attr:{'id':'cards_'+$index()}, component: {name: 'card', params:{rootModel: $data,  data:{
+			'topLeftPanel':
+			{
+		'title':$data.partyName,
+		'description': $data.productDTO.description,
+		'features': [$data.id.displayValue,$data.accountNickname],
+         'image':   $data.holdingPattern==='JOINT'?'demand-deposits/joint-account.svg':'',
+				 'altText' : $component.locale.cardDetails.jointAccount
+			 		 },
+					 'topRightPanel':$component.multipleModulesPresent()?$data.holdingPattern==='JOINT'?[
+					 	{
+							'label':$data.module==='CON'?$component.locale.cardDetails.conventional:$component.locale.cardDetails.islamic,
+							'class':''
+						},
+						{
+							'label':$data.holdingPattern,
+						'	class':''}]:[
+						{
+					 		'label':$data.module==='CON'?$component.locale.cardDetails.conventional:$component.locale.cardDetails.islamic,
+					 		'class':''}]:$data.holdingPattern==='JOINT'?[
+						{
+							'label':$data.holdingPattern,
+								'class':''}
+							]:[],
+		'bottomRightPanel': {
+			 'label':$component.locale.cardDetails.netBalance,
+			 'value':$baseModel.formatCurrency($data.availableBalance.amount, $data.availableBalance.currency)
+		 },
+		   clickHandler: $component.loadSelectedCard
+				} }}">
+
+			</div>
+			<!-- /ko -->
+			<!-- /ko -->
+		</oj-film-strip>
+
+	</div>
+	<!-- /ko -->
+
+	<!-- ko if:!$baseModel.small() -->
+	<div class="oj-flex oj-sm-12 oj-flex-items-pad">
+	<!-- ko foreach: $component.accountInfo -->
+
+	<!-- ko if:  $data.status==='ACTIVE' -->
+
+	<div class="oj-flex-item no-pad-cols" data-bind="css:'productCard'+$index(), attr:{'id':'cards_'+$index()}, component: {name: 'card', params:{rootModel: $data,
+		data:{
+			'topLeftPanel':
+			{
+		'title': $data.partyName,
+		'description': $data.productDTO.description,
+		'features': [$data.id.displayValue,$data.accountNickname],
+         'image':  $data.holdingPattern==='JOINT'?'demand-deposits/joint-account.svg':'',
+				  'altText' : $component.locale.cardDetails.jointAccount
+		 },
+		 'topRightPanel':$component.multipleModulesPresent()?$data.holdingPattern==='JOINT'?[
+		 	{
+				'label':$data.module==='CON'?$component.locale.cardDetails.conventional:$component.locale.cardDetails.islamic,
+				'class':''
+			},
+			{
+				'label':$data.holdingPattern,
+			'	class':''}]:[
+			{
+		 		'label':$data.module==='CON'?$component.locale.cardDetails.conventional:$component.locale.cardDetails.islamic,
+		 		'class':''}]:$data.holdingPattern==='JOINT'?[
+			{
+				'label':$data.holdingPattern,
+					'class':''}
+				]:[],
+		'bottomRightPanel': {
+			 'label': $component.locale.cardDetails.netBalance,
+			 'value':$baseModel.formatCurrency($data.availableBalance.amount, $data.availableBalance.currency)
+		 },
+		 clickHandler :$component.loadSelectedCard
+	 } }},style : {width : $parent.maxCardWidth() + 'px'}">
+
+	</div>
+
+	<!-- /ko -->
+
+	<!-- /ko -->
+	</div>
+	<!-- /ko -->
+	<!-- /ko -->

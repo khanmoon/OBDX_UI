@@ -1,0 +1,89 @@
+<div class="template-list-container">
+    <div class="oj-flex">
+        <div class="oj-flex-item oj-sm-9">
+            <div class="form-main-container">
+                <div data-bind='component:{name: "nav-bar",
+        params:{rootModel: $data,menuOptions: menuOptions, uiOptions:uiOptions,navBarDescription:$component.resourceBundle.navBarDescription}}'>
+                </div>
+                <!-- ko if:$component.menuSelection()==="dashboard" -->
+                <div class="oj-flex design-dashboard">
+                    <div class="oj-sm-12">
+                        <div class="oj-flex">
+                            <page-section class="oj-sm-12" params="baseModel : $baseModel,rootModel:$data, heading : ''">
+                                <div class='oj-flex oj-flex-items-pad oj-sm-12'>
+                                    <div class='oj-flex-item oj-sm-2 label'>
+                                        <label id="selectUser" data-bind="text:resourceBundle.selectUser"></label>
+                                    </div>
+                                    <div class='oj-flex-item'>
+                                        <oj-radioset id="selectSegmentRadio" labelled-by="selectUser" class="oj-choice-direction-row" value="{{selectSegment}}" :aria-label=[[$component.resourceBundle.selectUser]]>
+                                            <oj-option id="admin" value="ADMIN">
+                                                <span data-bind="text:resourceBundle.segments.admin"></span>
+                                            </oj-option>
+                                            <oj-option id="retail" value="RETAIL">
+                                                <span data-bind="text:resourceBundle.segments.retail"></span>
+                                            </oj-option>
+                                            <oj-option id="corporate" value="CORPORATE">
+                                                <span data-bind="text:resourceBundle.segments.corporate"></span>
+                                            </oj-option>
+                                        </oj-radioset>
+                                    </div>
+                                </div>
+                                <div class='oj-flex oj-flex-items-pad oj-sm-12'>
+                                    <div class='oj-flex-item oj-sm-2 label'>
+                                        <oj-label :for="[['filter']]">
+                                            <span data-bind="text:resourceBundle.templateName"></span>
+                                        </oj-label>
+                                    </div>
+                                    <div class='oj-flex-item'>
+                                        <div class="oj-sm-3">
+                                            <oj-input-text id="filter" maxlength="30" on-raw-value-changed="[[searchDashboards]]" value="{{filter}}" :placeholder="[[$component.resourceBundle.searchByTemplateName]]"></oj-input-text>
+                                        </div>
+                                    </div>
+                                </div>
+                                <oj-table id='table' :aria-label=[[$component.resourceBundle.alts.dashboardList]] data='[[datasource]]' columns-default.sortable='enabled'
+                                    columns='{{columnArray}}'>
+                                    <template slot="moduleName">
+                                        <div>
+                                            <span data-bind="text:$component.resourceBundle.personas[$current.row.segment][$current.row.module]"></span>
+                                        </div>
+                                    </template>
+                                    <template slot="formattedDate">
+                                        <div>
+                                            <span data-bind="text:$baseModel.formatDate($current.data)"></span>
+                                        </div>
+                                    </template>
+                                    <template slot="theme-actions">
+                                        <div>
+                                            <a class="pull-left" href="javascript:void(0)" data-bind="attr:{'alt':$component.resourceBundle.alts.viewDashboard,
+                                              'title':$baseModel.format($component.resourceBundle.generic.common.clickHere,{action:$component.resourceBundle.alts.viewDashboard}) },text:$component.resourceBundle.btns.view,click:$component.viewDashboard.bind($data,$current.row)"></a>
+                                        </div>
+                                    </template>
+                                </oj-table>
+                            </page-section>
+                            <div class="oj-flex oj-flex-items-pad button-container">
+                                <oj-button class="action-button-secondary" on-click="[[$dashboard.hideDetails]]">
+                                    <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+                                </oj-button>
+                                <oj-button class="action-button-tertiary" on-click="[[$dashboard.openDashBoard]]">
+                                    <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                                </oj-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:$component.menuSelection()==="mapping" -->
+                <div data-bind='component:{name: "dashboard-mapping-list",params:{rootModel: $data}}'></div>
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="oj-flex-item oj-sm-3 help-panel">
+            <!-- ko if:$component.menuSelection()==="dashboard" -->
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'dashboard-builder'"></help>
+            <!-- /ko -->
+            <!-- ko if:$component.menuSelection()==="mapping" -->
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'dashboard-mapping'"></help>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+  <div class="row-group">
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.amendTD.tdAccountNumber , dataClass : 'highlight-text',value :data.id.displayValue()"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.common.maturityInstructions.revisedMaturityInstruction, value :resourceBundle.common.maturityInstructions[data.module()][data.rollOverType()]"></row>
+    <!-- ko ifnot:data.rollOverType()==='I'-->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.termDepositDetails.payoutInstructions.payTo , dataClass : 'highlight-text',value : resourceBundle.transactions.termDepositDetails.payoutInstructions.payoutType[data.payoutInstructions()[0].type()]"></row>
+    <!-- ko if:data.rollOverType()==='S' -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.termDepositDetails.payoutInstructions.renewAmount, value:$baseModel.formatCurrency(data.rollOverAmount.amount(),data.rollOverAmount.currency())"></row>
+    <!-- /ko -->
+    <!-- ko if:data.payoutInstructions() && data.payoutInstructions().length -->
+    <!-- ko if:data.payoutInstructions()[0].type()==='O' -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.termDepositDetails.payoutInstructions.transferAccount , value :[data.payoutInstructions()[0].beneficiaryName(),data.payoutInstructions()[0].accountId.displayValue(),data.payoutInstructions()[0].bankName(),data.payoutInstructions()[0].address.line1,data.payoutInstructions()[0].address.line2,data.payoutInstructions()[0].address.city,data.payoutInstructions()[0].address.country]"></row>
+
+    <!-- /ko -->
+
+    <!-- ko if:data.payoutInstructions()[0].type()==='I' -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.termDepositDetails.payoutInstructions.account, value :data.payoutInstructions()[0].account"></row>
+    <!-- /ko -->
+
+    <!-- ko if:data.payoutInstructions()[0].type()==='E' -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.termDepositDetails.payoutInstructions.branch ,
+          value :[data.payoutInstructions()[0].beneficiaryName(),
+          data.payoutInstructions()[0].account(),
+          data.payoutInstructions()[0].networkType ? data.payoutInstructions()[0].networkType() : '' ,
+          data.payoutInstructions()[0].clearingCode ? data.payoutInstructions()[0].clearingCode() : '',
+          data.payoutInstructions()[0].bankName(),
+          data.payoutInstructions()[0].address.line1(),
+          data.payoutInstructions()[0].address.line2(),
+          data.payoutInstructions()[0].address.city(),
+          data.payoutInstructions()[0].address.country()]"></row>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+</page-section>

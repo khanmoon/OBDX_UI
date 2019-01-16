@@ -1,0 +1,43 @@
+<div class="row-group" data-bind="with:paymentData">
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.transferto ,
+                 value :transferDetails.creditAccountId.displayValue,dataClass :'highlight-text'"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.transferfrom,
+                 value :transferDetails.debitAccountId.displayValue"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.amount ,
+                 value :$baseModel.formatCurrency(transferDetails.amount.amount,transferDetails.amount.currency),dataClass :'highlight-text'"></row>
+    <!-- ko if: $component.paymentData().transferDetails && $component.paymentData().transferDetails.dealId -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.dealNumber ,value : $component.paymentData().transferDetails.dealId"></row>
+    <!-- /ko -->
+    <!-- ko if: $component.paymentData().transferDetails.instructionDetails && $component.paymentData().transferDetails.instructionDetails.dealId -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.dealNumber ,value : $component.paymentData().transferDetails.instructionDetails.dealId"></row>
+    <!-- /ko -->
+    <!-- ko if:$component.dealDetails() -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.dealType ,value : $component.dealType"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.exchangeRate ,value : $component.exchangeRate"></row>
+    <!-- /ko -->
+    <!-- ko if:!$component.isStandingInstruction() -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.transferon ,
+                 value :transferDetails.startDate?$baseModel.formatDate(transferDetails.startDate):$baseModel.formatDate(transferDetails.valueDate)"></row>
+    <!-- /ko -->
+    <!-- ko if:$component.isStandingInstruction() -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.frequency ,
+                 value : $component.resource.frequency[transferDetails.frequency]"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.startTransfer ,
+                 value :transferDetails.startDate?$baseModel.formatDate(transferDetails.startDate):$baseModel.formatDate(transferDetails.valueDate)"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.stopTransfer ,
+                    value : $baseModel.formatDate(transferDetails.endDate)"></row>
+    <!-- /ko -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.paymentDetails.note ,
+                 value :transferDetails.remarks?transferDetails.remarks:''"></row>
+    <!-- ko if:$component.isStandingInstruction() && $component.paynowWithSI -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-lg-3">
+            <oj-checkboxset id="pay-now" labelled-by="check-pay-now" value="{{$component.paynowWithSI}}" disabled="[[true]]">
+                <oj-option class="checkbox-option-label" id="pay-now-option" value="{{true}}">
+                    <span data-bind="text:$component.payments.moneytransfer.transfertoday"></span>
+                </oj-option>
+            </oj-checkboxset>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>

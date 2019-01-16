@@ -1,0 +1,71 @@
+define(["ojL10n!resources/nls/generic"], function(Generic) {
+  "use strict";
+  var RecordViewLocale = function() {
+    return {
+      root: {
+        recordView: {
+          uploadedFiles: "Uploaded Files Inquiry",
+          recordView: "Record View",
+          userRefNo: "User Ref No",
+          recordDetails: "Record Details",
+          fileName: "File Name",
+          recordRefNo: "Record Ref No",
+          txnRefId: "Transaction Reference Id",
+          purposeOfRemit: "Purpose Of Remittance",
+          beneName: "Payee Name",
+          status: "Status",
+          fileView: "File View",
+          internalPayments: "Internal Payments",
+          domesticPayments: "Domestic Payments",
+          internationalPayments: "International Payments",
+          creditAccNo: "Credit Account Number",
+          creditAccBranch: "Credit Account Branch",
+          debitNarrative: "Debit Narrative",
+          creditNarrative: "Credit Narrative",
+          valueDate: "Value Date",
+          rStatus: "Record Status",
+          errorDetail: "Error Detail",
+          creditDetails: "Credit Details",
+          debitDetails: "Debit Details",
+          debitPartyId: "Debit Party Id",
+          mode: "Mode",
+          adhoc: "Adhoc",
+          partyId: "Party Id",
+          debitAccountNumber: "Debit Account No",
+          debitAccBranch: "Debit Account Branch",
+          debitCurrency: "Debit Account Currency",
+          paymentAmount: "Payment Amount",
+          paymentCurrency: "Payment Currency",
+          paymentDate: "Payment Date",
+          paymentMode: "Payment Mode",
+          clearingCode: "Clearing Code",
+          purposeOfPayment: "Purpose Of Payment",
+          bicNccCode: "BIC | NCC Code",
+          paymentDetails1: "Payment Details 1",
+          paymentDetails2: "Payment Details 2",
+          paymentDetails3: "Payment Details 3",
+          paymentDetails4: "Payment Details 4",
+          valueDt: "Value Date",
+          charges: "Charges",
+          creditAccountNumber: "Credit Account No",
+          back: "Back",
+          delete: "Delete",
+          yes: "Yes",
+          no: "No",
+          deleteConfirmationMessage: "Are you sure you want to delete this record?",
+          warning: "Warning",
+          transactionName: "Record Deletion"
+        },
+        generic: Generic
+      },
+      ar: true,
+      fr: true,
+      cs: true,
+      sv: true,
+      en: false,
+      "en-us": false,
+      el: true
+    };
+  };
+  return new RecordViewLocale();
+});

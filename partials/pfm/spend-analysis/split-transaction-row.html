@@ -1,0 +1,49 @@
+<div class="oj-flex oj-flex-items-pad oj-lg-12 oj-sm-12 oj-md-12 split-row">
+    <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-md-12 oj-lg-4">
+        <oj-label class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 label" for="category" :for="[['splitcategory'+ $index()]]">
+            <span data-bind="text:$component.resource.split.category"></span>
+        </oj-label>
+        <oj-select-one class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-12" id="category" required :id="[['splitcategory'+ $index()]]" on-value-changed="[[$component.splitCategoryChangeHandler.bind($data,$index())]]" :placeholder="[[$component.resource.split.placeholder]]" value="{{$data.categoryId}}">
+            <!-- ko foreach: $component.categoryList() -->
+            <!-- ko ifnot: categoryId === 'UN-CATEGORIZED' -->
+            <oj-option :id="[[categoryId]]" value="{{categoryId}}">
+                <span data-bind="text:name"></span>
+            </oj-option>
+            <!-- /ko -->
+            <!-- /ko -->
+        </oj-select-one>
+    </div>
+    <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-md-12 oj-lg-4">
+        <oj-label class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 label" for="subcategory" :for="[['splitsubcategory'+ $index()]]">
+            <span data-bind="text:$component.resource.split.subcategory"></span>
+        </oj-label>
+        <oj-select-one class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-12" id="subcategory" :id="[['splitsubcategory'+ $index()]]" :placeholder="[[$component.resource.split.placeholder]]" value="{{$data.subcategoryId}}">
+            <!-- ko foreach: $data.subcategoryList() -->
+            <!-- ko ifnot: categoryId === 'OTHER-U' -->
+            <oj-option :id="[[categoryId]]" value="{{categoryId}}">
+                <span data-bind="text:name"></span>
+            </oj-option>
+            <!-- /ko -->
+            <!-- /ko -->
+        </oj-select-one>
+    </div>
+    <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-md-12 oj-lg-3">
+        <oj-label class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 label" for="amount" :for="[['amount'+ $index()]]"><span data-bind="text:$component.resource.split.amount"></span></oj-label>
+        <oj-input-text class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-12 split-row__amount-input" id="amount" required type="number" :id="[['amount'+ $index()]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[[$component.validateSplitAmount]]]" converter="[[{type:'number',options:{
+                style:'currency',currency:ko.utils.unwrapObservable($component.selectedTransactionForSplit().transactionAmount.currency),currencyDisplay:'symbol'}}]]" value="{{amount}}"></oj-input-text>
+    </div>
+    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-1">
+        <!-- ko if: $component.splitDetails().length > 2 -->
+        <!-- ko if: $baseModel.large() -->
+        <a href="#" data-bind="click:$component.removeSplitCategory.bind($data,$index())">
+       <span class="icons" data-bind="css:'icon-delete'"></span>
+      </a>
+        <!-- /ko -->
+        <!-- ko ifnot: $baseModel.large() -->
+        <oj-button class="help-button" on-click="[[$component.removeSplitCategory.bind($data,$index())]]"><span slot="startIcon" class="icons icon-delete"></span>
+            <span data-bind="text:$component.resource.split.remove"></span>
+        </oj-button>
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>

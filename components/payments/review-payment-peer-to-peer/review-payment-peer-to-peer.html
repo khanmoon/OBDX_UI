@@ -1,0 +1,53 @@
+<div class="form-main-container">
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.generic.common.review , reviewHeader : $baseModel.format($component.resource.common.reviewHeaderMsg, {txnName : $component.resource.txnname})}}"></div>
+    <!-- ko if:$component.dataLoaded() -->
+    <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="row-group" data-bind="with:p2ppaymentData">
+            <!-- ko if:$component.facebookDataLoaded()  -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.transferto ,
+                     value :$component.p2ppaymentData().transferValue,dataClass :'highlight-text'"></row>
+            <!-- /ko -->
+            <!-- ko ifnot:transferMode === 'FACEBOOK'  -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.transferto ,
+                     value :transferValue,dataClass :'highlight-text'"></row>
+            <!-- /ko -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.amount ,
+                     value :$baseModel.formatCurrency(transferDetails.amount.amount,transferDetails.amount.currency),dataClass :'highlight-text'"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.payvia ,
+                     value :$component.resource.transfermode[transferMode]"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.transferfrom ,
+                     value :transferDetails.debitAccountId.displayValue"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.note ,
+                     value :transferDetails.remarks, dataClass: 'break-word'"></row>
+        </div>
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" id="button_peertopeerverify" on-click="[[$component.verifyPayment]]">
+          <span slot="startIcon" class="icons icon-confirm"></span>
+          <span data-bind="text:$component.resource.common.confirm"></span>
+        </oj-button>
+
+        <!-- ko if:!$baseModel.small() -->
+        <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$dashboard.openDashBoard.bind($component.resource.common.cancelConfirm)]]">
+          <span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.resource.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+
+        <oj-button class="action-button-tertiary" id="button_peertopeercancel" on-click="[[$dashboard.hideDetails]]">
+          <span slot="startIcon" class="icons icon-back-arrow"></span>
+          <span data-bind="text:$component.resource.generic.common.back"></span>
+        </oj-button>
+    </div>
+
+    <!-- ko if:$component.p2ppaymentData().transferMode === 'FACEBOOK' -->
+    <social-media class="hide" params="baseModel : $baseModel, rootModel: $data ,
+                                      social_media_type:'facebook',
+                                      api:'USER_FRIENDS',
+                                      callback:$component.loadFriendList,
+                                      autoLogin: true,
+                                      resetState: false,
+                                      id:'social' "></social-media>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>

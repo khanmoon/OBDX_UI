@@ -1,0 +1,100 @@
+<!-- ko if:$component.isDataLoaded() -->
+<div class="pfm">
+    <div class="form-main-container goal">
+        <div class="oj-flex oj-flex-items-pad goal__banner banner" data-bind="with:$component.goalData">
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                <div class="banner__img img">
+                    <img class="img__icon" id="editimagepreview" data-bind="attr:{alt:'',
+                        title:$component.goal.account.imgCategoryAttr +'-'+categoryName(),'src':'data:image/gif;base64,'+content()}">
+                    <div class="img__fileInput">
+                        <!-- ko if:!$component.isRead() -->
+                        <input id="editinputimage" type="file" name="files[]" multiple>
+                        <oj-label for="editinputimage" class="icons icon-file-upload"><span data-bind="text:$component.nls"></span></oj-label>
+                        <div data-bind="template: {afterRender: $component.afterRender}"></div>
+                        <!-- /ko -->
+                    </div>
+                    <!-- ko if:!$component.isRead() -->
+                    <a href="#" class="icons icon-remarks img__editIcon" data-bind="attr:{'alt':$component.goal.account.imgCategoryEdit,'title':$component.goal.account.imgCategoryEditAttr},click:$component.chooseFile"></a>
+                    <!-- /ko -->
+                </div>
+                <div class="banner__section banner-section">
+                    <!-- ko if:$component.refreshAccountDropDown() -->
+                    <!-- ko if:$component.isActive() -->
+                    <div class="banner-section__info banner-section-info">
+                        <div id="goal-amount-label" class="banner-section-info__label" data-bind="text:$component.resource.manageGoal.currentvalue"></div>
+                        <div id="goal-amount" class="banner-section-info__value" data-bind="text:$baseModel.formatCurrency($component.goalAmount(),
+                            $data.initialDepositAmount.currency())"></div>
+                    </div>
+                    <div class="banner-section__info banner-section-info">
+                        <div id="goal-maturitydate-label" class="banner-section-info__label" data-bind="text:$component.resource.manageGoal.maturitydate"></div>
+                        <div id="goal-maturitydate" class="banner-section-info__value" data-bind="text:$baseModel.formatDate($data.tenure.date())"></div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko ifnot:$component.isActive() -->
+                    <div class="banner-section__info banner-section-info">
+                        <div id="goal-finalamount-label" class="banner-section-info__label" data-bind="text:$component.resource.withdrawGoal.finalValue"></div>
+                        <div id="goal-finalamount" class="banner-section-info__value" data-bind="text:$baseModel.formatCurrency($data.closingAmount.amount(),
+                        $data.initialDepositAmount.currency())"></div>
+                    </div>
+                    <div class="banner-section__info banner-section-info">
+                        <div id="goal-inactive-maturitydate-label" class="banner-section-info__label" data-bind="text:$component.resource.manageGoal.closingDate"></div>
+                        <div id="goal-inactive-maturitydate" class="banner-section-info__value" data-bind="text:$baseModel.formatDate($data.closingDate())"></div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+                <!-- ko if:$component.refreshAccountDropDown() -->
+                <div class="banner-section__percentage banner-section-percentage">
+                    <div id="goal-acheive-label" class="banner-section__progresslabel" data-bind="text:$baseModel.format($component.resource.manageGoal.achieved, {percent : $component.goalPercentage()})"></div>
+                    <div data-bind="component:{
+                              name:'percentage-graph',
+                              params:{
+                                rootModel: $component,
+                                data : {
+                                      label: $baseModel.format($component.resource.manageGoal.achieved, {percent : $component.goalPercentage()}),
+                                      showLabel:false,
+                                      uniqueId:'label_'+id,
+                                      max:$component.goalData.targetAmount.amount,
+                                      thresholdValues:$component.thresholdValues,
+                                      value:$component.goalData.availableBalance.amount,
+                                      toolTipCallBack:$component.goalTooltipCallback
+
+                                  }
+                              }
+
+                        }">
+              </div>
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+        <!-- ko if:$component.isActive() -->
+        <div class="pfm-navbar" data-bind='component:{name: "nav-bar",
+                        params:{rootModel: $data,menuOptions : menuCountOptions, uiOptions:uiOptions,navBarDescription:$component.resource.navBarDescription}}'>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.isActive() -->
+        <!-- ko if: $component.navigatorObject.view()===true -->
+        <div data-bind="template: { name:'pfm/goals/manage-goals'}"></div>
+        <!-- /ko -->
+        <!-- ko if: $component.navigatorObject.contribute()===true -->
+        <div data-bind="template: { name:'pfm/goals/contribute'}"></div>
+        <!-- /ko -->
+        <!-- ko if: $component.navigatorObject.withdraw()===true -->
+        <div data-bind="template: { name:'pfm/goals/withdraw'}"></div>
+        <!-- /ko -->
+        <!-- ko if: $component.navigatorObject.viewTransaction()===true -->
+        <div data-bind="template: { name:'pfm/goals/view-transactions'}"></div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko ifnot:$component.isActive() -->
+        <div data-bind="template: { name:'pfm/goals/manage-goals'}"></div>
+        <!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko if: $baseModel.large() -->
+<a class="back-link" href="#" data-bind="text: $component.resource.manageGoal.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

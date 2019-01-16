@@ -1,0 +1,46 @@
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.loan.purpose"></span></oj-label>
+
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text: $baseModel.format(resource.loan.loanPurpose,{purposeType:data.purposeType,description:data.purpose.description}) "></span>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.loan.loanAmount"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text:$baseModel.formatCurrency(data.requestedAmount.amount(), data.requestedAmount.currency)"></span>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.loan.tenure"></span></oj-label>
+
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+      <!-- ko if: parseInt(data.requestedTenure.years()) > 0 -->
+      <span data-bind="text : $baseModel.format(resource.termYears, {years: data.requestedTenure.years()})"></span>
+      <!-- /ko -->
+      <!-- ko if: data.requestedTenure.months() > 0 -->
+      <span data-bind="text : $baseModel.format(resource.termMonths, {months: data.requestedTenure.months()})"></span>
+      <!-- /ko -->
+    </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label>
+      <span data-bind="text:resource.coApplicant"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <!-- ko if: $component.productDetails().requirements.noOfCoApplicants === 0 -->
+        <span data-bind="text : resource.generic.common.no"></span>
+        <!-- /ko -->
+        <!-- ko if: $component.productDetails().requirements.noOfCoApplicants !== 0 -->
+        <span data-bind="text : resource.generic.common.yes"></span>
+        <!-- /ko -->
+    </div>
+</div>

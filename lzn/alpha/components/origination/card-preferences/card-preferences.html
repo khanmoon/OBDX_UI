@@ -1,0 +1,61 @@
+<!-- ko if: renderScreen() -->
+<div class="form-main-container">
+    <div class="personal-details">
+
+        <div id="cardPreferenceAccordion" class="accordion" data-bind="template:{afterRender:$component.initializeAccordion}">
+            <!-- ko foreach: components() -->
+            <div class="card  ">
+                <div class="card-header oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-1 oj-md-1 oj-lg-1">
+                        <div class="accordion-strip"></div>
+                        <div class="oj-sm-only-hide card-icon-container"><span class="image-icon" data-bind="css: $component.components()[$index()].icon"></span></div>
+                    </div>
+
+                    <div class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.accordionNames.accordionNames[$data.name]"></div>
+                    <!-- ko ifnot: $data.isComplete()===true -->
+                    <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+                        <a href="javascript:void(0)" class="icon section-icon collapse-icon icon-arrow-down"></a>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: $data.isComplete()===true -->
+                    <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+                        <span class="icon icon-success section-icon pull-right done-icon"></span>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <div class="">
+                    <div class="card-body" data-bind="component: { name: $data.component, params: { rootModel: $parent }}">
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <oj-button raised="" id="cancel" class="action-button-secondary last-3 oj-button" on-click="[[$component.showPluginComponent.bind($data,'cancel-application')]]">
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+</oj-button>
+
+    <oj-button raised="" id="saveForLater" class="action-button-secondary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+</oj-button>
+
+    <oj-button raised="" id="borrowingPowerSubmit" class="action-button-primary first-3" on-click="[[submitFunction]]" disabled="[[!$component.components()[$component.components().length-1].isComplete()]]">
+      <span data-bind="text:$component.resource.generic.common.revSubmit"></span>
+</oj-button>
+</div>
+
+
+
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+    <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'ERROR', header: $component.resource.generic.common.error">
+        <div class="message-text scroll" data-bind="text: $component.resource.cardPreferences.updateDelPreferences"></div>
+        <div class="message-btn button-container">
+            <oj-button id="hideButton" class="toUpperCase form-button-primary" on-click="[[function(){$('#ERROR').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.generic.common.ok"></span>
+</oj-button>
+        </div>
+    </modal-window>
+</div>
+<!-- /ko -->

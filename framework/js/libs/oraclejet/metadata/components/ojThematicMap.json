@@ -1,0 +1,738 @@
+{
+  "name": "oj-thematic-map",
+  "version": "5.0.0",
+  "jetVersion": "5.0.0",
+  "displayName": "Thematic Map",
+  "preview": true,
+  "roles": [
+    "application"
+  ],
+  "description": "An interactive data visualization that displays data corresponding to geographic locations or regions.  Applications are required to supply a mapProvider for a valid thematic map.",
+  "properties": {
+    "animationDuration": {
+      "description": "We recommend using the component CSS classes to set component wide styling. This API should be used only for styling a specific instance of the component. The default values come from the CSS classess and varies based on theme. The duration of the animations in milliseconds.",
+      "type": "number",
+      "displayName": "Animation Duration",
+      "units": "\"milliseconds\""
+    },
+    "animationOnDisplay": {
+      "description": "The type of animation to apply when the element is initially displayed.",
+      "type": "string",
+      "displayName": "Animation On Display",
+      "value": "none",
+      "enumValues": [
+        "auto",
+        "none"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "none": {
+          "displayName": "None"
+        }
+      }
+    },
+    "areas": {
+      "description": "An array of objects that define a row of data for an area data layer. Also accepts a Promise where no data will be rendered if the Promise is rejected. Regardless of the set value type, we will wrap and return a Promise when accessing the areas property.",
+      "type": "Array<Object>|Promise|null",
+      "displayName": "Areas",
+      "value": null
+    },
+    "focusRenderer": {
+      "description": "An optional callback function to update the data item in response to changes in keyboard focus state.",
+      "type": "function|null",
+      "displayName": "Focus Renderer",
+      "value": null
+    },
+    "hiddenCategories": {
+      "description": "An array of category strings used for category filtering. Data items with a category in hiddenCategories will be filtered.",
+      "type": "Array<string>",
+      "displayName": "Hidden Categories",
+      "value": []
+    },
+    "highlightMatch": {
+      "description": "The matching condition for the highlightedCategories option. By default, highlightMatch is 'all' and only items whose categories match all of the values specified in the highlightedCategories array will be highlighted. If highlightMatch is 'any', then items that match at least one of the highlightedCategories values will be highlighted.",
+      "type": "string",
+      "displayName": "Highlight Match",
+      "value": "all",
+      "enumValues": [
+        "all",
+        "any"
+      ],
+      "propertyEditorValues": {
+        "all": {
+          "displayName": "All"
+        },
+        "any": {
+          "displayName": "Any"
+        }
+      }
+    },
+    "highlightedCategories": {
+      "description": "An array of category strings used for category highlighting. Data items with a category in highlightedCategories will be highlighted.",
+      "type": "Array<string>",
+      "displayName": "Highlighted Categories",
+      "value": []
+    },
+    "hoverBehavior": {
+      "description": "Defines the behavior applied when hovering over data items.",
+      "type": "string",
+      "displayName": "Hover Behavior",
+      "value": "none",
+      "enumValues": [
+        "dim",
+        "none"
+      ],
+      "propertyEditorValues": {
+        "dim": {
+          "displayName": "Dim"
+        },
+        "none": {
+          "displayName": "None"
+        }
+      }
+    },
+    "hoverRenderer": {
+      "description": "An optional callback function to update the node in response to changes in hover state.",
+      "type": "function|null",
+      "displayName": "Hover Renderer",
+      "value": null
+    },
+    "initialZooming": {
+      "description": "Specifies whether the map will zoom to fit the data objects on initial render.",
+      "type": "string",
+      "displayName": "Initial Zooming",
+      "value": "none",
+      "enumValues": [
+        "auto",
+        "none"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "none": {
+          "displayName": "None"
+        }
+      }
+    },
+    "isolatedItem": {
+      "description": "The id for the isolated area of this area data layer. If set, only the isolated area will be displayed.",
+      "type": "string",
+      "displayName": "Isolated Item",
+      "value": ""
+    },
+    "labelDisplay": {
+      "description": "Determines how labels for this layer should be displayed.",
+      "type": "string",
+      "displayName": "Label Display",
+      "value": "off",
+      "enumValues": [
+        "auto",
+        "off",
+        "on"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "description": "Renders the label if it fits within the area bounds.",
+          "displayName": "Auto"
+        },
+        "off": {
+          "displayName": "Off"
+        },
+        "on": {
+          "displayName": "On"
+        }
+      }
+    },
+    "labelType": {
+      "description": "Determines which type of map labels to display.",
+      "type": "string",
+      "displayName": "Label Type",
+      "value": "short",
+      "enumValues": [
+        "long",
+        "short"
+      ],
+      "propertyEditorValues": {
+        "long": {
+          "displayName": "Long"
+        },
+        "short": {
+          "displayName": "Short"
+        }
+      }
+    },
+    "links": {
+      "description": "An array of objects that define the data for links. Also accepts a Promise where no data will be rendered if the Promise is rejected. Regardless of the set value type, we will wrap and return a Promise when accessing the links property.",
+      "type": "Array<Object>|Promise|null",
+      "displayName": "Links",
+      "value": null
+    },
+    "mapProvider": {
+      "description": "An object with the following properties, used to define a custom map.",
+      "type": "Object",
+      "displayName": "Map Provider",
+      "value": {
+        "geo": {},
+        "propertiesKeys": {
+          "id": "",
+          "longLabel": "",
+          "shortLabel": ""
+        }
+      },
+      "properties": {
+        "geo": {
+          "description": "The GeoJSON object containing custom area coordinates. Only GeoJSON objects of \"type\" Feature or FeatureCollection and Feature \"geometry\" objects of \"type\" Polygon or MultiPolygon are currently supported. Each Feature object will contain a thematic map area and each Feature's \"properties\" object will at a minimum need to contain a key, which can be defined in the propertiesKeys object, that will be used as the ID of the area.",
+          "type": "Object",
+          "value": {}
+        },
+        "propertiesKeys": {
+          "description": "The object specifying the GeoJSON Feature \"properties\" object keys to use for the custom area id, short label, and long label mappings.",
+          "type": "Object",
+          "value": {},
+          "properties": {
+            "id": {
+              "description": "The required name of the \"properties\" key to use as the location id that will map a data item to a map area.",
+              "type": "string",
+              "value": ""
+            },
+            "longLabel": {
+              "description": "The optional name of the \"properties\" key to use for rendering area labels when labelType is set to \"long\".",
+              "type": "string",
+              "value": ""
+            },
+            "shortLabel": {
+              "description": "The optional name of the \"properties\" key to use for rendering area labels when labelType is set to \"short\".",
+              "type": "string",
+              "value": ""
+            }
+          }
+        }
+      }
+    },
+    "markerZoomBehavior": {
+      "description": "Specifies marker behavior on zoom.",
+      "type": "string",
+      "displayName": "Marker Zoom Behavior",
+      "value": "fixed",
+      "enumValues": [
+        "fixed",
+        "zoom"
+      ],
+      "propertyEditorValues": {
+        "fixed": {
+          "displayName": "Fixed"
+        },
+        "zoom": {
+          "displayName": "Zoom"
+        }
+      }
+    },
+    "markers": {
+      "description": "An array of objects that define a row of data for a data layer. Also accepts a Promise where no data will be rendered if the Promise is rejected. Regardless of the set value type, we will wrap and return a Promise when accessing the markers property.",
+      "type": "Array<Object>|Promise|null",
+      "displayName": "Markers",
+      "value": null
+    },
+    "maxZoom": {
+      "description": "Specifies the maximum zoom level for this element. This can be any number greater than 1.0 which indicates the maximum point to which the map can be scaled. A value of 2.0 implies that the map can be zoomed in until it reaches twice the viewport size. A maxZoom of 1.0 indicates that the user cannot zoom the map beyond the viewport size.",
+      "type": "number",
+      "displayName": "Max Zoom",
+      "value": 6
+    },
+    "panning": {
+      "description": "Determines whether element panning is allowed.",
+      "type": "string",
+      "displayName": "Panning",
+      "value": "none",
+      "enumValues": [
+        "auto",
+        "none"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "none": {
+          "displayName": "None"
+        }
+      }
+    },
+    "renderer": {
+      "description": "A callback function used to stamp custom SVG elements for a data layer.",
+      "type": "function|null",
+      "displayName": "Renderer",
+      "value": null
+    },
+    "selection": {
+      "description": "An array of id strings, used to define the selected data items.",
+      "type": "Array<string>",
+      "displayName": "Selection",
+      "value": [],
+      "writeback": true
+    },
+    "selectionMode": {
+      "description": "The type of selection behavior that is enabled on the thematic map.",
+      "type": "string",
+      "displayName": "Selection Mode",
+      "value": "none",
+      "enumValues": [
+        "multiple",
+        "none",
+        "single"
+      ],
+      "propertyEditorValues": {
+        "multiple": {
+          "displayName": "Multiple"
+        },
+        "none": {
+          "displayName": "None"
+        },
+        "single": {
+          "displayName": "Single"
+        }
+      }
+    },
+    "selectionRenderer": {
+      "description": "An optional callback function to update the data item in response to changes in selection state.",
+      "type": "function|null",
+      "displayName": "Selection Renderer",
+      "value": null
+    },
+    "styleDefaults": {
+      "description": "We recommend using the component CSS classes to set component wide styling. This API should be used only for styling a specific instance of the component. Properties specified on this object may be overridden by specifications on the data item. The default values come from the CSS classess and varies based on theme.",
+      "type": "Object",
+      "displayName": "Style Defaults",
+      "value": {
+        "areaSvgStyle": {},
+        "dataAreaDefaults": {},
+        "dataMarkerDefaults": {
+          "borderWidth": 0.5,
+          "borderStyle": "solid",
+          "height": 8,
+          "labelStyle": {},
+          "opacity": 1,
+          "shape": "circle",
+          "width": 8
+        },
+        "hoverBehaviorDelay": 200,
+        "labelStyle": {},
+        "linkDefaults": {
+          "width": 2
+        }
+      },
+      "properties": {
+        "areaSvgStyle": {
+          "description": "The CSS style object defining the style of the area layer areas. The default value comes from the CSS and varies based on theme.",
+          "type": "Object"
+        },
+        "dataAreaDefaults": {
+          "description": "An object defining the default styles for data areas. Properties specified on this object may be overridden by specifications on the data object.",
+          "type": "Object",
+          "value": {},
+          "properties": {
+            "borderColor": {
+              "description": "The area stroke color for the area data layer. The default value comes from the CSS and varies based on theme.",
+              "type": "string"
+            },
+            "hoverColor": {
+              "description": "The hover data area border color. The default value comes from the CSS and varies based on theme.",
+              "type": "string"
+            },
+            "selectedInnerColor": {
+              "description": "The outer selected data area border color. The default value comes from the CSS and varies based on theme.",
+              "type": "string"
+            },
+            "selectedOuterColor": {
+              "description": "The outer selected data area border color. The default value comes from the CSS and varies based on theme.",
+              "type": "string"
+            }
+          }
+        },
+        "dataMarkerDefaults": {
+          "description": "An object defining the default styles for data markers. Properties specified on this object may be overridden by specifications on the data object.",
+          "type": "Object",
+          "value": {
+            "borderWidth": 0.5,
+            "borderStyle": "solid",
+            "height": 8,
+            "labelStyle": {},
+            "opacity": 1,
+            "shape": "circle",
+            "width": 8
+          },
+          "properties": {
+            "borderColor": {
+              "description": "The border color. The default value comes from the CSS and varies based on theme.",
+              "type": "string"
+            },
+            "borderStyle": {
+              "description": "The border style.",
+              "type": "string",
+              "value": "solid",
+              "enumValues": [
+                "none",
+                "solid"
+              ],
+              "propertyEditorValues": {
+                "none": {
+                  "displayName": "None"
+                },
+                "solid": {
+                  "displayName": "Solid"
+                }
+              }
+            },
+            "borderWidth": {
+              "description": "The border width in pixels.",
+              "type": "number",
+              "value": 0.5,
+              "units": "\"pixels\""
+            },
+            "color": {
+              "description": "The fill color of a marker. The default value comes from the CSS and varies based on theme.",
+              "type": "string"
+            },
+            "height": {
+              "description": "The default marker pixel height. Note that this option will be ignored if a value is provided to calculate marker sizes.",
+              "type": "number",
+              "value": 8,
+              "units": "\"pixels\""
+            },
+            "labelStyle": {
+              "description": "The CSS style for a marker label.",
+              "type": "Object",
+              "value": {}
+            },
+            "opacity": {
+              "description": "The default marker opacity.",
+              "type": "number",
+              "value": 1
+            },
+            "shape": {
+              "description": "The default marker shape. Can take the name of a built-in shape or the svg path commands for a custom shape.",
+              "type": "string",
+              "value": "circle"
+            },
+            "width": {
+              "description": "The default marker pixel width. Note that this option will be ignored if a value is provided to calculate marker sizes.",
+              "type": "number",
+              "value": 8,
+              "units": "\"pixels\""
+            }
+          }
+        },
+        "hoverBehaviorDelay": {
+          "description": "Specifies initial hover delay in ms for highlighting data items.",
+          "type": "number",
+          "value": 200,
+          "units": "\"milliseconds\""
+        },
+        "labelStyle": {
+          "description": "The CSS style for the area layer labels.",
+          "type": "Object",
+          "value": {}
+        },
+        "linkDefaults": {
+          "description": "An object defining the default styles for data areas. Properties specified on this object may be overridden by specifications on the data object.",
+          "type": "Object",
+          "value": {},
+          "properties": {
+            "color": {
+              "description": "The stroke color for links. The default value comes from the CSS and varies based on theme.",
+              "type": "string"
+            },
+            "width": {
+              "description": "The stroke width for links in pixels.",
+              "type": "number",
+              "value": 2,
+              "units": "\"pixels\""
+            }
+          }
+        }
+      }
+    },
+    "tooltip": {
+      "description": "An object containing an optional callback function for tooltip customization.",
+      "type": "Object",
+      "displayName": "Tooltip",
+      "value": {
+        "renderer": null
+      },
+      "properties": {
+        "renderer": {
+          "description": "A function that returns a custom tooltip.",
+          "type": "function"
+        }
+      }
+    },
+    "tooltipDisplay": {
+      "description": "Specifies the tooltip behavior of the thematic map.",
+      "type": "string",
+      "displayName": "Tooltip Display",
+      "value": "auto",
+      "enumValues": [
+        "auto",
+        "labelAndShortDesc",
+        "none",
+        "shortDesc"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "labelAndShortDesc": {
+          "displayName": "Label And Short Desc"
+        },
+        "none": {
+          "displayName": "None"
+        },
+        "shortDesc": {
+          "displayName": "Short Desc"
+        }
+      }
+    },
+    "touchResponse": {
+      "description": "Data visualizations require a press and hold delay before triggering tooltips and rollover effects on mobile devices to avoid interfering with page panning, but these hold delays can make applications seem slower and less responsive. For a better user experience, the application can remove the touch and hold delay when data visualizations are used within a non scrolling container or if there is sufficient space outside of the visualization for panning. If touchResponse is touchStart the element will instantly trigger the touch gesture and consume the page pan events if the element does not require an internal feature that requires a touch start gesture like panning or zooming. If touchResponse is auto, the element will behave like touchStart if it determines that it is not rendered within scrolling content and if element panning is not available for those elements that support the feature.",
+      "type": "string",
+      "displayName": "Touch Response",
+      "value": "auto",
+      "enumValues": [
+        "auto",
+        "touchStart"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "touchStart": {
+          "displayName": "Touch Start"
+        }
+      }
+    },
+    "trackResize": {
+      "description": "Defines whether the element will automatically render in response to changes in size. If set to off, then the application is responsible for calling refresh to render the element at the new size.",
+      "type": "string",
+      "displayName": "Track Resize",
+      "value": "on",
+      "enumValues": [
+        "off",
+        "on"
+      ],
+      "propertyEditorValues": {
+        "off": {
+          "displayName": "Off"
+        },
+        "on": {
+          "displayName": "On"
+        }
+      }
+    },
+    "translations": {
+      "description": "A collection of translated resources from the translation bundle, or null if this\ncomponent has no resources. Resources may be accessed and overridden individually or collectively, as seen in the examples. If the component does not contain any translatable resource, the default value of this attribute will be \nnull. If not, an object containing all resources relevant to the component.\n\nIf this component has translations, their documentation immediately follows this doc entry.",
+      "type": "Object|null",
+      "displayName": "Translations",
+      "translatable": true,
+      "properties": {
+        "componentName": {
+          "description": "Used to describe the data visualization type for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Thematic Map"
+        },
+        "labelAndValue": {
+          "description": "Used to display a label and its value.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "{0}: {1}"
+        },
+        "labelClearSelection": {
+          "description": "Text shown for clearing multiple selection on touch devices.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Clear Selection"
+        },
+        "labelCountWithTotal": {
+          "description": "Used to display a count out of a total.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "{0} of {1}"
+        },
+        "labelDataVisualization": {
+          "description": "Label for data visualizations used for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Data Visualization"
+        },
+        "labelInvalidData": {
+          "description": "Text shown when the component receives invalid data.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Invalid data"
+        },
+        "labelNoData": {
+          "description": "Text shown when the component receives no data.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "No data to display"
+        },
+        "stateCollapsed": {
+          "description": "Used to describe the collapsed state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Collapsed"
+        },
+        "stateDrillable": {
+          "description": "Used to describe a drillable object for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Drillable"
+        },
+        "stateExpanded": {
+          "description": "Used to describe the expanded state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Expanded"
+        },
+        "stateHidden": {
+          "description": "Used to describe the hidden state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Hidden"
+        },
+        "stateIsolated": {
+          "description": "Used to describe the isolated state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Isolated"
+        },
+        "stateMaximized": {
+          "description": "Used to describe the maximized state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Maximized"
+        },
+        "stateMinimized": {
+          "description": "Used to describe the minimized state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Minimized"
+        },
+        "stateSelected": {
+          "description": "Used to describe the selected state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Selected"
+        },
+        "stateUnselected": {
+          "description": "Used to describe the unselected state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Unselected"
+        },
+        "stateVisible": {
+          "description": "Used to describe the visible state for accessibility.\n\nSee the translations attribute for usage examples.",
+          "type": "string",
+          "value": "Visible"
+        }
+      }
+    },
+    "zooming": {
+      "description": "Determines whether element zooming is allowed.",
+      "type": "string",
+      "displayName": "Zooming",
+      "value": "none",
+      "enumValues": [
+        "auto",
+        "none"
+      ],
+      "propertyEditorValues": {
+        "auto": {
+          "displayName": "Auto"
+        },
+        "none": {
+          "displayName": "None"
+        }
+      }
+    }
+  },
+  "methods": {
+    "getArea": {
+      "description": "Returns an object for automation testing verification of an area with the specified index in the areas property.",
+      "params": [
+        {
+          "name": "index",
+          "description": "The index of the area in the areas Array.",
+          "type": "number"
+        }
+      ],
+      "return": "Object|null"
+    },
+    "getMarker": {
+      "description": "Returns an object for automation testing verification of a marker with the specified index in the markers property.",
+      "params": [
+        {
+          "name": "index",
+          "description": "The index of the marker in the markers Array.",
+          "type": "number"
+        }
+      ],
+      "return": "Object|null"
+    },
+    "getLink": {
+      "description": "Returns an object for automation testing verification of a link with the specified index in the links property.",
+      "params": [
+        {
+          "name": "index",
+          "description": "The index of the link in the links Array.",
+          "type": "number"
+        }
+      ],
+      "return": "Object|null"
+    },
+    "getContextByNode": {
+      "description": "Returns an object with context for the given child DOM node. This will always contain the subid for the node,\ndefined as the 'subId' property on the context object. Additional component specific information may also be included.\n\nFor more details on returned objects, see context objects.",
+      "params": [
+        {
+          "name": "node",
+          "description": "The child DOM node",
+          "type": "Element"
+        }
+      ],
+      "return": "Object|null"
+    },
+    "refresh": {
+      "description": "Refreshes the component.",
+      "return": "void"
+    },
+    "setProperty": {
+      "description": "Sets a property or a single subproperty for complex properties and notifies the component\nof the change, triggering a [property]Changed event.",
+      "params": [
+        {
+          "name": "property",
+          "description": "The property name to set. Supports dot notation for subproperty access.",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "description": "The new value to set the property to.",
+          "type": "*"
+        }
+      ],
+      "return": "void"
+    },
+    "getProperty": {
+      "description": "Retrieves a value for a property or a single subproperty for complex properties.",
+      "params": [
+        {
+          "name": "property",
+          "description": "The property name to get. Supports dot notation for subproperty access.",
+          "type": "string"
+        }
+      ],
+      "return": "*"
+    },
+    "setProperties": {
+      "description": "Performs a batch set of properties.",
+      "params": [
+        {
+          "name": "properties",
+          "description": "An object containing the property and value pairs to set.",
+          "type": "Object"
+        }
+      ],
+      "return": "void"
+    }
+  },
+  "slots": {
+    "contextMenu": {
+      "description": "The contextMenu slot is set on the oj-menu within this element. \nThis is used to designate the JET Menu that this component should launch as a context menu on right-click, Shift-F10, Press & Hold, or component-specific gesture. \nIf specified, the browser's native context menu will be replaced by the JET Menu specified in this slot.\n\nThe application can register a listener for the Menu's ojBeforeOpen event. The listener can cancel the launch via event.preventDefault(), \nor it can customize the menu contents by editing the menu DOM directly, and then calling refresh() on the Menu.\n\nTo help determine whether it's appropriate to cancel the launch or customize the menu, the ojBeforeOpen listener can use component API's to determine which \ntable cell, chart item, etc., is the target of the context menu. See the JSDoc and demos of the individual components for details. \n\nKeep in mind that any such logic must work whether the context menu was launched via right-click, Shift-F10, Press & Hold, or component-specific touch gesture."
+    }
+  }
+}

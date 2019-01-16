@@ -1,0 +1,242 @@
+<!-- ko if: $component.dataLoaded() -->
+<div class="form-main-container ">
+  <!-- ko if: !$component.isRegistered() -->
+  <div class="">
+    <div class="page-container">
+      <div class="oj-flex oj-flex-items-pad registration">
+        <!-- ko if: $component.registrationCompulsory()-->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom ">
+          <h3 class="primary-heading margin-bottom-20" data-bind="text: $component.resource.registration"></h3>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom">
+          <div class="text" data-bind="text:$component.resource.registrationCompulsoryMsg"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom">
+          <div class="text" data-bind="text: $component.resource.saveAndComplete4"></div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.registrationCompulsory()-->
+        <!-- ko if: $component.queryMap && $component.queryMap.regRefNo -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom ">
+          <div class="primary-heading margin-bottom-20" data-bind="text: $component.resource.registration"></div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.queryMap && $component.queryMap.regRefNo -->
+        <!-- ko if:$component.appRefNo() === undefined && $component.accountId() === undefined -->
+
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12  margin-bottom ">
+          <h3 class="primary-heading margin-bottom-20" data-bind="text: $component.resource.saveAndCompleteLater"></h3>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom">
+          <div class="text" data-bind="text:$component.resource.saveAndComplete1"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom">
+          <div class="text" data-bind="text: $component.resource.saveAndComplete2"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12  margin-bottom margin-top-20">
+          <div class="text" data-bind="text: $component.resource.saveAndComplete3"></div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.appRefNo() || $component.accountId() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom ">
+          <div class="primary-heading margin-bottom-20" data-bind="text: $component.resource.registration"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom">
+          <div class="text" data-bind="text: $component.resource.saveAndComplete4"></div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+      <div class="oj-flex oj-flex-items-pad" data-bind="with:$component.userCreationPayload()">
+        <div class="oj-flex-item">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+              <h4 class="form-heading" data-bind="text: $component.resource.defineLoginCredentials"></h4>
+            </div>
+          </div>
+          <oj-validation-group id="emailTracker">
+            <!-- ko if: $component.userNameType()==='EMAIL' -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="tooltip-section oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-1">
+                <label class="span-label label" data-bind="text: $component.resource.email,attr:{'for':'username1'}"></label>
+                <!-- ko if: $baseModel.large() -->
+                <div class="tooltip message-text" id="emailRequirementText_tooltip2" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.emailRequirementText,toolTipId:'emailRequirementText_tooltip2'}}">
+                </div>
+                <span class="icon-help" id="tool-tip-emailRequirementText-holder" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'emailRequirementText_tooltip2','tool-tip-emailRequirementText-holder'), mouseout: $component.hideToolTip.bind($data,'emailRequirementText_tooltip2') }"></span>
+                <!-- /ko -->
+                <!-- ko ifnot: $baseModel.large() -->
+                <a class="icon-help" href="javascript:void(0)" data-bind="click: function(){$('#emailRequiremnt').trigger('openModal')} ,attr:{alt: $component.resource.UserEmailRequirementsClick, title: $component.resource.UserEmailRequirementsClickTitle}"></a>
+                <!-- /ko -->
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+                <oj-input-text oncopy="return false" autocomplete="off" ondragstart="return false" onselectstart="return false" onpaste="return false" onmousedrop="return false" required maxlength="100" :id="[['username1']]" disabled="[[$component.disableRegistration]]"
+                  translations="[[{'required':{messageDetail:$component.resource.messages.email}}]]" :invalidcomponenttracker="[[$component.validationEmailTracker]]" validators="[[$baseModel.getValidator('EMAIL')]]" value="{{username}}"></oj-input-text>
+              </div>
+              <!-- ko if: $component.isEmailVerification() -->
+              <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2 label">
+                <a class="link" href="#" data-bind="click:$component.verifyEmail,text:$component.resource.generic.common.verify ,attr:{alt: $component.resource.UserVerifyEmailClick, title: $component.resource.UserVerifyEmailClick}"></a>
+              </div>
+              <!-- /ko -->
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-1 label">
+                <oj-label :for="[['confirmEmail'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.confirmEmail"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+                <oj-input-text oncopy="return false" autocomplete="off" ondragstart="return false" onselectstart="return false" onpaste="return false" onmousedrop="return false" required maxlength="100" disabled="[[$component.disableRegistration]]" :id="[['confirmEmail'+($baseModel.currentIdCount())]]"
+                  translations="[[{'required':{messageDetail:$component.resource.messages.email}}]]" validators="[[[$component.equalToEmail]]]" :invalidcomponenttracker="[[$component.validationEmailTracker]]" value="{{$component.confirmEmail}}"></oj-input-text>
+              </div>
+            </div>
+            <!-- /ko -->
+          </oj-validation-group>
+          <oj-validation-group id="pwdTracker">
+            <!-- ko if: !$component.userNameType() === 'EMAIL' -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-1">
+                <oj-label :for="[['username1']]"><span data-bind="text:$component.resource.userID"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 ">
+                <oj-input-text oncopy="return false" autocomplete="off" ondragstart="return false" onselectstart="return false" onpaste="return false" onmousedrop="return false" required disabled="[[$component.disableRegistration]]" maxlength="100" :id="[['username1']]"
+                  translations="[[{'required':{messageDetail:$component.resource.messages.email}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{username}}"></oj-input-text>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $component.passwordPolicyLoaded() -->
+            <div class="oj-flex oj-flex-items-pad ">
+              <div class="tooltip-section oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-1 label">
+                <oj-label class="span-label label" :for="[['pwd']]">
+                  <span data-bind="text:$component.resource.messages.password"></span>
+                  <!-- ko if: $baseModel.large() -->
+                  <div class="tooltip message-text" id="password_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component, message:$component.displaypasswordpolicy().childNodes[0].innerHTML, toolTipId:'password_tooltip'}}">
+                  </div>
+                  <span class="icon-help" id="tool-tip-password_tooltip-holder" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'password_tooltip','tool-tip-password_tooltip-holder'), mouseout: $component.hideToolTip.bind($data,'password_tooltip') }"></span>
+                  <!-- /ko -->
+                  <!-- ko ifnot: $baseModel.large() -->
+                  <a class="icon-help" href="javascript:void(0)" data-bind="click: function(){$('#passwordHint').trigger('openModal')} ,attr:{alt: $component.resource.passwordHintClick, title: $component.resource.passwordHintClick}"></a>
+                  <!-- /ko -->
+                </oj-label>
+                <modal-window class="origination-popup message" params="baseModel : $baseModel, rootModel : $component,id:'passwordHint', header:$component.resource.generic.common.info">
+                  <div class="message-text" data-bind="html:$component.displaypasswordpolicy().childNodes[0].innerHTML"></div>
+
+                </modal-window>
+
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 ">
+                <oj-input-password onmousedrop="return false" autocomplete="off" onpaste="return false" id="pwd" type="password" required disabled="[[$component.disableRegistration]]" translations="[[{'required':{messageDetail:$component.resource.messages.blankPassword}}]]"
+                  value="{{password}}"></oj-input-password>
+                <virtual-keyboard params="{baseModel : $baseModel,value:password, element: 'pwd'}"></virtual-keyboard>
+              </div>
+            </div>
+            <!-- /ko -->
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-1 label">
+                <oj-label for="cnfpwd" class="oj-label"><span data-bind="text:$component.resource.messages.confirmpassword"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+                <oj-input-password onmousedrop="return false" autocomplete="off" onpaste="return false" id="cnfpwd" type="password" required disabled="[[$component.disableRegistration]]" translations="[[{'required':{messageDetail:$component.resource.messages.blankConfirmPassword}}]]"
+                  validators="[[[$component.equalToPassword]]]" value="{{$component.passwordRepeat}}"></oj-input-password>
+                <virtual-keyboard params="{baseModel : $baseModel,value:$component.passwordRepeat, element: 'cnfpwd'}"></virtual-keyboard>
+              </div>
+
+            </div>
+          </oj-validation-group>
+        </div>
+        <oj-validation-group id="valTracker">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item" data-bind="template:{name:'origination/security-questions'}">
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item" data-bind="template:{name:'origination/terms-and-conditions'}">
+            </div>
+          </div>
+        </oj-validation-group>
+      </div>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel registration">
+    <!-- ko if: $component.queryMap && $component.queryMap.regRefNo -->
+    <oj-button raised="" id="submit" class="action-button-primary first-3 margin-bottom-80" on-click="[[registerUser]]">
+      <span data-bind="text:$component.resource.generic.common.register"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.queryMap && $component.queryMap.regRefNo -->
+    <!-- ko if:$component.appRefNo() || $component.accountId() -->
+    <oj-button raised="" id="submit" class="action-button-primary margin-bottom-80" on-click="[[registerUser]]">
+      <span data-bind="text:$component.resource.generic.common.register"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if:$component.appRefNo() === undefined && $component.accountId() === undefined -->
+    <!-- ko if:$component.registrationCompulsory() -->
+    <oj-button raised="" id="submit" class="action-button-primary first-3" on-click="[[registerUser]]">
+      <span data-bind="text:$component.resource.generic.common.submitApplication"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko ifnot:$component.registrationCompulsory() -->
+    <oj-button raised="" id="submit" class="action-button-primary first-3" on-click="[[registerUser]]">
+      <span data-bind="text:$component.resource.generic.common.saveApplication"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button raised="" id="cancelRegistration" class="action-button-secondary last-3 oj-button" on-click="[[$component.showPluginComponent.bind($data,'cancel-application')]]">
+      <span data-bind="text:$component.resource.generic.common.cancelApp"></span>
+    </oj-button>
+    <oj-button raised="" id="returnApplication" class="action-button-tertiary oj-button" on-click="[[function(){$component.productflowComponent(true);}]]">
+      <span data-bind="text:$component.resource.generic.common.returnApplication"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+  <!-- ko if: $component.isRegistered() -->
+  <!-- ko if: $component.queryMap && $component.queryMap.regRefNo -->
+  <div data-bind="template:{name:'origination/user-creation-confirmation/confirmation-through-mail' }"></div>
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <oj-button raised="" id="track" class="action-button-primary" on-click="[[$component.trackApplication]]">
+      <span data-bind="text:$component.resource.generic.common.trackApplication"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot: $component.queryMap && $component.queryMap.regRefNo -->
+  <!-- ko if: $component.appRefNo() === undefined && $component.accountId() === undefined -->
+  <div data-bind="template:{name:'origination/user-creation-confirmation/confirmation-without-id' }"></div>
+  <!-- /ko -->
+  <!-- ko if: $component.appRefNo() || $component.accountId() -->
+  <div data-bind="template:{name:'origination/user-creation-confirmation/confirmation-with-id' }"></div>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <oj-button raised="" id="track" class="action-button-primary" on-click="[[$component.trackApplication]]">
+      <span data-bind="text:$component.resource.generic.common.trackApplication"></span>
+    </oj-button>
+    <oj-button id="exit" class="action-button-secondary" on-click="[[function(){$baseModel.registerComponent('product-home','widgets/pre-login');$dashboard.switchModule('home',true);}]]">
+      <span data-bind="text:$component.resource.generic.common.homepage"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'emailVerification', header:$component.resource.generic.common.info">
+    <div class="" data-bind="component:{name:'otp-verification',params:{rootModel:$component,baseUrl:$component.baseUrl(),callback:verifyEmail,
+                                                  callbackFailure:function(){  $('#emailVerification').trigger('closeModal');},
+                                                  cancelCallback:function(){  $('#emailVerification').trigger('closeModal');}}}"></div>
+  </modal-window>
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'otpSuccess', header:$component.resource.generic.common.info">
+    <div class="message-text" data-bind="text:$component.resource.messages.emailVerified"></div>
+    <div class="message-btn button-container">
+      <oj-button id="" class="toUpperCase oj-button form-button-primary" on-click="[[function(){ $('#otpSuccess').trigger('closeModal');}]]">
+        <span data-bind="text:$component.resource.generic.common.ok"></span>
+      </oj-button>
+    </div>
+  </modal-window>
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'invalidEmailId', header:$component.resource.generic.common.info">
+    <div class="message-text" data-bind="$component.resource.messages.emailUnknown"></div>
+    <div class="message-btn button-container">
+      <oj-button id="" class="toUpperCase oj-button form-button-primary" on-click="[[function(){ $('#invalidEmailId').trigger('closeModal');}]]">
+        <span data-bind="text:$component.resource.generic.common.ok"></span>
+      </oj-button>
+    </div>
+  </modal-window>
+</div>
+<!-- /ko -->

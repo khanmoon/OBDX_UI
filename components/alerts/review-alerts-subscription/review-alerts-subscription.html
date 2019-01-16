@@ -1,0 +1,107 @@
+<div class="form-main-container">
+  <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6">
+      <div class="oj-flex oj-flex-items-pad alerts-header-row">
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8 header-title" data-bind="text:$component.resource.subscription.alertslist.alertType">
+        </div>
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4 pull-left header-title">
+          <div class="header-title" data-bind="text:$component.resource.subscription.alertslist.sendAlertVia">
+          </div>
+        </div>
+      </div>
+
+      <!-- ko foreach: koAlertModel -->
+
+
+      <div class="oj-flex oj-flex-items-pad alerts-list-row" data-bind="css:$data.activeEmail()||$data.activeSecure()||$data.activeSMS()?'selected':''">
+
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8 pull-left vertical-center alert-name" data-bind="text: alertName"></div>
+
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4 pull-left alert-icons alert-name">
+          <div class="oj-col oj-sm-12 oj-md-4 oj-lg-4 pull-left">
+            <!-- ko ifnot:destinationEmail -->
+            <a href="javascript:void(0)" data-bind="" class="disabled">
+                <span class="icons icon-mailbox disabled"></span>
+            </a>
+            <!-- /ko -->
+            <!-- ko if:destinationEmail && ($rawData.activeEmail()) -->
+            <a href="javascript:void(0)" data-bind="attr:{id:'email_selected_'+index},click: $component.toggleEmailSelect">
+                  <span class="icons icon-mailbox" title="Email">
+                  <span class="badge">
+                    <span class="icons icon-check"></span>
+                  </span>
+                  </span>
+                </a>
+            <!-- /ko -->
+
+            <!-- ko if:destinationEmail && (!$rawData.activeEmail())-->
+
+            <a href="javascript:void(0)" data-bind="attr:{id:'email_'+index},click: $component.toggleEmailSelect">
+              <span class="icons icon-mailbox" title="Email"></span>
+          </a>
+
+            <!-- /ko -->
+          </div>
+          <div class="oj-col oj-sm-12 oj-md-4 oj-lg-4 pull-left">
+            <!-- ko ifnot:destinationSMS -->
+            <a href="javascript:void(0)" data-bind="" class="disabled">
+            <span class="icons icon-sms"></span>
+            </a>
+            <!-- /ko -->
+            <!-- ko if:destinationSMS && ($rawData.activeSMS()) -->
+
+            <a href="javascript:void(0)" data-bind="attr:{id:'sms_'+index},click: $component.toggleSMSSelect">
+                  <span class="icons icon-sms" title="Sms">
+                  <span class="badge">
+                    <span class="icons icon-check"></span>
+                  </span>
+                  </span>
+                </a>
+            <!-- /ko -->
+
+            <!-- ko if:destinationSMS && (!$rawData.activeSMS())-->
+
+            <a href="javascript:void(0)" data-bind="attr:{id:'sms_'+index},click: $component.toggleSMSSelect">
+            <span class="icons icon-sms" title="Sms"></span>
+            </a>
+
+            <!-- /ko -->
+          </div>
+          <div class="oj-col oj-sm-12 oj-md-4 oj-lg-4 pull-left">
+            <!-- ko ifnot:destinationSecure -->
+            <a href="javascript:void(0)" data-bind="" class="disabled">
+             <span class="icons icon-on-screen-alerts"></span>
+             </a>
+            <!-- /ko -->
+            <!-- ko if:destinationSecure && ($rawData.activeSecure()) -->
+
+            <a href="javascript:void(0)" data-bind="attr:{id:'secure_'+index},click: $component.toggleSecureSelect">
+                     <span class="icons icon-on-screen-alerts" title="OnScreen">
+                     <span class="badge">
+                     <span class="icons icon-check"></span>
+                     </span>
+                     </span>
+                 </a>
+            <!-- /ko -->
+
+            <!-- ko if:destinationSecure && (!$rawData.activeSecure())-->
+             <a href="javascript:void(0)" data-bind="attr:{id:'secure_'+index},click: $component.toggleSecureSelect">
+               <span class="icons icon-on-screen-alerts" title="OnScreen"></span>
+             </a>
+            <!-- /ko -->
+          </div>
+        </div>
+      </div>
+
+      <!-- /ko -->
+
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'cheque-book-request'"></help>
+    </div>
+    <!-- /ko -->
+
+  </div>
+
+</div>

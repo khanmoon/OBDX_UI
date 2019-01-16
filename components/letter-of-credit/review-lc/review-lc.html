@@ -1,0 +1,53 @@
+<div class="form-main-container trade-finance">
+
+  <!-- ko ifnot:mode() === 'approval' -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+  <!-- /ko -->
+
+  <!-- ko if:dataLoaded() -->
+  <page-section params="baseModel : $baseModel, rootModel : $data">
+
+    <oj-accordion id="tradeFinanceAccordion">
+      <!-- ko foreach:stages -->
+      <oj-collapsible expanded="[['true']]" disabled="[['true']]">
+        <h3 slot="header">
+           <span>
+             <span data-bind="text: stageName"></span>
+           </span>
+        </h3>
+        <!-- ko ifnot:templateName === 'attach-documents' -->
+        <div class="stage-content" data-bind="template: templateName"> </div>
+        <!-- /ko -->
+        <!-- ko if:templateName === 'attach-documents' -->
+        <div id="attachDocs" class="stage-content" data-bind="component:{name:'attach-documents',
+        params:{rootModel: $component, attachDocList: $component.attachedDocuments, mode: $component.mode}}"></div>
+        <!-- /ko -->
+      </oj-collapsible>
+      <!-- /ko -->
+      </oj-accordion>
+
+  </page-section>
+
+  <!-- ko ifnot:mode() === 'approval' -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="confirmButton" class="action-button-primary" on-click="[[confirm]]">
+      <span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.confirm"></span>
+    </oj-button>
+    <!-- ko  ifnot: $baseModel.small() -->
+    <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+      <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button id="backbutton" class="action-button-tertiary" on-click="[[$component.editAll]]">
+      <span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+    </oj-button>
+  </div>
+
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+</div>

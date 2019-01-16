@@ -1,0 +1,194 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <div class="form-main-container submission-confirmation">
+    <div class=" registration">
+      <div class="page-container">
+        <!-- ko if: $component.accountId() === undefined -->
+        <div class="oj-flex oj-flex-items-pad oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 ">
+          <div class="primary-heading oj-flex-item" data-bind="text:$component.resource.thankNote"></div>
+        </div>
+
+
+        <div class="oj-flex oj-flex-items-pad oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 header-margin-top">
+          <div class="oj-flex-item">
+            <span class="text application-no" data-bind="text: $component.productDetails().offers.offerName"></span>
+          </div>
+
+        </div>
+        <div class="oj-flex oj-flex-items-pad oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+
+          <div class="oj-flex-item">
+            <span class="text emphasize  margin-bottom" data-bind="html:$baseModel.format($component.resource.appRefNo,{applicationRefNo:applicationRefNo})"></span>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="text oj-flex-item oj-sm-12 oj-md-12 oj-lg-12  " data-bind="html:$baseModel.format($component.resource.refstatus,{bold:'bold',applicationStatus:$component.resource.applicationStatus[$component.applicationStatus()]})">
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad header-margin-top">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12   primary-heading" data-bind="text:$component.resource.nxtSteps"></div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label class="text">
+              <ul>
+                <li data-bind="text:$component.resource.refMsg1"></li>
+                <!-- ko if: $component.productDetails().productClassName === 'CASA' || $component.productDetails().productClassName === 'TERM_DEPOSITS'-->
+                <li data-bind="text:$component.resource.refMsg2"></li>
+                <!-- /ko -->
+                <li data-bind="text:$component.resource.msg2"></li>
+                <!-- ko if: $component.productDetails().productClassName === 'CASA' -->
+                <li data-bind="text:$component.resource.msg3"></li>
+                <!-- /ko -->
+                <!-- ko if: $component.productDetails().productClassName === 'CREDIT_CARD' -->
+                <li data-bind="text:$component.resource.cardRefMsg1"></li>
+                <!-- /ko -->
+              </ul>
+            </oj-label>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: $component.accountId() !== undefined -->
+        <div class="oj-flex oj-flex-items-pad ">
+          <!-- ko if: $component.productDetails().productClassName === 'CASA' -->
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12   primary-heading" data-bind="html:$baseModel.format($component.resource.congratsMsg,{offerName :$component.productDetails().offers.offerName})"></div>
+          <!-- /ko -->
+          <!-- ko if: $component.productDetails().productClassName === 'TERM_DEPOSITS' -->
+          <div class=" oj-flex-item oj-sm-12 oj-md-12 oj-lg-12   primary-heading" data-bind="html:$baseModel.format($component.resource.congratsMsgTD,{offerName :$component.productDetails().offers.offerName})"></div>
+          <!-- /ko -->
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="bold oj-flex-item oj-sm-12 oj-md-12 oj-lg-12  ">
+            <span class="emphasize text" data-bind="html:$baseModel.format($component.resource.accNo,{identificationTypeAcc:identificationTypeAcc})"></span>
+          </div>
+        </div>
+
+
+
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class=" text oj-flex-item oj-sm-12 oj-md-12 oj-lg-12  " data-bind="html:$baseModel.format($component.resource.status,{bold:'bold'})">
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad header-margin-top">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12   primary-heading" data-bind="text:$component.resource.nxtSteps"></div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-12 oj-lg-12  ">
+            <oj-label class="text">
+              <ul>
+                <li data-bind="text:$component.resource.msg1"></li>
+                <li data-bind="text:$component.resource.msg2"></li>
+                <!-- ko if: $component.productDetails().productClassName === 'CASA' -->
+                <li data-bind="text:$component.resource.msg3"></li>
+                <!-- /ko -->
+              </ul>
+            </oj-label>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+      <!-- ko ifnot: $component.registrationCompulsory() -->
+      <!-- ko if: $component.dataLoaded()  -->
+      <!-- ko if: $component.applicantDetails()[1]  -->
+      <div class="oj-flex oj-flex-items-pad">
+
+        <!-- ko if: $component.applicantDetails()[1].applicantType() === 'anonymous' && !$component.applicantDetails()[1].channelUser() -->
+        <!-- ko ifnot:  $component.isCoApplogin() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom-20 primary-heading header-margin-top">
+          <div data-bind="text: $component.resource.coAppregister"></div>
+        </div>
+        <div class="form-content">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12  ">
+              <div data-bind="text: $component.resource.coApplinkMsg"></div>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+              <oj-input-text oncopy="return false" autocomplete="off" ondragstart="return false" onselectstart="return false" onpaste="return false" onmousedrop="return false" required maxlength="100" :id="[['username2']]" translations="[[{'required':{messageDetail:$component.resource.messages.email}}]]"
+                validators="[[$baseModel.getValidator('EMAIL')]]" value="{{$component.userCreationPayload().coApp.username}}"></oj-input-text>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+              <oj-button raised="" id="sendlink" class="action-button-primary " on-click="[[$component.registerCoAppUser]]">
+                <span data-bind="text:$component.resource.sendlink"></span></oj-button>
+            </div>
+          </div>
+          <!-- ko if:  $component.coAppRegSuccessful()  -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-10 oj-md-9 oj-lg-8  ">
+              <div data-bind="text: $component.resource.messages.coAppMsg"></div>
+            </div>
+            <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1">
+              <span class="icon icon-success section-icon pull-right done-icon"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: ($component.applicantDetails()[1].applicantType() === 'customer' && $component.applicantDetails()[1].channelUser()) && ($component.applicantDetails()[0].applicantType() === 'anonymous' && !$component.applicantDetails()[0].channelUser()) -->
+        <!-- ko if:  $component.isCoApplogin()  -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 margin-bottom-20 primary-heading header-margin-top">
+          <div data-bind="text: $component.resource.primaryAppregister"></div>
+        </div>
+        <div class="form-content">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12  ">
+              <div data-bind="text: $component.resource.primaryApplinkMsg"></div>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+              <oj-input-text oncopy="return false" autocomplete="off" ondragstart="return false" onselectstart="return false" onpaste="return false" onmousedrop="return false" required maxlength="100" :id="[['username2']]" translations="[[{'required':{messageDetail:$component.resource.messages.email}}]]"
+                validators="[[$baseModel.getValidator('EMAIL')]]" value="{{$component.userCreationPayload().coApp.username}}"></oj-input-text>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+              <oj-button raised="" id="sendlink" class="action-button-primary " on-click="[[$component.registerCoAppUser]]">
+                <span data-bind="text:$component.resource.sendlink"></span></oj-button>
+            </div>
+          </div>
+          <!-- ko if:  $component.coAppRegSuccessful()  -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-10 oj-md-9 oj-lg-8  ">
+              <div data-bind="text: $component.resource.messages.coAppMsg"></div>
+            </div>
+            <div class="oj-flex-item oj-sm-2 oj-md-1 oj-lg-1">
+              <span class="icon icon-success section-icon pull-right done-icon"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+  </div>
+</page-section>
+
+<div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+  <!-- ko if: !$component.productDetails().isRegistered -->
+  <oj-button raised="" id="saveForLater" class="action-button-primary" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]">
+    <span data-bind="text:$component.resource.generic.common.register"></span></oj-button>
+  <!-- /ko -->
+  <!-- ko if: $component.productDetails().isRegistered -->
+  <oj-button raised="" id="trackApplications" class="action-button-primary" on-click="[[function(){$baseModel.switchPage({homeComponent:{module:'application-tracking',component: 'application-tracking-base', query: {context: 'index'}}},true, true);}]]">
+    <span data-bind="text:$component.resource.generic.common.trackApplication"></span></oj-button>
+  <!-- /ko -->
+  <oj-button id="exitApplications" class="action-button-secondary" on-click="[[function(){$component.registerComponent('product-home','widgets/pre-login');$dashboard.switchModule('home');}]]"><span data-bind="text:$component.resource.generic.common.homepage"></span></oj-button>
+</div>
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'successfulRegistration', header: $component.resource.generic.common.info">
+    <div class="message-text scroll" data-bind="text:$component.successfulRegistrationMsg()"></div>
+    <div class="message-btn button-container">
+      <oj-button id="hideButton" class="toUpperCase form-button-primary" on-click="[[function(){$('#successfulRegistration').trigger('closeModal')}]]"> <span data-bind="text:$component.resource.generic.common.ok"></span></oj-button>
+    </div>
+    <div data-bind="template:{afterRender: function(){if($component.registrationCompulsory() && !($component.applicantDetails()[1].applicantType() === 'customer')){$('#successfulRegistration').trigger('openModal');}}}"></div>
+  </modal-window>
+</div>

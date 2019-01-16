@@ -1,0 +1,309 @@
+<div class="form-main-container application-list-container">
+<page-section params="baseModel : $baseModel, rootModel : $data">
+
+  <!-- ko if : submissionIdList() === undefined || submissionIdList().length === 0-->
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-panel">
+      <span data-bind="text: $component.resource.noApplications">
+                </span>
+    </div>
+  </div>
+  <!-- /ko -->
+
+
+  <!-- ko ifnot : submissionIdList() === undefined || submissionIdList().length === 0-->
+  <!-- ko if : isSubmittedApplicationsDataFetched() && isDraftApplicationsDataFetched() -->
+  <div class="form-container dashboard-container applications">
+    <div class=" oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-lg-2 applications__links">
+        <div class="oj-label">
+          <h3 :for="applicationTypes"><span data-bind="text:$component.resource.applicationType"></span></h3>
+        </div>
+      </div>
+      <!--Buttons for Toggling between Submissions and Draft-->
+      <div class="oj-flex-item button-container">
+        <oj-buttonset-one id="applicationTypes" on-value-changed="[[toggleApplicationsView]]" value="{{$component.applicationValue()}}">
+          <oj-option name="applicationTypes" class="applicationTypes" value="{{'SUBMITTED'}}" :id="[['Sub']]"><span data-bind="attr: {for: 'Sub'}, text: $component.resource.submitted"></span></oj-option>
+          <oj-option name="applicationTypes" class="applicationTypes" value="{{'DRAFT'}}" :id="[['Draft']]"><span data-bind="attr: {for: 'Draft'}, text: $component.resource.draft"></span></oj-option>
+        </oj-buttonset-one>
+      </div>
+    </div>
+
+    <!-- ko if : showSubmittedApplications() -->
+    <div class="oj-flex oj-flex-items-pad primary-heading">
+      <div class="oj-sm-12 oj-md-12 oj-lg-12 oj-flex-item">
+        <h3 data-bind="text: $component.resource.submittedApplications"></h3>
+      </div>
+    </div>
+
+    <!-- ko if : applicationsList() === undefined || applicationsList().length === 0-->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="application-summary-card oj-panel oj-flex-item">
+        <div class=" view-item-text">
+          <span data-bind="text: $component.resource.noApplicationsSubmitted">
+            </span>
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if : applicationsList().length > 0 -->
+    <!-- ko foreach : applicationsList-->
+    <!-- ko if : $parent.payLoad()-->
+    <a class="oj-flex oj-flex-items-pad application-summary-card oj-panel card" href="javascript:void(0)" data-bind="click : $parent.clickApplicationSummary.bind($data,$data,progress()), attr:{alt: $component.resource.summaryCardClick, title: $component.resource.summaryCardClickTitle}">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 track">
+        <div class="oj-flex oj-flex-items-pad application-card-row">
+          <h3 class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 application-summary-title" data-bind="text:$data.applications[0].productType"></h3>
+          <!-- ko if : $data.applications[0].productAmount -->
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 amount" data-bind="text:$baseModel.formatCurrency($data.applications[0].productAmount.amount,$data.applications[0].productAmount.currency)"></div>
+          <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad tracker">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 content-left link">
+            <div class="oj-flex oj-flex-items-pad application-summary-content">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                <span class="label-text" data-bind="text:$component.resource.applicationId"></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <span class="value-text" data-bind="text:$data.applications[0].applicationId.displayValue"></span>
+              </div>
+            </div>
+            <!-- ko if : $data.applications[0].remarks -->
+            <div class=" oj-flex oj-flex-items-pad application-summary-content">
+
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                <span class="label-text" data-bind="text:$component.resource.applicantName"></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <span class="value-text" data-bind="text:$data.applications[0].remarks"></span>
+              </div>
+
+            </div>
+            <!-- /ko -->
+            <!-- ko if : $data.applications[0].submissionDate -->
+            <div class="oj-flex oj-flex-items-pad application-summary-content">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                <span class="label-text" data-bind="text:$component.resource.submittedDate"></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <span class="value-text" data-bind="text:$baseModel.formatDate($data.applications[0].submissionDate)"></span>
+              </div>
+            </div>
+            <!-- /ko -->
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 content-right link">
+
+            <div class="oj-flex oj-flex-items-pad application-summary-content">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6 no-pad-cols">
+
+                <oj-progress id="progressbar" value="{{progress()}}" class="progress-bar"></oj-progress>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-2">
+                <span class="" data-bind="text :  $baseModel.format($component.resource.progress,{progress:progress()})"></span>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad application-summary-content">
+              <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+                <span class="label-text" data-bind="text:$component.resource.status"></span>
+              </div>
+              <!-- ko if : $data.applications[0].submissionStatus-->
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7">
+                <span class="value-text" data-bind="text:$component.resource.submissionStatus[$data.applications[0].submissionStatus]"></span>
+              </div>
+              <!-- /ko -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </a>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: !showSubmittedApplications() -->
+    <div class="oj-flex oj-flex-items-pad primary-heading ">
+      <div class="oj-sm-12 oj-md-12 oj-lg-12 oj-flex-item">
+        <h3 data-bind="text: $component.resource.draftApplications "></h3>
+      </div>
+    </div>
+
+    <!-- ko if : draftApplications() === undefined || draftApplications().length === 0 -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="application-summary-card oj-panel oj-flex-item ">
+        <div class="view-item-text ">
+          <span data-bind="text: $component.resource.noApplicationsInDraft ">
+              </span>
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if : draftApplications().length > 0 -->
+
+
+    <!-- ko foreach : draftApplications-->
+    <!-- ko if : $data.loanApplicationRequirementDTO -->
+    <a class="oj-flex oj-flex-items-pad application-summary-card oj-panel card" href="javascript:void(0)" data-bind="click : $parent.resumeApplication.bind($data,$data.loanApplicationRequirementDTO),attr:{alt: $component.resource.resumeApplicationCard ,title:$component.resource.resumeApplicationCard} ">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 track">
+        <div class="oj-flex oj-flex-items-pad application-card-row ">
+          <!-- ko if : loanApplicationRequirementDTO.purposeType -->
+          <h3 class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-12 application-summary-title " data-bind="text: $baseModel.format($component.resource.loanCardHeading,{productGroup:loanApplicationRequirementDTO.productGroupName, purposeType: loanApplicationRequirementDTO.purposeType}) "></h3>
+          <!-- /ko -->
+          <!-- ko ifnot : loanApplicationRequirementDTO.purposeType -->
+          <h3 class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-12 application-summary-title " data-bind="text: $baseModel.format($component.resource.loanHeading,{productGroup:loanApplicationRequirementDTO.productGroupName,productType: $component.resource.productClass[loanApplicationRequirementDTO.productSubClass]})"></h3>
+          <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad tracker">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 content-left link">
+            <div class="oj-flex oj-flex-items-pad application-summary-content">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                <span class="label-text " data-bind="text:$component.resource.submissionId "></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <span class="value-text " data-bind="text:loanApplicationRequirementDTO.submissionId.displayValue "></span>
+              </div>
+
+            </div>
+            <!-- ko if: !( loanApplicationRequirementDTO.requestedTenure.years === 0 && loanApplicationRequirementDTO.requestedTenure.months ===0 && loanApplicationRequirementDTO.requestedTenure.days ===0 )-->
+            <div class="oj-flex oj-flex-items-pad application-summary-content">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                <span class="label-text " data-bind="text : $component.resource.requestedTenure ">                 </span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <span class="value-text " data-bind="text : $baseModel.format($component.resource.tenure, {years: loanApplicationRequirementDTO.requestedTenure.years, months: loanApplicationRequirementDTO.requestedTenure.months})"></span>
+              </div>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad ">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                <span class="label-text " data-bind="text:$component.resource.status "></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <span class="value-text " data-bind="text:$component.resource.draft "></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+    <!-- /ko -->
+    <!-- ko if : $data.depositApplicationRequirementDTO && $data.depositApplicationRequirementDTO.productGroupLinkageType === 'TERM_DEPOSIT' -->
+    <a class="oj-flex oj-flex-items-pad application-summary-card oj-panel" href="javascript:void(0)" data-bind="click : $parent.resumeApplication.bind($data,$data.depositApplicationRequirementDTO),attr:{alt: $component.resource.applicationCardClick, title: $component.resource.applicationCardClick}">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <div class="oj-flex oj-flex-items-pad application-card-row ">
+          <h3 class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 application-summary-title " data-bind="text: depositApplicationRequirementDTO.productGroupName "></h3>
+
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 content-left link">
+            <div class="oj-flex oj-flex-items-pad application-summary-content">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 ">
+                <span class="label-text " data-bind="text:$component.resource.submissionId "></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7 ">
+                <span class="value-text " data-bind="text:depositApplicationRequirementDTO.submissionId.displayValue "></span>
+              </div>
+            </div>
+            <!-- ko ifnot : $data.depositApplicationRequirementDTO.requestedTenure===undefined  -->
+            <div class="oj-flex oj-flex-items-pad application-summary-content">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                <span class="label-text " data-bind="text : $component.resource.requestedTenure "></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <span class="value-text " data-bind="text :   $baseModel.format($component.resource.tenure, {years: depositApplicationRequirementDTO.requestedTenure.years, months: depositApplicationRequirementDTO.requestedTenure.months})"></span>
+              </div>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 ">
+                <span class="label-text " data-bind="text:$component.resource.status "></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7 ">
+                <span class="value-text " data-bind="text:$component.resource.draft "></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- /ko -->
+
+    <!-- ko if : $data.creditCardApplicationRequirementDTO && $data.creditCardApplicationRequirementDTO.productGroupLinkageType === 'CREDIT_CARD' -->
+    <a class="oj-flex oj-flex-items-pad application-summary-card oj-panel" href="javascript:void(0)" data-bind="click : $parent.resumeApplication.bind($data,$data.creditCardApplicationRequirementDTO),attr:{alt: $component.resource.forResumeApplication, title: $component.resource.forResumeApplication} ">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <div class="oj-flex oj-flex-items-pad application-card-row ">
+          <h3 class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-12 application-summary-title " data-bind="text: creditCardApplicationRequirementDTO.productGroupName "></h3>
+          <!--<div class = "oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 amount " data-bind = "text : $baseModel.formatCurrency(creditCardApplicationRequirementDTO.requestedAmount.amount,creditCardApplicationRequirementDTO.requestedAmount.currency) "></div>-->
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 content-left link">
+            <div class="oj-flex oj-flex-items-pad application-summary-content">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 ">
+                <span class="label-text " data-bind="text:$component.resource.submissionId "></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7 ">
+                <span class="value-text " data-bind="text:submissionId.displayValue "></span>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 ">
+                <span class="label-text " data-bind="text:$component.resource.status "></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7 ">
+                <span class="value-text " data-bind="text:$component.resource.draft "></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+    <!-- /ko -->
+
+    <!-- ko if : $data.depositApplicationRequirementDTO && $data.depositApplicationRequirementDTO.productGroupLinkageType === 'DEMAND_DEPOSIT'-->
+    <a class="oj-flex oj-flex-items-pad application-summary-card oj-panel" href="javascript:void(0)" data-bind="click : $parent.resumeApplication.bind($data,$data.depositApplicationRequirementDTO) ,attr:{alt: $component.resource.forDepositApplication, title: $component.resource.forDepositApplication}">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <div class="oj-flex oj-flex-items-pad application-card-row ">
+          <h3 class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-12 application-summary-title " data-bind="text: depositApplicationRequirementDTO.productGroupName "></h3>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 content-left link">
+            <div class="oj-flex oj-flex-items-pad application-summary-content">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 ">
+                <span class="label-text " data-bind="text:$component.resource.submissionId "></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7 ">
+                <span class="value-text " data-bind="text:depositApplicationRequirementDTO.submissionId.displayValue "></span>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 ">
+                <span class="label-text " data-bind="text:$component.resource.status "></span>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7 ">
+                <span class="value-text " data-bind="text:$component.resource.draft "></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  </page-section>
+
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel display-inline-block">
+    <oj-button id="homePage" class="action-button-primary " on-click="[[function(){$dashboard.switchModule('home');}]]">
+      <span data-bind="text:$component.resource.homepage"></span>
+    </oj-button>
+  </div>
+</div>

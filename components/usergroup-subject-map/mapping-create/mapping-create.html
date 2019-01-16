@@ -1,0 +1,81 @@
+<div class="form-main-container">
+    <!-- ko ifnot: loadReviewComponent -->
+    <!-- ko ifnot: showConfirmation -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <oj-label for="mappingcode"><span data-bind="text:$component.nls.fieldname.mappingCode"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6 label" data-bind="attr:{'aria-label': $component.nls.fieldname.mappingCode}">
+                <oj-input-text maxlength="20" id="mappingcode" required :invalidcomponenttracker="[[$component.validationTracker]]" value="{{mappingCode}}"></oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <oj-label for="mappingDesc"><span data-bind="text:$component.nls.fieldname.mappingDesc"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6 label">
+                <oj-input-text maxlength="80" id="mappingDesc" required :invalidcomponenttracker="[[$component.validationTracker]]" value="{{mappingDesc}}"></oj-input-text>
+            </div>
+        </div>
+
+
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.nls.headers.mppingDetails">
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="usertype" class="talign-left"><span data-bind="text:$component.nls.fieldname.groupCode"></span></oj-label>
+            </div>
+            <!-- ko if: groupCodeEnumsLoaded -->
+            <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-6">
+                <oj-select-one required id="usertype" on-value-changed="[[groupCodeCreateChangeHandler]]" :placeholder="[[nls.fieldname.select]]" value="{{selectedUserGroupId}}">
+                    <!-- ko foreach: groupCodeEnums -->
+                    <oj-option value="{{groupCodeId}}"><span data-bind="text:groupCodeName"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+
+            </div>
+            <!-- /ko -->
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                <oj-label><span data-bind="text:$component.nls.fieldname.subject"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 no-pad-cols" data-bind='component:{name: "list-mail-categories", params:{rootModel: $data}}'>
+            </div>
+        </div>
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.reviewMapping]]">
+    <span data-bind="text:nls.buttons.save"></span>
+</oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:nls.buttons.cancel"></span>
+</oj-button>
+        <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+      <span data-bind="text:nls.buttons.back"></span>
+</oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <!-- ko if: loadReviewComponent -->
+    <!-- ko ifnot : showConfirmation -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.generic.common.review , reviewHeader :$component.nls.fieldname.addReviewHeaderMsg}}"></div>
+    <div data-bind="component: { name: 'review-mapping-create',params:{rootModel:$component}}"></div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.createMapping]]">
+    <span data-bind="text:nls.buttons.confirm"></span>
+</oj-button>
+<oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+<span data-bind="text:nls.buttons.cancel"></span>
+</oj-button>
+<oj-button class="action-button-tertiary" on-click="[[$component.edit]]">
+<span data-bind="text:nls.buttons.back"></span>
+</oj-button>
+
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+
+</div>

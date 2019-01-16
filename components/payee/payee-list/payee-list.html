@@ -1,0 +1,218 @@
+<div class="payee-list">
+  <div data-bind='component:{name:"account-type-dialog", params:{rootModel: $component, modalCloseHandler : accountTypeModalCloseHandler }}'></div>
+  <!-- ko if: dataSourceCreated() -->
+
+  <!-- ko if:!$baseModel.large() -->
+  <div class="oj-flex oj-flex-items-pad cust-details">
+    <div class="oj-flex-item oj-sm-12 label">
+      <label class="oj-label" for="payment-type" data-bind="text:$component.payments.beneficiaryDetails.labels.title"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-12">
+      <oj-radioset class="oj-choice-direction-row" id="radioFavorite" :aria-label="[[$component.payments.payee.navBarDescription]]" on-value-changed="[[$component.radioPayeeHandler]]" value="{{$component.type}}">
+        <!-- ko foreach: menuCountOptions -->
+        <oj-option name="radiovalue" value="{{id}}" :id="[[id]]" :data-id="[[id]]"><span class="label" data-bind="attr: {for: id},text: label"></span></oj-option>
+        <!-- /ko -->
+      </oj-radioset>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <div class="form-main-container">
+    <!-- ko if:$baseModel.large() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8" data-bind='component:{name: "nav-bar",
+                  params:{rootModel: $data,menuOptions: menuCountOptions, uiOptions:uiOptions,navBarDescription:$component.payments.payee.navBarDescription}}'>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 pull-right right">
+          <oj-button class="action-button-primary" id="createbutton" on-click="[[openChoiseBox]]">
+            <span data-bind="text:payments.generic.common.create"></span>
+          </oj-button>
+        </div>
+      </div>
+
+      <div class="oj-flex  oj-flex-items-pad">
+        <div class="oj-flex-item" data-bind="component: {
+             name: 'search-box',
+             params: {searchFields : ['name'], rootModel:$component ,data:accountListDetailsDataSource,searchBy:$component.payments.beneficiaryDetails.labels.placeholderName}
+              }">
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <!-- ko if:accountsTable() -->
+        <oj-table id="table" :aria-label="[[$component.payments.tableHeaders.tableHeader]]" columns="[[[{headerText:$component.payments.payee.recipientname,renderer:$oj.KnockoutTemplateUtils.getRenderer('acc_name_link', true), sortProperty:'name'},{headerText:$component.payments.payee.accounttype,field:'type'},{headerText:$component.payments.payee.accountDetails,renderer:$oj.KnockoutTemplateUtils.getRenderer('account_details', true)},{headerText:$component.payments.payee.accountnickname,field:'nickName'},{headerText:$component.payments.payee.createdBy,field:'createdBy'},{headerText:$component.payments.payee.availableFor,field:'payeeAccessType'}]]]"
+          columns-default="[[{sortable:'enabled'}]]" data="[[accountListDetailsDataSource]]">
+
+        </oj-table>
+        <!-- /ko -->
+
+        <script type="text/html" id="acc_name_link">
+          <td>
+            <a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.payee.linkDetails,{name: name}), alt : $baseModel.format($component.payments.payee.linkDetails,{name: name}) },text:$context.row.name,
+                        click:$dashboard.loadComponent.bind($data,'payee-details',$context.row,$component)"></a>
+          </td>
+        </script>
+
+        <script type="text/html" id="account_details">
+          <td>
+            <div data-bind="text:$context.row.accountNumber"></div>
+            <div data-bind="text:$context.row.bankName"></div>
+          </td>
+        </script>
+
+        <!-- ko if:demandDraftTable() -->
+        <oj-table id="table" :aria-label="[[$component.payments.tableHeaders.tableHeader]]" columns="[[[{headerText:$component.payments.payee.recipientname,renderer:$oj.KnockoutTemplateUtils.getRenderer('dd_name_link', true),sortProperty:'name'},{headerText:$component.payments.payee.drafttype,field:'type'},{headerText:$component.payments.payee.draftfavouring,field:'nickName'},{headerText:$component.payments.payee.createdBy,field:'createdBy'},{headerText:$component.payments.payee.availableFor,field:'payeeAccessType'}]]]"
+          columns-default="[[{sortable:'enabled'}]]" data="[[accountListDetailsDataSource]]">
+
+        </oj-table>
+        <!-- /ko -->
+        <script type="text/html" id="dd_name_link">
+          <td>
+            <a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.payee.linkDetails,{name: name}), alt : $baseModel.format($component.payments.payee.linkDetails,{name: name}) },text:$context.row.name ,
+                        click:$dashboard.loadComponent.bind($data,'payee-details',$context.row,$component)"></a>
+          </td>
+        </script>
+        <oj-paging-control class="oj-flex-item oj-sm-12" id="paging1" slot="bottom" :page-size="[[10]]" data="[[accountListDetailsDataSource]]">
+        </oj-paging-control>
+      </div>
+    </page-section>
+    <!-- /ko -->
+
+    <!-- ko if:$baseModel.large() -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-secondary" id="cancelbutton" on-click="[[$dashboard.switchModule.bind($data)]]">
+        <span data-bind="text:$component.payments.generic.common.cancel"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if:!$baseModel.large() -->
+    <!-- ko ifnot:$component.choiseBoxOpened() -->
+    <a href="#" data-bind="click: $component.openChoiseBox">
+      <div class="floating-button"><span class="icons icon-plus"></span></div>
+    </a>
+    <!-- /ko -->
+    <!-- ko if:$component.choiseBoxOpened() -->
+    <a href="#" data-bind="click: $component.closeModal">
+      <div class="floating-button"><span class="icons icon-cross"></span></div>
+    </a>
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <!-- ko if:!$baseModel.large() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+      <div class="oj-flex  oj-flex-items-pad oj-sm-12">
+        <div class="oj-flex-item oj-sm-12" data-bind="component: {
+             name: 'search-box',
+             params: {searchFields : ['name'], rootModel:$component ,data:accountListDetailsDataSource,searchBy:$component.payments.beneficiaryDetails.labels.placeholderName}
+              }">
+        </div>
+      </div>
+      <!-- ko if:accountsTable() -->
+      <oj-list-view class="payments" :aria-label="[[$component.payments.tableHeaders.tableHeader]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('payeeListAcc_template',true)}]]" data="[[accountListDetailsDataSource]]">
+      </oj-list-view>
+
+      <script type="text/html" id="payeeListAcc_template">
+        <li class="payments-list__listItem" data-bind="attr: {id: $data['name']}">
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+              <label data-bind="text:$component.payments.payee.recipientname"></label>
+              <div><a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.payee.linkDetails,{reference: name}), alt : $baseModel.format($component.payments.payee.linkDetails,{reference: name}) },text:name ,
+                                    click:$dashboard.loadComponent.bind($data,'payee-details',$data,$component)"></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-6">
+              <label data-bind="text:$component.payments.payee.accounttype"></label>
+              <div data-bind="text: type"></div>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-6">
+              <label data-bind="text:$component.payments.payee.accountDetails"></label>
+              <div class=" acc-no" data-bind="text:accountNumber"></div>
+              <div data-bind="text:bankName"></div>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+              <label data-bind="text:$component.payments.payee.accountnickname"></label>
+              <div class=" party-name" data-bind="text: nickName"></div>
+            </div>
+          </div>
+
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-6">
+              <label data-bind="text:$component.payments.payee.createdBy"></label>
+              <div data-bind="text: createdBy"></div>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6">
+              <label data-bind="text:$component.payments.payee.availableFor"></label>
+              <div data-bind="text: payeeAccessType"></div>
+            </div>
+          </div>
+        </li>
+      </script>
+      <!-- /ko -->
+
+      <!-- ko if:demandDraftTable() -->
+      <oj-list-view class="payments" :aria-label="[[$component.payments.tableHeaders.tableHeader]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('payeeListDd_template',true)}]]" data="[[accountListDetailsDataSource]]">
+      </oj-list-view>
+
+      <script type="text/html" id="payeeListDd_template">
+        <li class="payments-list__listItem" data-bind="attr: {id: $data['name']}">
+
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+              <label data-bind="text:$component.payments.payee.recipientname"></label>
+              <div><a href="#" data-bind="attr:{ title: $baseModel.format($component.payments.payee.linkDetails,{reference: name}), alt : $baseModel.format($component.payments.payee.linkDetails,{reference: name}) }, text:name ,
+                                    click:$dashboard.loadComponent.bind($data,'payee-details',$data,$component)"></a></div>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-6">
+              <label data-bind="text:$component.payments.payee.drafttype"></label>
+              <div data-bind="text: type"></div>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6">
+              <label data-bind="text:$component.payments.payee.draftfavouring"></label>
+              <div class="party-name" data-bind="text: nickName"></div>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-6">
+              <label data-bind="text:$component.payments.payee.createdBy"></label>
+              <div data-bind="text: createdBy "></div>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6">
+              <label data-bind="text:$component.payments.payee.availableFor"></label>
+              <div data-bind="text: payeeAccessType"></div>
+            </div>
+          </div>
+        </li>
+      </script>
+      <!-- /ko -->
+
+      <oj-paging-control class="oj-flex-item center" id="paging2" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[accountListDetailsDataSource]]">
+      </oj-paging-control>
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-secondary" id="cancelbutton1" on-click="[[cancel]]">
+        <span data-bind="text:$component.payments.generic.common.cancel"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+  </div>
+
+  <!-- /ko -->
+</div>

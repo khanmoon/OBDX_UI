@@ -1,0 +1,170 @@
+$field-value-size: 0.9rem !default;
+$container-margin: 3.8rem auto 0 !default;
+$small-container-margin: 2.9rem auto 0.6rem !default;
+$medium-container-margin: 3rem auto 0 !default;
+$comp-title-text-transform: capitalize !default;
+$comp-title-font-size: var(--base-font-size-h2) !default;
+$comp-sub-title-font-size: var(--base-font-size-h3) !default;
+$comp-title-color: var(--base-text-primary) !default;
+$comp-sub-title-font-size: 1.3rem !default;
+$form-back-arrow: var(--base-text-primary) !important;
+:root {
+  --form-title-margin: 0.55rem 0;
+}
+
+.dashboard {
+  position: relative;
+  min-height: calc(100vh - 2.5rem);
+  &.banner {
+    background: none;
+    padding: 0;
+  }
+  .main-menu {
+    outline: 0;
+    background: var(--menu-background);
+    box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, 0.18);
+    width: var(--base-dimension-menu-width);
+    height: calc(100% - var(--base-dimension-footer-height));
+    @include mq(small) {
+      height: calc(100% - var(--base-dimension-footer-height) - var(--base-dimension-docked-menu-height)) !important;
+    }
+    @include mq(medium) {
+      height: calc(100% - var(--base-dimension-footer-height) - var(--base-dimension-docked-menu-height)) !important;
+    }
+  }
+  .oj-offcanvas-shift-start {
+    .container {
+      @include mq(large) {
+        margin: 0;
+        width: calc(100vw - var(--base-dimension-menu-width) - 1rem);
+      }
+    }
+  }
+  .container {
+    width: 100%;
+    height: 100%;
+    font-size: $field-value-size;
+    margin: 0 auto;
+    outline: 0;
+    min-height: calc(100vh - var(--base-dimension-header-height) - var(--base-dimension-footer-height));
+    .page-header-container {
+      .comp-title {
+        letter-spacing: 0.03rem;
+        text-transform: $comp-title-text-transform;
+        font-size: $comp-title-font-size;
+        font-weight: var(--base-font-weight-normal);
+        color: $comp-title-color;
+        margin: var(--form-title-margin);
+        @include mq(medium) {
+          display: none;
+        }
+        @include mq(small) {
+          display: none;
+        }
+        &.sub-heading {
+          font-size: $comp-sub-title-font-size;
+          font-weight: var(--base-font-weight-light);
+          margin: 0;
+        }
+      }
+      &.txn-page {
+        max-width: 80rem;
+        margin: 0 auto;
+      }
+    }
+    .warning-container {
+      background-color: var(--base-color-warning-light);
+      @include single-border(left, 0.4rem solid var(--base-color-warning));
+      line-height: 1.25rem;
+      margin: 0 0.6rem 0.6rem;
+      .warning-text {
+        padding: 0.6rem;
+      }
+      .warning-icon {
+        color: var(--link-base);
+        @include float(right);
+        padding-top: 0.1rem;
+      }
+      a {
+        .icons {
+          font-size: calc(#{var(--base-font-size-default)} + 0.4rem);
+        }
+      }
+    }
+    .widget-container {
+      padding: 0.6rem 0;
+      @include mq(small) {
+        padding: 0;
+        margin-bottom: 1.3rem;
+      }
+      @include mq(medium) {
+        padding: 0;
+        margin-bottom: 2rem;
+      }
+    }
+    .main-content {
+      padding: 0 0.6rem 3rem;
+      @include mq(small) {
+        padding: 0 0 5rem;
+      }
+      max-width: 80rem;
+      margin: 0 auto;
+    }
+  }
+  a.skip-main {
+    @include left(-62.4rem);
+    position: absolute;
+    overflow: hidden;
+    z-index: -999;
+    &:active,
+    :focus {
+      color: var(--base-color-secondary-text);
+      @include left(0);
+      top: auto;
+      padding: 0.6rem;
+      margin: 0.6rem;
+      font-size: 0.8em;
+      z-index: 999;
+      height: auto;
+      width: auto;
+      outline: 0.1rem dotted;
+    }
+  }
+  section {
+    margin-bottom: 1.1rem;
+  }
+  .back-top {
+    position: fixed;
+    bottom: 2.5rem;
+    @include left(96%);
+    @include mq(small) {
+      @include left(auto);
+      @include right(0);
+    }
+    @include mq(medium) {
+      @include left(auto);
+      @include right(0);
+    }
+    a {
+      display: block;
+      text-align: center;
+      transition: 2s;
+    }
+    span {
+      width: 2.5rem;
+      height: 2.5rem;
+      line-height: 2.5rem;
+      display: block;
+      margin-bottom: 0.4rem;
+      background: var(--base-color-secondary);
+      border-radius: 0.3rem;
+      transition: 1s;
+      @include mq(small) {
+        @include border-radius(0.3rem, 0, 0, 0.3rem);
+      }
+      @include mq(medium) {
+        @include border-radius(0.3rem, 0, 0, 0.3rem);
+      }
+    }
+  }
+}

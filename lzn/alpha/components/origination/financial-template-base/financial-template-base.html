@@ -1,0 +1,49 @@
+<div class="">
+  <div class="margin-bottom-20">
+    <!-- ko if: showBaseComponents() -->
+    <div class="oj-flex-item">
+      <!-- ko if : $component.employmentProfileIds().length > 0 -->
+      <div id="filmStripDiv" class="oj-panel filmstrip oj-flex-item">
+        <oj-film-strip id="filmStrip" :aria-label="{{$component.resource.financialTemplate.financialProfile}}" arrow-placement="adjacent" arrow-visibility="visible" on-value-changed="[[$component.ChangeFinancialProfile]]">
+          <!-- ko foreach: $component.employmentProfileIds() -->
+          <div class="oj-flex oj-flex-items-pad center filmstrip-text">
+            <h2 data-bind="html: $component.getFilmstripLabel($index())"></h2>
+          </div>
+          <!-- /ko -->
+        </oj-film-strip>
+      </div>
+      <!-- ko foreach: $component.employmentProfileIds() -->
+      <div class="oj-flex-item" data-bind="attr:{id:'financialPorfile'+$index()},css:{'hide':$index()>0}">
+        <div data-bind="component: { name: 'financial-details', params: { rootModel: $component, data:$data }}"></div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+
+    <!-- /ko -->
+  </div>
+  <!-- ko if: showBaseComponents() -->
+  <!-- ko if: displaySubmitButton() -->
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <oj-button raised="" id="submitFinancialDetails" class="action-button-primary first-3" on-click="[[$component.validateFinaicialDetails]]" disabled="[[!$component.enableContinue()]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+    <oj-button raised="" id="cancel" class="action-button-secondary last-3 oj-button" on-click="[[$component.showPluginComponent.bind($data,'cancel-application')]]">
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+    </oj-button>
+    <!-- ko if: !$component.productDetails().isRegistered -->
+    <oj-button raised="" id="saveForLater" class="action-button-secondary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if: $component.productDetails().isRegistered -->
+    <oj-button raised="" id="saveForLater" class="action-button-secondary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+    <!-- /ko -->
+
+
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+</div>

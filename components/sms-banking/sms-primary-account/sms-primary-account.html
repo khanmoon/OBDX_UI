@@ -1,0 +1,65 @@
+<div class="form-main-container sms-preference">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <h3 class="" data-bind="text:$component.resource.header"></h3>
+    </div>
+  </div>
+  <!-- ko if:!$baseModel.small() -->
+  <div class="widget-table">
+    <oj-table id='AccountPreferenceTable' :aria-label="[[$component.resource.tableName]]" data="[[datasource]]" columns-default='{"sortable": "disabled"}' columns='[[[
+      {
+          "headerText": resource.headers.select,
+          "template": "account_selection",
+          "className" : ""
+          }, {
+          "headerText": resource.headers.accountTypeAndNumber,
+          "field": "accountTypeAndNumber",
+          "className" : ""
+          },{
+            "headerText": resource.headers.partyName,
+            "field": "partyName",
+            "className" : ""
+          },{
+          "headerText": resource.headers.nickName,
+          "field": "nickName",
+          "className" : ""
+          }
+        ]]]'>
+      <template slot="account_selection">
+              <oj-radioset class="oj-choice-direction-row" value="{{$component.selectedAccount}}" :aria-label="[[$component.resource.select]]">
+                  <oj-option name="prefferedAccount" value=[[$current.row.accountId]] data-bind="attr:{id: 'radio-button'+$current.row.accountId}"></oj-option>
+              </oj-radioset>
+          </template>
+    </oj-table>
+  </div>
+  <!-- /ko -->
+  <!-- ko if:$baseModel.small() -->
+  <oj-list-view id="listview_AccountPreference" :aria-label="[[$component.resource.tableName]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.datasource]]">
+    <!--template loaded here-->
+  </oj-list-view>
+  <script type="text/html" id="content_template">
+
+    <div>
+      <div class="oj-flex">
+        <div class="oj-flex-item oj-sm-1">
+
+          <oj-radioset class="oj-choice-direction-row" value="{{$component.selectedAccount}}" :aria-label="[[$component.resource.select]]">
+            <oj-option name="prefferedAccount" value=[[$data.accountId]] data-bind="attr:{id: 'radio-button'+$data.accountId}"></oj-option>
+          </oj-radioset>
+
+        </div>
+        <div class="oj-flex-item oj-sm-11">
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.headers.accountTypeAndNumber , value :$data.accountTypeAndNumber"></row>
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.headers.partyName , value :$data.partyName"></row>
+          <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.headers.nickName , value :$data.nickName"></row>
+        </div>
+      </div>
+    </div>
+  </script>
+  <!-- /ko -->
+  <div class="oj-row button-container">
+    <oj-button class="action-button-primary" on-click="[[submit]]">
+      <span data-bind="text:$component.resource.generic.common.submit"></span>
+    </oj-button>
+  </div>
+</div>

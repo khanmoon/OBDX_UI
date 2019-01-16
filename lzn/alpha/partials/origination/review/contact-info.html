@@ -1,0 +1,374 @@
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-md-10 oj-lg-10">
+    <h4 class="section-heading" data-bind="text:resource.resAddr"></h4>
+  </div>
+</div>
+<!-- ko if: data.contactInfo.contactInfo.address.stayingSince -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.stayingSince"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text: $baseModel.formatDate(data.contactInfo.contactInfo.address.stayingSince)"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: data.contactInfo.selectedValues -->
+<!-- ko if: data.contactInfo.selectedValues().accomodationType -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.accomodationType"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text: data.contactInfo.selectedValues().accomodationType"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if : data.contactInfo.contactInfo.address.postalAddress -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.address"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <!-- ko if: data.contactInfo.contactInfo.address.postalAddress.line2 -->
+    <span class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddress, {line1: data.contactInfo.contactInfo.address.postalAddress.line1, line2: data.contactInfo.contactInfo.address.postalAddress.line2, city: data.contactInfo.contactInfo.address.postalAddress.city})"></span>
+    <div class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddressCountryZip, {state: $component.selectedState(), country: $component.selectedCountry(), zip: data.contactInfo.contactInfo.address.postalAddress.postalCode})"></div>
+
+    <!-- /ko -->
+    <!-- ko ifnot: data.contactInfo.contactInfo.address.postalAddress.line2 -->
+    <span class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddress2, {line1: data.contactInfo.contactInfo.address.postalAddress.line1, city: data.contactInfo.contactInfo.address.postalAddress.city})"></span>
+    <div class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddressCountryZip, {state: $component.selectedState(), country: $component.selectedCountry(), zip: data.contactInfo.contactInfo.address.postalAddress.postalCode})"></div>
+
+    <!-- /ko -->
+  </div>
+</div>
+<!-- /ko -->
+<!-- change for current landlord begin, header refered from prev content refered from current -->
+<!-- ko if: $component.productDetails().productClassName === 'LOANS' || $component.productDetails().productClassName === 'CREDIT_CARD'  -->
+<!-- ko if : data.contactInfo.contactInfo.address.landlordName -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.landlordname"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text:data.contactInfo.contactInfo.address.landlordName"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if : data.contactInfo.contactInfo.address.landlordAddress -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.landlordAddress"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <!-- ko if: data.contactInfo.contactInfo.address.landlordAddress.line2 -->
+    <span class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddress, {line1: data.contactInfo.contactInfo.address.landlordAddress.line1, line2: data.contactInfo.contactInfo.address.landlordAddress.line2, city: data.contactInfo.contactInfo.address.landlordAddress.city})"></span>
+    <div class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddressCountryZip, {state:  $component.selectedlandlordState(), country: $component.selectedlandlordCountry(), zip: data.contactInfo.contactInfo.address.landlordAddress.zipCode})"></div>
+
+    <!-- /ko -->
+    <!-- ko ifnot: data.contactInfo.contactInfo.address.landlordAddress.line2 -->
+    <span class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddress2, {line1: data.contactInfo.contactInfo.address.landlordAddress.line1, city: data.contactInfo.contactInfo.address.landlordAddress.city})"></span>
+    <div class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddressCountryZip, {state:  $component.selectedlandlordState(), country: $component.selectedlandlordCountry(), zip: data.contactInfo.contactInfo.address.landlordAddress.zipCode})"></div>
+
+    <!-- /ko -->
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if : data.contactInfo.contactInfo.address.landlordPhoneNumber  && data.contactInfo.contactInfo.address.landlordPhoneNumber.number -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.mobile"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text:data.contactInfo.contactInfo.address.landlordPhoneNumber.number"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- change for current landlord ends -->
+
+<!-- ko if: data.previousContactInfo -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-md-10 oj-lg-10">
+    <h4 class="section-heading" data-bind="text:resource.prevResAddr"></h4>
+  </div>
+</div>
+
+
+<!-- ko if: data.contactInfo.selectedValues -->
+<!-- ko if: data.contactInfo.selectedValues().accomodationType -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.accomodationType"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text: data.previousContactInfo.selectedValues().accomodationType"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if : data.previousContactInfo.contactInfo.address.postalAddress -->
+
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.address"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <!-- ko if: data.previousContactInfo.contactInfo.address.postalAddress.line2 -->
+    <span class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddress, {line1: data.previousContactInfo.contactInfo.address.postalAddress.line1, line2: data.previousContactInfo.contactInfo.address.postalAddress.line2, city: data.previousContactInfo.contactInfo.address.postalAddress.city})"></span>
+    <div class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddressStateZip, {state: $component.selectedPreviousState(), zip: data.previousContactInfo.contactInfo.address.postalAddress.postalCode})"></div>
+
+    <!-- /ko -->
+    <!-- ko ifnot: data.previousContactInfo.contactInfo.address.postalAddress.line2 -->
+    <span class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddress2, {line1: data.previousContactInfo.contactInfo.address.postalAddress.line1, city: data.previousContactInfo.contactInfo.address.postalAddress.city})"></span>
+    <div class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddressStateZip, {state: $component.selectedPreviousState(), zip: data.previousContactInfo.contactInfo.address.postalAddress.postalCode})"></div>
+
+    <!-- /ko -->
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- change for previous landlord begin -->
+
+<!-- ko if: data.previousContactInfo -->
+<!-- ko if: $component.productDetails().productClassName === 'LOANS' || $component.productDetails().productClassName === 'CREDIT_CARD'  -->
+<!-- ko if : data.previousContactInfo.contactInfo.address.landlordName -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.landlordname"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text:data.previousContactInfo.contactInfo.address.landlordName"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if : data.previousContactInfo.contactInfo.address.landlordAddress -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.landlordAddress"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <!-- ko if: data.previousContactInfo.contactInfo.address.landlordAddress.line2 -->
+    <span class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddress, {line1: data.previousContactInfo.contactInfo.address.landlordAddress.line1, line2: data.previousContactInfo.contactInfo.address.landlordAddress.line2, city: data.previousContactInfo.contactInfo.address.landlordAddress.city})"></span>
+    <div class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddressCountryZip, {state: $component.selectedlandlordPreviousState(), country: $component.selectedlandlordPreviousCountry(), zip: data.previousContactInfo.contactInfo.address.landlordAddress.zipCode})"></div>
+
+    <!-- /ko -->
+    <!-- ko ifnot: data.previousContactInfo.contactInfo.address.landlordAddress.line2 -->
+    <span class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddress2, {line1: data.previousContactInfo.contactInfo.address.landlordAddress.line1, city: data.previousContactInfo.contactInfo.address.landlordAddress.city})"></span>
+    <div class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddressCountryZip, {state: $component.selectedlandlordPreviousState(), country: $component.selectedlandlordPreviousCountry(), zip: data.previousContactInfo.contactInfo.address.landlordAddress.zipCode})"></div>
+
+    <!-- /ko -->
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if : data.previousContactInfo.contactInfo.address.landlordPhoneNumber && data.previousContactInfo.contactInfo.address.landlordPhoneNumber.number  -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.mobile"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text:data.previousContactInfo.contactInfo.address.landlordPhoneNumber.number"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+
+
+<!-- change for previous landlord ends -->
+
+<!-- ko ifnot: $component.productDetails().structureSolutionModel && $component.productDetails().structureSolutionModel.CardAddonModel -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-md-10 oj-lg-10">
+    <h4 class="section-heading" data-bind="text:resource.email"></h4>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.email"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text : data.contactInfo.emails[0].email()"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label class="hide-label" for="preferredEmail">
+      <span data-bind="text:resource.preferred"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+    <oj-checkboxset id="preferredEmail" value="{{data.contactInfo.emails[0].preferredEmail}}" disabled :aria-label="[[resource.preferred]]">
+      <oj-option value="true">
+        <span class="text" data-bind="text:resource.preferred">
+      </oj-option>
+    </oj-checkboxset>
+  </div>
+</div>
+<!-- ko if: data.contactInfo.emails[1].email() !== '' -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.alternateEmailReview"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text: data.contactInfo.emails[1].email()"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label class="hide-label" for="preferredNumber">
+      <span data-bind="text:resource.preferred"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+    <oj-checkboxset id="preferredNumber" value="{{data.contactInfo.emails[1].preferredEmail}}" disabled :aria-label="[[resource.preferred]]">
+      <oj-option value="true">
+        <span class="text" data-bind="text:resource.preferred">
+      </oj-option>
+    </oj-checkboxset>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if: data.contactInfo.contactInfo.contacts -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-md-10 oj-lg-10">
+    <h4 class="section-heading" data-bind="text:resource.contactNumber"></h4>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.primaryPhoneNumber"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text: $baseModel.format(resource.reviewPhoneNumber, {contactType: data.contactInfo.selectedValues().contactType1, number: data.contactInfo.contactInfo.contacts[0].phone.number})"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label class="hide-label" for="preferredNumber">
+      <span data-bind="text:resource.preferred"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+    <oj-checkboxset id="preferredNumber" value="{{data.contactInfo.contactInfo.contacts[0].preferredNumber}}" disabled :aria-label="[[resource.preferred]]">
+      <oj-option value="true">
+        <span class="text" data-bind="text:resource.preferred">
+      </oj-option>
+    </oj-checkboxset>
+  </div>
+</div>
+<!-- ko if: data.contactInfo.contactInfo.contacts[1].contactType !== '' -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label>
+      <span data-bind="text:resource.alternatePhoneNumber"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text: $baseModel.format(resource.reviewPhoneNumber, {contactType: data.contactInfo.selectedValues().contactType2, number: data.contactInfo.contactInfo.contacts[1].phone.number})"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label class="hide-label" for="preferredNumber">
+      <span data-bind="text:resource.preferred"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+    <oj-checkboxset id="preferredNumber" value="{{data.contactInfo.contactInfo.contacts[1].preferredNumber}}" disabled :aria-label="[[resource.preferred]]">
+      <oj-option value="true">
+        <span class="text" data-bind="text:resource.preferred">
+      </oj-option>
+    </oj-checkboxset>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label class="hide-label" for="consent1">
+      <span data-bind="text: resource.consent1"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12">
+    <oj-checkboxset id="consent1" value="{{data.contactInfo.consent1}}" disabled :aria-label="[[resource.consent1]]">
+      <oj-option value="true">
+        <span class="text" data-bind="text: resource.consent1">
+      </oj-option>
+    </oj-checkboxset>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label class="hide-label" for="consent2">
+      <span data-bind="text:resource.consent2"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12">
+    <oj-checkboxset id="consent2" value="{{data.contactInfo.consent2}}" disabled :aria-label="[[resource.consent2]]">
+      <oj-option value="true">
+        <span class="text" data-bind="text:resource.consent2">
+      </oj-option>
+    </oj-checkboxset>
+  </div>
+</div>
+<!-- ko if:data.contactInfo.showNumberSelection() -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label class="main-label" :for="{{'mobileAlert'+($component.coApplicant?'_coapp':'')}}">
+      <span data-bind="html:resource.mobileNumberForAlert"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+    <oj-radioset :id="{{'mobileAlert'+($component.coApplicant?'_coapp':'')}}" labelled-by="inlineLabelId" class="oj-choice-direction-row"
+      value="{{data.contactInfo.selectedMobileNumberForAlert}}" disabled>
+      <!-- ko foreach: data.contactInfo.alertMobileOptions -->
+      <oj-option value="{{phone.number}}">
+        <span data-bind="text:$data.phone.number"></span>
+      </oj-option>
+      <!-- /ko -->
+    </oj-radioset>
+  </div>
+</div>
+<!-- /ko -->

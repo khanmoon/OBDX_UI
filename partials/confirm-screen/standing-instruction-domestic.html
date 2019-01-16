@@ -1,0 +1,93 @@
+<div class="oj-flex oj-flex-items-pad oj-lg-6" data-bind="with : $component.params.confirmScreenExtensions">
+    <div class="oj-flex-item oj-sm-12 no-pad-cols">
+        <page-section params="baseModel : $baseModel, rootModel : $data,heading : resource.common.confirmScreen.subHeader.common">
+            <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                <div class="oj-flex-item oj-lg-4 no-pad-cols">
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.moneytransfer.transferTo,
+        value :data.payoutDetails.payeeDetails.nickName"></row>
+                </div>
+                <div class="oj-flex-item oj-lg-4 no-pad-cols">
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.moneytransfer.amount,
+        value :$baseModel.formatCurrency(data.payoutDetails.instructionDetails.amount.amount, data.payoutDetails.instructionDetails.amount.currency)"></row>
+                </div>
+                <div class="oj-flex-item oj-lg-4 no-pad-cols">
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.moneytransfer.accountNumber,
+        value :data.payoutDetails.payeeDetails.indiaDomesticPayee.accountNumber"></row>
+                </div>
+                <div class="oj-flex-item oj-lg-4 no-pad-cols">
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.payee.accountType,
+        value :resource.payee.type.DOMESTIC"></row>
+                </div>
+                <div class="oj-flex-item oj-lg-4 no-pad-cols">
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.moneytransfer.payVia,
+        value :data.payoutDetails.instructionDetails.network"></row>
+                </div>
+                <div class="oj-flex-item oj-lg-4 no-pad-cols">
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.moneytransfer.transferfrom,
+        value :data.payoutDetails.instructionDetails.debitAccountId.displayValue"></row>
+                </div>
+                <div class="oj-flex-item oj-lg-4 no-pad-cols">
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.payee.branchDetails,
+        value :[
+                                data.payeeDetails.accountBranch.code,
+                                data.payeeDetails.accountBranch.name,
+                                data.payeeDetails.accountBranch.city,
+                                data.payeeDetails.accountBranch.country
+                            ]"></row>
+                </div>
+            </div>
+        </page-section>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-6 no-pad-cols">
+        <page-section params="baseModel : $baseModel, rootModel : $data,heading : resource.common.confirmScreen.subHeader.repeat">
+            <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                <div class="oj-flex-item oj-sm-12 no-pad-cols">
+                    <!-- ko if: data.SIexternalRefId -->
+                    <row params="baseModel : $baseModel, rootModel : $data, label : $parentContext.$component.confirmScreenResources.confirm.hostReferenceID,
+        value :data.SIexternalRefId"></row>
+                    <!-- /ko -->
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.moneytransfer.startTransfer,
+        value :$baseModel.formatDate(data.payoutDetails.instructionDetails.startDate)"></row>
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.moneytransfer.stopTransfer,
+        value :$baseModel.formatDate(data.payoutDetails.instructionDetails.endDate)"></row>
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.moneytransfer.frequency,
+        value :resource.common.frequency[data.payoutDetails.instructionDetails.frequency]"></row>
+                </div>
+            </div>
+        </page-section>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-6 no-pad-cols">
+        <page-section params="baseModel : $baseModel, rootModel : $data,heading : resource.common.confirmScreen.subHeader.today">
+            <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                <div class="oj-flex-item oj-sm-12 no-pad-cols">
+                    <!-- ko if: data.payNowExternalRefId -->
+                    <row params="baseModel : $baseModel, rootModel : $data, label : $parentContext.$component.confirmScreenResources.confirm.hostReferenceID,
+        value :data.payNowExternalRefId"></row>
+                    <!-- /ko -->
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.moneytransfer.transferon,
+        value :$baseModel.formatDate(data.payNowDate)"></row>
+                </div>
+            </div>
+        </page-section>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item" data-bind="text:$component.confirmScreenResources.confirm.actions.nextAction">
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad ">
+    <ul class="confirm-screen__list">
+        <li>
+            <a href="#" data-bind="click:$dashboard.openDashBoard.bind(void 0, void 0)">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToDashboard},loadImage:'dashboard/quick-access/dashboard.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToDashboard"></div>
+        </a>
+        </li>
+        <li>
+            <a href="#" data-bind="click:$component.openTransaction.bind($data,($baseModel.small()?'payment-landing':'favorites'),'payments','')">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToAccountDetails},loadImage:'dashboard/quick-access/account-details.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.morePaymentOptions"></div>
+        </a>
+        </li>
+    </ul>
+</div>

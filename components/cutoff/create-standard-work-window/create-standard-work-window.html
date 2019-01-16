@@ -1,0 +1,140 @@
+<div class="oj-flex">
+    <div data-bind="css: $component.mode() === 'REVIEW' ? 'oj-flex-item oj-sm-12' : 'oj-flex-item oj-sm-9'">
+        <div class="form-main-container">
+            <!-- ko ifnot: $component.mode()==="SUCCESS" -->
+            <!-- ko if: $component.mode() === "REVIEW" -->
+                <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header: $component.nls.generic.common.review,reviewHeader:$component.nls.info.reviewMessage}}">
+                </div>
+            <!-- /ko -->
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+              <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="component:{name: 'cutoff-nav-bar', params:{rootModel:$data,disableNav:true,type:'STANDARD'}}">
+                  </div>
+              </div>
+            </page-section>
+            <!-- ko if: $component.mode() === "CREATE" || $component.mode() === "EDIT" -->
+            <oj-validation-group id="tracker" valid="{{groupValid}}">
+            <!-- ko if: $component.showData() -->
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+              <div class="oj-flex oj-flex-items-pad row-group">
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 label">
+                   <oj-label class="" for="effectdate"><span data-bind="text:$component.nls.workingWindow.effectiveDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+                      <oj-input-date id="effectdate" required="[[true]]" :placeholder="[[$component.nls.workingWindow.selectDate]]" converter="[[$component.dateInputConverter]]" value="{{$component.standardWindowDetails.effectiveDate}}" min="[[minEffectiveDate]]"></oj-input-date>
+                </div>
+            </div>
+            <!-- ko if: showuserTypeList() -->
+            <div class="oj-flex oj-flex-items-pad row-group">
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 label">
+                <oj-label for="userType"><span data-bind="text:$component.nls.workingWindow.userType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+               <oj-checkboxset id="userType" required value="{{$component.userType}}">
+                   <!-- ko foreach: $component.userTypeOptions()  -->
+                   <oj-option id="user" value="{{value}}" :id="[['purpose_'+ $index()]]">
+                       <span data-bind="text:label, attr : {'for' :'purpose_' + $index()}"></span>
+                   </oj-option>
+                   <!-- /ko -->
+                </oj-checkboxset>
+            </div>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad row-group">
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 label">
+                <oj-label for="tranType"><span data-bind="text:$component.nls.common.transaction"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+                      <!-- ko if: showTransactions() -->
+                          <oj-select-one id="tranType" class="listbox-drop" required="[[true]]" :placeholder="[[$component.nls.workingWindow.pleaseSelect]]" value="{{selectedTransaction}}" options="[[transactions]]">
+                          </oj-select-one>
+                      <!-- /ko -->
+              </div>
+            </div>
+            </page-section>
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">    
+            <div class="grid-main-container table-data">
+            <div class="oj-flex oj-flex-items-pad grid-row-group">
+                <div class="oj-lg-2 oj-md-6 oj-sm-12 oj-flex-item border_bottom">
+                    <span data-bind="text : $component.nls.common.days"></span>
+                </div>
+                <div class="oj-lg-3 oj-md-6 oj-sm-12 oj-flex-item border_bottom">
+                    <span data-bind="text : $component.nls.common.windowType"></span>
+                </div>
+                <div class="oj-lg-1 oj-md-6 oj-sm-12 border_bottom"></div>
+                <div class="oj-lg-2 oj-md-6 oj-sm-12 oj-flex-item border_bottom">
+                    <span data-bind="text : $component.nls.common.fromTime"></span>
+                </div>
+                <div class="oj-lg-2 oj-md-6 oj-sm-12 oj-flex-item border_bottom">
+                    <span data-bind="text : $component.nls.common.toTime"></span>
+                </div>
+            </div>
+            <!-- ko foreach: $component.standardWindowDetails.workingWindowRoleTaskMapDTOs()[0].workingWindowDayDTOs() -->
+            <div class="oj-flex oj-flex-items-pad grid-row-group">
+                <div class="oj-lg-2 oj-md-6 oj-sm-12 oj-flex-item label">
+                    <oj-label :for="[['selectid_'+$index()]]"><span data-bind="text:day()"></span></oj-label>
+                </div>
+                <div class="oj-lg-3 oj-md-6 oj-sm-12 oj-flex-item">
+                    <oj-select-one required="[[true]]" :id="[['selectid_'+$index()]]" :placeholder="[[$component.nls.workingWindow.pleaseSelect]]" on-value-changed="[[$component.optionChangedHandler]]" value="{{transactionWindow}}" options="[[$component.transactionTimeType]]">
+                    </oj-select-one>
+                </div>
+                <div class="oj-lg-1 oj-md-6 oj-sm-12"></div>
+                <!-- ko foreach: workingWindowTimeDTOs() -->
+                <div class="oj-lg-2 oj-md-6 oj-sm-12 oj-flex-item">
+                    <oj-label class="hide-label" :for="[['stime_'+dayIndex()+'_'+$index()]]"><span data-bind="text:$component.nls.common.fromTime"></span></oj-label>
+                    <oj-input-time class="oj-inputdatetime" required :id="[['stime_'+dayIndex()+'_'+$index()]]" disabled="[[disabled]]" converter="[[$component.secondConverter]]" time-picker="[[{timeIncrement:'00:01:00:00'}]]" on-value-changed="[[$component.verifyTime]]" value="{{startTime}}">
+                    </oj-input-time>
+                </div>
+                <div class="oj-lg-2 oj-md-6 oj-sm-12 oj-flex-item">
+                    <oj-label class="hide-label" :for="[['etime_'+dayIndex()+'_'+$index()]]"><span data-bind="text:$component.nls.common.toTime"></span></oj-label>
+                    <oj-input-time class="oj-inputdatetime" required :id="[['etime_'+dayIndex()+'_'+$index()]]" on-value-changed="[[$component.timeChangedHandler]]" disabled="[[disabled]]" converter="[[$component.secondConverter]]" time-picker="[[{timeIncrement:'00:01:00:00'}]]" min="[[startTime]]" value="{{endTime}}">
+                    </oj-input-time>
+                </div>
+                <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </div>
+            <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.workingWindow.othersHeading"></action-header>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+                 <oj-label for="processingType-radioset"><span data-bind="text:$component.nls.common.processingType"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-7 ">
+                  <oj-radioset id="processingType-radioset" required value="{{$component.standardWindowDetails.processingType}}" class="oj-choice-direction-row">
+                      <oj-option id="Success" name="processingType" value="{{'SUCCESS'}}">
+                          <span for="Success" data-bind="text:$component.nls.workingWindow.tanks"></span>
+                      </oj-option>
+                      <oj-option id="Rejected" name="processingType" value="{{'REJECT'}}">
+                          <span for="Rejected" data-bind="text:$component.nls.workingWindow.transactionRejected"></span>
+                      </oj-option>
+                  </oj-radioset>
+              </div>
+            </div>
+            </page-section>
+            <!-- /ko -->
+            </oj-validation-group>
+            <div class="oj-flex oj-flex-items-pad button-container ">
+                <oj-button class="action-button-primary" on-click="[[$component.save]]">
+                    <span data-bind="text:$component.nls.generic.common.save"></span>
+                </oj-button>    
+                <oj-button id="cancelButton" class="action-button-secondary " on-click="[[$dashboard.openDashBoard]]">
+                    <span data-bind="text:$component.nls.generic.common.cancel"></span>
+                </oj-button>
+                <oj-button id="backbutton" class="action-button-tertiary" on-click="[[$component.back]]">
+                    <span data-bind="text:$component.nls.common.back"></span>
+                </oj-button>        
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $component.mode() === "REVIEW" -->
+                <div data-bind="component:{name:'review-standard-work-window', params:{rootModel:$component, standardWindowDetails: $component.standardWindowDetails}}">
+                </div>
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- ko if: $component.mode() === "CREATE" || $component.mode() === "EDIT" -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'create-standard-work-window'"></help>
+    </div>
+    <!-- /ko -->
+</div>

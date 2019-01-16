@@ -1,0 +1,87 @@
+<!-- ko if:transactionGroupLoaded() -->
+<div class="oj-flex">
+    <div class="oj-flex-item oj-sm-9">
+      <div class=" form-main-container">
+    <!-- ko if: $component.showHeader-->
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading: $component.nls.fieldname.review"></action-header>
+    <!-- /ko -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading :'' ">
+          <div data-bind="css:($component.flagData())?'oj-flex oj-flex-items-pad transaction-group':'oj-flex oj-flex-items-pad'">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+              <label for="groupCode" data-bind="text:$component.nls.fieldname.transactionGroupCode"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+              <span id="groupCode" data-bind="text:readtransactionGroupCode"></span>
+            </div>
+          </div>
+
+          <div data-bind="css:($component.flagData())?'oj-flex oj-flex-items-pad transaction-group':'oj-flex oj-flex-items-pad'">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+              <label for="groupDescription" data-bind="text:$component.nls.fieldname.transactionGroupDesc"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+              <span id="groupDescription" data-bind="text:readtransactionGroupDesc">               </span>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <!-- ko if: !$baseModel.small()-->
+            <!-- display: 'grid', -->
+            <oj-table id="table" :aria-label="[[$component.nls.readTable]]" translations="[[{
+                                            msgNoData:''}]]" columns="[[[{headerText:$component.nls.fieldname.transactionId,field:'recordNo'},{headerText:$component.nls.fieldname.transactions,field:'transaction'}]]]" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'single',column:'single'}]]" data="[[$component.datasourceread]]">
+              <caption class="hide-label" data-bind="text:$component.nls.title"></caption>
+            </oj-table>
+            <!-- /ko -->
+            <!-- /ko -->
+
+          </div>
+
+          <!-- ko ifnot:flagData() -->
+          <!-- ko ifnot: $component.showHeader-->
+          <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary" on-click="[[$component.edit]]">
+              <span data-bind="text:$component.nls.common.edit"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[$component.deleteModal]]">
+              <span data-bind="text:$component.nls.common.delete"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+              <span data-bind="text:$component.nls.common.cancel"></span>
+            </oj-button>
+            <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+              <span data-bind="text:$component.nls.common.back"></span>
+            </oj-button>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+        </page-section>
+      </div>
+      </div>
+      <!-- ko ifnot:flagData() -->
+      <!-- ko ifnot: $component.showHeader-->
+
+      <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'transaction-group-read'"></help>
+      </div>
+      <!-- /ko -->
+
+      <!-- /ko -->
+  <modal-window class="" params="baseModel : $baseModel, rootModel : $component , id:'deleteDialog' , header : $component.nls.fieldname.deleteMessage">
+    <div class="form-main-container message-text">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <span data-bind="text:$component.nls.common.deleteMessage"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" on-click="[[$component.deleteTransactionGroup]]">
+          <span data-bind="text:$component.nls.common.yes"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$component.closeDeleteDialog]]">
+          <span data-bind="text:$component.nls.common.no"></span>
+        </oj-button>
+      </div>
+    </div>
+  </modal-window>
+</div>
+<!-- /ko -->

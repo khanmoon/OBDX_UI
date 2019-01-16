@@ -1,0 +1,33 @@
+<!-- ko if:userSegment==="CORP" -->
+        <div class="oj-flex-item ">
+            <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-flex-item right">
+            <a href="#" data-bind="click:addToFavorites">
+            <span class="icon icon-heart icon-2x" id="favorite"></span></a> </div>
+        </div>
+        <!-- /ko -->
+
+<div class="button-container">
+        <oj-button class="action-button-primary " on-click="[[issueDone]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.payments.common.done"></span>
+</oj-button>
+    </div>
+    <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'favoritesDialog'">
+        <div class="grid-main-container ">
+            <div class="dialog-text-heading center">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div data-bind="text:$component.payments.favorite.header">
+                    </div>
+                </div>
+            </div>
+            <div class="dialog-text center" data-bind="text:$baseModel.format($component.payments.favorite.favadded,{name:customPayeeName()})">
+            </div>
+            <div class="button-container">
+                <oj-button class="action-button-secondary " on-click="[[cancelFavourite]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.payments.common.cancel"></span>
+</oj-button>
+                <oj-button class="action-button-primary " on-click="[[persistFavorites]]"><span slot="startIcon" class="icons icon-ok"></span>
+      <span data-bind="text:$component.payments.common.ok"></span>
+</oj-button>
+            </div>
+        </div>
+    </modal-window>

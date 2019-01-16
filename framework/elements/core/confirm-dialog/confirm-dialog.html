@@ -1,0 +1,20 @@
+<modal-window params="rootModel : $data,id:'confirm-dialog', header :$component.resourceBundle.dialogHeader">
+  <div class="confirm-dialog">
+    <div class="confirm-dialog__container confirm-dialog-container">
+      <div class="oj-flex oj-flex-items-pad confirm-dialog-container__message">
+        <div class="oj-flex-item j-sm-12" data-bind="text:$component.resourceBundle.dialogMsg"></div>
+      </div>
+      <div class="confirm-dialog-container__buttons button-container">
+        <oj-button class="action-button-primary" on-click="[[$component.yes]]">
+          <span slot="startIcon" class="icons icon-confirm"></span>
+          <span data-bind="text:$component.resourceBundle.yes"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$component.no]]">
+          <span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.resourceBundle.no"></span>
+        </oj-button>
+      </div>
+    </div>
+    <div data-bind="template : {afterRender : $component.showDialog}"></div>
+  </div>
+</modal-window>

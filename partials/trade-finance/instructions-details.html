@@ -1,0 +1,148 @@
+<div class="page-section-content">
+
+<div class="oj-flex oj-flex-items-pad">
+<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+  <!-- ko if: $component.letterOfCreditDetails.lcType !=='Export' -->
+  <div class="oj-flex oj-flex-items-pad grid-row-group">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+      <oj-label for="advBankSwiftCode"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.advBankSwiftCode"></span></oj-label>
+    </div>
+    <!-- ko if:$component.additionalBankDetails() !== null && $component.additionalBankDetails() !== 'undefined'-->
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-6" data-bind="with:$component.additionalBankDetails">
+        <div data-bind="text:('code' in $data)?code:''"></div>
+        <div data-bind="text:('name' in $data)?name:''"></div>
+        <div data-bind="text:('line1' in branchAddress)?branchAddress.line1:''"></div>
+        <div data-bind="text:('city' in branchAddress)?branchAddress.city:''"></div>
+        <div data-bind="text:('country' in branchAddress)?branchAddress.country:''"></div>
+    </div>
+    <!-- /ko -->
+  </div>
+    <!-- /ko -->
+    <!-- ko if: $component.letterOfCreditDetails.lcType ==='Export' -->
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <oj-label for="issueBankSwiftCode"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.issueBank"></span></oj-label>
+      </div>
+      <!-- ko if:$component.additionalIssueBankDetails() !== null && $component.additionalIssueBankDetails() !== 'undefined'-->
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-6" data-bind="with:$component.additionalIssueBankDetails">
+          <div data-bind="text:('code' in $data)?code:''"></div>
+          <div data-bind="text:('name' in $data)?name:''"></div>
+          <div data-bind="text:('line1' in branchAddress)?branchAddress.line1:''"></div>
+          <div data-bind="text:('city' in branchAddress)?branchAddress.city:''"></div>
+          <div data-bind="text:('country' in branchAddress)?branchAddress.country:''"></div>
+      </div>
+      <!-- /ko -->
+    </div>
+      <!-- /ko -->
+</div>
+<!-- ko if:$component.letterOfCreditDetails.deliveryMode-->
+<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <oj-label class="align-right" for="modeOfDelivery"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.modeOfDelivery"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+      <div id="modeOfDelivery" data-bind="text: $component.resourceBundle.instructionsDetails.labels[$component.letterOfCreditDetails.deliveryMode]"></div>
+    </div>
+</div>
+<!-- /ko -->
+</div>
+
+
+<!-- ko ifnot: $component.letterOfCreditDetails.lcType -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="chargesBorneByType"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.chargesBorneBy"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-6 content">
+          <span id="chargesBorneByType" data-bind="text: $component.resourceBundle.instructionsDetails.labels[$component.letterOfCreditDetails.confirmationInstruction]"></span>
+      </div>
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label class="align-right" for="chargesAccountType"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.chargesAccount"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-6 content">
+          <span id="chargesAccountType" data-bind="text: $component.letterOfCreditDetails.chargingAccountId.displayValue"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ko if:$component.letterOfCreditDetails.confirmationInstruction=== 'BYCOUNTERPARTY' -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="chargesFromBeneficiary" class="align-left"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.chargesFromBeneficiary"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-7 content">
+        <span id="chargesFromBeneficiary" data-bind="text: $component.letterOfCreditDetails.chargesFromBeneficiary"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="instructionsToBank" class="align-left"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.instructionsToBank"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-7 content">
+        <span id="instructionsToBank" data-bind="text: ('instructionDescription' in $component.letterOfCreditDetails)?$component.letterOfCreditDetails.instructionDescription:''"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- /ko -->
+
+<!-- ko if: $component.letterOfCreditDetails.lcType -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="chargesBorneByType"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.chargesBorneBy"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-7 content">
+            <span id="chargesBorneByType" data-bind="text: $component.resourceBundle.instructionsDetails.labels[$component.letterOfCreditDetails.confirmationInstruction]"></span>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- ko if: $component.letterOfCreditDetails.chargesFromBeneficiary -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label class="align-right" for="chargesFromBeneficiary"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.chargesFromBeneficiary"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7 content">
+          <span id="chargesFromBeneficiary" data-bind="text: $component.letterOfCreditDetails.chargesFromBeneficiary"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label class="align-right" for="remarks"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.remarks"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7 content">
+          <span id="remarks" data-bind="text: $component.letterOfCreditDetails.remarks"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /ko -->
+
+</div>

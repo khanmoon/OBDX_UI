@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- purpose That tag will try to force the browser to use the latest rendering mode the browser supports
+        Note that the tag has to be the first tag in the head or it will not work -->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <!-- purpose The viewport is the user's visible area of a web page.
+        A <meta> viewport element gives the browser instructions on how to control the page's dimensions and scaling.-->
+    <meta name="apple-mobile-web-app-title" content="Oracle DigX" />
+    <script>
+    function fetchURLAttribute() {
+        var url = window.location.href;
+        var parts = url.split("?");
+
+        var encSpaceReplace = url.replace(/%20/g, " ");
+        var additionInfo = encSpaceReplace.split("&");
+        var i = 1;
+        var additinalInfoHTML = '';
+        while (i < additionInfo.length) {
+            additinalInfoHTML += ('<p>' + additionInfo[i] + '</p>');
+            i++;
+        }
+        if (parts[1].includes("&name")) {
+            var element = document.getElementById("if-key");
+            document.getElementById("else-key").style.visibility = 'hidden';
+            element.innerHTML += additinalInfoHTML;
+            element.style.visibility = 'visible';
+        } else {
+            document.getElementById("if-key").style.visibility = 'hidden';
+            document.getElementById("else-key").style.visibility = 'visible';
+        }
+    }
+    window.onload = function() {
+        fetchURLAttribute();
+    };
+    </script>
+</head>
+
+<body>
+    <div>
+        <div>External Transfer Failed!!</div>
+        <div id="refid"></div>
+        <div id="if-key">Additional Information :</div>
+        <div id="else-key">No additional info to display.</div>
+    </div>
+</body>
+
+</html>

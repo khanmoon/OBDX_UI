@@ -1,0 +1,20 @@
+<div class="oj-form-layout page-section">
+	<div class="oj-form oj-sm-odd-cols-12 oj-md-labels-inline page-section__container page-section-container">
+		<!-- ko if : ko.utils.unwrapObservable(heading) -->
+		<div class="oj-flex page-section-container__header page-section-header">
+			<div class="oj-flex-item page-section-header__container  page-section-heading">
+				<h3 class="page-section-heading__text" data-bind="attr:{'id' : $baseModel.incrementIdCount() + '_page-section-header'}">
+					<span data-bind="text: ko.utils.unwrapObservable(heading)"></span>
+					<div data-bind="template: { name: $component.headerTemplate}"></div>
+				</h3>
+			</div>
+		</div>
+		<!-- /ko -->
+		<div class="oj-flex page-section-container__body page-section-content">
+			<div data-bind="attr:{'aria-labelledby': ko.utils.unwrapObservable(heading) ? $baseModel.currentIdCount() + '_page-section-header' : null }" class="oj-flex-item page-section-content__data">
+				<!-- ko template: { nodes: $componentTemplateNodes}-->
+				<!-- /ko -->
+			</div>
+		</div>
+	</div>
+</div>

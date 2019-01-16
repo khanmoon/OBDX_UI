@@ -1,0 +1,21 @@
+<div class="oj-flex oj-flex-items-pad row">
+	<div class="oj-flex-item oj-sm-12 row__label label-container" data-bind="css:{'oj-md-4 oj-lg-3':($component.constants.userSegment ==='ADMIN' || $component.constants.userSegment ==='CORPADMIN')}">
+		<span class="label-container__label" data-bind="text : label"></span>
+	</div>
+	<!-- ko if: !Array.isArray(ko.utils.unwrapObservable(value))-->
+	<div class="oj-flex-item oj-sm-12 row__value" data-bind="attr: {'data-id' : dataId}, css: $component.computeStyles() , text : value">
+	</div>
+	<!-- /ko -->
+
+	<!-- ko if: Array.isArray(ko.utils.unwrapObservable(value))-->
+	<div class="oj-flex-item oj-sm-12" data-bind="attr: {'data-id' : dataId}, css: $component.computeStyles()">
+		<div class="oj-flex oj-flex-items-pad">
+			<!-- ko foreach: value -->
+			<!-- ko if: ko.utils.unwrapObservable($data) !== '' && ko.utils.unwrapObservable($data) !== void 0 -->
+			<div class="oj-flex-item oj-sm-12 row__value multiple" data-bind="css:$parent.dataClass, text : $data"></div>
+			<!-- /ko -->
+			<!-- /ko -->
+		</div>
+	</div>
+	<!-- /ko -->
+</div>

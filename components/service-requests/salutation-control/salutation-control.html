@@ -1,0 +1,76 @@
+<oj-validation-group :id="[[$component.id+'track']]">
+  <div class="oj-flex oj-flex-items-pad salutation-control">
+    <div class="oj-flex-item oj-md-12 salutation-control__banner">
+      <span data-bind="text:$component.resource.salutation"></span>
+    </div>
+    <div class="oj-flex salutation-control__middle">
+      <div class="oj-flex-item oj-sm-5">
+        <oj-input-text :id="[['salutation'+$component.id]]" :aria-label="[[$component.resource.salutation]]" placeholder="{{$component.resource.labelNamePlaceHolder}}" value="{{$component.formField().label}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+                       type: 'length',
+                       options: {
+                           min: 0,
+                           max: 80
+                       }})]]" disabled="{{$component.isDisabled}}" required>
+        </oj-input-text>
+      </div>
+      <div class="oj-flex-item oj-sm-5">
+        <oj-select-one :id="[['salutationOption'+$component.id]]" :aria-label="[[$component.resource.salutation]]" placeholder="{{$component.resource.selectSalutation}}">
+        </oj-select-one>
+      </div>
+      <!-- ko if: $component.buttonShow -->
+      <div class="oj-flex-item oj-sm-1 right icon-style salutation-control__icon">
+        <a class="icon-size" href="javascript:void(0)" on-click="[[$component.showHideDetails]]">
+          <div class="icons icon-setting"></div>
+        </a>
+      </div>
+      <div class="oj-flex-item oj-sm-1 salutation-control__icon">
+        <a class="icon-size" href="javascript:void(0)" on-click="[[$component.deleteSalutationComponent]]">
+          <div class="icons icon-delete"></div>
+        </a>
+      </div>
+      <!-- /ko -->
+    </div>
+    <!-- ko if:isDetails -->
+    <div class="oj-md-12 salutation-control__section">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-3">
+          <oj-label :for="[[$component.uniqueId()+3]]" class="oj-label-inline"><span data-bind="text:$component.resource.validations"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-1">
+        </div>
+        <div class="oj-flex-item oj-sm-8">
+          <oj-radioset labelled-by="mainlabelid" :id="[[$component.uniqueId()+3]]" class="oj-choice-direction-row" value="{{$component.formField().validation.isMandatory}}" disabled="{{$component.isDisabled}}">
+            <oj-option value="{{true}}"><span data-bind="text:$component.resource.mandatory"></span></oj-option>
+            <oj-option value="{{false}}"><span data-bind="text:$component.resource.optional"></span></oj-option>
+          </oj-radioset>
+        </div>
+      </div>
+      <!-- ko if: JSON.parse($component.formField().validation.isMandatory()) -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-3">
+          <oj-label for="[['error'+$component.id]]" class="oj-label-inline"><span data-bind="text:$component.resource.errorMessage"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-1">
+        </div>
+        <div class="oj-flex-item oj-sm-5">
+          <oj-input-text for="[['error'+$component.id]]" :aria-label="[[$component.resource.errorMessagePlaceHolder]]" placeholder="{{$component.resource.errorMessagePlaceHolder}}" value="{{$component.formField().errorMessage}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+                         type: 'length',
+                         options: {
+                             min: 0,
+                             max: 200
+                         }})]]" disabled="{{$component.isDisabled}}" required>
+          </oj-input-text>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.buttonShow -->
+      <div class="oj-flex button-container">
+        <oj-button class="action-button-primary" on-click="[[$component.saveSalutation]]" disabled="{{$component.isDisabled}}">
+          <span data-bind="text:$component.resource.save"></span>
+        </oj-button>
+      </div>
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+  </div>
+</oj-validation-group>

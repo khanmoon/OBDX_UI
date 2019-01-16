@@ -1,0 +1,122 @@
+<!-- ko if: $component.currenciesLoaded()  -->
+<div class="requirements" data-bind="with:productDetails().requirements">
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-10 ">
+
+      <h3 class=" primary-heading" data-bind="text:$component.resource.td.header"></h3>
+
+    </div>
+  </div>
+  <oj-validation-group id="requirementsTracker" valid="{{$component.groupValid}}">
+    <div class="">
+
+      <div data-bind="component: {
+                name: 'amount-input', params: {
+                    amount :requestedAmount.amount,
+                    label : $component.resource.td.depositAmount,
+                    labelClasses : 'oj-lg-2 label oj-md-4 oj-lg-offset-1 oj-md-offset-1',
+                    valueClasses :'oj-lg-7 oj-md-7 amount-input',
+                    currency: $component.transferCurrency,
+                    currencyListRequired : true,
+                    currencyParser : $component.currencyParser,
+                    converter:$baseModel.formatCurrency,
+                    validator:$component.validationTracker,
+                    isMandatory:true,
+                    maxlength:15,
+                    rootId:'deposit-amount',
+                    rootClass:'form-input',
+                    inline:'origination',
+                    formattedAmount: ko.observable()
+                }
+            }"></div>
+
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+        <oj-label class="main-label" for="maturityOption"><span data-bind="text:$component.resource.maturityOption"></span></oj-label>
+      </div>
+      <div class="oj-sm-12 oj-md-4 oj-lg-3">
+        <oj-radioset id="maturityOption" required translations="[[{'required':{messageDetail:$component.resource.messages.maturityOption}}]]" labelled-by="inlineLabelId" class="oj-choice-direction-row" value="{{$component.selectedMaturityOption}}" on-value-changed="[[$component.setDefault]]">
+          <!-- ko foreach: $component.maturityOption -->
+          <oj-option value="{{id}}"><span data-bind="text:$component.resource.maturityOptions[id]"></span></oj-option>
+          <!-- /ko -->
+        </oj-radioset>
+      </div>
+    </div>
+
+    <!-- ko if: $component.selectedMaturityOption()==='TERM' -->
+    <div class="">
+      <div data-bind='component: {
+        name: "loan-tenure", params: {
+            tenureYears :requestedTenure.years,
+            tenureMonths :requestedTenure.months,
+            tenureDays:requestedTenure.days,
+            maxVal: 20,
+            label: $component.resource.loan.tenure,
+            labelClasses: "oj-lg-offset-1 oj-md-offset-1",
+            validator:$component.validationTracker,
+            isMandatory:true,
+            rootId:"tenureSelectYears",
+            rootClass:"form-input",
+            yearsId:"tenure-years",
+            monthsId:"tenure-months",
+            daysId:"tenure-days",
+            requirementId:"term-deposits"
+
+        }
+    }'></div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if: $component.maturityDateLoaded()  && $component.selectedMaturityOption()!=='MATURITY_DATE' -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-1">
+        <oj-label><span data-bind="text:$component.resource.maturityDate"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+        <span data-bind="text : $baseModel.dateConverter.format($component.maturityDate())"></span>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if: $component.selectedMaturityOption()==='MATURITY_DATE' -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-1">
+        <oj-label class="main-label" for="maturityDate"><span data-bind="text:$component.resource.specifyDate"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+        <oj-input-date id="maturityDate" required translations="[[{'required':{messageDetail:$component.resource.messages.maturityDate}}]]" value='{{maturityDate}}'>
+        </oj-input-date>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if:  $component.termLoaded() && $component.selectedMaturityOption()!=='TERM'-->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-1">
+        <oj-label><span data-bind="text:$component.resource.depositTerm"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+        <span data-bind="text :$baseModel.format($component.resource.maturityTerm ,{year:$component.maturityTerm().years,month:$component.maturityTerm().months,day:$component.maturityTerm().days})"></span>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if: $component.frequencyOptionsLoaded() -->
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-1">
+        <oj-label class="main-label" for="frequency-type"><span data-bind="text:$component.resource.td.frequency"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+        <oj-select-one id="frequency-type" required translations="[[{'required':{messageDetail:$component.resource.messages.frequency}}]]" :placeholder="" value="{{frequency}}">
+          <!-- ko foreach: $parent.repaymentFrequencyData() -->
+          <oj-option value="{{$data}}"><span data-bind="text:$component.resource.td.frequencyList[$data]"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+    <!-- /ko -->
+  </oj-validation-group>
+</div>
+<!-- /ko -->

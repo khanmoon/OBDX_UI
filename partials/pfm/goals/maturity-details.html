@@ -1,0 +1,148 @@
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+    <oj-label for="maturity"><span data-bind="text:$component.goal.account.maturity"></span></oj-label>
+  </div>
+  <div id="maturity" class="oj-flex-item oj-sm-12">
+    <oj-select-one id="maturity" required value="{{maturityType}}">
+        <!-- ko foreach: maturityList -->
+        <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+        <!-- /ko -->
+    </oj-select-one>
+  </div>
+</div>
+
+<!-- ko if:maturityType()[0] === 'Self' -->
+<account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.goal.account.selfAccount,taskCode : $component.currentTask(),
+        type : 'balance' , account : selfAccount , additionalDetails: additionalDetails, validator:$component.validationTracker">
+</account-input>
+<!-- /ko -->
+
+<!-- ko if:maturityType()[0] === 'Domestic' -->
+    <!-- ko if:isNetworkTypesLoaded() -->
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+              <oj-label for="networkType"><span data-bind="text:$component.goal.account.networkType"></span></oj-label>
+          </div>
+          <div id="networkType" class="oj-flex-item oj-sm-12">
+              <oj-select-one id="networkType" required value="{{network}}" :placeholder="[[$component.goal.account.select]]" on-value-changed="[[networkTypeChanged]]">
+                <!-- ko foreach: networkTypes -->
+                <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+                <!-- /ko -->
+            </oj-select-one>
+          </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+              <oj-label for="domesticAccount"><span data-bind="text:$component.goal.account.internalAccount"></span></oj-label>
+          </div>
+          <div id="domesticAccount" class="oj-flex-item oj-sm-12">
+              <oj-input-text required id="domesticAccount" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ACCOUNT')]]" value="{{domesticAccount}}"></oj-input-text>
+
+          </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+              <oj-label for="beneName"><span data-bind="text:$component.goal.account.beneName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+              <oj-input-text required id="beneName" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('NAME')]]" value="{{beneficiaryName}}"></oj-input-text>
+
+          </div>
+      </div>
+
+      <!-- Lookup code -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+              <oj-label for="domSwiftCode"><span data-bind="text:$component.goal.account.bankCode"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+            <!-- ko if:$component.additionalBankDetails()===null -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-8">
+            <oj-input-text id="domSwiftCode" required :invalidcomponenttracker="[[$component.validateCodeTrancker]]" validators="[[$baseModel.getValidator('BANK_CODE')]]" value="{{$component.bankCode}}"></oj-input-text>
+            </div>
+            <div class="oj-flex-item oj-sm-4">
+                     <oj-button class="form-button-secondary" on-click="[[verifyCode]]">
+      <span data-bind="text:$component.goal.account.verify"></span>
+</oj-button>
+            </div>
+            <div class="oj-flex-item">
+              <a href="#" class="form-button-link" data-bind="attr:{'alt':$component.goal.account.banklookup,'title':$component.goal.account.banklookupTitle},text:$component.goal.account.banklookup, click:openLookup">
+              </a>
+            </div>
+          </div>
+            <!-- /ko -->
+
+            <!-- ko if:$component.additionalBankDetails()!==null -->
+            <div class="oj-flex oj-flex-items-pad" data-bind="with:$component.additionalBankDetails">
+                <div class="oj-flex-item">
+                <div data-bind="text:$component.bankCode()"></div>
+                <div data-bind="text:name"></div>
+                <div data-bind="text:branchAddress.line1"></div>
+                <div data-bind="text:branchAddress.city"></div>
+                <div data-bind="text:branchAddress.country"></div>
+                <div class="">
+                    <oj-button class="form-button-secondary" id="button" on-click="[[$component.resetCode]]">
+      <span data-bind="text:$component.goal.account.resetcode"></span>
+</oj-button>
+                </div>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+      </div>
+
+      <div data-bind="component: {name: 'bank-look-up', params:{rootModel: $component,
+                   clearingCodeType:$component.network,
+                   accountType:'Domestic',
+                   region: 'INDIA',
+                   networkCode:$component.bankCode,
+                   additionalBankDetails:$component.additionalBankDetails}}">
+      </div>
+
+      <!-- ko if:detailsFetched() -->
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+              <oj-label for="bankName"><span data-bind="text:$component.goal.account.bankName"></span></oj-label>
+          </div>
+          <div id="bankName" class="oj-flex-item oj-sm-12">
+              <div data-bind="text:additionalBankDetails().name"></div>
+          </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+              <oj-label for="bankAddress"><span data-bind="text:$component.goal.account.bankAddress"></span></oj-label>
+          </div>
+          <div id="bankAddress" class="oj-flex-item oj-sm-12">
+              <div data-bind="text:additionalBankDetails().branchName + ', ' + additionalBankDetails().branchAddress.line1"></div>
+          </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+              <oj-label for="bankCity"><span data-bind="text:$component.goal.account.bankCity"></span></oj-label>
+          </div>
+          <div id="bankCity" class="oj-flex-item oj-sm-12">
+              <div data-bind="text:additionalBankDetails().branchAddress.city"></div>
+          </div>
+      </div>
+      <!-- /ko -->
+   <!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if:maturityType()[0] === 'Internal' -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <oj-label for="internalAccount"><span data-bind="text:$component.goal.account.internalAccount"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <oj-input-text required id="internalAccount" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ACCOUNT')]]" value="{{internalAccount}}"></oj-input-text>
+
+      </div>
+    </div>
+
+  
+ <!-- /ko -->

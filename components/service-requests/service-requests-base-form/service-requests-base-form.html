@@ -1,0 +1,123 @@
+<div class="form-main-container">
+  <oj-validation-group id="baseFormTracker">
+    <!-- ko if: $component.formData -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class=" oj-flex oj-sm-12 oj-md-8 oj-lg-8">
+        <div class="oj-flex-item oj-sm-12">
+          <div class="oj-panel">
+            <!-- ko if: $component.formArray().length -->
+            <oj-list-view id="listview" data="[[dataProvider]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('Comp_temp', true)]]">
+            </oj-list-view>
+            <script type="text/html" id="Comp_temp">
+              <!-- ko if: $data.type === "FFTB" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'text-box-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "SCH" -->
+              <li class="oj-listview-item">
+                <div class="" data-bind="component:{name: 'section-header-view', params:{rootModel:$data,isDisabled:false}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "SBH" -->
+              <li class="oj-listview-item">
+                <div class="" data-bind="component:{name: 'sub-header-view', params:{rootModel:$data,isDisabled:false}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "FFRB" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'radio-button-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "FFMC" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'check-box-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "PDAN" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'account-number-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "FFDL" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'drop-list-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "PDGS" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'gender-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "PDCS" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'country-states-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "FFTC" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'toggle-button-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "FFFU" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'file-upload-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "PDDP" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'date-picker-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "PDSS" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'salutation-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "PDAD" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'account-number-debit-card-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+              <!-- ko if: $data.type === "FFMS" -->
+              <li class="oj-listview-item">
+                <div data-bind="component:{name: 'multi-select-view', params:{rootModel:$data,isDisabled:false,formData:$component.userFormData()[$context.index]}}"></div>
+              </li>
+              <!-- /ko -->
+            </script>
+            <!-- /ko -->
+          </div>
+        </div>
+      </div>
+      <!-- ko ifnot: $baseModel.small() -->
+      <div class="oj-flex oj-sm-4 oj-lg-4 oj-panel">
+        <div class="oj-flex oj-flex-items-pad information-wrapper noborder info-view center">
+          <div class="oj-flex-item">
+            <!-- ko if : viewUploaded -->
+            <img alt="" class="icon-size" id="info-image" data-bind="attr: { src: $component.imageData()}" />
+            <!-- /ko -->
+            <!-- ko ifnot: viewUploaded -->
+            <img alt="" data-bind="loadImage : 'info-icon/note.svg'" class="icon-size">
+            <!-- /ko -->
+          </div>
+          <div class="oj-flex-item oj-sm-12 information-wrapper-heading center">
+            <h3 data-bind="text:$component.infoNote().header"></h3>
+          </div>
+          <div class="oj-flex-item oj-sm-12  information-wrapper-contents ">
+            <oj-text-area :aria-label="[[$component.resource.infoText]]" value="{{$component.infoNote().description}}" readonly></oj-text-area>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <div class="button-container">
+      <oj-button class="action-button-primary" id="next-button" type="submit" on-click="[[$component.saveData]]">
+        <span data-bind="text:$component.resource.submit"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" id="back-button" type="submit" on-click="[[$component.loadFormBuilder]]">
+        <span data-bind="text:$component.resource.back"></span>
+      </oj-button>
+    </div>
+  </oj-validation-group>
+</div>

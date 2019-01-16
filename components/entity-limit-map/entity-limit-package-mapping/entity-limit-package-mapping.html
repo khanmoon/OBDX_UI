@@ -1,0 +1,35 @@
+
+
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- ko if:entityLoaded -->
+    <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-1 label">
+      <oj-label class="" :for="[['title'+$index()]]">
+      <span data-bind="text:$component.resource.entity"></span></oj-label>
+    </div>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+      <oj-select-one id="title" :placeholder="[[$component.resource.common.pleaseSelect]]" required="[[true]]" on-value-changed="[[getMappedLimitPackages]]" value="{{entityLimitPackageDetails.entityId}}">
+
+                  <!-- ko foreach: $component.entityList -->
+                  <oj-option value="{{code}}"><span data-bind="text:code"></span></oj-option>
+                  <!-- /ko -->
+              </oj-select-one>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:packageLoaded -->
+
+    <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2 label">
+      <oj-label class="" for="userlimit"><span data-bind="text:$component.resource.limitPackage"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+      <oj-select-one disabled="[[limitPackageDisabled]]" :placeholder="[[$component.resource.common.pleaseSelect]]" on-value-changed="[[limitPackageChangeHandler.bind($data,entityLimitPackageDetails,$data)]]" required="[[true]]" value="{{entityLimitPackageDetails.packageId}}">
+              <!-- ko foreach: limitPackageArray -->
+              <oj-option value="{{key.id}}"><span data-bind="text:key.id"></span></oj-option>
+              <!-- /ko -->
+          </oj-select-one>
+    </div>
+    <!-- /ko -->
+  </div>
+  <!-- <div class="oj-flex-item oj-lg-2 oj-md-4 oj-sm-4">
+      <a href="javascript:void(0)" class="icon icon-delete" data-bind="click:"></a>
+  </div> -->

@@ -1,0 +1,58 @@
+<div class="row-group" data-bind="with:paymentData">
+    <!-- ko if:!('adhocPaymentFlag' in $component) -->
+    <!-- ko ifnot: $component.isMultiplePayment -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.transferTo ,
+                     value :payoutDetails.instructionDetails?payoutDetails.payeeDetails.nickName:payeeDetails.nickName
+                     ">
+    </row>
+    <!-- /ko -->
+    <div data-bind="with:$component.payeeDetails()">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments?$component.payments.payee.accountType:$component.payments.moneytransfer.accountType ,value : $component.payments.payee.type[accountType]"></row>
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments?$component.payments.payee.accountNumber:$component.payments.moneytransfer.accountNumber ,value : accountNumber"></row>
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments?$component.payments.payee.accountName:$component.payments.moneytransfer.accountName ,value : accountName"></row>
+        <!-- ko if:typeof(accountBranch) === 'object'-->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.branchDetails,
+            value :[accountBranch.code,accountBranch.name,accountBranch.branch,accountBranch.address,accountBranch.city,accountBranch.country]"></row>
+        <!-- /ko -->
+        <!-- ko if:typeof(accountBranch) === 'string'-->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.branchDetails, value :accountBranch"></row>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.isMultiplePayment -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.transferfrom ,
+                     value :payoutDetails.instructionDetails?payoutDetails.instructionDetails.debitAccountId.displayValue:
+                     payoutDetails.debitAccountId.displayValue">
+    </row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.transferon ,
+                     value :payoutDetails.instructionDetails?$baseModel.formatDate(payoutDetails.instructionDetails.startDate):$baseModel.formatDate(payoutDetails.valueDate)"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.amount ,
+                     value :payoutDetails.instructionDetails?
+                            $baseModel.formatCurrency(payoutDetails.instructionDetails.amount.amount,payoutDetails.instructionDetails.amount.currency):$baseModel.formatCurrency(payoutDetails.amount.amount,payoutDetails.amount.currency),
+                            dataClass :'highlight-text'"></row>
+    <!-- /ko -->
+    <!-- ko if: $component.serviceChargesLoaded() -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.serviceCharge ,
+     value :$baseModel.formatCurrency($component.chargesSum(),$component.chargesData()[0].serviceCharge.currency)"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.totalDebitAmount ,
+                    value :$baseModel.formatCurrency(($component.chargesSum() + (payoutDetails.instructionDetails?
+                    payoutDetails.instructionDetails.amount.amount : payoutDetails.amount.amount)),$component.chargesData()[0].serviceCharge.currency)"></row>
+    <!-- /ko -->
+    <!-- ko if: $component.paymentData().payoutDetails && $component.paymentData().payoutDetails.dealId -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.dealNumber ,value : $component.paymentData().payoutDetails.dealId"></row>
+    <!-- /ko -->
+    <!-- ko if: $component.paymentData().payoutDetails.instructionDetails && $component.paymentData().payoutDetails.instructionDetails.dealId -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.dealNumber ,value : $component.paymentData().payoutDetails.instructionDetails.dealId"></row>
+    <!-- /ko -->
+    <!-- ko if:$component.dealDetails && $component.dealDetails() -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.dealType ,value : $component.dealType"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.exchangeRate ,value : $component.exchangeRate"></row>
+    <!-- /ko -->
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.correspondencecharges ,
+                    value :$component.chargesDescription()"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.paymentdetails ,
+                    value :payoutDetails.instructionDetails?payoutDetails.instructionDetails.otherDetails.line1:
+                     payoutDetails.otherDetails.line1"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.note ,
+                    value :payoutDetails.instructionDetails?payoutDetails.instructionDetails.remarks: payoutDetails.remarks"></row>
+</div>

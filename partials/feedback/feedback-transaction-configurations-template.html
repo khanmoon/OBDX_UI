@@ -1,0 +1,58 @@
+<!-- ko if: $component.dataLoaded() -->
+<!-- ko foreach: $component.newFeedbackDefinitionDTO -->
+
+<div class="oj-flex oj-lg-12">
+  <div class="oj-flex-item oj-lg-3 ">
+
+    <oj-label :id="[['selectTransaction']]"><span data-bind="text:$component.resource.selectTransactionLabel"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-lg-6 ">
+    <oj-select-many id="transactions" value="{{temp_transactions}}" placeholder="{{$component.resource.selectedTransaction}}" required disabled="[[$component.reviewTemplate]]" options="[[$component.transactionList]]" on-value-changed="[[$component.transactionHandler]]">
+    </oj-select-many>
+  </div>
+  <div class="oj-flex-item oj-lg-3 right">
+    <a href="#" class="icon-delete" data-bind="click : $component.deleteAddNewTransaction.bind($data,$index())"></a>
+  </div>
+</div>
+<!-- ko foreach: ratings -->
+<div class="oj-flex oj-lg-12">
+  <div class="oj-flex-item oj-lg-3">
+    <oj-rating-gauge id="gauge9" readonly value="{{$component.convertToInt(weightId)}}" selected-state.shape="[[$component.customShape]]" hover-state.shape="[[$component.customShape]]" unselected-state.shape="[[$component.customShape]]" changed-state.shape="[[$component.customShape]]"></oj-rating-gauge>
+  </div>
+
+  <div class="oj-flex-item oj-lg-6">
+    <oj-select-one :id="[['selectQuestions'+$index()]]" placeholder="{{$component.resource.selectQuestions}}" on-value-changed="{{$component.questionChangeHandler}}" value="{{temp_questionDescription}}" required disabled="[[$component.reviewTemplate]]">
+      <!-- ko foreach: $component.question -->
+      <oj-option value="[[questionId]]"><span data-bind="text: questionDescription"></span></oj-option>
+      <!-- /ko -->
+    </oj-select-one>
+  </div>
+</div>
+<div class="oj-flex-item oj-lg-3">
+</div>
+<!-- ko if: temp_questionSelected -->
+<div class="oj-flex oj-lg-12">
+  <div class="oj-flex-item oj-lg-3">
+  </div>
+  <div class="oj-flex-item oj-lg-6">
+    <oj-label :id="[['selectTransaction']]"><span data-bind="text:$component.resource.selectOptionApplicableLable"></span></oj-label>
+  </div>
+</div>
+<div class="oj-flex oj-lg-12">
+  <div class="oj-flex-item oj-lg-3">
+  </div>
+  <div class="oj-flex-item oj-lg-6">
+    <span class="oj-choice-row ">
+           <oj-checkboxset :id="[['optionRequest'+$index()]]" labelled-by="optionId" on-value-changed="{{$component.OptionRequestChangedHandler}}" value="{{temp_selectedOptions}}" disabled="[[$component.reviewTemplate]]" required>
+             <!-- ko foreach: temp_optionsRequestList -->
+                           <oj-option value="[[optionId]]"><span data-bind="text: optionDescription" attr="{'id':'checkboxSetOptionId'}"></span></oj-option>
+    <!-- /ko -->
+    </oj-checkboxset>
+    </span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- /ko -->
+<!-- /ko -->

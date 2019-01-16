@@ -1,0 +1,642 @@
+<div data-bind="template : $component.getTemplate(), data:$data"></div>
+<script type="text/html" id="corpTemplate">
+  <div class="account-transactions">
+    <!-- ko if: $data.fullPage -->
+    <div class="oj-flex-item">
+      <div class="account-transactions__widget-nav">
+        <a href="#" data-bind="click:toggleFilter,
+        attr:{ title: $component.nls.searchFields.labels.toggleSearchTitle, alt : $component.nls.searchFields.labels.toggleSearch }">
+        <span id="ctrl2" class="icon icon-search"></span>
+      </a>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:showSearch() -->
+    <div class="account-transactions__search-section form-main-container" id="searchSection">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''" data-bind="">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 no-pad-cols">
+            <account-input params="baseModel : $baseModel, rootModel: $data, label : $component.nls.searchFields.labels.selectAccount,
+          account : $component.selectedAccount,
+          type: 'balance',
+          customURL : $component.moduleUrl,
+          additionalDetails : ko.observable(),
+          validator:$component.validationTracker">
+            </account-input>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+            <div>
+              <label for="id1" data-bind="text:nls.searchFields.labels.searchBy"></label>
+            </div>
+            <div class="">
+              <oj-select-one id="id1" value="{{$component.searchParameters.searchBy}}" on-value-changed="[[searchBy]]">
+                <!-- ko foreach: period -->
+                <oj-option value="{{$data.key}}"><span data-bind="text:$data.value"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+        </div>
+        <!-- ko if:dateRange() -->
+        <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+            <div class="">
+              <label data-bind="attr:{id:'fromDate' + $baseModel.incrementIdCount()},text:nls.searchFields.labels.timeFrom"></label>
+            </div>
+            <div class="">
+              <oj-input-date required :id="[['fromDate'+ $baseModel.currentIdCount()]]" max="[[$component.todayDate()]]" value="{{$component.searchParameters.fromDate}}" datepicker="[[{changeMonth:'none',changeYear:'none'}]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+            </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+            <div class="">
+              <label data-bind="attr:{for:'toDate' + $baseModel.incrementIdCount()},text:nls.searchFields.labels.timeTo"></label>
+            </div>
+            <div class="">
+              <oj-input-date required :id="[['toDate'+ $baseModel.currentIdCount()]]" min="[[$component.searchParameters.fromDate]]" max="[[$component.todayDate()]]" value="{{$component.searchParameters.toDate}}" datepicker="[[{changeMonth:'none',changeYear:'none'}]]"
+                converter="[[$baseModel.dateConverter]]"></oj-input-date>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+            <div class="">
+              <label data-bind="text:nls.searchFields.labels.referrenceNumber"></label>
+            </div>
+            <div class="">
+              <oj-input-text :invalidcomponenttracker="[[validationTracker]]" validators="[[$baseModel.getValidator('REFERENCE_NUMBER')]]" value="{{$component.searchParameters.referenceNo}}"></oj-input-text>
+            </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+            <div class="">
+              <label for="id2" data-bind="text:nls.searchFields.labels.transactionType"></label>
+            </div>
+            <div class="">
+              <oj-select-one id="id2" value="{{$component.searchParameters.transactionType}}">
+                <!-- ko foreach: transactionNames -->
+                <oj-option value="{{$data.key}}"><span data-bind="text:$data.value"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+        </div>
+        <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+          <div class="oj-flex-item oj-sm-12 oj-lg-4" data-bind="component: {
+              name: 'amount-input', params: {
+              amount : $component.searchParameters.fromAmount,
+              currency : $component.accountTransactionCurrency(),
+              label :$component.nls.searchFields.labels.amountFrom,
+              labelClasses:'oj-lg-6 oj-md-4',
+              valueClasses:'oj-lg-6 oj-md-4',
+              validator:$component.validation,
+              isMandatory:false,
+              rootId:'foreignAmount',
+              rootClass:'form-input'
+              }
+            }">
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-lg-4" data-bind="component: {
+              name: 'amount-input', params: {
+              amount : $component.searchParameters.toAmount,
+              currency : $component.accountTransactionCurrency(),
+              label :$component.nls.searchFields.labels.amountTo,
+              labelClasses:'oj-lg-6 oj-md-4',
+              valueClasses:'oj-lg-6 oj-md-4',
+              validator:$component.validation,
+              isMandatory:false,
+              rootId:'foreignAmount',
+              rootClass:'form-input',
+              minimumAmount: $component.searchParameters.fromAmount
+              }
+            }">
+          </div>
+        </div>
+      </page-section>
+      <div class="oj-flex oj-flex-items-pad button-container" data-bind="">
+        <oj-button class="action-button-primary" on-click="[[searchTransaction]]">
+          <span slot="startIcon" class="icons icon-search"></span>
+          <span data-bind="text:nls.searchFields.labels.btnSearch"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[resetFilter]]">
+          <span slot="startIcon" class="icons icon-refresh"></span>
+          <span data-bind="text:nls.searchFields.labels.btnReset"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+          <span slot="startIcon" class="icons icon-back-arrow"></span>
+          <span data-bind="text:nls.searchFields.labels.btnBack"></span>
+        </oj-button>
+      </div>
+    </div>
+    <!-- /ko -->
+    <action-widget params="baseModel : $baseModel, rootModel: $data,header:transactionHeading,
+controls:{ctrl2: $component.showSearchSection}" class="account-transactions__details account-transactions-details">
+      <!-- ko if:showPagination() -->
+      <!-- ko if:$baseModel.large() -->
+      <div class="account-transactions-details__widget-table account-transactions-details-widget-table">
+        <div class="oj-flex oj-flex-items-pad account-transactions-details-widget-table__balances account-transactions-details-widget-table-balances">
+          <!-- ko ifnot : $component.hideAmount() -->
+          <div class="oj-flex-item oj-sm-12 oj-md-5">
+            <label data-bind="text:nls.searchFields.labels.closingBalance"></label>
+            <span class="account-transactions-details-widget-table-balances__amount" data-bind="text:openingBalance"></span>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-5 account-transactions-details-widget-table-balances__closingBalance">
+            <label data-bind="text:nls.searchFields.labels.closingBalance"></label>
+            <span class="account-transactions-details-widget-table-balances__amountClosed" data-bind="text:closingBalance"></span>
+          </div>
+          <!-- /ko -->
+          <div class="oj-flex-item oj-sm-12" data-bind="css: $component.hideAmount() ? 'oj-md-12 right' : 'oj-md-2'">
+            <!-- ko if: mediatypeLoaded -->
+
+            <oj-menu-button class="action-button-primary" id="menuButton">
+              <!-- ko text: $component.nls.searchFields.labels.download-->
+              <!-- /ko -->
+              <oj-menu id="myMenu" slot="menu" class="hide" on-oj-action="[[downloadStatement]]">
+                <!-- ko foreach: menuItems -->
+                <oj-option value="[[$data.value]]"><span data-bind="text: $data.text"></span></oj-option>
+                <!-- /ko -->
+              </oj-menu>
+            </oj-menu-button>
+            <!-- /ko -->
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <oj-table columns="[[[{
+                    headerText:nls.searchFields.labels.date,template:'formattedDate'},{
+                    headerText:nls.searchFields.labels.description,field:'description',style:'width : 30%'},{
+                    headerText:nls.searchFields.labels.reference_no,field:'reference_no',className:'ref-no-text'},{
+                    headerText:nls.searchFields.labels.amount,field:'tempAmount',template:'amountWithCurrencyField',className:'amount'},{
+                    headerText:nls.searchFields.labels.balance,field:'balance',headerClassName:$component.hideAmount() ?'hide':'right',className:$component.hideAmount() ?'hide':'right amount'}]]]" columns-default="[[{
+                sortable:'enabled'}]]" data="[[pagingDatasource]]">
+              <template slot="amountWithCurrencyField">
+                    <span class="account-transactions-details-widget-table__activity-amt" data-bind="text: $current.row.amount,css:$current.row.amountClass">
+                    </span>
+                </template>
+              <template slot="formattedDate">
+                    <span data-bind="text: $baseModel.formatDate($current.row.date)">
+                    </span>
+                </template>
+            </oj-table>
+            <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[pagingDatasource]]">
+            </oj-paging-control>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-primary" on-click="[[$component.downloadeStatement]]">
+            <span slot="startIcon" class="icons icon-view-statement"></span>
+            <span data-bind="text:nls.searchFields.labels.downloadeStatement"></span>
+          </oj-button>
+          <!-- ko if: type === 'demandDeposit' -->
+          <oj-button class="action-button-primary" on-click="[[$component.eStatementSubsciption]]">
+            <span slot="startIcon" class="icons icon-view-casa"></span>
+            <span data-bind="text:nls.searchFields.labels.estatement"></span>
+          </oj-button>
+          <!-- /ko -->
+          <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:nls.searchFields.labels.btnBack"></span>
+          </oj-button>
+
+
+
+        </div>
+      </div>
+
+      <modal-window params="baseModel : $baseModel, rootModel : $data, id:'statementDialog', header : showPhysicalStatement() ? $component.nls.searchFields.labels.reqStatement : accountNumberAlreadySubscribed() ? $component.nls.searchFields.labels.unsubscribeHeader : showeStatementDownload() ? $component.nls.searchFields.labels.downloadeStatement : $component.nls.searchFields.labels.estatement,closeHandler:$component.closeHandler">
+        <!-- ko if:showeStatement() -->
+        <div class="account-statement__eStatement account-statement-eStatement" data-bind="component: {name:'electronic-statement', params: {rootModel:$data} }">
+        </div>
+        <!-- /ko -->
+        <!-- ko if:showeStatementDownload() -->
+        <div data-bind="component: {name:'electronic-statement-download', params:{rootModel:$data}}">
+        </div>
+        <!-- /ko -->
+      </modal-window>
+      <!-- /ko -->
+      <!-- ko ifnot: $baseModel.large() -->
+      <div class="grid-main-container" params="rootModel : $data, heading : ''">
+        <oj-list-view id="listview" selection-mode="[['none']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('data-template-corp',true)}]]" data="[[pagingDatasource]]">
+        </oj-list-view>
+        <oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[pagingDatasource]]">
+        </oj-paging-control>
+        <!-- ko if: mediatypeLoaded -->
+
+        <oj-menu-button class="action-button-primary" id="menuButton">
+          <!-- ko text: $component.nls.searchFields.labels.download-->
+          <!-- /ko -->
+          <oj-menu id="myMenu" slot="menu" class="hide" on-oj-action="[[downloadStatement]]">
+            <!-- ko foreach: menuItems -->
+            <oj-option value="[[$data.value]]"><span data-bind="text: $data.text"></span></oj-option>
+            <!-- /ko -->
+          </oj-menu>
+        </oj-menu-button>
+        <!-- /ko -->
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+
+      <!-- ko ifnot: showPagination() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+          <div data-bind="text:$component.nls.searchFields.labels.noRecord"></div>
+        </div>
+      </div>
+      <!-- /ko -->
+    </action-widget>
+    <script type="text/html" id="data-template-corp">
+      <li data-bind="attr: {id: 'id'}">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 date"><span data-bind="text:$baseModel.format(date)"></span></div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 account-transactions__ref-no-text">
+            <span data-bind="text:'#'"></span>
+            <span data-bind="text:reference_no"></span>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 description">
+            <span data-bind="text:description"></span>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-6">
+            <label data-bind="text:$component.nls.searchFields.labels.amount"></label>
+          </div>
+          <div class="oj-flex-item oj-sm-6 right">
+            <span data-bind="text:amount,css:transactionType==='C'?'credit right':'debit right'"></span>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-6" data-bind="css:{hide:$component.hideAmount()}">
+            <label data-bind="text:$component.nls.searchFields.labels.balance"></label>
+          </div>
+          <div class="oj-flex-item oj-sm-6 right">
+            <span data-bind="text:balance"></span>
+          </div>
+        </div>
+        <!-- ko if:balance -->
+        <!-- /ko -->
+      </li>
+    </script>
+  </div>
+</script>
+<script type="text/html" id="retTemplate">
+  <!-- ko if: !$baseModel.small() -->
+  <div class="form-main-container account-statement">
+    <div class="oj-flex oj-flex-items-pad">
+      <div id="slider" data-bind="css:$baseModel.medium()?'hide':'oj-flex-item oj-sm-12 oj-lg-3'" class="account-statement__left  account-statement-left">
+        <!-- <div class="account-statement-left__accNoText" data-bind="text:$component.nls.searchFields.labels.acccountNumber"></div>
+          <div class="account-statement-left__accNo" data-bind="text:$component.accountNoSelected"></div> -->
+        <account-input params="baseModel : $baseModel, rootModel: $data, label : $component.nls.searchFields.labels.acccountNumber,
+          account : $component.selectedAccount,
+          customURL : $component.moduleUrl,
+          type: 'nodeValue',
+          readOnly: !!$component.params.id,
+          additionalDetails : $component.additionalDetails,
+          validator:$component.validationTracker">
+        </account-input>
+        <div class="account-statement-left__viewInfo label">
+          <oj-label><span data-bind="text:$component.nls.searchFields.labels.view"></span></oj-label>
+        </div>
+        <div class=" account-statement-left__selectPeriod account-statement-left-selectPeriod">
+          <label class="hide-label" data-bind="attr:{for: 'selectPeriod' + ($baseModel.incrementIdCount())},text:$component.nls.searchFields.labels.period"></label>
+          <oj-select-one :id="[['selectPeriod'+($baseModel.currentIdCount())]]" value="{{$component.searchParameters.searchBy}}" on-value-changed="[[searchBy]]">
+            <!-- ko foreach: period -->
+            <oj-option value="{{$data.key}}"><span data-bind="text:$data.value"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+        <!-- ko if:dateRange() -->
+        <oj-validation-group id="dateTracker" valid="{{dateValid}}">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <label data-bind="attr:{for:'fromDate' + $baseModel.incrementIdCount()},text:$component.nls.searchFields.labels.timeFrom"></label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <oj-input-date required :id="[['fromDate'+ $baseModel.currentIdCount()]]" max="[[$component.todayDate()]]" value="{{$component.searchParameters.fromDate}}" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <label data-bind="attr:{for:'toDate' + $baseModel.incrementIdCount()},text:$component.nls.searchFields.labels.timeTo"></label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <oj-input-date required :id="[['toDate'+ $baseModel.currentIdCount()]]" min="[[$component.searchParameters.fromDate]]" max="[[$component.todayDate()]]" value="{{$component.searchParameters.toDate}}" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+          </div>
+        </oj-validation-group>
+        <!-- /ko -->
+        <div class="account-statement-left__selectAccountType account-statement-left-selectAccountType">
+          <label class="hide-label" data-bind="attr:{for: 'selectTransactionType' + ($baseModel.incrementIdCount())},text:$component.nls.searchFields.labels.type"></label>
+          <oj-select-one :id="[['selectTransactionType'+($baseModel.currentIdCount())]]" value="{{$component.searchParameters.transactionType}}">
+            <!-- ko foreach: transactionNames -->
+            <oj-option value="{{$data.key}}"><span data-bind="text:$data.value"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+        <div class="oj-flex button-container">
+          <oj-button class="action-button-primary" on-click="[[searchTransaction]]">
+            <span data-bind="text:nls.searchFields.labels.applyFilter"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" on-click="[[resetFilter]]">
+            <span data-bind="text:nls.searchFields.labels.btnReset"></span>
+          </oj-button>
+        </div>
+        <div class="">
+          <!-- ko if: type === 'demandDeposit' -->
+          <a class="account-statement-left__link account-statement-left-link" href="#" data-bind="click: eStatementSubsciption ,attr:{alt:$component.nls.searchFields.labels.estatementText,title:$component.nls.searchFields.labels.estatement,'aria-label':$component.nls.searchFields.labels.estatement}">
+                    <span class="icons icon-view-casa account-statement-left-link__icon"></span>
+                    <span class="account-statement-left-link__statement" data-bind="text:$component.nls.searchFields.labels.estatement"></span>
+                </a>
+          <!-- /ko -->
+          <!-- ko if: type === 'deposit' -->
+          <a class="account-statement-left__link account-statement-left-link" href="#" data-bind="click: eStatementSubsciption ,attr:{alt:$component.nls.searchFields.labels.estatementText,title:$component.nls.searchFields.labels.estatement,'aria-label':$component.nls.searchFields.labels.estatement}">
+                    <span class="icons icon-view-casa account-statement-left-link__icon"></span>
+                    <span class="account-statement-left-link__statement" data-bind="text:$component.nls.searchFields.labels.estatement"></span>
+                </a>
+          <!-- /ko -->
+          <!-- ko ifnot: type === 'loan' -->
+          <a class="account-statement-left__link account-statement-left-link" href="#" data-bind="$component.nls.searchFields.labels.reqStatement,click: physicalStatementRequest,attr:{alt:$component.nls.searchFields.labels.reqStatementText,title:$component.nls.searchFields.labels.reqStatement,'aria-label':$component.nls.searchFields.labels.reqStatement}">
+                    <span class="icons icon-summary account-statement-left-link__icon"></span>
+                    <span class="account-statement-left-link__statement" data-bind="text:$component.nls.searchFields.labels.reqStatement"></span>
+                </a>
+          <!-- /ko -->
+          <a class="account-statement-left__link account-statement-left-link" href="#" data-bind="$component.nls.searchFields.labels.downloadeStatement, click: downloadeStatement,attr:{alt:$component.nls.searchFields.labels.downloadeStatement,title:$component.nls.searchFields.labels.downloadStatement,'aria-label':$component.nls.searchFields.labels.downloadStatement}">
+                    <span class="icons icon-view-statement account-statement-left-link__icon"></span>
+                    <span class="account-statement-left-link__statement" data-bind="text:$component.nls.searchFields.labels.downloadeStatement"></span>
+                </a>
+        </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-9 account-statement__details account-statement-details">
+        <div class="oj-flex oj-flex-items-pad account-statement-details__balances account-statement-details-balances">
+          <!-- ko if : $baseModel.medium() -->
+          <div class="oj-flex-item oj-md-1 filter-image">
+            <a href="javascript:void(0)" data-bind="attr:{'alt':$component.nls.searchFields.labels.openDiv ,'title':$component.nls.searchFields.labels.openDivText }, click: $component.toggleDiv">
+                            <img data-bind="loadImage:'common/filter.svg'">
+                        </a>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot : hideAmount -->
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4 account-statement-details-balances__openBal account-statement-details-balances-openBal">
+            <span data-bind="text:$component.nls.searchFields.labels.closingBalance"></span>
+            <span class="account-statement-details-balances-openBal__openAmount" data-bind="text:openingBalance"></span>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4 account-statement-details-balances__closingBal account-statement-details-balances-closingBal">
+            <span data-bind="text:$component.nls.searchFields.labels.closingBalance"></span>
+            <span class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 account-statement-details-balances-closingBal__closedAmount" data-bind="text:closingBalance"></span>
+          </div>
+          <!-- /ko -->
+          <div data-bind="css:$component.hideAmount() ? 'oj-flex-item oj-sm-12 oj-md-12 oj-lg-12' : 'oj-flex-item oj-sm-4 oj-md-4 oj-lg-4'">
+            <div class="account-statement-details-balances__dropdown">
+              <!-- ko if: mediatypeLoaded -->
+
+              <oj-menu-button class="action-button-primary" id="menuButton">
+                <!-- ko text: $component.nls.searchFields.labels.download-->
+                <!-- /ko -->
+                <oj-menu id="myMenu" slot="menu" class="hide" on-oj-action="[[downloadStatement]]">
+                  <!-- ko foreach: menuItems -->
+                  <oj-option value="[[$data.value]]"><span data-bind="text: $data.text"></span></oj-option>
+                  <!-- /ko -->
+                </oj-menu>
+              </oj-menu-button>
+              <!-- /ko -->
+            </div>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <!-- ko if: showPagination -->
+          <div class="oj-flex-item">
+            <oj-table :aria-label="[[$component.nls.searchFields.labels.accountStatement]]" columns="[[[{headerText:nls.searchFields.labels.date,template:'formattedDate'},{headerText:nls.searchFields.labels.description,field:'description',style:'width : 30%'},{headerText:nls.searchFields.labels.reference_no,field:'reference_no',className:'ref-no-text'},{headerText:nls.searchFields.labels.amount,field:'tempAmount',template:'amountWithCurrencyField',headerClassName:'right'},{headerText:nls.searchFields.labels.balance,field:'balance',headerClassName:hideAmount() ?'hide':'right',className:'right amount '+($component.hideAmount()?'hide':'')}]]]"
+              columns-default="[[{sortable:'enabled'}]]" data="[[pagingDatasource]]">
+              <template slot="amountWithCurrencyField">
+                              <span class="account-statement-details__amount" data-bind="text: $current.row.amount,css:$current.row.amountClass">
+                              </span>
+                          </template>
+              <template slot="formattedDate">
+                              <span data-bind="text: $baseModel.formatDate($current.row.date)">
+                              </span>
+                          </template>
+            </oj-table>
+            <oj-paging-control class="oj-flex-item account-statement-details__pagination" id="paging" slot="bottom" :page-size="[[10]]" data="[[pagingDatasource]]">
+            </oj-paging-control>
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot: showPagination -->
+        <div class="oj-flex-item oj-sm-12">
+          <div data-bind="text: $component.nls.searchFields.labels.noData"></div>
+        </div>
+        <!-- /ko -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+  <modal-window params="baseModel : $baseModel, rootModel : $data, id:'statementDialog', header : showPhysicalStatement() ? $component.nls.searchFields.labels.reqStatement : accountNumberAlreadySubscribed() ? $component.nls.searchFields.labels.unsubscribeHeader : showeStatementDownload() ? $component.nls.searchFields.labels.downloadeStatement : $component.nls.searchFields.labels.estatement,closeHandler:$component.closeHandler">
+     <!-- ko if:showeStatementDownload() -->
+    <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-sm-12 account-statement__pwdInfo">
+        <div class="account-statement__pwdInfo__iconStyling">
+            <div class="icon icon-2x icon-information" aria-hidden="true"></div>
+        </div>
+        <div class="oj-flex-item oj-lg-11 oj-sm-11">
+            <oj-label id="pdfPwdInfo">
+                <span data-bind="text:$component.nls.searchFields.labels.pdfPwdInfo"></span>
+            </oj-label>
+             <oj-label id="pdfPwdExample">
+                <span data-bind="text:$component.nls.searchFields.labels.pdfPwdExample"></span>
+            </oj-label>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:showeStatement() -->
+    <div class="account-statement__eStatement account-statement-eStatement" data-bind="component: {name:'electronic-statement', params: {rootModel:$parent} }">
+    </div>
+    <!-- /ko -->
+    <!-- ko if:showPhysicalStatement() -->
+    <div class="account-statement__physicalStatement account-statement-physicalStatement" data-bind="component: {name:'physical-statement', params:{rootModel:$data}}">
+    </div>
+    <!-- /ko -->
+    <!-- ko if:showeStatementDownload() -->
+    <div data-bind="component: {name:'electronic-statement-download', params:{rootModel:$data}}">
+    </div>
+    <!-- /ko -->
+  </modal-window>
+  <modal-window params="baseModel : $baseModel, rootModel : $data, id:'passwordDialog', header : $component.nls.searchFields.labels.passwordNotification">
+    <div class="form-main-container">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <span data-bind="text: $component.nls.searchFields.labels.passCombination"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <span data-bind="text: $component.nls.searchFields.labels.passwordExample"></span>
+        </div>
+      </div>
+      <div class="oj-flex button-container">
+        <oj-button id="ok" class="action-button-primary" on-click="[[$component.ok]]">
+          <span data-bind="text:nls.searchFields.labels.ok"></span>
+        </oj-button>
+      </div>
+    </div>
+  </modal-window>
+  <!-- ko if: $baseModel.small() -->
+  <div class="form-main-container account-statement__headerInfo account-statement-headerInfo">
+    <account-input params="baseModel : $baseModel, rootModel: $data, label : $component.nls.searchFields.labels.selectAccount,
+      account : $component.selectedAccount,
+      type: 'nodeValue',
+      customURL : $component.moduleUrl,
+      readOnly: !!$component.params.id,
+      additionalDetails : $component.additionalDetails,
+      validator:$component.validationTracker">
+    </account-input>
+    <div class="oj-flex oj-flex-items-pad">
+      <!-- ko ifnot : hideAmount -->
+      <div class="oj-flex-item oj-sm-6 account-statement-headerInfo__balance account-statement-headerInfo-balance" data-bind="">
+        <div class="account-statement-headerInfo-balance__text" data-bind="text:$component.nls.searchFields.labels.closingBalance"></div>
+        <div class="account-statement-headerInfo-balance__amount" data-bind="text:$component.openingBalance"></div>
+      </div>
+      <div class="oj-flex-item oj-sm-6 right account-statement-headerInfo__balance account-statement-headerInfo-balance" data-bind="">
+        <div class="account-statement-headerInfo-balance__text" data-bind="text:$component.nls.searchFields.labels.closingBalance"></div>
+        <div class="account-statement-headerInfo-balance__amount" data-bind="text:$component.closingBalance"></div>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex oj-flex-items-pad account-statement__filter">
+      <div class="oj-flex-item oj-sm-5 account-statement__searchBy">
+        <div data-bind="text:$component.nls.dropDownValues[$component.searchParameters.searchBy()]"></div>
+      </div>
+      <div class="oj-flex-item oj-sm-5 account-statement__searchBy">
+        <div data-bind="text:$component.nls.dropDownValues[$component.searchParameters.transactionType().toLowerCase()]"></div>
+      </div>
+      <div id="filter" class="oj-flex-item oj-sm-2 right">
+        <a href="#" data-bind="attr:{'alt':$component.nls.searchFields.labels.applyFilter,'title':$component.nls.searchFields.labels.filter},click : toggleFilter">
+          <span class="icons icon-filter account-statement__img"></span>
+        </a>
+      </div>
+      <!-- ko if: filter() -->
+      <div class="account-statement__filter-container">
+        <div class="form-main-container">
+          <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.searchFields.labels.period">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12">
+                <oj-radioset on-value-changed="[[$component.showDateRange]]" value="{{$component.searchParameters.searchBy}}" class="oj-choice-direction-row">
+                  <!-- ko foreach: period -->
+                  <oj-option name="period" :id="[[$baseModel.currentIdCount()]]" value="[[$data.key]]"><span data-bind="attr: {for: $baseModel.incrementIdCount()},text: $data.value"></span></oj-option>
+                  <!-- /ko -->
+                </oj-radioset>
+              </div>
+            </div>
+            <!-- ko if:dateRange() -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <label data-bind="text:$component.nls.searchFields.labels.timeFrom"></label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+                <oj-input-date required max="[[$component.todayDate()]]" value="{{$component.searchParameters.fromDate}}" converter="[[$baseModel.dateConvertervalue]]"></oj-input-date>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <label data-bind="text:$component.nls.searchFields.labels.timeTo"></label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+                <oj-input-date required min="[[$component.searchParameters.fromDate]]" max="[[$component.todayDate()]]" value="{{$component.searchParameters.toDate}}" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+              </div>
+            </div>
+            <!-- /ko -->
+          </page-section>
+          <page-section params="baseModel : $baseModel, rootModel : $data, heading :$component.nls.searchFields.labels.type">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12">
+                <oj-radioset id="radioTransactionType" aria-labelledby="mainlabelid" value="{{$component.searchParameters.transactionType}}" class="oj-choice-direction-row">
+                  <!-- ko foreach: transactionNames -->
+                  <oj-option name="transactionTypes" :id="[[$baseModel.currentIdCount()]]" :value="[[$data.key]]"><span data-bind="attr: {for: $baseModel.incrementIdCount()},text: $data.value"></span></oj-option>
+                  <!-- /ko -->
+                </oj-radioset>
+              </div>
+            </div>
+          </page-section>
+          <div class="button-container" data-bind="">
+            <oj-button class="action-button-primary" on-click="[[searchTransaction]]">
+              <span data-bind="text:nls.searchFields.labels.applyFilter"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[toggleFilter]]">
+              <span data-bind="text:nls.searchFields.labels.btnCancel"></span>
+            </oj-button>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- ko if:showPagination() -->
+  <div class="grid-main-container" data-bind="css: filter() ? 'hide': ''" params="rootModel : $data, heading : ''">
+    <oj-list-view class="account-statement__list account-statement-list" id="listview" selection-mode="[['none']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('data-template',true)}]]" data="[[pagingDatasource]]">
+    </oj-list-view>
+    <oj-paging-control class="center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[pagingDatasource]]">
+    </oj-paging-control>
+    <!-- ko if: mediatypeLoaded -->
+    <oj-menu-button class="action-button-primary" id="menuButton">
+      <!-- ko text: $component.nls.searchFields.labels.download-->
+      <!-- /ko -->
+      <oj-menu id="myMenu" slot="menu" class="hide" on-oj-action="[[downloadStatement]]">
+        <!-- ko foreach: menuItems -->
+        <oj-option value="[[$data.value]]"><span data-bind="text: $data.text"></span></oj-option>
+        <!-- /ko -->
+      </oj-menu>
+    </oj-menu-button>
+    <!-- /ko -->
+    <a href="#" data-bind="click: $component.showFloatingPanel">
+      <div class="floating-button right"><span class="icons icon-more-vertical"></span></div>
+    </a>
+  </div>
+
+  <floating-panel params="baseModel : $baseModel, panelId: 'panelViewStatement', rootModel: $component">
+    <ul>
+      <!-- ko ifnot: type === 'loan' -->
+      <li>
+        <a href="#" data-bind="attr:{alt:$component.nls.searchFields.labels.reqStatementText,title:$component.nls.searchFields.labels.reqStatement,'aria-label':$component.nls.searchFields.labels.reqStatement},click: physicalStatementRequest">
+              <span class="icons icon-view-statement"></span>
+              <span data-bind="text:$component.nls.searchFields.labels.reqStatement"></span>
+             </a>
+      </li>
+      <!-- /ko -->
+      <!-- ko if: type === 'demandDeposit' -->
+      <li>
+        <a href="#" data-bind="attr:{alt:$component.nls.searchFields.labels.estatementText,title:$component.nls.searchFields.labels.estatement,'aria-label':$component.nls.searchFields.labels.estatement},click: eStatementSubsciption">
+              <span class="icons icon-subscription"></span>
+              <span data-bind="text:$component.nls.searchFields.labels.estatement"></span>
+             </a>
+      </li>
+      <!-- /ko -->
+      <li>
+        <a href="#" data-bind="attr:{alt:$component.nls.searchFields.labels.downloadStatement,title:$component.nls.searchFields.labels.downloadStatement,'aria-label':$component.nls.searchFields.labels.downloadStatement},click: downloadeStatement">
+              <span class="icons icon-view-statement"></span>
+              <span data-bind="text:$component.nls.searchFields.labels.downloadeStatement"></span>
+             </a>
+      </li>
+    </ul>
+  </floating-panel>
+  <!-- /ko -->
+  <!-- ko ifnot : $component.showPagination() -->
+  <div class="oj-flex oj-flex-items-pad" data-bind="css: filter() ? 'hide': ''">
+    <div class="oj-flex-item">
+      <span data-bind="text:nls.searchFields.labels.noRecord"></span>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="data-template">
+  <li class="account-statement-list__item account-statement-list-item">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12" data-bind="text:$baseModel.formatDate(date)"></div>
+      <div class="oj-flex-item oj-sm-12" data-bind="">
+        <span data-bind="text:reference_no"></span>
+      </div>
+      <div class="oj-flex-item oj-sm-12" data-bind="text:description"></div>
+      <label class="oj-flex-item oj-sm-6" data-bind="text:$component.nls.searchFields.labels.amount"></label>
+      <span class="oj-flex-item oj-sm-6 right" data-bind="text:amount,css:transactionType==='C'?'credit':'debit'"></span>
+      <div class="oj-flex-item" data-bind="css:{hide:$component.hideAmount()}">
+        <label class="oj-flex-item oj-sm-6 account-statement-list-item__balText" data-bind="text:$component.nls.searchFields.labels.balance"></label>
+        <div class="oj-flex-item oj-sm-6 account-statement-list-item__balAmount right" data-bind="text:balance"></div>
+      </div>
+    </div>
+  </li>
+</script>

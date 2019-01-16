@@ -1,0 +1,162 @@
+<!-- ko if : dataLoaded() -->
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-9">
+    <div class="form-main-container">
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <oj-validation-group id="tracker" valid="{{groupValid}}">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="groupCode"><span data-bind="text:$component.nls.accessPointGroup.groupCode"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-input-text id="groupCode" value="{{groupCode}}" disabled="{{params.mode==='editAfterUpdate'}}" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.nls.accessPointGroup.invalidCode,{type: 'length',options: {min: 1, max: 20}})]]" aria-labelledby="groupCode"
+                required></oj-input-text>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 oj-label">
+              <oj-label for="description">
+                <span data-bind="text:$component.nls.accessPointGroup.description"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-input-text id="description" value="{{description}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.nls.accessPointGroup.invalidDescription,{type: 'length',options: {min: 1, max: 40}})]]" aria-labelledby="description"
+                required></oj-input-text>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label for="groupType">
+                <span data-bind="text:$component.nls.accessPointGroup.groupType"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <oj-radioset id="groupType" value="{{groupType}}" :aria-label="[[$component.nls.accessPointGroup.groupType]]" on-value-changed="[[changeGroupType]]" class="oj-choice-direction-row">
+                <oj-option :id="[[$component.nls.accessPointGroup.internal+'Group']]" value="[[$component.nls.accessPointGroup.internal]]"><span data-bind="text:$component.nls.accessPointGroup.internal"></span></oj-option>
+                <oj-option :id="[[$component.nls.accessPointGroup.external+'Group']]" value="[[$component.nls.accessPointGroup.external]]"><span data-bind="text:$component.nls.accessPointGroup.external"></span></oj-option>
+              </oj-radioset>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-4 label">
+              <oj-label>
+                <span data-bind="text:$component.nls.accessPointGroup.accessPoints"></span>
+              </oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4">
+              <!-- ko if : $component.groupType()===$component.nls.accessPointGroup.internal -->
+              <div class="oj-flex spacing-table">
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-table id="internal-table" data-bind="attr:{'aria-label':$component.nls.accessPointGroup.internal}" data='[[$component.internalDataSource()]]' selection-mode='{"row": "multiple", "column": "multiple"}' columns="{{internalColumns}}">
+                  </oj-table>
+                </div>
+              </div>
+              <script type="text/html" id="internalCheckBox">
+                <td>
+                  <oj-checkboxset aria-hidden="true" value="{{$context.row.selected}}" class="oj-checkboxset-no-chrome">
+                    <oj-option data-bind="attr:{
+                                id: 'internalCheckBox' + $context.cellContext.status.rowIndex}" value="checked" disabled="{{$context.row.disabled}}"></oj-option>
+                  </oj-checkboxset>
+                </td>
+              </script>
+              <script type="text/html" id="internalCheckBoxLabel">
+                <!-- ko if : $context.row.disabled -->
+                <td>
+                  <oj-label>
+                    <span class="accesspoint-group__checkbox-disabled-label" data-bind="text:$context.row.description"></span>
+                  </oj-label>
+                </td>
+                <!-- /ko -->
+                <!-- ko ifnot : $context.row.disabled -->
+                <td>
+                  <oj-label>
+                    <span class="accesspoint-group__checkbox-label" data-bind="text:$context.row.description"></span>
+                  </oj-label>
+                </td>
+                <!-- /ko -->
+              </script>
+              <script type="text/html" id="internalHeaderCheckBox">
+                <td>
+                  <oj-checkboxset value='[false]' on-value-changed="[[$parent.selectAllInternalListener]]" class='oj-checkboxset-no-chrome'>
+                    <oj-option id="internalHeaderCheckBxoxOption" :aria-label="[[$component.nls.accessPointGroup.selectAllInternal]]" value="checked"></oj-option>
+                  </oj-checkboxset>
+                </td>
+              </script>
+              <!-- /ko -->
+              <!-- ko if : $component.groupType()===$component.nls.accessPointGroup.external -->
+              <div class="oj-flex spacing-table">
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-table id="external-table" :aria-label="[[$component.nls.accessPointGroup.external]]" data="[[$component.externalDataSource()]]" selection-mode='{"row": "multiple", "column": "multiple"}' columns="{{externalColumns}}">
+                  </oj-table>
+                </div>
+              </div>
+              <script type="text/html" id="externalCheckBox">
+                <td>
+                  <oj-checkboxset aria-hidden="true" value="{{$context.row.selected}}" class="oj-checkboxset-no-chrome">
+                    <oj-option :id="[['externalCheckBox'+ $context.cellContext.status.rowIndex]]" value="checked" disabled="{{$context.row.disabled}}"></oj-option>
+                  </oj-checkboxset>
+                </td>
+              </script>
+              <script type="text/html" id="externalCheckBoxLabel">
+                <!-- ko if : $context.row.disabled -->
+                <td>
+                  <oj-label>
+                    <span class="accesspoint-group__checkbox-disabled-label" data-bind="text:$context.row.description"></span>
+                  </oj-label>
+                </td>
+                <!-- /ko -->
+                <!-- ko ifnot : $context.row.disabled -->
+                <td>
+                  <oj-label>
+                    <span class="accesspoint-group__checkbox-label" data-bind="text:$context.row.description"></span>
+                  </oj-label>
+                </td>
+                <!-- /ko -->
+              </script>
+              <script type="text/html" id="externalHeaderCheckBox">
+                <td>
+                  <oj-checkboxset value='[false]' on-value-changed='[[$parent.selectAllExternalListener]]' class='oj-checkboxset-no-chrome'>
+                    <oj-option id="externalHeaderCheckBoxOption" :aria-label="[[$component.nls.accessPointGroup.selectAllExternal]]" value="checked"></oj-option>
+                  </oj-checkboxset>
+                </td>
+              </script>
+              <!-- /ko -->
+            </div>
+          </div>
+        </oj-validation-group>
+
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-primary" id="saveBtn" on-click="[[submit]]">
+            <span data-bind="text:$component.nls.generic.common.save"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" id="cancelBtn" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" id="backBtn" on-click="[[back]]">
+            <span data-bind="text:$component.nls.generic.common.back"></span>
+          </oj-button>
+        </div>
+
+        <modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'createError',header:$component.nls.generic.common.ERROR">
+          <div class="message-box">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <div class="dialog-text"><span data-bind="text:$component.nls.accessPointGroup.createError"></span></div>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad button-container">
+              <oj-button class="action-button-primary" id="okBtn" on-click="[[$component.closeDialogBox]]">
+                <span data-bind="text:$component.nls.generic.common.ok"></span>
+              </oj-button>
+            </div>
+          </div>
+        </modal-window>
+
+      </page-section>
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'access-point-group-create'"></help>
+  </div>
+</div>
+<!-- /ko -->

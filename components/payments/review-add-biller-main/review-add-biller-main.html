@@ -1,0 +1,40 @@
+<div class="form-main-container">
+    <!-- ko if:detailsLoaded() -->
+
+    <!-- ko if:$component.params.reviewMode -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.payments.generic.common.review , reviewHeader : $component.resource.reviewHeaderMsg}}"></div>
+    <!-- /ko -->
+    <page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading : $component.params.reviewMode?'':$component.resource.header">
+        <div class="row-group" data-bind="with : biller().billerDetails">
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.category , value :categoryType"></row>
+
+            <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.resource.billerName , value :billerDescription"></row>
+
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.relationship1 , value :relationshipNumber"></row>
+            <!-- ko if:'consumerNumber' in $component.biller().billerDetails?(consumerNumber!==null && consumerNumber !=='') : false -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.relationship2 , value :consumerNumber"></row>
+            <!-- /ko -->
+            <!-- ko if:'accountRelationshipNumber' in $component.biller().billerDetails?(accountRelationshipNumber!==null &&  accountRelationshipNumber !==''):false -->
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.relationship3 , value :accountRelationshipNumber"></row>
+            <!-- /ko -->
+        </div>
+    </page-section>
+
+    <!-- ko if:$component.params.reviewMode -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+
+        <oj-button class="action-button-primary " on-click="[[confirmBiller]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:billers.confirm"></span>
+</oj-button>
+<!-- ko if:$baseModel.large() -->
+        <oj-button class="action-button-secondary " id="cancel" on-click="[[$dashboard.openDashBoard.bind($component.resource.common.cancelConfirm)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.payments.generic.common.cancel"></span>
+</oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary " id="button" on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.payments.generic.common.back"></span>
+</oj-button>
+</div>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>

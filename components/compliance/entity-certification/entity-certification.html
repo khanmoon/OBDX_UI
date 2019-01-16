@@ -1,0 +1,316 @@
+<div class='form-main-container'>
+  <page-section params='baseModel : $baseModel, rootModel : $data, heading : ""'>
+    <div class="row-group">
+      <oj-validation-group id="entityCertificationTracker">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for='Pleaseselectacategorytowhichtheentitybelongs' id="entityCategoryLabel">
+              <span data-bind='text:$component.nls.EntityCertification.Pleaseselectacategorytowhichtheentitybelongs'></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-choice-direction-row">
+                <oj-radioset id="Pleaseselectacategorytowhichtheentitybelongs" required aria-labelledby="entityCategoryLabel" value="{{$component.fatcaComplianceData.entityCertification.entityFinancialInstitution}}">
+                  <oj-option value="true">
+                    <span data-bind="text:$component.nls.EntityCertification.FinancialInstitution"></span>
+                  </oj-option>
+                  <oj-option value="false">
+                    <span data-bind="text:$component.nls.EntityCertification.NonFinancialInstitution"></span>
+                  </oj-option>
+                </oj-radioset>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ko if: $component.fatcaComplianceData.entityCertification.entityFinancialInstitution() === "true" -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for='FinancialInstitution' id="FinancialInstitutionLabel">
+              <span data-bind='text:$component.nls.EntityCertification.FinancialInstitution'></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12">
+                <oj-radioset id="FinancialInstitution" required aria-labelledby="FinancialInstitutionLabel" value="{{$component.fatcaComplianceData.entityCertification.financialInstitutionDetails.investmentEntity}}">
+                  <oj-option value="true">
+                    <span data-bind="text:$component.nls.EntityCertification.AnInvestmentEntity"></span>
+                  </oj-option>
+                  <!-- ko if: $component.fatcaComplianceData.entityCertification.financialInstitutionDetails.investmentEntity() === "true" -->
+                  <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12">
+                      <oj-label class="hide-label" for='InvestmentEntityType' id="InvestmentEntityTypeLabel">
+                        <span data-bind='text:$component.nls.EntityCertification.InvestmentEntityType'></span>
+                      </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12">
+                      <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-choice-direction-row ">
+                          <oj-radioset id="InvestmentEntityType" required aria-labelledby="InvestmentEntityTypeLabel" on-value-changed="[[$component.investmentEntityChangeHandler]]"
+                            value="{{$component.fatcaComplianceData.entityCertification.financialInstitutionDetails.locatedInNonParticipating}}">
+                            <oj-option value="true">
+                              <span data-bind="text:$component.nls.EntityCertification.AnInvestmentEntitylocatedinaNonParticipatingJurisdictionandmanagedbyanotherFinancialInstitution"></span>
+                            </oj-option>
+                            <oj-option value="false">
+                              <span data-bind="text:$component.nls.EntityCertification.OtherInvestmentEntity"></span>
+                            </oj-option>
+                          </oj-radioset>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /ko -->
+                  <oj-option value="false">
+                    <span data-bind="text:$component.nls.EntityCertification.DepositoryInstitutionCustodialInstitutionorSpecifiedInsuranceCompany"></span>
+                  </oj-option>
+                </oj-radioset>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for='GIINAvailable' id="GIINAvailableLabel">
+              <span data-bind='text:$component.nls.EntityCertification.GIINAvailable'></span>
+              <a id="giinInfo" :alt="{{$component.nls.EntityCertification.giinInfoAlt}}" :title="{{$component.nls.EntityCertification.giinInfoTitle}}"
+                href="javascript:void(0)" data-bind="click:$component.infoPopUp.bind($data, 'giinInfoPopUp', true)">
+                <span class="icons icon-information"></span>
+              </a>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-4">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-choice-direction-row ">
+                <oj-radioset id="GIINAvailable" required aria-labelledby="GIINAvailableLabel" value="{{$component.fatcaComplianceData.entityCertification.financialInstitutionDetails.giinAvailable}}">
+                  <oj-option value="true">
+                    <span data-bind="text:$component.nls.EntityCertification.Yes"></span>
+                  </oj-option>
+                  <oj-option value="false">
+                    <span data-bind="text:$component.nls.EntityCertification.No"></span>
+                  </oj-option>
+                </oj-radioset>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ko if: $component.fatcaComplianceData.entityCertification.financialInstitutionDetails.giinAvailable() === "true" -->
+        <div class='oj-flex oj-flex-items-pad'>
+          <div class='oj-flex-item oj-sm-12 oj-label'>
+            <oj-label for='EnterGIIN'>
+              <span data-bind='text:$component.nls.EntityCertification.EnterGIIN'></span>
+            </oj-label>
+          </div>
+          <div class='oj-flex-item oj-sm-12 oj-md-4 oj-lg-4'>
+            <oj-input-text id='EnterGIIN' required value='{{$component.fatcaComplianceData.entityCertification.financialInstitutionDetails.giin}}'
+              validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.nls.messages.giin,{
+                           type:'length',options:{min:1,max:16}})]]"></oj-input-text>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: $component.fatcaComplianceData.entityCertification.financialInstitutionDetails.giinAvailable() === "false" -->
+        <div class='oj-flex oj-flex-items-pad'>
+          <div class='oj-flex-item oj-sm-12 oj-label'>
+            <oj-label for='ReasonForNA'>
+              <span data-bind='text:$component.nls.EntityCertification.ReasonForNA'></span>
+            </oj-label>
+          </div>
+          <div class='oj-flex-item oj-sm-12 oj-md-4 oj-lg-4'>
+            <oj-input-text id='ReasonForNA' required value='{{$component.fatcaComplianceData.entityCertification.financialInstitutionDetails.reasonForNonAvailability}}'
+              validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.nls.messages.ReasonForNA,{
+                           type:'length',options:{min:1,max:100}})]]"></oj-input-text>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: $component.fatcaComplianceData.entityCertification.entityFinancialInstitution() === "false" -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for='NonFinancialInstitution' id="nonFinancialInstitutionLabel">
+              <span data-bind='text:$component.nls.EntityCertification.NonFinancialInstitution'></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12">
+                <oj-radioset id="NonFinancialInstitution" required aria-labelledby="nonFinancialInstitutionLabel" on-value-changed="[[$component.nonFinancialChangeHandler]]"
+                  value="{{$component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNFE}}">
+                  <oj-option value="true">
+                    <span data-bind="text:$component.nls.EntityCertification.ActiveNonFinancialEntity"></span>
+                  </oj-option>
+                  <!-- ko if: $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNFE() === "true" -->
+                  <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12">
+                      <oj-label class="hide-label" for='ActiveNFEType' id="activeNFETypeLabel">
+                        <span data-bind='text:$component.nls.EntityCertification.ActiveNFEType'></span>
+                      </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12">
+                      <div class="oj-flex oj-flex-items-pad nested-radio-container">
+                        <div class="oj-flex-item oj-sm-12">
+                          <oj-radioset id="ActiveNFEType" required aria-labelledby="activeNFETypeLabel" value="{{$component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNonFinancialEntityType}}"
+                            on-value-changed="[[$component.activeNFEChangeHandler]]">
+                            <oj-option value="COR">
+                              <span data-bind="text:$component.nls.EntityCertification.regularlyTradedCorporation"></span>
+                            </oj-option>
+                            <!-- ko if: $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNonFinancialEntityType() === "COR" -->
+                            <div class='oj-flex oj-flex-items-pad radio-child-container'>
+                              <div class='oj-flex-item oj-sm-12 oj-label'>
+                                <oj-label for='Nameoftheestablishedsecuritiesmarketonwhichthecorporationisregularlytraded'>
+                                  <span data-bind='text:$component.nls.EntityCertification.Nameoftheestablishedsecuritiesmarketonwhichthecorporationisregularlytraded'></span>
+                                </oj-label>
+                              </div>
+                              <div class='oj-flex-item oj-sm-12 oj-md-4 oj-lg-4'>
+                                <oj-input-text id='Nameoftheestablishedsecuritiesmarketonwhichthecorporationisregularlytraded' required value='{{$component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.nameOfEstablishedSecuritiesMarket}}'
+                                  validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.nls.messages.nameOfEstablishedSecuritiesMarket,{
+                                               type:'length',options:{min:1,max:100}})]]"></oj-input-text>
+                              </div>
+                            </div>
+                            <!-- /ko -->
+                            <oj-option value="REL">
+                              <span data-bind="text:$component.nls.EntityCertification.Entityisrelatedtoacorporationwhosestockisregularlytradedonanestablishedsecuritiesmarket"></span>
+                            </oj-option>
+                            <!-- ko if: $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNonFinancialEntityType() === "REL" -->
+                            <div class="radio-child-container">
+                              <div class='oj-flex oj-flex-items-pad'>
+                                <div class='oj-flex-item oj-sm-12 oj-label'>
+                                  <oj-label for='Nameoftherelatedcorporationwhosestockistraded'>
+                                    <span data-bind='text:$component.nls.EntityCertification.Nameoftherelatedcorporationwhosestockistraded'></span>
+                                  </oj-label>
+                                </div>
+                                <div class='oj-flex-item oj-sm-12 oj-md-4 oj-lg-4'>
+                                  <oj-input-text id='Nameoftherelatedcorporationwhosestockistraded' required value='{{$component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.stockTradedCorporation}}'
+                                    validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.nls.messages.nameoftherelatedcorporation,{
+                                                 type:'length',options:{min:1,max:100}})]]"></oj-input-text>
+                                </div>
+                              </div>
+                              <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-flex-item oj-sm-12">
+                                  <oj-label for='Natureofrelation'>
+                                    <span data-bind='text:$component.nls.EntityCertification.Natureofrelation'></span>
+                                  </oj-label>
+                                </div>
+                                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+                                  <div class="oj-flex oj-flex-items-pad">
+                                    <div class="oj-flex-item oj-sm-12">
+                                      <oj-select-one id="Natureofrelation" required value="{{$component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.natureOfRelation}}"
+                                        :placeholder="">
+                                        <oj-option value="SUB">
+                                          <span data-bind="text:$component.nls.EntityCertification.Subsidiaryofthelistedcompany"></span>
+                                        </oj-option>
+                                        <oj-option value="CON">
+                                          <span data-bind="text:$component.nls.EntityCertification.Controlledbyalistedcompany"></span>
+                                        </oj-option>
+                                        <oj-option value="CCO">
+                                          <span data-bind="text:$component.nls.EntityCertification.Commoncontrolaslistedcompany"></span>
+                                        </oj-option>
+                                      </oj-select-one>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class='oj-flex oj-flex-items-pad'>
+                                <div class='oj-flex-item oj-sm-12 oj-label'>
+                                  <oj-label for='Nameoftheestablishedsecuritiesmarketonwhichthestockoftherelatedcorporationisregularlytraded'>
+                                    <span data-bind='text:$component.nls.EntityCertification.Nameoftheestablishedsecuritiesmarketonwhichthestockoftherelatedcorporationisregularlytraded'></span>
+                                  </oj-label>
+                                </div>
+                                <div class='oj-flex-item oj-sm-12 oj-md-4 oj-lg-4'>
+                                  <oj-input-text required id='Nameoftheestablishedsecuritiesmarketonwhichthestockoftherelatedcorporationisregularlytraded'
+                                    value='{{$component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.nameOfEstablishedSecuritiesMarket}}'
+                                    validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.nls.messages.nameOfEstablishedSecuritiesMarket,{
+                                                 type:'length',options:{min:1,max:100}})]]"></oj-input-text>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /ko -->
+                            <oj-option value="GOV">
+                              <span data-bind="text:$component.nls.EntityCertification.AGovernmentalEntityorCentralBank"></span>
+                            </oj-option>
+                            <!-- ko if: $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNonFinancialEntityType() === "GOV" -->
+                            <div class='oj-flex oj-flex-items-pad radio-child-container'>
+                              <div class='oj-flex-item oj-sm-12 oj-label'>
+                                <oj-label for='SubCategoryofActiveNFE'>
+                                  <span data-bind='text:$component.nls.EntityCertification.SubCategoryofActiveNFE'></span>
+                                </oj-label>
+                              </div>
+                              <div class='oj-flex-item oj-sm-12 oj-md-4 oj-lg-4'>
+                                <oj-input-text id='SubCategoryofActiveNFE' required value='{{$component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.subCategoryOfActiveNFE}}'
+                                  validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.nls.messages.subCategoryOfActiveNFE,{
+                                               type:'length',options:{min:1,max:100}})]]"></oj-input-text>
+                              </div>
+                            </div>
+                            <!-- /ko -->
+                            <oj-option value="INT">
+                              <span data-bind="text:$component.nls.EntityCertification.AnInternationalOrganization"></span>
+                            </oj-option>
+                            <!-- ko if: $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNonFinancialEntityType() === "INT" -->
+                            <div class='oj-flex oj-flex-items-pad radio-child-container'>
+                              <div class='oj-flex-item oj-sm-12 oj-label'>
+                                <oj-label for='SubCategoryofActiveNFE'>
+                                  <span data-bind='text:$component.nls.EntityCertification.SubCategoryofActiveNFE'></span>
+                                </oj-label>
+                              </div>
+                              <div class='oj-flex-item oj-sm-12 oj-md-4 oj-lg-4'>
+                                <oj-input-text id='SubCategoryofActiveNFE' required value='{{$component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.subCategoryOfActiveNFE}}'
+                                  validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.nls.messages.subCategoryOfActiveNFE,{
+                                               type:'length',options:{min:1,max:100}})]]"></oj-input-text>
+                              </div>
+                            </div>
+                            <!-- /ko -->
+                            <oj-option value="OTH">
+                              <span data-bind="text:$component.nls.EntityCertification.otherNFE"></span>
+                            </oj-option>
+                            <!-- ko if: $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNonFinancialEntityType() === "OTH" -->
+                            <div class='oj-flex oj-flex-items-pad radio-child-container'>
+                              <div class='oj-flex-item oj-sm-12 oj-label'>
+                                <oj-label for='SubCategoryofActiveNFE'>
+                                  <span data-bind='text:$component.nls.EntityCertification.SubCategoryofActiveNFE'></span>
+                                </oj-label>
+                              </div>
+                              <div class='oj-flex-item oj-sm-12 oj-md-4 oj-lg-4'>
+                                <oj-input-text id='SubCategoryofActiveNFE' required value='{{$component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.subCategoryOfActiveNFE}}'
+                                  validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL', $component.nls.messages.subCategoryOfActiveNFE,{
+                                               type:'length',options:{min:1,max:100}})]]"></oj-input-text>
+                              </div>
+                            </div>
+                            <!-- /ko -->
+                          </oj-radioset>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /ko -->
+                  <oj-option value="false">
+                    <span data-bind="text:$component.nls.EntityCertification.PassiveNonFinancialEntity"></span>
+                  </oj-option>
+                </oj-radioset>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+      </oj-validation-group>
+    </div>
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="continueEntityCertification" class="action-button-primary" on-click="[[continueEntityCertification]]">
+      <span data-bind="text:$component.resource.continue"></span>
+    </oj-button>
+  </div>
+</div>
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component, id:'entityNote', header:$component.resource.entityPopupTextHeader">
+  <div class="message-text label scroll oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item" data-bind="text:$component.resource.entityPopupText1"></div>
+    <div class="oj-flex-item" data-bind="text:$component.resource.entityPopupText2"></div>
+  </div>
+  <div class="message-btn button-container">
+    <oj-button id="entityPopupButton" class="toUpperCase form-button-primary" on-click="[[function(){$('#entityNote').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.generic.common.ok"></span>
+    </oj-button>
+  </div>
+</modal-window>
+<oj-popup class="fatca-compliance-container" id="giinInfoPopUp">
+  <span class="fatca-popup" data-bind="text:$component.nls.EntityCertification.giinInfo"></span>
+</oj-popup>

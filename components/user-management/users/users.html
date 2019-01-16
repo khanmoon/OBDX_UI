@@ -1,0 +1,20 @@
+<div class="oj-flex">
+  <div class="oj-sm-9">
+    <div class="form-main-container">
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <div data-bind='component:{name: "user-type", params:{rootModel: $data ,searchFor:"user"}}'></div>
+        <!-- ko ifnot:deleteConfrimFlag -->
+        <div data-bind='component:{name: "users-search", params:{rootModel: $data ,searchFor:"user"}}'></div>
+        <!-- /ko -->
+      </page-section>
+      <!-- ko if:user().loadSearchData() -->
+      <!-- <div data-bind='component:{name: "users-search-results", params:{rootModel: $data, dataSource:user().searchedUserList()}}'> -->
+      <div data-bind='component:{name: "user-search-list", params:{rootModel: $data, dataSource:user().searchedUserList()}}'></div>
+      <!-- /ko -->
+    </div>
+  </div>
+
+  <div class="oj-sm-3 help-panel">
+    <help params="baseModel: $baseModel, rootModel: $component, transaction: 'users'"></help>
+  </div>
+</div>

@@ -1,0 +1,143 @@
+<!-- ko if:$component.stageOne() -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 label ">
+        <oj-label class="oj-label" for="paymentType"><span data-bind="text:$component.payments.payee.paymenttype"></span></oj-label>
+    </div>
+    <!-- ko if:isPaymentTypesLoaded() -->
+    <div class="oj-flex-item oj-sm-12 ">
+        <oj-radioset id="transferto" aria-labelledby="mainlabelid" required on-value-changed="[[paymentTypeChanged]]" value="{{$component.paymentType}}" class="oj-choice-direction-row">
+            <!-- ko foreach: paymentTypes -->
+            <oj-option name="transferto" value="{{value}}" :id="[[value]]">
+                <span data-bind="attr: {for: value},text: $component.payments.payee.domestic.uk[text]"></span>
+            </oj-option>
+            <!-- /ko -->
+        </oj-radioset>
+    </div>
+    <!-- /ko -->
+</div>
+
+        <!-- ko if:$component.paymentType()==="URG" ||   $component.paymentType()==="NOU" || $component.paymentType()==="FAS" -->
+
+          <div class="oj-flex oj-flex-items-pad" data-bind="template: { name: 'payee/account-info' }"></div>
+        <!-- ko if:$component.paymentType()==="URG" -->
+        <!-- Lookup code -->
+        <div class="oj-flex oj-flex-items-pad">
+        	<div class="oj-flex-item oj-sm-12 label">
+                <oj-label for="swiftCode"><span data-bind="text:$component.payments.payee.domestic.uk.swiftcode"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12  ">
+
+                <!-- ko if:$component.additionalBankDetails()===null -->
+            	<div class="oj-flex oj-flex-items-pad bottom-margin-small">
+            		<div class="oj-flex-item oj-sm-6">
+                    <oj-validation-group id="verify-swiftCode-tracker" valid="{{groupValid}}">
+            				<oj-input-text id="swiftCode" required validators="[[validateCode]]" value="{{$component.bankDetailsCode}}"></oj-input-text>
+            		</oj-validation-group>
+                    </div>
+            		<div class="oj-flex-item oj-sm-6">
+                		<oj-button class="form-button-secondary" id="button-verify" on-click="[[$component.verifyCode]]">
+                            <span data-bind="text:$component.payments.common.verify"></span>
+                        </oj-button>
+            		</div>
+            	</div>
+            	<div class="oj-flex oj-flex-items-pad bottom-margin-small">
+            		<div class="oj-flex-item " data-bind="text:$component.payments.payee.domestic.or">
+            		</div>
+            	</div>
+            	<div class="oj-flex oj-flex-items-pad bottom-margin-small">
+            		<div class="oj-flex-item">
+            			<a href="#" class="form-button-link" data-bind="text:$component.payments.payee.domestic.uk.lookupswiftcode,
+                  click:openLookup"></a>
+            		</div>
+            	</div>
+                <!-- /ko -->
+
+                <!-- ko if:$component.additionalBankDetails()!==null -->
+                <div class="oj-flex oj-flex-items-pad" data-bind="with:$component.additionalBankDetails">
+                    <div class="oj-flex-item">
+                    <div data-bind="text:$component.bankDetailsCode()"></div>
+                    <div data-bind="text:('name' in $data)?name:''"></div>
+                    <div data-bind="text:('line1' in branchAddress)?branchAddress.line1:''"></div>
+                    <div data-bind="text:('city' in branchAddress)?branchAddress.city:''"></div>
+                    <div data-bind="text:('country' in branchAddress)?branchAddress.country:''"></div>
+                    <div class="">
+                        <oj-button class="form-button-secondary" id="button-reset" on-click="[[$component.resetCode]]">
+                            <span data-bind="text:$component.payments.common.reset"></span>
+                        </oj-button>
+                    </div>
+                    </div>
+                </div>
+            <!-- /ko -->
+
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if:$component.paymentType()==="NOU" ||   $component.paymentType()==="FAS" -->
+         <!-- Lookup code -->
+        <div class="oj-flex oj-flex-items-pad">
+        	<div class="oj-flex-item oj-sm-12 label">
+                <oj-label for="sortcode"><span data-bind="text:$component.payments.payee.domestic.uk.sortcode"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+                <!-- ko if:$component.additionalBankDetails()===null -->
+            	<div class="oj-flex oj-flex-items-pad  bottom-margin-small">
+            		<div class="oj-flex-item oj-sm-6">
+                    <oj-validation-group id="verify-sortcode-tracker" valid="{{groupValid}}">
+            				<oj-input-text id="sortcode" required validators="[[validateCode]]" value="{{$component.bankDetailsCode}}"></oj-input-text>
+                            </oj-validation-group>
+            		</div>
+            		<div class="oj-flex-item oj-sm-6">
+                	   <oj-button class="form-button-secondary" id="verify" on-click="[[$component.verifyCode]]">
+                            <span data-bind="text:$component.payments.common.verify"></span>
+                        </oj-button>
+            		</div>
+            	</div>
+            	<div class="oj-flex oj-flex-items-pad bottom-margin-small">
+            		<div class="oj-flex-item info-t" data-bind="text:$component.payments.payee.domestic.or">
+            		</div>
+            	</div>
+            	<div class="oj-flex oj-flex-items-pad bottom-margin-small">
+            		<div class="oj-flex-item">
+            			<a href="#" class="form-button-link" data-bind="text:$component.payments.payee.domestic.uk.lookupsortcode,click:openLookup"></a>
+            		</div>
+            	</div>
+                <!-- /ko -->
+
+                <!-- ko if:$component.additionalBankDetails()!==null -->
+                <div class="oj-flex oj-flex-items-pad" data-bind="with:$component.additionalBankDetails">
+                    <div class="oj-flex-item">
+                    <div data-bind="text:$component.bankDetailsCode()"></div>
+                    <div data-bind="text:('name' in $data)?name:''"></div>
+                    <div data-bind="text:('line1' in branchAddress)?branchAddress.line1:''"></div>
+                    <div data-bind="text:('city' in branchAddress)?branchAddress.city:''"></div>
+                    <div data-bind="text:('country' in branchAddress)?branchAddress.country:''"></div>
+                    <div class="">
+                        <oj-button class="form-button-secondary" id="reset" on-click="[[$component.resetCode]]">
+                            <span data-bind="text:$component.payments.common.reset"></span>
+                        </oj-button>
+                    </div>
+                    </div>
+                </div>
+            <!-- /ko -->
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if:refreshLookup() -->
+        <div data-bind="component: {name: 'bank-look-up', params:{rootModel: $component,
+                    clearingCodeType:$component.clearingCodeType,
+                    accountType:'Domestic',
+                    region:$component.region(),
+                    networkCode:$component.bankDetailsCode,
+                    additionalBankDetails:$component.additionalBankDetails}}">
+        </div>
+        <!-- /ko -->
+    <!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if:$component.stageTwo() -->
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.payments.payee.review">
+    <div data-bind="template: { name: 'payee/review-domestic-payee' }"></div>
+</page-section>
+<!-- /ko -->

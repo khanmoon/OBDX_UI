@@ -1,0 +1,156 @@
+<!-- ko if:$baseModel.large() -->
+
+<div id="pagingControlDemo" class="full-width">
+  <oj-table id="table" :aria-label="[[$component.resource.pendingApprovalsDetails.labels.paymentList]]" columns-default="[[{sortable:'enabled'}]]"
+    columns="[[[{headerRenderer:renderHeadCheckBox,renderer:renderCheckBox,sortable:'none'},{headerText:$component.Nls.generic.common.date,template:'date-time-payments',style:'width:10%',field:'creationDate'},{headerText:$component.Nls.pendingApprovalsDetails.labels.description,field:'type'},{headerText:$component.Nls.pendingApprovalsDetails.labels.debitAccountNumber,field:'debitAccountNumber'},{headerText:$component.Nls.generic.common.amount,field:'amount',headerClassName:'right',className:'right amount'},{headerText:$component.Nls.pendingApprovalsDetails.labels.beneficiaryAccountNumber,template:'payeeAccountDetails'},{headerText:$component.Nls.pendingApprovalsDetails.labels.initiatedBy,field:'initiatedBy'},{headerText:$component.Nls.pendingApprovalsDetails.labels.referenceNo,field:'transactionId',template:'approval_link_pending'},{headerText:$component.Nls.pendingApprovalsDetails.labels.status,template:'approvalStatusPending',field:'status'}]]]"
+    data="[[arrayDataSource]]">
+    <caption class="hide-label" data-bind="text:$component.Nls.pendingApprovalsDetails.labels.paymentList"></caption>
+    <template slot="approval_link_pending">
+      
+        <a href="#" data-bind="attr:{ title:  $baseModel.format($component.Nls.pendingApprovalsDetails.labels.details,{transactionId : $current.row.transactionId}), alt :  $baseModel.format($component.Nls.pendingApprovalsDetails.labels.detailText,{transactionId : $current.row.transactionId}) },text:$current.row.transactionId,click:$dashboard.loadComponent.bind($data,'transaction-detail', $current.row,$parent)"></a>
+        <!-- ko if:$data.maxApprovalDate -->
+        <div class="pending-approvals__gracePeriod pending-approvals-gracePeriod">
+          <oj-popup class="pending-approvals-gracePeriod__popUp" :id="[['gracePeriodPopup_' + $cellContext.status.rowIndex]]">
+            <span class="pending-approvals-gracePeriod__text" data-bind="text:$baseModel.format($component.Nls.pendingApprovalsDetails.toolTipMesssage,{maxDate:$baseModel.formatDate($current.row.maxApprovalDate)})"></span>
+          </oj-popup>
+          <span class="icons icon-warning pending-approvals-gracePeriod__icon"></span>
+          <a href="#" class="" data-bind="text:$component.Nls.pendingApprovalsDetails.labels.gracePeriod,event: { click : $component.gracePeriodPopUpMessage.bind($data,$cellContext.status.rowIndex)},
+          attr:{id:'gracePeriodID_' + $cellContext.status.rowIndex}"></a>
+        </div>
+        <!-- /ko -->
+
+
+    </template>
+    <template slot="date-time-payments">
+
+        <div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "date-time", params:{rootModel: $component,date:$current.row.creationDate}}'></div>
+
+    </template>
+    <template slot="approvalStatusPending">
+
+        <div data-bind="template : {name : 'approvals/status', data : {status :$current.row.processingStatus ,noOfApprovalSteps: $current.row.noOfApprovalSteps, nls : $component.Nls.pendingApprovalsDetails.status}}"></div>
+
+    </template>
+
+    <template slot="payeeAccountDetails">
+
+        <div data-bind="template : {name : 'approvals/payee-account-details', data : {beneficiaryName :$current.row.beneficiaryName ,beneficiaryAccountNumber: $current.row.beneficiaryAccountNumber}}"></div>
+
+    </template>
+
+  </oj-table>
+  <oj-paging-control class="oj-flex-item" slot="bottom" :id="[['pagingControl'+($baseModel.incrementIdCount())]]" :page-size="[[10]]"
+    data="[[arrayDataSource]]"></oj-paging-control>
+</div>
+
+
+<!-- /ko -->
+
+<!-- ko if:!$baseModel.large() -->
+<div class="form-main-container grid-main-container">
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <h3 class="heading" data-bind="text:$baseModel.format($component.Nls.pendingApprovalsDetails.labels.PAYMENTS_COUNT, {count: $component.countForHeader()})"></h3>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-2 oj-md-1">
+      <input type="checkbox" id="headerCheckbox" name="selectionParent" value="selectAll">
+      <label data-bind="text:$component.Nls.pendingApprovalsDetails.labels.selectAll" for="headerCheckbox" class="oj-checkbox-label hide-label"></label>
+    </div>
+    <div class="oj-flex-item oj-sm-10 oj-md-11 no-pad-cols">
+      <div class="select-all" data-bind="text:$component.Nls.pendingApprovalsDetails.labels.selectAll"></div>
+    </div>
+  </div>
+
+  <oj-list-view id="searchRuleListView" data="[[arrayDataSource]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('rulesSearch_template',true)}]]"
+    selection-mode="[['single']]">
+  </oj-list-view>
+  <!-- ko if: $baseModel.small() -->
+  <oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]"
+    data="[[arrayDataSource]]">
+  </oj-paging-control>
+  <!-- /ko -->
+
+  <!-- ko if: !$baseModel.small() -->
+  <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[arrayDataSource]]">
+  </oj-paging-control>
+  <!-- /ko -->
+  <script type="text/html" id="rulesSearch_template">
+
+    <li data-bind="attr: {id: $data['transactionId']}">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-2">
+          <input type="checkbox" name="selection" data-bind="attr : {id : 'childCheckBox' + $context.index} ,value: transactionId">
+          <label data-bind="attr : {for : 'childCheckBox' + $context.index}" class="oj-checkbox-label"></label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-10 no-pad-cols grid-row-group">
+          <a href="#" data-bind="attr:{ title:  $baseModel.format($component.Nls.pendingApprovalsDetails.labels.details,{transactionId : transactionId}), alt :  $baseModel.format($component.Nls.pendingApprovalsDetails.labels.detailText,{transactionId : transactionId}) },click:$dashboard.loadComponent.bind($data,'transaction-detail', $data,$parent)">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <label data-bind="text: $component.Nls.generic.common.date"></label>
+                <div class="date" data-bind='component:{name: "date-time", params:{rootModel: $component,date:creationDate}}'></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <label data-bind="text: $component.Nls.pendingApprovalsDetails.labels.description"></label>
+                <div class="description" data-bind="text:type"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-6">
+                <label data-bind="text: $component.Nls.pendingApprovalsDetails.labels.debitAccountNumber"></label>
+                <div class="acc-no" data-bind="text:debitAccountNumber"></div>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6">
+                <label data-bind="text: $component.Nls.generic.common.amount"></label>
+                <div class="amount" data-bind="text:amount"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-6">
+                <label data-bind="text: $component.Nls.pendingApprovalsDetails.labels.beneficiaryAccountNumber"></label>
+                <div data-bind="text:beneficiaryName"></div>
+                <div class="party-no" data-bind="text:beneficiaryAccountNumber"></div>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6">
+                <label data-bind="text: $component.Nls.pendingApprovalsDetails.labels.initiatedBy"></label>
+                <div data-bind="text:initiatedBy"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-6">
+                <label data-bind="text: $component.Nls.pendingApprovalsDetails.labels.referenceNo"></label>
+                <div class="ref-no-text" data-bind="text:transactionId"></div>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6">
+                <label data-bind="text: $component.Nls.pendingApprovalsDetails.labels.status"></label>
+                <div data-bind="template : {name : 'approvalStatusPending'}"></div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </li>
+  </script>
+</div>
+<!-- /ko -->
+
+<script type="text/html" id="approvalStatusPending">
+
+    <div data-bind="template : {name : 'approvals/status', data : {status :processingStatus ,noOfApprovalSteps: noOfApprovalSteps, nls : $component.Nls.pendingApprovalsDetails.status}}"></div>
+
+</script>
+
+<script type="text/html" id="payeeAccountDetails">
+
+    <div data-bind="template : {name : 'approvals/payee-account-details', data : {beneficiaryName :beneficiaryName ,beneficiaryAccountNumber: beneficiaryAccountNumber}}"></div>
+
+</script>

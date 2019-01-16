@@ -1,0 +1,184 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between bill-payments">
+  <div class="form-main-container oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+          <oj-label for="selectPeriod">
+            <!-- ko text: $component.resourceBundle.labels.selectPeriod  -->
+            <!-- /ko -->
+          </oj-label>
+        </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+              <oj-select-one :id="[['selectPeriod'+($baseModel.currentIdCount())]]"
+                              value="{{$component.selectedPeriod}}"
+                              on-value-changed="[[periodChangedHandler]]"
+                              placeholder="{{$component.resourceBundle.labels.selectPeriod}}">
+                <!-- ko foreach: periods -->
+                <oj-option value="{{$data.key}}"><span data-bind="text:$data.value"></span></oj-option>
+                <!-- /ko -->
+            </oj-select-one>
+          </div>
+      </div>
+      <!-- ko if: $component.showDates() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+            <label class="hide-label" data-bind="attr:{for:'fromDate' + $baseModel.incrementIdCount()},text:$component.resourceBundle.labels.fromDate">
+            </label>
+            <oj-input-date required :id="[['fromDate'+ $baseModel.currentIdCount()]]" max="[[$component.maxDate]]" value="{{$component.fromDate}}" on-value-changed="[[$component.fromDateChanged]]" converter="[[$baseModel.dateConverter]]" placeholder="[[$component.resourceBundle.labels.fromDate]]">
+            </oj-input-date>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+            <label class="hide-label" data-bind="attr:{for:'toDate' + $baseModel.incrementIdCount()},text:$component.resourceBundle.labels.toDate">
+            </label>
+            <oj-input-date required :id="[['toDate'+ $baseModel.currentIdCount()]]" min="[[$component.minDate]]" max="[[$component.todayDate ]]" value="{{$component.toDate}}" on-value-changed="[[$component.toDateChanged]]" converter="[[$baseModel.dateConverter]]" placeholder="[[$component.resourceBundle.labels.toDate]]">
+            </oj-input-date>
+        </div>
+        <!-- ko ifnot:$baseModel.large() -->
+        &nbsp;
+        <!-- /ko -->
+        <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
+          <oj-button id="searchButton" class="help-button" on-click="[[searchByDate]]">
+              <span class="icon icon-search oj-button-icon oj-start" slot="startIcon"></span>
+              <span data-bind="text:$component.resourceBundle.generic.common.search"></span>
+          </oj-button>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+        </div>
+      </div>
+      <!-- /ko -->
+    </page-section>
+
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+      <!-- ko if: $component.dataLoaded() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-10">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="component: { name: 'search-box',
+              params: {rootModel:$component, searchFields : ['category','billerName'],
+              arrayReference: $component.paymentsList,
+              refreshReference: $component.searchRefresh,
+              searchBy:$component.resourceBundle.labels.searchFields,
+              value:$component.searchValue}}">
+            </div>
+          </div>
+        </div>
+        <!-- ko if:$baseModel.large() -->
+        <!-- ko if: paymentsList().length > 0 -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-2">
+                <!-- ko if: mediatypeLoaded -->
+                <oj-select-one value="{{$component.mediaFormat}}" on-value-changed="[[downloadStatement]]" 
+                               placeholder="[[$component.resourceBundle.labels.download]]">
+                    <!-- ko foreach: menuItems -->
+                    <oj-option value="[[$data.value]]"><span data-bind="text: $data.text"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+      <!-- ko if:$baseModel.large() -->
+        <div class="oj-flex oj-flex-items-pad grid-row-group">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-table id="table" aria-label=$component.resourceBundle.labels.paymentsList
+                 data="[[$component.datasource]]"
+                 columns-default.sortable="enabled"
+                 columns="[[tableColumns]]" translations="[[{msgNoData:$component.resourceBundle.labels.noData}]]">
+                    <caption class="hide-label" data-bind="text:$component.resourceBundle.labels.paymentsTable"></caption>
+                    <template slot="date">
+                    <td>
+                        <date-box params="baseModel : $baseModel, date:$current.row.date"></date-box>
+                    </td>
+                    </template>
+                </oj-table>
+                <oj-paging-control id="paging" data="[[$component.datasource]]" page-size="10" slot="bottom">
+                </oj-paging-control>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$baseModel.large() -->
+        <div class="oj-flex grid-main-container">
+            <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('payment_list_card',true)}]]" selection-mode="[['single']]" data="[[$component.datasource]]">
+            </oj-list-view>
+            <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.datasource]]">
+            </oj-paging-control>
+            <!-- ko if: paymentsList().length > 0 -->
+            <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-12">
+                <!-- ko if: mediatypeLoaded -->
+                <oj-select-one value="{{$component.mediaFormat}}" on-value-changed="[[downloadStatement]]" placeholder="[[$component.resourceBundle.labels.download]]">
+                   <!-- ko foreach: menuItems -->
+                   <oj-option value="[[$data.value]]"><span data-bind="text: $data.text"></span></oj-option>
+                   <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+        </div>
+        <script type="text/html" id="payment_list_card">
+          <li data-bind="attr: {id: $data.referenceNo}">
+            <div class="oj-flex oj-flex-items-pad">
+
+              <div class="oj-flex-item oj-sm-12">
+                  <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-9" data-bind="text: $data.date">
+                    </div>
+                    <div class="oj-flex-item oj-sm-3 right" data-bind="text: $data.billAmount">
+                    </div>
+                  </div>
+                  <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-9" data-bind="text: $data.billerName">
+                    </div>
+                    <div class="oj-flex-item oj-sm-3 right" data-bind="text: $data.status">
+                    </div>
+                  </div>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 grid-row-group">
+
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-9">
+                    <label data-bind="text: $component.resourceBundle.labels.category"></label>    
+                  </div>
+                  <div class="oj-flex-item oj-sm-3 right">
+                    <div data-bind="text: $data.category"></div>
+                  </div>
+                </div>    
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-9">
+                    <label data-bind="text: $component.resourceBundle.labels.referenceNo"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-3 right">
+                    <div data-bind="text: $data.referenceNo"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </script>
+        <!-- /ko -->
+      <!-- /ko -->
+    </page-section>
+  </div>
+  <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'payment-history'"></help>
+  </div>
+</div>
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'passwordDialog', header : $component.resourceBundle.labels.passwordNotification">
+    <div class="form-main-container">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+                <span data-bind="text: $component.resourceBundle.labels.passCombination"></span>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+                <span data-bind="text: $component.resourceBundle.labels.passwordExample"></span>
+            </div>
+        </div>
+        <div class="oj-flex button-container">
+            <oj-button id="ok" class="action-button-primary" on-click="[[$component.ok]]">
+                <span data-bind="text:$component.resourceBundle.generic.common.ok"></span>
+            </oj-button>
+        </div>
+    </div>
+</modal-window>

@@ -1,0 +1,24 @@
+<div data-bind="attr:{id:dialogId}, css: $component.display" class="modal-window">
+	<div tabindex="-1" role="alert" class="modal-window__container modal-container" data-bind="css: $component.display">
+		<!-- ko if: $component.hideHeader -->
+		<a href="#" class="close-alternate" data-bind="attr:{'aria-label':$component.modalWindowNls.common.closeDialog, 'alt':$component.modalWindowNls.common.closeDialog ,'title':$component.modalWindowNls.common.closeDialogTitle },click:closeDialog">
+			<span class="icons icon-cross"></span>
+		</a>
+		<!-- /ko -->
+		<!-- ko ifnot: $component.hideHeader -->
+		<div class="modal-container__header modal-header">
+			<span class="modal-header__text" data-bind="text:header"></span>
+			<a class="modal-header__close" href="#" data-bind="attr:{'aria-label':$component.modalWindowNls.common.closeDialog, 'alt':$component.modalWindowNls.common.closeDialog ,'title':$component.modalWindowNls.common.closeDialogTitle },click:closeDialog">
+				<span class="icons icon-cancel"></span>
+			</a>
+		</div>
+		<!-- /ko -->
+		<div class="se-pre-con modal-window-container__progress"></div>
+		<div class="modal-container__body modal-body">
+			<div class="modal-body-content">
+				<!-- ko template: { nodes: $componentTemplateNodes}-->
+				<!-- /ko -->
+			</div>
+		</div>
+	</div>
+</div>

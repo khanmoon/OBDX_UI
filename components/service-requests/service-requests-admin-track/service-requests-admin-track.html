@@ -1,0 +1,332 @@
+<div class="track-details">
+  <div class="oj-flex">
+    <div class=" oj-flex-item oj-sm-12 oj-md-9 oj-lg-9 form-main-container">
+      <!-- ko if: $component.dataLoad -->
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.requestAttributes">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label for="requestId" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.refNumber"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span id="requestId" data-bind="text:$component.serviceRequestData.id"></span>
+          </div>
+        </div>
+        <!-- ko if: $component.statusLoad() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label for="requestStatus" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.statusPlaceHolder"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span id="requestStatus" data-bind="text:$component.statusData"></span>
+
+          </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label for="requestDate" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.requestDate"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span id="requestDate" data-bind="text:$component.creationDate"></span>
+
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label for="product" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.product"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span id="product" data-bind="text:$component.serviceRequestData.definition.product"></span>
+
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label for="category" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.requestCategory"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span id="category" data-bind="text:$component.serviceRequestData.definition.categoryType"></span>
+
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label for="requestName" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.requestName"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span id="requestName" data-bind="text:$component.serviceRequestData.definition.name"></span>
+
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label for="type" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.requestTypeAdmin"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span id="type" data-bind="text:$component.requestTypeData"></span>
+
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label for="severity" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.severity"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span id="severity" data-bind="text:$component.severityData"></span>
+
+          </div>
+        </div>
+      </page-section>
+      <!-- /ko -->
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.formHeader">
+        <!-- ko if: $component.detailsLoad -->
+        <!-- ko foreach: $component.dataFill -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label :for="[['requestDetails'+$index()]]" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:label"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span :id="[['requestDetails'+$index()]]" data-bind="text:value"></span>
+
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+      </page-section>
+      <!-- ko if: $component.dataLoad -->
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.userDetails">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label for="username" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.userName"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span id="username" data-bind="text:$component.serviceRequestData.userName"></span>
+
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label for="userId" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.userId"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span id="userId" data-bind="text:$component.serviceRequestData.userID"></span>
+
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3">
+            <oj-label for="party" class="oj-flex-item oj-lg-12">
+              <span data-bind="text:$component.resource.partyId"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-6">
+            <span id="party" data-bind="text:$component.serviceRequestData.party.displayValue"></span>
+
+          </div>
+        </div>
+      </page-section>
+      <!-- /ko -->
+      <!-- ko if: $component.commentShow -->
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.comments">
+        <div class="comments-top">
+          <!-- ko foreach: $component.comments -->
+          <div class="oj-flex oj-flex-items-pad comments oj-lg-11 oj-md-11 oj-sm-12">
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <!-- ko if: status==="CO" -->
+              <b>
+                <span data-bind="text:$component.resource.closure"></span>
+              </b>
+              <span data-bind="text:date"></span>
+              <!-- /ko -->
+              <!-- ko ifnot: status==="CO" -->
+              <b>
+                <span data-bind="text:$component.resource.remarksAdmin"></span>
+              </b>
+              <span data-bind="text:date"></span>
+              <!-- /ko -->
+            </div>
+            <!-- ko if: status==="CO" && visible -->
+            <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5 closure-comments right">
+              <span data-bind="text:$component.resource.commentsVisibilty"></span>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <span data-bind="text:comment">
+                <!-- /ko -->
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <!-- ko if: status==="CO" -->
+              <span data-bind="text:$component.resource.closedBy"></span>
+              <b>
+                <span data-bind="text:user"></span>
+              </b>
+              <!-- /ko -->
+              <!-- ko ifnot: status==="CO" -->
+              <span data-bind="text:$component.resource.updatedBy"></span>
+              <b>
+                <span data-bind="text:user"></span>
+              </b>
+              <!-- /ko -->
+            </div>
+          </div>
+          <!-- /ko -->
+        </div>
+      </page-section>
+      <!-- /ko -->
+      <div class="button-container">
+        <!-- ko if: $component.dataLoad -->
+        <!-- ko ifnot: $component.completed -->
+        <oj-button class="action-button-primary" id="approvalButton" type="submit" on-click="[[$component.showModalWindow.bind($data,'APPROVE')]]">
+          <span data-bind="text:$component.resource.approve"></span>
+        </oj-button>
+        <oj-button class="action-button-primary" id="rejectButton" type="submit" on-click="[[$component.showModalWindow.bind($data,'REJECT')]]">
+          <span data-bind="text:$component.resource.reject"></span>
+        </oj-button>
+        <!-- /ko -->
+        <!-- ko if: $component.completed -->
+        <oj-button class="action-button-primary" id="confirmbutton" type="submit" on-click="[[$component.showModalWindowUpdate]]">
+          <span data-bind="text:$component.resource.updateStatus"></span>
+        </oj-button>
+        <!-- /ko -->
+        <!-- /ko -->
+        <oj-button class="action-button-secondary" id="cancel-button" type="submit" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+          <span data-bind="text:$component.resource.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" id="back-button" type="submit" on-click="[[$component.loadFormBuilder]]">
+          <span data-bind="text:$component.resource.back"></span>
+        </oj-button>
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 help-panel">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'service-request-create-info'"></help>
+    </div>
+  </div>
+</div>
+<!-- ko if: $component.natureOfTask() === "REJECT" -->
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component, id:'otherTransactionsApproval',  header: $component.resource.reject">
+  <!-- ko if: $component.showModal() -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.remarksMandatory">
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-md-4 oj-lg-3 oj-sm-12">
+        <oj-label for="remarksBox">
+          <span data-bind="text:$component.resource.remarks"></span>
+        </oj-label>
+      </div>
+      <div class="oj-flex-item oj-md-8 oj-lg-8 oj-sm-12 ">
+        <oj-text-area id="remarksBox" maxlength="100" value="{{remarks}}"></oj-text-area>
+      </div>
+    </div>
+    <div class="message-btn button-container">
+      <oj-button id="confirm" class="action-button-primary" on-click="[[submit]]">
+        <!-- ko if: $component.natureOfTask() === "APPROVE" -->
+        <span data-bind="text:$component.resource.approve"></span>
+        <!-- /ko -->
+        <!-- ko if: $component.natureOfTask() === "REJECT" -->
+        <span data-bind="text:$component.resource.reject"></span>
+        <!-- /ko -->
+      </oj-button>
+      <oj-button id="cancel" class="action-button-secondary" on-click="[[function(){$component.disableApproveRejectButton(true);$('#otherTransactionsApproval').hide().trigger('closeModal');}]]">
+        <span data-bind="text:$component.resource.cancel"></span>
+      </oj-button>
+    </div>
+  </page-section>
+  <!-- /ko  -->
+</modal-window>
+<!--   /ko -->
+<!-- ko if: $component.natureOfTask() === "APPROVE" -->
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component, id:'otherTransactionsApproval',  header: $component.resource.approve">
+
+  <!-- ko if: $component.showModal() -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.remarksMandatory">
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-md-4 oj-lg-3 oj-sm-12">
+        <oj-label for="remarksBox">
+          <span data-bind="text:$component.resource.remarks"></span>
+        </oj-label>
+      </div>
+      <div class="oj-flex-item oj-md-8 oj-lg-8 oj-sm-12 ">
+        <oj-text-area id="remarksBox" maxlength="100" value="{{remarks}}"></oj-text-area>
+      </div>
+    </div>
+    <div class="message-btn button-container">
+      <oj-button id="confirm" class="action-button-primary" on-click="[[submit]]">
+        <!-- ko if: $component.natureOfTask() === "APPROVE" -->
+        <span data-bind="text:$component.resource.approve"></span>
+        <!-- /ko -->
+        <!-- ko if: $component.natureOfTask() === "REJECT" -->
+        <span data-bind="text:$component.resource.reject"></span>
+        <!-- /ko -->
+      </oj-button>
+      <oj-button id="cancel" class="action-button-secondary" on-click="[[function(){$component.disableApproveRejectButton(true);$('#otherTransactionsApproval').hide().trigger('closeModal');}]]">
+        <span data-bind="text:$component.resource.cancel"></span>
+      </oj-button>
+    </div>
+  </page-section>
+  <!-- /ko  -->
+</modal-window>
+<!--   /ko -->
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component, id:'updateStatus',  header: $component.resource.updateStatus">
+  <!-- ko if: $component.showModalUpdate() -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-md-4 oj-lg-3 oj-sm-12 label">
+        <oj-label for="dropList">
+          <span data-bind="text:$component.resource.statusPlaceHolder"></span>
+        </oj-label>
+      </div>
+      <div class="oj-flex-item oj-md-8 oj-lg-8 oj-sm-12 ">
+        <oj-select-one id="dropList" value="{{$component.updatedStatus}}">
+          <!-- ko foreach: $component.applicableStatus -->
+          <oj-option value="{{code}}">
+            <span data-bind="text:description"></span>
+          </oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-md-4 oj-lg-3 oj-sm-12">
+        <oj-label for="remarksBox">
+          <span data-bind="text:$component.resource.remarks"></span>
+        </oj-label>
+      </div>
+      <div class="oj-flex-item oj-md-8 oj-lg-8 oj-sm-12 ">
+        <oj-text-area id="remarksBox" maxlength="100" value="{{remarks}}"></oj-text-area>
+      </div>
+    </div>
+    <div class="message-btn button-container">
+      <oj-button id="confirm" class="action-button-primary" on-click="[[submitUpdate]]">
+        <span data-bind="text:$component.resource.submit"></span>
+      </oj-button>
+      <oj-button id="cancel" class="action-button-secondary" on-click="[[function(){$component.disableApproveRejectButton(true);$('#otherTransactionsApproval').hide().trigger('closeModal');}]]">
+        <span data-bind="text:$component.resource.cancel"></span>
+      </oj-button>
+    </div>
+  </page-section>
+  <!-- /ko  -->
+</modal-window>

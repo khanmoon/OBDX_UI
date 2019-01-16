@@ -1,0 +1,71 @@
+<!-- ko if: $component.parentAccessLevel()==="PARTY" -->
+
+<action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.nls.headers.newAccounts">
+</action-header>
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+        <label class="pull-left" data-bind="text: $component.nls.fieldname.mapAccts"></label>
+        <span class="icons icon-help tool-tip">
+            <div class="tooltip-content" data-bind=" html:$baseModel.format($component.nls.messages.tooltip.autoManualMessage,{accountType:$component.transactionNames.td,accountType1:$component.transactionNames.td})">
+            </div>
+
+        </span>
+    </div>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-9">
+        <oj-buttonset-one disabled="[[$component.showEditableForm]]" on-value-changed="[[$component.tdDefaultPolicyChangeHandler]]" value="{{$component.selectedTdPolicy}}"><oj-option name="tdPolicy" value="{{'tdAuto'}}" :id="[['tdAuto']]"><span data-bind="attr: {for: 'tdAuto'},text:$component.nls.common.auto"></span></oj-option><oj-option name="tdPolicy" value="{{'tdManual'}}" :id="[['tdManual']]"><span data-bind="attr: {for: 'tdManual'},text:$component.nls.common.manual"></span></oj-option></oj-buttonset-one>
+    </div>
+
+</div>
+
+<action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.nls.headers.existingAccounts">
+</action-header>
+<!-- /ko -->
+
+<!-- ko if: $component.parentAccessLevel()==="USER" -->
+<div class="oj-flex oj-flex-items-pad">
+
+    <oj-checkboxset class="oj-flex-item" disabled="[[$component.showEditableForm]]" value="{{$component.selectedTdPolicyChecked}}" on-value-changed="[[$component.tdDefaultPolicyChangeHandler]]"><oj-option value="tdAuto" id="td_account_access"><span for="td_account_access" data-bind="text:$component.nls.common.ApplyChanges">
+            </span></oj-option></oj-checkboxset>
+</div>
+
+
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+
+    <oj-checkboxset class="oj-flex-item"  value="{{$component.mapAllTdAccounts}}" on-click="[[$component.toggleAllCheckboxTd]]" disabled="[[$component.showEditableForm]]"><oj-option id="td_all" value="{{'ALL'}}"><span for="td_all" data-bind="text: $component.nls.fieldname.mapallAccts"></span></oj-option></oj-checkboxset>
+</div>
+
+<!-- ko if:$component.loadTdTemplate -->
+
+<div class="oj-flex oj-flex-items-pad table-data">
+    <oj-table id="tdAccountsTable" :aria-label="[[$component.nls.headers.tdAccounts]]"
+    columns="[[[{headerText:'',field:'accountType','renderer': $oj.KnockoutTemplateUtils.getRenderer('tdCheckbox', true),style:'width: 10%'},
+    {headerText:$component.nls.headers.AccountNumber,field:'ID',style:'width: 20%'},
+    {headerText:$component.nls.headers.currency,field:'currency',style:'width: 10%'},
+    {headerText:$component.nls.headers.displayName,field:'displayName',style:'width: 35%'},
+    {headerText:$component.nls.headers.accountStatus,field:'accountStatus',style:'width: 25%'}]]]"
+    columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'multiple',column:'multiple'}]]"
+     data="[[$component.tdAccountdataSource]]">
+        <caption class="hide-label" data-bind="text:$component.nls.headers.tdAccounts"></caption>
+    </oj-table>
+    <script type="text/html" id="tdCheckbox">
+        <td>
+            <span class="talign-left">
+                      <input type="checkbox"
+                       data-bind="attr:{'aria-label' : $component.nls.headers.tdcheckbox + $context.row.accountNumber.value,
+                       id : $component.nls.headers.tdcheckbox + $context.row.accountNumber.value,
+                        'class' : $component.selectedTdAccounts.indexOf($context.row.accountNumber.value) > -1 ? 'oj-selected' :  ''},
+                        value:$context.row.accountNumber.value ,
+                        disable:$component.showEditableForm, checked:$component.selectedTdAccounts">
+                       <label class="oj-checkbox-label" data-bind="attr:{for : $component.nls.headers.tdcheckbox +  $context.row.accountNumber.value}"></label>
+                </span>
+
+
+
+
+        </td>
+    </script>
+</div>
+<!-- /ko -->

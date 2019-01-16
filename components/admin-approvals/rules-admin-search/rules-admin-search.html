@@ -1,0 +1,110 @@
+<div class="oj-flex">
+    <div class="oj-flex-item oj-sm-9">
+        <div class="form-main-container">
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                        <oj-label for="ruleCodeSearch">                 
+                            <span data-bind="text:$component.resourceBundle.adminrules.rules.ruleCode"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7">
+                       <oj-input-text maxlength="15" id="ruleCodeSearch" on-submitifenter="[[submitIfEnter]]" validators="[[$baseModel.getValidator('APPLICATION_CODE')]]" value="{{$component.ruleDetails.ruleName}}"></oj-input-text>
+
+                    </div>
+                </div>
+               <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                    <oj-label for="descriptionSearch">                 
+                        <span data-bind="text:$component.resourceBundle.adminrules.rules.ruleDescription"></span>
+                    </oj-label>
+                </div>
+                 <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7">
+                       <oj-input-text maxlength="100" id="descriptionSearch" on-submitifenter="[[submitIfEnter]]" validators="[[$baseModel.getValidator('APPLICATION_DESCRIPTION')]]" value="{{$component.ruleDetails.description}}"></oj-input-text>
+                   </div>
+                </div>
+            </page-section>
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button id="dialogtopupButton" class="action-button-primary" on-click="[[fetchRuleDetails]]">
+                <span data-bind="text:$component.resourceBundle.generic.common.search"></span>
+                </oj-button>
+                <!-- ko ifnot:$component.ruleDetails.ruleDetailsFetched() -->
+                <oj-button id="dialogtopupButtonCancel" class="action-button-secondary" on-click="[[cancel]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                </oj-button>
+                <!-- /ko -->
+                <oj-button id="dialogtopupButtonClear" class="action-button-tertiary" on-click="[[clear]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.clear"></span>
+                </oj-button>
+            </div>
+                <!-- ko if:$component.searchResultsFetched() -->
+
+                <!-- ko if:!$baseModel.small() -->
+                <oj-table id="table" :aria-label="[[$component.resourceBundle.adminrules.rules.details]]"
+                columns="[[columnArray]]"
+                columns-default="[[{sortable:'enabled'}]]"
+                selection-mode="[[{row:'single',column:'single'}]]" data="[[$component.datasource]]">
+                <caption class="hide-label" data-bind="text:$component.resourceBundle.adminrules.rules.details"></caption>
+                </oj-table>
+                <!-- /ko -->
+
+                <script type="text/html" id="viewDetails">
+                    <td>
+                        <a href="javascript:void(0)" data-bind="text:$context.row.ruleName,click:$component.viewRule.bind($data,$context.row),attr:{title:$component.resourceBundle.approvals.rules.moredetails}"></a>
+                    </td>
+                </script>
+
+                <div class="button-container">
+                    <oj-button id="cancelButton" class="action-button-tertiary" on-click="[[cancel]]">
+                        <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                    </oj-button>
+                </div>
+                <!-- ko if:$baseModel.small() -->
+                <div class="grid-main-container">
+                    <div class="oj-flex oj-flex-items-pad grid-row-group">
+                        <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                            <span data-bind="text :$component.resourceBundle.adminrules.rules.ruleName"></span>
+                        </div>
+                        <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                            <span data-bind="text :$component.resourceBundle.adminrules.rules.description"></span>
+                        </div>
+                        <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                            <span data-bind="text :$component.resourceBundle.adminrules.rules.transaction"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-main-container">
+                    <oj-list-view id="searchRuleListView" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('rulesSearch_template',true)}]]" selection-mode="[['single']]" data="[[datasource]]" on-current-item-changed="[[$component.viewRule]]" selection="[[selectedItem]]"></oj-list-view>
+
+                    <script type="text/html" id="rulesSearch_template">
+                        <li data-bind="attr: {id: $data['ruleId']}">
+                            <div class="oj-flex oj-flex-items-pad grid-row-group">
+                                 <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                                    <span data-bind="text: ruleName"></span>
+                                 </div>
+                                <!-- ko if: $data.description==="" -->
+                                    <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                                        <div>    </div>
+                                    </div>
+                                <!-- /ko -->
+                                <!-- ko ifnot: $data.description==="" -->
+                                    <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                                        <span data-bind="text: description"></span>
+                                    </div>
+                                <!-- /ko -->
+                                <div class="oj-lg-3 oj-md-3 oj-sm-3 oj-flex-item">
+                                <span data-bind="text:associatedRuleCriterias[0].ruleCriteriaDTO.taskType"></span>
+                                </div>
+                            </div>
+                         </li>
+                    </script>
+                </div> 
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </div>
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'rules-admin-search'"></help>
+    </div>
+</div>

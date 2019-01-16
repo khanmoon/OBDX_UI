@@ -1,0 +1,55 @@
+<!-- ko if: $component.existingOccupationsLoaded()-->
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <oj-validation-group id="payday-occupation-tracker"  valid="{{groupValid}}">
+    <div class="margin-top-20 employments-financial-info" data-bind="with: applicantObject().occupationInfo">
+      <div class="oj-flex oj-flex-items-pad">
+        <span class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10 text" data-bind="text:$component.resource.aboutEmployment"></span>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 oj-label">
+          <oj-label :for="[['employmentStausButtonset']]"><span data-bind="text:$component.resource.employmentStatus"></span></oj-label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+
+          <oj-buttonset-one id="employmentStausButtonset" on-value-changed="[[$component.currentEmploymentStatus]]" value="{{$component.employmentStatusDefault()}}">
+            <oj-option name="currentlyEmployed" class="currentlyEmployed" value="{{'OPTION_YES'}}" :id="[['YesEmployed']]"><span data-bind="attr: {for: 'YesEmployed'}, text: $component.resource.yes"></span></oj-option>
+            <oj-option name="currentlyEmployed" class="currentlyEmployed" value="{{'OPTION_NO'}}" :id="[['NotEmployed']]"><span data-bind="attr: {for: 'NotEmployed'}, text: $component.resource.no"></span></oj-option>
+          </oj-buttonset-one>
+
+        </div>
+      </div>
+      <!-- ko if: $component.employmentStatusToggle()-->
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+          <oj-label :for="[['employerName']]"><span data-bind="text:$component.resource.employerName"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+          <oj-input-text required maxlength="80" autocomplete="off" spellcheck="false" :id="[['employerName']]" translations="[[{'required':{
+            messageDetail:$component.resource.messages.employerName}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{occupations().employmentDTOs[occupations().primaryEmp].employerName}}"></oj-input-text>
+        </div>
+      </div>
+      <!-- ko if:$component.existingContactLoaded() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+          <oj-label :for="[['workPhoneNumber']]"><span data-bind="text:$component.resource.WorkPhone"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-input-text required="[[true]]" maxlength="10" :id="[['workPhoneNumber']]" translations="[[{'required':{messageDetail:$component.resource.messages.mobileNumber}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{occupations().contactInfo.contactDTOs[$component.applicantObject().occupationInfo.workPhoneIndex].phone.number}}"></oj-input-text>
+          <!--disabled : $component.applicantObject().occupationInfo.disableInputs(),-->
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+  </oj-validation-group>
+</page-section>
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item  oj-md-10 oj-lg-10">
+    <oj-button id="submitOccupation" class="form-button-secondary" on-click="[[$component.submitOccupationInfo.bind($data,$component.applicantObject().occupationInfo)]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span></oj-button>
+  </div>
+</div>
+<!-- /ko -->

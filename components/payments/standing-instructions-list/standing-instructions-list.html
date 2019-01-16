@@ -1,0 +1,128 @@
+<!-- ko if:$baseModel.large() -->
+<div class="form-main-container">
+    <!-- ko if:stageOne() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+            <!-- ko if:isSIListLoaded() -->
+            <div class="oj-flex-item oj-sm-12" data-bind="component: {
+                    name:'search-box',                 
+                    params:{
+                    searchFields : ['payeeNickName'],
+                      data:$component.SIListDataSource(),
+                      searchBy:$component.resource.accountName
+                      }}">
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+                <oj-table id="listTable" :aria-label="[[$component.resource.tableheader]]" columns="[[[{headerText:resource.transferTo,template:'transferTo',sortable:'none'},{headerText:resource.transferFrom,template:'transferFrom',sortable:'none'},{headerText:resource.transfertype,template:'transfertype',sortable:'none'},{headerText:resource.nextPayment,template:'date',sortProperty:'nextExecutionDate'},{headerText:resource.amount,template:'formatted-amount',sortProperty:'amount'},{headerText:'',template:'icons-vertical',sortable:'none'}]]]" data="[[$component.SIListDataSource()]]">
+                    <caption class="hide-label" data-bind="text:$component.resource.tableheader"></caption>
+                    <template slot="transferTo">
+                        <div>
+                            <div class="oj-lg-12" data-bind="text : $current.row.payeeNickName"></div>
+                            <div class="oj-lg-12" data-bind="text : $current.row.creditAccountId.displayValue"></div>
+                        </div>
+                    </template>
+                    <template slot="transferFrom">
+                        <td>
+                            <div data-bind="text : $current.row.debitAccountId.displayValue"></div>
+                        </td>
+                    </template>
+                    <template slot="transfertype">
+                        <td>
+                            <div data-bind="text : $component.resource.msgtype[$current.row.paymentType]"></div>
+                        </td>
+                    </template>
+                    <template slot="date">
+                        <td>
+                            <div data-bind="text : $baseModel.formatDate($current.row.nextExecutionDate)"></div>
+                        </td>
+                    </template>
+                    <template slot="formatted-amount">
+                        <td>
+                            <div data-bind="text : $baseModel.formatCurrency($current.row.amount.amount,$current.row.amount.currency)"></div>
+                        </td>
+                    </template>
+                    <template slot="icons-vertical">
+                        <td>
+                            <a href="#" openprofile="true" data-bind="click:$component.openMenu.bind($data,$current.row),
+                            attr : {id:'menuLauncher-standingInstruction-' + $current.row.externalReferenceNumber, 'alt' : $component.resource.options, 'title' : $component.resource.moreOptions}">
+                                <div class="icons icon-more-vertical"></div>
+                            </a>
+                            <oj-menu :id="[['menuLauncher-standingInstruction-contents-' + $current.row.externalReferenceNumber]]" on-oj-action="[[$component.menuItemSelect.bind($data,$current.row)]]" open-options.launcher="[['menuLauncher-standingInstruction-'  + $current.row.externalReferenceNumber]]">
+                                <!-- ko foreach: $component.menuItems -->
+                                <oj-option :id="[[id]]" :value="[[id]]">
+                                    <span data-bind="text : label"></span>
+                                </oj-option>
+                                <!-- /ko -->
+                            </oj-menu>
+                        </td>
+                    </template>
+                </oj-table>
+            </div>
+            <oj-paging-control class="oj-flex-item oj-sm-12" id="SIListpaging" slot="bottom" :page-size="[[10]]" data="[[$component.SIListDataSource]]">
+            </oj-paging-control>
+            <!-- /ko -->
+        </div>
+    </page-section>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko if:!$baseModel.large() && isSIListLoaded() && stageOne() -->
+<div id="viewDetails" class="form-main-container">
+    <div class="oj-flex-item oj-sm-12" data-bind="component: {
+                    name:'search-box',
+                    params:{
+                    searchFields : ['payeeNickName'],
+                      data:$component.SIListDataSource(),
+                      searchBy:$component.resource.searchBy
+                      }}">
+    </div>
+    <script type="text/html" id="content_template">
+        <li data-bind="attr: {id:$data.externalReferenceNumber}" class="upcomingpayments-sm">
+            <div class="oj-flex">
+                <div class="oj-flex-item oj-sm-8" data-bind="text: $component.resource.transferTo"> </div>
+                <div class="oj-flex-item oj-sm-4 right" id="icons-vertical">
+                    <a href="#" openprofile="true" data-bind="click:$component.openMenu,
+                      attr : {id:'menuLauncher-standingInstruction-' + $data.externalReferenceNumber, 'alt' : $component.resource.options , 'title' : $component.resource.moreOptions}">
+                        <div class="icons icon-more-vertical"></div>
+                    </a>
+                    <oj-menu :id="[['menuLauncher-standingInstruction-contents-' + externalReferenceNumber]]" on-oj-action="[[$component.menuItemSelect.bind($data, $data)]]" open-options.launcher="[['menuLauncher-standingInstruction-'  + $data.externalReferenceNumber]]" open-options.display="dropDown">
+                        <!-- ko foreach: $component.menuItems -->
+                        <oj-option :id="[[id]]" :value="[[id]]">
+                            <span data-bind="text : label"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-menu>
+                </div>
+                <label class="oj-flex-item oj-sm-12" data-bind="text : payeeNickName"></label>
+                <label class="oj-flex-item oj-sm-12" data-bind="text : creditAccountId.displayValue"></label>
+                <div class="oj-flex-item oj-sm-12 " data-bind="text:$component.resource.transferFrom"></div>
+                <label class="oj-flex-item oj-sm-12" data-bind="text: debitAccountId.displayValue"></label>
+                <div class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.msgtype[paymentType]"></div>
+                <label class="oj-flex-item oj-sm-12" data-bind="text: $baseModel.formatDate(nextExecutionDate)"></label>
+                <div class="oj-flex-item oj-sm-4" data-bind="text:$component.resource.amount"></div>
+                <div class="oj-flex-item oj-sm-8 upcomingpayments-sm__amount right" data-bind="text:$baseModel.formatCurrency(amount.amount,amount.currency)"></div>
+            </div>
+        </li>
+    </script>
+    <oj-list-view id="listview_dashboard" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[SIListDataSource]]">
+    </oj-list-view>
+    <oj-paging-control id="paging-small" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[$component.SIListDataSource]]"></oj-paging-control>
+</div>
+<!-- /ko -->
+<!-- ko if:$baseModel.large() -->
+<modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'view-SI', header : $component.stopClicked()? $component.resource.stopRepeatTransfer : $component.resource.viewdetails, closeHandler : $component.closeModal">
+    <!-- ko if:$component.modelWindowLoaded() -->
+    <div data-bind="component:{name:'standing-instruction-detail',
+        params:{rootModel: {params : {
+        paymentType : $component.paymentType,
+        getRepeatData : $component.getRepeatData,
+        externalReferenceId : $component.selectedSIExternRfNum(), 
+        confirmScreenDetails : $component.confirmScreenDetails, 
+        isStopClicked : $component.stopClicked,
+        closeModal : $component.closeModal,
+        confirmScreenDetails : $component.confirmScreenDetails
+      }}}}">
+    </div>
+    <!-- /ko -->
+</modal-window>
+<!-- /ko -->

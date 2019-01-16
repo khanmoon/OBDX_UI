@@ -1,0 +1,96 @@
+<oj-validation-group :id="{{'taxResidencyOtherCountryInfoTracker' + $index()}}">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <oj-label :for="{{'countryOfTaxResidence'+$index()}}"><span data-bind="text:$component.resource.taxResidencyInfo.countryOfTaxResidence"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+      <oj-select-one :id="{{'countryOfTaxResidence'+$index()}}" required value="{{$data.taxResidenceCountry}}" on-value-changed="[[$component.taxCountryChanged]]" translations="[[{'required':{messageDetail:$component.resource.messages.countryOfTaxResidence}}]]"
+        :placeholder="">
+        <!-- ko foreach: $component.taxResidenceCountries -->
+        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+  <!-- ko if: $component.taxResidenceCountriesLoaded -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <oj-label :for="{{'tinAvailable'+$index()}}" :id="{{'tinAvailableLabel'+$index()}}"><span data-bind="text:$component.resource.taxResidencyInfo.tinAvailable"></span>
+        <a :id="{{'tinInfo'+$index()}}" :alt="{{$component.resource.taxResidencyInfo.tinInfoAlt}}" :title="{{$component.resource.taxResidencyInfo.tinInfoTitle}}" href="javascript:void(0)" data-bind="click:$component.infoPopUp.bind($data, 'tinInfoPopUp', true)">
+                                  <span class="icons icon-information"></span>
+                              </a></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-12 oj-md-12">
+      <oj-radioset class="oj-choice-direction-row" :id="{{'tinAvailable'+$index()}}" :aria-labelledby="{{'tinAvailableLabel'+$index()}}" maxlength="50" value="{{$data.tinAvailable}}" translations="[[{'required':{messageDetail:$component.resource.messages.tinAvailable}}]]">
+        <oj-option :id="{{'yestinAvailable'+$index()}}" value="true"><span data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+        <oj-option :id="{{'notinAvailable'+$index()}}" value="false"><span data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+      </oj-radioset>
+    </div>
+  </div>
+  <!-- ko if: $data.tinAvailable() === "false" -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <oj-label :for="{{'reasonForNonAvailability'+$index()}}"><span data-bind="text:$component.resource.taxResidencyInfo.reasonForNonAvailability"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+      <oj-input-text :id="{{'reasonForNonAvailability'+$index()}}" required validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.resource.messages.reasonForNonAvailability,{
+                   type:'length',options:{
+                     min:1,max:100}})]]" maxlength="100" value="{{$data.tinNonAvailabilityReason}}" translations="[[{'required':{messageDetail:$component.resource.messages.reasonForNonAvailability}}]]" name="reasonForNonAvailability"></oj-input-text>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if: $data.tinAvailable() === "true" -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <oj-label :for="{{'taxIdentificationType'+$index()}}"><span data-bind="text:$component.resource.taxResidencyInfo.taxIdentificationType"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+      <oj-select-one :id="{{'taxIdentificationType'+$index()}}" required value="{{$component.taxIdentificationType()[$index()]}}" translations="[[{'required':{messageDetail:$component.resource.messages.taxIdentificationType}}]]" :placeholder="">
+        <!-- ko foreach: $component.taxIdentificationTypes()[$index()] -->
+        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+  <!-- ko if: $component.taxIdentificationType()[$index()]() === "OTHER" -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <oj-label :for="{{'otherTaxIdentificationType'+$index()}}"><span data-bind="text:$component.resource.taxResidencyInfo.otherTaxIdentificationType"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+      <oj-input-text :id="{{'otherTaxIdentificationType'+$index()}}" required maxlength="100" value="{{$data.taxIdentifierType}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.resource.messages.otherTaxIdentificationType,{
+                   type:'length',options:{
+                     min:1,max:100}})]]" translations="[[{'required':{messageDetail:$component.resource.messages.otherTaxIdentificationType}}]]" name="otherTaxIdentificationType"></oj-input-text>
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <oj-label :for="{{'TIN'+$index()}}"><span data-bind="text:$component.resource.taxResidencyInfo.TIN"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-3 oj-md-4">
+      <oj-input-text :id="{{'TIN'+$index()}}" required maxlength="35" value="{{$data.tin}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.resource.messages.TIN,{
+                   type:'length',options:{
+                     min:1,max:50}})]]" translations="[[{'required':{messageDetail:$component.resource.messages.TIN}}]]" name="TIN"></oj-input-text>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+</oj-validation-group>
+<!-- ko if: $index() === ($component.fatcaComplianceData.taxResidencyInfoDTO.nonDomesticTaxResidencyInfo().length - 1) -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item">
+    <a id="addAnotherCountry" href="javascript:void(0)" :alt="{{$component.resource.taxResidencyInfo.addAnotherCountryClick}}" :title="{{$component.resource.taxResidencyInfo.addAnotherCountry}}" data-bind="click : $component.addCountry.bind($data, $index()), text: $component.resource.taxResidencyInfo.addAnotherCountry"></a>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: $index() < ($component.fatcaComplianceData.taxResidencyInfoDTO.nonDomesticTaxResidencyInfo().length - 1) -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item">
+    <a id="removeCountry" href="javascript:void(0)" :alt="{{$component.resource.taxResidencyInfo.removeCountryClick}}" :title="{{$component.resource.taxResidencyInfo.removeCountry}}" data-bind="click : $component.removeCountry.bind($data, $index()), text: $component.resource.taxResidencyInfo.removeCountry"></a>
+  </div>
+</div>
+<!-- /ko -->
+<oj-popup class="fatca-compliance-container" id="tinInfoPopUp">
+  <span class="fatca-popup" data-bind="text:$component.resource.taxResidencyInfo.tinInfo"></span>
+</oj-popup>

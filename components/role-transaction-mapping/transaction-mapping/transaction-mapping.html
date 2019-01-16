@@ -1,0 +1,43 @@
+<div class="form-main-container">
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
+      <oj-table id="table" class="transaction-mapping-taskTable" aria-label=$component.nls.info.tasksTable data="[[$component.dataSource]]" columns='{{columnArray}}'>
+      </oj-table>
+
+      <script type="text/html" id="checkbox_hdr_tmpl">
+        <td>
+          <oj-checkboxset value='{{$component.actionCheckbox[$context.columnIndex-1]}}' class='oj-checkboxset-no-chrome' on-click='[[$component.selectAllListener.bind($data)]]' :aria-label="[[$data]]" disabled="[[$component.readMode]]">
+            <span data-bind="text: $data"></span>
+            <oj-option :id="[[$data]]" :aria-label="[[$data]]" value=true>
+            </oj-option>
+          </oj-checkboxset>
+        </td>
+      </script>
+      <script type="text/html" id="checkbox_tmpl">
+        <td>
+          <!-- ko if: $context.cellContext.leaf -->
+          <oj-checkboxset value='{{$context.row.actionTypeMap[$context.columnIndex-1].selected}}' on-click='[[$component.manipulateCurrentChild.bind($context)]]' class='oj-checkboxset-no-chrome' :aria-label="[[$context.cellContext.parentKey + $context.cellContext.status.rowIndex + $context.row.actionTypeMap[$context.columnIndex-1].action]]"
+            disabled="[[$component.readMode]]">
+            <oj-option data-bind="attr:{
+                                                 id: $context.cellContext.parentKey + $context.cellContext.status.rowIndex + $context.row.actionTypeMap[$context.columnIndex-1].action, disabled:$context.row.actionTypeMap[$context.columnIndex-1].disable}"
+              value=true></oj-option>
+          </oj-checkboxset>
+          <!-- /ko -->
+        </td>
+      </script>
+      <script type="text/html" id="row_template">
+        <td>
+
+          <oj-row-expander :aria-label="[[$component.nls.info.transactionTable]]" context="[[$context.cellContext]]"></oj-row-expander>
+
+          <oj-checkboxset value="{{$context.row.selected}}" class="oj-checkboxset-no-chrome transaction-mapping-rowExpander" on-click='[[$component.manipulateCurrentChild.bind($context)]]' disabled="[[$component.readMode]]">
+            <oj-option value=true data-bind="attr :  { id: $context.cellContext.parentKey+$context.cellContext.status.rowIndex}">
+              <span data-bind="text:$context.row.displayName, attr : {'for' :$context.cellContext.parentKey+$context.cellContext.status.rowIndex}"></span>
+            </oj-option>
+          </oj-checkboxset>
+        </td>
+      </script>
+    </div>
+  </div>
+</div>

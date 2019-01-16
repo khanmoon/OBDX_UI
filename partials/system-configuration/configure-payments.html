@@ -1,0 +1,137 @@
+<!-- ko foreach:$component.configuration.configurationItemDTOs() -->
+<!-- ko if:$data.id ==='PRODUCT_TRANS_CONFIGURATION_ITEM' -->
+<table class="system-configuration" data-bind="visible: $data.inputDTOs.length > 0">
+  <thead>
+    <tr class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12">
+      <td colspan="1"></td>
+      <td>
+        <span class="tableHeader" data-bind=" text: $component.nls.tableHeader.prod_cat"></span>
+      </td>
+      <td>
+        <div class="oj-flex-item oj-sm-6 blank">
+
+        </div>
+      </td>
+      <td>
+        <span class="tableHeader" data-bind=" text: $component.nls.tableHeader.prod_code"></span>
+      </td>
+    </tr>
+  </thead>
+  <tbody data-bind="foreach: $data.inputDTOs">
+    <tr class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+      <td class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+        <oj-label>
+          <span data-bind="attr:{id:'configure'}, text: uiDefinition.title"></span>
+        </oj-label>
+      </td>
+      <td>
+        <!-- ko if :$data.type ==='TXT' -->
+        <oj-label class="hide-label" for="'product_desc_' + $index()">
+          <span data-bind="attr:{id:product_desc_' + $index()}, text: $component.nls.tableHeader.prod_code"></span>
+        </oj-label>
+        <oj-input-text id="input" :id="[['product_desc_'+ $index()]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator,$data.uiDefinition.message,$data.uiDefinition.extension)]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues[0]}}"></oj-input-text>
+        <!-- /ko -->
+        <!-- ko if :$data.type === 'LISTBOX' -->
+        <oj-label class="hide-label" for="'product_desc_' + $index()">
+          <span data-bind="attr:{id:product_desc_' + $index()}, text: $component.nls.tableHeader.prod_code"></span>
+        </oj-label>
+        <oj-select-one :id="[['product_desc_'+ $index()]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues}}"
+          :placeholder="[[$component.nls.fieldname.select]]">
+          <!-- ko foreach: $data.tempObj.options -->
+          <oj-option value="{{key}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+        <!-- /ko -->
+        <!-- ko if :$data.type === 'CHB' -->
+        <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" class="oj-choice-direction-row" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" value="{{$data.inputValues}}">
+          <!-- ko foreach: $data.tempObj.options -->
+          <oj-option value="{{key}}" :id="[['AcctType'+ $index()]]"><span data-bind="text: description, attr : {'for' :'AcctType' + $index()}"></span></oj-option>
+          <!-- /ko -->
+        </oj-checkboxset>
+        <!-- /ko -->
+      </td>
+      <td>
+        <div class="oj-flex-item oj-sm-6 blank">
+
+        </div>
+      </td>
+      <td>
+        <!-- ko if :$data.type ==='TXT' -->
+        <oj-label class="hide-label" for="'product_desc_' + $index()">
+          <span data-bind="attr:{id:'product_desc_' + $index()}, text: $component.nls.tableHeader.prod_code"></span>
+        </oj-label>
+        <oj-input-text id="input" :id="[['product_code_'+ $index()]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator,$data.uiDefinition.message,$data.uiDefinition.extension)]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues[1]}}"></oj-input-text>
+        <!-- /ko -->
+        <!-- ko if :$data.type === 'LISTBOX' -->
+        <oj-label class="hide-label" for="'product_desc_' + $index()">
+          <span data-bind="attr:{id:'product_desc_' + $index()}, text: $component.nls.tableHeader.prod_code"></span>
+        </oj-label>
+        <oj-select-one :id="[['product_code_'+ $index()]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues}}"
+          :placeholder="[[$component.nls.fieldname.select]]">
+          <!-- ko foreach: $data.tempObj.options -->
+          <oj-option value="{{key}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+        <!-- /ko -->
+        <!-- ko if :$data.type === 'CHB' -->
+        <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" class="oj-choice-direction-row" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" value="{{$data.inputValues}}">
+          <!-- ko foreach: $data.tempObj.options -->
+          <oj-option value="{{key}}" :id="[['AcctType'+ $index()]]"><span data-bind="text: description, attr : {'for' :'AcctType' + $index()}"></span></oj-option>
+          <!-- /ko -->
+        </oj-checkboxset>
+        <!-- /ko -->
+      </td>
+    </tr>
+  </tbody>
+  <caption class="hide-label" data-bind="text:$data.name"></caption>
+</table>
+<!-- /ko -->
+<!-- ko ifnot:$data.id ==='PRODUCT_TRANS_CONFIGURATION_ITEM' -->
+<div class="oj-flex oj-flex-items-pad">
+  <!-- ko foreach:$data.inputDTOs -->
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+    <label for="input" data-bind="text:$data.uiDefinition.title"></label>
+  </div>
+  <oj-label class="hide-label" for="input">
+    <span data-bind="attr:{id:'product_desc_' + $index()}, text: $component.nls.tableHeader.prod_code"></span>
+  </oj-label>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-8">
+    <!-- ko if :$data.type ==='TXT' -->
+    <oj-label class="hide-label" for="input">
+      <span data-bind="attr:{id:'product_desc_' + $index()}, text: $component.nls.tableHeader.prod_code"></span>
+    </oj-label>
+    <oj-input-text :id="[['product_code_'+ $index()]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator,$data.uiDefinition.message,$data.uiDefinition.extension)]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues}}"></oj-input-text>
+    <!-- /ko -->
+    <!-- ko if :$data.type === 'LISTBOX' -->
+    <oj-label class="hide-label" for="input">
+      <span data-bind="attr:{id:'product_desc_' + $index()}, text: $component.nls.tableHeader.prod_code"></span>
+    </oj-label>
+    <oj-select-one :id="[['product_desc_'+ $index()]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues}}"
+      :placeholder="[[$component.nls.fieldname.select]]">
+      <!-- ko foreach: $data.tempObj.options -->
+      <oj-option value="{{key}}"><span data-bind="text:description"></span></oj-option>
+      <!-- /ko -->
+    </oj-select-one>
+    <!-- /ko -->
+    <!-- ko if :$data.type === 'MSELECT' -->
+    <oj-label class="hide-label" for="input">
+      <span data-bind="attr:{id:'product_desc_' + $index()}, text: $component.nls.tableHeader.prod_code"></span>
+    </oj-label>
+    <oj-combobox-many id="allowedRolesList" value="{{inputValues}}">
+      <!-- ko foreach: $data.tempObj.options -->
+      <oj-option value="{{key}}"><span data-bind="text: description"></span></oj-option>
+      <!-- /ko -->
+    </oj-combobox-many>
+    <!-- /ko -->
+    <!-- ko if :$data.type === 'CHB' -->
+    <oj-checkboxset id="checkboxSetId " aria-labelledby="mainlabelid " class="oj-choice-direction-row " validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" value="{{$data.inputValues}}">
+      <!-- ko foreach: $data.tempObj.options -->
+      <oj-option value="{{key}}" :id="[['AcctType'+ $index()]]"><span data-bind="text: description, attr : { 'for' : 'AcctType' + $index()} "></span></oj-option>
+      <!-- /ko -->
+    </oj-checkboxset>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- /ko -->

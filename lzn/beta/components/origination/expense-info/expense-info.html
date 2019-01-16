@@ -1,0 +1,159 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <oj-validation-group id="expenseInfoTracker">
+    <div class=" employments-financial-info">
+      <div data-bind="with:applicantObject().financialProfile[$component.profileIdIndex].expenseInfo">
+        <!-- ko if: $component.existingExpensesLoaded() -->
+        <!-- ko foreach: $data.expenseList -->
+        <div class="form-heading-strip oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top">
+            <!-- ko if : $index()===0 -->
+            <h4 class="form-heading additional-label" data-bind="text: $component.resource.primaryExpense"></h4>
+            <!-- /ko -->
+            <!-- ko if : $index()>0 -->
+            <h4 class="form-heading additional-label" data-bind="text: $component.resource.additionalExpense"></h4>
+            <!-- /ko -->
+          </div>
+          <div class="oj-flex-item oj-sm-2 oj-md-4 oj-lg-4">
+            <!-- ko if: temp_isActive -->
+            <a href="javascript:void(0)" class="pull-right icon-delete" data-bind="click : $parentContext.$component.deleteExpense.bind($data, $index(), $parent) ,attr:{alt: $component.resource.deleteExpenseClick, title: $component.resource.deleteExpenseClickTitle}"></a>
+            <!-- /ko -->
+            <!-- ko if: !temp_isActive() -->
+            <a href="javascript:void(0)" class="pull-right icon-edit" data-bind="click : $component.editExpenseInfo.bind($data, $parent) ,attr:{alt: $component.resource.editExpenseInfoClick, title: $component.resource.editExpenseInfoClick}"></a>
+            <!-- /ko -->
+          </div>
+        </div>
+
+        <!-- ko if: temp_isActive() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <!-- ko if: $component.expenditureOptionsLoaded() -->
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-3 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label for="expenseType" :for="[['expenseType'+(++$component.idCount)]]"><span data-bind="text:$component.resource.expenseType"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+            <oj-select-one id="expenseType" required :id="[['expenseType'+($component.idCount)]]" translations="[[{'required':{messageDetail:$component.resource.messages.expenseType}}]]" :placeholder="" value="{{type}}">
+              <!-- ko ifnot : $component.optionsByFinTemplate() -->
+              <!-- ko foreach: $component.expenditureOptions -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+              <!-- /ko -->
+
+              <!-- ko if : $component.optionsByFinTemplate() -->
+              <oj-optgroup label="Mandatory">
+                <!-- ko foreach: $component.manEXP -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+              </oj-optgroup>
+              <oj-optgroup label="Optional">
+                <!-- ko foreach: $component.optEXP -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+              </oj-optgroup>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+
+          <!-- /ko -->
+        </div>
+
+
+        <div data-bind="component: {
+                            name: 'amount-input', params: {
+                                amount :amount.amount,
+                                label:$component.resource.totalExpense,
+                                currency: amount.currency,
+                                labelClasses : 'oj-lg-3 oj-md-3 oj-lg-offset-2 oj-md-offset-1',
+                               valueClasses : 'oj-lg-6 oj-md-7',
+                                   converter:$baseModel.formatCurrency,
+                                validator:$component.validationTracker,
+                                isMandatory:true,
+                                maxlength:15,
+                                rootId:'expenseValue'+ (++$component.idCount),
+                                rootClass:'form-input',
+                                inline:true,
+                                formattedAmount: ko.observable()
+                            }
+                        }"></div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <!-- ko if: $component.frequencyOptionsLoaded() -->
+
+          <div class="oj-flex-item label oj-sm-12 oj-md-3 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label for="expenseFrequency" :for="[['expenseFrequency'+(++$component.idCount)]]"><span data-bind="text:$component.resource.frequency"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-select-one id="expenseFrequency" required :id="[['expenseFrequency'+($component.idCount)]]" translations="[[{'required':{messageDetail:$component.resource.messages.frequencyExpense}}]]" :placeholder="" value="{{frequency}}">
+              <!-- ko foreach: $component.frequencyOptions -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+
+          <!-- /ko -->
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <div class="oj-flex-item oj-lg-10 oj-md-10">
+            <oj-button id="submitExpense" class="form-button-secondary" on-click="[[$component.submitExpenseInfo]]">
+              <span data-bind="text:$component.resource.generic.common.save"></span>
+            </oj-button>
+          </div>
+        </div>
+
+        <!-- /ko -->
+        <!-- ko if: !temp_isActive() -->
+        <div data-bind="template: { name: 'origination/review/expense-info', data:{data: $data, resource: $component.resource} }" class="show-info"></div>
+        <!-- /ko -->
+
+
+
+        <!-- /ko -->
+
+        <!-- ko if:$component.displayAddExpenseButton($data) -->
+
+        <!-- ko if:$data.expenseList().length===0 -->
+        <div class="form-heading-strip oj-flex oj-flex-items-pad">
+          <oj-label for="addExpense" class="oj-flex-item label oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 additional-label"><span data-bind="text:$component.resource.addExpense"></span></oj-label>
+          <div class="oj-flex-item oj-sm-2 oj-md-4 oj-lg-4">
+            <a href="javascript:void(0)" class="pull-right icon icon-plus-circle section-icon pull-right" data-bind="click : $component.addExpense.bind($data, $index()) ,attr:{alt: $component.resource.addExpenseOnClick, title: $component.resource.addExpenseOnClick}"></a>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$data.expenseList().length>0 -->
+        <div class="form-heading-strip oj-flex oj-flex-items-pad">
+          <oj-label for="addExpense" class="oj-flex-item label oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 additional-label"><span data-bind="text:$component.resource.addAnotherExpense"></span></oj-label>
+          <div class="oj-flex-item oj-sm-2 oj-md-4 oj-lg-4">
+            <a href="javascript:void(0)" class="pull-right icon icon-plus-circle section-icon pull-right" data-bind="click : $component.addExpense.bind($data, $index()) ,attr:{alt: $component.resource.addAnotherExpenseOnClick, title: $component.resource.addAnotherExpenseOnClick}"></a>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- /ko -->
+      </div>
+    </div>
+  </oj-validation-group>
+</page-section>
+
+
+<!-- ko if:displayFinalSubmit() -->
+
+<!-- ko if: $baseModel.large()||$baseModel.medium()-->
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item oj-lg-10 oj-md-10">
+    <oj-button id="submitExpense" class="form-button-secondary" :aria-label="[[$component.resource.submitExpense]]" on-click="[[$component.completeExpenseSection]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: $baseModel.small() -->
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item oj-lg-10 oj-md-10">
+    <oj-button id="submitExpense" class="form-button-secondary" :aria-label="[[$component.resource.submitExpense]]" on-click="[[$component.completeExpenseSection]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->

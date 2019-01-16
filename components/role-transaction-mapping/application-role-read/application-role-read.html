@@ -1,0 +1,100 @@
+<div class="form-main-container">
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <!-- ko if : dataloaded -->
+    <row params="baseModel : $baseModel, rootModel : $data, label :$component.nls.common.appRoleName , value :appRoleName"></row>
+    <row params="baseModel : $baseModel, rootModel : $data, label :$component.nls.common.desc , value :appDescription"></row>
+    <row params="baseModel : $baseModel, rootModel : $data, label :$component.nls.common.userSegment , value :userSegment"></row>
+    <row params="baseModel : $baseModel, rootModel : $data, label :$component.nls.common.accessType , value :accessType"></row>
+    <!-- ko if: $component.accessType() === "External" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.common.scopeName , value :$component.selectedScopeText"></row>
+    <!-- /ko -->
+    <action-header params="baseModel : $baseModel, rootModel : $data, heading: $component.nls.headings.mapTransactions">
+        <a href="#" data-bind="click:edit, attr:{'alt':$component.nls.labels.editAlt,'title':$component.nls.labels.editTitle, 'aria-label':$component.nls.labels.editTitle}">
+              <span class="icons icon-remarks"></span>
+        </a>
+    </action-header>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+        <oj-label for="moduleName"><span data-bind="text:$component.nls.common.moduleName"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
+        <!-- ko if: $component.isModuleFetched() -->
+        <oj-combobox-many id="moduleName" value="{{selectedModuleName}}" disabled>
+          <!-- ko foreach: $component.moduleName() -->
+          <oj-option value="[[value]]"><span data-bind="text: text"></span>
+          </oj-option>
+          <!-- /ko -->
+        </oj-combobox-many>
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- ko if: $component.isAccessPointFetched() -->
+    <!-- ko if: $component.selectedAccessType()==="INT" -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+        <oj-label for="mapTransaction"><span data-bind="text:$component.nls.common.accessPoint"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
+      <oj-checkboxset id="accessPoint" :aria-label="[[$component.nls.common.accessPoint]]" class="oj-choice-direction-row accessPoint" value="{{selectedAccessPoint}}" disabled="[[true]]">
+        <!-- ko foreach: accessPoint() -->
+        <oj-option :id="[['val'+$baseModel.incrementIdCount()]]" value="[[value]]">
+          <span data-bind="text: text"></span>
+        </oj-option>
+        <!-- /ko -->
+      </oj-checkboxset>
+    </div>
+      </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if : dataSourceLoaded -->
+    <!-- ko if : selectedAccessType()==="INT" -->
+    <div class="oj-flex oj-flex-items-pad tabs-container">
+      <div class="oj-flex-item oj-lg-12">
+        <oj-tab-bar id="tabGroups" selection="{{selectedItem}}" :aria-label="[[$component.nls.common.accessPointTab]]" on-selection-changed="[[$component.accessPointTabChangeHandler]]" edge="top">
+          <ul class="tab-list">
+            <!-- ko foreach: accessPointTabs -->
+            <li data-bind="attr:{ id: id}">
+              <span data-bind="text : name"></span>
+            </li>
+            <!-- /ko -->
+          </ul>
+        </oj-tab-bar>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <div class="oj-flex-item" data-bind='component:{name: "transaction-mapping",
+        params:{rootModel: $data, datasource : $component.dataSourceToBePassed(),readMode:true }}'>
+    </div>
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.deleteClicked]]">
+        <span data-bind="text:$component.nls.generic.common.delete"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.generic.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+        <span data-bind="text:$component.nls.generic.common.back"></span>
+      </oj-button>
+    </div>
+  </page-section>
+  <!-- /ko -->
+</div>
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'deleteConfirmationModal',header: $component.nls.common.deleteHeader">
+  <div class="form-main-container message-text">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <span data-bind="text:$component.nls.common.deleteMessage"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="delbackYes" class="action-button-primary" on-click="[[$component.deleteAccess]]">
+        <span data-bind="text:$component.nls.generic.common.yes"></span>
+      </oj-button>
+      <oj-button id="delbackNo" class="action-button-secondary" on-click="[[$component.hideModal]]">
+        <span data-bind="text:$component.nls.generic.common.no"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>

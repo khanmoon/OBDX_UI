@@ -1,0 +1,51 @@
+<oj-validation-group id="templateTracker" valid="{{$component.templateValid}}">
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+      <oj-label for="limitCode"><span data-bind="text:$component.nls.limit.limitCode"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+
+      <oj-input-text :aria-label="[[$component.nls.limit.limitCode]]" id="limitCode" required validators="[[$baseModel.getValidator('APPLICATION_CODE')]]" value="{{limitName}}"></oj-input-text>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+      <oj-label for="description"><span data-bind="text:$component.nls.limit.limitDescription"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-5">
+
+      <oj-input-text :aria-label="[[$component.nls.limit.limitDescription]]" id="description" required validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" value="{{limitDescription}}"></oj-input-text>
+    </div>
+  </div>
+  <!-- ko if :  $component.cummulativeLimitSection() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+      <oj-label for="frequencyTypeSet"><span data-bind="text:$component.nls.limit.frequency"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-5">
+      <oj-radioset id="frequencyTypeSet" value="{{$component.frequency}}" :aria-label="[[$component.nls.limit.frequency]]" class="oj-choice-direction-row">
+        <oj-option value="DAILY" id="daily" name="frequency"><span for="daily" data-bind="text:$component.nls.limit.daily"></span></oj-option>
+        <oj-option value="MONTHLY" id="monthly" name="frequency"><span for="monthly" data-bind="text:$component.nls.limit.monthly"></span></oj-option>
+      </oj-radioset>
+    </div>
+
+  </div>
+
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+      <oj-label for="limitCurrency"><span data-bind="text:$component.nls.limit.limitCurrency"></span></oj-label>
+    </div>
+    <!-- ko if : $component.currencyLoaded() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+      <oj-select-one id="limitCurrency" class="oj-flex-item  oj-lg-8" :id="[['limitCurrency'+$data.limitType()]]" required="[[true]]" value="{{currency}}" :aria-label="[[$component.nls.limit.limitCurrency]]" on-value-changed="[[$component.currencyOptionChangeHandler]]" :placeholder="[[$component.nls.limit.selectCurrency]]">
+        <!-- ko foreach:$component.currencyList() -->
+        <oj-option value="{{code}}"><span data-bind="text:code"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+    <!-- /ko -->
+  </div>
+</oj-validation-group>

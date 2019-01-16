@@ -1,0 +1,41 @@
+<div class="form-main-container account-snapshot-registration">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div data-bind="text:$component.resource.quickSnapshot"></div>
+    <div class="account-snapshot-paragraph" data-bind="text:$component.resource.quickSnapshot2"></div>
+    <div class="account-snapshot-paragraph" data-bind="text:$component.resource.quickSnapshot3"></div>
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container account-snapshot-button-container">
+    <oj-button class="action-button-primary" on-click="[[$component.enableQuickSnapshot]]">
+      <span data-bind="text:$component.resource.enableQuickSnapshot"></span>
+    </oj-button>
+  </div>
+</div>
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'alternateLoginNotSet', header:$component.resource.information">
+  <page-section params="baseModel : $baseModel, rootModel : $data,heading :''">
+    <div data-bind="text:$parent.resource.quickSnapshot"></div>
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[$parent.enableAlternateLogin]]">
+      <span data-bind="text:$parent.resource.generic.common.ok"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.closeDialog]]">
+      <span data-bind="text:$parent.resource.generic.common.cancel"></span>
+    </oj-button>
+  </div>
+</modal-window>
+
+<modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,header:$component.resource.generic.common.NOTIFICATION,id:'requestPermision'">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12" data-bind="text:$parent.resource.pleaseAllow">
+    </div>
+  </div>
+  <div class="oj-flex-items-pad button-container">
+    <oj-button class="action-button-secondary" on-click="[[$parent.dontProceed]]">
+      <span data-bind="text:$parent.resource.generic.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-primary" on-click="[[$parent.proceed]]">
+      <span data-bind="text:$parent.resource.generic.common.ok"></span>
+    </oj-button>
+  </div>
+</modal-window>

@@ -1,0 +1,86 @@
+@function inverse($property) {
+     @if $property == left{
+        @return right;
+    }
+    @else if $property == right {
+         @return left;
+    }
+    @else {
+         @return $property;
+    }
+}
+@mixin compact($property, $top, $right, $bottom, $left) {
+    [dir='rtl'] & {
+        #{$property}: $top $left $bottom $right;
+    }
+    #{$property}: $top $right $bottom $left;
+}
+@mixin compact-single($property, $direction, $distance) {
+    [dir='rtl'] & {
+        #{$property}-#{inverse($direction)}: $distance;
+    }
+
+    [dir ='ltr'] & {
+        #{$property}-#{$direction}: $distance;
+    }
+}
+@mixin inverse-direction($property, $direction) {
+    [dir='rtl'] & {
+        #{$property}: inverse($direction);
+    }
+    #{$property}: $direction;
+}
+@mixin inverse-selector($direction, $distance) {
+    [dir='rtl'] & {
+        #{inverse($direction)}: $distance;
+    }
+
+    [dir ='ltr'] & {
+        #{$direction}: $distance;
+    }
+}
+@mixin background-position($direction) {
+    [dir='rtl'] & {
+        background-position: inverse($direction);
+    }
+    background-position: $direction;
+}
+@mixin margin($top, $right, $bottom, $left) {
+     @include compact(margin, $top, $right, $bottom, $left);
+}
+@mixin padding($top, $right, $bottom, $left) {
+     @include compact(padding, $top, $right, $bottom, $left);
+}
+@mixin border-radius($top, $right, $bottom, $left) {
+     @include compact(border-radius, $top, $right, $bottom, $left);
+}
+@mixin border($top, $right, $bottom, $left) {
+     @include compact(border, $top, $right, $bottom, $left);
+}
+@mixin border-style($top, $right, $bottom, $left) {
+     @include compact(border-style, $top, $right, $bottom, $left);
+}
+@mixin single-padding($direction, $distance) {
+     @include compact-single(padding, $direction, $distance);
+}
+@mixin single-border($direction, $distance) {
+     @include compact-single(border, $direction, $distance);
+}
+@mixin single-margin($direction, $distance) {
+     @include compact-single(margin, $direction, $distance);
+}
+@mixin single-border-style($direction, $distance) {
+     @include compact-single(border-style, $direction, $distance);
+}
+@mixin text-align($direction) {
+     @include inverse-direction(text-align, $direction);
+}
+@mixin float($direction) {
+     @include inverse-direction(float, $direction);
+}
+@mixin left($distance) {
+     @include inverse-selector(left, $distance);
+}
+@mixin right($distance) {
+     @include inverse-selector(right, $distance);
+}

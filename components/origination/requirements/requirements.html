@@ -1,0 +1,18 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <div class="">
+    <div class="">
+      <oj-validation-group id="requirementsInfoTracker" valid="{{$component.groupValid}}">
+        <!-- ko if: $component.requirementLoaded() -->
+        <div data-bind="template:{name:'origination/requirements/' +$component.requirementsPartial()}"></div>
+        <!-- /ko -->
+      </oj-validation-group>
+    </div>
+  </div>
+</page-section>
+<div class="button-container oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item left oj-sm-12">
+    <oj-button raised="" id="submit-requirements" class="form-button-secondary" :aria-label="[[$component.resource.submitRequirement]]" on-click="[[$component.submitRequirements]]" disabled="[[$component.disableSubmit]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+  </div>
+</div>

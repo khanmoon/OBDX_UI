@@ -1,0 +1,34 @@
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.resource.certification.certifications"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad conscent card-text cust-label">
+    <ul class="text">
+        <li data-bind="text:$component.resource.certification.certInfo1"></li>
+        <li data-bind="text:$component.resource.certification.certInfo2"></li>
+        <li data-bind="text:$component.resource.certification.certInfo3"></li>
+        <li data-bind="text:$component.resource.certification.certInfo4"></li>
+        <li data-bind="text:$component.resource.certification.certInfo5"></li>
+        <li data-bind="text:$component.resource.certification.certInfo6"></li>
+        <li data-bind="text:$component.resource.certification.certInfo7"></li>
+    </ul>
+    <div class=" oj-flex-item oj-sm-12 oj-lg-12 oj-md-12">
+        <div class="oj-flex oj-flex-items-pad">
+            <span class="link oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">    <a href="#" class="link" data-bind="click: $component.downloadDisclosure.bind($data,$component.productDetails().disclosures.accountDocRefId), text: $component.resource.disclosures.accntAgreement ,attr:{alt: $component.resource.disclosures.AccountDocRefIdClick, title: $component.resource.disclosures.disclosureAccountDocRefIdClick}"></a>
+
+          </span>
+        </div>
+    </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <oj-checkboxset id="checkboxSetAgreeId2" aria-labelledby="agreeId" translations="[[{'required':{messageDetail:$component.resource.disclosures.messages.privacyAlert}}]]" required="[[true]]" on-value-changed="[[$component.checkDisclosureType]]"><oj-option value="{{$component.productDetails().disclosures.privacyValue}}" :id="[['agree4']]"><span data-bind="text:$component.resource.certification.certCheckbox, attr:{'for':'agree4'}">
+            </span></oj-option></oj-checkboxset>
+</div>
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+    <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'depositAccntAgreement'">
+        <div class="message-text label" data-bind="text:$component.resource.disclosures.depositAccntAgreement"></div>
+        <div class="message-btn button-container">
+            <oj-button id="depositAccntAgreementButton" on-click="[[function(){$('#depositAccntAgreement').hide().trigger('closeModal')}]]"> <span data-bind="text:$component.resource.disclosures.generic.common.ok"></span></oj-button>
+        </div>
+    </modal-window>
+</div>

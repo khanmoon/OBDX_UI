@@ -1,0 +1,22 @@
+<!-- ko if:(isAdmin()) -->
+<modal-window params="baseModel : $baseModel, rootModel : $data,id:'choicePopup',closeHandler:closeHandler, header : $component.nls.navLabels.userSelection">
+<div class="form-main-container">
+  <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-12" data-bind="text: $component.nls.navLabels.chooseUserType"></div>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12 vertical-ruler">
+            <oj-radioset id="workflowType" :aria-label="[[$component.nls.navLabels.workflowType]]" value="{{$component.workflowType}}" on-value-changed="[[$component.workflowTypeSelected]]" class="oj-choice-direction-row">
+                <oj-option :id="[[$component.nls.navLabels.adminUser]]" value="[[$component.nls.navLabels.adminUser]]">     
+                    <span data-bind="text:$component.nls.navLabels.adminUser"></span>
+                </oj-option>
+                <oj-option :id="[[$component.nls.navLabels.corporateUser]]" value="[[$component.nls.navLabels.corporateUser]]">
+                    <span data-bind="text:$component.nls.navLabels.corporateUser"></span>
+                </oj-option>  
+            </oj-radioset>
+        </div>
+    </div>
+    <div data-bind="template : {afterRender : $component.showModal}"></div>
+</modal-window>
+<!-- /ko -->

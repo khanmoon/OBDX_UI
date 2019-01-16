@@ -1,0 +1,64 @@
+<div class="form-main-container">
+  <div class="oj-flex">
+    <div class=" oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6">
+            <label data-bind="text:$component.resource.refNumber"></label>
+            <div data-bind="text: $component.refNo"></div>
+          </div>
+          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6">
+            <label data-bind="text:$component.resource.requestType"></label>
+            <div data-bind="text: $component.requestType"></div>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6">
+            <label data-bind="text:$component.resource.requestDate"></label>
+            <div data-bind="text: $component.creationDate"></div>
+          </div>
+          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6">
+            <label data-bind="text:$component.resource.statusPlaceHolder"></label>
+            <div data-bind="text: $component.status"></div>
+          </div>
+        </div>
+        <!-- ko if: showComments -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resource.comments"></label>
+            <div data-bind="text: $component.comments"></div>
+          </div>
+        </div>
+        <!-- /ko -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.formHeader">
+          <div class="oj-flex oj-flex-items-pad">
+            <!-- ko foreach: $component.displayData -->
+            <!-- ko if: type === "FFFU" -->
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 track-details">
+              <label data-bind="text:label"></label>
+              <div>
+                <a href="javascript:void(0)" data-bind="text: displayValues, click :$component.getFile"></a>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: type === "FFFU" -->
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 track-details">
+              <label data-bind="text:label"></label>
+              <div data-bind="text:displayValues"></div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+          </div>
+        </page-section>
+      </page-section>
+      <!-- ko ifnot: $baseModel.small() -->
+      <oj-button class="action-button-primary" id="back-button" type="submit" on-click="[[$component.trackScreen]]">
+        <span data-bind="text:$component.resource.back"></span>
+      </oj-button>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>
+<!-- ko ifnot: $baseModel.small() -->
+<a class="back-link" href="#" data-bind="text: $component.resource.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

@@ -1,0 +1,118 @@
+    <div class="form-main-container">
+
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <!-- ko ifnot: showConfirmationForCreate -->
+            <!-- ko if: showEditableForm -->
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading :">
+            </page-section>
+            <!-- /ko -->
+
+            <!-- ko if: isAccessCreated -->
+            <!-- ko ifnot: showEditableForm -->
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading :">
+            </page-section>
+            <!-- /ko -->
+            <!-- /ko -->
+
+
+            <!-- ko ifnot: isAccessCreated -->
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading :">
+            </page-section>
+            <!-- /ko -->
+
+            <div class="oj-flex oj-flex-items-pad ">
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+                    <div class="oj-flex oj-flex-items-pad ">
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <oj-label><span data-bind="text:nls.fieldname.parentPartyID"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <span data-bind="text:$component.party.displayValue()"></span>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad ">
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <oj-label><span data-bind="text:nls.fieldname.parentPartyName"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <span data-bind="text:$component.partyName()"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 ">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <span class=" arrow-icon-size icon icon-arrow-right"></span>
+                    </div>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+                    <div class="oj-flex oj-flex-items-pad ">
+
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <oj-label><span data-bind="text:nls.fieldname.linkedPartyID"></span></oj-label>
+                        </div>
+
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <span data-bind="text:relatedPartyId().displayValue"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="oj-flex oj-flex-items-pad ">
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <oj-label><span data-bind="text:nls.fieldname.linkedPartyName"></span></oj-label>
+                        </div>
+
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <span data-bind="text:relatedPartyName()"></span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- ko if: selectedUserId  -->
+
+            <div class="oj-flex oj-flex-items-pad ">
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+                    <div class="oj-flex oj-flex-items-pad ">
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <oj-label><span data-bind="text:nls.fieldname.userID"></span></oj-label>
+                        </div>
+
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <span data-bind="text:$component.selectedUserId()"></span>
+                        </div>
+
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad ">
+
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <oj-label><span data-bind="text:nls.fieldname.userName"></span></oj-label>
+                        </div>
+
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                            <span data-bind="text:$component.selectedUserName()"></span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+        </page-section>
+        <!-- ko ifnot: isAccessCreated -->
+        <div data-bind="component: {name:'mapping-modules' , params:{rootModel:$data }}">
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: isAccessCreated -->
+        <!-- ko if: refreshed -->
+        <div data-bind="component: {name:'mapping-modules' , params:{rootModel:$data }}">
+        </div>
+
+        <!-- /ko -->
+        <!-- /ko -->
+
+
+
+
+    </div>

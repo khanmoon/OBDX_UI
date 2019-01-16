@@ -1,0 +1,375 @@
+<div class="form-main-container">
+  <!-- ko if:recordDetailsLoaded() -->
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <div data-bind="with:$component.recordDetails">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.fileName"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('fileName' in $data)?fileName:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.recordRefNo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : $component.recordDetails.recRefId"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.rStatus"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : $component.recordDetails.recStatus"></span>
+        </div>
+      </div>
+      <action-header params="baseModel : $baseModel, rootModel : $component, heading:$component.Nls.billerDetails"></action-header>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerName"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerName' in $data)?billerName:'-')"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerCategory"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerCategory' in $data)?billerCategory:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : $component.recordDetails.billerType"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerCurrency"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerCurrency' in $data)?billerCurrency:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerStatus"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerStatus' in $data)?billerStatus:'-')"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerLocation"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerLocation' in $data)?billerLocation:'-')"></span>
+        </div>
+      </div>
+      <action-header params="baseModel : $baseModel, rootModel : $component, heading:$component.Nls.billerSpecifications"></action-header>
+      <!-- ko if: $baseModel.large() -->
+      <div class="widget-table">
+        <oj-table id="table" :aria-label="[[$component.Nls.details]]" columns="[[[{
+                                          headerText:$component.Nls.label,field:'label'},{
+                                          headerText:$component.Nls.values,field:'values'},{
+                                          headerText:$component.Nls.dataType,field:'dataType'},{
+                                          headerText:$component.Nls.required,field:'mandatory'}]]]" selection-mode="[[{row:'single',column:'single'}]]" translations="[[{msgNoData:$component.Nls.noData}]]" data="[[$component.datasource]]">
+        </oj-table>
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot: $baseModel.large() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerLabel1"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerLabel1' in $data)?billerLabel1:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.dataType1"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('dataType1' in $data)?dataType1:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.required1"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('required1' in $data)?required1:'-')"></span>
+        </div>
+      </div>
+      <!-- ko if: $data.billerLabel2 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerLabel2"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerLabel2' in $data)?billerLabel2:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.dataType2"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+          <span data-bind="text : (('dataType2' in $data)?dataType2:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.required2"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('required2' in $data)?required2:'-')"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $data.billerLabel3 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerLabel3"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerLabel3' in $data)?billerLabel3:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.dataType3"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('dataType3' in $data)?dataType3:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.required3"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('required3' in $data)?required3:'-')"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $data.billerLabel4 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerLabel4"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerLabel4' in $data)?billerLabel4:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.dataType4"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('dataType4' in $data)?dataType4:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.required4"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('required4' in $data)?required4:'-')"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $data.billerLabel5 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerLabel5"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerLabel5' in $data)?billerLabel5:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.dataType5"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('dataType5' in $data)?dataType5:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.required5"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('required5' in $data)?required5:'-')"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $data.billerLabel6 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerLabel6"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerLabel6' in $data)?billerLabel6:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.dataType6"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('dataType6' in $data)?dataType6:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.required6"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('required6' in $data)?required6:'-')"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $data.billerLabel7 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerLabel7"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerLabel7' in $data)?billerLabel7:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.dataType7"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('dataType7' in $data)?dataType7:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.required7"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('required7' in $data)?required7:'-')"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $data.billerLabel8 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerLabel8"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerLabel8' in $data)?billerLabel8:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.dataType8"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('dataType8' in $data)?dataType8:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.required8"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('required8' in $data)?required8:'-')"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $data.billerLabel9 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerLabel9"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerLabel9' in $data)?billerLabel9:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.dataType9"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('dataType9' in $data)?dataType9:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.required9"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('required9' in $data)?required9:'-')"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $data.billerLabel10 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.billerLabel10"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('billerLabel10' in $data)?billerLabel10:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.dataType10"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('dataType10' in $data)?dataType10:'-')"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.required10"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('required10' in $data)?required10:'-')"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if: 'txnId' in $data -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.txnRefId"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+          <span data-bind="text : (('txnId' in $data)?txnId:'-')"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:'errorMessage' in $data -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.Nls.errorDetail"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+          <span data-bind="text : (('errorMessage' in $data)?errorMessage:'-')"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div data-bind="template: { name: $component.loadPartialComponentName() ,data:$component.recordDetails}"></div>
+  </page-section>
+  <!-- /ko -->
+  <!-- ko if:showBackButton() -->
+  <div class="button-container">
+    <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+      <span data-bind="text:$component.Nls.back"></span>
+    </oj-button>
+  </div>
+
+  <!-- /ko -->
+</div>

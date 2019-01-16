@@ -1,0 +1,119 @@
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 bank-account-payee">
+        <!-- ko if:stageOne() -->
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : (userSegment === 'CORP')?$component.payments.payee.bankaccount:''">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 label">
+                        <oj-label :for="payeename" class="oj-flex-item oj-lg-12 label">
+                        <span data-bind="text: $component.payments.payee.recipientname"></span>
+                        </oj-label>
+                    </div>
+                    <!-- ko if:isNew() -->
+                    <div class="oj-flex-item oj-sm-12">
+                        <oj-validation-group id="payee-name-tracker">
+                            <oj-input-text id="payeename" required validators="[[$baseModel.getValidator('NAME')]]" value="{{payeeName}}"></oj-input-text>
+                        </oj-validation-group>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko ifnot:isNew() -->
+                    <div class="oj-flex-item oj-sm-12 " data-bind="text:$component.payeeName"></div>
+                    <!-- /ko -->
+                </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label ">
+                    <label class="oj-label" for="accType" data-bind="text: $component.payments.payee.accounttype"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12  ">
+                    <oj-buttonset-one id="accType" :aria-label="[[$component.payments.payee.accounttype]]" value="{{currentAccountType}}" on-value-changed="[[accountTypeChanged]]">
+                        <oj-option id="internal" name="mod" value="{{'INTERNAL'}}">
+                            <span for="internal" data-bind="text:$component.payments.payee.accinternal"></span>
+                        </oj-option>
+                        <oj-option id="domestic" name="mod" value="{{'DOMESTIC'}}">
+                            <span for="domestic" data-bind="text:$component.payments.payee.accdomestic"></span>
+                        </oj-option>
+                        <oj-option id="international" name="mod" value="{{'INTERNATIONAL'}}">
+                            <span for="international" data-bind="text:$component.payments.payee.accinternational"></span>
+                        </oj-option>
+                    </oj-buttonset-one>
+                </div>
+            </div>
+            <!-- ko if:isComponentLoaded() -->
+            <div data-bind="component:{name: $component.selectedComponent(), params:{rootModel: $component,model:$component.model()}}">
+            </div>
+            <!-- /ko -->
+            <oj-validation-group id="payee-nickname-tracker">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12  label ">
+                    <oj-label :for="nickName" class="oj-flex-item oj-sm-12 label">
+                        <span data-bind="text: $component.payments.payee.accountnickname"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 ">
+                    <oj-input-text required id="nickName" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.payeeNickName}}"></oj-input-text>
+                </div>
+            </div>
+            </oj-validation-group>
+            <!-- ko if:userSegment === "CORP" -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12  label">
+                    <label class="oj-label" data-bind="text : payments.payee.payeeaccesstype"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 ">
+                    <oj-buttonset-one id="accessType" value="{{accessType}}">
+                        <!-- ko foreach: accessTypes -->
+                        <oj-option name="accessType" value="{{id}}" :id="[[id]]">
+                            <span data-bind="attr: {for: id},text: label "></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-buttonset-one>
+                </div>
+            </div>
+            <!-- /ko -->
+        </page-section>
+        <!-- /ko -->
+        <!-- ko if: stageOne() -->
+        <div data-bind='component:{name:"warning-message-dialog", params:{rootModel: $component }}'></div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary" data-id="addPayee" on-click="[[$component.createPayeeGroup]]">
+                <span slot="startIcon" class="icons icon-add"></span>
+                <span data-bind="text:$component.payments.payee.add"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" id="buttoncancel" on-click="[[$component.cancel]]">
+                <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.payments.common.cancel"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: isCollingPeriodSlot() && stageOne() && userSegment!=="CORP"-->
+        <div class="cooling-period__message">
+            <label class="oj-flex oj-flex-items-pad message" data-bind="text: $component.payments.coolingPeriodmsz"></label>
+        </div>
+        <div class="cooling-period__header" data-bind="text:$component.payments.coolingPeriod"></div>
+        <page-section params="baseModel : $baseModel, rootModel : $component">
+            <div class="oj-flex oj-flex-items-pad">
+                <div clas="oj-flex-item">
+                    <oj-table id="table" :aria-label="[[$component.payments.coolingPeriod]]" columns="[[[{
+                        headerText:$component.payments.duration,
+                        field:'duration',sortable:'none',
+                        className : 'cooling-period__table__row',
+                        headerClassName : 'cooling-period__table__header'
+                    },{
+                        headerText:$component.payments.cumulativeAmount,
+                        field:'amount',sortable:'none',
+                        className : 'cooling-period__table__row',
+                        headerClassName : 'cooling-period__table__header'
+                    }]]]" selection-mode="[[{row:'none',column:'none'}]]" columns-default="[[{sortable:'disabled'}]]" data="[[$component.CoolingPeriodDataSource]]">
+                        <caption class="hide-label" data-bind="text:$component.payments.coolingPeriod"></caption>
+                    </oj-table>
+                </div>
+            </div>
+        </page-section>
+        <!-- /ko -->
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'bank-account-payee'"></help>
+    </div>
+    <!-- /ko -->
+</div>

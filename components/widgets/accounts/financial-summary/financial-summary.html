@@ -1,0 +1,78 @@
+<!-- ko if : !$baseModel.small()  -->
+
+<div id="animatable" class="oj-panel financial-summary animatable" data-bind="css:$component.css">
+  <div class="cardface backside oj-animation-backface" data-bind="css : $component.selectedType() ">
+    <!-- ko if: $component.renderFlipAccount() -->
+    <flip-account params="baseModel : $baseModel, dashboard : $dashboard, filteredAccount : $component.filteredAccount, type: type,turnCard : turnCard"></flip-account>
+    <!-- /ko -->
+  </div>
+  <div class="cardface">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <h3 class="cardface__sub-heading" tabindex="-1" id="MyAccountHeading" data-bind="text:$component.resource.labels.myAccounts"></h3>
+      </div>
+    </div>
+    <!-- ko if: $component.dataLoaded() -->
+    <oj-list-view id="listview" data="[[dataSource]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('financial_summary_template',true)}]]"
+      selection-mode='single' :aria-label="[[$component.resource.labels.myAccounts]]"></oj-list-view>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.dataLoaded() -->
+    <div class="oj-flex oj-flex-items-pad cardface__noData cardface-noData">
+      <div class="oj-flex-item cardface-noData__content">
+        <div data-bind="text: $component.resource.labels.noAccounts"></div>
+      </div>
+    </div>
+    <!-- /ko -->
+  </div>
+</div>
+
+
+<script type="text/html" id="financial_summary_template">
+  <li data-bind="css:type">
+    <span class="vertical-line"></span>
+    <a href="#" openprofile="true" data-bind="attr:{'alt':$component.resource.labels[type],'title':$component.resource.labels[type]},click: $component.listClick.bind($data,$data)">
+      <div class="oj-flex">
+        <div class="oj-flex-item oj-sm-6 ">
+          <div class="account-title" data-bind="text:$component.resource.labels[type]"></div>
+        </div>
+        <!-- ko if: $data.loaded() -->
+        <div class="oj-flex-item oj-sm-5 right">
+          <div class="account-value" data-bind="text:$baseModel.formatCurrency(value, ccy)"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-1 right">
+          <div class="icons icon-arrow-right"></div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$data.loaded() -->
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$component.resource.subHeaders[type]"></span>
+        </div>
+        <!-- /ko -->
+      </div>
+    </a>
+  </li>
+</script>
+<!-- /ko -->
+<!-- ko if : $baseModel.small()  -->
+<oj-accordion id="accordionPage" class="dashboard-accordian-container">
+  <!-- ko foreach: {data : items, afterAdd : refreshWidget } -->
+  <div data-bind="css : type">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <div class="dashboard-accordian-container-heading" data-bind="text:$component.resource.labels[type]"></div>
+      </div>
+      <!-- ko if: $data.loaded() -->
+      <div class="oj-flex-item oj-sm-12">
+        <div class="dashboard-accordian-container-sub-heading" data-bind="text:$baseModel.formatCurrency(value, ccy)"></div>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex-item oj-sm-12 dashboard-accordian-list">
+      <!-- ko if: $component.renderFlipAccount() -->
+      <flip-account params="baseModel : $baseModel, dashboard : $dashboard, filteredAccount : $component.filteredAccount, type: ko.observable(type), turnCard : $parent.turnCard"></flip-account>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- /ko -->
+</oj-accordion>
+<!-- /ko -->

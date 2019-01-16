@@ -1,0 +1,60 @@
+<div class="form-main-container aggregate-accounts-list">
+
+  <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-lg-4">
+      <!-- ko if : $component.dataLoaded -->
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.heading.sites">
+        <ul class="aggregate-accounts-list__content aggregate-accounts-list-content">
+          <!-- ko foreach: $component.accountsList -->
+          <li class="aggregate-accounts-list-content__item aggregate-accounts-list-content-item">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-4">
+                <img class="aggregate-accounts-list-content-item__image" data-bind="attr: {'id': bankLogo, 'src': $component.retrieveLogoImage1(bankLogo)}"></img>
+              </div>
+              <div class="oj-flex-item oj-sm-4 vertical-align-middle">
+                <span data-bind="attr:{alt:$component.resourceBundle.labels.alt,title:$component.resourceBundle.labels.title},text:bankName"></span>
+              </div>
+              <div class="oj-flex-item oj-sm-4 right vertical-align-middle">
+                <!-- ko if: $data.accountLinked -->
+                <a href="#" data-bind="click:$component.UnregisterBank.bind($data,bankCode)">
+                        <span data-bind="text:$component.resourceBundle.labels.deLinkButton"></span>
+                    </a>
+                <!-- /ko -->
+                <!-- ko ifnot: $data.accountLinked -->
+                <a href="#" data-bind="click:$component.viewBankDetails.bind($data,bankCode)">
+                          <span data-bind="text:$component.resourceBundle.labels.linkButton"></span>
+                      </a>
+                <!-- /ko -->
+              </div>
+
+            </div>
+          </li>
+          <!-- /ko -->
+        </ul>
+      </page-section>
+      <!-- /ko -->
+    </div>
+    <modal-window params="baseModel : $baseModel, rootModel : $component, id:'confirmDialog', header : $component.resourceBundle.labels.delinkAccount">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <div class="account-statement__eStatement account-statement-eStatement" data-bind="text: $component.resourceBundle.labels.confirmMessage">
+          </div>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" data-bind="click:$component.confirm">
+          <span data-bind="text:$component.resourceBundle.labels.confirmButton"></span>
+        </oj-button>
+      </div>
+    </modal-window>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide pull-right">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'aggregate-accounts-list'"></help>
+    </div>
+    <!-- /ko -->
+  </div>
+</div>
+
+<!-- ko ifnot: $baseModel.small() -->
+<a class="back-link" href="#" data-bind="text: $component.resourceBundle.labels.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

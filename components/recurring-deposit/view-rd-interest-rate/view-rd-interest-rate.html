@@ -1,0 +1,36 @@
+<div class="form-main-container">
+    <!-- ko if:interestSlabsLoaded() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-table id="interestSlabstable" :aria-label="[[rates.interestslab.caption]]" columns='[[[
+            {
+            	"headerText":rates.interestslab.header.tenure,
+        		"field":"range"
+        	},
+        	{
+        		"headerText":rates.interestslab.header.rate,
+        		"field":"rate",
+        		"headerClassName" : "rate-header"
+        	}
+        ]]]' columns-default="[[{sortable:'disabled'}]]" selection-mode="[[{row:'none',column:'none'}]]" data="[[interestSlabsDataSource()]]">
+                <caption class="hide-label" data-bind="text:rates.interestslab.caption"></caption>
+            </oj-table>
+        </div>
+    </page-section>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" on-click="[[params.closeModelWindow]]">
+            <span slot="startIcon" class="icons icon-ok"></span>
+            <span data-bind="text:rates.interestslab.ok"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $baseModel.large() -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:rates.interestslab.generic.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>

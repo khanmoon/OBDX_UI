@@ -1,0 +1,72 @@
+<!-- ko pageTitle: pageTitle -->
+<!-- /ko -->
+<div data-bind="childContext: {name: '$dashboard', context: $component.getDashboardContext()}, css: $component.application() + ' dashboard ' + ($component.isDashboard() ? 'banner': '')">
+	<a class="skip-main" href="#maincontent" tabindex="0" data-bind="text:$component.locale.skipToMainContent"></a>
+	<header>
+		<div data-bind="component: {name:'header', params:{rootModel : $root, mailbox: $component.mailbox, changeMenuState: $component.changeMenuState, menuLoaded: $component.menuLoaded, loadedComponent: $component.loadedComponent, menuOptionSelect: $component.menuOptionSelect}}"></div>
+	</header>
+	<div class="oj-offcanvas-outer-wrapper" data-bind="css: !$baseModel.xl() ? 'oj-offcanvas-page' : ''">
+		<nav class="main-menu oj-offcanvas-start" id="innerDrawer">
+			<div data-bind="component:{name:'menu', params:{rootModel : $root, languageOptions: $component.languageOptions, menuOptionSelect: $component.menuOptionSelect, changeMenuState: $component.changeMenuState, menuLoaded: $component.menuLoaded}}"></div>
+		</nav>
+		<main class="container oj-web-applayout-page" id="maincontent" tabindex="-1">
+			<div class="se-pre-con"></div>
+			<div data-bind="visible: !$baseModel.onTFAScreen()">
+				<!-- ko if:renderModuleData() -->
+				<div data-bind="template: {name:'dashboard-heading'}"></div>
+				<!-- ko if:isDashboard() -->
+				<div class="widget-container">
+					<div data-bind="template: {name : 'dashboard-notification'}"></div>
+					<div class="oj-flex" data-bind="css: !$baseModel.small() ? 'oj-flex-items-pad' : ''">
+						<!-- ko foreach: $component.layout -->
+						<!-- ko if: $data.childPanel.length  -->
+						<div class="oj-flex-item" data-bind="css:$data.style ? style:'oj-sm-12'">
+							<div class="oj-flex" data-bind="css: !$baseModel.small() ? 'oj-flex-items-pad' : ''">
+								<!-- ko foreach: $data.childPanel -->
+								<section class="oj-flex-item" data-bind="css:$data.style ? style:'oj-sm-12',component: {name: componentName, params:{data:$data}}">
+								</section>
+								<!-- /ko -->
+							</div>
+						</div>
+						<!-- /ko -->
+						<!-- ko ifnot: $data.childPanel.length  -->
+						<section class="oj-flex-item" data-bind="css:$data.style ? style:'oj-sm-12',component: {name: componentName, params:{data:$data}}">
+						</section>
+						<!-- /ko -->
+						<!-- /ko -->
+					</div>
+				</div>
+				<!-- /ko -->
+				<!-- /ko -->
+				<!-- ko if:!isDashboard() -->
+				<div class="oj-flex">
+					<div class="oj-flex-item oj-sm-12 main-content" data-bind="component: {name:loadedComponent, params:{rootModel:data}}"></div>
+				</div>
+				<!-- /ko -->
+			</div>
+				<!-- ko if:$baseModel.onTFAScreen() -->
+					<div data-bind="component: {name : 'generic-authentication', params:{rootModel: $baseModel.authViewModel}}"></div>
+				<!-- /ko -->
+		</main>
+		<div data-bind="component: {name : 'offline-notification', params:{rootModel: $data}}"></div>
+		<footer>
+			<!-- ko if:!$baseModel.large() && $root.isUserDataSet() && (constants.userSegment ==="RETAIL" || constants.userSegment ==="CORP") -->
+			<!-- ko if: $component.menuNavigationAvailable -->
+			<div data-bind="component: {name:'docked-menu' , params:{rootModel:$data}}"></div>
+			<!-- /ko -->
+			<!-- /ko -->
+			<div data-bind="component: {name:'footer' , params:{rootModel:$data}}"></div>
+		</footer>
+		<!-- ko if:!isDashboard() && !$baseModel.small() -->
+		<div class="back-top">
+			<a href="#" data-bind="attr:{'alt':$component.locale.backTop ,'aria-label':$component.locale.backTop, 'title':$component.locale.backTop}">
+				<span class="icons icon-arrow-up"></span>
+			</a>
+		</div>
+		<!-- /ko -->
+		<!-- /ko -->
+	</div>
+	<!-- ko if: $component.modalComponent() -->
+	<div data-bind="component: {name:modalComponent , params:{rootModel:$component}}"></div>
+	<!-- /ko -->
+</div>

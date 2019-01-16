@@ -1,0 +1,33 @@
+<div class="requirements-form" data-bind="with:productDetails().requirements">
+  <div class="oj-flex oj-flex-items-pad requirements">
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-10 ">
+      <h3 class=" primary-heading" data-bind="text:$component.resource.confirmRequirements"></h3>
+    </div>
+  </div>
+  <oj-validation-group id="requirementsTracker" valid="{{$component.groupValid}}">
+    <div class="oj-flex oj-flex-items-pad requirements">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1   oj-lg-offset-1">
+        <oj-label class="main-label" for="currency"><span data-bind="text:$component.resource.selectCurrency"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-10 oj-md-3 oj-lg-2 margin-top">
+        <oj-select-one id="currency" required translations="[[{'required':{messageDetail:$component.resource.messages.currency}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{currency}}" :placeholder="">
+          <!-- ko foreach : $component.productDetails().offerCurrencies -->
+          <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+
+        </oj-select-one>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad requirements">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-1 ">
+        <oj-label class="oj-label" for="noOfCoApplicants"><span data-bind="text:$component.resource.coApplicant"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 margin-top">
+        <oj-buttonset-one id="noOfCoApplicants" required :aria-label="[[$component.resource.coApplicant]]" on-value-changed="[[$component.coapplicantsSelected]]" value="{{noOfCoApplicants}}" disabled="[[$component.disableCoAppPartyId()]]">
+          <oj-option id="coAppYes" name="applicationTypes" class="applicationTypes" value="{{'1'}}"><span for="coAppYes" data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+          <oj-option id="coAppNo" name="applicationTypes" class="applicationTypes" value="{{'0'}}"><span for="coAppNo" data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+        </oj-buttonset-one>
+      </div>
+    </div>
+  </oj-validation-group>
+</div>

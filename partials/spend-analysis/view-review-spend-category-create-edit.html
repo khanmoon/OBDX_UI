@@ -1,0 +1,11 @@
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.spendCategory.categoryCode , value :$component.spendCategoryDetails().code,
+      dataClass :'highlight-text'">
+</row>
+<row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.spendCategory.categoryName , value :$component.spendCategoryDetails().name,
+      dataClass :'highlight-text'">
+</row>
+<action-header params="baseModel : $baseModel, rootModel : $data, heading :$component.resource.spendCategory.subCategoryDetails "></action-header>
+<oj-table :aria-label="[[$component.resource.spendCategory.tableMessage]]" columns="[[[{headerText:$component.resource.spendCategory.subCategoryCode,field:'code'},{headerText:$component.resource.spendCategory.subCategoryName,field:'name'}]]]" selection-mode="[[{row:'multiple',column:'multiple'}]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.subCategoryDataSource]]">
+</oj-table>
+<oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.subCategoryDataSource]]">
+</oj-paging-control>

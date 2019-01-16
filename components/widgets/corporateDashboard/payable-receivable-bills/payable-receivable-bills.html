@@ -1,0 +1,22 @@
+<div class="oj-panel bills">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <h3 class="bills__heading" data-bind="text:$component.nls.payableReceivableBillsDetails.labels.title"></h3>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <!-- ko if: chartRendered() -->
+      <oj-label class="labelTitle"><span data-bind="text:$component.nls.payableReceivableBillsDetails.labels.billsUnderLc"></span></oj-label>
+      <oj-chart class="bills-chart" tooltip="[[tooltip]]" type="bar" series="[[underLCSeries]]" groups="[[groups]]" animation-on-display="auto" animation-on-data-change="auto" orientation="horizontal" style-defaults.data-label-position="[[labelPosition]]" stack="[[stackValue]]" stack-label="on">
+      </oj-chart>
+      <oj-label class="labelTitle"><span data-bind="text:$component.nls.payableReceivableBillsDetails.labels.standloneBills"></span></oj-label>
+      <oj-chart class="bills-chart" tooltip="[[tooltip]]" type="bar" series="[[standaloneSeries]]" groups="[[groups]]" animation-on-display="auto" animation-on-data-change="auto" orientation="horizontal" style-defaults.data-label-position="[[labelPosition]]" stack="[[stackValue]]" stack-label="on">
+      </oj-chart>
+      <!-- /ko -->
+      <!-- ko ifnot: chartRendered() -->
+        <div class="noData" data-bind="text: $component.nls.payableReceivableBillsDetails.labels.noData"></div>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>

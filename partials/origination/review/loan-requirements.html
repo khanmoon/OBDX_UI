@@ -1,0 +1,93 @@
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.loan.loanAmount"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+        <span data-bind="text:$baseModel.formatCurrency(data.requestedAmount.amount(), data.requestedAmount.currency)"></span>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.loan.purpose"></span></oj-label>
+
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+        <span data-bind="text: $baseModel.format(resource.loan.loanPurpose,{purposeType:$component.transformText(data.purposeType),description:data.purpose.description}) "></span>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.loan.tenure"></span></oj-label>
+
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+      <!-- ko if: parseInt(data.requestedTenure.years()) > 0 -->
+      <span data-bind="text : $baseModel.format(resource.termYears, {years: data.requestedTenure.years()})"></span>
+      <!-- /ko -->
+      <!-- ko if: data.requestedTenure.months() > 0 -->
+      <span data-bind="text : $baseModel.format(resource.termMonths, {months: data.requestedTenure.months()})"></span>
+      <!-- /ko -->
+    </div>
+</div>
+<!-- ko if: $component.productDetails().requirements.frequency() -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label>
+      <span data-bind="text:resource.loan.repaymentFrequency"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+        <span data-bind="text : data.frequency()"></span> </div>
+</div>
+<!-- /ko -->
+<!-- ko if: $component.productDetails().productClassName === 'LOANS' && $component.productDetails().productType === 'LOANS' -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label>
+      <span data-bind="text:resource.loan.firstHome"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+        <!-- ko ifnot: $component.productDetails().requirements.isYourFirstHome -->
+        <span data-bind="text : resource.generic.common.no"></span>
+        <!-- /ko -->
+        <!-- ko if: $component.productDetails().requirements.isYourFirstHome -->
+        <span data-bind="text : resource.generic.common.yes"></span>
+        <!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label>
+      <span data-bind="text:resource.coApplicant"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+        <!-- ko if: $component.productDetails().requirements.noOfCoApplicants === 0 -->
+        <span data-bind="text : resource.generic.common.no"></span>
+        <!-- /ko -->
+        <!-- ko if: $component.productDetails().requirements.noOfCoApplicants !== 0 -->
+        <span data-bind="text : resource.generic.common.yes"></span>
+        <!-- /ko -->
+    </div>
+</div>
+<!-- ko if: $component.userType !== 'primary' -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.loan.primaryApplicant"></span></oj-label>
+
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+        <span data-bind="text:$component.productDetails().primaryApplicantName"></span>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko foreach : $component.productDetails().coAppNames -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.coApplicant + parseInt($index() + 1)"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+        <span data-bind="text:$data"></span>
+    </div>
+</div>
+<!-- /ko -->

@@ -1,0 +1,29 @@
+<!-- ko if: $component.newQuestions().length > 0 -->
+<!-- ko foreach:$component.newQuestions -->
+<div class="oj-flex padding-question">
+  <div class="oj-flex-items oj-lg-2">
+    <oj-label :id="[['questionLabel'+$index()]]" :for="[['questionLabel'+$index()]]"><span data-bind="text:$baseModel.format($component.resource.questionNumber,{questionNumber:  $index()+1+$component.question().length})"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-lg-3 padding-new-question">
+    <oj-label :id="[['questionLabel'+$index()]]" :for="[['questionLabel'+$index()]]"><span data-bind="text:questionDescription"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-lg-4 right">
+    <a href="#" class="icon-delete delete-icon-size" data-bind="click : $component.deleteAddNewQuestion.bind($data,$index())"></a>
+  </div>
+</div>
+<div class="oj-flex">
+  <div class="oj-flex-item oj-lg-2 padding-question-option">
+    <oj-label :id="[['selectOptions']]"><span data-bind="text:$component.resource.selectOptions"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-lg-9 padding-question-option">
+    <oj-validation-group id="tracker" valid="{{$component.groupValid}}">
+    <oj-combobox-many :id="[['optionsRequestList'+$index()]]" value="{{extraOptionRequestList}}" on-value-changed="[[$component.optionvalueChangeHandler]]" required>
+      <!-- ko foreach:$component.optionList -->
+      <oj-option value="{{optionDescription}}"><span data-bind="text: optionDescription"></span></oj-option>
+      <!-- /ko -->
+    </oj-combobox-many>
+    </oj-validation-group>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->

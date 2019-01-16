@@ -1,0 +1,72 @@
+<!-- ko ifnot: showDetailedMessage -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item no-pad-cols">
+    <!-- ko if:toShow -->
+    <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.delete ,'title': $component.nls.mailbox.labels.deleteTitle}, click:showModalWindow.bind($data), enable: true">
+      <span class="icons icon-delete"></span>
+    </a>
+    <span class="mailbox-controls__divider"></span>
+    <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.restore ,'title': $component.nls.mailbox.labels.restoreTitle}, click:$component.restoreMails">
+      <span class="icon icon-undo"></span>
+    </a>
+    <!-- /ko -->
+    <!-- ko ifnot:toShow -->
+    <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.delete ,'title': $component.nls.mailbox.labels.deleteTitle}, click:showModalWindow.bind($data), enable: false">
+      <span class="icons icon-delete disabled"></span>
+    </a>
+    <span class="mailbox-controls__divider"></span>
+    <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.restore ,'title': $component.nls.mailbox.labels.restoreTitle}, click:$component.restoreMails">
+      <span class="icon icon-undo disabled"></span>
+    </a>
+    <!-- /ko -->
+    <span class="mailbox-controls__divider"></span>
+    <a href="#"  data-bind="attr:{'alt': $component.nls.mailbox.labels.refreshTitle ,'title': $component.nls.mailbox.labels.refresh}, click : $component.refreshMails ">
+      <span class="icons icon-refresh"></span>
+    </a>
+  </div>
+</div>
+<!-- ko if:deletedMailsListLoaded() -->
+
+<!-- ko if: $component.isAdminMailBox -->
+<div data-bind="template: { name: '../partials/mailbox/message-list-admin'}">
+</div>
+<!-- /ko -->
+<!-- ko ifnot: $component.isAdminMailBox -->
+<div data-bind="template: { name: '../partials/mailbox/message-list-user'}">
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- /ko -->
+
+<!-- ko if: showDetailedMessage -->
+<div class="" data-bind='component:{name: "message-detail", params:{rootModel:$component,data:$data}}'>
+</div>
+<!-- /ko -->
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'deleteDeletedMailsConfirmation', header : $component.nls.mailbox.headers.deleteMailsConfirmation ">
+  <div class="message-box">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <!-- ko if: $component.s() === "s" -->
+        <div class="dialog-text">
+          <span data-bind="text: $baseModel.format(nls.mailbox.messages.selectedMessagesForPermanentDelete, {count: $component.messages().length})"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: $component.s() !== "s" -->
+        <div class="dialog-text">
+          <span data-bind="text: $component.nls.mailbox.messages.selectMessage"></span>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="confirm" class="action-button-primary" on-click="[[submit]]">
+        <span data-bind="text:$component.nls.mailbox.buttons.confirm"></span>
+      </oj-button>
+      <oj-button id="cancel" class="action-button-secondary" on-click="[[closeModal]]">
+        <span data-bind="text:nls.mailbox.buttons.cancel"> </span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>

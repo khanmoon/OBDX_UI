@@ -1,0 +1,69 @@
+<div data-bind="with:uplTrackingDetails().additionalInfo.loanStatement">
+	<!-- ko if: $parent.dataLoaded() -->
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 oj-label">
+			<oj-label><span data-bind="text:$component.resource.statementRequired"></span></oj-label>
+		</div>
+
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+
+			<oj-buttonset-one id="statement-required" on-value-changed="[[$component.saveCheckBoxResponse]]" value="{{$component.isCheckBoxResponse}}">
+				<oj-option name="statement-required" class="statement-required" value="{{'OPTION_YES'}}" :id="[['YesStatement']]"><span data-bind="attr: {for: 'YesStatement'}, text: $component.resource.yes"></span></oj-option>
+				<oj-option name="statement-required" class="statement-required" value="{{'OPTION_NO'}}" :id="[['NoStatement']]"><span data-bind="attr: {for: 'NoStatement'}, text: $component.resource.no"></span></oj-option>
+			</oj-buttonset-one>
+
+		</div>
+	</div>
+	<!--  ko if: $parent.isStatementRequired()-->
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+			<oj-label for="frequency"><span data-bind="text:$component.resource.frequency"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+			<oj-select-one required id="frequency" translations="[[{'required':{messageDetail:$component.resource.messages.statementFrequency}}]]" value="{{$parent.selectedFrequency}}">
+				<!-- ko foreach: $parent.frequencyOptions -->
+				<oj-option value="{{value}}"><span data-bind="text:description"></span></oj-option>
+				<!-- /ko -->
+			</oj-select-one>
+		</div>
+	</div>
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 oj-label">
+			<oj-label><span data-bind="text:$component.resource.email"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+
+			<oj-buttonset-one id="email-preference" on-value-changed="[[$component.saveEmailResponse]]" value="{{$component.isEmailResponse}}">
+				<oj-option name="email-preference" class="email-preference" value="{{'OPTION_YES'}}" :id="[['YESEmail']]"><span data-bind="attr: {for: 'YESEmail'}, text: $component.resource.yes"></span></oj-option>
+				<oj-option name="email-preference" class="email-preference" value="{{'OPTION_NO'}}" :id="[['NOEmail']]"><span data-bind="attr: {for: 'NOEmail'}, text: $component.resource.no"></span></oj-option>
+			</oj-buttonset-one>
+
+		</div>
+
+	</div>
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 oj-label">
+			<oj-label><span data-bind="text:$component.resource.post"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+
+			<oj-buttonset-one id="post-preference" on-value-changed="[[$component.savePostResponse]]" value="{{$component.isPostResponse}}">
+				<oj-option name="post-preference" class="post-preference" value="{{'OPTION_YES'}}" :id="[['YESPost']]"><span data-bind="attr: {for: 'YESPost'}, text: $component.resource.yes"></span></oj-option>
+				<oj-option name="post-preference" class="post-preference" value="{{'OPTION_NO'}}" :id="[['NOPost']]"><span data-bind="attr: {for: 'NOPost'}, text: $component.resource.no"></span></oj-option>
+			</oj-buttonset-one>
+
+		</div>
+
+	</div>
+	<!-- /ko -->
+
+	<!-- /ko -->
+</div>
+
+<div class="oj-flex oj-flex-items-pad button-container">
+	<div class="oj-flex-item right oj-md-10 oj-lg-10">
+		<oj-button raised="" class="form-button-secondary" on-click="[[submitLoanStatementInfo]]">
+			<span data-bind="text:$component.resource.continue"></span>
+		</oj-button>
+	</div>
+</div>

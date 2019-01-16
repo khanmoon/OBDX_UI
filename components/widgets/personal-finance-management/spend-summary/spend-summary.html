@@ -1,0 +1,302 @@
+<!-- ko if:$component.type === "graph" -->
+<div class="oj-panel spend-summary">
+    <div class="oj-flex oj-flex-items-pad spend-summary__header spend-summary-header">
+        <div class="oj-flex-item oj-sm-10 oj-md-4 oj-lg-6 spend-summary-header__title spend-summary-header-title">
+            <div class="spend-summary-header-title__content spend-summary-header-title-content">
+                <h3 class="spend-summary-header-title-content__label" data-bind="text:$component.resource.spend.title"></h3>
+                <!-- <div class="spend-summary-header-title-content__subHeader" data-bind="text:$component.resource.spend.subCategory"></div> -->
+            </div>
+            </div>
+            <!-- ko if: $baseModel.small() -->
+            <div class="oj-flex-item oj-sm-2 spend-summary-header__refresh spend-summary-header-refresh right">
+                <a href="#" data-bind="attr:{alt:$component.resource.resetalt ,title:$component.resource.resetaltText,'aria-label':$component.resource.resetalt},click:$component.resetDonut">
+                    <div class="spend-summary-header-refresh__icon icon-refresh">
+                    </div>
+                </a>
+            </div>
+            <!-- /ko -->
+
+        <!-- ko ifnot:$baseModel.small() -->
+        <!-- ko if:refreshChart() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 spend-summary-header__dropdownList spend-summary-header">
+            <oj-menu-button id="categoryFilterButton">
+                <span data-bind="text : $component.selectedCategoryName"></span>
+                <oj-menu id="categoryFiltermenu" slot="menu" on-oj-action="[[categoryDropdownChangeHandler]]">
+                    <!-- ko foreach: categoryList -->
+                    <oj-option :id="[[id]]" value="[[$data]]">
+                        <span data-bind="text : name"></span>
+                    </oj-option>
+                    <!-- /ko -->
+                </oj-menu>
+            </oj-menu-button>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 spend-summary-header__dropdownList spend-summary-header">
+            <oj-menu-button id="periodFilterButton">
+                <span data-bind="text : $component.selectedPeriodLabel"></span>
+                <oj-menu id="periodFiltermenu" slot="menu" on-oj-action="[[periodChangeHandler]]">
+                    <!-- ko foreach: periodRanges -->
+                    <oj-option :id="[[value]]" value="[[$data]]">
+                        <span data-bind="text : label"></span>
+                    </oj-option>
+                    <!-- /ko -->
+                </oj-menu>
+            </oj-menu-button>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2 spend-summary-header__refresh spend-summary-header-refresh right">
+            <a href="#" data-bind="attr:{alt:$component.resource.resetalt ,title:$component.resource.resetaltText,'aria-label':$component.resource.resetalt},click:$component.resetDonut">
+                <div class="spend-summary-header-refresh__icon icon-refresh">
+                </div>
+            </a>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- ko ifnot:$baseModel.small() -->
+    <div class="pfm__container containerContent">
+        <!-- ko if:refreshChart() -->
+        <div class="oj-flex oj-flex-items-pad containerContent__content-info spend-summary-container">
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8 spend-summary-container__chart chartData" data-bind="style:{opacity:noSpendData()?0.35:''}">
+                <oj-chart class="chartData__content" type="[[$component.loadSubCategories()?'bar':'pie']]" series="[[pieSeriesValue]]" groups="[[['']]]"
+                    animation-on-display="[[noSpendData()?'none':'auto']]" selectionMode="[[(noSpendData() || $component.loadSubCategories())?'none':'single']]"
+                    optionChange="[[$component.categoryChangeHandler]]" hoverBehavior="[[noSpendData()?'none':'auto']]"
+                    legend="[[{textStyle: 'font-size:15px;',
+                            rendered: noSpendData() ? 'off' : 'on'
+                          }]]" yAxis="[[{
+                            title: $component.resource.spend.amount,
+                            titleStyle: 'font-size:0.8rem;',
+                            tickLabel: {
+                              scaling: 'none',
+                              style: 'font-size:0.8rem;',
+                              converter: $oj.Validation.converterFactory('number').createConverter({
+                                style: 'currency',
+                                currency: $component.baseCurrency(),
+                                useGrouping: true
+                              })
+                            }
+                          }]]" styleDefaults="[[{
+                            dataLabelStyle: ko.toJS('font-size:12px'),
+                            dataLabelPosition: ko.toJS(noSpendData() ? 'none' : 'outsideSlice'),
+                            pieInnerRadius: ko.toJS(innerRadius),
+                            maxBarWidth: 30
+
+                          }]]" valueFormats="[[[{
+                            type: 'series',
+                            tooltipLabel: $baseModel.format($component.resource.spend.category, {
+                              value: $component.resource.tooltip.categoryTitle
+                            })
+                          }, {
+                            type: 'value',
+                            tooltipLabel: $baseModel.format($component.resource.spend.amount, {
+                              value: $component.resource.tooltip.amountTitle
+                            })
+                          }]]]" pieCenter="[[{
+                            label: ko.toJS(centerLabel),
+                            labelStyle: ko.toJS('font-size:0.8rem;')
+                          }]]">
+                </oj-chart>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-5 oj-sm-12 spend-summary-container__chartData spend-summary-container-chartData center">
+                <!-- ko ifnot:$component.noSpendData() -->
+                <div class="spend-summary-container-chartData__totalSpendContent spend-summary-container-chartData-totalSpendContent">
+                    <div class="spend-summary-container-chartData-totalSpendContent__text" data-bind="text:$component.resource.spend.totalspend"></div>
+                    <div class="spend-summary-container-chartData-totalSpendContent__value" data-bind="text:$component.totalSpend()"></div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:$component.noSpendData() -->
+                <div class="spend-summary-container-chartData__totalSpendContent spend-summary-container-chartData-totalSpendContent">
+                    <div class="spend-summary-container-chartData-totalSpendContent__text" data-bind="text:$component.resource.spend.noSpendMsg"></div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex-item oj-lg-12 oj-sm-12 spend-summary-container-chartData__seperator"></div>
+                <div class="spend-summary-container-chartData__topSpendsContent spend-summary-container-chartData-topSpendsContent">
+                    <!-- ko if:$component.topSpends().length > 0 -->
+                    <div class="spend-summary-container-chartData-topSpendsContent__text" data-bind="text:$component.resource.spend.topspends"></div>
+                    <!-- ko foreach: $component.topSpends() -->
+                    <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+                        <span class="oj-flex-item spend-summary-container-chartData-topSpendsContent__value spend-summary-container-chartData-topSpendsContent-value"
+                            data-bind="text:$baseModel.formatCurrency(amount,currency)">
+                        </span>
+                        <span class="oj-flex-item spend-summary-container-chartData-topSpendsContent__name spend-summary-container-chartData-topSpendsContent-name"
+                            data-bind="text:CategoryName,style:{'background-color' :$data.color}">
+
+                        </span>
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+                <div class="oj-flex-item oj-lg-12 oj-sm-12 spend-summary-container-chartData__linkText spend-summary-container-chartData-linkText">
+                <a class="" href="#" data-bind="attr:{'alt': $component.resource.spend.viewalltxn ,'title': $component.resource.spend.linkTitle},click:$dashboard.loadComponent.bind($data, 'transaction-list')">
+                    <div class="oj-flex-item spend-summary-container-chartData-linkText__description" data-bind="text : $component.resource.spend.viewalltxn"></div>
+                </a>
+              </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <!-- ko if:$baseModel.small() -->
+    <div class="pfm__container containerContent">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-6 oj-md-3 oj-lg-2 spend-summary-header__dropdownList spend-summary-header">
+                <oj-menu-button id="categoryFilterButton">
+                    <span data-bind="text : $component.selectedCategoryName"></span>
+                    <oj-menu id="categoryFiltermenu" slot="menu" on-oj-action="[[categoryDropdownChangeHandler]]">
+                        <!-- ko foreach: categoryList -->
+                        <oj-option :id="[[id]]" value="[[$data]]">
+                            <span data-bind="text : name"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-menu>
+                </oj-menu-button>
+            </div>
+            <div class="oj-flex-item oj-sm-6 oj-md-3 oj-lg-2 spend-summary-header__dropdownList spend-summary-header">
+                <oj-menu-button id="periodFilterButton">
+                    <span data-bind="text : $component.selectedPeriodLabel"></span>
+                    <oj-menu id="periodFiltermenu" slot="menu" on-oj-action="[[periodChangeHandler]]">
+                        <!-- ko foreach: periodRanges -->
+                        <oj-option :id="[[value]]" value="[[$data]]">
+                            <span data-bind="text : label"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-menu>
+                </oj-menu-button>
+            </div>
+        </div>
+        <!-- ko if:refreshChart() -->
+        <div class="oj-flex oj-flex-items-pad oj-sm-12 containerContent__content-info spend-summary-container">
+            <div class="oj-flex-item oj-lg-7 oj-sm-12 spend-summary-container__chart chartData" data-bind="style:{opacity:noSpendData()?0.35:''}">
+                <oj-chart class="chartData__content" type="[[$component.loadSubCategories()?'bar':'pie']]" series="[[pieSeriesValue]]" groups="[[['']]]"
+                    animationOnDisplay="[[noSpendData()?'none':'auto']]" selectionMode="[[(noSpendData() || $component.loadSubCategories())?'none':'single']]"
+                    optionChange="[[categoryChangeHandler]]" hoverBehavior="[[noSpendData()?'none':'dim']]"
+                    yAxis="[[{
+                            title: $component.resource.spend.amount,
+                            titleStyle: 'font-size:1.2rem;',
+                            tickLabel: {
+                              scaling: 'none',
+                              style: 'font-size:1.2rem;',
+                              converter: $oj.Validation.converterFactory('number').createConverter({
+                                style: 'currency',
+                                currency: $component.baseCurrency(),
+                                useGrouping: true
+                              })
+                            }
+                          }]]" legend="[[{ textStyle : 'font-size:15px;', rendered : 'off' }]]" styleDefaults="[[{ dataLabelStyle: ko.toJS( 'font-size:12px'), dataLabelPosition: ko.toJS(noSpendData()? 'none': 'outsideSlice'), pieInnerRadius: ko.toJS(innerRadius), maxBarWidth : 18 }]]"
+                    pieCenter="[[{ label: ko.toJS(centerLabel), labelStyle: ko.toJS( 'font-size:0.8rem;') }]]">
+                </oj-chart>
+            </div>
+            <!-- ko ifnot:$component.noSpendData() -->
+            <div class="oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-list-view id="listview" selection-mode="[['none']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('legend-template',true)}]]"
+                    data="[[legendDataSource()]]">
+                </oj-list-view>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad spend-summary-container__chartData spend-summary-container-chartData">
+            <!-- ko ifnot:$component.noSpendData() -->
+            <div class="oj-flex-item oj-sm-12 spend-summary-container-chartData__totalSpendContent">
+                <div class="spend-summary-container-chartData-totalSpendContent__text" data-bind="text:$component.resource.spend.totalspend"></div>
+                <div class="spend-summary-container-chartData-totalSpendContent__value" data-bind="text:$component.totalSpend()"></div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:$component.noSpendData() -->
+            <div class="oj-flex-item oj-sm-12 spend-summary-container-chartData__totalSpendContent">
+                <div class="spend-summary-container-chartData-totalSpendContent__text" data-bind="text:$component.resource.spend.noSpendMsg"></div>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex-item oj-sm-12 spend-summary-container-chartData__topSpendsContent">
+                <!-- ko if:$component.topSpends().length > 0 -->
+                <div class="spend-summary-container-chartData-topSpendsContent__text" data-bind="text:$component.resource.spend.topspends"></div>
+                <!-- ko foreach: $component.topSpends() -->
+                <div class="oj-flex-item oj-sm-6 spend-summary-container-chartData-topSpendsContent__value" data-bind="text:$baseModel.formatCurrency(amount,currency)"></div>
+                <div class="oj-flex-item oj-sm-6 spend-summary-container-chartData-topSpendsContent__name">
+                    <div class="spend-summary-container-chartData-topSpendsContent-name--tag" data-bind="text:CategoryName,style:{'background-color' :$data.color}"></div>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 center spend-summary-container-chartData__linkText spend-summary-container-chartData-linkText">
+            <a class="" href="#" data-bind="attr:{'alt': $component.resource.spend.viewalltxn ,'title': $component.resource.spend.linkTitle},click:$dashboard.loadComponent.bind($data, 'transaction-list', {})">
+                <div class="oj-flex-item spend-summary-container-linkText__description" data-bind="text : $component.resource.spend.viewalltxn"></div>
+            </a>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <!-- <circle cx="6" cy="6" r="6" data-bind="attr:{fill:color}"/> -->
+    <script type="text/html" id="legend-template">
+        <li data-bind="attr: {id: name}">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-1">
+                    <svg width="10" height="10">
+                        <rect width="10" height="10" data-bind="attr:{fill:color}" />
+                    </svg>
+                </div>
+                <div class="oj-flex-item oj-sm-7" data-bind="text:name"></div>
+                <div class="oj-flex-item oj-sm-4 right">
+                    <div data-bind="text:$baseModel.formatCurrency(items[0].value,$component.baseCurrency())"></div>
+                </div>
+            </div>
+        </li>
+    </script>
+</div>
+<!-- /ko -->
+<!-- ko if:$component.type === "cards" -->
+<div class="oj-panel spends logo-in-background">
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+              <h3 class="spends__heading oj-sm-12" data-bind="text:$component.resource.spend.title"></h3>
+              <span class="spends__days" data-bind="text:$component.resource.spend.last30Days"></span>
+          </div>
+      </div>
+      <!-- ko if:$component.viewSpends() -->
+        <div class="oj-flex oj-flex-items-pad spends__content spends-content">
+          <!-- ko if : $component.pieSeriesValue().length > 0 -->
+            <div class="oj-sm-6">
+                <oj-chart id="pieChart" type="pie" style-defaults.data-label-style="[['color:white']]" series="[[pieSeriesValue]]" animation-on-display="auto" animation-on-data-change="auto"
+                    legend.rendered="off" hover-behavior="dim" class="spendGraph">
+                </oj-chart>
+            </div>
+            <div class="oj-sm-6 leftSection">
+                <div class="oj-flex oj-flex-items-pad right">
+                    <div class="oj-flex-item oj-lg-12 oj-sm-12 total-spends-value">
+                        <div data-bind="text:$component.totalSpend()"></div>
+                    </div>
+                    <div class="oj-flex-item oj-lg-12 oj-sm-12 total-spends">
+                        <div data-bind="text:$component.resource.spend.totalspend"></div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex legendSection">
+                        <oj-legend orientation='vertical' sections='[[$component.legendArray]]' text-style="[[legendStyle]]">
+                        </oj-legend>
+                    </div>
+                </div>
+            </div>
+         <!-- /ko -->
+         <!-- ko if:$component.pieSeriesValue().length === 0 -->
+         <div class="oj-flex-item oj-sm-12 oj-md-5 spends-content__img">
+           <img class="no-spend-icon" alt="" data-bind="loadImage:'dashboard/spends.svg'" />
+         </div>
+           <div class="oj-flex-item oj-sm-12 oj-md-7 no-spend-txt" data-bind="text:$component.resource.spend.nospend"></div>
+         <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.viewSpends() -->
+        <div class="oj-flex oj-flex-items-pad spends__content spends-content">
+        <div class="oj-flex-item oj-sm-12 oj-md-5 spends-content__img">
+          <img class="no-spend-icon" alt="" data-bind="loadImage:'dashboard/spends.svg'" />
+        </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-7 no-spend-txt" data-bind="text:$component.resource.spend.nospend"></div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex">
+            <div class="oj-flex-item oj-sm-12 view-all center">
+                <a href="#" data-bind="attr:{'alt':$component.resource.spend.viewDetailsText ,'title':$component.resource.clickToViewDetail},click:$dashboard.loadComponent.bind($data, 'transaction-list', {})">
+                    <div class="view-all__text" data-bind="text:$component.resource.spend.viewAllSpends"></div>
+                </a>
+            </div>
+        </div>
+</div>
+<!-- /ko -->

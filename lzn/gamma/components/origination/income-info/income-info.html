@@ -1,0 +1,144 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <oj-validation-group id="income-tracker"  valid="{{groupValid}}">
+    <div class="employments-financial-info">
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12 oj-md-offset-1 oj-lg-offset-1">
+          <oj-label><span data-bind="text:$component.resource.incomeInfoDisclaimer1"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12 oj-md-offset-1 oj-lg-offset-1">
+          <oj-label><span data-bind="text:$component.resource.incomeInfoDisclaimer2"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12 oj-md-offset-1 oj-lg-offset-1">
+          <oj-label><span data-bind="text:$component.resource.incomeInfoDisclaimer3"></span></oj-label>
+        </div>
+      </div>
+
+      <!-- ko if: $component.existingIncomesLoaded() -->
+      <!-- ko foreach: $component.applicantObject().incomeInfo.incomeList -->
+      <div class="form-heading-strip oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top">
+          <!-- ko if : $index()===0 -->
+          <span class="form-heading additional-label" data-bind="text: $component.resource.primaryIncome"></span>
+          <!-- /ko -->
+          <!-- ko if : $index()>0 -->
+          <span class="form-heading additional-label" data-bind="text: $component.resource.additionalIncome"></span>
+          <!-- /ko -->
+        </div>
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+          <!-- ko if: temp_isActive() && $index()>0 -->
+          <a href="javascript:void(0)" class="pull-right icon-delete" data-bind="click : $component.deleteIncome.bind($data, $index(), $data, $component.applicantObject().incomeInfo) ,attr:{alt: $component.resource.deleteIncomeClick, title: $component.resource.deleteIncomeClickTitle}"></a>
+          <!-- /ko -->
+          <!-- ko if: !temp_isActive() -->
+          <a href="javascript:void(0)" class="pull-right icon-edit" data-bind="click : $component.editIncomeInfo.bind($data, $index(), $component.applicantObject().incomeInfo) ,attr:{alt: $component.resource.editIncomeInfoClick, title: $component.resource.editIncomeInfoClick}"></a>
+          <!-- /ko -->
+        </div>
+      </div>
+      <!-- ko if: temp_isActive() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <!-- ko if: $component.incomeOptionsLoaded() -->
+
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+          <oj-label for="incomeType" :for="[['incomeType'+(++$component.idCount)]]"><span data-bind="text:$component.resource.incomeSource"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+          <oj-select-one id="incomeType" required :id="[['incomeType'+($component.idCount)]]" translations="[[{'required':{messageDetail:$component.resource.messages.incomeType}}]]" :placeholder="" value="{{type}}">
+            <!-- ko ifnot : $component.optionsByFinTemplate() -->
+            <!-- ko foreach: $component.incomeOptions -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if : $component.optionsByFinTemplate() -->
+            <oj-optgroup label="Mandatory">
+              <!-- ko foreach: $component.manINC -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-optgroup>
+            <oj-optgroup label="Optional">
+              <!-- ko foreach: $component.optINC -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-optgroup>
+            <!-- /ko -->
+
+
+          </oj-select-one>
+        </div>
+
+        <!-- /ko -->
+      </div>
+
+      <div data-bind="component: {
+                            name: 'amount-input', params: {
+                                amount :grossAmount.amount,
+                                label: $component.resource.annualIncome,
+                                currency: grossAmount.currency,
+                                labelClasses : 'oj-lg-3 oj-md-4 oj-lg-offset-2 oj-md-offset-1',
+                                valueClasses : 'oj-lg-6 oj-md-7 grossIncome',
+                                converter:$root.formatCurrency,
+                                validator:$component.validationTracker,
+                                isMandatory:true,
+                                maxlength:15,
+                                rootId:'grossIncome' + ($index()),
+                                id:'grossIncome' + ($index()),
+                                rootClass:'form-input',
+                                inline:true,
+                                formattedAmount: ko.observable()
+                            }
+                        }"></div>
+
+
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <div class="oj-flex-item oj-lg-10 oj-md-10">
+          <oj-button id="submitIncome" class="form-button-secondary" on-click="[[$component.submitIncomeInfo.bind($data, $data)]]"><span data-bind="text:$component.resource.generic.common.save"></span></oj-button>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: !temp_isActive() -->
+
+      <div class="row-group">
+        <div data-bind="template: { name: 'origination/review/income-info', data:{data: $data, resource: $component.resource} }" class="show-info"></div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+
+      <!-- ko if: $component.displayAddIncomeButton($component.applicantObject().incomeInfo) -->
+
+      <!-- ko if: $component.applicantObject().incomeInfo.incomeList().length===0 -->
+      <div class="form-heading-strip oj-flex oj-flex-items-pad">
+        <span for="addIncome" class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 additional-label" data-bind="text: $component.resource.addIncome"></span>
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+          <a href="javascript:void(0)" class=" icon icon-plus-circle section-icon pull-right" data-bind="click : $component.addIncome.bind($data, $index(), $component.applicantObject().incomeInfo) ,attr:{alt: $component.resource.addIncomeClick, title: $component.resource.addIncomeClick}"></a>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.applicantObject().incomeInfo.incomeList().length>0 -->
+      <div class="form-heading-strip oj-flex oj-flex-items-pad">
+        <span for="addIncome" class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 additional-label" data-bind="text: $component.resource.addAnotherIncome"></span>
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+          <a href="javascript:void(0)" class=" icon icon-plus-circle section-icon pull-right" data-bind="click : $component.addIncome.bind($data, $index(), $component.applicantObject().incomeInfo) ,attr:{alt: $component.resource.addAnotherIncomeClick, title: $component.resource.addAnotherIncomeClick}"></a>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+  </oj-validation-group>
+</page-section>
+<!-- ko if:displayFinalSubmit() -->
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item  oj-lg-10 oj-md-10">
+    <oj-button id="submitIncome" class="form-button-secondary" on-click="[[$component.completeIncomeSection]]"><span data-bind="text:$component.resource.generic.common.continue"></span></oj-button>
+  </div>
+</div>
+<!-- /ko -->
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'ERROR'">
+    <div class="message-text scroll" data-bind="text:$component.resource.messages.netIncome"></div>
+    <div class="message-btn button-container">
+      <oj-button id="hideButton1" class="toUpperCase form-button-primary" on-click="[[function(){$('#ERROR').trigger('closeModal')}]]"> <span data-bind="text:$component.resource.generic.common.ok"></span></oj-button>
+    </div>
+  </modal-window>
+</div>

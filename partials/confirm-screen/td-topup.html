@@ -1,0 +1,20 @@
+<page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+  <div class="row-group">
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.topUp.tdAccountNumber , value :data.account.displayValue()"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.topUp.topUpAmount, value :$baseModel.formatCurrency(data.amount.amount(), $component.data.amount.currency())"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.topUp.currentPrincipal, value :$baseModel.formatCurrency($component.data.currentPrincipal.amount(), $component.data.currentPrincipal.currency())"></row>
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.topUp.sourceAccount, value :data.sourceAccountId.displayValue"></row>
+  </div>
+  <div class="row-group">
+    <!-- ko if : data.revisedPricipal-->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.topUp.revisedPrincipal, value :$baseModel.formatCurrency(data.revisedPricipal.amount(), data.amount.currency())"></row>
+    <!-- /ko -->
+    <!-- ko if : data.revisedMaturity-->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.topUp.revisedMaturity, value :$baseModel.formatCurrency(data.revisedMaturity.amount(), data.amount.currency())"></row>
+    <!-- /ko -->
+    <!-- ko if : data.revisedInterestRate -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.topUp.revisedInterestRate, value :$baseModel.formatNumber((data.revisedInterestRate())/100, 'percent',2)"></row>
+    <!-- /ko -->
+  </div>
+</page-section>

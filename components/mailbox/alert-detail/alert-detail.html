@@ -1,0 +1,54 @@
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 right">
+    <!-- ko if:deleteEnableBatch()  -->
+    <oj-button id="delete_alert-detail" class="action-button-primary " on-click="[[confirmDelete.bind($data)]]"><span slot="startIcon" class="icons icon-delete"></span>
+      <span data-bind="text:nls.mailbox.labels.delete"></span>
+</oj-button>
+    <!-- /ko -->
+    <!-- ko ifnot:deleteEnableBatch() -->
+    <oj-button id="delete_alert-detail" class="action-button-tertiary " on-click="[[confirmDelete.bind($data)]]"><span slot="startIcon" class="icons icon-delete"></span>
+      <span data-bind="text:nls.mailbox.labels.delete"></span>
+</oj-button>
+    <!-- /ko -->
+    <oj-button id="back_alert-detail" class="action-button-tertiary " on-click="[[back]]"><span slot="startIcon" class="icons icon-undo"></span>
+      <span data-bind="text:nls.mailbox.labels.back"></span>
+</oj-button>
+  </div>
+</div>
+
+<action-header params="baseModel : $baseModel, rootModel : $data, heading :subject">
+</action-header>
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 right">
+    <div data-bind="text:date"></div>
+  </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+
+  <div class="oj-flex-item mailbox-alert-list__message-body" data-bind="html:messageBody"></div>
+</div>
+<modal-window class="" params="baseModel : $baseModel, rootModel : $data, id:'deleteAlert' , header : nls.mailbox.headers.deleteMailsConfirmation">
+  <div class="form-main-container">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <div class="">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+              <div data-bind="text:nls.mailbox.alerts.selectAlert"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="cancel_alert_detail" class="action-button-secondary" on-click="[[closeModal]]">
+      <span data-bind="text:nls.mailbox.buttons.cancel"></span>
+</oj-button>
+      <oj-button id="confirm_alert_detail" class="action-button-primary" on-click="[[submit]]">
+      <span data-bind="text:nls.mailbox.buttons.confirm"></span>
+</oj-button>
+    </div>
+  </div>
+</modal-window>

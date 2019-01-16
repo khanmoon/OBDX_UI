@@ -1,0 +1,25 @@
+<oj-validation-group :id="[[$component.id+'track']]">
+  <div class="oj-flex oj-flex-items-pad sub-header-control">
+    <div class="oj-flex-item oj-md-12 sub-header-control__banner">
+      <span data-bind="text:$component.resource.subHeaderCaption"></span>
+    </div>
+    <div class="oj-flex sub-header-control__middle">
+    <div class="oj-flex-item oj-sm-4">
+    </div>
+    <div class="oj-flex-item oj-sm-4">
+      <oj-input-text :id="[[$component.id+1]]" placeholder="{{$component.resource.subHeader}}" value="{{$component.formField().values[0].description}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+                       type: 'length',
+                       options: {
+                           min: 0,
+                           max: 120
+                       }})]]" required></oj-input-text>
+    </div>
+    <!-- ko if: showSave -->
+    <a href="javascript:void(0)" on-click="[[$component.saveSubHeader]]">
+  <span class="icons icon-save sub-header-control__icon"></span></a>
+    <!-- /ko -->
+    <a href="javascript:void(0)" on-click="[[$component.deleteSubHeader]]">
+  <span class="icons icon-close sub-header-control__icon"></span></a>
+  </div>
+</div>
+</oj-validation-group>

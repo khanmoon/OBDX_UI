@@ -1,0 +1,134 @@
+<!-- ko if : $component.existingOccupationsLoaded() -->
+<div class="oj-flex oj-flex-items-pad application-form-text cust-label">
+    <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <!-- ko ifnot : $component.productDetails().productClassName === 'CASA' || $component.productDetails().productClassName === 'TERM_DEPOSITS' -->
+        <div class="text" data-bind="text: $baseModel.format($component.resource.primaryEmployment,{months :$component.employmentStability})"></div>
+        <!-- /ko -->
+        <!-- ko if : $component.productDetails().productClassName === 'CASA' || $component.productDetails().productClassName === 'TERM_DEPOSITS' -->
+        <div class="text" data-bind="text: $component.resource.currentEmployment"></div>
+        <!-- /ko -->
+    </div>
+</div>
+<div class="margin-top-20 employments-financial-info" data-bind="with: applicantObject().occupationInfo">
+    <!-- ko foreach: $data.occupations().employmentDTOs -->
+    <div class="form-heading-strip oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 padding-top additional-label">
+            <!-- ko if : $index()===0 -->
+            <h4 class="form-heading additional-label" data-bind="text: $component.resource.primaryOccupation"></h4>
+            <!-- /ko -->
+            <!-- ko if : $index()>0 -->
+            <h4 class="form-heading additional-label" data-bind="text: $component.resource.additionalOccupation"></h4>
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+            <!-- ko if: (temp_isActive() &&  (!isPrimary))-->
+            <a href="javascript:void(0)" class="pull-right icon-delete" data-bind="click : $component.deleteOccupation.bind($data, $index(), $parent) ,attr:{alt: $component.resource.deleteOccupationClick, title: $component.resource.deleteOccupationInfoClick}"></a>
+            <!-- /ko -->
+            <!-- ko if: !temp_isActive() -->
+            <a href="javascript:void(0)" class="pull-right icon-edit" data-bind="click : $component.editOccupationInfo.bind($data, $parent) ,attr:{alt: $component.resource.editOccupationClick, title: $component.resource.editOccupationInfoClick}"></a>
+            <!-- /ko -->
+        </div>
+    </div>
+
+    <!-- ko if: temp_isActive() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label :for="[['occupationType'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.occupationType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <!-- ko if: $component.occupationLoaded() -->
+            <oj-select-one id="occupationType" required :id="[['occupationType'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.occupationType}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[!temp_isTypeDisable()]]" :placeholder="" on-value-changed="[[$component.updateStatuses.bind($data,$index())]]" value="{{type}}">
+                <!-- ko foreach: $component.occupations -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+        </div>
+    </div>
+    <!-- ko if: $component.statusLoaded() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label :for="[['occupation-status'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.occupationStatus"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-select-one required :id="[['occupation-status'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.occupationStatus}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{status}}" :placeholder="">
+                <!-- ko foreach: $component.statuses -->
+                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+                </oj-select-one>
+        </div>
+    </div>
+    <!-- ko if: !$component.othersLoaded() -->
+
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label :for="[['employerName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.employerName"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+            <oj-input-text required maxlength="50" autocomplete="off" spellcheck="false" :id="[['employerName'+($baseModel.currentIdCount())]]" translations="[[{'required':{
+            messageDetail:$component.resource.messages.employerName}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL',$component.resource.messages.employerName,{
+                        type:'length',options:{
+                          min:1,max:50}})]]" value="{{employerName}}"></oj-input-text>
+        </div>
+    </div>
+
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label :for="[['startDate'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.startDate"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-input-date required autocomplete="off" spellcheck="false" :id="[['startDate'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.startDate}}]]" validators="[[$component.validateStartDate]]" converter="[[$component.dateConverter]]" value="{{startDate}}" datepicker="[[{yearRange:'c-100:c'}]]"></oj-input-date>
+        </div>
+    </div>
+    <!-- ko if: $index() -->
+
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+            <oj-label :for="[['endDate'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.endDate"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-input-date required :id="[['endDate'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.endDate}}]]" converter="[[$component.dateConverter]]" max="[[$component.todayIsoDate]]" value="{{endDate}}"></oj-input-date>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: !temp_isActive() -->
+    <div data-bind="template: { name: 'origination/review/occupation-info', data:{data: $data, resource: $component.resource} }" class="show-info"></div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if:$component.displayAddOccupationButton($data) -->
+    <!-- ko if:$component.productDetails().productClassName==='CREDIT_CARD' || $component.productDetails().productClassName==='LOANS' -->
+    <div class="oj-flex oj-flex-items-pad form-heading-strip">
+
+      <!-- ko if:$component.applicantObject().occupationInfo.occupations().employmentDTOs.length===0 -->
+      <oj-label for="addOccupation" class="oj-flex-item label oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 additional-label"><span data-bind="text:$component.resource.addOccupation"></span></oj-label>
+      <!-- /ko -->
+      <!-- ko ifnot:$component.applicantObject().occupationInfo.occupations().employmentDTOs.length===0 -->
+      <oj-label for="addOccupation" class="oj-flex-item label oj-lg-offset-1 oj-md-offset-1 oj-sm-9 oj-md-8 oj-lg-8 additional-label"><span data-bind="text:$component.resource.addAnotherOccupation"></span></oj-label>
+      <!-- /ko -->
+
+        <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+            <a href="javascript:void(0)" id="addOcupation" class="icon icon-plus-circle section-icon pull-right" data-bind="click:  $component.addOccupation.bind($data, $index()) ,attr:{alt: $component.resource.addOccupationClick, title: $component.resource.addOccupationInfoClick}"></a>
+        </div>
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <div class="oj-flex-item oj-md-10 oj-lg-10">
+            <oj-button id="doneOccupation" class="form-button-secondary" :aria-label="[[$component.resource.submitOccupation]]" on-click="[[$component.submitOccupationInfo.bind($data,$component.applicantObject().occupationInfo)]]">
+            <span data-bind="text:$component.resource.generic.common.continue"></span></oj-button>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:!$component.displayAddOccupationButton($data) -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <div class="oj-flex-item oj-md-10 oj-lg-10">
+            <oj-button id="submitOccupation" class="form-button-secondary" on-click="[[$component.addOccupationInfo.bind($data,$component.applicantObject().occupationInfo)]]">
+            <span data-bind="text:$component.resource.generic.common.add"></span></oj-button>
+        </div>
+    </div>
+    <!-- /ko -->
+
+</div>
+<!-- /ko -->

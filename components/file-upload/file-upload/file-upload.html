@@ -1,0 +1,54 @@
+<div class="form-main-container">
+    <!-- ko if : $component.stage1() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <!-- ko if:isBTIDListLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 label " data-bind="css: ($component.constants.userSegment === 'CORP' ? 'oj-md-12 oj-lg-12':'oj-md-3 oj-lg-3')">
+                <oj-label for="btid"> <span data-bind="text:$component.Nls.fileid"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12" data-bind="css: ($component.constants.userSegment === 'CORP' ? 'oj-md-12 oj-lg-12':'oj-md-9 oj-lg-9')">
+                <oj-select-one required id="btid" :placeholder="[[$component.Nls.select]]" translations="[[{'required':{messageDetail:$component.Nls.selectFI}}]]" on-value-changed="[[valueChangeHandler]]" value="{{$component.btid}}">
+                    <!-- ko foreach:$component.btIdList -->
+                    <oj-option value="{{fileIdentifier}}"><span data-bind="text:$baseModel.format($component.Nls.fileIdDesc,{fileId:fileIdentifier,description:description})"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.selected() -->
+        <div data-bind="with: $component.selectedBtId">
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.transactionType , value : $component.transactionTypesMap[fileTemplateDTO.transaction]"></row>
+            <!-- ko ifnot:fileTemplateDTO.formatType === 'CSV' -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.fileType , value : $component.closedEnumsMap[fileTemplateDTO.formatType]"></row>
+            <!-- /ko -->
+            <!-- ko if:fileTemplateDTO.formatType === 'CSV' && fileTemplateDTO.templateType === 'D' -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.fileType , value :$component.Nls.allFileFormat"></row>
+            <!-- /ko -->
+            <!-- ko if:fileTemplateDTO.formatType === 'CSV' && fileTemplateDTO.templateType === 'F' -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.fileType , value :$component.Nls.textFileFormat"></row>
+            <!-- /ko -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.approvalType , value : $baseModel.format($component.Nls.approvalTypeDesc,{approvalType:$component.closedEnumsMap[approvalType]})"></row>
+            <!-- ko if:fileTemplateDTO.financial === true -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.accountingType , value : $component.closedEnumsMap[fileTemplateDTO.accountingType]"></row>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 label " data-bind="css: ($component.constants.userSegment === 'CORP' ? 'oj-md-12 oj-lg-12':'oj-md-3 oj-lg-3')">
+                <oj-label id="filenamelabel"> <span data-bind="text:$component.Nls.filename"></span></oj-label>
+            </div>
+            <div id="filename" class="oj-flex-item oj-sm-12 label" data-bind="css: ($component.constants.userSegment === 'CORP' ? 'oj-md-12 oj-lg-12':'oj-md-9 oj-lg-9'),component:{name:'file-input',params:{rootModel: $component , id:'input'}}">
+            </div>
+        </div>
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" id="button1" on-click="[[$component.uploadDocument]]">
+      <span data-bind="text:$component.Nls.upload"></span>
+</oj-button>
+        <oj-button class="action-button-secondary" id="button" on-click="[[back]]">
+      <span data-bind="text:$component.Nls.cancel"></span>
+</oj-button>
+
+    </div>
+    <!-- /ko -->
+</div>

@@ -1,0 +1,29 @@
+<div class="form-main-container">
+  <!-- ko if: $component.params.mode === 'review' -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+  <!-- /ko -->
+  <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="row-group">
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.loanRepayment.loanAccountNumber , value : $component.modelData.loanAccountId.displayValue"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.loanRepayment.installmentArrears , value :$baseModel.formatCurrency($component.modelData.installmentArrears.amount(),modelData.installmentArrears.currency())"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.loanRepayment.principalBalance, value :$baseModel.formatCurrency($component.modelData.principalBalance.amount(),modelData.principalBalance.currency())"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.loanRepayment.transferFrom , value: $component.modelData.settlementAccountId.displayValue"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.loanRepayment.amount, value :$baseModel.formatCurrency($component.modelData.amount.amount(), $component.modelData.amount.currency())"></row>
+    </div>
+  </page-section>
+  <!-- ko if:$component.params.mode ==='review'-->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary " on-click="[[submitRepaymentRequest]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.locale.generic.common.confirm"></span>
+    </oj-button>
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($component,$component)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.locale.generic.common.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.locale.generic.common.back"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+</div>

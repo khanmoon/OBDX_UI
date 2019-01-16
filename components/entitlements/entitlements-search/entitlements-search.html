@@ -1,0 +1,65 @@
+<page-section params="baseModel : $baseModel, rootModel : $data, rootParams: $component">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+      <oj-label for="moduleName"><span data-bind="text:$component.nls.common.moduleName"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-5 label">
+      <!-- ko if: $component.isModuleFetched() -->
+      <oj-select-one id="moduleName" value="{{selectedModule}}" placeholder="{{nls.headings.select}}" on-value-changed="[[moduleChangeHandler]]">
+        <!-- ko foreach: $component.moduleName -->
+        <oj-option value="[[value]]"><span data-bind="text: text"></span>
+        </oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- ko if: $component.isCategoryFetched() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+      <oj-label for="categoryName"><span data-bind="text:$component.nls.common.categoryName"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-5 label">
+      <oj-select-one id="categoryName" value="{{selectedCategory}}" placeholder="{{nls.headings.select}}">
+        <!-- ko foreach: $component.categoryName -->
+        <oj-option value="[[value]]"><span data-bind="text: text"></span>
+        </oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+      <oj-label for="entitlementNames"><span data-bind="text:$component.nls.common.entName"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-5 label">
+      <oj-input-text id="entitlementNames" maxlength="80" :aria-label="[[$component.nls.common.entName]]" value="{{entitlementNames}}" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL',$component.nls.entitlement.validEntitlementName,{
+                type:'length',options:{
+                    min:0,max:20}})]]"></oj-input-text>
+    </div>
+  </div>
+
+</page-section>
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button class="action-button-primary" on-click="[[$component.showResult]]">
+    <span data-bind="text:$component.nls.generic.common.search"></span>
+  </oj-button>
+  <!-- ko ifnot: $component.showResults() -->
+  <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+    <span data-bind="text:$component.nls.generic.common.cancel"></span>
+  </oj-button>
+  <!-- /ko -->
+  <oj-button class="action-button-tertiary" on-click="[[$component.resetForm]]">
+    <span data-bind="text:$component.nls.generic.common.clear"></span>
+  </oj-button>
+</div>
+
+<!-- ko if: $component.showResults() -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item" data-bind='component:{name: "entitlements-search-results", params:{rootModel:$data}}'>
+  </div>
+</div>
+<!-- /ko -->

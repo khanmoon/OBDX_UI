@@ -1,0 +1,82 @@
+<!-- ko if: $component.dataloaded() -->
+<div class="form-main-container multiple-payments">
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.payments.generic.common.review , reviewHeader : $baseModel.format($component.resource.message.info, { number : $component.masterBatchArray.length})}}"></div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+        <div class="oj-flex oj-flex-items-pad oj-sm-12 expand-collapse">
+            <div class="oj-flex-item oj-lg-2 oj-sm-4 expand-all">
+                <a class="oj-sm-2" href="#" data-bind="text: $component.resource.label.expandall,attr:{'alt':$component.resource.label.altexpandall ,'title':$component.resource.label.expandall },click:$component.expandAllAccordians">
+                </a>
+            </div>
+            <div class="oj-flex-item oj-lg-2 oj-sm-5 right">
+                <a class="oj-sm-2" href="#" data-bind="text: $component.resource.label.collapseall,attr:{'alt':$component.resource.label.altcollapseall ,'title':$component.resource.label.collapseall },click:$component.collapseAllAccordians">
+                </a>
+            </div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 payment-accordian-container">
+            <oj-accordion id="payee-group-accordian" multiple="true" expanded="{{$component.expandedAccordians()}}" on-oj-before-collapse="[[$component.collapseAccordian]]" on-oj-before-expand="[[$component.beforeExpandAccordian]]">
+                <!-- ko foreach:masterBatchArray -->
+                <oj-collapsible :id="[['batch-payment-' + id]]" class="payment-element">
+                    <!-- ko if: isSuccess -->
+                    <span slot="header">
+                      <h4 class="payment-element__header" data-bind="text: $baseModel.format($component.resource.label.payee,{count : $index()+1})"></h4>
+                            <!-- ko if:warning -->
+                            <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 warning-bar">
+                                    <span class="warning-icon action-icon icons icon-alert"></span>
+                                    <span class="warning-msg" id="confirm" data-bind="text:warning"></span>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko template: { name: 'payments/payment-overview',data:autoPopulationData.overviewDetails()} -->
+                            <!-- /ko -->
+                    </span>
+                    <div class="oj-flex-item oj-sm-12 oj-lg-12" data-bind="attr:{id : 'batch-payment-' + id}">
+                            <div data-bind="component:{name: reviewComponent,
+                            params:{
+                                rootModel : {
+                                    params : {
+                                        data : response
+                                    },
+                                    isMultiplePayment : true,
+                                    supportingData : $component.supportingData,
+                                    payeeDetails : autoPopulationData.payeeDetails
+                                },
+                                isTransferNow : (autoPopulationData.transferOn() === 'now')
+                            }
+                    }">
+                            </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko ifnot: isSuccess -->
+                    <span slot="header">
+                      <h4 class="payment-element__header" data-bind="text: $baseModel.format($component.resource.label.payee,{count : $index()+1})"></h4>
+                            <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 warning-bar">
+                                    <span class="error-icon action-icon icons icon-alert"></span>
+                                    <span class="error-msg" id="confirm" data-bind="text:response.message.title"></span>
+                                </div>
+                            </div>
+                            <!-- ko template: { name: 'payments/payment-overview',data:autoPopulationData.overviewDetails()} -->
+                            <!-- /ko -->
+                    </span>
+                    <!-- /ko -->
+                </oj-collapsible>
+                <!-- /ko -->
+            </oj-accordion>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container oj-sm-12">
+        <oj-button class="action-button-primary " id="confirm-button" on-click="[[$component.confirmPayment]]"><span slot="startIcon" class="icons icon-confirm"></span>
+            <span data-bind="text:$component.payments.generic.common.confirm"></span>
+        </oj-button>
+        <!-- ko if: $baseModel.large() -->
+        <oj-button data-id="cancelPayment" class="action-button-secondary " id="cancel-button" on-click="[[$dashboard.openDashBoard.bind($component.payments.common.cancelConfirm)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.payments.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button data-id="cancelPayment" class="action-button-tertiary " id="back-button" on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.payments.generic.common.back"></span>
+        </oj-button>
+    </div>
+</div>
+<!-- /ko -->

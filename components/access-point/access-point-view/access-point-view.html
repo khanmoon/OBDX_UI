@@ -1,0 +1,161 @@
+<!-- ko if : dataLoaded -->
+<div class="oj-flex">
+  <div data-bind="css: $component.params.mode === 'reviewAfterCreate' ||params.mode === 'reviewAfterEdit' ? 'oj-flex-item oj-sm-12' : 'oj-flex-item oj-sm-9'">
+    <div class="form-main-container">
+      <!-- ko if : params.mode === 'reviewAfterCreate' ||params.mode === 'reviewAfterEdit' -->
+      <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+      <!-- /ko -->
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.accessPoint.accessPointId , value :params.data.id"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.accessPoint.accessPointName , value :params.data.description"></row>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="accessType" id="accessTypeLabel">
+              <span data-bind="text:$component.nls.accessPoint.accessType"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-3">
+            <oj-radioset class="oj-choice-direction-row" id="accessType" labelled-by="accessTypeLabel" value="{{accessType}}" disabled="true">
+              <!-- ko foreach: accessTypeOptions -->
+              <oj-option :id="{{code}}" value="{{code}}"><span data-bind="text:  description"></span></oj-option>
+              <!-- /ko -->
+            </oj-radioset>
+          </div>
+        </div>
+        <!-- ko if : params.data.clientId -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.accessPoint.clientId , value :params.data.clientId"></row>
+        <!-- /ko -->
+        <!-- ko if : isExternal() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="scopes">
+              <span data-bind="text:$component.nls.accessPoint.scope"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-3">
+            <!-- ko foreach: selectedScopes -->
+            <div>
+              <span data-bind="text:$data"></span>
+            </div>
+            <!-- /ko -->
+          </div>
+        </div>
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.accessPoint.selectImage , value :$component.uploadedImage()"></row>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="statusSwitch" id="statusSwitchLabel">
+              <span data-bind="text:$component.nls.accessPoint.accessPointStatus"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-3">
+            <oj-switch id="statusSwitch" value="{{statusSwitch}}" disabled="true"></oj-switch>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="headlessMode" id="headlessModeLabel">
+              <span data-bind="text:$component.nls.accessPoint.headlessMode"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-3">
+            <oj-switch id="isHeadlessMode" value="{{isHeadlessMode}}" disabled="true"></oj-switch>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="twoFARequired" id="twoFARequiredLabel">
+              <span data-bind="text:$component.nls.accessPoint.twoFARequired"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-3">
+            <oj-switch id="twoFARequired" value="{{twoFARequired}}" disabled="true"></oj-switch>
+          </div>
+        </div>
+        <!-- ko ifnot : isExternal() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="defaultSelectFlag" id="defaultSelectLabel">
+              <span data-bind="text:$component.nls.accessPoint.defaultSelect"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-3">
+            <oj-switch id="defaultSelect" value="{{defaultSelect}}" disabled="true"></oj-switch>
+          </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="selfOnboardFlag" id="selfOnboardLabel">
+              <span data-bind="text:$component.nls.accessPoint.selfOnboard"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-3">
+            <oj-switch id="selfOnboard" value="{{selfOnboard}}" disabled="true"></oj-switch>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="skipLoginFlow" id="skipLoginFlow">
+              <span data-bind="text:$component.nls.accessPoint.skipLoginFlow"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-3">
+            <oj-switch id="skipLoginFlow" value="{{skipLoginFlow}}" disabled="true" required></oj-switch>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <!-- ko if : params.mode === 'reviewAfterCreate' || params.mode === 'reviewAfterEdit' -->
+          <oj-button class="action-button-primary" id="confirmbtn" on-click="[[confirm]]">
+            <span data-bind="text:$component.nls.generic.common.confirm"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" id="cancelbtn" on-click="[[cancel]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" id="backbtn" on-click="[[backReview]]">
+            <span data-bind="text:$component.nls.generic.common.back"></span>
+          </oj-button>
+          <!-- /ko -->
+          <!-- ko if : params.mode === 'view'-->
+          <oj-button class="action-button-primary" id="updateaccesspointbtn" on-click="[[updateAccessPoint]]">
+            <span data-bind="text:$component.nls.generic.common.edit"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" id="cancelbtn" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" id="backviewbtn" on-click="[[backView]]">
+            <span data-bind="text:$component.nls.generic.common.back"></span>
+          </oj-button>
+          <!-- /ko -->
+        </div>
+
+        <modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'reviewCancel',header:$component.nls.accessPoint.reviewwarning">
+          <div class="message-box">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <div class="dialog-text"><span data-bind="text:$component.nls.accessPoint.cancelMessage"></span></div>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad button-container">
+              <oj-button class="action-button-primary" id="yesBtn" on-click="[[yes]]">
+                <span data-bind="text:$component.nls.generic.common.yes"></span>
+              </oj-button>
+              <oj-button class="action-button-secondary" id="noBtn" on-click="[[no]]">
+                <span data-bind="text:$component.nls.generic.common.no"></span>
+              </oj-button>
+            </div>
+          </div>
+        </modal-window>
+
+      </page-section>
+    </div>
+  </div>
+  <!-- ko if : params.mode === 'view' -->
+  <div class="oj-flex-item oj-sm-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'access-point'"></help>
+  </div>
+  <!-- /ko -->
+</div>
+<!-- /ko -->

@@ -1,0 +1,50 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+<div class="oj-flex oj-flex-items-pad">
+	<!-- ko if:!$baseModel.small() -->
+	<!-- ko foreach: $component.inactiveAccountList -->
+	<div class="oj-flex-item oj-lg-4 oj-md-6 oj-sm-12">
+		<div data-bind="css:'productCard'+$index(),attr:{'id':'cards_'+$index()}, component: {name: 'card', params:{rootModel: $data, cardObject:$data, data:{
+			'topLeftPanel':
+			{
+            'title': partyName,
+            'description': ddaAccountType,
+            'features': [id.displayValue,$data.status]
+		 },
+        'bottomRightPanel': {
+             'label':$component.locale.cardDetails.netBalance,
+			 'value':$baseModel.formatCurrency($data.availableBalance.amount, $data.availableBalance.currency) },
+			 clickHandler:$dashboard.loadComponent.bind($data,'demand-deposit-details',$data, $component)
+           } }}">
+
+		</div>
+	</div>
+	<!-- /ko -->
+	<!-- /ko -->
+	<!-- ko if:$baseModel.small() -->
+	<!-- ko foreach:  $component.inactiveAccountList -->
+
+
+	<div data-bind="css:'productCard'+$index(), attr:{'id':'cards_'+$index()},component: {name: 'card', params:{rootModel: $data, data:{
+			'topLeftPanel':
+			{
+		'title': partyName,
+		'description': ddaAccountType,
+		'features': [id.displayValue,$data.status]
+		 },
+		 'bottomRightPanel': {
+             'label':$component.locale.cardDetails.netBalance,
+			 'value':$baseModel.formatCurrency($data.availableBalance.amount, $data.availableBalance.currency) },
+			 clickHandler:$dashboard.loadComponent.bind($data,'demand-deposit-details',$data, $component)
+           } }}">
+
+	</div>
+
+	<!-- /ko -->
+	<!-- /ko -->
+</div>
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container">
+	<oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.locale.back"></span>
+</oj-button>
+</div>

@@ -1,0 +1,106 @@
+<div class="page-section-content">
+
+  <!-- ko if: $component.letterOfCreditDetails.lcType === 'Export'-->
+  <div class="oj-flex oj-flex-items-pad grid-row-group flex-right">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+          <a href="javascript:void(0)" class="padding-tb pull-right initiate-link" data-bind="click:$component.initiateBill">
+            <span class="icons icon-add icon-2x icon-padding-right"></span>
+            <span data-bind="text:$component.resourceBundle.labels.initiateBill"></span>
+          </a>
+      </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.datasourceForBills() -->
+
+  <!-- ko if: $component.billList().length > 0 -->
+  <!-- ko ifnot:$baseModel.small() -->
+  <div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 grid-row-group" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+      <!-- ko if : $component.letterOfCreditDetails.lcType ==='Import' -->
+      <oj-table id="billsTable" :undefined="[[undefined]]" columns="[[[{headerText:$component.resourceBundle.bills.inwardBillNo,style:'width: 30%'},{headerText:$component.resourceBundle.bills.dateReceived,style:'width: 40%'},{headerText:$component.resourceBundle.bills.billAmount,style:'width: 30%',headerClassName:'right',className:'right'}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('lcList_bills', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.datasourceForBills]]">
+          <caption class="hide-label" data-bind="text:$component.resourceBundle.labels.viewLCBills"></caption>
+      </oj-table>
+      <!-- /ko -->
+      <!-- ko if : $component.letterOfCreditDetails.lcType ==='Export' -->
+      <oj-table id="billsTable" :aria-label="[[$component.resourceBundle.labels.billTable]]" columns="[[[{headerText:$component.resourceBundle.bills.negoRefNo,style:'width: 30%'},{headerText:$component.resourceBundle.bills.negoDate,style:'width: 40%'},{headerText:$component.resourceBundle.bills.billAmount,style:'width: 30%',headerClassName:'right',className:'right'}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('lcList_bills', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.datasourceForBills]]">
+          <caption class="hide-label" data-bind="text:$component.resourceBundle.labels.viewLCBills"></caption>
+      </oj-table>
+      <!-- /ko -->
+      <oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.datasourceForBills]]">
+            </oj-paging-control>
+    </div>
+
+  </div>
+  <!-- /ko -->
+  <!-- ko if:$baseModel.small() -->
+  <div class="oj-flex grid-main-container">
+    <div class="oj-flex-item oj-sm-12">
+        <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('bills_list_card',true)}]]" selection-mode="[['single']]" data="[[datasourceForBills]]">
+        </oj-list-view>
+        <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.datasourceForBills]]">
+        </oj-paging-control>
+    </div>
+  </div>
+  <script type="text/html" id="bills_list_card">
+    <li data-bind="attr: {id: $data.id}">
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 description">
+                <a href="#" data-bind="text: $data.id, click: $component.fetchLCBillDetails.bind($data, id)"></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 grid-row-group" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+              <label data-bind="text: $component.letterOfCreditDetails.lcType ==='Import'?$component.resourceBundle.bills.dateReceived:$component.resourceBundle.bills.negoDate"></label>
+              <div data-bind="text: $baseModel.formatDate(receivedDate)"></div>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-6">
+              <label data-bind="text: $component.resourceBundle.bills.billAmount"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-6">
+              <div class="right" data-bind="text: $baseModel.formatCurrency(amount.amount, amount.currency)"></div>
+            </div>
+          </div>
+
+          </div>
+      </div>
+    </li>
+  </script>
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+  <!-- ko ifnot: $component.billList().length > 0 -->
+  <div class="oj-flex oj-flex-items-pad info-message">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }, text: $component.resourceBundle.tradeFinanceErrors.messages.noBills">
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+</div>
+
+<script type="text/html" id="lcList_bills">
+    <tr>
+      <td>
+        <a href="#" data-bind="text:$data.id, click:$component.fetchLCBillDetails.bind($data, id)"></a>
+      </td>
+       <td>
+        <span data-bind="text: $baseModel.formatDate(receivedDate)"></span>
+      </td>
+      <td>
+        <span data-bind="text: $baseModel.formatCurrency(amount.amount, amount.currency)"></span>
+      </td>
+    </tr>
+</script>

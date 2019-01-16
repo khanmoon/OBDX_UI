@@ -1,0 +1,33 @@
+<a href="javacript:void(0)" data-bind="click:clickHandler">
+	<div class="oj-flex oj-flex-items-pad oj-panel dashboard-card">
+		<div class="oj-flex-item no-pad-cols dashboard-card__header dashboard-card-header">
+			<!-- ko if:!$data.cardData.bottomRightPanel.count -->
+			<span class="dashboard-card-header__count" data-bind="attr : {title : cardData.topLeftPanel.title}, text:cardData.topLeftPanel.title"></span>
+			<!-- /ko -->
+			<span class="dashboard-card-header__title" data-bind="attr : {title : cardData.topLeftPanel.description}, text:cardData.topLeftPanel.description"></span>
+			<!-- ko if : $data.cardData.topLeftPanel.image-->
+			<img class="dashboard-card-header__image" data-bind="loadImage:cardData.topLeftPanel.image, attr:{alt:cardData.topLeftPanel.imageDesc}">
+			<!-- /ko -->
+		</div>
+		<div class="oj-flex-item dashboard-card__body dashboard-card-feature">
+			<!-- ko if:  $data.cardData.topLeftPanel.features -->
+			<span class="dashboard-card-feature__item" data-bind="text:$data.cardData.topLeftPanel.features"></span>
+			<!-- /ko -->
+			<!-- ko if:$data.cardData.topLeftPanel.title==='0' && !$data.cardData.topLeftPanel.features -->
+			<span class="dashboard-card-feature__item" data-bind="text:$data.cardData.failSafeString"></span>
+			<!-- /ko -->
+		</div>
+		<div class="oj-flex oj-flex-items-pad dashboard-card__bottom-panel dashboard-card-bottom-panel">
+			<!-- ko if:$data.cardData.bottomRightPanel.label && $data.cardData.topLeftPanel.title!=='0' -->
+			<div class="dashboard-card-bottom-panel__label" data-bind="text : cardData.bottomRightPanel.label"></div>
+
+			<div class="dashboard-card-bottom-panel__value" data-bind="text:cardData.bottomRightPanel.value"></div>
+
+			<!-- /ko -->
+			<!-- ko if:!$data.cardData.bottomRightPanel.label -->
+			<div class="dashboard-card-bottom-panel__label" data-bind="text:cardData.bottomRightPanel.count"></div>
+			<div class="dashboard-card-bottom-panel__value" data-bind="text:cardData.bottomRightPanel.value"></div>
+			<!-- /ko -->
+		</div>
+	</div>
+</a>

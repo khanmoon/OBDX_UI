@@ -1,0 +1,33 @@
+<div class="form-main-container set-pin">
+  <div class="curtail-width">
+    <div class="main-content">
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for="setPin"><span data-bind="text:$component.commonResource.setPin"></span></oj-label>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-10 margin-auto">
+            <oj-input-text autofocus class="set-pin-input" value="{{setPin}}" id="setPin" :maxlength="[[$component.maxlength()]]" on-raw-value-changed="[[setPinProceed]]"></oj-input-text>
+          </div>
+      </div>
+      <div class="oj-flex flex-center padding20">
+        <oj-button id="cancelButtonForprocced" class="action-button-secondary" on-click="[[$component.cancelClickHandler]]"><span slot="startIcon" class="icons icon-no"></span>
+            <span data-bind="text:$component.commonResource.generic.common.cancel"></span>
+        </oj-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,header:$component.commonResource.generic.common.ERROR,id:'backWarning'">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12" data-bind="text:$parent.commonResource.pinShouldhaveOnlyNumber">
+    </div>
+  </div>
+  <div class="oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[$parent.hideWarning]]">
+      <span data-bind="text:commonResource.generic.common.ok"></span>
+</oj-button>
+  </div>
+</modal-window>

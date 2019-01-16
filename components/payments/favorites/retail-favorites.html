@@ -1,0 +1,197 @@
+	<div class="oj-flex oj-flex-items-pad cust-details">
+		<div class="oj-flex-item oj-sm-12 label">
+			<label class="oj-label" for="payment-type" data-bind="text:$component.nls.payments.favoritesDetails.labels.paymenttyp"></label>
+		</div>
+		<div id="payment-type" class="oj-flex-item oj-sm-12">
+			<oj-radioset class="payments-money-transfer__radiosetSpacing oj-choice-direction-row" :aria-label="[[$component.nls.payments.favoritesDetails.labels.paymenttyp]]" on-value-changed="[[$component.paymentTypeChanged]]" value="{{type}}">
+				<!-- ko foreach: $component.paymentTypeArray -->
+				<oj-option name="paymenttype" value="[[id]]" :id="[[id]]">
+					<span class="label" data-bind="text: label"></span>
+				</oj-option>
+				<!-- /ko -->
+			</oj-radioset>
+		</div>
+	</div>
+	<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+		<!-- ko if: $component.showActivitySuccessMsg() -->
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8 success-bar">
+			<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+				<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+					<span class="success-icon icons" data-bind="css: 'icon-success'"></span>
+					<span class="success-msg" id="confirm" data-bind="text:$component.nls.payments.messages.deleteSuccessMsg"></span>
+				</div>
+			</page-section>
+		</div>
+		<!-- /ko -->
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+			<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+				<div class="oj-sm-12" data-bind="component: {
+				 name: 'search-box',
+				 params: {searchFields : ['nickName'], rootModel:$component ,data:favoritesDataSource(),
+				   searchBy:isBillPayment()?nls.payments.tableHeaders.billerName:nls.payments.tableHeaders.payeeName}
+			 }">
+				</div>
+				<!-- ko if : $baseModel.large() && dataFetched() -->
+				<div class="oj-sm-12">
+					<oj-table id="table" :aria-label="[[$component.nls.payments.favoritesDetails.labels.tableheader]]" columns="[[$component.isBillPayment()?[{headerText:nls.payments.tableHeaders.billerCategory,field:'category'},{headerText:nls.payments.tableHeaders.billerName,field:'accountName'},{headerText:nls.payments.tableHeaders.relationshipnum,field:'nickName'},{headerText:nls.payments.tableHeaders.amount,className:'right',headerClassName:'right',field:'formattedAmount'},{headerText:'',template:'menu_options'}]:[{headerText:nls.payments.tableHeaders.payeeName,headerClassName:'left',field:'nickName'},{headerText:nls.payments.tableHeaders.transactionType,headerClassName:'left',field:'paymentType'},{headerText:nls.payments.tableHeaders.amount,headerClassName:'right',className:'right',field:'formattedAmount'},{headerText:'',template:'menu_options'}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[favoritesDataSource()]]">
+
+					<template slot="menu_options">
+						<div class="oj-flex-item oj-sm-1 right" data-bind="attr:{id:'menuLauncher-' + $current.row.paymentId}">
+							<a href="#" openprofile="true" data-bind="click: $component.openMenu.bind($data,$current.row), attr:{id : 'menuLauncher-favorites-' + $current.row.paymentId, 'aria-label': $component.nls.payments.favoritesDetails.labels.menuLabel, title: $component.nls.payments.favoritesDetails.labels.menuTitle, alt : $component.nls.payments.favoritesDetails.labels.menuAlt}">
+								<div class="icons icon-more-vertical"></div>
+							</a>
+
+								<oj-menu :id="[['menuLauncher-favorites-contents-' + $current.row.paymentId]]"		on-oj-action="[[$component.menuItemSelect.bind($data,$current.row)]]"
+			        					open-options.launcher="[['menuLauncher-favorites-' + $current.row.paymentId]]">
+									<!-- ko foreach: $component.menuItems -->
+						            <oj-option :id="[[id]]" :value="[[id]]">
+						            	<span data-bind="text : label"></span>
+						            </oj-option>
+									<!-- /ko -->
+			          			</oj-menu>
+						</div>
+					</template>
+					</oj-table>
+					<oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.favoritesDataSource()]]">
+					</oj-paging-control>
+				</div>
+				<!-- /ko -->
+				<!-- ko if:$baseModel.small() && dataFetched() -->
+				<div class="retail-favorite">
+					<oj-list-view class="retail-favorite__items-list" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('favouriteAccount-Corporate',true)}]]" data="[[favoritesDataSource()]]">
+					</oj-list-view>
+					<script type="text/html" id="favouriteAccount-Corporate">
+						<!-- ko if: !$component.isDraft() && !$component.isBillPayment() -->
+						<li class="item" data-bind="attr: {id: $data['paymentId', 'accountName', 'nickName']}">
+							<div class="oj-flex">
+								<div class="oj-flex-item oj-sm-10">
+									<div data-bind="text:$component.nls.payments.tableHeaders.payeeName"></div>
+									<label for="accountName-fav" data-bind="text:accountName"></label>
+									<div id="accountName-fav" data-bind="text: paymentType"></div>
+									<div class="acc-no" data-bind="text: displayValue"></div>
+								</div>
+								<div class="oj-flex-item oj-sm-2 right" data-bind="attr:{id:'menuLauncher-' + paymentId}">
+									<a href="#" openprofile="true" data-bind="click: $component.openMenu, attr:{id : 'menuLauncher-favorites-' + paymentId,'aria-label':$component.nls.payments.favoritesDetails.labels.menuLabel,title: $component.nls.payments.favoritesDetails.labels.menuTitle, alt : $component.nls.payments.favoritesDetails.labels.menuAlt}">
+										<div class="icons icon-more-vertical"></div>
+									</a>
+									<ul class="accounts-overview-launcher">
+										<oj-menu :id="[['menuLauncher-favorites-contents-' + paymentId]]" on-oj-action="[[$component.menuItemSelect.bind($data,$data)]]" open-options.launcher="[['menuLauncher-favorites-' + paymentId]]">
+                                <!-- ko foreach: $component.menuItems -->
+                                <oj-option :id="[[id]]" :value="[[id]]">
+                                    <span data-bind="text : label"></span>
+                                </oj-option>
+                                <!-- /ko -->
+                            </oj-menu>
+									</ul>
+								</div>
+							</div>
+							<div class="oj-flex">
+								<div class="oj-flex-item oj-sm-12">
+									<div data-bind="text:$component.nls.payments.tableHeaders.nickName"></div>
+									<label for="nickName-fav" data-bind="text: nickName"></label>
+								</div>
+							</div>
+							<div class="oj-flex">
+								<div id="nickName-fav" class="oj-flex-item oj-sm-4" data-bind="text:$component.nls.payments.tableHeaders.amount">
+								</div>
+								<div class="oj-flex-item oj-sm-8 retail-favorite__amount right" data-bind="text: formattedAmount"></div>
+							</div>
+						</li>
+						<!-- /ko -->
+						<!-- ko if :$component.isBillPayment() -->
+						<li class="item" data-bind="attr: {id: $data['paymentId', 'accountName', 'nickName']}">
+							<div class="oj-flex">
+								<div class="oj-flex-item oj-sm-10">
+									<label for="billerName-fav" data-bind="text:$component.nls.payments.tableHeaders.billerName"></label>
+									<div id="billerName-fav" data-bind="text:accountName"></div>
+									<div class="party-name" data-bind="text: nickName"></div>
+								</div>
+								<div class="oj-flex-item oj-sm-2 right" data-bind="attr:{id:'menuLauncher-' + paymentId}">
+									<a href="#" openprofile="true" data-bind="click: $component.openMenu, attr:{'aria-label':$component.nls.payments.favoritesDetails.labels.menuLabel ,id : 'menuLauncher-favorites-' + paymentId,'aria-label':$component.nls.payments.favoritesDetails.labels.menuLabel,title: $component.nls.payments.favoritesDetails.labels.menuTitle, alt : $component.nls.payments.favoritesDetails.labels.menuAlt}">
+										<div class="icons icon-more-vertical"></div>
+									</a>
+									<ul class="accounts-overview-launcher">
+										<oj-menu :id="[['menuLauncher-favorites-contents-' + paymentId]]" on-oj-action="[[$component.menuItemSelect.bind($data,$data)]]" open-options.launcher="[['menuLauncher-favorites-' + paymentId]]">
+                                <!-- ko foreach: $component.menuItems -->
+                                <oj-option :id="[[id]]" :value="[[id]]">
+                                    <span data-bind="text : label"></span>
+                                </oj-option>
+                                <!-- /ko -->
+                            </oj-menu>
+									</ul>
+								</div>
+							</div>
+							<div class="oj-flex">
+								<div class="oj-flex-item oj-sm-12">
+									<label for="billerCategory-fav" data-bind="text:$component.nls.payments.tableHeaders.billerCategory"></label>
+									<div id="billerCategory-fav" class="party-name" data-bind="text: category"></div>
+								</div>
+							</div>
+							<div class="oj-flex">
+								<div class="oj-flex-item oj-sm-4" data-bind="text:$component.nls.payments.tableHeaders.amount">
+								</div>
+								<div class="oj-flex-item oj-sm-8 retail-favorite__amount right" data-bind="text: formattedAmount"></div>
+							</div>
+						</li>
+						<!-- /ko -->
+						<!-- ko if: $component.isDraft() -->
+						<li data-bind="attr: {id: $data['paymentId', 'accountName', 'nickName']}">
+							<div class="oj-flex">
+								<div class="oj-flex-item oj-sm-12">
+									<label for="payeeName-fav" data-bind="text:$component.nls.payments.tableHeaders.payeeName"></label>
+									<div id="payeeName-fav" class="description">
+										<a href="#" data-bind="text:accountName ,click:$component.accFavoriteDetails"></a>
+									</div>
+								</div>
+								<div class="oj-flex-item oj-sm-12">
+									<label for="draftType-fav" data-bind="text:$component.nls.payments.tableHeaders.draftType"></label>
+									<div id="draftType-fav" data-bind="text: paymentType"></div>
+								</div>
+							</div>
+							<div class="oj-flex">
+								<div class="oj-flex-item oj-sm-12">
+									<label for="draftFavouring-fav" data-bind="text:$component.nls.payments.tableHeaders.draftFavouring"></label>
+									<div id="draftFavouring-fav" class="party-name" data-bind="text:nickName"></div>
+								</div>
+								<div class="oj-flex-item oj-sm-12">
+									<label for="amount-fav-draft" data-bind="text:$component.nls.payments.tableHeaders.amount"></label>
+									<div id="amount-fav-draft" class="amount" data-bind="text: formattedAmount"></div>
+								</div>
+							</div>
+						</li>
+						<!-- /ko -->
+					</script>
+					<!-- ko if: $baseModel.small() -->
+					<oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.favoritesDataSource()]]">
+					</oj-paging-control>
+					<!-- /ko -->
+				</div>
+				<!-- /ko -->
+			</page-section>
+		</div>
+		<!-- ko if: $baseModel.large() -->
+		<div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+			<help params="baseModel : $baseModel, rootModel : $component, transaction: 'favorites'"></help>
+		</div>
+		<!-- /ko -->
+
+<modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'delete-favorite', header : $component.nls.payments.favoritesDetails.labels.deletefavorite">
+			<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+				<!-- ko if:$component.favoriteData()-->
+				<div class="oj-flex oj-flex-items-pad">
+					<div class="oj-flex-item" data-bind="text : $baseModel.format($component.nls.payments.messages.deleteFavoriteMsg, {name : $component.favoriteData().nickName})"></div>
+				</div>
+				<!-- /ko -->
+			</page-section>
+			<div class="oj-flex oj-flex-items-pad button-container">
+				<oj-button class="action-button-primary" on-click="[[$component.confirmDeleteFavorite]]">
+					<span class="icons icon-delete" slot="startIcon"></span><span data-bind="text:$component.nls.generic.common.proceed">
+						</span>
+				</oj-button>
+				<oj-button class="action-button-secondary" on-click="[[$component.closeModal]]">
+					<span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.nls.generic.common.cancel">
+						</span>
+				</oj-button>
+			</div>
+</modal-window>
+</div>

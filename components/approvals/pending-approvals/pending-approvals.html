@@ -1,0 +1,51 @@
+<div data-bind="css : !$dashboard.isDashboard() ? 'form-main-container' : ''">
+    <action-widget params="baseModel : $baseModel, rootModel: $data,header:$dashboard.isDashboard() ? $component.widgetHeading : void 0,controls:$component.controls,expandComponent: $baseModel.large() ? 'pending-for-approvals' : null ,onDashboard:$dashboard.isDashboard()">
+          <!-- ko if:userSegment !== 'ADMIN' && userSegment !== 'CORPADMIN' -->
+        <div class="oj-flex txn-type">
+            <oj-buttonset-one class="oj-flex-item" :aria-label="[[$component.Nls.pendingApprovalsDetails.labels.chooseTxnType]]" value="{{$component.currentSelection}}"><oj-option id="financialTxn_PendingApproval" name="typetxn1" value="{{'financialTxn'}}"><span for="financialTxn_PendingApproval" data-bind="text : $baseModel.format($component.Nls.pendingApprovalsDetails.labels.financialTxn, {count : $component.financialTxnCount()})"></span></oj-option><oj-option id="nonfinancialTxn_PendingApproval" name="typetxn1" value="{{'nonfinancialTxn'}}"><span for="nonfinancialTxn_PendingApproval" data-bind="text : $baseModel.format($component.Nls.pendingApprovalsDetails.labels.nonFinancialTxn, {count : $component.nonFinancialTxnCount()})"></span></oj-option></oj-buttonset-one>
+        </div>
+          <!-- /ko -->
+        <!-- ko if:$baseModel.large() -->
+        <div data-bind='component:{name: "nav-bar", params:{rootModel: $data,menuOptions : menuCountOptions, uiOptions:uiOptions,navBarDescription:$component.Nls.navBarDescription}}'></div>
+        <div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "batch-process-approvals", params:{rootModel: $data }}'></div>
+        <!-- ko if : $component.loadModule() -->
+        <div class="pending-approvals" data-bind="template:{name:$baseModel.format('pending-for-approvals/{moduleName}', {moduleName: $component.loadModule()}), data:$data}"></div>
+        <!-- /ko -->
+
+        <!-- ko if:!$dashboard.isDashboard() -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:$component.Nls.generic.header.back"></span>
+</oj-button>
+        </div>
+        <!-- /ko -->
+
+        <!-- /ko -->
+
+        <!-- ko ifnot: $baseModel.large() -->
+        <!-- ko if:$dashboard.isDashboard() -->
+        <div class="oj-flex oj-flex-items-pad activityLog__approver-tabs-listView activityLog-approver-tabs-listView">
+            <div class="oj-flex-item no-pad-cols approver-tabs-listView">
+                <ul data-bind="foreach : menuCountOptions">
+                    <li class="activityLog-approver-tabs-listView--item">
+                        <a class="activityLog-approver-tabs-listView--activity" href="#" data-bind="attr:{'alt':$baseModel.format($component.Nls.pendingApprovalsDetails.labels.mobileClickAlt,{module: label}) ,'title':$baseModel.format($component.Nls.pendingApprovalsDetails.labels.mobileClick,{module: label}) },click:$parent.showModule">
+                            <span data-bind="text:label"></span>
+                            <div class="activityLog-approver-tabs-listView__items activityLog-approver-tabs-listView-items">
+                                <span class="activityLog-approver-tabs-listView-items__count" data-bind="text:count"></span>
+                                <div class="icons icon-arrow-right activityLog-approver-tabs-listView-items__icon"></div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$dashboard.isDashboard() -->
+
+        <div data-bind='component:{name: "batch-process-approvals", params:{rootModel: $data }}'></div>
+        <div data-bind="template:{name:$baseModel.format('pending-for-approvals/{moduleName}', {moduleName: $component.loadModule()}), data:$data}"></div>
+
+        <!-- /ko -->
+        <!-- /ko -->
+    </action-widget>
+</div>

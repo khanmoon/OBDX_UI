@@ -1,0 +1,26 @@
+<div class="oj-flex">
+    <!-- ko foreach: $component.analysis -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 consolidated-analysis__header consolidated-analysis-header">
+        <div class="consolidated-analysis-header__statement consolidated-analysis-header-statement">
+
+
+            <svg class="consolidated-analysis-header-statement__svg" data-bind="attr:{id : 'svg_' + id}">
+                <defs>
+                    <linearGradient data-bind="attr:{id : 'grd_' + id}">
+                        <stop data-bind="attr:{offset : '5%', 'stop-color' : startColor}"/>
+                        <stop data-bind="attr:{offset : '95%', 'stop-color' : stopColor}"/>
+                    </linearGradient>
+                </defs>
+                <rect data-bind="attr:{id : 'rect_' + id}"/>
+            </svg>
+
+
+            <div class="consolidated-analysis-header-statement__label" data-bind="text:label"></div>
+            <div class="consolidated-analysis-header-statement__value" data-bind="text:$baseModel.formatCurrency(($index()?$component.moneyIowe():$component.moneyIhave()),currency)"></div>
+        </div>
+    </div>
+    <!-- /ko -->
+
+    <div data-bind="template: {afterRender: $component.afterRender}"></div>
+
+</div>

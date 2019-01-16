@@ -1,0 +1,22 @@
+<!-- ko if: flag() -->
+  <action-widget params="baseModel : $baseModel, rootModel:$data,
+                                  header:$component.nls.adminActivity.labels.heading,
+                                  onDashboard: true,
+                                  validator:$component.validationTracker">
+    <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-lg-justify-content-space-around">
+      <!-- ko foreach:details() -->
+      <div class="oj-flex-item center">
+        <h3 class="header" data-bind="text: $component.nls.adminActivity.labels.groups[$data.Name]"></h3>
+        <!-- ko foreach:transactionDetails -->
+        <a class="" href="javascript:void(0)" data-bind="click:$component.loadPage">
+        <div class="quick-link-contents">
+           <img class="icons bounceUp" alt="" data-bind="loadImage:'admin-icons/' + $data.icon + '.svg'" />
+          <div class="icon-title" data-bind="text: $component.nls.adminActivity.labels.groups[$data.name]"></div>
+          </div>
+        </a>
+        <!-- /ko -->
+      </div>
+      <!-- /ko -->
+    </div>
+  </action-widget>
+<!-- /ko -->

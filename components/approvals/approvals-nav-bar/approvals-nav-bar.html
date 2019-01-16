@@ -1,0 +1,26 @@
+<!-- <div class="oj-flex oj-flex-items-pad">
+<div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "nav-bar", params:{rootModel: $data,menuOptions: menuOptions, uiOptions:uiOptions}}'></div>
+</div> -->
+
+<!-- ko if:(isAdmin()) -->
+<modal-window params="baseModel : $baseModel, rootModel : $data,id:'choicePopup',closeHandler:closeHandler, header : $component.nls.navLabels.userSelection">
+<div class="form-main-container">
+  <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-12" data-bind="text: $component.nls.navLabels.chooseUserType"></div>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12 center vertical-ruler">
+            <oj-button id="searchButton" class="action-button-primary" on-click="[[$component.loadAdminComponent]]">
+      <span data-bind="text:$component.nls.navLabels.adminUser"></span>
+</oj-button>
+        </div>
+        <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12 center">
+            <oj-button id="searchButton" class="action-button-primary" on-click="[[$component.loadCorporateComponent]]">
+      <span data-bind="text:$component.nls.navLabels.corporateUser"></span>
+</oj-button>
+        </div>
+    </div>
+    <div data-bind="template : {afterRender : $component.showModal}"></div>
+</modal-window>
+<!-- /ko -->

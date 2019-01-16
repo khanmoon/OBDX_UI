@@ -1,0 +1,683 @@
+<action-header params="baseModel : $baseModel, rootModel : $component, heading:$component.Nls.paymentDetails"></action-header>
+<!-- ko if: $component.recordDetails.billerType === "PRESENTMENT" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.accNo"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('accountNumber' in $data)?accountNumber:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text:$component.Nls.allow"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.partPay"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('partPayment' in $data)?partPayment:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.excessPay"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('excessPayment' in $data)?excessPayment:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.latePay"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('latePayment' in $data)?latePayment:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text:$component.Nls.paymethods"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.casa"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('currentAndSavingsAcc' in $data)?currentAndSavingsAcc:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.debitCard"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('debitCard' in $data)?debitCard:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.creditCard"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('creditCard' in $data)?creditCard:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.autoDays"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('autopaymentBufferDays' in $data)?autopaymentBufferDays:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text:$component.Nls.validationType"></span>
+  </div>
+</div>
+<!-- ko if: validationType === "Auto" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: validationType === "Offline" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: validationType === "Online" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('validationURL' in $data)?validationURL:'-')"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if: $component.recordDetails.billerType === "PRESENTMENTPAYMENT" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.accNo"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('accountNumber' in $data)?accountNumber:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text:$component.Nls.allow"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.partPay"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('partPayment' in $data)?partPayment:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.excessPay"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('excessPayment' in $data)?excessPayment:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.latePay"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('latePayment' in $data)?latePayment:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.quickPay"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('quickBillPay' in $data)?quickBillPay:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text:$component.Nls.paymethods"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.casa"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('currentAndSavingsAcc' in $data)?currentAndSavingsAcc:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.debitCard"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('debitCard' in $data)?debitCard:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.creditCard"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('creditCard' in $data)?creditCard:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.autoDays"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('autopaymentBufferDays' in $data)?autopaymentBufferDays:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text:$component.Nls.validationType"></span>
+  </div>
+</div>
+<!-- ko if: validationType === "Auto" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: validationType === "Offline" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: validationType === "Online" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('validationURL' in $data)?validationURL:'-')"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if: $component.recordDetails.billerType === "PAYMENT" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.accNo"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('accountNumber' in $data)?accountNumber:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.quickPay"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('quickBillPay' in $data)?quickBillPay:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text:$component.Nls.paymethods"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.casa"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('currentAndSavingsAcc' in $data)?currentAndSavingsAcc:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.debitCard"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('debitCard' in $data)?debitCard:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.creditCard"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('creditCard' in $data)?creditCard:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text:$component.Nls.validationType"></span>
+  </div>
+</div>
+<!-- ko if: validationType === "Auto" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: validationType === "Offline" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: validationType === "Online" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('validationURL' in $data)?validationURL:'-')"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if: $component.recordDetails.billerType === "RECHARGE" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.accNo"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('accountNumber' in $data)?accountNumber:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.quickRecharge"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('quickRecharge' in $data)?quickRecharge:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text:$component.Nls.paymethods"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.casa"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('currentAndSavingsAcc' in $data)?currentAndSavingsAcc:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.debitCard"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('debitCard' in $data)?debitCard:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.creditCard"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('creditCard' in $data)?creditCard:'-')"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text:$component.Nls.validationType"></span>
+  </div>
+</div>
+<!-- ko if: validationType === "Auto" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: validationType === "Offline" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: validationType === "Online" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.auto"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.offline"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.n"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.online"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : $component.Nls.y"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.Nls.onlineurl"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+    <span data-bind="text : (('validationURL' in $data)?validationURL:'-')"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->

@@ -1,0 +1,129 @@
+<div class="page-section-content">
+
+  <!-- ko if: $component.guaranteeDetails.allowAmendment -->
+  <div class="oj-flex oj-flex-items-pad grid-row-group flex-right">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+      <a href="javascript:void(0)" class="padding-tb pull-right initiate-link" data-bind="click:$component.initiateAmend">
+        <span class="icons icon-add icon-2x icon-padding-right"></span>
+        <span data-bind="text:$component.resourceBundle.labels.initiateAmendment"></span>
+      </a>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot: $component.guaranteeDetails.allowAmendment -->
+  <div id="warning-container" class="oj-flex oj-flex-items-pad warning-container">
+    <div class="oj-flex-item warning-text">
+      <span class="warning-msg" data-bind="text : $component.resourceBundle.tradeFinanceErrors.messages.amendmentWarning"></span>
+      <a href="#" data-bind="attr:{'alt':$component.resourceBundle.generic.common.cancel ,'title':$component.resourceBundle.generic.common.closeDialog }, click: $component.hideWarningContainer">
+          <span class="icons icon-cancel warning-icon"></span>
+      </a>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.dataForAmendment() -->
+
+  <!-- ko if: $component.amendments().length > 0 -->
+  <!-- ko ifnot:$baseModel.small() -->
+  <div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 grid-row-group" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+
+    <oj-table id="printTable" :aria-label="[[$component.resourceBundle.amendments.amendTable]]" columns="[[[{headerText:$component.resourceBundle.amendments.amendmentNumber},{headerText:$component.resourceBundle.labels.issueDate},{headerText:$component.resourceBundle.guaranteeDetails.labels.expiryDate},{headerText:$component.resourceBundle.amendments.newAmount,headerClassName:'right',className:'right'},{headerText:$component.resourceBundle.common.labels.status}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('amendmentList_template', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.dataForAmendment]]">
+        <caption class="hide-label" data-bind="text:$component.resourceBundle.leftMenu.amendments"></caption>
+    </oj-table>
+    <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.dataForAmendment]]">
+    </oj-paging-control>
+
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if:$baseModel.small() -->
+  <div class="oj-flex grid-main-container">
+    <div class="oj-flex-item oj-sm-12">
+        <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('amendment_list_card',true)}]]" selection-mode="[['single']]" data="[[$component.dataForAmendment]]">
+        </oj-list-view>
+        <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.dataForAmendment]]">
+        </oj-paging-control>
+    </div>
+
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+
+  <!-- ko ifnot: $component.amendments().length > 0 -->
+  <div class="oj-flex oj-flex-items-pad info-message">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }, text: $component.resourceBundle.tradeFinanceErrors.messages.noAmendments">
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+</div>
+<script type="text/html" id="amendmentList_template">
+    <tr>
+      <td>
+        <a href="#" data-bind="text:id, click:$component.fetchAmendmentDetails.bind($data, id)"></a>
+      </td>
+      <td>
+        <span data-bind="text:$baseModel.formatDate($data.issueDate)"></span>
+      </td>
+      <td>
+        <span data-bind="text:$baseModel.formatDate($data.newExpiryDate)"></span>
+      </td>
+      <td>
+        <span data-bind="text:$baseModel.formatCurrency(newAmount.amount, newAmount.currency)"></span>
+      </td>
+      <td>
+        <span data-bind="text:$data.amendStatus"></span>
+      </td>
+  </tr>
+</script>
+
+<script type="text/html" id="amendment_list_card">
+  <li data-bind="attr: {id: $data.id}">
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+        <div class="oj-flex oj-flex-items-pad">
+           <div class="oj-flex-item oj-sm-12 description">
+            <a href="javascript:void(0)" data-bind="text: $baseModel.format($component.resourceBundle.labels.amendmentNumber,{amendmentNumber:$data.id}),click:$component.fetchAmendmentDetails.bind($data, $data.id)"></a>
+            </div>
+          </div>
+        </div>
+
+       <div class="oj-flex-item oj-sm-12 grid-row-group" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.labels.issueDate"></label>
+            <div data-bind="text: $baseModel.formatDate($data.issueDate)"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.guaranteeDetails.labels.expiryDate"></label>
+            <div data-bind="text: $baseModel.formatDate($data.newExpiryDate)"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-6">
+            <label data-bind="text: $component.resourceBundle.amendments.newAmount"></label>
+          </div>
+          <div class="oj-flex-item oj-sm-6">
+            <div class="right" data-bind="text: $baseModel.formatCurrency($data.newAmount.amount, $data.newAmount.currency)"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.common.labels.status"></label>
+            <div data-bind="text: $data.amendStatus"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+</script>

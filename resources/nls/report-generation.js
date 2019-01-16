@@ -1,0 +1,101 @@
+define(["ojL10n!resources/nls/generic"], function(Generic) {
+  "use strict";
+  var ReportGenerationLocale = function() {
+    return {
+      root: {
+        reportDescription: {
+          A16: "Epi Payment reconciliation Report",
+          A11: "File Identifier wise Party User Mapping Report",
+          A12: "Party User wise File Identifiers Mapping Report",
+          A13: "Party wise User Groups Report",
+          A7: "Party wise Approval Rules Report",
+          A9: "Party wise File Identifiers Mapping Report",
+          A10: "Party wise Payee Maintenance Report",
+          C6: "Party User wise File Identifiers Mapping Report",
+          C4: "Party wise Payee Maintenance Report",
+          C3: "Party wise File Identifiers Mapping Report",
+          C7: "Party wise User Groups Report",
+          A6: "Wallet Transaction Activity Report",
+          C1: "Party wise Workflows Report",
+          C2: "Party wise pending Approvals list Report",
+          A1: "Date wise User creation Report",
+          A2: "Resources Child Role Mapping Report",
+          A3: "Wallets KYC Report",
+          A4: "Wallets creation for a Date Range Report",
+          A8: "Party wise pending Approvals list Report",
+          A14: "Party wise Workflows Report",
+          U3: "Daily Balance Position Report",
+          U4: "Transaction Summary Report",
+          U1: "Party wise pending Approvals list Report",
+          U2: "Party wise Payee Maintenance Report"
+        },
+        reportGeneration: {
+          reportType: "Report Type",
+          reportGeneration: "Report Generation",
+          report: "Report Name",
+          reports: "Reports",
+          viewScheduledReports: "View Scheduled Reports",
+
+          selectReportType: "Select Report Type",
+          select: "Select",
+          frequency: "Frequency",
+          selectFrequency: "Select Frequency",
+          reportFormat: "Report Format",
+          selectReportFormat: "Select Report Format",
+          reportParameters: "Report Parameters",
+          startDate: "Start Generating",
+          endDate: "Stop Generating",
+          repotFrequency: "Choose Report Frequency",
+          done: "Done",
+          navBarDescription: "Report Frequency",
+
+          from: "dd/mm/yy",
+          to: "dd/mm/yy",
+          myReports: "My Reports",
+          reportRequestId: "Report Request ID",
+          downloadReport: "Download Report",
+          generateReport: "Generate Report",
+          clear: "Clear",
+          cancel: "Cancel",
+          adhoc: "Adhoc",
+          frequencyBased: "Frequency Based",
+          successfulReportRegistration: "You have successfully generated {reportName}.",
+          pendingStatus: "Pending Approval",
+          txnName: "Report Generation request",
+          confirmStatus: "Completed",
+          ok: "Ok",
+          scheduleReport: "Schedule Report",
+          viewReport: "View Reports",
+          viewReportText: "Click to View Reports",
+          review: "Review",
+          details: "Details",
+          partyId: "Party Id",
+          userType: "User Type",
+          merchantCode: "Merchant Code",
+          transactionName: "Report request",
+          txnType: "Transaction Type",
+          kycStatus: "KYC Status",
+          mobileNo: "Mobile Number",
+          childRole: "Child Role",
+          accountNumber: "Account Number",
+          emailId: "Email Id",
+          create: "Create",
+          validateBillerMessage: "Please enter either Biller ID or Biller Name to generate the report",
+          toReportGeneration: "Generate another Report",
+          toScheduleReport: "Schedule another Report"
+
+
+        },
+        generic: Generic
+      },
+      ar: true,
+      fr: true,
+      cs: true,
+      sv: true,
+      en: false,
+      "en-us": false,
+      el: true
+    };
+  };
+  return new ReportGenerationLocale();
+});

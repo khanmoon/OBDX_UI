@@ -1,0 +1,165 @@
+<!-- ko if : $component.mode()==='CREATE' || $component.mode()==='EDIT'-->
+
+<oj-validation-group id="mailboxtracker" valid="{{groupValidMailBox}}">
+
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+<oj-checkboxset aria-labelledby="mainlabelid" :id="[['checkboxSetId'+ $baseModel.incrementIdCount()]]" value="{{copyContent}}">
+	<oj-option value="checked">
+		<span for="copyContent" class="oj-checkbox-label" data-bind="attr:{'for':'copy_' + $component.index+$index()},text: $component.nls.message_template.copyContent"></span></oj-option></oj-checkboxset>
+	</div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+		<oj-label for="subject"><span data-bind="text:$component.nls.message_template.secureSubject"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+		<oj-input-text required :id="[['text-input'+ $baseModel.incrementIdCount()]]" :aria-label="[[$component.nls.message_template.secureSubject]]" :invalidcomponenttracker="[[$component.invalidTracker]]" disabled="[[isContentDisabled]]" value="{{secureMailSubject}}"></oj-input-text>
+	</div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+		<oj-label for="content"><span data-bind="text:$component.nls.message_template.secureContent"></span></oj-label>
+	</div>
+
+	<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+	<text-editor params="baseModel : $baseModel, rootModel:$data,id:'contentsecure'+index,data:secureMailContent,containerClass:'oj-sm-12',height:'200px',copyTxt:copyVar,label:$component.nls.message_template.secureContent,validate:$component.editorValidator()[$component.index].validateSecure">
+	</text-editor>
+  </div>
+</div>
+
+<oj-validation-group id="tracker" valid="{{groupValid}}">
+
+<!-- ko if: dataAttributeList().length >0 -->
+<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+			<oj-label><span data-bind="text:$component.nls.message_template.setAttributeMask"></span></oj-label>
+	</div>
+
+<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+<!-- ko if:showSecureAttributeLabel -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+		<oj-label><span data-bind="text:$component.nls.message_template.dataAttribute"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+		<oj-label for="fetchAttributeMasks"><span data-bind="text:$component.nls.message_template.attributeMask"></span></oj-label>
+	</div>
+</div>
+<!-- /ko -->
+
+	<!-- ko foreach:secureMailAttributeList -->
+	<div class="oj-flex oj-flex-items-pad grid-row-group">
+			<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-6 label">
+					<span data-bind="attr:{'id':('secureAttributeId'+$component.index+$index())},text:attributeId"></span>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 label">
+					<span data-bind="attr:{'id':('secureAttributeMask'+$component.index+$index())},text:attributeMask"></span>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1 deleteMask">
+			 <a href="javascript:void(0)" class="icon icon-delete pull-right" data-bind="click: $component.deleteAttribute.bind($data,$index,'SECURE')"></a>
+		 </div>
+	</div>
+	<!-- /ko -->
+	<!-- ko if: $component.buttonToDropDownSecure()===false && secureAttributes().length>0 -->
+			<oj-button class="oj-flex-item help-button form-button-rounded" on-click="[[$component.addRow.bind($data,secureAttributes,secureMailAttributeList,'SECURE')]]">
+      <span data-bind="text:$component.nls.message_template.addNew"></span>
+</oj-button>
+	<!-- /ko -->
+	<!-- ko if : ($component.buttonToDropDownSecure()) -->
+  <div class="oj-flex oj-flex-items-pad">
+<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+  <oj-label class="hide-label" for="attributeId"><span data-bind="text:$component.nls.message_template.attributeId"></span></oj-label>
+									 <oj-select-one id="attributeIdSelect" required :id="[[('attributeIdSelect'+$component.index+$index())]]" :aria-label="[[$component.nls.message_template.attributeId]]" :invalidcomponenttracker="[[$component.invalidTracker]]" :placeholder="[[$component.nls.genericTemplate.select]]" on-value-changed="[[$component.attributeSelected]]" value="{{secureAttributeId}}">
+											 <!-- ko foreach : $component.secureAttributes -->
+											 <oj-option value="{{attributeId}}"><span data-bind="text:attributeId"></span></oj-option>
+											 <!-- /ko -->
+										 </oj-select-one>
+</div>
+
+
+<!-- ko ifnot : ($component.attributeMaskEnable()[$component.attributeSelectionOrder]) === true -->
+	<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+									 <oj-input-text id="fetchAttributeMasks" type="text" required :id="[[('fetchAttributeMasks'+$component.index+$index())]]" :aria-label="[[$component.nls.message_template.attributeMask]]"  validators="[[$baseModel.getValidator('ATTRIBUTE_MASK')]]" value="{{secureAttributeMask}}"></oj-input-text>
+
+
+</div>
+<!-- /ko -->
+
+<!-- ko if : ($component.attributeMaskEnable()[$component.attributeSelectionOrder]) === true-->
+	<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+									 <oj-input-text id="fetchAttributeMasks" type="text" required :id="[[('fetchAttributeMasks'+$component.index+$index())]]" :aria-label="[[$component.nls.message_template.attributeMask]]"  validators="[[$baseModel.getValidator('ATTRIBUTE_MASK')]]" readonly="{{true}}" value="{{secureAttributeMask}}"></oj-input-text>
+
+</div>
+<!-- /ko -->
+
+
+
+								 <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
+								 	<oj-button class="oj-flex-item help-button form-button-rounded" on-click="[[$component.add.bind($data,secureMailAttributeList,'SECURE')]]">
+      <span data-bind="text:$component.nls.message_template.addNew"></span>
+</oj-button>
+								</div>
+              </div>
+<!-- /ko -->
+
+
+
+</div>
+
+</div>
+<!-- /ko -->
+</oj-validation-group>
+
+
+<div class="oj-flex oj-flex-items-pad button-container">
+	<oj-button class="action-button-primary" on-click="[[saveSecure]]">
+		<span data-bind="text:$component.nls.genericTemplate.save"></span>
+	</oj-button>
+</div>
+
+</oj-validation-group>
+
+<!-- /ko -->
+
+<!-- ko if : $component.mode()==='VIEW' || $component.mode()==='REVIEW'-->
+<action-header params="baseModel : $baseModel, rootModel : $data, heading :$component.nls.message_template.onScreen "></action-header>
+    <row params="baseModel : $baseModel, rootModel : $root, label : $component.nls.message_template.secureSubject , value :secureMailSubject"></row>
+		<div class="oj-flex oj-flex-items-pad row">
+			<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 row__label label-container">
+				<oj-label class="label-container__label"><span data-bind="text:$component.nls.message_template.secureContent"></span></oj-label>
+			</div>
+
+			<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 row__value" data-bind="css: $data.dataClass, html : secureMailContent">
+			</div>
+
+		</div>
+		<!-- ko if:secureMailAttributeList().length>0 -->
+
+		<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+			<strong data-bind="text:$component.nls.message_template.setAttributeMask"></strong>
+		</div>
+		</div>
+
+		<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+			<oj-label><span data-bind="text:$component.nls.message_template.dataAttribute"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+			<oj-label for="fetchAttributeMasks"><span data-bind="text:$component.nls.message_template.attributeMask"></span></oj-label>
+		</div>
+	</div>
+	<!-- ko foreach:secureMailAttributeList -->
+	<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+	<span data-bind="text:attributeId,attr:{'id':('secureAttributeId'+$component.index+$index())}"></span>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+		<span data-bind="text:attributeMask,attr:{id:'secureAttributeMask'+$component.index +  $index()}"></span>
+	</div>
+	</div>
+	<!-- /ko -->
+	<!-- /ko -->
+<!-- /ko -->

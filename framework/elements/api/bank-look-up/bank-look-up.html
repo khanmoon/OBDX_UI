@@ -1,0 +1,194 @@
+<modal-window params="baseModel : $baseModel, rootModel : $data,display : 'full-screen',id:'menuButtonDialog',header : $component.header, closeHandler:resetLookUp">
+    <div class="bank-look-up">
+        <oj-validation-group id="bank-look-up-validation-tracker">
+            <div class="oj-flex oj-flex-items-pad">
+                <!-- ko if:$component.clearingCodeType() === 'NAC' && $component.accountType === 'INTERNATIONAL' -->
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 label">
+                            <oj-label class="" for="ncctype"><span data-bind="text:$component.nls.codeType"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12">
+                            <!-- ko if:nccTypeLoaded() -->
+                            <oj-select-one id="ncctype" translations.required.message-detail="[[$component.nls.enterAnyOne]]" on-value-changed="[[valueChangeHandler.bind($data,3)]]" :placeholder="[[$component.nls.select]]" value="{{$component.nccCodeType}}">
+                                <!--  ko foreach:nccTypes -->
+                                <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+                                <!-- /ko -->
+                            </oj-select-one>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 label">
+                            <oj-label class="" for="clearingCode"><span data-bind="text:$component.clearingCodeLabel()"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12">
+                            <oj-input-text id="clearingCode" translations.required.message-detail="[[$component.nls.enterAnyOne]]" on-value-changed="[[valueChangeHandler.bind($data,0)]]" value="{{$component.clearingCode}}" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.nls.invalidCode,{type: 'length',options: {min: 0, max: 11}})]]"></oj-input-text>
+                        </div>
+                    </div>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 label">
+                            <oj-label class="" for="bankName"><span data-bind="text:$component.nls.bankName"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12">
+                            <oj-input-text id="bankName" translations.required.message-detail="[[$component.nls.enterAnyOne]]" value="{{$component.bankName}}" on-value-changed="[[valueChangeHandler.bind($data,1)]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.nls.invalidBankName,{type: 'length',options: {min: 0, max: 60}})]]" value="{{$component.bankName}}"></oj-input-text>
+                        </div>
+                    </div>
+                </div>
+                <!-- ko if:  $component.clearingCodeType() ==='IFSC' || $component.clearingCodeType()==='NEFT' || $component.clearingCodeType() === 'RTGS' || $component.clearingCodeType()==='IMPS' -->
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 label">
+                            <oj-label class="" for="state"><span data-bind="text:$component.nls.state"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12">
+                            <oj-input-text id="state" translations.required.message-detail="[[$component.nls.enterAnyOne]]" on-value-changed="[[valueChangeHandler.bind($data,3)]]" value="{{$component.state}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.nls.stateError,{type: 'length',options: {min: 0, max: 40}})]]"></oj-input-text>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: $component.clearingCodeType()==='SWI' && $component.accountType ==='INTERNATIONAL' && $component.countriesLoaded() -->
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 label">
+                            <oj-label class="" for="country"><span data-bind="text:$component.nls.country"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12">
+                            <oj-select-one class="select-box" id="country" translations.required.message-detail="[[$component.nls.enterAnyOne]]" on-value-changed="[[valueChangeHandler.bind($data,3)]]" placeholder="{{$component.nls.select}}" value="{{$component.country}}">
+                                <!--  ko foreach:countriesList -->
+                                <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+                                <!-- /ko -->
+                            </oj-select-one>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 label">
+                            <oj-label class="" for="city"><span data-bind="text:$component.nls.city"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12">
+                            <oj-input-text id="city" translations.required.message-detail="[[$component.nls.enterAnyOne]]" on-value-changed="[[valueChangeHandler.bind($data,2)]]" value="{{$component.city}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.nls.invalidcity,{type: 'length',options: {min: 0, max: 40}})]]"></oj-input-text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </oj-validation-group>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary" on-click="[[search]]">
+                <span class="icons icon-search" slot="startIcon"></span>
+                <span data-bind="text:$component.nls.generic.common.search"></span>
+            </oj-button>
+        </div>
+        <!-- ko if: !$baseModel.small() && $component.lookUpDataLoaded() -->
+        <oj-table id='look-up-search-data' :aria-label="[[$component.nls.lookupdatatable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('look-up-data-row-template', true)]]" data="[[lookUpData]]" columns-default='{"sortable": "disabled"}' columns='[[[
+                    {
+                "headerText": $component.nls.bankName
+            }].concat($component.clearingCodeType() !== "SWI"?[{
+                "headerText": $component.nls.branch
+            }]:[]).concat([
+            {
+                "headerText": $component.nls.address
+            },
+            {
+                "headerText": $component.clearingCodeLabel()
+            }
+        ])]]'>
+        </oj-table>
+        <script type="text/html" id="look-up-data-row-template">
+            <tr>
+                <td data-bind="css:$component.clearingCodeType() !== 'SWI'?'oj-lg-3':'oj-lg-4'">
+                    <div data-bind="text:$context.row.name"></div>
+                </td>
+                <!-- ko if: $component.clearingCodeType() !== 'SWI' -->
+                <td class="oj-lg-3">
+                    <div data-bind="text:$context.row.branchName"></div>
+                </td>
+                <!-- /ko -->
+                <td data-bind="css:$component.clearingCodeType() !== 'SWI'?'oj-lg-3':'oj-lg-5'">
+                    <!-- ko if: $context.row.branchAddress.line1 -->
+                    <div data-bind="text:$context.row.branchAddress.line1"></div>
+                    <!-- /ko -->
+                    <!-- ko if: $context.row.branchAddress.line2 -->
+                    <div data-bind="text:$context.row.branchAddress.line2"></div>
+                    <!-- /ko -->
+                    <!-- ko if: $context.row.branchAddress.line3 -->
+                    <div data-bind="text:$context.row.branchAddress.line3"></div>
+                    <!-- /ko -->
+                    <!-- ko if: $context.row.branchAddress.line4 -->
+                    <div data-bind="text:$context.row.branchAddress.line4"></div>
+                    <!-- /ko -->
+                    <!-- ko if: $context.row.branchAddress.city -->
+                    <div data-bind="text:$context.row.branchAddress.city"></div>
+                    <!-- /ko -->
+                    <!-- ko if: $context.row.branchAddress.country -->
+                    <div data-bind="text:$context.row.branchAddress.country"></div>
+                    <!-- /ko -->
+                </td>
+                <td class="oj-lg-3">
+                    <a href="javascript:void(0) " data-bind="attr:{alt:$component.nls.bankCodeSubmit,title:$component.nls.bankCodeSubmitTitle}, text:$context.row.code, click:$component.bankCodeSubmit.bind($data,$context.row)"></a>
+                </td>
+            </tr>
+        </script>
+        <!-- /ko -->
+        <!-- ko if: $baseModel.small() && $component.lookUpDataLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-list-view class="bank-look-up__listView" id="replicate_nominee" :aria-label="[[$component.nls.lookupdatatable]]" data="[[lookUpData]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('look-up-data-row-template-small', true)]]" selection-mode="none">
+            </oj-list-view>
+            <script type="text/html" id="look-up-data-row-template-small">
+                <li data-bind="attr: {id:$context.data.code}">
+                    <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                        <div class="oj-flex-item no-pad-cols">
+                            <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-flex-item oj-sm-12 label">
+                                    <oj-label for="bankCode"><span data-bind="text:$component.clearingCodeLabel()"></span></oj-label>
+                                </div>
+                                <div class="oj-flex-item oj-sm-12">
+                                    <a href="javascript:void(0)" id="bankCode" data-bind="attr:{alt:$component.nls.bankCodeSubmit,title:$component.nls.bankCodeSubmitTitle}, text:$context.data.code, click:$component.bankCodeSubmit.bind(null,$context.data)"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="oj-flex-item no-pad-cols">
+                            <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-flex-item oj-sm-12 label">
+                                    <oj-label for="name"><span data-bind="text:$component.nls.bankName"></span></oj-label>
+                                </div>
+                                <div id="name" class="oj-flex-item oj-sm-12" data-bind="text:$context.data.name">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ko if: $component.clearingCodeType() !== 'SWI' -->
+                        <div class="oj-flex-item no-pad-cols">
+                            <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-flex-item oj-sm-12 label">
+                                    <oj-label for="branch"><span data-bind="text:$component.nls.branch"></span></oj-label>
+                                </div>
+                                <div id="branch" class="oj-flex-item oj-sm-12" data-bind="text:$context.data.branchName">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <div class="oj-flex-item no-pad-cols">
+                            <div class="oj-flex oj-flex-items-pad">
+                                <div class="oj-flex-item oj-sm-12 label">
+                                    <oj-label for="address"><span data-bind="text:$component.nls.address"></span></oj-label>
+                                </div>
+                                    <!-- ko foreach: $component.fromObjectToArray($context.data.branchAddress) -->
+                                    <div id="address" class="oj-flex-item oj-sm-12" data-bind="text:$data">
+                                    </div>
+                                    <!-- /ko -->
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </script>
+        </div>
+        <!-- /ko -->
+    </div>
+</modal-window>

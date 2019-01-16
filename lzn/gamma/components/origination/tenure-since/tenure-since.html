@@ -1,0 +1,31 @@
+<!-- ko if: $component.monthsLoaded() -->
+<div class="oj-flex oj-flex-items-pad tenure-since">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3" data-bind="css:labelClasses">
+    <oj-label :for="[[rootId]]"><span data-bind="text:label"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-lg-7" data-bind="attr:{'id': rootId, 'aria-label':label}">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item label oj-sm-6 oj-md-1 oj-lg-2">
+        <oj-label :for="[[monthsId]]"><span data-bind="text:$component.resource.tenure_month"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-6 oj-md-2 oj-lg-3">
+        <oj-select-one required :id="[[monthsId]]" translations="[[{'required':{messageDetail:$component.resource.messages.month}}]]" :placeholder="" disabled="[[$component.disableInputs()]]" on-value-changed="[[$component.monthChange]]" value="{{tenureMonths}}">
+            <!-- ko foreach: optionMonths -->
+            <oj-option value="{{code}}"><span data-bind="text:$component.resource.generic.common.months[$data.description]"></span></oj-option>
+            <!-- /ko -->
+        </oj-select-one>
+      </div>
+      <div class="oj-flex-item label oj-sm-6 oj-md-1 oj-lg-2">
+        <oj-label :for="[[yearsId]]"><span data-bind="text:$component.resource.tenure_year"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-6 oj-md-2 oj-lg-3 padding-left">
+        <oj-select-one required :id="[[yearsId]]" translations="[[{'required':{messageDetail:$component.resource.messages.year}}]]" disabled="[[$component.disableInputs()]]" on-value-changed="[[$component.yearChange]]" :placeholder="" value="{{tenureYears}}">
+            <!-- ko foreach: optionYears -->
+            <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+            <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /ko -->

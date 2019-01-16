@@ -1,0 +1,78 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div params="rootModel : $component" class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+        <div class="oj-flex oj-flex-items-pad oj-sm-12">
+            <oj-checkboxset id="forexDeal" class="oj-flex-item oj-sm-12" value="{{$component.params.usePreBookedDeal}}" on-value-changed="{{usePreBookedDealHandler}}" disabled="[[!$component.params.dealsAvailable()]]">
+                <oj-option id="acceptCondition" value="{{$component.resource.forexDealBooking.usePreExistingDeals}}">
+                    <span data-bind="text:$component.resource.forexDealBooking.usePreExistingDeals"></span>
+                </oj-option>
+            </oj-checkboxset>
+        </div>
+        <!-- ko if:params.usePreBookedDeal().length -->
+        <div class="oj-flex oj-flex-items-pad ">
+            <!-- ko ifnot:params.dealDetails() -->
+            <div class="oj-flex-item oj-sm-12 ">
+                <oj-label for="dealNumber" class="oj-flex-item oj-lg-12">
+                    <span data-bind="text:$component.resource.forexDealBooking.dealNumber"></span>
+                </oj-label>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-lg-8 oj-sm-8">
+                    <oj-validation-group id="verify-dealNumber-tracker">
+                        <oj-input-text id="dealNumber" class="oj-flex-item oj-sm-12" required validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resource.forexDealBooking.invalidDealNo,{})]]" value="{{$component.params.dealId}}"></oj-input-text>
+                        <div class="oj-flex-item oj-sm-12">
+                            <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.forexDealBooking.lookUpDealNo,'title':$component.resource.forexDealBooking.lookUpDealNoTitle},text:$component.resource.forexDealBooking.lookUpDealNo,click:$component.openLookup">
+                            </a>
+                        </div>
+                    </oj-validation-group>
+                </div>
+                <div class="oj-flex-item oj-lg-4 oj-sm-4">
+                    <oj-button class="action-button-secondary" id="verify" on-click="[[verifyCode]]">
+                        <span slot="startIcon" class="icons icon-verify"></span>
+                        <span data-bind="text:$component.resource.common.verify"></span>
+                    </oj-button>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:params.dealDetails() -->
+            <div>
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.forexDealBooking.dealNumber, value : $component.params.dealId"></row>
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.forexDealBooking.dealType, value : $component.dealType"></row>
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.forexDealBooking.exchangeRate, value : $component.exchangeRate"></row>
+                <oj-button class="action-button-secondary" id="refresh" on-click="[[$component.resetCode]]">
+                    <span slot="startIcon" class="icons icon-refresh"></span>
+                    <span data-bind="text:$component.resource.common.reset"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- ko if:params.usePreBookedDeal().length && $component.params.showList() && $baseModel.large() -->
+        <modal-window params="baseModel : $baseModel, rootModel : $component,id:'lookUpDealNumber', header : $component.resource.forexDealBooking.preBookedDeals, closeHandler : $component.closeModal">
+            <div class="oj-flex oj-flex-items-pad">
+                <div data-bind='component:{name: "view-forex-deal", params:{rootModel : {
+                        params : {
+                        retainedData : $component.params.retainedData,
+                        transferCurrency : $component.params.transferCurrency,
+                        transferAmount: $component.params.transferAmount,
+                        currency2 : $component.params.currency2,
+                        expiryDate : $component.params.expiryDate,
+                        selectedDealId: $component.selectedDealId,
+                        selectedDealDetails : {
+                            dealNumber : $component.params.dealId,
+                            dealType : $component.dealType,
+                            exchangeRate : $component.exchangeRate
+                        },
+                        lookUp: $component.lookUpDeal,
+                        usePreBookedDeal : $component.params.usePreBookedDeal,
+                        dealsAvailable : $component.params.dealsAvailable,
+                        dealPresent : $component.dealPresent,
+                        dealDetails: $component.params.dealDetails,
+                        firstRowDealId: $component.firstRowDealId
+                    }
+                }}}'>
+                </div>
+            </div>
+        </modal-window>
+        <!-- /ko -->
+    </div>
+</div>

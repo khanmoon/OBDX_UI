@@ -1,0 +1,40 @@
+<!-- ko if: $component.showData-->
+  <!-- ko ifnot: $component.showHeader-->
+  <action-header params="baseModel : $baseModel, rootModel : $data, heading: $component.nls.fieldname.review"></action-header>
+  <!-- /ko -->
+    <!-- ko if: $component.showHeader-->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.generic.common.review , reviewHeader :$component.nls.fieldname.addReviewHeaderMsg}}"></div>
+
+    <!-- /ko -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading :'' ">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+          <label for="groupCode" data-bind="text:$component.nls.fieldname.transactionGroupCode"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9 label">
+          <span id="groupCode" data-bind="text:$component.createtransactionGroupCode"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+          <label for="groupDescription" data-bind="text:$component.nls.fieldname.transactionGroupDesc"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
+          <span id="groupDescription" data-bind="text:$component.createtransactionGroupDesc">               </span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad oj-lg-8">
+        <!-- ko if: !$baseModel.small()-->
+        <!-- display: 'grid', -->
+        <oj-table id="table" :aria-label="[[$component.nls.readTable]]" translations="[[{
+                                            msgNoData:''}]]" columns="[[[{headerText:$component.nls.fieldname.transactionId,field:'recordNo',style:'width: 10%'},{headerText:$component.nls.fieldname.transactions,field:'transaction'}]]]" columns-default="[[{sortable:'enabled'}]]"
+          selection-mode="[[{row:'single',column:'single'}]]" data="[[$component.reviewdatasource]]">
+          <caption class="hide-label" data-bind="text:$component.nls.title"></caption>
+        </oj-table>
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+    </page-section>
+<!-- /ko -->

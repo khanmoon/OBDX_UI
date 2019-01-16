@@ -1,0 +1,85 @@
+<div class="form-main-container smsheader full-width">
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.events.labels.reviewHeading , reviewHeader : $component.editReviewMessage}}"></div>
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div data-bind='component: {name: "nav-bar", params:{rootModel: $data, menuOptions: menuOptions, uiOptions: uiOptions, navBarDescription: $component.nls.navBarDescription}}'></div>
+    <div class="oj-flex oj-flex-items-pad"></div>
+    <div data-bind="with:$component.eventTemplateMap()">
+      <div class="oj-flex-item oj-flex-items-pad">
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.events.labels.events , value : event.eventName"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.events.labels.locale , value : $component.nls.events.locale[locale]"></row>
+      </div>
+    </div>
+    <div data-bind="with:$component.eventTempUpdate().dto">
+      <!-- ko if:$component.smsSelected() -->
+      <div id="pinRequired">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label><span data-bind="text:$component.nls.events.labels.pinRequired"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-switch id="switch" value="{{pinRequired}}" disabled="[[$component.disabledState]]"></oj-switch>
+          </div>
+        </div>
+      </div>
+      <div id="inputAttributes">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label><span data-bind="text:$component.nls.events.labels.input"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9 label">
+            <span class="smsheader__value" data-bind="text:requestTemplate.message">
+                  </span>
+            <ul id="sortable" class="smsheader__list smsheader-list">
+              <!-- ko foreach:requestTemplate.requestDataAttributes -->
+              <li class="smsheader-list__listItem smsheader-list-listItem" data-bind="attr:{id : attribute.attributeID}">
+                <div class="smsheader-list-listItem__text" data-bind="text:attribute.attributeID">
+                </div>
+              </li>
+              <!-- /ko -->
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:$component.missedCallSelected() -->
+      <div id="inputAttributes">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label><span data-bind="text:$component.nls.events.labels.contactNumber"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-input-text id="input" value="{{requestTemplate.message}}" :aria-label="[[$component.nls.events.labels.contactNumber]]" disabled="[[$component.disabledState]]"></oj-input-text>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+      <div class="oj-flex oj-flex-items-pad row">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 row__label label-container">
+          <oj-label class="label-container__label"><span data-bind="text:$component.nls.events.labels.response"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 row__value" data-bind="css: $data.dataClass, html : responseTemplate.message">
+        </div>
+      </div>
+
+    </div>
+  </page-section>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 ">
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <oj-table id="table" :aria-label="[[$component.nls.events.labels.dataAttribute]]" columns="[[[{headerText:$component.nls.events.labels.dataAttribute,field:'responseDataAttributes'}]]]" columns-default="[[{sortable:'disabled'}]]" selection-mode="[[{row:'single',column:'single'}]]"
+      data="[[$component.datasource]]">
+      <caption class="hide-label" data-bind="text:$component.nls.events.labels.dataAttribute"></caption>
+    </oj-table>
+  </page-section>
+</div>
+  <div class="oj-row button-container">
+    <oj-button class="action-button-primary" on-click="[[confirm]]">
+      <span data-bind="text:$component.nls.genericAlert.confirm"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+      <span data-bind="text:$component.nls.genericAlert.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[back]]">
+      <span data-bind="text:$component.nls.genericAlert.back"></span>
+    </oj-button>
+  </div>
+</div>

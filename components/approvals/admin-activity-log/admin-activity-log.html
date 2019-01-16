@@ -1,0 +1,18 @@
+<div class="full-width">
+    <!-- ko if : transactionListLoaded -->
+    <oj-table id="adminActivityLogTable" columns-default="[[{sortable:'enabled'}]]" columns="[[[{headerText:$component.Nls.activityLogDetails.labels.date,template:'date-time',field:'creationDate'},{headerText:$component.Nls.activityLogDetails.labels.description,field:'description'},{headerText:$component.Nls.activityLogDetails.labels.referenceNo,field:'transactionId',template:'approval_link'},{headerText:$component.Nls.activityLogDetails.labels.status,template:'activityStatus',field:'status'}]]]" data="[[paginationDataSource]]">
+      <caption class="hide-label" data-bind="text:$component.Nls.activityLogDetails.labels.title"></caption>
+      <template slot="approval_link">
+              <a href="javascript:void(0)" data-bind="attr:{title:$baseModel.format($component.Nls.activityLogDetails.labels.linkDetails,{transactionId:$current.row.transactionId})},text:$current.row.transactionId,click:$dashboard.loadComponent.bind($data,'transaction-detail', $current.row)"></a>
+      </template>
+      <template slot="date-time">
+              <div data-bind='component:{name: "date-time", params:{rootModel: $component,date:$current.row.creationDate}}'></div>
+      </template>
+      <template slot="activityStatus">
+              <div data-bind="template : {name : 'approvals/status', data : {status :$current.row.processingStatus ,noOfApprovalSteps: $current.row.noOfApprovalSteps, nls : $component.Nls.activityLogDetails.status}}"></div>
+      </template>
+    </oj-table>
+    <oj-paging-control slot="bottom" :id="[[$component.Nls.activityLogDetails.labels.title+($baseModel.currentIdCount())]]" :page-size="[[10]]" data="[[paginationDataSource]]"></oj-paging-control>
+
+    <!-- /ko -->
+</div>

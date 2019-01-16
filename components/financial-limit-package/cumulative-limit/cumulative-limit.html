@@ -1,0 +1,39 @@
+<div class="oj-sm-12">
+    <!-- ko if:$component.showCummulativeSearchSection() -->
+    <div class="oj-flex oj-flex-items-pad  oj-sm-12 limitSearchBox">
+        <div class="oj-flex-item  oj-lg-3 label">
+         <!-- ko if:$component.periodicity()==="DAILY" -->
+            <oj-label :for="[[('cummulative_limits_list_'+$component.periodicity()+$parentContext.$parentContext.$index()+$index())]]"><span data-bind="text:$component.nls.cummulative_limit.limit_section_daily"></span></oj-label>
+            <!-- /ko -->
+            <!-- ko if:$component.periodicity()==="MONTHLY" -->
+            <oj-label :for="[[('cummulative_limits_list_'+$component.periodicity()+$parentContext.$parentContext.$index()+$index())]]"><span data-bind="text:$component.nls.cummulative_limit.limit_section_monthly"></span></oj-label>
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex-item  oj-lg-8">
+            <oj-select-one class="cummulative_limits_list oj-flex-item  oj-lg-8" :list="[['cummulative_limits_list_'+$component.periodicity()+$parentContext.$parentContext.$index()+$index()]]" :id="[['cummulative_limits_list_'+$component.periodicity()+$parentContext.$parentContext.$index()+$index()]]" disabled="[[!editable]]" :placeholder="[[$component.nls.cummulative_limit.select_limit]]" value="{{selectedCumulativeRecord}}">
+                <!-- ko foreach:cummulativeLimitsData -->
+                <oj-option value="{{limitId}}"><span data-bind="text:$baseModel.format($component.nls.cummulative_limit.transaction_limit_search,{id:limitName,name:limitDescription})"></span></oj-option>
+                <!-- /ko -->
+            </oj-select-one>
+        </div>
+        <!--a href="javascript:void(0)" data-bind="click:deleteCurrentSelection,text:$component.nls.cummulative_limit.delete"></a-->
+    </div>
+    <span data-bind="template: { afterRender: checkEdit }"></span>
+    <!-- /ko -->
+
+    <!-- ko if:$component.cummulativeLimitSelected -->
+    <div class="oj-flex-item  limitSelected">
+        <div class="oj-flex oj-flex-items-pad  oj-sm-12 viewLimit">
+            <div class="oj-flex-item  oj-lg-1"></div>
+            <div class="oj-flex-item  oj-lg-3 label">
+                <oj-label :for="[['resultName_'+$index()]]"><span data-bind="text:$component.nls.cummulative_limit.code"></span></oj-label>
+                <span data-bind="attr:{id:'resultid_'+$index()},text:limitName"></span>
+            </div>
+            <div class="oj-flex-item  oj-lg-5 label">
+                <oj-label :for="[['resultdesc_'+$index()]]"><span data-bind="text:$component.nls.cummulative_limit.description"></span></oj-label>
+                <span data-bind="attr:{id:'resultdesc_'+$index()},text:limitDescription"></span>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>

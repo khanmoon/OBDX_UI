@@ -1,0 +1,38 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <!-- ko if: $component.accountPreferenceInfoLoaded() -->
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-2 oj-md-offset-1">
+      <oj-label class="oj-label" for="availRedrawFacility"><span data-bind="text:$component.resource.availRedrawFacility"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4  oj-lg-3 label">
+      <oj-buttonset-one id="availRedrawFacility" required on-value-changed="[[$component.redrawFacilitySelected]]" value="{{redrawFacility}}">
+        <oj-option name="applicationTypes" class="applicationTypes" value="{{'OPTION_YES'}}" :id="[['redrawFacilityYes']]"><span data-bind="attr: {for: 'redrawFacilityYes'},text:$component.resource.generic.common.yes"></span></oj-option>
+        <oj-option name="applicationTypes" class="applicationTypes" value="{{'OPTION_NO'}}" :id="[['redrawFacilityNo']]"><span data-bind="attr: {for: 'redrawFacilityNo'},text:$component.resource.generic.common.no"></span></oj-option>
+      </oj-buttonset-one>
+    </div>
+  </div>
+  <!-- ko if: $component.frequencyLoaded() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-2 oj-md-offset-1">
+      <oj-label for="statementFrequency"><span data-bind="text:$component.resource.frequencyForStatement"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4  oj-lg-3 label">
+      <oj-select-one id="statementFrequency" :placeholder="" value="{{$component.applicantObject().loanAccountPreference.loanAccountAdditionalDetails.statementFrequncy}}">
+        <!-- ko foreach: $component.preferenceFrequencies() -->
+        <!-- ko if: code !== "NA" -->
+        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item oj-lg-10 oj-md-10">
+    <oj-button id="submitAccountPreference" class="form-button-secondary" on-click="[[$component.submitAccountPreference]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+  </div>
+</div>

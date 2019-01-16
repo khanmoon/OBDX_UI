@@ -1,0 +1,78 @@
+<div class="dashboard-admin-action-card-container oj-flex oj-flex-items-pad">
+  <h3 class="oj-flex-item admin-card-header__title" data-bind="text:$component.resource.topThree"></h3>
+</div>
+<div class="dashboard-admin-action-card-container oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item admin-card__description" data-bind="html:$component.resource.topThreeDescription">
+  </div>
+</div>
+<div class="oj-flex">
+  <!-- ko if: showTopThreeBottomThreeTxn-->
+  <!-- ko foreach: $component.allPieChartData -->
+  <!-- ko ifnot: $data.taskId === "GENERIC" -->
+  <div class="oj-flex-item oj-md-4 oj-sm-12 feedback-analytics">
+    <div class="oj-panel">
+      <div class="dashboard-admin-action-card-container oj-flex oj-flex-items-pad">
+        <h3 class="oj-flex-item admin-card-header__title" data-bind="text: $data.taskName"></h3>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-8">
+          <oj-chart class="feedback-analytics__chartForSubmit" :id="[['pieChartForTop'+$index()]]" type="pie" series="[[$data.pieChartData]]" style-defaults.pie-inner-radius="[[$component.innerRadius]]" animation-on-display="auto" animation-on-data-change="auto" hover-behavior="dim">
+          </oj-chart>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 feedback-analytics__content feedback-analytics-content">
+          <div class="feedback-analytics-content__avgRatingForPie feedback-analytics-content-avgRating">
+            <oj-label><span data-bind="text:$component.resource.totalAverageRating"></span></oj-label>
+            <div class="feedback-analytics-content-avgRating__value" data-bind="text:$data.totalAverageRating"></div>
+            <oj-rating-gauge :id="[['gaugeForTop'+$index()]]" step="1" readonly value="{{$data.totalAverageRating}}"></oj-rating-gauge>
+          </div>
+          <div class="feedback-analytics-content__totalRating feedback-analytics-content-totalRating">
+            <oj-label><span data-bind="text:$component.resource.totalRating"></span></oj-label>
+            <div class="feedback-analytics-content-totalRating__value" data-bind="text:$data.totalRating"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->
+</div>
+<div class="dashboard-admin-action-card-container oj-flex oj-flex-items-pad">
+  <h3 class="oj-flex-item admin-card-header__title" data-bind="text:$component.resource.bottomThree"></h3>
+</div>
+<div class="dashboard-admin-action-card-container oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item admin-card__description" data-bind="html:$component.resource.bottomThreeDescription">
+  </div>
+</div>
+<div class="oj-flex">
+  <!-- ko if: showTopThreeBottomThreeTxn-->
+  <!-- ko foreach: $component.allPieChartDataBottom -->
+  <!-- ko ifnot: $data.taskId === "GENERIC" -->
+  <div class="oj-flex-item oj-md-4 oj-sm-12 feedback-analytics">
+    <div class="oj-panel">
+      <div class="dashboard-admin-action-card-container oj-flex oj-flex-items-pad">
+        <h3 class="oj-flex-item admin-card-header__title" data-bind="text: $data.taskName"></h3>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-8">
+          <oj-chart class="feedback-analytics__chartForSubmit" :id="[['pieChartForBottom'+$index()]]" type="pie" series="[[$data.pieChartData]]" style-defaults.pie-inner-radius="[[$component.innerRadius]]" animation-on-display="auto" animation-on-data-change="auto" hover-behavior="dim">
+          </oj-chart>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 feedback-analytics__content feedback-analytics-content">
+          <div class="feedback-analytics-content__avgRatingForPie feedback-analytics-content-avgRating">
+            <oj-label><span data-bind="text:$component.resource.totalAverageRating"></span></oj-label>
+            <div class="feedback-analytics-content-avgRating__value" data-bind="text:$data.totalAverageRating"></div>
+            <oj-rating-gauge :id="[['gaugeForBottom'+$index()]]" step="1" readonly value="{{$data.totalAverageRating}}"></oj-rating-gauge>
+          </div>
+          <div class="feedback-analytics-content__totalRating feedback-analytics-content-totalRating">
+            <oj-label><span data-bind="text:$component.resource.totalRating"></span></oj-label>
+            <div class="feedback-analytics-content-totalRating__value" data-bind="text:$data.totalRating"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->
+</div>

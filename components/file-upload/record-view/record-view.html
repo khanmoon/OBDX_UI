@@ -1,0 +1,86 @@
+<div class="form-main-container">
+    <!-- ko if:recordDetailsLoaded() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div data-bind="with:$component.recordDetails">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                    <oj-label><span data-bind="text:$component.Nls.fileName"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text : (('fileName' in $data)?fileName:'-')"></span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                    <oj-label><span data-bind="text:$component.Nls.purposeOfRemit"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text : (('purpose' in $data)?purpose:'-')"></span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                    <oj-label><span data-bind="text:$component.Nls.recordRefNo"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text : (('recRefId' in $data)?recRefId:'-')"></span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                    <oj-label><span data-bind="text:$component.Nls.rStatus"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text : (('recStatusDesc' in $data)?recStatusDesc:'-')"></span>
+                </div>
+            </div>
+            <!-- ko if: 'txnId' in $data -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                    <oj-label><span data-bind="text:$component.Nls.txnRefId"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                    <span data-bind="text : (('txnId' in $data)?txnId:'-')"></span>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:'errorMessage' in $data -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                    <oj-label><span data-bind="text:$component.Nls.errorDetail"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+                    <span data-bind="text : (('errorMessage' in $data)?errorMessage:'-')"></span>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div data-bind="template: { name: $component.loadPartialComponentName() ,data:$component.recordDetails}"></div>
+    </page-section>
+    <!-- /ko -->
+    <!-- ko if:showBackButton() -->
+    <div class="button-container">
+        <!-- ko if:$component.selectedFile().isFinancial && $component.selectedRecord().status === 'PROCESSING_IN_PROGRESS' -->
+        <oj-button class="action-button-secondary" id="delete" on-click="[[$component.showModalWindow]]">
+      <span data-bind="text:$component.Nls.delete"></span>
+</oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+      <span data-bind="text:$component.Nls.back"></span>
+</oj-button>
+    </div>
+    <modal-window params="baseModel : $baseModel, rootModel : $data,id:'confirm-dialog', header: $component.Nls.warning">
+        <div class="confirm-dialog">
+            <div class="confirm-dialog__container confirm-dialog-container">
+                <div class="oj-flex oj-flex-items-pad confirm-dialog-container__message">
+                    <div class="oj-flex-item oj-sm-12" data-bind="text:$component.Nls.deleteConfirmationMessage"></div>
+                </div>
+                <div class="confirm-dialog-container__buttons button-container">
+                    <oj-button class="action-button-secondary " on-click="[[function(){$('#confirm-dialog').hide().trigger('closeModal');}]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.Nls.no"></span>
+</oj-button>
+                    <oj-button class="action-button-primary " on-click="[[$component.deleteRecords.bind($component,$component.selectedFile().fileId,$component.selectedRecord().recRefId,$component.readRecord)]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.Nls.yes"></span>
+</oj-button>
+                </div>
+            </div>
+        </div>
+    </modal-window>
+    <!-- /ko -->
+</div>

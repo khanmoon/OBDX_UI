@@ -1,0 +1,67 @@
+<!-- ko if:$component.verificationModel.aliasType() === 'FACEBOOK' -->
+<social-media class="hide" params="baseModel : $baseModel, rootModel: $data ,
+                                    social_media_type:'facebook',
+                                    api:'USER_PROFILE',
+                                    callback:$component.loadUserProfile,
+                                    autoLogin: true,
+                                    id:'social' "></social-media>
+
+<!-- /ko -->
+<div class="oj-flex oj-flex-item oj-flex-items-pad security-code-verification">
+  <div class="oj-flex-item oj-lg-8 oj-sm-12 oj-md-12 oj-flex-items-pad ">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <!-- ko if:$component.showAliasValueAndAliasMode() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-flex-items-pad label">
+          <oj-label for="selectmode"><span data-bind="text:$component.resource.payments.peertopeer.selectmode"></span></oj-label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 radio-padding">
+          <oj-radioset class="oj-choice-direction-row" :aria-label="[[$component.verificationModel.aliasType]]" value="{{$component.verificationModel.aliasType}}" on-value-changed="[[$component.changeValue]]"><!-- ko foreach: transferToArray --><oj-option name="security" value="{{value}}" :id="[[id]]" :data-id="[[id]]"><span class="label" data-bind="attr: {for: id},text: label"></span></oj-option><!-- /ko --></oj-radioset>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <div data-bind="with:verificationModel">
+        <!-- ko if:$component.showAliasValueAndAliasMode() -->
+          <!-- ko if:$component.verificationModel.aliasType() !== 'FACEBOOK' -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+              <oj-label for="aliasValue"><span data-bind="text:$component.resource.payments.peertopeer[$component.verificationModel.aliasType()]"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+              <oj-input-text id="aliasValue" maxlength="80" required :invalidcomponenttracker="[[$component.validationTracker]]" value="{{aliasValue}}"></oj-input-text>
+            </div>
+          </div>
+          <!-- /ko -->
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+            <oj-label for="securityCode"><span data-bind="text:$component.resource.payments.peertopeer.enterSecurityCode"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+            <oj-input-text id="securityCode" maxlength="10" required :invalidcomponenttracker="[[$component.validationTracker]]" value="{{securityCode}}"></oj-input-text>
+          </div>
+        </div>
+      </div>
+
+        <div class="button-container button-left">
+          <oj-button class="action-button-primary" id="newuser" on-click="[[newUser]]">
+            <span data-bind="text:$component.resource.payments.peertopeer.newUser"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" id="existingUser" on-click="[[existingUser]]">
+            <span data-bind="text:$component.resource.payments.peertopeer.existing"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" id="back" on-click="[[back]]">
+            <span data-bind="text:$component.resource.common.back"></span>
+          </oj-button>
+        </div>
+
+    </page-section>
+  </div>
+  <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'claim-money'"></help>
+
+  </div>
+</div>

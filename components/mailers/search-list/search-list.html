@@ -1,0 +1,43 @@
+<div class="form-main-container">
+
+    <page-section params="baseModel : $baseModel, rootModel :$component,heading : ''">
+
+        <!-- ko if: mailersListFetched -->
+        <div id="pagingControlAll" class="full-width">
+
+        <oj-table id="table" :aria-label="[[$component.nls.fieldname.table]]" columns="[[[{headerText:nls.fieldname.mailerId,field:'code','renderer': $oj.KnockoutTemplateUtils.getRenderer('mailId', true) },{headerText:nls.fieldname.mailerName,field:'description','renderer': $oj.KnockoutTemplateUtils.getRenderer('mailName', true)},{headerText:$component.nls.fieldname.dateCreated,field:'creationDate','renderer': $oj.KnockoutTemplateUtils.getRenderer('dateCreated', true)},{headerText:$component.nls.fieldname.sendDate,field:'activationDate','renderer': $oj.KnockoutTemplateUtils.getRenderer('sendDate', true)},{headerText:$component.nls.fieldname.status,field:'status'}]]]" data="[[paginationDataSource]]">
+            <caption class="hide-label" data-bind="text:$component.nls.headers.mailer"></caption>
+        </oj-table>
+        <oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[paginationDataSource]]"></oj-paging-control>
+      </div>
+
+
+        <script type="text/html" id="mailId">
+            <td>
+                <a href="javascript:void(0)" data-bind="text:$context.row.code, click:$component.onMailerSelected.bind($data,$context.row)"></a>
+            </td>
+        </script>
+
+        <script type="text/html" id="mailName">
+            <td>
+                <div href="javascript:void(0)" data-bind="text:$context.row.description"></div>
+            </td>
+        </script>
+
+        <script type="text/html" id="dateCreated">
+            <td>
+                <div data-bind="text:$baseModel.formatDate($context.row.creationDate,'dateTimeStampFormat')"></div>
+            </td>
+        </script>
+
+        <script type="text/html" id="sendDate">
+            <td>
+                <div data-bind="text:$baseModel.formatDate($context.row.activationDate,'dateTimeStampFormat')"></div>
+            </td>
+        </script>
+
+        <!-- /ko -->
+
+
+    </page-section>
+</div>

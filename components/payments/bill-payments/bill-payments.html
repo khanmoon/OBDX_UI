@@ -1,0 +1,219 @@
+<oj-validation-group :id="[['billPaymentsTracker' + ($component.referenceHandle ? $component.referenceHandle.id : '')]]">
+<!-- ko ifnot:$component.showPaymentOverview -->
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div data-bind="css:$component.isMultipleBillPayment?'oj-flex-item oj-sm-12':'oj-flex-item oj-sm-12 oj-md-6 oj-lg-4'">
+        <!-- ko if:stageOne() && isDateLoaded() -->
+        <div data-bind='component:{name:"warning-message-dialog", params:{rootModel: $component }}'></div>
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+            <!-- ko if:$component.txnFailed -->
+            <div class="oj-flex oj-flex-items-pad pfm">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 error-bar">
+                    <span class="error-icon icons icon-alert"></span>
+                    <span class="error-msg" id="confirm" data-bind="text:$component.failureReason"></span>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- Pay to -->
+            <!-- ko if:showError() -->
+            <div class="oj-flex oj-flex-items-pad center">
+                <span data-bind="text: resource.billPayment.selectRelationShipNumber"> </span>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad row-margin">
+                <div class="oj-flex-item oj-sm-12 label ">
+                    <oj-label :for="[['transferto'+ $baseModel.incrementIdCount()]]"> <span data-bind="text:resource.billPayment.billerName"></span></oj-label>
+                </div>
+                <div data-bind="css:$component.isMultipleBillPayment?'oj-flex-item oj-sm-9':'oj-flex-item oj-sm-12'">
+                    <!-- ko if:isBillerListLoaded() -->
+                    <oj-select-one required :id="[['transferto'+ $baseModel.currentIdCount()]]" :aria-label="[[resource.billPayment.billerName]]" on-value-changed="[[getRelationshipNumbers]]" disabled="[[fromFavourites()]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[resource.billPayment.pleaseSelect]]" value="{{payBillModel.billerId}}">
+                        <!-- ko foreach:billerName() -->
+                        <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                    <!-- /ko -->
+                </div>
+                <!-- ko if: $component.isMultipleBillPayment && $component.masterBatchArray().length > 1 -->
+                <div class="oj-flex-item oj-sm-3 right">
+                    <a class="action-icon" href="#" data-bind="attr:{'aria-label':$component.resource.billPayment.deleteTitle,'alt':$component.resource.generic.common.delete,
+                    'title':$component.resource.billPayment.deleteTitle },click:$component.removePayment.bind($data, $component.referenceHandle.id)">
+                        <div class="icons icon-delete"></div>
+                    </a>
+                </div>
+                <!-- /ko -->
+            </div>
+            <!-- ko if:isRelationshipNumbersLoaded() -->
+            <div class="oj-flex oj-flex-items-pad row-margin">
+                <div class="oj-flex-item oj-sm-12 label ">
+                    <oj-label :for="[['relationship'+ $baseModel.incrementIdCount()]]"> <span data-bind="text:resource.billPayment.relationshipNumber"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-lg-6">
+                    <oj-select-one id="relationship" required :aria-label="[[resource.billPayment.relationshipNumber]]" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[fromFavourites()]]" :placeholder="[[resource.billPayment.pleaseSelect]]" value="{{payBillModel.relationshipNumber}}">
+                        <!-- ko foreach:relationshipNumbers() -->
+
+                            <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- Amount -->
+            <div class="oj-flex-item oj-sm-12 oj-lg-6" data-bind="component: {
+                            name: 'amount-input', params: {
+                            amount :payBillModel.amount.amount,
+                            label : resource.billPayment.amount,
+                            currency: $component.currency(),
+                            converter:$baseModel.formatCurrency,
+                            currencyListRequired : false,
+                            validator:$component.validationTracker,
+                            isMandatory:true,
+                            rootId:'bill-amount'+$baseModel.incrementIdCount(),
+                            currencyURL : '',
+                            currencyParser :'',
+                            rootClass:'form-input'
+                        }
+                         }">
+                <div class="oj-flex-item">
+                    <a data-id="viewLimits" href="#" class="form-button-link" data-bind="attr:{for : 'view-limit-button' + $baseModel.incrementIdCount(),'alt':$data.resource.billPayment.viewlimits,'title':$data.resource.billPayment.viewlimitsTitle},click:$data.viewLimits, text:$data.resource.billPayment.viewlimits">
+                            </a>
+                </div>
+            </div>
+            <modal-window params="baseModel : $baseModel, rootModel : $component, header:$component.resource.billPayment.mylimits, id:'viewlimits-bill-payment' + $component.incrementId">
+              <!-- ko if : $component.viewLimitsFlag() -->
+              <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                <!-- ko if: $component.loadAccessPointList() -->
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12">
+                    <span data-bind="text:$component.resource.billPayment.channel"></span>
+                    <a class="oj-label-inline" id="channel-disclaimer" href="javascript:void(0)" data-bind="attr:{title:$component.resource.billPayment.showInformation},click:$component.channelPopup.bind($data,true)">
+            <span class="icons icon-2x icon-information iconStyling"></span></a>
+                  </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4">
+                    <oj-select-one :id="[['channel']]" value="{{selectedChannelIndex}}" on-value-changed="[[channelTypeChangeHandler]]" :placeholder="[[$component.resource.billPayment.pleaseSelect]]">
+                      <!-- ko foreach:$component.channelList -->
+                      <oj-option value="[[$index]]"><span data-bind="text:description"></span></oj-option>
+                      <!-- /ko -->
+                    </oj-select-one>
+                  </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: viewLimitsFlag() && $component.selectedChannel() -->
+
+                <div data-bind="component:{name:'transfer-view-limits', params:{rootModel: $component,type:'PC_F_BLPMT',accessPointValue:$component.selectedChannelType}}">
+                </div>
+                <!-- /ko -->
+
+              </page-section>
+              <!-- /ko -->
+              <div class="button-container">
+                <oj-button class="action-button-primary" on-click="[[$component.closeLimitsModal]]">
+                  <span data-bind="text:$component.resource.billPayment.ok"></span>
+                </oj-button>
+              </div>
+            </modal-window>
+            <!-- Transfer From -->
+            <div class="oj-flex-item oj-sm-12 oj-lg-10">
+                <account-input params="baseModel : $baseModel, rootModel: $data ,label : resource.billPayment.transferFrom,taskCode : $component.currentTask(),
+                        type : 'balance' , account : transferFrom ,additionalDetails : additionalDetails,validator:$component.validationTracker"></account-input>
+            </div>
+            <!-- BillDate -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label ">
+                    <oj-label :for="[['billDate'+ $baseModel.incrementIdCount()]]"> <span data-bind="text:resource.billPayment.billDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-6">
+                    <oj-input-date required :aria-label="[[resource.billPayment.billDate]]" :id="[['billDate'+ $baseModel.currentIdCount()]]" value="{{payBillModel.billDate}}" converter="[[$baseModel.dateConverter]]" max="[[$oj.IntlConverterUtils.dateToLocalIso($component.maxbillDate())]]"></oj-input-date>
+                </div>
+            </div>
+            <!-- Bill Number -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label ">
+                    <oj-label :for="[['billNumber'+ $baseModel.incrementIdCount()]]"> <span data-bind="text:resource.billPayment.billNumber"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-lg-6">
+                    <oj-input-text required maxlength="25" :id="[['billNumber'+ $baseModel.currentIdCount()]]" :aria-label="[[resource.billPayment.billNumber]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resource.billPayment.invalidBillNumbrMsg,{
+                        type:'length',options:{
+                            min:1,max:25}})]]" value="{{payBillModel.billNumber}}"></oj-input-text>
+
+                </div>
+            </div>
+            <!-- Payment Desc -->
+            <div class="oj-flex-item oj-sm-12 oj-lg-6" data-bind="component:{name: 'comment-box',
+                            params:{
+                            rootModel: $root,
+                            label:resource.billPayment.note,
+                            rootId:'payComment'+ $baseModel.incrementIdCount(),
+                            rootClass:'form-input',
+                            required:$component.isCommentRequired,
+                            validator:$component.validationTracker,
+                            comment:payBillModel.remarks}}"></div>
+        </page-section>
+        <!-- Pay Button-->
+        <!-- ko if:!$component.isMultipleBillPayment-->
+        <div class="oj-flex oj-flex-items-pad button-container ">
+            <oj-button class="action-button-primary " on-click="[[verifyPayment]]"><span slot="startIcon" class="icons icon-pay"></span>
+      <span data-bind="text:resource.billPayment.pay"></span>
+</oj-button>
+            <!-- ko if:fromFavourites() && userSegment==='CORP' -->
+            <oj-button class="action-button-secondary " id="unfavourite-button" on-click="[[$component.removeFavourite]]"><span slot="startIcon" class="icons icon-unfavourite"></span>
+      <span data-bind="text:$component.resource.billPayment.unfavourite"></span>
+</oj-button>
+            <!-- /ko -->
+            <oj-button class="action-button-secondary " id="button" on-click="[[$component.cancel]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.billPayment.cancel"></span>
+</oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.isMultipleBillPayment-->
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary " :for="[['save-button'+ $baseModel.incrementIdCount()]]" on-click="[[$component.verifyPayment.bind($data,null)]]"><span slot="startIcon" class="icons icon-save"></span>
+      <span data-bind="text:$component.resource.billPayment.save"></span>
+</oj-button>
+            <oj-button class="action-button-secondary " :for="[['copynsave-button'+ $baseModel.incrementIdCount()]]" on-click="[[$component.verifyPayment.bind($data,true)]]"><span slot="startIcon" class="icons icon-copy"></span>
+      <span data-bind="text:$component.resource.billPayment.copynsave"></span>
+</oj-button>
+            <!-- <a class="form-button-link" href="#" data-bind="text: $component.payments.common.resetFields, click: $component.refreshDropDown"></a> -->
+            <oj-button class="action-button-tertiary " :for="[['reset-button'+ $baseModel.incrementIdCount()]]" on-click="[[$component.refreshDropDown]]"><span slot="startIcon" class="icons icon-refresh"></span>
+      <span data-bind="text:$component.resource.billPayment.resetFields"></span>
+</oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- Remove favorite Section -->
+        <!-- ko if:removeFavouriteFlag() -->
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <div class="oj-flex oj-flex-items-pad center margin-bottom-20">
+                <div class="question-text" data-bind="text:$baseModel.format($component.resource.billPayment.deleteFavouriteMsg,
+                                             {name : $component.params.accountName,
+                                             amount : $baseModel.formatCurrency($component.params.amount, $component.params.currency)
+                                             })"></div>
+            </div>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary " on-click="[[confirmDeleteFavourite]]"><span slot="startIcon" class="icons icon-remove"></span>
+      <span data-bind="text:$component.resource.billPayment.remove"></span>
+</oj-button>
+            <oj-button class="action-button-secondary " id="button" on-click="[[$component.cancelDeletion]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.billPayment.cancel"></span>
+</oj-button>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- ko if: $baseModel.large() && !$component.isMultipleBillPayment -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'bill-payments'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko if:$component.showPaymentOverview -->
+<!-- ko template: { name: 'payments/bill-payment-overview',data:$component.overviewDetails()} -->
+<!-- /ko -->
+<!-- /ko -->
+</oj-validation-group>
+<oj-popup id="channel-popup" modality="modeless" tail="simple" position.my.horizontal="start" position.my.vertical="top" position.at.horizontal="right" position.at.vertical="bottom">
+  <span data-bind="text:$component.resource.billPayment.showInformation"></span>
+</oj-popup>

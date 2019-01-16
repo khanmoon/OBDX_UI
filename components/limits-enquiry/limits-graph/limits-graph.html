@@ -1,0 +1,246 @@
+<div class="oj-panel limits-graph" id="chart-container">
+  <div class="oj-flex oj-flex-items-pad section">
+
+    <div data-bind="css:($component.flagCorp())?'oj-flex-item oj-sm-12 oj-md-12 oj-lg-12':'oj-flex-item oj-sm-12 oj-md-12 oj-lg-6 view-limits'">
+      <div data-bind="css:($component.flagCorp() || $baseModel.small() || $baseModel.medium())?'dividerBottom':'dividerRight'">
+        <div class="oj-flex">
+          <div class="oj-flex-item">
+            <h3 class="title" data-bind="text:$component.nls.limitsInquiry.messages.dailyLimits"></h3>
+          </div>
+        </div>
+        <!-- ko if:$component.data() && $component.data().periodicLimitDaily -->
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 bottom">
+            <oj-chart id="pieChart" class="pie" type="pie" series="[[pieSeriesDailyAmount]]" groups="[[pieGroupsValue]]" style-defaults.pie-inner-radius="[[innerRadius]]" style-defaults.data-label-position="none" animation-on-data-change="auto" pie-center-label="[[centerLabel1]]"
+              legend.rendered="off">
+            </oj-chart>
+            <div id="iHaveLegends" class="legend">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 countOrAmount" data-bind="text:$component.nls.limitsInquiry.messages.amount">
+                </div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad">
+                <!-- ko foreach: pieSeriesDailyAmount -->
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <div class="oj-flex" data-bind="event: { mouseover: $component.changeCenterLabel.bind($data,'1',$index()), mouseout: $component.changeCenterLabelOut.bind($data,'1',$index())}">
+                    <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2 legend-color-wrapper">
+                      <div class="legend-color" data-bind="style:{background:$data.color}"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text" data-bind="text:$data.name"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text-content-amount" data-bind="text:$baseModel.formatCurrency($data.items[0],$data.currency)"></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <div class="oj-flex">
+                    <h3 class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-header-border total"></h3>
+                  </div>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <div class="oj-flex">
+                    <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2 legend-color-wrapper">
+                      <div class="legend-color" data-bind="style:{background:$data.color}"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text" data-bind="text:$component.nls.limitsInquiry.messages.total"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text-content-amount" data-bind="text:$baseModel.formatCurrency($component.data().periodicLimitDaily.maxAmount,$component.data().periodicLimitDaily.bankAllocatedCurrency)"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6">
+            <oj-chart id="pieChart" class="pie" type="pie" series="[[pieSeriesDailyCount]]" groups="[[pieGroupsValue]]" style-defaults.pie-inner-radius="[[innerRadius]]" style-defaults.data-label-position="none" animation-on-data-change="auto" pie-center-label="[[centerLabel2]]"
+              legend.rendered="off">
+            </oj-chart>
+            <div id="iOweLegends" class="legend">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 countOrAmount" data-bind="text:$component.nls.limitsInquiry.messages.count">
+                </div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad">
+                <!-- ko foreach: pieSeriesDailyCount -->
+                <div class="oj-flex-item oj-sm-12 oj-md-12">
+                  <div class="oj-flex" data-bind="event: { mouseover: $component.changeCenterLabel.bind($data,'2',$index()), mouseout: $component.changeCenterLabelOut.bind($data,'2',$index())}">
+                    <div class="oj-flex-item oj-sm-2 oj-md-2 legend-color-wrapper">
+                      <div class="legend-color" data-bind="style:{background:$data.color}"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5">
+                      <div class="legend-text" data-bind="text:$data.name"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5">
+                      <div class="legend-text-content" data-bind="text:$data.items[0]"></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <div class="oj-flex">
+                    <h3 class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-header-border total"></h3>
+                  </div>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <div class="oj-flex">
+                    <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2 legend-color-wrapper">
+                      <div class="legend-color" data-bind="style:{background:$data.color}"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text" data-bind="text:$component.nls.limitsInquiry.messages.total"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text-content" data-bind="text:$component.data().periodicLimitDaily.maxCount"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:!$component.data() || !$component.data().periodicLimitDaily -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-3 oj-md-3 oj-lg-3">
+          </div>
+          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 image">
+            <img data-bind="loadImage:'dashboard/reports.svg'">
+          </div>
+        </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+            </div>
+            <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8 text" data-bind="text:$baseModel.format($component.nls.limitsInquiry.messages.noDailyLimitsAssigned,{accessPoint:$component.accessPointValue()})">
+            </div>
+          </div>
+        <!-- /ko -->
+      </div>
+    </div>
+
+    <div data-bind="css:($component.flagCorp())?'oj-flex-item oj-sm-12 oj-md-6 oj-lg-12':'oj-flex-item oj-sm-12 oj-md-12 oj-lg-6 view-limits'">
+      <div data-bind="css:($component.flagCorp() || $baseModel.small() || $baseModel.medium())?'':'monthlyMargin'">
+        <div class="oj-flex">
+          <div class="oj-flex-item">
+            <h3 class="title" data-bind="text:$component.nls.limitsInquiry.messages.monthlyLimits"></h3>
+          </div>
+        </div>
+        <!-- ko if:$component.data() && $component.data().periodicLimitMonthly -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 bottom">
+            <oj-chart id="pieChart" class="pie" type="pie" series="[[pieSeriesMonthlyAmount]]" groups="[[pieGroupsValue]]" style-defaults.pie-inner-radius="[[innerRadius]]" style-defaults.data-label-position="none" animation-on-data-change="auto" pie-center-label="[[centerLabel3]]"
+              legend.rendered="off">
+            </oj-chart>
+            <div id="iHaveLegends" class="legend">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 countOrAmount" data-bind="text:$component.nls.limitsInquiry.messages.amount">
+                </div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad">
+                <!-- ko foreach: pieSeriesMonthlyAmount -->
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <div class="oj-flex" data-bind="event: { mouseover: $component.changeCenterLabel.bind($data,'3',$index()), mouseout: $component.changeCenterLabelOut.bind($data,'3',$index())}">
+                    <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2 legend-color-wrapper">
+                      <div class="legend-color" data-bind="style:{background:$data.color}"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text" data-bind="text:$data.name"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text-content-amount" data-bind="text:$baseModel.formatCurrency($data.items[0],$data.currency)"></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <div class="oj-flex">
+                    <h3 class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-header-border total"></h3>
+                  </div>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <div class="oj-flex">
+                    <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2 legend-color-wrapper">
+                      <div class="legend-color" data-bind="style:{background:$data.color}"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text" data-bind="text:$component.nls.limitsInquiry.messages.totalAmount"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text-content-amount" data-bind="text:$baseModel.formatCurrency($component.data().periodicLimitMonthly.maxAmount,$component.data().periodicLimitMonthly.bankAllocatedCurrency)"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6">
+            <oj-chart id="pieChart" class="pie" type="pie" series="[[pieSeriesMonthlyCount]]" groups="[[pieGroupsValue]]" style-defaults.pie-inner-radius="[[innerRadius]]" style-defaults.data-label-position="none" animation-on-data-change="auto" pie-center-label="[[centerLabel4]]"
+              legend.rendered="off">
+            </oj-chart>
+            <div id="iOweLegends" class="legend">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 countOrAmount" data-bind="text:$component.nls.limitsInquiry.messages.count">
+                </div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad">
+                <!-- ko foreach: pieSeriesMonthlyCount -->
+                <div class="oj-flex-item oj-sm-12 oj-md-12">
+                  <div class="oj-flex" data-bind="event: { mouseover: $component.changeCenterLabel.bind($data,'4',$index()), mouseout: $component.changeCenterLabelOut.bind($data,'4',$index())}">
+                    <div class="oj-flex-item oj-sm-2 oj-md-2 legend-color-wrapper">
+                      <div class="legend-color" data-bind="style:{background:$data.color}"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5">
+                      <div class="legend-text" data-bind="text:$data.name"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5">
+                      <div class="legend-text-content" data-bind="text:$data.items[0]"></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <div class="oj-flex">
+                    <h3 class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-header-border total"></h3>
+                  </div>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <div class="oj-flex">
+                    <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2 legend-color-wrapper">
+                      <div class="legend-color" data-bind="style:{background:$data.color}"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text" data-bind="text:$component.nls.limitsInquiry.messages.total"></div>
+                    </div>
+                    <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+                      <div class="legend-text-content" data-bind="text:$component.data().periodicLimitMonthly.maxCount"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:!$component.data() || !$component.data().periodicLimitMonthly -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-3 oj-md-3 oj-lg-3">
+          </div>
+          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 image">
+            <img data-bind="loadImage:'dashboard/reports.svg'">
+          </div>
+        </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+            </div>
+            <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8 text" data-bind="text:$baseModel.format($component.nls.limitsInquiry.messages.noMonthlyLimitsAssigned,{accessPoint:$component.accessPointValue()})">
+            </div>
+          </div>
+        <!-- /ko -->
+      </div>
+    </div>
+  </div>
+</div>

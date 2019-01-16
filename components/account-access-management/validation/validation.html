@@ -1,0 +1,320 @@
+<div class="container-record">
+<div class="oj-flex">
+  <div class="oj-flex-item oj-lg-9">
+  <div class="form-main-container">
+    <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+    <!-- ko if: showPartyValidateComponent  -->
+    <div data-bind="component: {
+           name: 'party-validate', params:{
+           rootModel: $data, partyDetails: ExclusionModelInstance().partyDetails, additionalDetails: ExclusionModelInstance().partyDetails.additionalDetails
+           }} ">
+    </div>
+    <!-- /ko -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <!-- ko ifnot: showPartyValidateComponent  -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <label data-bind="text: nls.fieldname.partyID"></label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <span data-bind="text:maskedPartyId"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <label data-bind="text: nls.fieldname.partyName"></label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <span data-bind="text:partyName"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko if: selectedUserId  -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <label data-bind="text: nls.fieldname.userID"></label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <span data-bind="text:selectedUserId"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <label data-bind="text: nls.fieldname.userName"></label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <span data-bind="text:selectedUserName"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+    </page-section>
+
+    <!-- ko if : loadUserListComponent() -->
+    <div data-bind="component: {name:'user-list-details' , params:{rootModel:$data }}">
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.common.cancel"></span>
+      </oj-button>
+      <!-- ko ifnot:$component.isCorpAdmin -->
+      <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+        <span data-bind="text:$component.nls.common.back"></span>
+      </oj-button>
+      <!-- /ko -->
+          </div>
+    <!-- /ko -->
+    <!-- ko if: showAccountAccess  -->
+    <!-- ko if: loadSummaryTable  -->
+    <!-- ko foreach:summarydataSource -->
+    <!-- ko if: accessLevel !== 'LINKAGE' && accessLevel !== 'USERLINKAGE'  -->
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading :  $component.tableHeading">
+
+      <!-- ko if: (isPreferenceExist && isAccessCreated) -->
+      <div class="oj-flex oj-flex-items-pad table-data">
+        <oj-table :aria-label="[[$parentContext.$parent.tableHeading]]"
+        columns="[[[{headerText:$parentContext.$parent.nls.fieldname.accountType,
+          field:'accountType', 'renderer': $oj.KnockoutTemplateUtils.getRenderer('module_link', true)},
+          {headerText:$parentContext.$parent.nls.fieldname.totalAccts,field:'totalAccts'},
+          {headerText:$parentContext.$parent.nls.fieldname.mappedAccts,field:'mappedAccts'}]]]"
+          data="[[dataSource]]">
+          <caption class="hide-label" data-bind="text:$component.tableHeading"></caption>
+        </oj-table>
+
+        <script type="text/html" id="module_link">
+          <td>
+            <a href="#" data-bind="text:$context.row.accountType, click: $parentContext.$parentContext.$component.onRowClicked.bind($data,$index(),$component.linkedPartyName,$component.linkedPartyId,$component.isAccessCreated,$component.showEditableForm,$component.accessLevel,$context.row)"></a>
+          </td>
+        </script>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko ifnot : isPreferenceExist  -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <span data-bind="text : $parentContext.$parent.nls.info.preferenceInfo"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if : partySetUpNotExists  -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <span data-bind="text : $parentContext.$parent.nls.info.userParentSetUp"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if : isPreferenceExist  -->
+      <!-- ko ifnot : isAccessCreated  -->
+      <!-- ko ifnot : partySetUpNotExists  -->
+      <div class="oj-flex oj-flex-items-pad">
+        <!-- ko if: accessLevel === 'USER'  -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <span data-bind="text:$parentContext.$parent.nls.info.userSetUp"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 help-item">
+          <oj-button class="help-button createBtn" on-click="[[$parentContext.$parent.loadAccountMappingComponent.bind($data,$index(),linkedPartyName,linkedPartyId,isAccessCreated,showEditableForm,accessLevel)]]">
+            <span data-bind="text:$parentContext.$parent.nls.common.map"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: accessLevel === 'PARTY'  -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <span data-bind="text:$parentContext.$parent.nls.info.parentSetUp"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 help-item">
+          <oj-button class="help-button createBtn" on-click="[[$parentContext.$parent.loadAccountMappingComponent.bind($data,$index(),linkedPartyName,linkedPartyId,isAccessCreated,showEditableForm,accessLevel)]]">
+            <span data-bind="text:$parentContext.$parent.nls.common.map"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+
+    </page-section>
+    <!-- /ko -->
+
+    <!-- ko if: $parentContext.$parent.isDataRecieved -->
+    <!-- ko ifnot: $parentContext.$parent.isPartyAccessCreated -->
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[loadAccountMappingComponent]]">
+        <span data-bind="text:nls.common.create"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+        <span data-bind="text:$component.nls.common.back"></span>
+      </oj-button>
+         
+    </div>
+
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <!-- /ko -->
+
+
+    <!-- ko if: showAccountAccess  -->
+    <!-- ko if: loadSummaryTable  -->
+    <!-- ko if:isLinkageExist -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.linkagetableHeading">
+
+      <!-- ko foreach:summarydataSource -->
+      <!-- ko if: accessLevel === 'LINKAGE' || accessLevel === 'USERLINKAGE'  -->
+
+      <!-- ko if: (isPreferenceExist && isAccessCreated) -->
+
+      <div class="oj-flex oj-flex-items-pad party-name-header">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <div class="party-name-font-weight" data-bind="text : $baseModel.format($parentContext.$parent.nls.fieldname.partyNameHeading,{linkedPartyName:linkedPartyName})"></div>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad table-data">
+        <oj-table id="linkedPartyAccSummary" :aria-label="[[$component.linkagetableHeading]]"
+         columns="[[[{headerText:$parentContext.$parent.nls.fieldname.accountType,field:'accountType',
+         'renderer': $oj.KnockoutTemplateUtils.getRenderer('module_link_linkage', true)},
+        {headerText:$parentContext.$parent.nls.fieldname.totalAccts,field:'totalAccts'},
+        {headerText:$parentContext.$parent.nls.fieldname.mappedAccts,field:'mappedAccts'}]]]"
+          selection-mode="[[{row:'none',column:'none'}]]" data="[[dataSource]]">
+          <caption class="hide-label" data-bind="text:$component.linkagetableHeading"></caption>
+
+        </oj-table>
+        <script type="text/html" id="module_link_linkage">
+          <td>
+              <a href="#" data-bind="text:$context.row.accountType, click: $component.onRowClicked.bind($data,$index(),$parent.linkedPartyName,$parent.linkedPartyId,$parent.isAccessCreated,$parent.showEditableForm,$parent.accessLevel,$context.row)"></a>
+          </td>
+                  </script>
+
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot : isPreferenceExist  -->
+      <div class="oj-flex oj-flex-items-pad party-margin-header">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+          <div class="party-name-font-weight" data-bind="text : linkedPartyName"></div>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <span data-bind="text : $parentContext.$parent.nls.info.linkagePreferenceInfo"></span>
+        </div>
+      </div>
+
+      <br>
+      <!-- /ko -->
+      <!-- ko if : parentChannelAccessNotExists  -->
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12 party-margin-header">
+        <div class="party-name-font-weight" data-bind="text : linkedPartyName"></div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <span data-bind="text : $parentContext.$parent.nls.info.linkageParentChannelAccess"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot : parentChannelAccessNotExists  -->
+      <!-- ko if : partySetUpNotExists  -->
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12 party-margin-header">
+        <div class="party-name-font-weight" data-bind="text : linkedPartyName"></div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+          <span data-bind="text : $parentContext.$parent.nls.info.userLinkedParentSetUp"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if : isPreferenceExist  -->
+      <!-- ko ifnot : isAccessCreated  -->
+      <!-- ko ifnot : partySetUpNotExists  -->
+      <!-- ko ifnot : parentChannelAccessNotExists  -->
+
+      <div class="oj-flex oj-flex-items-pad party-margin-header">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <div class="party-name-font-weight" data-bind="text : linkedPartyName"></div>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <!-- ko if: parentAccessLevel === 'USER'  -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-9">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+            <span data-bind="text:$parentContext.$parent.nls.info.userLinkageSetUp"></span>
+          </div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 help-item">
+          <oj-button class="help-button createBtn" on-click="[[$parentContext.$parent.loadAccountMappingComponent.bind($data,$index(),linkedPartyName,linkedPartyId,isAccessCreated,showEditableForm,accessLevel)]]">
+            <span data-bind="text:$parentContext.$parent.nls.common.map"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: parentAccessLevel === 'PARTY'  -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-9">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+            <span data-bind="text:$parentContext.$parent.nls.info.accountSetUp"></span>
+          </div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 help-item">
+          <oj-button class="help-button createBtn" on-click="[[$parentContext.$parent.loadAccountMappingComponent.bind($data,$index(),linkedPartyName,linkedPartyId,isAccessCreated,showEditableForm,accessLevel)]]">
+            <span data-bind="text:$parentContext.$parent.nls.common.map"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+    </page-section>
+
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+      
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.common.cancel"></span>
+      </oj-button>
+      <!-- ko ifnot:$component.isCorpAdmin -->
+      <oj-button class="action-button-tertiary" on-click="[[$component.goBack]]">
+        <span data-bind="text:$component.nls.common.back"></span>
+      </oj-button>
+      <!-- /ko -->
+    </div>
+
+    <!-- /ko -->
+    <!-- /ko -->
+    </div>
+</div>
+</div>
+</div>
+<!-- ko if: accessLevel() === 'PARTY'|| accessLevel() === 'LINKAGE'  -->
+<!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-3 help-panel">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'party-account-access'"></help>
+    </div>
+    <!-- /ko -->
+     <!-- /ko -->
+     <!-- ko if: accessLevel() === 'USER'|| accessLevel() === 'USERLINKAGE'   -->
+<!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-3 help-panel">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'user-account-access'"></help>
+    </div>
+    <!-- /ko -->
+     <!-- /ko -->
+  </div>
+</div>

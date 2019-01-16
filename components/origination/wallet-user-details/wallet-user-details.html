@@ -1,0 +1,213 @@
+<div class=" wallets_container">
+   <div class=" oj-panel form-main-container card-action-container">
+      <div class="header">
+         <div class="title_primary" data-bind="text:$component.resource.wallet.info"></div>
+         <div class="title_secondary" data-bind="text:$component.resource.wallet.infodescription"></div>
+      </div>
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+         <div class="section customizedinput">
+            <!-- ko if: stageOne() -->
+             <div class="  wallets-action-label">
+                <div class="oj-col">
+                <oj-label for="basicSelect"><span data-bind="text:$component.resource.wallet.salutation"></span></oj-label>
+                </div>
+             </div>
+             <div class="oj-row">
+                <div class="oj-col">
+                          <!-- ko if: showDropDown2() -->
+                          <oj-label class="hide-label" :for="[['salutation'+$baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.messages.walletOrigination.salutation"></span></oj-label>
+                          <oj-select-one :id="[['salutation'+$baseModel.currentIdCount()]]" translations="[[{'required':{messageDetail:$component.resource.messages.walletOrigination.salutation}}]]" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{selectedSalutation}}">
+                             <!-- ko foreach:salutation -->
+                             <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                             <!-- /ko -->
+                          </oj-select-one>
+                          <!-- /ko -->
+                </div>
+             </div>
+
+
+            <div class="  wallets-action-label" data-bind="visible:userDefinedSalutation">
+                <div class="oj-col">
+                <oj-label class="hide-label" :for="[['undefinedsalutation'+$baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.messages.walletOrigination.salutation"></span></oj-label>
+                <oj-input-text id="undefinedsalutation" type="text" autocomplete="off" maxlength="15" :id="[['undefinedsalutation'+$baseModel.currentIdCount()]]" :placeholder="[[$component.resource.wallet.salutation]]" value="{{newSalutation}}"></oj-input-text>
+                </div>
+            </div>
+
+            <div>
+               <div class=" wallets-action-label">
+                  <div class="oj-col">
+                  <oj-label for="firstname"><span data-bind="text:$component.resource.wallet.firstName"></span></oj-label>
+               </div></div>
+               <div class="oj-row ">
+                  <div class="oj-col">
+                  <oj-input-text id="firstname" type="text" autocomplete="off" maxlength="35" translations="[[{'required':{messageDetail:$component.resource.messages.walletOrigination.firstName}}]]" required="[[true]]" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{details.partyOnBoardingDTO.individualDTO.firstName}}"></oj-input-text>
+               </div></div>
+            </div>
+            <div>
+               <div class=" wallets-action-label">
+                  <div class="oj-col">
+                  <oj-label for="lastname"><span data-bind="text:$component.resource.wallet.lastName"></span></oj-label>
+               </div></div>
+               <div class="oj-row customizedinput">
+                  <div class="oj-col">
+                  <oj-input-text id="lastname" type="text" autocomplete="off" maxlength="35" translations="[[{'required':{messageDetail:$component.resource.messages.walletOrigination.lastName}}]]" required="[[true]]" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{details.partyOnBoardingDTO.individualDTO.lastName}}"></oj-input-text>
+               </div></div>
+            </div>
+            <div>
+               <div class=" wallets-action-label">
+                  <div class="oj-col">
+                  <oj-label for="gender"><span data-bind="text:$component.resource.wallet.gender"></span></oj-label>
+               </div></div>
+               <div class="oj-row">
+                  <div class="oj-col">
+                  <!-- ko if: showDropDown() -->
+                  <oj-select-one id="gender" translations="[[{'required':{messageDetail:$component.resource.messages.walletOrigination.gender}}]]" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{selectedGender}}">
+                     <!-- ko foreach:gender -->
+                     <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                     <!-- /ko -->
+                  </oj-select-one>
+                  <!-- /ko -->
+               </div></div>
+            </div>
+            <div>
+               <div class=" wallets-action-label">
+                  <div class="oj-col">
+                  <oj-label for="dateofbirth"><span data-bind="text:$component.resource.wallet.dateOfBirth"></span></oj-label>
+               </div></div>
+               <div class="oj-row customizedinput">
+                  <div class="oj-col">
+                  <oj-input-date id="dateofbirth" type="date" name="dateTimeRange2" translations="[[{'required':{messageDetail:$component.resource.messages.walletOrigination.birthDate}}]]" required="[[true]]" converter="[[$baseModel.dateConverter]]" max="[[$oj.IntlConverterUtils.dateToLocalIso($component.today())]]" value="{{birthDate}}"></oj-input-date>
+               </div></div>
+            </div>
+            <div>
+               <div class=" wallets-action-label">
+                  <div class="oj-col">
+                  <oj-label for="email"><span data-bind="text:$component.resource.wallet.email"></span></oj-label>
+               </div></div>
+               <div class="oj-row customizedinput">
+                  <div class="oj-col">
+                  <oj-input-text id="email" type="text" maxlength="50" translations="[[{'required':{messageDetail:$component.resource.messages.walletOrigination.email}}]]" required="[[true]]" validators="[[$baseModel.getValidator('EMAIL')]]" :invalidcomponenttracker="[[$component.validationTracker]]" readonly="{{$component.emaillock}}" value="{{details.walletDTO.emailId}}"></oj-input-text>
+               </div></div>
+            </div>
+                 <!-- ko if: !emaillock() -->
+                <div class=" oj-row button-container">
+                   <oj-button class="action-button-primary" on-click="[[verifyEMail]]">
+      <span data-bind="text:$component.resource.wallet.receivecodetext"></span>
+</oj-button>
+                   <img data-bind="loadImage:'wallet/wallet-farward-white.png',attr:{alt: $component.resource.wallet.altFwd,title: $component.resource.wallet.titleFwd}">
+                 </div>
+                <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: stageTwo() -->
+            <div>
+               <div class=" wallets-action-label">
+                  <div class="oj-col">
+                  <oj-label for="verificationcodemsg"><span data-bind="text:$component.resource.wallet.verificationcodemsg"></span></oj-label>
+               </div></div>
+               <div class="oj-row">
+                  <div class="oj-col oj-sm-8 oj-md-11 oj-lg-11">
+                  <oj-input-password id="verificationcodemsg" required autofocus maxlength="10" type="text" translations="[[{'required':{messageDetail:$component.resource.messages.walletOrigination.verificationCode}}]]" value="{{emailverificationCode}}"></oj-input-password>
+                  </div>
+                  <div class="oj-col oj-sm-2 oj-md-1 oj-lg-1">
+
+                    <a href="javascript:void(0)" data-bind="click:togglePassword">
+                      <span id="eyecon" class="icon icon-eye-slash"></span>
+                    </a>
+                  </div>
+                  <div class="oj-col">
+                      <oj-label><span data-bind="text:$component.resource.wallet.verificationcodeemailmsg"></span></oj-label>
+                  </div>
+               </div>
+
+             </div>
+
+            <div>
+            <!-- ko if:codeResendMsg -->
+            <div>
+               <div class=" wallets-action-label">
+                  <div class="oj-col">
+               <oj-label><span data-bind="text:$component.resource.wallet.codeResendMsg"></span></oj-label>
+            </div>
+            </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:resendButtonMsg -->
+            <div>
+               <div class=" wallets-action-label">
+                  <div class="oj-col">
+               <oj-label><span data-bind="text:$component.resource.wallet.resendMsg"></span></oj-label></div>
+            </div>
+            </div>
+
+            <!-- /ko -->
+            <div class="oj-row button-container">
+                  <oj-button class="action-button-primary" on-click="[[authenticateEMail]]">
+      <span data-bind="text:$component.resource.common.continue"></span>
+</oj-button>
+                  <img data-bind="loadImage:'wallet/wallet-farward-white.png,attr:{alt: $component.resource.wallet.altFwd,title: $component.resource.wallet.titleFwd}'">
+                  <oj-button class="action-button-secondary" id="button-resend" on-click="[[resend]]">
+      <span data-bind="text:$component.resource.wallet.resendcode"></span>
+</oj-button>
+            </div></div>
+            <!-- /ko -->
+            <!-- ko if: stageThree() -->
+            <div>
+               <div class=" wallets-action-label">
+                  <div class="oj-col">
+                  <oj-label for="password"><span data-bind="text:$component.resource.wallet.password"></span></oj-label>
+                  </div>
+               </div>
+               <div class="oj-row">
+                  <div class="oj-col oj-sm-10 oj-md-11 oj-lg-11">
+                  <oj-input-password id="password" type="password" autocomplete="off" maxlength="16" translations="[[{'required':{messageDetail:$component.resource.messages.walletOrigination.passwordBlank}}]]" required="[[true]]" value="{{details.credentialsDTO.password}}"></oj-input-password>
+                  </div>
+                    <div class="oj-col oj-sm-2 oj-md-1 oj-lg-1">
+                    <a href="javascript:void(0)" data-bind="click:$component.passwordpolicy">
+                      <span class="icon icon-help" aria-hidden="true"></span>
+                    </a>
+                    </div>
+               </div>
+            </div>
+            <div>
+               <div class=" wallets-action-label">
+                  <div class="oj-col">
+                  <oj-label for="confirmPassword"><span data-bind="text:$component.resource.wallet.confirmPassword"></span></oj-label>
+               </div></div>
+               <div class="oj-row">
+                  <div class="oj-col oj-sm-10 oj-md-11 oj-lg-11">
+                  <oj-input-password id="confirmPassword" type="password" autocomplete="off" maxlength="16" name="cpassword" translations="[[{'required':{messageDetail:$component.resource.messages.walletOrigination.confirmPassword}}]]" required="[[true]]" validators="[[[equalToPassword]]]" value="{{confirmPassword}}"></oj-input-password>
+               </div></div>
+            </div>
+            <div class=" wallets-action-label" data-bind="if:pwdNoMatch">
+                <div class="oj-col">
+                    <oj-label><span data-bind="text:$component.resource.wallet.pwdNoMatch"></span></oj-label>
+                </div>
+            </div>
+            <div class="oj-row button-container">
+                    <oj-button class="action-button-primary" on-click="[[signUp]]">
+      <span data-bind="text:$component.resource.common.submit"></span>
+</oj-button>
+                    <img data-bind="loadImage:'wallet/wallet-farward-white.png',attr:{alt: $component.resource.wallet.altFwd,title: $component.resource.wallet.titleFwd}">
+                    <oj-button class="action-button-secondary" id="button-cancel" on-click="[[cancelOption]]">
+      <span data-bind="text:$component.resource.common.cancel"></span>
+</oj-button>
+            </div>
+            <!-- /ko -->
+         </div>
+          <!-- ko if: displaypasswordpolicy -->
+    <modal-window params="baseModel : $baseModel, rootModel : $parent,id:'PasswordPolicy'">
+      <div class="">
+        <div class="oj-dialog-body">
+          <ul>
+             <li data-bind="text:$component.showPasswordRule1()"> </li><br>
+             <li data-bind="text:$component.showPasswordRule2()"> </li><br>
+             <li data-bind="text:$component.showPasswordRule3()"> </li><br>
+          </ul>
+        </div>
+      </div>
+   </modal-window>
+
+     <!-- /ko -->
+      </page-section>
+   </div>
+</div>

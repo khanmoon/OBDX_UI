@@ -1,0 +1,166 @@
+<div class="form-main-container smsheader full-width">
+  <oj-validation-group id="eventtracker" valid="{{valid}}">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <div data-bind='component: {name: "nav-bar", params:{rootModel: $component, menuOptions: $component.menuOptions, uiOptions: $component.uiOptions, navBarDescription: $component.nls.navBarDescription, disabledState: "true"}}'></div>
+      <div class="oj-flex oj-flex-items-pad"></div>
+      <div class="oj-flex-item oj-flex-items-pad">
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.events.labels.events , value : $component.eventTemplateMap().event.eventName"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.events.labels.locale , value :$component.nls.events.locale[$component.eventTemplateMap().locale]"></row>
+      </div>
+      <!-- ko if:$component.smsSelected() -->
+      <div data-bind="with:$component.eventTempUpdate.dto">
+        <div id="pinRequired">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <label data-bind="text:$component.nls.events.labels.pinRequired"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-switch id="switch" value="{{pinRequired}}"></oj-switch>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /ko -->
+      <div data-bind="with:$component.eventTempUpdate.dto">
+        <!-- ko if:$component.smsSelected() -->
+        <div id="inputAttributes">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <label data-bind="text:$component.nls.events.labels.input"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-9 smsevent">
+              <oj-input-text class="smsheader__value" :aria-label="[[$component.nls.events.labels.input]]" value="{{requestTemplate.message}}" required="[[true]]">
+              </oj-input-text>
+              <!-- </div>
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-7"> -->
+              <ul id="sortable" class="smsheader__list smsheader-list">
+                <!-- ko foreach:requestTemplate.requestDataAttributes -->
+                <li class="smsheader-list__listItem smsheader-list-listItem" data-bind="attr:{id : attribute.attributeID}">
+
+                  <div class="smsheader-list-listItem__text" data-bind="text:attribute.attributeID, attr: {'id': 'movable' + $index()}"></div>
+
+                  <a href="javascript:void(0)" :aria-label="[[$component.nls.events.labels.addRequestAttribute]]" data-bind="click: $component.removeAttribute.bind($data,$component.index+$index())">
+                        <span class="icons icon-cancel smsheader-list-listItem__smsIcons"></span> </a>
+                </li>
+                <!-- /ko -->
+              </ul>
+              <div data-bind="template:{afterRender:$component.loadSortable}"></div>
+            </div>
+
+          </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <label class="hide-label" for="attributeId" data-bind="text:$component.nls.events.labels.attributeId"></label>
+          </div>
+          <!-- ko if: $component.requestDataAttributeList().length >0 -->
+          <!-- ko if : ($component.addRequestAttributes()) -->
+          <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 right">
+            <label class="hide-label" for="attributeId" data-bind="text:$component.nls.events.labels.attributeId"></label>
+            <oj-select-one class="smsheader__margin" id="attributeIdSelect" required="[[true]]" :placeholder="[[$component.nls.genericAlert.select]]" value="{{$parent.requestAttributeId}}">
+              <!-- ko foreach : $component.requestDataAttributeList -->
+              <oj-option value="{{attributeID}}"><span data-bind="text:attributeID"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if:$component.smsSelected() -->
+          <div class="oj-flex-item oj-lg-4 oj-md-4 oj-sm-12">
+            <a href="javascript:void(0)" :aria-label="[[$component.nls.events.labels.addAttribute]]" data-bind="click: $component.addAttribute.bind($data,$component.smsAttributes)">
+              <div class="smsheader__margin" data-bind="text:$component.nls.events.labels.addAttribute"></div>
+            </a>
+          </div>
+          <!-- /ko -->
+        </div>
+        <!-- ko if:$component.missedCallSelected() -->
+        <div id="inputAttributes">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <label data-bind="text:$component.nls.events.labels.contactNumber"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-input-text id="input" :aria-label="[[$component.nls.events.labels.contactNumber]]" value="{{requestTemplate.message}}" required="[[true]]"></oj-input-text>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <label for="content" data-bind="text: $component.nls.events.labels.response"></label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-7">
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-11 ">
+              <oj-text-area class="smsheader__textArea" id="message_template" :aria-label="[[$component.nls.events.labels.response]]" maxlength="1000" value="{{responseTemplate.message}}" rows="3" required></oj-text-area>
+            </div>
+            <!-- ko if: $component.dataAttributeList().length >0 -->
+            <div class="oj-flex oj-flex-items-pad">
+
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+                <div class="oj-flex oj-flex-items-pad smsheader__dataattr">
+                  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+                    <strong data-bind="text:$component.nls.events.labels.dataAttribute"></strong>
+                  </div>
+
+                </div>
+                <!-- ko foreach:responseTemplate.responseDataAttributes -->
+                <div class="oj-flex oj-flex-items-pad smsheader__dataattr">
+                  <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4 label">
+                    <span data-bind="attr:{'id':('attribute.attributeID'+$component.index+$index())},text:attribute.attributeID"></span>
+                  </div>
+
+                  <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1 label">
+                    <a href="javascript:void(0)" :aria-label="[[$component.nls.events.labels.deleteAttribute]]" class="icon icon-delete pull-right smsheader-list-listItem__smsDeleteIcons" data-bind="click: $component.deleteAttribute.bind($data,$component.index+$index())"></a>
+                  </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if : ($component.buttonToDropDownSms()) -->
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+                    <label class="hide-label" for="attributeId" data-bind="text:$component.nls.events.labels.attributeId"></label>
+                    <oj-select-one id="attributeIdSelect" required="[[true]]" :placeholder="[[$component.nls.genericAlert.select]]" value="{{$component.smsAttributeId}}">
+                      <!-- ko foreach : $component.dataAttributeList -->
+                      <oj-option value="{{attributeID}}"><span data-bind="text:attributeID"></span></oj-option>
+                      <!-- /ko -->
+                    </oj-select-one>
+                  </div>
+
+
+                  <!-- ko if: $component.buttonToDropDownSms() -->
+                  <div class="oj-flex-item oj-lg-4 oj-md-4 oj-sm-12">
+                    <a href="javascript:void(0)" :aria-label="[[$component.nls.events.labels.addDataAttribute]]" data-bind="click: $component.addRow.bind($data,$component.smsAttributes)">
+                      <div class="smsheader__margin" data-bind="text:$component.nls.events.labels.addDataAttribute"></div>
+                    </a>
+                  </div>
+                  <!-- /ko -->
+                </div>
+                <!-- /ko -->
+              </div>
+              <!-- ko ifnot: $component.buttonToDropDownSms() -->
+              <div class="oj-flex-item oj-lg-4 oj-md-4 oj-sm-12">
+                <a href="javascript:void(0)" :aria-label="[[$component.nls.events.labels.addDataAttribute]]" data-bind="click: $component.addRow.bind($data,$component.smsAttributes)">
+                  <div class="smsheader__margin" data-bind="text:$component.nls.events.labels.addDataAttribute"></div>
+                </a>
+              </div>
+              <!-- /ko -->
+            </div>
+            <!-- /ko -->
+          </div>
+        </div>
+      </div>
+    </page-section>
+  </oj-validation-group>
+  <div class="oj-row button-container">
+    <oj-button class="action-button-primary" on-click="[[save]]">
+      <span data-bind="text:$component.nls.genericAlert.save"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+      <span data-bind="text:$component.nls.genericAlert.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[back]]">
+      <span data-bind="text:$component.nls.genericAlert.back"></span>
+    </oj-button>
+  </div>
+</div>

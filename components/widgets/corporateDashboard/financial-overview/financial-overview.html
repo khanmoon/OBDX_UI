@@ -1,0 +1,41 @@
+<div class="oj-panel financial-overview">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-8">
+      <h3 class="financial-overview__heading" data-bind="text:$component.nls.accountDetails.labels.title"></h3>
+    </div>
+    <!-- ko if : $component.accountsLoaded() -->
+    <div class="oj-flex-item oj-sm-4">
+      <oj-select-one value="{{$component.selectedValue}}" required on-value-changed="[[selectedAccountTypeChangedHandler]]" data-bind="attr:{id:$component.nls.accountDetails.labels.myAccountType + $baseModel.currentIdCount(),'aria-label':$component.nls.accountDetails.labels.myAccountType}">
+        <!-- ko foreach: typeOfAccounts -->
+        <oj-option value="[[id]]"><span data-bind="text: label"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+    <!-- /ko -->
+  </div>
+<!-- ko if : $component.dataLoaded() -->
+  <div class="oj-flex oj-flex-items-pad financial-overview__content">
+    <div class="oj-flex-item oj-sm-12 oj-md-6">
+      <oj-sunburst animation-on-display="auto" nodes="[[nodeValues]]" animation-on-data-change="auto" display-levels="2" selection-mode="none" tooltip="[[tooltip]]" class="sunburst-chart" drilling="on">
+      </oj-sunburst>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6">
+      <div class="netWorth-Label" data-bind="text:$component.nls.accountDetails.labels.netWorth"></div>
+      <div class="highlighted-text" data-bind="text:$baseModel.formatCurrency(netWorth(), $component.baseCcy())"></div>
+      <oj-legend class="asset-legend-section"
+                orientation="vertical"
+                sections= "[[assestLegendSections]]"
+                title= "[[$component.nls.accountDetails.labels.assets]]"
+                titleStyle= "[[assestsLegendTitleStyle]]">
+            </oj-legend>
+      <oj-legend class="liabilities-legend-sections" id="legend1"
+                orientation="vertical"
+                sections= "[[liabilitiesLegendSections]]"
+                title= "[[$component.nls.accountDetails.labels.liabilities]]"
+                titleStyle= "[[liabilitiesLegendTitleStyle]]">
+            </oj-legend>
+    </div>
+
+  </div>
+  <!-- /ko -->
+</div>

@@ -1,0 +1,44 @@
+<div class="oj-flex">
+    <div class="oj-flex design-dashboard">
+        <div class="oj-flex-item oj-sm-9">
+            <div class="form-main-container">
+                <div data-bind="component: {
+         name: 'party-validate',
+         params:{
+         rootModel: $component,
+         partyDetails:$component.partyDetail,
+         additionalDetails:$component.additionalDetails}}"></div>
+                <!-- ko if:isFILoaded() -->
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.Nls.fuids">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <oj-table id="table" class="record" :aria-label="[[$component.Nls.details]]" columns="[[[{headerText:$component.Nls.srno,renderer:$oj.KnockoutTemplateUtils.getRenderer('SrNo', true),sortable:'none'},{headerText:$component.Nls.fuid,field:'fileIdentifier',renderer:$oj.KnockoutTemplateUtils.getRenderer('fileIdentifier', true)},{headerText:$component.Nls.description,field:'description'},{headerText:$component.Nls.transactiontype,field:'transactionDesc'},{headerText:$component.Nls.approvaltype,field:'approvalDesc'}]]]" selection-mode="[[{row:'single',column:'single'}]]" on-value-changed="[[onUserSelected]]" translations="[[{msgNoData:$component.Nls.noData}]]" data="[[$component.datasource()]]">
+                            <caption class="hide-label" data-bind="text:$component.Nls.fuids"></caption>
+                        </oj-table>
+                        <script type="text/html" id="SrNo">
+                            <td data-bind="text: $component.renderSrNo()"></td>
+                        </script>
+                        <script type="text/html" id="fileIdentifier">
+                            <td>
+                                <a href="#" data-bind="text:$context.row.fileIdentifier, click: $component.onUserSelected.bind($context.row.fileIdentifier)"></a>
+                            </td>
+                        </script>
+                    </div>
+                </page-section>
+                <div class="button-container">
+                    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.Nls.cancelTransaction)]]">
+                        <span data-bind="text:$component.Nls.cancel"></span>
+                    </oj-button>
+                    <!-- ko if:isBankAdmin() -->
+                    <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+                        <span data-bind="text:$component.Nls.back"></span>
+                    </oj-button>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="oj-flex-item oj-sm-3 help-panel">
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'file-identifier-search'"></help>
+        </div>
+    </div>
+</div>

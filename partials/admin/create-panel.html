@@ -1,0 +1,705 @@
+<div class="form-main-container user-create">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+        <oj-label class="" for="usertype"><span data-bind="text:$component.nls.fieldname.userType"></span></oj-label>
+      </div>
+
+      <!-- ko if: userTypeEnumsLoaded -->
+      <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+        <oj-select-one id="usertype" disabled="[[$component.diableUserType]]" :placeholder="[[nls.fieldname.select]]" value="{{selectedParentRole}}" on-value-changed="[[parentOptionChangedHandler]]">
+          <!-- ko foreach: userTypeEnums -->
+          <oj-option value="{{enterpriseRoleId}}"><span data-bind="text:enterpriseRoleName"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+
+      </div>
+      <!-- /ko -->
+    </div>
+  </page-section>
+
+  <!-- ko if: ($component.selectedParentRole() === undefined) -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+
+    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:$component.nls.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[$component.backOnCreate]]">
+      <span data-bind="text:$component.nls.common.back"></span>
+    </oj-button>
+
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: (userType().toLowerCase()==="retailuser" || userType().toLowerCase()==="corporateuser") -->
+  <div data-bind="component: {name: 'party-validate', params:{rootModel: $data,partyDetails:$component.rootModelInstance().partyDetails,additionalDetails:$component.additionalDetails}}"></div>
+  <!-- /ko -->
+
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="">
+
+      <!-- ko if: (userType().toLowerCase()==="administrator")-->
+      <!-- <action-header params="rootModel : $data, heading : $component.nls.headers.employeeinfo">
+		</action-header> -->
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="organizationName"><span data-bind="text:$component.nls.fieldname.organization"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.organization]]" id="organizationName" maxlength="50" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{organization}}"></oj-input-text>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="manager"><span data-bind="text:$component.nls.fieldname.manager"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.manager]]" id="manager" maxlength="50" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{manager}}"></oj-input-text>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="employeeNumber"><span data-bind="text:$component.nls.fieldname.empno"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.empno]]" id="employeeNumber" required maxlength="50" required :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('NUMBERS',$component.nls.common.empNoValidation,{
+                       type:'length',options:{
+                         min:6,max:6}})]]" value="{{employeeNumber}}"></oj-input-text>
+        </div>
+
+
+      </div>
+
+      <!-- /ko -->
+    </div>
+  </page-section>
+
+
+  <!-- ko if: userType().toLowerCase()==="retailuser" -->
+  <!-- ko if: showCreateOption -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" id="interestedbutton" on-click="[[loadFormDetails]]">
+      <span data-bind="text:$component.nls.common.create"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:$component.nls.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[backOnCreate]]">
+      <span data-bind="text:$component.nls.common.back"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+  <!-- ko if: showFormDetails -->
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="">
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.profileinfo">
+      </action-header>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 ">
+          <oj-label class="" for="userName"><span data-bind="text:$component.nls.fieldname.username"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.username]]" id="userName" required maxlength="40" validators="[[$baseModel.getValidator('USER_ID')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{username}}"></oj-input-text>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+          <!-- ko if: checkIfUserExistsFlag -->
+          <a href="#" class="label users-create__checkAvailabilitySuccess" disabled :aria-label="[[$component.checkAvailability]]" data-bind="text: $component.checkAvailability"></a>
+          <!-- /ko -->
+          <!-- ko ifnot: checkIfUserExistsFlag -->
+          <a href="#" class="label" :aria-label="[[$component.checkAvailability]]" data-bind="text: $component.checkAvailability, click: $component.checkIfUserExists"></a>
+          <!-- /ko -->
+        </div>
+      </div>
+
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.title , value :title"></row>
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.firstname , value :firstName"></row>
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.middlename , value :middleName"></row>
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.lastname , value :lastName"></row>
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.dob , value : $baseModel.formatDate(dateOfBirth)"></row>
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.contactDetails">
+      </action-header>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.emailid , value :emailId"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.contactmobile , value :mobileNumber"></row>
+
+      <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.fieldname.contactlandline , value :phoneNumber"></row>
+      <div data-bind="template: { name: 'admin/add', data: address, isDisabled : $component.isDisabled}"></div>
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.limitnRoles">
+      </action-header>
+
+
+      <!-- ko if: userLimitsListLoaded -->
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+
+          <div data-bind="component: {name: 'access-point-mapping', params:{rootModel: $component,header :$component.header,listLimitPackageArray:$component.userLimitsList,selectedLimitPackages:$component.selectedLimitPackagesEditMode,limitPackageDetails:$component.selectedLimitPackage,accessPointType:$component.accessPointType}}"></div>
+        </div>
+
+      </div>
+      <!-- /ko -->
+
+
+      <!-- ko if: showChildRole -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.nls.fieldname.role"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9" data-bind="attr:{'aria-label': $component.nls.fieldname.role}">
+          <!-- ko if: childRoleEnumsLoaded -->
+          <oj-checkboxset id="checkboxSetId" class="oj-choice-direction-row" value="{{selectedChildRole}}" required>
+            <!-- ko foreach: childRoleEnums -->
+            <oj-option value="{{applicationRoleName}}" :id="[['roles_'+ $index()]]"><span data-bind="text:applicationRoleName , attr : {'for' :'roles_' + $index()}"></span></oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
+          <!-- /ko -->
+        </div>
+      </div>
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading:$component.nls.internalAccessPoints.internalAccessPoints.internalAccessPoints">
+      </action-header>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.nls.internalAccessPoints.internalAccessPoints.selectAccessPoints"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+          <!-- ko if: isAccessPointFetched -->
+          <oj-checkboxset id="accessPoint" labelled-by="accessPoint" class="oj-choice-direction-row" value="{{selectedAccessPoint}}" required>
+            <!-- ko foreach: accessPoint -->
+            <oj-option value="[[value]]">
+              <span data-bind="text:text"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
+          <!-- /ko -->
+        </div>
+      </div>
+
+      <!-- /ko -->
+      <!-- ko if: $dashboard.userData.userProfile.accessibleEntities.length>1 -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading:$component.nls.accessibleEntity.accessibleEntity.accessibleEntities">
+      </action-header>
+      <!-- /ko -->
+      <!-- ko if: refresh-->
+      <!-- ko foreach: accessibleEntityArray-->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-10 oj-md-4 oj-sm-4">
+
+        </div>
+
+        <div class="oj-flex-item oj-lg-2 oj-md-4 oj-sm-4 users-create">
+          <a href="javascript:void(0)" class="icon icon-delete" data-bind="click:$parent.deleteAccessibleEntity.bind($data,$index(),$data)"></a>
+        </div>
+      </div>
+      <div data-bind="component: {name: 'accessible-entity', params:{rootModel: $parent,entityDetails:$data,parentRole:$component.parentRole(),validationTracker:$parent.validationTracker}}"></div>
+
+
+
+
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if: ($component.accessibleEntityArray().length<$dashboard.userData.userProfile.accessibleEntities.length-1) && $dashboard.userData.userProfile.accessibleEntityDTOs.length>1 && $component.entitiesListLoaded-->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+          <oj-button class="help-button" on-click="[[addAccessibleEntity]]" disabled="[[$component.disableEntity()]]">
+            <span data-bind="text:$component.nls.accessibleEntity.accessibleEntity.addAccessibleEntities"></span>
+          </oj-button>
+        </div>
+      </div>
+
+      <!-- /ko -->
+    </div>
+  </page-section>
+
+  <!-- ko ifnot:createReviewFlag -->
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[reviewCreateUser]]">
+      <span data-bind="text:$component.nls.common.save"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:$component.nls.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[backOnCreate]]">
+      <span data-bind="text:$component.nls.common.back"></span>
+    </oj-button>
+
+  </div>
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+  <!-- ko if: (userType().toLowerCase()==="administrator")-->
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="">
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.profileinfo">
+      </action-header>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+
+          <oj-label class="" for="userName"><span data-bind="text:$component.nls.fieldname.username"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.username]]" id="userName" required maxlength="40" validators="[[$baseModel.getValidator('USER_ID')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{username}}"></oj-input-text>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+          <!-- ko if: checkIfUserExistsFlag -->
+          <a href="#" class="label users-create__checkAvailabilitySuccess" disabled :aria-label="[[$component.checkAvailability]]" data-bind="text: $component.checkAvailability"></a>
+          <!-- /ko -->
+          <!-- ko ifnot: checkIfUserExistsFlag -->
+          <a href="#" class="label" :aria-label="[[$component.checkAvailability]]" data-bind="text: $component.checkAvailability, click: $component.checkIfUserExists"></a>
+          <!-- /ko -->
+        </div>
+      </div>
+
+
+      <div class="oj-flex oj-flex-items-pad">
+
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="title">
+            <span data-bind="text:$component.nls.fieldname.title"></span></oj-label>
+        </div>
+
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+
+
+          <oj-select-one id="title" :placeholder="[[nls.fieldname.select]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{title}}">
+
+            <!-- ko foreach: salutationList -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="firstName"><span data-bind="text:$component.nls.fieldname.firstname"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.firstname]]" id="firstName" required maxlength="50" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{firstName}}"></oj-input-text>
+        </div>
+
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="middleName"><span data-bind="text:$component.nls.fieldname.middlename"></span></oj-label>
+        </div>
+
+
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.middlename]]" id="middleName" maxlength="50" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{middleName}}"></oj-input-text>
+        </div>
+
+
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="lastName"><span data-bind="text:$component.nls.fieldname.lastname"></span></oj-label>
+        </div>
+
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.lastname]]" id="lastName" required maxlength="50" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{lastName}}"></oj-input-text>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="dateofBirth"><span data-bind="text:$component.nls.fieldname.dob"></span></oj-label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+
+          <oj-input-date :aria-label="[[$component.nls.fieldname.dob]]" id="dateofBirth" required="[[true]]" value="{{dateOfBirth}}" max="[[$component.maxDate()]]" converter="[[$baseModel.dateConverter]]" datepicker="[[{yearRange:'c-100:c'}]]"></oj-input-date>
+        </div>
+      </div>
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.contactDetails">
+      </action-header>
+
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="emailid"><span data-bind="text:$component.nls.fieldname.emailid"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.emailid]]" id="emailid" required maxlength="60" validators="[[$baseModel.getValidator('EMAIL')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{emailId}}"></oj-input-text>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="mobile"><span data-bind="text:$component.nls.fieldname.contactmobile"></span></oj-label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2">
+
+          <oj-input-text :aria-label="[[$component.nls.fieldname.contactmobile]]" id="mobile" required maxlength="15" validators="[[$baseModel.getValidator('MOBILE_NO')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{mobileNumber}}"></oj-input-text>
+
+
+
+        </div>
+
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="landline"><span data-bind="text:$component.nls.fieldname.contactlandline"></span></oj-label>
+        </div>
+
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2">
+
+          <oj-input-text :aria-label="[[$component.nls.fieldname.contactlandline]]" id="landline" maxlength="15" validators="[[$baseModel.getValidator('PHONE_NO')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{phoneNumber}}"></oj-input-text>
+
+        </div>
+
+      </div>
+
+      <div data-bind="template: { name: 'admin/add', data: address, isDisabled : $component.isDisabled}"></div>
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.fieldname.role">
+      </action-header>
+
+
+      <!-- ko if: showChildRole -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.nls.fieldname.role"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9" data-bind="attr:{'aria-label': $component.nls.fieldname.role}">
+          <!-- ko if: childRoleEnumsLoaded -->
+
+          <oj-checkboxset id="checkboxSetId" class="oj-choice-direction-row" aria-labelledby="mainlabelid" value="{{selectedChildRole}}">
+            <!-- ko foreach: childRoleEnums -->
+            <oj-option value="{{applicationRoleName}}" :id="[['rolesadmin_'+ $index()]]"><span data-bind="text:applicationRoleName , attr : {'for' :'rolesadmin_' + $index()}"></span></oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
+          <!-- /ko -->
+        </div>
+      </div>
+
+      <!-- /ko -->
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading:$component.nls.internalAccessPoints.internalAccessPoints.internalAccessPoints">
+      </action-header>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.nls.internalAccessPoints.internalAccessPoints.selectAccessPoints"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+          <!-- ko if: isAccessPointFetched -->
+          <oj-checkboxset id="accessPoint" labelled-by="accessPoint" class="oj-choice-direction-row" value="{{selectedAccessPoint}}" required>
+            <!-- ko foreach: accessPoint -->
+            <oj-option value="[[value]]">
+              <span data-bind="text:text"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
+          <!-- /ko -->
+        </div>
+      </div>
+
+
+      <!-- ko if: $dashboard.userData.userProfile.accessibleEntities.length>1 -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading:$component.nls.accessibleEntity.accessibleEntity.accessibleEntities">
+      </action-header>
+      <!-- /ko -->
+      <!-- ko if: refresh-->
+      <!-- ko foreach: accessibleEntityArray-->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-10 oj-md-4 oj-sm-4">
+
+        </div>
+
+        <div class="oj-flex-item oj-lg-2 oj-md-4 oj-sm-4 users-create">
+          <a href="javascript:void(0)" class="icon icon-delete" data-bind="click:$parent.deleteAccessibleEntity.bind($data,$index(),$data)"></a>
+        </div>
+      </div>
+      <div data-bind="component: {name: 'accessible-entity', params:{rootModel: $parent,entityDetails:$data,parentRole:$component.parentRole(),validationTracker:$parent.validationTracker}}"></div>
+
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if: ($component.accessibleEntityArray().length<$dashboard.userData.userProfile.accessibleEntities.length-1) && $dashboard.userData.userProfile.accessibleEntityDTOs.length>1 && $component.entitiesListLoaded -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+          <oj-button class="help-button" on-click="[[addAccessibleEntity]]" disabled="[[$component.disableEntity()]]">
+            <span data-bind="text:$component.nls.accessibleEntity.accessibleEntity.addAccessibleEntities"></span>
+          </oj-button>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+  </page-section>
+
+
+  <!-- ko ifnot:createReviewFlag -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[reviewCreateUser]]">
+      <span data-bind="text:$component.nls.common.save"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:$component.nls.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[backOnCreate]]">
+      <span data-bind="text:$component.nls.common.back"></span>
+    </oj-button>
+
+  </div>
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+
+  <!-- ko if: userType().toLowerCase()==="corporateuser" -->
+  <!-- ko if: showCreateOption -->
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" id="interestedbutton" on-click="[[loadFormDetails]]">
+      <span data-bind="text:$component.nls.common.create"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:$component.nls.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[backOnCreate]]">
+      <span data-bind="text:$component.nls.common.back"></span>
+    </oj-button>
+  </div>
+
+  <!-- /ko -->
+  <!-- ko if: showFormDetails -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="">
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.profileinfo">
+      </action-header>
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 ">
+
+          <oj-label class="" for="userName"><span data-bind="text:$component.nls.fieldname.username"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.username]]" id="userName" required maxlength="50" validators="[[$baseModel.getValidator('USER_ID')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{username}}"></oj-input-text>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5 ">
+          <!-- ko if: checkIfUserExistsFlag -->
+          <a href="#" class="label users-create__checkAvailabilitySuccess" disabled :aria-label="[[$component.checkAvailability]]" data-bind="text: $component.checkAvailability"></a>
+          <!-- /ko -->
+          <!-- ko ifnot: checkIfUserExistsFlag -->
+          <a href="#" class="label" :aria-label="[[$component.checkAvailability]]" data-bind="text: $component.checkAvailability, click: $component.checkIfUserExists"></a>
+          <!-- /ko -->
+        </div>
+      </div>
+
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="basicSelect">
+            <span data-bind="text:$component.nls.fieldname.title"></span></oj-label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-select-one id="basicSelect" :placeholder="[[nls.fieldname.select]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{title}}">
+
+            <!-- ko foreach: salutationList -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="firstName"><span data-bind="text:$component.nls.fieldname.firstname"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.firstname]]" id="firstName" required maxlength="50" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{firstName}}"></oj-input-text>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="middleName"><span data-bind="text:$component.nls.fieldname.middlename"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.middlename]]" id="middleName" maxlength="50" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{middleName}}"></oj-input-text>
+        </div>
+
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="lastName"><span data-bind="text:$component.nls.fieldname.lastname"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.lastname]]" id="lastName" required maxlength="50" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{lastName}}"></oj-input-text>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="dateofBirth"><span data-bind="text:$component.nls.fieldname.dob"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-input-date :aria-label="[[$component.nls.fieldname.dob]]" id="dateofBirth" required="[[true]]" value="{{dateOfBirth}}" max="[[$component.maxDate()]]" converter="[[$baseModel.dateConverter]]" datepicker="[[{yearRange:'c-100:c'}]]"></oj-input-date>
+        </div>
+      </div>
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.contactDetails">
+      </action-header>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="emailid"><span data-bind="text:$component.nls.fieldname.emailid"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.emailid]]" id="emailid" required maxlength="60" validators="[[$baseModel.getValidator('EMAIL')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{emailId}}"></oj-input-text>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="mobile"><span data-bind="text:$component.nls.fieldname.contactmobile"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.contactmobile]]" id="mobile" required maxlength="15" validators="[[$baseModel.getValidator('MOBILE_NO')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{mobileNumber}}"></oj-input-text>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+          <oj-label class="" for="landline"><span data-bind="text:$component.nls.fieldname.contactlandline"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2">
+          <oj-input-text :aria-label="[[$component.nls.fieldname.contactlandline]]" id="landline" maxlength="15" validators="[[$baseModel.getValidator('PHONE_NO')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{phoneNumber}}"></oj-input-text>
+        </div>
+      </div>
+      <div data-bind="template: { name: 'admin/add', data: address, isDisabled : $component.isDisabled}"></div>
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.limitnRoles">
+      </action-header>
+
+      <!-- ko if: userLimitsListLoaded -->
+
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+
+          <div data-bind="component: {name: 'access-point-mapping', params:{rootModel: $component,header :$component.header,listLimitPackageArray:$component.userLimitsList,selectedLimitPackages:$component.selectedLimitPackagesEditMode,limitPackageDetails:$component.selectedLimitPackage,accessPointType:$component.accessPointType}}"></div>
+        </div>
+      </div>
+      <!-- /ko -->
+
+
+      <!-- ko if: showChildRole -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.nls.fieldname.role"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9" data-bind="attr:{'aria-label': $component.nls.fieldname.role}">
+          <!-- ko if: childRoleEnumsLoaded -->
+          <oj-checkboxset id="checkboxSetId" class="oj-choice-direction-row" aria-labelledby="mainlabelid" value="{{selectedChildRole}}" required>
+            <!-- ko foreach: childRoleEnums -->
+            <oj-option value="{{applicationRoleName}}" :id="[['rolescorp_'+ $index()]]"><span data-bind="text:applicationRoleName , attr : {'for' :'rolescorp_' + $index()}"></span></oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
+          <!-- /ko -->
+        </div>
+      </div>
+
+      <!-- /ko -->
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading:$component.nls.internalAccessPoints.internalAccessPoints.internalAccessPoints">
+      </action-header>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-label><span data-bind="text:$component.nls.internalAccessPoints.internalAccessPoints.selectAccessPoints"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+          <!-- ko if: isAccessPointFetched -->
+          <oj-checkboxset id="accessPoint" labelled-by="accessPoint" class="oj-choice-direction-row" value="{{selectedAccessPoint}}" required>
+            <!-- ko foreach: accessPoint -->
+            <oj-option value="[[value]]">
+              <span data-bind="text:text"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
+          <!-- /ko -->
+        </div>
+      </div>
+      <!-- ko if: !$dashboard.userData.userProfile.partyId.value -->
+      <!-- ko if: $dashboard.userData.userProfile.accessibleEntities.length>1 -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading:$component.nls.accessibleEntity.accessibleEntity.accessibleEntities">
+      </action-header>
+      <!-- /ko -->
+      <!-- ko if: refresh-->
+      <!-- ko foreach: accessibleEntityArray-->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-10 oj-md-4 oj-sm-4">
+
+        </div>
+
+        <div class="oj-flex-item oj-lg-2 oj-md-4 oj-sm-4 users-create">
+          <a href="javascript:void(0)" class="icon icon-delete users-create" data-bind="click:$parent.deleteAccessibleEntity.bind($data,$index(),$data)"></a>
+        </div>
+      </div>
+      <div data-bind="component: {name: 'accessible-entity', params:{rootModel: $parent,entityDetails:$data,parentRole:$component.parentRole(),validationTracker:$parent.validationTracker}}"></div>
+
+
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if: ($component.accessibleEntityArray().length<$dashboard.userData.userProfile.accessibleEntityDTOs.length-1) && $dashboard.userData.userProfile.accessibleEntityDTOs.length>1  -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+          <oj-button class="help-button" on-click="[[addAccessibleEntity]]" disabled="[[$component.disableEntity()]]">
+            <span data-bind="text:$component.nls.accessibleEntity.accessibleEntity.addAccessibleEntities"></span>
+          </oj-button>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+  </page-section>
+  <!-- ko ifnot:createReviewFlag -->
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" id="interestedbutton" on-click="[[reviewCreateUser]]">
+      <span data-bind="text:$component.nls.common.save"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:$component.nls.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[backOnCreate]]">
+      <span data-bind="text:$component.nls.common.back"></span>
+    </oj-button>
+
+  </div>
+  <!-- /ko -->
+
+  <!-- /ko -->
+
+  <!-- /ko -->
+</div>

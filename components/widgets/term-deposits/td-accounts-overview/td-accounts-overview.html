@@ -1,0 +1,31 @@
+<div class="oj-panel td-overview">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-8">
+      <h3 class="td-overview__header" data-bind="text:$component.nls.accountDetails.labels.header"></h3>
+    </div>
+    <!-- ko if : accountsLoaded() -->
+   <div class="oj-flex-item oj-sm-4">
+     <oj-select-one value="{{$component.selectedValue}}" required on-value-changed="[[selectedAccountTypeChangedHandler]]" data-bind="attr:{id:$component.nls.accountDetails.labels.myAccountType + $baseModel.currentIdCount(),'aria-label':$component.nls.accountDetails.labels.myAccountType}">
+       <!-- ko foreach: typeOfAccounts -->
+       <oj-option value="[[id]]"><span data-bind="text: label"></span></oj-option>
+       <!-- /ko -->
+     </oj-select-one>
+   </div>
+   <!-- /ko -->
+  </div>
+
+      <!-- ko if: tdOverviewBarSeriesValue().length -->
+      <div class="chart-container">
+        <oj-chart class="chart" type="bar" series="[[tdOverviewBarSeriesValue]]" groups="[[tdOverviewGroupValue]]" animation-on-data-change="auto" orientation="horizontal" legend.position="auto" style-defaults="[[styleDefaults]]" y-axis="[[yAxisConverter]]">
+            </oj-chart>
+
+        <!-- ko if: $baseModel.small() -->
+        <oj-legend orientation="vertical" sections="[[legendSections]]" valign="[[vertAlign]]" halign="[[horizAlign]]">
+            </oj-legend>
+        <!-- /ko -->
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot: tdOverviewBarSeriesValue().length > 0 -->
+      <div class="oj-flex-item noData" data-bind="text: $component.nls.accountDetails.labels.noData"></div>
+      <!-- /ko -->
+</div>

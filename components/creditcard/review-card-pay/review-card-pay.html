@@ -1,0 +1,85 @@
+<div class="form-main-container">
+  <!-- ko if:verifyCancel() -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.pay.review , reviewHeader :$component.resource.pay.reviewHeading}}"></div>
+
+  <page-section class="review" ="" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+    <div class="row-group">
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.pay.amount, value :$baseModel.formatCurrency($component.params.confData.amount.amount, $component.params.confData.amount.currency)"></row>
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resource.pay.sourceAccount, value :$component.params.confData.debitAccountId.displayValue"></row>
+    </div>
+
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="payConfirm" class="action-button-primary " on-click="[[payConfirm]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:resource.pay.confirm"></span>
+    </oj-button>
+
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button id="cancelCardPayment" class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:resource.pay.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+
+    <oj-button id="backCardPayment" class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:resource.pay.back"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if:otpCancel() -->
+  <div class="review-text-heading">
+    <span class="icons icon-information pull-left"></span>
+    <span data-bind="text: resource.pay.reviewHeader"></span>
+  </div>
+  <page-section class="review" ="" params="baseModel : $baseModel, rootModel : $data, heading : resource.pay.verification">
+    <div class="row-group">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex oj-flex-items-pad center margin-bottom-20">
+          <span data-bind="text:resource.pay.verification-msg"></span>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+            <oj-label for="otp"><span data-bind="text:resource.pay.verificationcode"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+            <oj-input-text required id="otp" maxlength="6" value="{{authKey}}" validators="[[$baseModel.getValidator('OTP')]]"></oj-input-text>
+          </div>
+        </div>
+
+        <!-- ko if:invalidOtpEntered() -->
+        <div class="oj-flex oj-flex-items-pad margin-bottom-20">
+          <div class="oj-flex-item oj-lg-offset-4">
+            <span data-bind="text:resource.pay.invalid-code"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <div class=" button-container ">
+          <oj-button class="form-button-secondary "><span slot="startIcon" class="icons icon-resend-otp"></span>
+            <span data-bind="text:resource.pay.resendotp"></span>
+          </oj-button>
+
+        </div>
+
+
+
+        <div class="oj-flex oj-flex-items-pad  center">
+          <a href="#"><span data-bind="text:resource.pay.otp-message"></span></a>
+        </div>
+      </div>
+    </div>
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="confirmPaymentWithAuth" class="action-button-primary " on-click="[[confirmPaymentWithAuth]]"><span slot="startIcon" class="icons icon-submit"></span>
+      <span data-bind="text:resource.pay.submit"></span>
+    </oj-button>
+    <!-- ko if: !$baseModel.small() -->
+    <oj-button id="cancelCardPayment" class="action-button-secondary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:resource.pay.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+</div>

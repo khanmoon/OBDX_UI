@@ -1,0 +1,47 @@
+<!-- ko if: notifications() -->
+<!-- ko if:showFilmStrip() -->
+<!-- ko if:$baseModel.small() -->
+<div id="wallet-alerts">
+	<oj-film-strip id="filmStrip" arrowPlacement = "overlay" arrowVisibility = "visible" maxItemsPerPage = "1">
+		<!-- ko foreach: notifications()[0].requestFundDTOList -->
+		<div data-bind="style : {width : $parent.maxCardWidth() + 'px'},
+		attr:{'id':id},component: {name: 'wallet-notification-card',
+		params:{rootModel: $parent, data:{
+      'firstName': $component.notifications()[0].walletResponseDTO[$index()].firstName,
+      'lastName': $component.notifications()[0].walletResponseDTO[$index()].lastName,
+      'image': 'wallet/wallet-alert.svg',
+      'comments': comments,
+      'formattedAmount': $baseModel.formatCurrency(amount.amount,amount.currency),
+      'walletId': $component.notifications()[0].walletResponseDTO[$index()].walletId.value,
+      'amount': amount.amount,
+      'currency': amount.currency,
+      'mobileNo': $component.notifications()[0].walletResponseDTO[$index()].mobileNo,
+      'requestId':id,
+      'requestFlow':true
+    }}
+	}">
+		</div>
+		<!-- /ko -->
+</oj-film-strip>
+ </div>
+  <!-- /ko -->
+<!-- ko if:!$baseModel.small() -->
+<!-- ko foreach: notifications()[0].requestFundDTOList -->
+ <div data-bind="component: {name: 'wallet-notification-card', params:{rootModel: $parent, data:{
+   'firstName': $component.notifications()[0].walletResponseDTO[$index()].firstName,
+   'lastName': $component.notifications()[0].walletResponseDTO[$index()].lastName,
+   'image': 'wallet/wallet-alert.svg',
+   'comments': comments,
+   'formattedAmount': $baseModel.formatCurrency(amount.amount,amount.currency),
+   'walletId': $component.notifications()[0].walletResponseDTO[$index()].walletId.value,
+   'amount': amount.amount,
+   'currency': amount.currency,
+   'mobileNo': $component.notifications()[0].walletResponseDTO[$index()].mobileNo,
+   'requestId':id,
+   'requestFlow':true
+ }}},attr:{id:id}">
+ </div>
+<!-- /ko -->
+ <!-- /ko -->
+ <!-- /ko -->
+<!-- /ko -->

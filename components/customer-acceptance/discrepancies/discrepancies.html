@@ -1,0 +1,176 @@
+<div class="trade-finance">
+
+<div class="trade-finance-nav-bar" data-bind="component:{name: 'customer-acceptance-nav-bar', params:{rootModel:$data, selectedMenu: $component.resourceBundle.navLabels.discrepancies}}">
+</div>
+
+<div class="form-main-container">
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad grid-row-group">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <label for="customerName" data-bind="text: $component.resourceBundle.viewBills.labels.drawee"></label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+            <oj-select-one id="customerName" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[$component.drawerNameArray]]" value="{{$component.partyId}}">
+          </oj-select-one>
+          </div>
+      </div>
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad grid-row-group">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <label for="applicantName" data-bind="text: $component.resourceBundle.viewBills.labels.drawer"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+          <oj-input-text id="applicantName" type="text" minlength="0" maxlength="35" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.tradeFinanceErrors.bills.invalidDraweeName,{type:'length',options:{
+                        min:0,max:35}})]]" value="{{$component.counterPartyName}}"></oj-input-text>
+        </div>
+      </div>
+  </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+            <div class="oj-flex oj-flex-items-pad grid-row-group">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <label for="billNumber" data-bind="text: $component.resourceBundle.viewBills.labels.billRefNo"></label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                <oj-input-text id="billNumber" type="text" maxlength="16" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resourceBundle.tradeFinanceErrors.bills.invalidBillNumber,{type:'length',options:{
+                              min:0,max:16}})]]" value="{{$component.id}}"></oj-input-text>
+              </div>
+            </div>
+        </div>
+  </div>
+  </page-section>
+
+  <div class="button-container">
+    <oj-button id="search" class="action-button-primary" on-click="[[getListBillsDiscrepancies]]">
+      <span slot="startIcon" class="icons icon-search"></span>
+    <span data-bind="text:$component.resourceBundle.generic.common.search"></span>
+</oj-button>
+      <!-- ko ifnot: dataSourceCreated -->
+        <!-- ko ifnot: $baseModel.small() -->
+      <oj-button id="cancel" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+        <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+</oj-button>
+       <!-- /ko -->
+        <!-- /ko -->
+      <oj-button id="reset" class="action-button-tertiary" on-click="[[$component.reset]]">
+        <span slot="startIcon" class="icons icon-refresh"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.reset"></span>
+</oj-button>
+
+  </div>
+
+  <!-- ko if: dataSourceCreated -->
+    <!-- ko if:$baseModel.large() -->
+  <div class="oj-flex oj-flex-items-pad grid-row-group">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+      <oj-table id="discrepancyTable" :aria-label="[[$component.resourceBundle.heading.billTables]]" columns="[[[{headerText:$component.resourceBundle.viewBills.labels.billRefNo},{headerText:$component.resourceBundle.labels.productName},{headerText:$component.resourceBundle.viewBills.labels.drawer},{headerText:$component.resourceBundle.labels.LCNumber},{headerText:$component.resourceBundle.viewBills.labels.billAmount,headerClassName:'right',className:'right'}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('billDiscrepanciesList_template', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[dataSource]]">
+          <caption class="hide-label" data-bind="text:$component.resourceBundle.heading.billDiscrepancies"></caption>
+      </oj-table>
+
+      <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSource]]"></oj-paging-control>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot:$baseModel.large() -->
+  <div class="oj-flex grid-main-container">
+    <div class="oj-flex-item oj-sm-12">
+        <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('template_list_card',true)}]]" selection-mode="[['single']]" data="[[dataSource]]">
+        </oj-list-view>
+        <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.dataSource]]">
+        </oj-paging-control>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if: dataSourceCreated && !$baseModel.small()-->
+  <div class="button-container">
+  <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+    <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+</oj-button>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+
+  </div>
+</div>
+
+<script type="text/html" id="billDiscrepanciesList_template">
+    <tr>
+       <td>
+        <a href="#" data-bind="text:$data.billNumber,click:$component.onBillSelected.bind($data)"></a>
+      </td>
+      <td>
+        <span data-bind="text:productName"></span>
+      </td>
+      <td>
+        <span data-bind="text:beneficiary"></span>
+      </td>
+      <td>
+        <span data-bind="text:lcNumber"></span>
+      </td>
+      <td>
+        <span data-bind="text:billAmount"></span>
+      </td>
+  </tr>
+</script>
+
+<script type="text/html" id="template_list_card">
+  <li data-bind="attr: {id: $data.billNumber}">
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-md-12 oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-9 description">
+              <a href="#" data-bind="attr:{ title:  $data.billNumber, alt : $data.billNumber },text:$data.billNumber,
+              click:$component.onBillSelected.bind($data)"></a>
+            </div>
+          </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6 content" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.labels.productName"></label>
+            <div data-bind="text: $data.productName"></div>
+          </div>
+        </div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-6">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.viewBills.labels.drawer"></label>
+            <div data-bind="text: $data.beneficiary"></div>
+          </div>
+        </div>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.labels.LCNumber"></label>
+            <div data-bind="text: $data.lcNumber"></div>
+          </div>
+        </div>
+
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <label data-bind="text: $component.resourceBundle.viewBills.labels.billAmount"></label>
+          <div data-bind="text: $data.billAmount"></div>
+        </div>
+      </div>
+      </div>
+      </div>
+
+  </li>
+</script>

@@ -1,0 +1,308 @@
+<div class="oj-flex">
+    <div data-bind="css: $component.mode() === 'REVIEW' ? 'oj-flex-item oj-sm-12' : 'oj-flex-item oj-sm-9'">
+        <div class="form-main-container">
+        <page-section params="baseModel : $baseModel, rootModel : $data">
+            <oj-validation-group id="tracker1" valid="{{groupValid1}}">
+            <!-- ko if: $component.mode() === "CREATE" -->
+            <action-header params="baseModel : $baseModel, rootModel : $data, heading : ''"></action-header>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                    <oj-label for="type"><span data-bind="text:$component.nls.transaction.transactionType"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-lg-offset-2 oj-lg-4 oj-md-6 oj-sm-12">
+                    <oj-select-one id="type" required :placeholder="[[$component.nls.workingWindow.pleaseSelect]]" value="{{typeTransaction}}">
+                        <!-- ko foreach: $component.transTypes -->
+                        <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+                        <!-- /ko -->
+                    </oj-select-one>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad row-group">
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+                  <oj-label for="tridata">
+                      <span data-bind="text:$component.nls.transaction.transactionName"></span>
+                  </oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                    <oj-select-one id="tridata" required :placeholder="[[$component.nls.workingWindow.pleaseSelect]]" value="{{$component.blackout.taskCode}}" options="[[transactions]]" disabled="{{disableTransaction}}">
+                    </oj-select-one>
+                </div>
+            </div>          
+        <!-- /ko -->
+        <!-- ko if: $component.mode() === "EDIT" -->
+            <action-header params="baseModel : $baseModel, rootModel : $data, heading : ''"></action-header>
+            <!-- ko if:$component.blackout.blackoutId -->
+<!--
+            <div class="oj-flex oj-flex-items-pad row-group">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                    <oj-label for="txnName"><span data-bind="text:"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                    <span id="txnName" data-bind="text:"></span>
+                </div>
+
+            </div>
+-->
+            <row params="baseModel : $baseModel,rootModel:$parent,label:$component.nls.transaction.transactionName, value : $component.selectedTransaction()"></row>
+            <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: $component.mode() === "CREATE" || $component.mode() === "EDIT"-->
+            <!-- ko if: showuserTypeList() -->
+            <div class="oj-flex oj-flex-items-pad row-group">
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+                    <oj-label for="purposeList"><span data-bind="text:$component.nls.common.userType"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-9">
+                    <oj-checkboxset id="purposeList" class="oj-choice-direction-column" required value="{{$component.blackout.blackoutRole}}" disabled="[[editdisableTransaction]]">
+                        <!-- ko foreach: $component.userTypeOptions()  -->
+                        <oj-option value="{{value}}" :id="[['purpose_'+ $index()]]">
+                            <span data-bind="text:label, attr : {'for' :'purpose_' + $index()}">
+                            </span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-checkboxset>
+                </div>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                    <oj-label for="frequency"><span data-bind="text:$component.nls.transaction.blackoutType"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-10 oj-md-6 oj-lg-4 ">
+                    <oj-buttonset-one id="frequency" on-value-changed="[[$component.typeDefaultChangeHandler]]" disabled="[[editdisableTransaction]]" value="{{$component.blackout.frequency}}">
+                        <oj-option name="selectedTypeButton" value="{{'FULL'}}" :id="[['full']]">
+                            <span data-bind="attr: {for: 'full'},text: $component.nls.transaction.full">
+                            </span>
+                        </oj-option>
+                        <oj-option name="selectedTypeButton" value="{{'DAILY'}}" :id="[['recurring']]">
+                            <span data-bind="attr: {for: 'recurring'},text:$component.nls.transaction.recurring"></span>
+                        </oj-option>
+                    </oj-buttonset-one>
+                </div>
+            </div>
+
+            <!-- ko if: !recurring() -->
+
+            <div class="oj-flex oj-flex-items-pad">
+
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                    <oj-label for="date"><span data-bind="text:$component.nls.datetime.startOn"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-9 label">
+                    <div class="oj-flex oj-flex-items-pad">
+
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                            <oj-input-date id="date" name="date" required="[[true]]" converter="[[$baseModel.dateConverter]]" value="{{$component.blackout.startDate}}" max="[[$component.blackout.endDate]]" disabled="[[editdisableTransaction]]" :placeholder="[[$component.nls.common.selectDate]]" min="[[minEffectiveDate]]"></oj-input-date>
+                        </div>
+
+
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                            <oj-label class="hide-label" :for="[['stime_'+'0']]"><span data-bind="text:$component.nls.datetime.startOn"></span></oj-label>
+                            <oj-input-time name="date" required :id="[['stime_'+'0']]" converter="[[$baseModel.timeConverter]]" value="{{$component.blackout.blackoutTime()[0].startTime}}" on-value-changed="[[$component.startTimeChangedHandler]]" disabled="[[editdisableTransaction]]" :placeholder="[[$component.nls.common.selectTime]]" time-picker="[[{
+                                                                timeIncrement:'00:01:00:00'}]]"></oj-input-time>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                    <oj-label for="end"><span data-bind="text:$component.nls.datetime.endOn"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-9 label">
+                    <div class="oj-flex oj-flex-items-pad">
+
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                            <oj-input-date id="end" name="date" required="[[true]]" converter="[[$baseModel.dateConverter]]" value="{{$component.blackout.endDate}}" :placeholder="[[$component.nls.common.selectDate]]" min="[[minDate]]"></oj-input-date>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                            <oj-label class="hide-label" :for="[['etime_'+'0']]"><span data-bind="text:$component.nls.datetime.endOn"></span></oj-label>
+                            <oj-input-time name="date" :id="[['etime_'+'0']]" required="[[true]]" converter="[[$baseModel.timeConverter]]" value="{{$component.blackout.blackoutTime()[0].endTime}}" on-value-changed="[[$component.endTimeChangedHandler]]" min="[[minTime]]" :placeholder="[[$component.nls.common.selectTime]]" time-picker="[[{
+                                timeIncrement:'00:01:00:00'}]]"></oj-input-time>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: recurring()-->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                    <oj-label for="dateRange"><span data-bind="text:$component.nls.datetime.dateRange"></span></oj-label>
+                </div>
+                <div id="dateRange" class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-9 label">
+                    <div class="oj-flex oj-flex-items-pad">
+<!--                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-1">-->
+                            <oj-label class="hide-label" for="first">
+                                <span data-bind="text:$component.nls.datetime.from"></span>
+                            </oj-label>
+<!--                        </div>-->
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                            <oj-input-date id="first" name="first" required="[[true]]" converter="[[$baseModel.dateConverter]]" value="{{$component.blackout.startDate}}" max="[[$component.blackout.endDate]]" disabled="[[editdisableTransaction]]" :placeholder="[[$component.nls.datetime.from]]" min="[[minEffectiveDate]]"></oj-input-date>
+                        </div>
+<!--                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-1">-->
+                            <oj-label class="hide-label" for="endDate">
+                                <span data-bind="text:$component.nls.datetime.to"></span>
+                            </oj-label>
+<!--                        </div>-->
+                    
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                            <oj-input-date id="endDate" name="first" required="[[true]]" converter="[[$baseModel.dateConverter]]" value="{{$component.blackout.endDate}}" :placeholder="[[$component.nls.datetime.to]]" min="[[minDate]]"></oj-input-date>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                    <oj-label><span data-bind="text:$component.nls.datetime.time"></span></oj-label>
+                </div>
+                <!-- ko foreach :$component.blackout.blackoutTime -->
+                <!-- ko if: $index() === 0 -->
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9 label">
+                    <div class="oj-flex oj-flex-items-pad">
+<!--                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-1">-->
+                          <oj-label class="hide-label" :for="[['stime_'+$index()]]"><span data-bind="text:$component.nls.datetime.from"></span></oj-label>
+<!--                        </div>-->
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                            <oj-input-time name="second" :id="[['stime_'+$index()]]" required="[[true]]" on-value-changed="[[$component.verifyStartTime]]" converter="[[$baseModel.timeConverter]]" time-picker="[[{
+                               timeIncrement:'00:01:00:00'}]]" value="{{startTime}}" :placeholder="[[$component.nls.datetime.from]]"></oj-input-time>
+                        </div>
+<!--                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-1">-->
+                          <oj-label class="hide-label" :for="[['etime_'+$index()]]">
+                              <span data-bind="text:$component.nls.datetime.to"></span>
+                          </oj-label>
+<!--                        </div>-->
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                            <oj-input-time name="second" :id="[['etime_'+$index()]]" required="[[true]]" converter="[[$baseModel.timeConverter]]" value="{{endTime}}" min="[[startTime]]" on-value-changed="[[$component.timeChangedHandler]]" :placeholder="[[$component.nls.datetime.to]]" time-picker="[[{
+                                timeIncrement:'00:01:00:00'}]]"></oj-input-time>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+            </div>
+            <!-- /ko --> 
+            
+            <!-- ko if: recurring()-->
+                <!-- ko foreach :$component.blackout.blackoutTime -->
+                <!-- ko if: $index() > 0 -->
+                <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                </div>      
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9 label">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <oj-label class="hide-label" :for="[['stime_'+$index()]]">
+                            <span data-bind="text:$component.nls.datetime.from"></span>
+                        </oj-label>
+                        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+                            <oj-input-time :id="[['stime_'+$index()]]" required="[[true]]" converter="[[$baseModel.timeConverter]]" value="{{startTime}}" time-picker="[[{timeIncrement:'00:01:00:00'}]]" on-value-changed="[[$component.verifyStartTime]]" placeholder="[[$component.nls.datetime.from]]">
+                            </oj-input-time>
+
+                        </div>
+                            <oj-label class="hide-label" :for="[['etime_'+$index()]]">
+                                <span data-bind="text:$component.nls.datetime.to"></span>
+                            </oj-label>
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                            <oj-input-time :id="[['etime_'+$index()]]" required="[[true]]" converter="[[$baseModel.timeConverter]]" value="{{endTime}}" time-picker="[[{timeIncrement:'00:01:00:00'}]]" min="[[startTime]]" on-value-changed="[[$component.timeChangedHandler]]" placeholder="[[$component.nls.datetime.to]]">
+                            </oj-input-time>
+                        </div>
+                        <div class="pull-right">
+                            <a href="javascript:void(0)" class="icon icon-delete delete-icon" data-bind="click:$component.deleteRow"></a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                    </div>      
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+                        <div class="oj-flex oj-flex-items-pad button-container">
+                            <oj-button class="help-button" on-click="[[$component.addRow]]">
+                                  <span data-bind="text:$component.nls.common.addTime"></span>
+                            </oj-button>
+                        </div>
+                    </div>
+                </div> 
+            <!-- /ko -->
+                  
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button id="savebutton" class="action-button-primary" on-click="[[$component.save]]">
+                <span data-bind="text:$component.nls.common.save"></span>
+            </oj-button>
+            <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.nls.transaction.confirmMsg)]]">
+                <span data-bind="text:$component.nls.common.cancel"></span>
+            </oj-button>
+            <oj-button id="backbutton" class="action-button-tertiary" on-click="[[$component.back]]">
+                <span data-bind="text:$component.nls.common.back"></span>
+            </oj-button>
+        </div>
+
+        <!-- /ko -->
+        </oj-validation-group> 
+        <!-- ko if:  $component.mode()==="VIEW" -->
+        <div data-bind="component:{name:'transaction-blackout-view', params:{rootModel:$component, blackoutDetails: $component.blackoutDetails()}}">
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button id="editbutton" class="action-button-primary" on-click="[[$component.edit]]">
+            <span data-bind="text:$component.nls.common.edit"></span>
+            </oj-button>
+            <oj-button id="deletebutton" class="action-button-primary" on-click="[[function(){$('#deleteDialog').trigger('openModal');}]]">
+            <span data-bind="text:$component.nls.common.delete"></span>
+            </oj-button>
+            <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.nls.transaction.confirmMsg)]]">
+            <span data-bind="text:$component.nls.common.cancel"></span>
+            </oj-button>
+            <oj-button id="backbutton" class="action-button-tertiary" on-click="[[$component.back]]">
+            <span data-bind="text:$component.nls.common.back"></span>
+            </oj-button> 
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: $component.mode() === "REVIEW" -->
+        <div data-bind="component:{name:'transaction-blackout-review', params:{rootModel:$component, blackoutData: $component.blackout}}">
+        </div>
+        <!-- /ko -->
+        </page-section>     
+        <modal-window params="baseModel : $baseModel, rootModel : $data, id:'deleteDialog', header: $component.nls.transaction.deleteBlackoutTitle ">
+              <!-- ko if: blackout.transactionBlackoutStatusType() === "ONGOING" -->
+                <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item">
+                <div data-bind="text:$component.nls.transaction.deleteBlackoutOnMsg"></div>
+                </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko ifnot: blackout.transactionBlackoutStatusType() === "ONGOING" -->
+                <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item">
+                <div data-bind="text:$component.nls.transaction.deleteBlackoutMsg"></div>
+                </div>
+                </div>
+                
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button class="action-button-secondary" on-click="[[$component.hideDeleteBlock]]">
+                <span data-bind="text:$component.nls.common.no"></span>
+                </oj-button>
+                <oj-button class="action-button-primary" on-click="[[$component.delete]]">
+                <span data-bind="text:$component.nls.common.yes"></span>
+                </oj-button>
+            </div>
+
+        </modal-window>   
+    </div>
+    </div>
+    <!-- ko if: $component.mode() === "CREATE" || $component.mode() === "EDIT" -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'create-transaction-blackout'"></help>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $component.mode() === "VIEW" -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'transaction-blackout-view'"></help>
+    </div>
+    <!-- /ko -->
+</div>

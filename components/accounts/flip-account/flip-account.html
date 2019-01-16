@@ -1,0 +1,107 @@
+<div class="flip-account" data-bind="css: $component.type()">
+  <!-- ko if : !$baseModel.small() -->
+  <div class="top-pannel">
+    <div class="oj-flex">
+      <!-- ko if: $component.type() -->
+      <div class="oj-flex-item oj-sm-11">
+        <h3 class="sub-heading" tabindex="-1" id="flipAccountHeading" data-bind="text:$component.resource.heading[$component.type()]"></h3>
+        <span class="total-account" data-bind="text:$baseModel.format($component.resource.subHeading ,{count:$component.totalAccount()})"></span>
+      </div>
+      <!-- /ko -->
+
+      <div class="oj-flex-item oj-sm-1">
+        <a href="#" data-bind="attr:{'aria-label':$component.resource.turnCard,'title':$component.resource.turnCard},click: $component.turnCard">
+          <div class="icons icon-close pull-right"></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-12 status">
+        <oj-label class="hide-label" for="select"><span data-bind="text:$component.resource.accountTypeLabel"></span></oj-label>
+
+        <oj-select-one id="select" value="{{statusSelected}}">
+          <!-- ko foreach: accountsTypes -->
+          <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+  <oj-list-view id="accountResults" :aria-label="[[$component.resource.myAccount]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('flip-account-data-script',true)}]]" data="{{$component.dataSource}}">
+  </oj-list-view>
+  <!-- ko if : $component.type() -->
+  <div class="oj-flex bottom-nav">
+    <!-- ko foreach: $component.options[$component.type()].bottomOptions -->
+    <div class="oj-flex-item center">
+      <a href="#" data-bind="attr:{'alt':$component.resource.linksLabel[$data.id],'title':$component.resource.linksLabel[$data.id]},click: $component.linkClick">
+        <div data-bind="text:$component.resource.linksLabel[$data.id]"></div>
+      </a>
+    </div>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+</div>
+<script type="text/html" id="flip-account-data-script">
+  <li data-bind="attr: {id: $data.id ? $data.id.value : $data.creditCard.value}">
+    <div class="oj-flex account-details">
+      <div class="oj-flex-item oj-sm-6 ">
+        <div class="account-name" data-bind="text:$data.partyName || $data.ownerName"></div>
+      </div>
+      <div class="oj-flex-item oj-sm-5 right">
+        <!-- ko if: $component.type()  ==='LON' -->
+        <div class="balance-amount" data-bind="text:$baseModel.formatCurrency(outstandingAmount.amount,outstandingAmount.currency)"></div>
+        <!-- /ko -->
+        <!-- ko if: $component.type()  ==='CSA' -->
+        <div class="balance-amount" data-bind="text:$baseModel.formatCurrency(availableBalance.amount,availableBalance.currency)"></div>
+        <!-- /ko -->
+        <!-- ko if: $component.type()  ==='TRD' &&  $data.status  ==='ACTIVE' -->
+        <div class="balance-amount" data-bind="text:$baseModel.formatCurrency(availableBalance.amount,availableBalance.currency)"></div>
+        <!-- /ko -->
+        <!-- ko if: $component.type()  ==='RD' &&  $data.status  ==='ACTIVE' -->
+        <div class="balance-amount" data-bind="text:$baseModel.formatCurrency(availableBalance.amount,availableBalance.currency)"></div>
+        <!-- /ko -->
+        <!-- ko if: $component.type()  ==='CCA' -->
+        <div class="balance-amount" data-bind="text:$baseModel.formatCurrency(due.billedAmount.amount,due.billedAmount.currency)"></div>
+        <!-- /ko -->
+      </div>
+
+      <div class="oj-flex-item oj-sm-1 right">
+        <a class="menu-icon" href="#" data-bind="attr: {id : $component.type() + $context.index,'alt':$component.resource.openMenu,'title':$component.resource.openMenu}, click: $component.openMenu">
+          <div class="icons icon-more-vertical"></div>
+        </a>
+        <oj-menu :id="[[ $component.type() + $context.index + '-container']]" :aria-label="[[$component.resource.transactions.myAccount]]" open-options="[[{display:'dropDown',launcher: $component.type() +  $context.index, position:{'my': 'center center', 'at': 'center center'}}]]"
+          on-oj-action="[[$component.menuItemSelect]]">
+          <!-- ko foreach: $component.evaluateMenu($data) -->
+          <oj-option data-bind="attr: {id: $data},value: $data">
+            <span data-bind="text: $component.resource.transactions[$data]"></span>
+          </oj-option>
+          <!-- /ko -->
+        </oj-menu>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <div class="account-no">
+          <!-- ko if : $data.accountNickname -->
+          <span data-bind="text: $baseModel.format($component.resource.accountNumberWithNickName, {accountNumber: ($component.type() ==='CCA')  ?  $data.creditCard.displayValue : id.displayValue, status : $component.resource.status[status || cardStatus], nickName :accountNickname })"></span>
+          <!-- /ko -->
+          <!-- ko if : !$data.accountNickname -->
+          <span data-bind="text: $baseModel.format($component.resource.accountNumber, {accountNumber: ($component.type() ==='CCA')  ?  $data.creditCard.displayValue : id.displayValue, status : $component.resource.status[status || cardStatus]})"></span>
+          <!-- /ko -->
+        </div>
+      </div>
+      <!-- ko if: $component.type()  ==='CSA' || $component.type()  ==='LON'  -->
+      <div class="account-type" data-bind="text:$baseModel.format($component.resource.ddSubText,{product : productDTO.description , accountType:$component.resource.accountType[module]})"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.type() ==='TRD' -->
+      <div class="account-type" data-bind="text:$baseModel.format($component.resource.tdSubText,{interestRate : $data.interestRate|| 0 , maturityDate:$baseModel.formatDate($data.maturityDate) ,accountType:$component.resource.accountType[module]})"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.type() ==='RD' -->
+      <div class="account-type" data-bind="text:$baseModel.format($component.resource.rdSubText,{interestRate : $data.interestRate|| 0 , maturityDate:$baseModel.formatDate($data.maturityDate)})"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.type() ==='CCA' -->
+      <!-- <div class="account-type" data-bind="text:$baseModel.format($component.resource.ccaSubText,{interestRate : $data.interestRate|| 0 , maturityDate:$baseModel.formatDate(maturityDate)})"></div> -->
+      <!-- /ko -->
+    </div>
+  </li>
+</script>

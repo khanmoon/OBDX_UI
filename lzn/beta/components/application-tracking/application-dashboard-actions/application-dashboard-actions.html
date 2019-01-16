@@ -1,0 +1,40 @@
+<!-- ko if:pendingActionList() && pendingActionList().length > 0  -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item">
+		<h3 class="section-heading" data-bind="text : $component.resource.pending"></h3>
+	</div>
+</div>
+<!-- ko foreach : pendingActionList -->
+<!-- ko ifnot: $component.productClassName() === "LOANS" && type === "AdditionalInfo"  -->
+<a class="pending-actions-container oj-flex oj-flex-items-pad" href="javascript:void(0)" data-bind="click :function(){$parent.navigateFurther(type);} ,attr:{alt: $component.resource.viewListContainer, title: $component.resource.viewListContainerTitle}">
+	<div class="oj-flex-item oj-sm-9 pending-text">
+		<span data-bind="text:$component.resource.additionalPreferences"></span>
+	</div>
+	<div class="oj-flex-item oj-sm-3 pull-right">
+		<span class="icon-arrow-right pull-right"></span>
+	</div>
+</a>
+<!-- /ko -->
+<!-- ko if: $component.productClassName() === "LOANS" && type === "AdditionalInfo"  -->
+<a class="pending-actions-container oj-flex oj-flex-items-pad" href="javascript:void(0)" data-bind="click :function(){$parent.navigateFurther(type);} ,attr:{alt: $component.resource.viewListContainer, title: $component.resource.viewListContainerTitle}">
+	<div class="oj-flex-item oj-sm-9 pending-text">
+		<span data-bind="text:$component.resource.accountConfigurationPendingActions"></span>
+	</div>
+	<div class="oj-flex-item oj-sm-3 pull-right">
+		<span class="icon-arrow-right pull-right"></span>
+	</div>
+</a>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if:pendingActionList() === undefined && $component.applicationSummary().progress !== 100 -->
+<h3 class="section-heading " data-bind="text : $component.resource.pending"></h3>
+<div class="view-list-container">
+	<div class="pending-actions-container oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item label pending-text">
+			<oj-label><span data-bind="text:$component.resource.noAction"></span></oj-label>
+		</div>
+	</div>
+</div>
+<!-- /ko -->

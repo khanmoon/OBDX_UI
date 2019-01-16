@@ -1,0 +1,51 @@
+<page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+  <div class="row-group">
+    <!-- ko if: data.accountId -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.redeem.tdAccountNumber , dataClass : 'highlight-text',value :data.accountId.displayValue"></row>
+    <!-- /ko -->
+    <!-- ko if: data.netCreditAmt -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.redeem.redeemableAmount , dataClass : 'highlight-text',value :$baseModel.formatCurrency(data.netCreditAmt.amount(),data.netCreditAmt.currency())"></row>
+    <!-- /ko -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.redeem.redemptionType , value : resourceBundle.transactions.redeem.type[ko.utils.unwrapObservable(data.typeRedemption)]"></row>
+    <!-- ko if: data.charges -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.redeem.charges , dataClass : 'highlight-text',value :$baseModel.formatCurrency(data.charges.amount(),data.charges.currency())"></row>
+    <!-- /ko -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.redeem.redemptionAmount , dataClass : 'highlight-text',value :$baseModel.formatCurrency(data.netCreditAmt.amount(),data.netCreditAmt.currency())"></row>
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.termDepositDetails.payoutInstructions.payTo , dataClass : 'highlight-text',value : resourceBundle.transactions.termDepositDetails.payoutInstructions.payoutType[data.payoutInstructions()[0].type()]"></row>
+    <!-- ko if: data.payoutInstructions()[0].type()==='O' -->
+    <div class="row-group">
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.termDepositDetails.payoutInstructions.transferAccount, value : [data.payoutInstructions()[0].beneficiaryName(),data.payoutInstructions()[0].accountId.displayValue(),data.payoutInstructions()[0].bankName(),data.payoutInstructions()[0].address.line1(),data.payoutInstructions()[0].address.line2(),data.payoutInstructions()[0].address.city(),data.payoutInstructions()[0].address.country()]"></row>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if: data.payoutInstructions()[0].type()==='I' -->
+    <div class="row-group">
+      <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.termDepositDetails.payoutInstructions.transferAccount, value : data.payoutInstructions()[0].account"></row>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if: data.payoutInstructions()[0].type()==='E' -->
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.termDepositDetails.payoutInstructions.branch ,
+
+          value :[data.payoutInstructions()[0].beneficiaryName(),
+          data.payoutInstructions()[0].account,
+          data.payoutInstructions()[0].networkType ? data.payoutInstructions()[0].networkType() : '',
+		      data.payoutInstructions()[0].clearingCode() ? data.payoutInstructions()[0].clearingCode() : '',
+          data.payoutInstructions()[0].bankName(),
+   		  data.payoutInstructions()[0].address.line1(),
+   		  data.payoutInstructions()[0].address.line2(),
+   		  data.payoutInstructions()[0].address.city(),
+   		  data.payoutInstructions()[0].address.country()
+
+          ]"></row>
+    <!-- /ko -->
+
+
+    <!-- ko if:data.typeRedemption() === 'P' -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : resourceBundle.transactions.termDepositDetails.depositDetails.revisedMaturity, dataClass : 'highlight-text',value :$baseModel.formatCurrency(data.revisedMaturityAmount.amount(),data.revisedMaturityAmount.currency())"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : data.module()==='ISL'?resourceBundle.transactions.redeem.islamicRevisedInterestRate: resourceBundle.transactions.redeem.revisedInterestRate, dataClass : 'highlight-text',value :$baseModel.formatNumber((data.revisedInterestRate())/100, 'percent')"></row>
+    <!-- /ko -->
+  </div>
+</page-section>

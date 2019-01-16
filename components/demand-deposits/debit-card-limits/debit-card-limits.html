@@ -1,0 +1,362 @@
+<div class="">
+
+  <div class="debit-card-limit" data-bind="css: $component.params.mode==='REVIEW' ? 'form-main-container' : ''">
+    <!-- ko if: $component.isDataLoaded() -->
+    <!-- ko ifnot: $baseModel.small()-->
+
+    <!-- ko if: $component.params.mode === 'REVIEW' -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+    <!-- /ko -->
+
+    <div class="oj-flex">
+      <div class="oj-flex-item">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading :$component.params.mode==='REVIEW'?'':$component.params.mode">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-md-6 oj-lg-6">
+              <page-section params="baseModel : $baseModel, rootModel : $component, heading: locale.debitCards.dailyLimits">
+                <!-- ko if: $component.rowTemplateValue() === 'rowTemplate' -->
+                <oj-table id="table" class="debit-card-limit__limitsTable debit-card-limit-limitsTable" :aria-label="[[$component.locale.debitCards.limits.limitsTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('rowTemplate', true)]]" columns="[[$component.columns]]"
+                  data="[[$component.datasource]]">
+                  <caption class="hide-label" data-bind="text:$component.locale.debitCards.limits.limitsTable"></caption>
+                </oj-table>
+                <!-- /ko -->
+                <!-- ko if: $component.rowTemplateValue() === 'editRowTemplate' -->
+                <oj-table id="table" class="debit-card-limit__limitsTable debit-card-limit-limitsTable" :aria-label="[[$component.locale.debitCards.limits.limitsTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer($component.rowTemplateValue, true)]]" columns="[[$component.columns]]"
+                  data="[[$component.datasource]]">
+                  <caption class="hide-label" data-bind="text:$component.locale.debitCards.limits.limitsTable"></caption>
+                </oj-table>
+                <!-- /ko -->
+                <script type="text/html" id="rowTemplate">
+                  <tr>
+                    <td data-bind="text:limitTypeLocal">
+                    </td>
+                    <td data-bind="text:count">
+                    </td>
+                    <td class="debit-card-limit-limitsTable__amount right" data-bind="text:$baseModel.formatCurrency(amountType.amount(),amountType.currency())"></td>
+                  </tr>
+                </script>
+
+
+                <script type="text/html" id="editRowTemplate">
+                  <tr>
+                    <td class="debit-card-limit__limitTypeInput" data-bind="text:limitTypeLocal">
+                    </td>
+                    <td>
+                      <oj-input-text class="debit-card-limit__countInput" type="text" maxlength="2" :aria-label="[[$component.locale.debitCards.limits.Count + $context.rowContext.status.rowIndex]]" :id="[['count_'+ $context.rowContext.status.rowIndex]]" value="{{count}}"></oj-input-text>
+                    </td>
+                    <td>
+                      <div class="debit-card-limit__amountInput" data-bind="component: {
+         name: 'amount-input', params: {
+         amount :amountType.amount,
+         label : $component.locale.debitCards.limits.Amount + $context.rowContext.status.rowIndex,
+         isLabelHidden: true,
+         currency: amountType.currency,
+         converter:$baseModel.formatCurrency,
+         currencyListRequired : false,
+         validator:$component.validationTracker,
+         isMandatory:true,
+         rootId:'card-amount'+$baseModel.incrementIdCount(),
+         currencyURL : '',
+         currencyParser :'',
+         rootClass:'form-input',
+        labelClasses: 'hide-label'
+
+         }
+         }"></div>
+
+                    </td>
+                  </tr>
+                </script>
+                <!-- ko if: ($component.mode()==="VIEW")-->
+                <oj-button class="action-button-secondary" on-click="[[editLimit]]">
+                  <span class="icons icon-edit" slot="startIcon"></span><span data-bind="text:$component.locale.debitCards.update"></span>
+                </oj-button>
+                <!-- /ko -->
+                <!-- ko if: ($component.mode()==="EDIT")-->
+                <oj-button class="action-button-primary" on-click="[[openModal.bind($data, 'confirmationDialog')]]">
+                  <span class="icons icon-save" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.save"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" on-click="[[cancelEdit]]">
+                  <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.cancel"></span>
+                </oj-button>
+                <!-- /ko -->
+              </page-section>
+            </div>
+            <div class="oj-flex-item oj-md-2 oj-lg-1">
+            </div>
+            <!-- ko if: $component.internationalTransactionsValue() -->
+            <div class="oj-flex-item oj-md-4 oj-lg-4">
+              <page-section params="baseModel : $baseModel, rootModel : $component, heading: locale.debitCards.internationalLimits">
+                <!-- ko if: $component.internationalLimitTemplateValue() === 'internationalLimitRowTemplate' -->
+                <oj-table id="table" class="debit-card-limit__limitsTable debit-card-limit-limitsTable" :aria-label="[[$component.locale.debitCards.limits.internationalLimitsTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('internationalLimitRowTemplate', true)]]"
+                  columns="[[[{headerText:$component.locale.debitCards.limits.NoOfTran,sortable:'disabled'},{headerText:$component.locale.debitCards.limits.Amount,headerClassName:'right',sortable:'disabled'}]]]" data="[[$component.internationLimitDataSource]]">
+                  <caption class="hide-label" data-bind="text:$component.locale.debitCards.limits.limitsTable"></caption>
+                </oj-table>
+                <!-- /ko -->
+                <!-- ko if: $component.internationalLimitTemplateValue() === 'editInternationalLimit' -->
+                <oj-table id="table" class="debit-card-limit__limitsTable debit-card-limit-limitsTable" :aria-label="[[$component.locale.debitCards.limits.internationalLimitsTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('editInternationalLimit', true)]]"
+                  columns="[[[{headerText:$component.locale.debitCards.limits.NoOfTran,sortable:'disabled'},{headerText:$component.locale.debitCards.limits.Amount,headerClassName:'right',sortable:'disabled'}]]]" data="[[$component.internationLimitDataSource]]">
+                  <caption class="hide-label" data-bind="text:$component.locale.debitCards.limits.limitsTable"></caption>
+                </oj-table>
+                <!-- /ko -->
+                <script type="text/html" id="internationalLimitRowTemplate">
+                  <tr>
+                    <td data-bind="text:count">
+                    </td>
+                    <td class="debit-card-limit-limitsTable__amount right" data-bind="text:$baseModel.formatCurrency(amountType.amount(),amountType.currency())"></td>
+                  </tr>
+                </script>
+
+
+                <script type="text/html" id="editInternationalLimit">
+                  <tr>
+                    <td>
+                      <oj-input-text class="debit-card-limit__countInput" type="text" maxlength="2" :aria-label="[[$component.locale.debitCards.limits.Count + $context.rowContext.status.rowIndex]]" :id="[['count_'+ $context.rowContext.status.rowIndex]]" value="{{count}}"></oj-input-text>
+                    </td>
+                    <td>
+                      <div class="debit-card-limit__amountInput" data-bind="component: {
+        name: 'amount-input', params: {
+        amount :amountType.amount,
+        label : $component.locale.debitCards.limits.Amount + $context.rowContext.status.rowIndex,
+        isLabelHidden: true,
+        currency: amountType.currency,
+        converter:$baseModel.formatCurrency,
+        currencyListRequired : false,
+        validator:$component.validationTracker,
+        isMandatory:true,
+        rootId:'card-amount'+$baseModel.incrementIdCount(),
+        currencyURL : '',
+        currencyParser :'',
+        rootClass:'form-input',
+          labelClasses:'hide-label'
+
+        }
+        }"></div>
+
+                    </td>
+                  </tr>
+                </script>
+                <!-- ko if: ($component.internationalMode()==="InternationalVIEW")-->
+                <oj-button class="action-button-secondary" on-click="[[editIntnlLimit]]">
+                  <span class="icons icon-edit" slot="startIcon"></span><span data-bind="text:$component.locale.debitCards.update"></span>
+                </oj-button>
+                <!-- /ko -->
+                <!-- ko if: ($component.internationalMode()==="InternationalEDIT")-->
+                <oj-button class="action-button-primary" on-click="[[openModal.bind($data, 'confirmationDialogInternational')]]">
+                  <span class="icons icon-save" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.save"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" on-click="[[cancelIntlEdit]]">
+                  <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.cancel"></span>
+                </oj-button>
+                <!-- /ko -->
+              </page-section>
+            </div>
+            <!-- /ko -->
+          </div>
+        </page-section>
+
+
+      </div>
+
+
+    </div>
+
+    <!-- /ko -->
+
+
+    <!-- ko if: $baseModel.small()-->
+    <!-- ko if: $component.params.mode === 'REVIEW' -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+    <!-- /ko -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading: ''">
+      <page-section params="baseModel : $baseModel, rootModel : $component, heading :locale.debitCards.dailyLimits">
+        <!-- ko ifnot: $component.mobileView()-->
+        <div class="grid-main-container">
+          <oj-list-view id="listview" :aria-label="[[$component.locale.debitCards.limits.limitsTable]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('data-template',true)}]]" data="[[datasource]]">
+          </oj-list-view>
+        </div>
+        <script type="text/html" id="data-template">
+          <li>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 debit-card-limit__limitText">
+                <div data-bind="text:limitTypeLocal"></div>
+              </div>
+
+              <div class="oj-flex-item oj-sm-6">
+                <label class="" data-bind="text:$component.locale.debitCards.limits.NoOfTxn"></label>
+                <span data-bind="text: count"></span>
+              </div>
+              <div class="oj-flex-item oj-sm-6 right" data-bind="">
+                <span data-bind="text:$baseModel.formatCurrency(amountType.amount(),amountType.currency())"></span>
+              </div>
+
+            </div>
+          </li>
+        </script>
+        <!-- /ko -->
+        <!-- ko if: $component.mobileView()-->
+        <div class="grid-main-container">
+          <oj-list-view id="listview" :aria-label="[[$component.locale.debitCards.limits.limitsTable]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('data-template',true)}]]" data="[[datasource]]">
+          </oj-list-view>
+        </div>
+
+        <script type="text/html" id="data-template">
+          <li>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 debit-card-limit__limitText">
+                <div data-bind="text:limitTypeLocal"></div>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-6">
+                <label for="count1" data-bind="attr:{},text:$component.locale.debitCards.limits.NoOfTxn"></label>
+                <oj-input-text class="debit-card-limit__countInput" id="count1" type="text" maxlength="3" value="{{count}}"></oj-input-text>
+              </div>
+
+              <div class="oj-flex-item oj-sm-6 right debit-card-limit__amountEdit">
+                <label for="amount1" class="hide-label" data-bind="text:$component.locale.debitCards.limits.NoOfTxn"></label>
+                <oj-input-text class="debit-card-limit__amountInput" id="amount1" type="text" maxlength="3" value="{{$baseModel.formatCurrency(amountType.amount(),amountType.currency())}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+              </div>
+
+            </div>
+          </li>
+        </script>
+        <!-- /ko -->
+        <!-- ko if: !$component.mobileView() && $component.mode() !== 'REVIEW' -->
+        <oj-button class="action-button-secondary" on-click="[[editLimit]]">
+          <span class="icons icon-edit" slot="startIcon"></span><span data-bind="text:$component.locale.debitCards.update"></span>
+        </oj-button>
+        <!-- /ko -->
+        <!-- ko if: $component.mobileView() && $component.mode() !== 'REVIEW' -->
+        <oj-button class="action-button-primary" on-click="[[openModal.bind($data, 'confirmationDialog')]]">
+          <span class="icons icon-save" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.save"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[cancelEdit]]">
+          <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+      </page-section>
+      <!-- ko if: $component.internationalTransactionsValue() -->
+      <page-section params="baseModel : $baseModel, rootModel : $component, heading :locale.debitCards.internationalLimits">
+        <!-- ko ifnot: $component.mobileViewIntl()-->
+        <div class="grid-main-container">
+          <oj-list-view id="listview" :aria-label="[[$component.locale.debitCards.limits.limitsTable]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('international-data-template',true)}]]" data="[[internationLimitDataSource]]">
+          </oj-list-view>
+        </div>
+        <script type="text/html" id="international-data-template">
+          <li>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 debit-card-limit__limitText">
+                <div data-bind="text:limitTypeLocal"></div>
+              </div>
+
+              <div class="oj-flex-item oj-sm-6">
+                <label class="" data-bind="text:$component.locale.debitCards.limits.NoOfTxn"></label>
+                <span data-bind="text: count"></span>
+              </div>
+              <div class="oj-flex-item oj-sm-6 right" data-bind="">
+                <span data-bind="text:$baseModel.formatCurrency(amountType.amount(),amountType.currency())"></span>
+              </div>
+
+            </div>
+          </li>
+        </script>
+        <!-- /ko -->
+        <!-- ko if: $component.mobileViewIntl()-->
+        <div class="grid-main-container">
+          <oj-list-view id="listview" :aria-label="[[$component.locale.debitCards.limits.limitsTable]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('international-data-template',true)}]]" data="[[internationLimitDataSource]]">
+          </oj-list-view>
+        </div>
+
+        <script type="text/html" id="international-data-template">
+          <li>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 debit-card-limit__limitText">
+                <div data-bind="text:limitTypeLocal"></div>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-6">
+                <label for="count1" data-bind="attr:{},text:$component.locale.debitCards.limits.NoOfTxn"></label>
+                <oj-input-text class="debit-card-limit__countInput" id="count1" type="text" maxlength="3" value="{{count}}"></oj-input-text>
+              </div>
+
+              <div class="oj-flex-item oj-sm-6 right debit-card-limit__amountEdit">
+                <label for="amount1" class="hide-label" data-bind="text:$component.locale.debitCards.limits.NoOfTxn"></label>
+                <oj-input-text class="debit-card-limit__amountInput" id="amount1" type="text" maxlength="3" value="{{$baseModel.formatCurrency(amountType.amount(),amountType.currency())}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+              </div>
+
+            </div>
+          </li>
+        </script>
+        <!-- /ko -->
+        <!-- ko if: !$component.mobileViewIntl() && $component.mode() !== 'REVIEW' -->
+        <oj-button class="action-button-secondary" on-click="[[editIntnlLimit]]">
+          <span class="icons icon-edit" slot="startIcon"></span><span data-bind="text:$component.locale.debitCards.update"></span>
+        </oj-button>
+        <!-- /ko -->
+        <!-- ko if: $component.mobileViewIntl() && $component.mode() !== 'REVIEW' -->
+        <oj-button class="action-button-primary" on-click="[[openModal.bind($data, 'confirmationDialogInternational')]]">
+          <span class="icons icon-save" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.save"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[cancelIntlEdit]]">
+          <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+      </page-section>
+      <!-- /ko -->
+    </page-section>
+    <!-- /ko -->
+
+    <!-- ko if: ($component.mode()==="REVIEW")-->
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[editLimitConfirm]]">
+        <span class="icons icon-confirm" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.confirm"></span>
+      </oj-button>
+      <!-- ko if: !$baseModel.small() -->
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+        <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.cancel"></span>
+      </oj-button>
+      <!-- /ko -->
+      <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+        <span class="icons icon-back-arrow" slot="startIcon"></span><span data-bind="text:$component.locale.generic.common.back"></span>
+      </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <modal-window params="baseModel : $baseModel, rootModel : $data, id:'confirmationDialog', header : $component.locale.debitCards.limits.updateLimits">
+           <div class="form-main-container">
+               <div class="oj-flex oj-flex-items-pad">
+                   <div class="oj-flex-item">
+                       <span data-bind="text: $component.locale.debitCards.limits.confirmUpdate"></span>
+                   </div>
+               </div>
+               <div class="oj-flex oj-flex-items-pad button-container">
+                 <oj-button id="updateLimit" class="action-button-primary" on-click="[[reviewLimit.bind($data, 'confirmationDialogInternational')]]"><span slot="startIcon" class="icons icon-forward-arrow"></span>
+                   <span data-bind="text:$component.locale.generic.common.proceed"></span>
+                 </oj-button>
+                 <oj-button id="cancelUpdateLimit" class="action-button-secondary" on-click="[[cancel.bind($data, 'confirmationDialog')]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                   <span data-bind="text:$component.locale.generic.common.cancel"></span>
+                 </oj-button>
+               </div>
+           </div>
+    </modal-window>
+    <modal-window params="baseModel : $baseModel, rootModel : $data, id:'confirmationDialogInternational', header : $component.locale.debitCards.limits.updateLimits">
+           <div class="form-main-container">
+               <div class="oj-flex oj-flex-items-pad">
+                   <div class="oj-flex-item">
+                       <span data-bind="text: $component.locale.debitCards.limits.confirmUpdate"></span>
+                   </div>
+               </div>
+               <div class="oj-flex oj-flex-items-pad button-container">
+                 <oj-button id="updateLimit" class="action-button-primary" on-click="[[reviewInternationalLimit.bind($data, 'confirmationDialogInternational')]]"><span slot="startIcon" class="icons icon-forward-arrow"></span>
+                   <span data-bind="text:$component.locale.generic.common.proceed"></span>
+                 </oj-button>
+                 <oj-button id="cancelUpdateLimit" class="action-button-secondary" on-click="[[cancel.bind($data, 'confirmationDialogInternational')]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                   <span data-bind="text:$component.locale.generic.common.cancel"></span>
+                 </oj-button>
+               </div>
+           </div>
+    </modal-window>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="container-record">
+    <!-- ko ifnot: $component.transactionDetails -->
+<!-- ko if: $component.loadCreateComponent() -->
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header :  $component.nls.headers.reviewPartyLinkage , reviewHeader :$component.nls.fieldname.addCreateReviewHeaderMsg}}"></div>
+  <!-- /ko -->
+  <!-- ko if: $component.loadUpdateComponent() -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header :  $component.nls.headers.reviewPartyLinkage , reviewHeader :$component.nls.fieldname.addReviewHeaderMsg}}"></div>
+    <!-- /ko -->
+  <!-- /ko -->
+  <!-- ko ifnot:showConfirmationScreen()  -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+        <label data-bind="text: nls.fieldname.partyId"></label>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <span data-bind="text:partyDisplayName"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+        <label data-bind="text: nls.fieldname.partyName"></label>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <span data-bind="text:partyName"></span>
+      </div>
+    </div>
+
+
+  </page-section>
+
+  <!-- ko if: loadSummaryTable  -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : isLinkageCreated() ? nls.headers.linkedparties : nls.headers.linkparties ">
+
+    <oj-table :aria-label="[[$component.nls.headers.linkedparties]]" columns="[[[{headerText:nls.common.partyID,field:'relatedPartyIdDisplay'},{headerText:nls.common.partyName,field:'relatedPartyName'}]]]" data="[[$component.linkagesForReview]]">
+      <caption class="hide-label" data-bind="text:$component.nls.headers.linkedparties"></caption>
+    </oj-table>
+    <!-- <script type="text/html" id="name_template">
+            <td>
+                <span data-bind="text: $baseModel.format($component.nls.fieldvalues.fullname, {firstName: ($data.relatedPartyFirstName ? $data.relatedPartyFirstName : ''),lastName:($data.relatedPartyLastName ? $data.relatedPartyLastName : '')})"></span>
+            </td>
+        </script>-->
+
+  </page-section>
+  <!-- ko ifnot: $component.transactionDetails -->
+  <div class="oj-flex-item button-container">
+    <oj-button id="confirmButton" class="action-button-primary" on-click="[[confirmLinkageReview]]">
+      <span data-bind="text:$component.nls.generic.common.confirm"></span>
+    </oj-button>
+    <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$component.cancelOnReview]]">
+      <span data-bind="text:$component.nls.generic.common.cancel"></span>
+    </oj-button>
+    <oj-button id="editButton" class="action-button-tertiary" on-click="[[$component.back]]">
+      <span data-bind="text:$component.nls.generic.common.back"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->
+</div>

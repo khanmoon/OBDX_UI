@@ -1,0 +1,244 @@
+<!-- ko ifnot: $component.creditCardIdDisplay -->
+<div class="reset-pin" data-bind="template: {name: 'accounts/reset-pin', data: $component.debitCardDetailsObject}">
+</div>
+<!-- /ko -->
+<div class="form-main-container reset-pin">
+  <oj-validation-group id="resetPinTracker">
+    <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+        <!-- ko if: $component.small -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+          <!-- ko if: $component.cardLoaded() -->
+          <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.resource.resetPin.selectedCard,
+            account : $component.creditCardId,
+            type: 'nodeValue',
+            additionalDetails : $component.additionalCardDetails,
+            validator:$component.validationTracker,
+            customURL : $component.moduleURL,
+            accountsParser: $component.creditCardParser,
+            readOnly: !!$component.params.id">
+          </account-input>
+          <!-- /ko -->
+          <!-- ko ifnot: $component.cardLoaded() -->
+          <!-- ko if: $component.creditCardIdDisplay -->
+          <div class="oj-flex">
+            <div class="oj-flex-item oj-sm-12 label">
+              <oj-label for="cardNumber" class=""><span data-bind="text:resource.resetPin.cardNumber"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+              <span data-bind="text:$component.creditCardIdDisplay"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+        </page-section>
+        <!-- /ko -->
+        <!-- ko ifnot: $component.small -->
+        <!-- ko if: $component.creditCardIdDisplay -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+          <div class="oj-flex">
+            <div class="oj-flex-item oj-sm-12 label ">
+              <oj-label for="cardNumber" class=""><span data-bind="text:resource.resetPin.cardNumber"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+              <span data-bind="text:$component.creditCardIdDisplay"></span>
+            </div>
+          </div>
+        </page-section>
+        <!-- /ko -->
+        <!-- /ko -->
+        <div class="oj-flex">
+          <!-- ko if: $component.isDataLoaded() -->
+          <div class="oj-flex-item oj-sm-12 oj-lg-9">
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label ">
+                  <oj-label for="dateOfBirth" class=""><span data-bind="text:resource.resetPin.dateOfBirth"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-input-date required id="dateOfBirth" value="{{$component.pinResetPayload().dob}}" translations="[[{'required':{messageDetail:$component.resource.resetPin.validDateOfBirth}}]]" converter="[[$baseModel.dateConverter]]" display-options="[[$component.displayOptions]]"
+                    min="[[$oj.IntlConverterUtils.dateToLocalIso(new Date('1800-01-01T00:00:00'))]]"></oj-input-date>
+                </div>
+              </div>
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-accordion id="accordionPageValidate">
+                    <oj-collapsible id="collapsibleDiv">
+                      <div slot="header">
+                        <!-- ko if:verifyCard() -->
+                        <!-- <img title="Active" alt="Active" class="step-complete-image" data-bind="loadImage:'alerts/active-alert.svg'"> -->
+                        <span class="icon icon-success"></span>
+                        <!-- /ko -->
+                        <span class="disabledText" data-bind="text:$component.resource.resetPin.enterDetails"></span>
+                      </div>
+                      <div>
+                        <oj-validation-group id="cardDetailsTracker">
+                          <div class="oj-flex">
+                            <div class="oj-flex-item oj-sm-12 label">
+                              <oj-label><span data-bind="text:$component.resource.resetPin.expiryDate"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+                              <oj-label class="hide-label" for="expiryMonth"><span data-bind="text:$component.resource.resetPin.monthFormat.toUpperCase()"></span></oj-label>
+                              <oj-input-text id="expiryMonth" type="text" required="[[true]]" maxlength="2" validators="[[$baseModel.getValidator('NUMBERS',$component.resource.resetPin.validMonth,{
+                        type:'numberRange',options:{
+                            min:1,max:12}})]]" :placeholder="[[$component.resource.resetPin.monthFormat.toUpperCase()]]" value="{{$component.expiryMonth}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-1">
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+                              <oj-label class="hide-label" for="expiryYear"><span data-bind="text:$component.resource.resetPin.yearFormat.toUpperCase()"></span></oj-label>
+                              <oj-input-text id="expiryYear" type="text" maxlength="2" required="[[true]]" validators="[[$baseModel.getValidator('NUMBERS',$component.resource.resetPin.validYear,{
+                                type:'length',options:{min:1,max:2}})]]":placeholder="[[$component.resource.resetPin.yearFormat.toUpperCase()]]" value="{{$component.expiryYear}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+                            </div>
+                          </div>
+                          <div class="oj-flex">
+                            <div class="oj-flex-item oj-sm-12 label">
+                              <oj-label for="cvvNumber"><span data-bind="text:$component.resource.resetPin.cvvNumber"></span></oj-label>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4">
+                              <oj-input-password id="cvvNumber" type="password" autocomplete="off" maxlength="3" validators="[[$baseModel.getValidator('CVV')]]" required="[[true]]" :placeholder="[[$component.resource.resetPin.enter]]" value="{{$component.cvvNumber}}"></oj-input-password>
+                            </div>
+                          </div>
+                          <div class="oj-flex">
+                            <div class="oj-flex-item oj-sm-12">
+                              <oj-button id="dialogButton" class="action-button-primary" on-click="[[validateCard]]"><span slot="startIcon" class="icons icon-submit"></span>
+                                <span data-bind="text:$component.resource.resetPin.validate"></span>
+                              </oj-button>
+                            </div>
+                          </div>
+                        </oj-validation-group>
+                      </div>
+                    </oj-collapsible>
+                    <oj-collapsible id="collapsibleDiv2" disabled>
+                      <span slot="header" data-bind="text:$component.resource.resetPin.resetPin"></span>
+                      <div>
+                        <div class="oj-flex oj-flex-items-pad">
+                          <div class="oj-flex-item oj-sm-12 label">
+                            <oj-label for="pinValue"><span data-bind="text:$component.resource.resetPin.newPin"></span></oj-label>
+                          </div>
+                          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                            <oj-input-password id="pinValue" type="password" autocomplete="off" required="[[true]]" value="{{$component.pinValue}}"></oj-input-password>
+                          </div>
+                        </div>
+                        <div class="oj-flex oj-flex-items-pad">
+                          <div class="oj-flex-item oj-sm-12 label">
+                            <oj-label for="rePinValue"><span data-bind="text:$component.resource.resetPin.reEnterNewPin"></span></oj-label>
+                          </div>
+                          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                            <oj-input-password id="rePinValue" type="password" autocomplete="off" required="[[true]]" value="{{$component.reEnterPinValue}}"></oj-input-password>
+                          </div>
+                        </div>
+                      </div>
+                    </oj-collapsible>
+                  </oj-accordion>
+                </div>
+              </div>
+            </page-section>
+          </div>
+          <!-- /ko -->
+          <div class="oj-flex-item">
+            <div class="oj-flex oj-flex-items-pad button-container">
+              <!-- ko if:verifyCard() -->
+              <oj-button id="dialogtopupButton" class="action-button-primary " on-click="[[resetPin]]"><span slot="startIcon" class="icons icon-submit"></span>
+                <span data-bind="text:$component.resource.resetPin.submit"></span>
+              </oj-button>
+              <!-- /ko -->
+              <!-- ko if: !$baseModel.small() -->
+              <oj-button class="action-button-secondary " on-click="[[cancelConfirmation]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resource.resetPin.cancel"></span>
+              </oj-button>
+              <!-- /ko -->
+              <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+                <span data-bind="text:$component.resource.resetPin.back"></span>
+              </oj-button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'reset-pin'"></help>
+      </div>
+    </div>
+  </oj-validation-group>
+</div>
+<!-- ko ifnot: $baseModel.large() -->
+<!-- ko ifnot: $component.creditCardIdDisplay() -->
+<a href="#" data-bind="click: $component.showFloatingPanel">
+  <div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+</a>
+<floating-panel params="baseModel : $baseModel, panelId: 'panelDebitCard6', rootModel: $component">
+  <ul>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reissue-card',cardObject,$data)">
+        <span class="icons icon-limit"></span>
+        <span data-bind="text: $component.locale.buttons.reissueCard"></span></a>
+    </li>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'upgrade-card',cardObject,$data)">
+        <span class="icons icon-card-preference"></span>
+        <span data-bind="text: $component.locale.buttons.upgradeCard"></span></a>
+    </li>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'debit-card-hotlisting',cardObject,$data)">
+        <span class="icons icon-cancel-card"></span>
+        <span data-bind="text: $component.locale.buttons.blockCards"></span></a>
+    </li>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reset-pin',cardObject,$data)">
+        <span class="icons icon-refresh"></span>
+        <span data-bind="text: $component.locale.buttons.resetPin"></span></a>
+    </li>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'debit-card-pin-request',cardObject,$data)">
+        <span class="icons icon-request-pin"></span>
+        <span data-bind="text: $component.locale.buttons.pinRequest"></span></a>
+    </li>
+  </ul>
+</floating-panel>
+<!-- /ko -->
+<!-- ko if: $component.creditCardIdDisplay() -->
+<a href="#" data-bind="click: $component.showFloatingPanel">
+  <div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+</a>
+<floating-panel params="baseModel : $baseModel, panelId: 'panelCreditCard7', rootModel: $component">
+  <ul>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'card-statement',cardObject,$data)">
+        <span class="icons icon-view-statement"></span>
+        <span data-bind="text: $component.resource.cardLinks.viewStatement"></span></a>
+    </li>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'card-pay',cardObject,$data)">
+        <span class="icons icon-limit"></span>
+        <span data-bind="text: $component.resource.cardLinks.cardPayment"></span></a>
+    </li>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'request-pin',cardObject,$data)">
+        <span class="icons icon-request-pin"></span>
+        <span data-bind="text: $component.resource.cardLinks.requestPin"></span></a>
+    </li>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'block-card',cardObject,$data)">
+        <span class="icons icon-cancel-card"></span>
+        <span data-bind="text: $component.resource.cardLinks.blockCard"></span></a>
+    </li>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'auto-pay',cardObject,$data)">
+        <span class="icons icon-pay"></span>
+        <span data-bind="text: $component.resource.cardLinks.autoPay"></span></a>
+    </li>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reset-pin',cardObject,$data)">
+        <span class="icons icon-refresh"></span>
+        <span data-bind="text: $component.resource.cardLinks.resetPin"></span></a>
+    </li>
+    <li>
+      <a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'add-on-card',cardObject,$data)">
+        <span class="icons icon-card-preference"></span>
+        <span data-bind="text: $component.resource.cardLinks.addOnCard"></span></a>
+    </li>
+  </ul>
+</floating-panel>
+<!-- /ko -->
+<!-- /ko -->

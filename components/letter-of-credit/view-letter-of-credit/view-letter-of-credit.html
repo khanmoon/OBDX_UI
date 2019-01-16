@@ -1,0 +1,194 @@
+<div class="form-main-container view-lc">
+
+  <!-- ko if: $baseModel.small() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 trade-heading-banner">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12">
+          <oj-label for="amendments"><span data-bind="text:$component.resourceBundle.labels.lcNo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12">
+          <span for="amendments" data-bind="text:$component.letterOfCreditDetails.id"></span>
+        </div>
+      </div>
+      <!-- ko if: $component.chargesCommissionFlag()==='true' -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12">
+          <oj-label for="chargesCommission-Radioset" class="hide-label"><span data-bind="text:$component.resourceBundle.labels.lcCommision"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7">
+          <oj-radioset class="oj-choice-direction-row" id="chargesCommission-Radioset" required value="{{$component.chargesOrCommissionSelection}}"><oj-option value="COMMISION" id="commisionRadioset" name="chargesCommission"><span for="commisionRadioset" data-bind="text:$component.resourceBundle.labels.lcCommision"></span></oj-option><oj-option value="CHARGES" id="chargesRadioset" name="chargesCommission"><span for="chargesRadioset" data-bind="text:$component.resourceBundle.instructionsDetails.labels.charges"></span></oj-option></oj-radioset>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- /ko -->
+
+<!-- ko if:dataLoaded() -->
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : $baseModel.small() === false ?$baseModel.format($component.resourceBundle.labels.lcNumber,{lcNumber:$component.letterOfCreditDetails.id}):''">
+
+    <div class="oj-flex oj-flex-items-pad">
+
+    <!-- ko if: $baseModel.medium() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-2" data-bind='component: {name: "nav-bar",
+    params:{rootModel: $data, menuOptions: menuOptions, uiOptions: uiOptions,
+      navBarDescription: $component.resourceBundle.leftMenu.viewLCDetails}}'></div>
+    <!-- /ko -->
+
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2 view-lc-menu">
+      <oj-navigation-list  :aria-label="[[$component.resourceBundle.leftMenu.viewLCDetails]]" drill-mode="none" selection= "{{$component.menuSelection}}">
+          <ul id="listview">
+            <!-- ko foreach:menuOptions -->
+           <li class="oj-flex oj-flex-items-pad grid-row-group" data-bind="attr: {id: $data.id}">
+             <a href="#" data-bind="text:$data.label,click:$component.showSection.bind($data,$data.label,$data.templatePath)"></a>
+           </li>
+           <!-- /ko -->
+          </ul>
+      </oj-navigation-list>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if : sectionName() === $component.resourceBundle.leftMenu.viewLCDetails -->
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-10" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+        <oj-accordion id="tradeFinanceAccordion">
+          <!-- ko foreach:stages -->
+          <oj-collapsible expanded="[[expanded]]">
+            <h3 slot="header">
+               <span>
+                 <span data-bind="text: stageName"></span>
+               </span>
+            </h3>
+            <div class="stage-content" data-bind="template:{name : templateName}"> </div>
+          </oj-collapsible>
+          <!-- /ko -->
+          </oj-accordion>
+        <div class="button-container">
+          <!-- ko ifnot: $baseModel.small() -->
+          <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+          </oj-button>
+          <!-- /ko -->
+          <oj-button id="backButton" class="action-button-tertiary" on-click="[[goBack]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+              <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+          </oj-button>
+        </div>
+      </div>
+   <!-- /ko -->
+
+   <!-- ko ifnot : sectionName() === $component.resourceBundle.leftMenu.viewLCDetails -->
+   <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-10 view-details-span">
+     <!-- ko if : sectionName() === $component.resourceBundle.leftMenu.viewAttachedDocuments -->
+     <div class="oj-flex oj-flex-items-pad">
+       <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+         <!-- ko ifnot: $component.letterOfCreditDetails.lcType === 'Export'-->
+         <div id="attachDocs" data-bind="component:{name:'attach-documents',
+            params:{rootModel: $component, attachDocList: $component.attachedDocuments, deletedDocList:$component.deletedDocuments, contractModified:$component.contractModified, mode: $component.mode, allowAttachments: $component.letterOfCreditDetails.authStatus === 'AUTHORIZED' ? true : false}}">
+         </div>
+         <!-- /ko -->
+         <!-- ko if: $component.letterOfCreditDetails.lcType === 'Export'-->
+         <div id="attachDocs" data-bind="component:{name:'attach-documents',
+            params:{rootModel: $component, attachDocList: $component.attachedDocuments, deletedDocList:$component.deletedDocuments, contractModified:$component.contractModified, mode: $component.mode}}">
+         </div>
+         <!-- /ko -->
+       </div>
+     </div>
+     <!-- /ko -->
+     <!-- ko ifnot : sectionName() === $component.resourceBundle.leftMenu.viewAttachedDocuments -->
+     <div data-bind="template:{name : sectionName}"></div>
+     <!-- /ko -->
+     <div class="button-container" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+       <!-- ko if : sectionName() === $component.resourceBundle.leftMenu.viewAttachedDocuments && $component.contractModified-->
+       <oj-button id="submit" class="action-button-primary" on-click="[[$component.modifyContract]]">
+          <span data-bind="text:$component.resourceBundle.generic.common.submit"></span>
+        </oj-button>
+       <!-- /ko -->
+        <!-- ko ifnot: $baseModel.small() -->
+        <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+          <span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button id="backButton" class="action-button-tertiary" on-click="[[goBack]]">
+          <span slot="startIcon" class="icons icon-back-arrow"></span>
+          <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+        </oj-button>
+     </div>
+   </div>
+  <!-- /ko -->
+
+  </div>
+
+  <!-- ko if: $baseModel.small() -->
+  <a href="#" data-bind="click: $component.showFloatingPanel">
+    <div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+  </a>
+  <floating-panel params="baseModel : $baseModel, panelId: 'panelDD', rootModel: $component">
+    <ul>
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.viewLCDetails,$component.resourceBundle.leftMenu.viewLCDetails)">
+          <span class="icons icon-summary"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.viewLCDetails"></span>
+        </a>
+      </li>
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.amendments,'trade-finance/view-lc/amendments')">
+          <span class="icons icon-issue"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.amendments"></span>
+        </a>
+      </li>
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.bills,'trade-finance/view-lc/bills')">
+          <span class="icons icon-view-casa"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.bills"></span>
+        </a>
+      </li>
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.viewAttachedDocuments,$component.resourceBundle.leftMenu.viewAttachedDocuments)">
+          <span class="icons icon-attachment"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.viewAttachedDocuments"></span>
+        </a>
+      </li>
+      <!-- ko if: $component.letterOfCreditDetails.lcType !== 'Export'-->
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.guarantee,'trade-finance/view-lc/guarantee-letter-of-credit')">
+          <span class="icons icon-review"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.guarantee"></span>
+        </a>
+      </li>
+      <!-- /ko -->
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.charges,'trade-finance/view-lc/charges-letter-of-credit')">
+          <span class="icons icon-fees-charges"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.charges"></span>
+        </a>
+      </li>
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.viewSwiftMessages,'trade-finance/swift-message')">
+          <span class="icons icon-mailbox-view"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.viewSwiftMessages"></span>
+        </a>
+      </li>
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.viewAdvice,'trade-finance/advices')">
+          <span class="icons icon-claim-money"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.viewAdvice"></span>
+        </a>
+      </li>
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data,$component.resourceBundle.leftMenu.banks,'trade-finance/view-lc/bank-view-letter-of-credit')">
+          <span class="icons icon-bank-details"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.banks"></span>
+        </a>
+      </li>
+    </ul>
+  </floating-panel>
+  <!-- /ko -->
+
+</page-section>
+
+  <!-- /ko -->
+</div>

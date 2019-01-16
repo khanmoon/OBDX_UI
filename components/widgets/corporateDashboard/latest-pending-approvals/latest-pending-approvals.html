@@ -1,0 +1,64 @@
+<div data-bind="css : !$dashboard.isDashboard() ? 'form-main-container' : ''">
+  <div class="oj-panel pending-approvals">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-6 oj-lg-9">
+        <h3 class="pending-approvals__title" data-bind="text:$component.Nls.pendingApprovalsDetails.labels.header"></h3>
+      </div>
+      <!-- ko if:userSegment !== 'ADMIN' && userSegment !== 'CORPADMIN' -->
+      <div class="oj-flex-item oj-sm-6 oj-lg-3 approvals-selection right">
+        <oj-label class="hide" :for="[['accountTypeDropDown'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.Nls.pendingApprovalsDetails.labels.dropDown"></span></oj-label>
+               <oj-select-one value="{{$component.currentSelection}}" data-bind="attr:{id:'accountTypeDropDown'+ $baseModel.currentIdCount(),'aria-label':$component.Nls.pendingApprovalsDetails.labels.dropdown}">
+                 <!-- ko foreach: txnListData -->
+                  <oj-option value="[[$data]]"><span data-bind="text: $component.Nls.pendingApprovalsDetails.labels[$data]"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+      </div>
+      <!-- /ko -->
+    </div>
+    <!-- ko if:$baseModel.large() -->
+    <!-- ko if: $component.countLoaded() -->
+    <div data-bind='component:{name: "nav-bar", params:{rootModel: $data,menuOptions: menuCountOptions, uiOptions:uiOptions,navBarDescription:$component.Nls.navBarDescription}}'></div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad" data-bind='component:{name: "batch-process-approvals", params:{rootModel: $data }}'></div>
+    <!-- ko if : $component.loadModule() -->
+    <div class="pending-approvals" data-bind="template:{name:$baseModel.format('pending-for-approvals/{moduleName}', {moduleName: $component.loadModule()}), data:$data}"></div>
+    <!-- /ko -->
+
+    <!-- ko if:!$dashboard.isDashboard() -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:$component.Nls.generic.header.back"></span>
+</oj-button>
+    </div>
+    <!-- /ko -->
+
+    <!-- /ko -->
+
+    <!-- ko ifnot: $baseModel.large() -->
+    <!-- ko if:$dashboard.isDashboard() -->
+    <div class="oj-flex oj-flex-items-pad approver-tabs-listView">
+      <div class="oj-flex-item no-pad-cols">
+        <ul class="approver-tabs-listView__list approver-tabs-listView-list" data-bind="foreach : menuCountOptions">
+          <li class="approver-tabs-listView-list__listItems approver-tabs-listView-list-listItems">
+            <a class="approver-tabs-listView-list-listItems__link approver-tabs-listView-list-listItems-link" href="#" data-bind="attr:{'alt':$baseModel.format($component.Nls.pendingApprovalsDetails.labels.mobileClickAlt,{module: label}) ,'title':$baseModel.format($component.Nls.pendingApprovalsDetails.labels.mobileClick,{module: label}) },click:$parent.showModule">
+                            <span data-bind="text:label"></span>
+                            <div class="approver-tabs-listView-list-listItems-link__items approver-tabs-listView-list-listItems-link-items">
+                                <span class="approver-tabs-listView-list-listItems-link-items__count" data-bind="text:count"></span>
+                                <div class="icons icon-arrow-right approver-tabs-listView-list-listItems-link-items__icon"></div>
+                            </div>
+                        </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot:$dashboard.isDashboard() -->
+
+    <div data-bind='component:{name: "batch-process-approvals", params:{rootModel: $data }}'></div>
+    <div data-bind="template:{name:$baseModel.format('pending-for-approvals/{moduleName}', {moduleName: $component.loadModule()}), data:$data}"></div>
+
+    <!-- /ko -->
+    <!-- /ko -->
+
+  </div>
+</div>

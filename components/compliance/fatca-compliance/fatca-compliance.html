@@ -1,0 +1,29 @@
+<div class="form-main-container">
+  <div class="oj-flex oj-flex-items-pad">
+    <div id="accordionContainer" class="oj-flex-item oj-sm-12 oj-lg-8">
+      <!-- ko if: $component.stagesLoaded -->
+      <oj-accordion class="" id="complianceAccordion">
+        <!-- ko foreach: $component.stages -->
+        <oj-collapsible expanded="{{expanded}}" class="" :id="{{'fatcaStage' + $index()}}">
+          <div slot="header">
+            <h3 class="" data-bind="text: stageName"></h3>
+          </div>
+          <div class="stage-content" data-bind="component:{name : moduleName, params:{rootModel:$component, index: $index()}}"> </div>
+        </oj-collapsible>
+        <!-- /ko -->
+      </oj-accordion>
+      <!-- /ko -->
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button id="submitFatcaCompliance" class="action-button-primary" on-click="[[submitFatcaCompliance]]">
+          <span data-bind="text:$component.resource.generic.common.submit"></span>
+        </oj-button>
+      </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'fatca-compliance'"></help>
+    </div>
+    <!-- /ko -->
+  </div>
+  <help params="baseModel : $baseModel, rootModel : $component, transaction: 'fatca-compliance-instructions'"></help>
+</div>

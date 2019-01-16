@@ -1,0 +1,47 @@
+<div class="demand-deposits oj-panel">
+  <div class="summary-card">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 summary-card-title">
+        <span data-bind="text: $component.locale.analysis.title"></span>
+        <!-- ko if: $component.dataFetched() -->
+          <!-- ko if : singleModule() -->
+            <oj-label class="account-count"><span data-bind="text:$baseModel.format($component.locale.accountCount,{count:$component.conventionalAnalysis()?cardData.title:islamicCardData.title})"></span></oj-label>
+          <!-- /ko -->
+        <!-- /ko -->
+      </div>
+      <!-- ko if: $component.dataFetched() -->
+      <!-- ko if : multipleModules() -->
+      <div class="oj-flex-item oj-sm-12 summary-card-button-set">
+        <oj-buttonset-one :aria-label="[[$component.locale.analysis.selectOption]]" on-value-changed="[[handleButtonChange]]" value="{{checkedOption}}"><!-- ko foreach: options --><oj-option name="demandDepositAnalysisAccountTypeChoice" value="{{id}}" :id="[[$baseModel.currentIdCount()]]"><span data-bind="attr: {for: $baseModel.incrementIdCount()}, html:$baseModel.format($component.locale.buttonsetBinding, {count: count, label: label})"></span></oj-option><!-- /ko --></oj-buttonset-one>
+      </div>
+      <!-- /ko -->
+
+      <!-- /ko -->
+      <!-- ko if: $component.dataFetched() -->
+          <div class="oj-flex-item oj-sm-12">
+            <oj-chart class="chart" id="loanbarChart" type="pie"
+            series="[[conventionalAnalysis()? pieSeriesValue().conventionalAccounts:pieSeriesValue().islamicAccounts]]"
+            animation-on-data-change="auto" orientation="horizontal"
+            style-defaults="[[{pieInnerRadius: ko.toJS(innerRadius)}]]"
+            hoverBehavior= "dim">
+              </oj-chart>
+          </div>
+          <!-- ko if:conventionalAnalysis() && cardData.title > 0 -->
+            <div class="oj-flex-item oj-sm-12 center vertical-align-middle">
+              <div class="summary-net-balance-heading" data-bind="text:$component.locale.analysis.balance_heading_main"></div>
+              <div class="summary-net-balance-amount" data-bind="text: $baseModel.formatCurrency(totalNetBalance(),currency())"></div>
+            </div>
+          <!-- /ko -->
+          <!-- ko if:!conventionalAnalysis() && islamicCardData.title > 0-->
+            <div class="oj-flex-item oj-sm-12 center vertical-align-middle">
+              <div class="summary-net-balance-heading" data-bind="text:$component.locale.analysis.balance_heading_main"></div>
+              <div class="summary-net-balance-amount" data-bind="text: $baseModel.formatCurrency(islamicTotalNetBalance(),islamicCurrency())"></div>
+            </div>
+          <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko ifnot: $component.dataFetched() -->
+      <div data-bind="template: {name: 'accounts/no-account-activity', data: $component.noAccountsData}"></div>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>

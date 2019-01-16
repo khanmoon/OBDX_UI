@@ -1,0 +1,85 @@
+.financial-summary {
+  &__account{
+    @include float(right);
+    @include text-align(right);
+  }
+  &-account{
+    &__icons {
+        font-size: var(--base-font-size-h2);
+        color: var(--link-base);
+        @include text-align(right);
+        line-height: 2.8rem;
+        cursor: pointer;
+        &:hover{
+          color: var(--link-base);
+        }
+        @include mq(small){
+          line-height: normal;
+        }
+    }
+  }
+    &__data {
+        @include mq(small) {
+            border-bottom: 0.05rem solid var(--base-border-default);
+            padding-bottom: 0.3rem !important;
+            margin-bottom: 0.5rem;
+        }
+        &:last-child {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border-bottom: 0;
+        }
+      }
+      &-data{
+        &__currency {
+            font-size: var(--base-font-size-h3);
+            text-align: center;
+            color: var(--base-text-primary);
+            font-weight: var(--base-font-weight-light);
+            line-height: 2.8rem;
+            @include mq(small) {
+                @include text-align(left);
+            }
+        }
+        &__accountNo {
+            @include single-border(left,0.05rem solid var(--base-border-default));
+            @include single-border(right,0.05rem solid var(--base-border-default));
+            text-align: center;
+            font-size: var(--base-font-size-larger);
+            color: var(--base-text-primary);
+            height: 2.8rem;
+            @include mq(small) {
+                color: transparent;
+            }
+            .count {
+                font-size: var(--base-font-size-h1);
+                @include single-padding(right, 0.5rem);
+                color: var(--base-text-primary);
+                font-weight: var(--base-font-weight-light);
+                display: inline-block;
+                @include mq(small) {
+                    width: 100%;
+                    text-align: center;
+                    display: block;
+                    line-height: 2.8rem;
+                }
+            }
+        }
+        &__total-value {
+            font-size: var(--base-font-size-h3);
+            font-weight: var(--base-font-weight-light);
+            color: var(--link-base);
+            @include text-align(right);
+            line-height: 2.8rem;
+            @include mq(small) {
+                font-weight: var(--base-font-weight-regular);
+            }
+            @include mq(medium) {
+              font-weight: var(--base-font-weight-regular);
+            }
+        }
+    }
+    table {
+        margin-top: 1.1rem;
+    }
+}

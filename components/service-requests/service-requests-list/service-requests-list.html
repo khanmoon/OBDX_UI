@@ -1,0 +1,80 @@
+<div data-bind="template:$component.getTemplate()"></div>
+<script type="text/html" id="template">
+  <!-- ko if:$component.defaultListLoaded -->
+  <!-- ko if: $component.approveRejectButton -->
+  <div class="oj-flex oj-flex-items-pad" data-bind="component: {name: 'service-requests-batch-approval', params:{rootModel: $data}}"></div>
+  <!-- /ko -->
+  <!-- ko if: $component.approveRejectButton -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <oj-table id="srList" columns="{{$component.columnsArray}}" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'multiple'}]]" data="[[$component.pagingDatasource]]">
+        <caption class="hide-label" data-bind="text:resource.serviceRequest.reset"></caption>
+      </oj-table>
+      <oj-paging-control class="oj-flex-item account-statement-details__pagination" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.pagingDatasource]]">
+      </oj-paging-control>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot: $component.approveRejectButton -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <oj-table id="srList" columns="{{$component.columnsArrayPending}}" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'multiple'}]]" data="[[$component.pagingDatasource]]">
+        <caption class="hide-label" data-bind="text:resource.serviceRequest.reset"></caption>
+      </oj-table>
+      <oj-paging-control class="oj-flex-item account-statement-details__pagination" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.pagingDatasource]]">
+      </oj-paging-control>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+</script>
+<script type="text/html" id="alert_template">
+  <td>
+    <span data-bind="css: $context.iconClass"></span>
+  </td>
+</script>
+<script type="text/html" id="templateRetail">
+  <!-- ko if:$component.defaultListLoaded -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <!-- ko if: !$baseModel.small() -->
+      <oj-table id="srList" columns="{{$component.columnsArrayRetail}}" selection-mode="[[{row:'single',column:'single'}]]" data="[[$component.pagingDatasource]]">
+        <caption class="hide-label" data-bind="text:resource.serviceRequest.reset"></caption>
+      </oj-table>
+      <oj-paging-control class="oj-flex-item account-statement-details__pagination" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.pagingDatasource]]">
+      </oj-paging-control>
+      <!-- /ko -->
+      <!-- ko if: $baseModel.small() -->
+      <div id="srTableList" class="oj-flex oj-flex-items-pad">
+        <oj-list-view id="serviceRequestListView" data="[[$component.datasource]]" on-selection-changed="[[$component.handleSelectionChanged]]" on-current-item-changed="[[$component.handleCurrentItemChanged]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('servicerequest_template', true)]]"
+          selection-mode="single">
+        </oj-list-view>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- /ko -->
+</script>
+<script type="text/html" id="servicerequest_template">
+  <li :id="{{$data['refnumber']}}">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <span data-bind="text:date"></span>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <span data-bind="text:requesttype"></span>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <span data-bind="text:refnumber"></span>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <span data-bind="text:statustype"></span>
+      </div>
+    </div>
+  </li>
+</script>
+<script type="text/html" id="requesttype_template">
+  <td>
+    <a href="#" data-bind="attr:{title: $baseModel.format($component.resource.serviceRequest.click.requestTypeClickTitle, {refnumber : $context.row.refnumber}), alt:  $baseModel.format($component.resource.serviceRequest.click.requestTypeClick, {requesttype : $context.row.requesttype})}, text: $context.row.requesttype, click: $component.currentSelectionAdmin.bind($data, $context.row)"></a>
+  </td>
+</script>

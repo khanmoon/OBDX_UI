@@ -1,0 +1,67 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+            <oj-label for="sourceOfFunds">
+                <span data-bind="text: resource.sourceOfFund"></span>
+            </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+            <oj-combobox-many id="sourceOfFunds" value="{{data.amlData.selectedSourceOfFunds}}" disabled>
+                <!-- ko foreach: data.amlData.sourceOfFunds -->
+                <oj-option value="{{id}}">
+                    <span data-bind="text:description"></span>
+                </oj-option>
+                <!-- /ko -->
+            </oj-combobox-many>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+            <oj-label for="sourceOfWealth">
+                <span data-bind="text: resource.sourceOfWealth"></span>
+            </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+            <oj-combobox-many id="sourceOfWealth" value="{{data.amlData.selectedSourceOfWealth}}" disabled>
+                <!-- ko foreach: data.amlData.wealthSources -->
+                <oj-option value="{{id}}">
+                    <span data-bind="text:description"></span>
+                </oj-option>
+                <!-- /ko -->
+            </oj-combobox-many>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+            <oj-label for="purposeOfRelationship">
+                <span data-bind="text: resource.purposeOfRelationship"></span>
+            </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+            <oj-combobox-many id="purposeOfRelationship" value="{{data.amlData.selectedPurposeOfRelationship}}" disabled>
+                <!-- ko foreach: data.amlData.relationshipPurposes -->
+                <oj-option value="{{id}}">
+                    <span data-bind="text:description"></span>
+                </oj-option>
+                <!-- /ko -->
+            </oj-combobox-many>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad margin-top-20">
+        <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+            <h4 class="section-heading" data-bind="text: resource.consents"></h4>
+        </div>
+    </div>
+    <!-- ko foreach: data.consents.consentDTOs -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-7 oj-lg-6">
+            <oj-label>
+                <span data-bind="html: $data.consentDisplayText"></span>
+            </oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <span data-bind="text : $data.answer ? $parent.resource.origination.common.yes : $parent.resource.origination.common.no"></span>
+        </div>
+    </div>
+    <!-- /ko -->
+</page-section>

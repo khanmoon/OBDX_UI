@@ -1,0 +1,59 @@
+<!-- ko if:maturityInstructionLoaded -->
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 label">
+    <oj-label for="maturityInstruction"><span data-bind="text:$component.locale.openTermDeposit.payoutInstructions.maturityInstruction"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12">
+    <!-- ko if: maturityInstructionList().length -->
+    <oj-select-one id="maturityInstruction" required="[[true]]" :placeholder="[[$component.locale.openTermDeposit.placeholder.pleaseSelect]]" value="{{$component.rootModelInstance.createTDData.rollOverType}}">
+            <!-- ko foreach: maturityInstructionList -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+        </oj-select-one>
+    <!-- /ko -->
+  </div>
+
+</div>
+
+<!-- /ko -->
+<!-- For Close on Maturity and Renew Principal & Payout Instruction Maturity Instruction Start -->
+
+
+<!-- ko if:$component.rootModelInstance.createTDData.rollOverType() === 'A' || $component.rootModelInstance.createTDData.rollOverType()==='P'-->
+
+
+
+<div data-bind="component: {name: 'td-payout', params:{rootModel: $component,payoutInstructions:$component.rootModelInstance.createTDData.payoutInstructions()[0],dataModel:$component.dataModel}}"></div>
+
+
+<!-- /ko -->
+<!-- For Close on Maturity and Renew Principal & Payout Instruction Maturity Instruction END -->
+<!--For renew principal and Interest-->
+<!-- ko if:$component.rootModelInstance.createTDData.rollOverType() === 'I'-->
+
+<!-- /ko -->
+
+
+<!-- ko if:$component.rootModelInstance.createTDData.rollOverType()==='S' -->
+
+
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item" data-bind="component: {
+      name: 'amount-input', params: {
+      amount :$component.rootModelInstance.createTDData.rollOverAmount.amount,
+      label :$component.locale.openTermDeposit.payoutInstructions.renewAmount,
+      currency: $component.rootModelInstance.createTDData.principalAmount.currency,
+      validator:$component.validationTracker,
+      isMandatory:true,
+      rootId:'newDeposit-amount',
+      rootClass:'form-input'
+  }
+}"></div>
+
+</div>
+
+<div data-bind="component: {name: 'td-payout', params:{rootModel: $component,payoutInstructions:$component.rootModelInstance.createTDData.payoutInstructions()[0],dataModel:$component.dataModel}}"></div>
+
+<!-- /ko -->

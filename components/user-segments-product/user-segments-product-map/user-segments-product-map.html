@@ -1,0 +1,85 @@
+<div class="oj-flex oj-sm-flex-items-initial">
+<div class="form-main-container" data-bind="css:$component.mode() !== 'REVIEW' ? 'oj-sm-9' : 'oj-sm-12'">
+   <!-- ko if :$component.mode() === 'REVIEW' -->
+<div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.common.review , reviewHeader : $component.resource.common.initiateHeader}}"></div>
+<!-- /ko -->
+   <!-- ko if : tasksLoaded() -->
+   <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+     <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.productMapping.productModule , value :$component.productTypeName"></row>
+     <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.productMapping.userSegment , value :$component.userSegmentName"></row>
+   </page-section>
+
+   <page-section params="baseModel : $baseModel, rootModel : $component">
+     <oj-table id="table" class="limitsTable" :aria-label="[[$component.resource.productMapping.productTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer($component.productsTemplateId, true)]]" columns="[[[{headerText:'',style:'width: 10%'},{headerText:$component.resource.tableHeader.productName,sortable:'disabled',style:'width: 40%;vertical-align: middle'},{headerText:$component.resource.tableHeader.expiryDate,sortable:'disabled',style:'width: 25%;vertical-align: middle'},{headerText:'',style:'width: 25%',sortable:'disabled',style:'vertical-align: middle'},]]]" data="[[$component.datasource]]">
+      <caption class="hide-label" data-bind="text:$component.resource.productMapping.productTable"></caption>
+     </oj-table>
+      <script type="text/html" id="row_Template_products_read">
+       <tr>
+                <td>
+                     <oj-checkboxset disabled="[[$component.mode() === 'VIEW' ? true:false]]" value="{{productsMapped.product}}"><oj-option value="checked" :id="[['checkbox-' + productId]]"><span class="hide-label" data-bind="attr:{
+                               for: 'checkbox-' + productId},text:name"></span></oj-option></oj-checkboxset>
+                 </td>
+
+                 <td data-bind="text:name">
+                 </td>
+                 <td data-bind="text:productExpiryDate">
+                 </td>
+                 <td data-bind="text:expiredFlag">
+                 </td>
+
+      </tr>
+     </script>
+
+   </page-section>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad button-container">
+    <!-- ko if:($component.mode() === "CREATE" || $component.mode() === "EDIT") -->
+    <oj-button class="action-button-primary" on-click="[[$component.save]]">
+      <span data-bind="text:$component.resource.generic.common.save"></span>
+    </oj-button>
+
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+    </oj-button>
+     <!-- /ko -->
+
+    <!-- ko if:($component.mode() === "REVIEW") -->
+    <!-- ko ifnot:$component.approverReview() -->
+    <oj-button class="action-button-primary" on-click="[[$component.confirm]]">
+      <span data-bind="text:$component.resource.generic.common.confirm"></span>
+    </oj-button>
+
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+    </oj-button>
+
+    <oj-button class="action-button-tertiary" on-click="[[$component.edit]]">
+      <span data-bind="text:$component.resource.generic.common.back"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- /ko -->
+
+    <!-- ko if:$component.mode() === "VIEW" -->
+    <oj-button class="action-button-primary" on-click="[[$component.edit]]">
+      <span data-bind="text:$component.resource.generic.common.edit"></span>
+    </oj-button>
+
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+    </oj-button>
+     <!-- /ko -->
+
+    <!-- ko ifnot:$component.approverReview() ||  $component.mode() === "REVIEW" -->
+    <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+      <span data-bind="text:$component.resource.generic.common.back"></span>
+    </oj-button>
+     <!-- /ko -->
+     </div>
+</div>
+
+    <!-- ko if: $baseModel.large() && ($component.mode() === "VIEW" || $component.mode() === "EDIT") -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'product-mapping-maintenance'"></help>
+    </div>
+    <!-- /ko -->
+</div>

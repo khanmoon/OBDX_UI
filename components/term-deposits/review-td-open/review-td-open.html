@@ -1,0 +1,93 @@
+<div class="form-main-container">
+    <!-- ko if: $component.params.mode ==='review' -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-item">
+        <div class="oj-flex-items-pad oj-sm-12 oj-md-4 oj-lg-4">
+            <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : resource.transactions.termDepositDetails.depositDetails.depositDetails">
+                <div class="row-group">
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.transactions.termDepositDetails.depositDetails.tdProduct , value :params.data.productDTO.name"></row>
+                    <!-- ko if :params.data.payInInstruction-->
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.transactions.termDepositDetails.depositDetails.sourceAccount ,  value:params.data.payInInstruction()[0].accountId.displayValue"></row>
+                    <!-- /ko -->
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.depositDetails.depositAmount, value :$baseModel.formatCurrency(params.data.principalAmount.amount(), params.data.principalAmount.currency())"></row>
+                    <!-- ko if : params.data.interestRate && params.data.interestRate()-->
+                    <row params="baseModel : $baseModel, rootModel : $data, label : params.data.module()==='ISL'? resource.transactions.termDepositDetails.depositDetails.profitRate : resource.transactions.termDepositDetails.depositDetails.interestRate , value :$baseModel.formatNumber(params.data.interestRate()/100, 'percent')"></row>
+                    <!-- /ko -->
+                    <row params="baseModel : $baseModel, rootModel : $component, label : resource.transactions.termDepositDetails.depositDetails.depositTenure, value :$component.formatTenure()"></row>
+                    <!-- ko ifnot: $component.constants.userSegment === 'CORP' -->
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.transactions.openTermDeposit.holdingPattern , value : resource.transactions.openTermDeposit.holdingPatternType[params.data.holdingPattern()]"></row>
+                    <!-- /ko -->
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.transactions.openTermDeposit.primaryAccHolder , value :params.data.partyName"></row>
+                    <!-- ko foreach: $component.parties -->
+                    <row params="baseModel : $baseModel, rootModel : $root, label : $baseModel.format($parent.resource.transactions.openTermDeposit.jointAccHolder,{accountHolder:$index()+1}) , value : partyName"></row>
+                    <!-- /ko -->
+                </div>
+            </page-section>
+        </div>
+        <div class="oj-flex-items-pad oj-sm-12 oj-md-4 oj-lg-4">
+            <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : resource.transactions.termDepositDetails.depositDetails.maturityDetails">
+                <div class="row-group">
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.common.maturityInstructions.maturityInstruction , value :resource.common.maturityInstructions[params.data.module()][params.data.rollOverType()]"></row>
+                    <!-- ko if:$component.params.data.rollOverType() === 'S' -->
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.renewAmount , value :$baseModel.formatCurrency(params.data.rollOverAmount.amount(),params.data.principalAmount.currency())"></row>
+                    <!-- /ko -->
+                    <!-- ko if:params.data.rollOverType() !== 'I' -->
+                    <!-- ko if:params.data.payoutInstructions && params.data.payoutInstructions().length-->
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.payTo , value : resource.transactions.termDepositDetails.payoutInstructions.payoutType[params.data.payoutInstructions()[0].type()]"></row>
+                    <!-- ko if:$component.params.data.payoutInstructions()[0].type()==='O' -->
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.transferTo , value :[params.data.payoutInstructions()[0].beneficiaryName,params.data.payoutInstructions()[0].accountId.displayValue,params.data.payoutInstructions()[0].bankName,params.data.payoutInstructions()[0].address.line1,params.data.payoutInstructions()[0].address.line2,params.data.payoutInstructions()[0].address.city,params.data.payoutInstructions()[0].address.country]"></row>
+                    <!-- /ko -->
+                    <!-- ko if:$component.params.data.payoutInstructions()[0].type()==='I' -->
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.accNumber , value :[params.data.payoutInstructions()[0].account]"></row>
+                    <!-- /ko -->
+                    <!-- ko if:$component.params.data.payoutInstructions()[0].type()==='E'-->
+                    <row params="baseModel : $baseModel, rootModel : $parent, label : resource.transactions.termDepositDetails.payoutInstructions.transferTo , value : params.data.payoutInstructions()[0].account()"></row>
+                    <!-- /ko -->
+                    <!-- ko if : $component.maturityDate-->
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.transactions.termDepositDetails.depositDetails.maturityDate , value :$baseModel.formatDate($component.maturityDate)"></row>
+                    <!-- /ko -->
+                    <!-- ko if: $component.params.data.module() ==='CON' && params.data.maturityAmount-->
+                    <row params="baseModel : $baseModel, rootModel : $data, label : resource.transactions.termDepositDetails.depositDetails.maturityAmount , value :$baseModel.formatCurrency(params.data.maturityAmount.amount(), params.data.maturityAmount.currency())"></row>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+            </page-section>
+        </div>
+        <div class="oj-flex-items-pad oj-sm-12 oj-md-4 oj-lg-4">
+            <!-- ko if:$component.constants.userSegment === "RETAIL" && $component.params.accountModule() !== 'ISL' -->
+            <!-- ko ifnot:$component.params.addNomineeModel && $component.params.isNomineeRequired && $component.params.isNomineeRequired() && $component.params.data.holdingPattern() === 'SINGLE' -->
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.nominationDetails.nominationDetails">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.nominationDetails.
+           nomination, value :$component.resource.nominationDetails.nominationStatus.false">
+                </row>
+            </page-section>
+            <!-- /ko -->
+            <!-- ko if:$component.params.addNomineeModel && $component.params.isNomineeRequired && $component.params.isNomineeRequired() && $component.params.data.holdingPattern() === 'SINGLE' -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="component:{name:component(),params:{rootModel:{
+                        params:{
+                        addNomineeModel : $component.params.addNomineeModel,
+                        minor : $component.params.minor,
+                        isNomineeRequired : $component.params.isNomineeRequired}}}}">
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <!-- ko if:$component.params.mode ==='review'-->
+        <div class="button-container">
+            <oj-button id="dialogtopupButton" class="action-button-primary " on-click="[[$component.createTDConfirm.bind($data,false)]]"><span slot="startIcon" class="icons icon-confirm"></span>
+                <span data-bind="text:$component.locale.generic.common.confirm"></span>
+            </oj-button>
+            <!-- ko if: !$baseModel.small() -->
+            <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind($data,$data)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.locale.generic.common.cancel"></span>
+            </oj-button>
+            <!-- /ko -->
+            <oj-button class="action-button-tertiary " on-click="[[$component.cancelDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+                <span data-bind="text:$component.locale.generic.common.back"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

@@ -1,0 +1,221 @@
+<div class="form-main-container file-view">
+    <div class="search-section">
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading:''">
+            <!-- ko if:!$component.searchEnabled() -->
+            <action-header params="baseModel : $baseModel, rootModel : $component, heading:$component.viewing">
+                <a href="" class="icon icon-search pull-right" data-bind="click: $component.searchEnable , attr: { alt: $component.Nls.searchEnableText, title: $component.Nls.searchEnable }"></a>
+            </action-header>
+            <!-- /ko -->
+            <!-- ko if:$component.searchEnabled() -->
+            <action-header params="baseModel : $baseModel, rootModel : $component, heading:$component.Nls.search">
+                <a href="" class="icon icon-search pull-right" data-bind="click: $component.searchEnable , attr: { alt: $component.Nls.searchEnableText, title: $component.Nls.searchEnable" }=""></a>
+            </action-header>
+            <!-- /ko -->
+        </page-section>
+        <div id="search" class="search-container">
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading:''">
+                <div class="oj-flex oj-flex-items-pad">
+                    <!-- ********************** Dropdown for the File Upload IDs. ********************** -->
+                    <!-- ko if:isBTIDListLoaded() -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 label">
+                        <label for="btid" data-bind="text: $component.Nls.btid"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7 label">
+                        <oj-select-one id="btid" :placeholder="[[$component.Nls.select]]" disabled="[[($component.searchedData.fileId()?true:false)]]" on-value-changed="[[valueChangeHandler]]" value="{{$component.searchedData.btid}}">
+                            <!-- ko foreach:$component.btIdList -->
+                            <oj-option value="{{fileIdentifier}}"><span data-bind="text:$baseModel.format($component.Nls.fileIdDesc,{fileId:fileIdentifier,description:description})"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <!-- ************************ DROP DOWN for transaction Type ************************* -->
+                    <!-- ko if:isPaymentTypeListLoaded() -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 label">
+                        <label for="paymentType" data-bind="text: $component.Nls.transactionType"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 label">
+                        <oj-select-one id="paymentType" :placeholder="[[$component.Nls.selectPaymentType]]" disabled="[[($component.searchedData.fileId()?true:false)]]" on-value-changed="[[paymentTypeValueChangeHandler]]" value="{{$component.searchedData.paymentType}}">
+                            <!-- ko foreach:$component.paymentTypeList -->
+                            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                    <!-- /ko -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 label">
+                        <label for="fileName" data-bind="text: $component.Nls.fileName"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 label">
+                        <oj-input-text id="fileName" type="text" value="{{$component.searchedData.fileName}}" disabled="[[($component.searchedData.fileId()?true:false)]]"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 label">
+                        <label for="fileId" data-bind="text: $component.Nls.referenceId"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 label">
+                        <oj-input-text id="fileId" type="text" value="{{$component.searchedData.fileId}}" validators="[[$baseModel.getValidator('REFERENCE_NUMBER')]]"></oj-input-text>
+                    </div>
+                    <!-- ********************** DropDown For File Status ********************** -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 label">
+                        <label for="status" data-bind="text: $component.Nls.status"> </label>
+                    </div>
+                    <!-- ko if:isStatusListLoaded() -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 label">
+                        <oj-select-one id="status" :placeholder="[[$component.Nls.selectFileStatus]]" disabled="[[($component.searchedData.fileId()?true:false)]]" on-value-changed="[[$component.statusValueChangeHandler]]" value="{{$component.searchedData.fileStatus}}">
+                            <!-- ko foreach:$component.statusList -->
+                            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <!--**************************** Date Range **********************************-->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 label">
+                        <label for="frDt" data-bind="text: $component.Nls.fromDate"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                        <oj-input-date id="frDt" datepicker="[[{changeYear:'none'}]]" max="[[$component.today]]" disabled="[[($component.searchedData.fileId()?true:false)]]" value="{{$component.searchedData.uploadDateStartRange}}" on-value-changed="[[fromDateChanged]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2 label">
+                        <label for="tDt" data-bind="text: $component.Nls.toDate"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+                        <oj-input-date id="tDt" disabled="[[($component.searchedData.fileId()?true:false)]]" datepicker="[[{'changeYear':'none'}]]" value="{{$component.searchedData.uploadDateEndRange}}" converter="[[$baseModel.dateConverter]]" min="[[$component.fromDate]]" max="[[$component.toDate]]"></oj-input-date>
+                    </div>
+                </div>
+            </page-section>
+            <!-- **************************** Search Button **************************** -->
+            <div class="button-container">
+                <oj-button class="action-button-primary" id="button2" on-click="[[searchFile]]">
+                    <span data-bind="text:$component.Nls.search"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="button" on-click="[[closeSearch]]">
+                    <span data-bind="text:$component.Nls.cancel"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="button1" on-click="[[refreshSearch]]">
+                    <span data-bind="text:$component.Nls.clear"></span>
+                </oj-button>
+            </div>
+        </div>
+    </div>
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading:''">
+        <!-- ko if:$component.searchEnabled() -->
+        <action-header params="baseModel : $baseModel, rootModel : $component, heading:$component.viewing">
+        </action-header>
+        <!-- /ko -->
+        <!-- ko if:$baseModel.large() -->
+        <div class="widget-table">
+            <oj-table id="table" class="record" :aria-label="[[$component.Nls.details]]" columns="[[[{headerText:$component.Nls.uploadDetails,field:'uploadDate'},{headerText:$component.Nls.type,field:'paymentType'},{headerText:$component.Nls.btid,field:'description'},{headerText:$component.Nls.fileName,field:'fileName'},{headerText:$component.Nls.referenceId,renderer:$oj.KnockoutTemplateUtils.getRenderer('file_link',true),field:'fileId'},{headerText:$component.Nls.status,renderer:$oj.KnockoutTemplateUtils.getRenderer('fileStatusDesc',true)},{headerText:$component.Nls.action,renderer:$oj.KnockoutTemplateUtils.getRenderer('delete_file',true)}]]]" selection-mode="[[{row:'single',column:'single'}]]" translations="[[{msgNoData:$component.Nls.noData}]]" data="[[$component.pagingdatasource()]]">
+                <caption class="hide-label" data-bind="text:$component.Nls.details"></caption>
+                <script type="text/html" id="fileStatusDesc">
+                    <td>
+                        <span data-bind="attr:{ title:  $component.Nls[$context.row.fileStatusLower], alt :  $component.Nls[$context.row.fileStatusLower]}, text : $context.row.fileStatusDesc"></span>
+                    </td>
+                </script>
+                <script type="text/html" id="delete_file">
+                    <td>
+                        <a href="" class="icons icon-delete" data-bind="click:$component.deleteFile.bind($context.row), attr: { alt: $component.Nls.deleteFile, title:  $component.Nls.deleteFileText },css : (($component.btIdMap[$context.row.fileIdentifier]?($context.row.isFinancial && $context.row.accountingType!=='MDMC'):false) && $context.row.fileStatus==='PROCESSING_IN_PROGRESS')? '':'disabled'"></a>
+                    </td>
+                </script>
+                <script type="text/html" id="file_link">
+                    <td>
+                        <a href="#" data-bind="attr:{ title:  $context.row.fileId, alt :  $context.row.fileId},text:$context.row.fileId,click:$component.onFileSelected"></a>
+                    </td>
+                </script>
+                <oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[pagingdatasource()]]">
+                </oj-paging-control>
+            </oj-table>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$baseModel.large() -->
+        <div class="grid-main-container">
+            <oj-list-view id="listview" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('file_template',true)}]]" data="[[$component.pagingdatasource()]]">
+            </oj-list-view>
+        </div>
+        <script type="text/html" id="file_template">
+            <li>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-md-6 oj-sm-12">
+                        <label data-bind="text: $component.Nls.uploadDetails"></label>
+                        <a href="" class="icons icon-delete float-right" data-bind="click:$component.deleteFile, attr: { alt: $component.Nls.deleteFile, title:  $component.Nls.deleteFileText }, css : (($component.btIdMap[fileIdentifier]?(isFinancial && accountingType!=='MDMC'):false)  && fileStatus==='PROCESSING_IN_PROGRESS')? '':'disabled'">             
+                            </a>
+                        <div class="date" data-bind="text: uploadDate"></div>
+                    </div>
+                    <div class="oj-flex-item oj-md-6 oj-sm-12">
+                        <label data-bind="text: $component.Nls.type"></label>
+                        <div data-bind="text: paymentType"></div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-md-6 oj-sm-12">
+                        <label data-bind="text: $component.Nls.btid"></label>
+                        <div class="description" data-bind="text: description"></div>
+                    </div>
+                    <div class="oj-flex-item oj-md-6 oj-sm-12">
+                        <label data-bind="text: $component.Nls.fileName"></label>
+                        <div data-bind="text: fileName"></div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-md-6 oj-sm-12">
+                        <label data-bind="text: $component.Nls.referenceId"></label>
+                        <div>
+                            <a href="#" data-bind="attr:{ title:  fileId, alt :  fileId},text:fileId,click:$component.onFileSelected.bind($context.data.fileId)"></a>
+                        </div>
+                    </div>
+                    <div class="oj-flex-item oj-md-6 oj-sm-12">
+                        <label data-bind="text: $component.Nls.status"></label>
+                        <div data-bind="text: fileStatusDesc"></div>
+                    </div>
+                </div>
+            </li>
+        </script>
+        <div class="center">
+            <oj-paging-control id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[pagingdatasource()]]">
+            </oj-paging-control>
+        </div>
+        <!-- /ko -->
+    </page-section>
+    <div class="button-container">
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.Nls.cancelTransaction)]]">
+            <span data-bind="text:$component.Nls.cancel"></span>
+        </oj-button>
+    </div>
+    <modal-window params="baseModel : $baseModel, rootModel : $data,id:'confirm-dialog',header: $component.Nls.warning">
+        <div class="confirm-dialog">
+            <div class="confirm-dialog__container confirm-dialog-container">
+                <div class="oj-flex oj-flex-items-pad confirm-dialog-container__message">
+                    <div class="oj-flex-item j-sm-12" data-bind="text: $component.Nls.confirmDeleteMsg"></div>
+                </div>
+                <div class="confirm-dialog-container__buttons button-container">
+                    <oj-button class="action-button-primary" on-click="[[$component.yes]]">
+                        <span class="icons icon-confirm" slot="startIcon"></span><span data-bind="text:$component.Nls.yes"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[$component.no]]">
+                        <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.Nls.no"></span>
+                    </oj-button>
+                </div>
+            </div>
+        </div>
+    </modal-window>
+    <!-- ko if:isStatusListLoaded() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+            <div data-bind="text : $component.Nls.status"> </div>
+            <ul class="file-view__list file-view-list">
+                <!-- ko foreach:$component.statusList -->
+                <li class="file-view-list__item file-view-list-item">
+                    <div>
+                        <span class="file-view-list-item__textHeader" data-bind="text : $baseModel.format($component.Nls.statusDesc, {status : description})"></span>
+                        <span data-bind="text: $component.Nls[code.toLowerCase()]"></span>
+                    </div>
+                </li>
+                <!-- /ko -->
+            </ul>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>

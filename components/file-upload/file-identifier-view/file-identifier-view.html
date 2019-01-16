@@ -1,0 +1,31 @@
+<div class="oj-flex-item oj-sm-9">
+  <div class="form-main-container">
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+      <div class="label">
+        <!-- ko if: $component.partyDetail -->
+        <div data-bind="template: { name: 'file-upload/party-detail', data:$component.partyDetail}"></div>
+        <!-- /ko -->
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.Nls.details">
+        </action-header>
+        <div class="row-group">
+          <div data-bind="template: { name: 'file-upload/file-identifier-details',data:$component.selectedFUID}"></div>
+        </div>
+        <!-- ko if:'fileTemplateDTO' in $component.selectedFUID() -->
+        <div data-bind="template: { name: 'file-upload/template-details',data:$component.selectedFUID().fileTemplateDTO}"></div>
+        <!-- /ko -->
+        <div data-bind="template: { name: 'file-upload/approval-type',data:$component.selectedFUID}"></div>
+      </div>
+    </page-section>
+    <div class="button-container">
+      <oj-button class="action-button-primary" on-click="[[$dashboard.loadComponent.bind($data,'file-identifier-edit',{},$component)]]">
+        <span data-bind="text:$component.Nls.edit"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.Nls.cancelTransaction)]]">
+        <span data-bind="text:$component.Nls.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+        <span data-bind="text:$component.Nls.back"></span>
+      </oj-button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,127 @@
+<div data-bind="with:uplTrackingDetails().additionalInfo.repaymentsInfo">
+
+	<div class="oj-flex oj-flex-items-pad">
+		<span class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10 text" data-bind="text:$component.resource.linkAccount"></span>
+	</div>
+	<!-- ko if: $parent.dataLoaded() -->
+	<div class="oj-flex oj-flex-items-pad">
+		<!-- ko if: $parent.settlementModesLoaded() -->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+				<oj-label for="account"><span data-bind="text:$component.resource.bankAccount"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+				<oj-select-one id="account" required translations="[[{'required':{messageDetail:$component.resource.messages.accountType}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$parent.accountTypeSelected]]" value="{{$parent.defaultSettlementMode}}">
+					<!-- ko foreach: $parent.accountOptions -->
+					<oj-option value="{{$data.code}}"><span data-bind="text:$data.description"></span></oj-option>
+					<!-- /ko -->
+				</oj-select-one>
+			</div>
+		</div>
+		<!-- /ko -->
+
+		<!-- ko if: $parent.isExternalAccountSelected() -->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+				<oj-label for="ext-account-name"><span data-bind="text:$component.resource.accountName"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+
+				<oj-input-text required id="ext-account-name" type="text" translations="[[{'required':{messageDetail:$component.resource.messages.specify}}]]" value="{{$component.externalAccountName}}"></oj-input-text>
+			</div>
+		</div>
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+				<oj-label for="ext-account-number"><span data-bind="text:$component.resource.accountNumber"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+				<oj-input-text required id="ext-account-number" type="number" translations="[[{'required':{messageDetail:$component.resource.messages.specify}}]]" value="{{$component.externalAccountNumber}}"></oj-input-text>
+			</div>
+		</div>
+
+
+		<!-- ko if: $parent.institutionCodeTypeLoaded() -->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+				<oj-label for="institution-code-type"><span data-bind="text:$component.resource.institutionCodeType"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+				<oj-select-one id="institution-code-type" required translations="[[{'required':{messageDetail:$component.resource.messages.institutionCodeType}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$parent.instutionCodeTypeSelected]]">
+					<!-- ko foreach: $parent.institutionCodeTypeOptions -->
+					<oj-option value="{{$data.code}}"><span data-bind="text:$data.description"></span></oj-option>
+					<!-- /ko -->
+				</oj-select-one>
+			</div>
+		</div>
+		<!-- /ko -->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+				<oj-label for="institution-code"><span data-bind="text:$component.resource.institutionCode"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+				<oj-input-text required id="institution-code" type="text" translations="[[{'required':{messageDetail:$component.resource.messages.specify}}]]" value="{{$component.externalInstitutionCode}}"></oj-input-text>
+			</div>
+		</div>
+		<!-- /ko -->
+
+		<!-- ko if: !$parent.isExternalAccountSelected() && !$parent.isLinkedAccount()-->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+				<oj-label for="account-number"><span data-bind="text:$component.resource.accountNumber"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+				<oj-select-one id="account-number" required translations="[[{'required':{messageDetail:$component.resource.messages.accountNumber}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$parent.accountSelected]]" value="{{$parent.defaultAccountNumber}}">
+					<!-- ko foreach: $parent.accountNumberOptions -->
+					<oj-option value="{{id.value}}"><span data-bind="text:id.displayValue"></span></oj-option>
+					<!-- /ko -->
+				</oj-select-one>
+			</div>
+		</div>
+		<!-- /ko -->
+
+
+		<!-- ko if: $parent.isLinkedAccount() -->
+
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+				<oj-label for="linked-account"><span data-bind="text:$component.resource.linkedAccounts"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+				<oj-select-one id="linked-account" required translations="[[{'required':{messageDetail:$component.resource.messages.accountNumber}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$parent.accountSelected]]" value="{{$parent.defaultAccountNumber}}">
+					<!-- ko foreach: $parent.linkedAccNumber -->
+					<oj-option value="{{id}}"><span data-bind="text:id"></span></oj-option>
+					<!-- /ko -->
+				</oj-select-one>
+			</div>
+		</div>
+
+		<!-- /ko -->
+	</div>
+
+	<!-- ko if: !$parent.isExternalAccountSelected() && $parent.displayAccountDetails()-->
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2" data-bind="text : $component.resource.accountDetails">
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-10 application-status-text">
+			<div data-bind="text: $parent.name()"></div>
+			<div data-bind="text: $parent.address()"></div>
+		</div>
+	</div>
+	<!-- /ko -->
+	<!-- /ko -->
+</div>
+<div class="oj-flex oj-flex-items-pad button-container">
+	<div class="oj-flex-item right oj-md-10 oj-lg-10">
+		<!-- ko if: isExternalAccountSelected() -->
+		<oj-button class="form-button-secondary" on-click="[[addExternalAccount]]">
+      <span data-bind="text:$component.resource.continue"></span>
+</oj-button>
+		<!-- /ko -->
+		<!-- ko if: !isExternalAccountSelected()-->
+		<oj-button class="form-button-secondary" on-click="[[submitRepaymentsInfo]]">
+      <span data-bind="text:$component.resource.continue"></span>
+</oj-button>
+		<!-- /ko -->
+
+	</div>
+</div>

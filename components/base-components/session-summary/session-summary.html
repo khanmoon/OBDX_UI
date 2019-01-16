@@ -1,0 +1,114 @@
+<div class="form-main-container">
+  <!-- ko if:!$baseModel.small() -->
+  <!-- ko if: dataLoaded -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading :''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <oj-table id="SessionSummaryTable" :aria-label="[[$component.nls.header.sessionSummary]]" columns="[[[{headerText:$component.nls.labels.startDate},{headerText:$component.nls.labels.endDate},{headerText:$component.nls.labels.channel},{headerText:$component.nls.labels.ipAddress}]]]"
+          data="[[paginationDataSource]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('session_template', true)]]">
+          <caption class="hide-label" data-bind="text:$component.nls.header.sessionSummary"></caption>
+        </oj-table>
+
+        <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[paginationDataSource]]"></oj-paging-control>
+      </div>
+    </div>
+  </page-section>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="ok" class="action-button-primary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:$component.nls.labels.ok"></span>
+    </oj-button>
+    <oj-button id="cancel" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+      <span data-bind="text:$component.nls.labels.cancel"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if:$baseModel.small() -->
+  <!-- ko if: dataLoaded -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading :''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <oj-list-view id="listview_SessionSummaryTable" :aria-label="[[$component.nls.header.sessionSummary]]"
+          selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('listRow_template',true)}]]"
+          data="[[paginationDataSource]]"></oj-list-view>
+        <oj-paging-control id="paging-small" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[$component.paginationDataSource]]"></oj-paging-control>
+      </div>
+    </div>
+  </page-section>
+  <!-- /ko -->
+  <!-- /ko -->
+</div>
+<script type="text/html" id="session_template">
+  <tr>
+    <!-- ko if: $context['rowContext']['depth']===1 -->
+    <td>
+      <oj-row-expander context="[[$context.rowContext]]"></oj-row-expander>
+      <span data-bind="text:creationDate"></span>
+    </td>
+    <td>
+      <span data-bind="text:lastUpdatedDate"></span>
+    </td>
+    <td>
+      <span data-bind="text:channel"></span>
+    </td>
+    <td>
+      <span data-bind="text:ipAddress"></span>
+    </td>
+    <!-- /ko -->
+    <!-- ko if: $context['rowContext']['depth']===2 -->
+    <td colspan="4">
+      <div data-bind="component:{name: 'session-summary-details', params:{rootModel: $component,data:$data}}">
+      </div>
+    </td>
+    <!-- /ko -->
+  </tr>
+</script>
+<script type="text/html" id="listRow_template">
+  <li>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <label data-bind="text: $component.nls.labels.startDate"></label>
+        <div class="oj-flex-item oj-sm-12" data-bind="text:creationDate"> </div>
+      </div>
+      <br>
+      <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <label data-bind="text: $component.nls.labels.endDate"></label>
+        <div class="oj-flex-item oj-sm-12" data-bind="text:lastUpdatedDate"> </div>
+      </div>
+      <br>
+      <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <label data-bind="text: $component.nls.labels.channel"></label>
+        <div class="oj-flex-item oj-sm-12" data-bind="text:channel"> </div>
+      </div>
+      <br>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <label data-bind="text: $component.nls.labels.ipAddress"></label>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-8" data-bind="text:ipAddress"> </div>
+
+          <span data-bind="attr:{id:'blocktoshow_'+$data.id}">
+          <a href="javascript:void(0)" class="oj-flex-item oj-sm-4 right" data-bind="attr:{id:$data.id},
+          click:$component.showSesionDetails">
+        <span class="form-button-link" data-bind="text:$component.nls.labels.viewMore">
+        </span>
+      </a>
+    </span>
+      <span data-bind="attr:{id:'block_'+$data.id}" class="hide">
+      <a href="javascript:void(0)" data-bind="click:$component.hideSesionDetails">
+      <div class="form-button-link icons icon-eye-slash" data-bind="text:$component.nls.labels.viewLess"></div>
+      </a>
+      </span>
+       </div>
+      </div>
+      <!-- ko if : $data.isVisible() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 form-button-link" data-bind="attr:{id:'blockdetails_'+ id},
+          component:{name: 'session-summary-details',
+          params:{rootModel: $component, data:$data, idAttribute:('blockdetails_'+ id) }}"></div>
+      </div>
+      <!-- /ko -->
+  </div></li>
+</script>

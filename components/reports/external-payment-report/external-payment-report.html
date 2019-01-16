@@ -1,0 +1,27 @@
+<form>
+    <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+            <oj-label for="merchantCode"> <span data-bind="text:$component.Nls.merchantCode"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+            <oj-combobox-one id="search" options="[[suggestions]]" filter-on-open="rawValue" on-oj-value-updated="[[suggestions]]" on-value-changed="[[merchantCodeSelected]]">
+            </oj-combobox-one>
+        </div>
+    </div>
+    <!-- ko  if:$component.frequencySelected() && $component.reportGenerationPayload.reportFreq()+"" ==="ADHOC"  -->
+    <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+            <oj-label for="startDate"> <span data-bind="text:$component.Nls.duration"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2 ">
+            <oj-input-date required id="startDate" name="startDate" :placeholder="[[$component.Nls.dateFrom]]" max="[[$component.today]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+        </div>
+        <oj-label for="endDate" class="hide-label"> <span data-bind="text:$component.Nls.dateTo"></span></oj-label>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2 ">
+            <oj-input-date required id="endDate" name="endDate" :placeholder="[[$component.Nls.dateTo]]" max="[[$component.today]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+        </div>
+    </div>
+    <!-- /ko -->
+
+      <input type="hidden" id="merchantCode" name="merchantCode">
+</form>

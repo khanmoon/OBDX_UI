@@ -1,0 +1,101 @@
+<!-- ko if:stageOne() -->
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-9">
+        <div class="form-main-container">
+            <div data-bind="template: { name: 'goals/review-goal-category-create' }"></div>
+            <div class="oj-flex oj-flex-items-pad button-container right">
+                <oj-button class="action-button-primary" id="edit" on-click="[[editCategory]]">
+                    <span data-bind="text:$component.common.edit"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="cancel1" on-click="[[$dashboard.openDashBoard]]">
+                    <span data-bind="text:$component.common.cancel"></span>
+                </oj-button>
+                <oj-button class="action-button-tertiary" id="back1" on-click="[[back]]">
+                    <span data-bind="text:$component.common.back"></span>
+                </oj-button>
+            </div>
+        </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'goal-category-view'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko if:stageTwo() -->
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-9">
+        <div class="form-main-container">
+            <div data-bind="template: { name: 'goals/goal-category-create' }"></div>
+            <div class="oj-flex oj-flex-items-pad button-container right">
+                <oj-button class="action-button-primary" id="save" on-click="[[updateCategory]]">
+                    <span data-bind="text:$component.common.save"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="cancel2" on-click="[[$dashboard.openDashBoard]]">
+                    <span data-bind="text:$component.common.cancel"></span>
+                </oj-button>
+                <oj-button class="action-button-tertiary" id="back2" on-click="[[backEdit]]">
+                    <span data-bind="text:$component.common.back"></span>
+                </oj-button>
+            </div>
+        </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'goal-category-create'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko if:stageThree() -->
+<div class="form-main-container">
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.common.review , reviewHeader : $component.goal.reviewHeaderMsg}}"></div>
+    <div data-bind="template: { name: 'goals/review-goal-category-create' }"></div>
+    <div class="oj-flex oj-flex-items-pad button-container right">
+        <oj-button class="action-button-primary" id="confirm" on-click="[[confirmCategory]]">
+            <span data-bind="text:$component.common.confirm"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="cancel3" on-click="[[$dashboard.openDashBoard]]">
+            <span data-bind="text:$component.common.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" id="back3" on-click="[[backReview]]">
+            <span data-bind="text:$component.common.back"></span>
+        </oj-button>
+    </div>
+</div>
+<!-- /ko -->
+<modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'intrestslabs1'">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.goal.interestslab.title">
+        <!-- ko if:$component.interestSlabsLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5">
+                <label for="amountrange1" data-bind="text:$component.goal.interestslab.amount"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7">
+                <oj-select-one id="amountrange1" required :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$component.amountChangeHandler]]" :placeholder="[[$component.common.select]]" value="{{$component.selectedAmountRange()}}">
+                    <!-- ko foreach: $component.amountRangeList() -->
+                    <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" data-bind="text:$component.goal.interestslab.chartTitle">
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12">
+                <oj-table id="interestSlabstable" :aria-label="[[$component.goal.interestslab.caption]]" columns="[[[{headerText:$component.goal.interestslab.tenure,field:'range'},{headerText:$component.goal.interestslab.rate,field:'rate'}]]]" columns-default="[[{sortable:'disabled'}]]" selection-mode="[[{row:'none',column:'none'}]]" data="[[$component.interestSlabsDataSource()]]">
+                    <caption class="hide-label" data-bind="text:$component.goal.interestslab.caption"></caption>
+                </oj-table>
+            </div>
+        </div>
+        <!-- /ko -->
+    </page-section>
+    <div class="button-container">
+        <oj-button class="action-button-primary" id="ok" on-click="[[$component.closeModelWindow]]">
+            <span data-bind="text:$component.goal.interestslab.ok"></span>
+        </oj-button>
+    </div>
+</modal-window>

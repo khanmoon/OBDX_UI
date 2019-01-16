@@ -1,0 +1,65 @@
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item  oj-sm-12 oj-md-12 oj-lg-7">
+		<!-- ko if:offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].minimumInitialDepositAmount -->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="html:$component.resource.casa.minimumInitialDepositAmount"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<span class="details-text-value" data-bind="text: $baseModel.formatCurrency(offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].minimumInitialDepositAmount.amount,offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].minimumInitialDepositAmount.currencyCode)"></span>
+			</div>
+		</div>
+		<!-- /ko -->
+		<!-- ko if: offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].minimumBalanceAmount -->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="html:$component.resource.casa.minimumBalanceAmount"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<span class="details-text-value" data-bind="text: $baseModel.formatCurrency(offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].minimumBalanceAmount.amount,offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].minimumBalanceAmount.currencyCode)"></span>
+			</div>
+		</div>
+		<!-- /ko -->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="text:$component.resource.casa.atmAccess"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<!-- ko if: offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.offerAllowedAccessChannelResponseDTO.atmallowed -->
+				<span class="details-text-value" data-bind="text:$component.resource.casa.allowed"></span>
+				<!-- /ko  -->
+				<!-- ko ifnot: offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.offerAllowedAccessChannelResponseDTO.atmallowed -->
+				<span class="details-text-value" data-bind="text:$component.resource.casa.notAllowed"></span>
+				<!-- /ko  -->
+			</div>
+		</div>
+		<!-- ko if:offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].dailyWithdrawalLimitForAtmOrPos -->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-6">
+				<oj-label class="details-text"><span data-bind="text:$component.resource.casa.dailyWithdrawalLimitForAtm"></span></oj-label>
+			</div>
+			<div class="oj-flex-item oj-sm-6">
+				<span class="details-text-value" data-bind="text: $baseModel.formatCurrency(offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].dailyWithdrawalLimitForAtmOrPos.amount,offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].dailyWithdrawalLimitForAtmOrPos.currencyCode)"></span>
+			</div>
+		</div>
+		<!-- /ko -->
+	</div>
+
+	<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5 facilities">
+		<div class="details-text" data-bind="text:$component.resource.casa.facilities"></div>
+		<ul class="oj-flex-item oj-sm-5 oj-md-6 oj-lg-12 no-pad-cols facilities-values">
+			<!-- ko if:offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferFacilityResponseDTO.chequeBookAllowed -->
+			<li class="details-text-value" data-bind="text:$component.resource.casa.checkBookAllowed"></li>
+			<!-- /ko  -->
+			<!-- ko if: offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.offerAllowedAccessChannelResponseDTO.atmallowed -->
+			<li class="details-text-value" data-bind="text:$component.resource.casa.atmAccess"></li>
+			<!-- /ko  -->
+			<!-- ko if:offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferFacilityResponseDTO.overdraftAllowed -->
+			<li class="details-text-value" data-bind="text:$component.resource.casa.overdraftAllowed"></li>
+			<!-- /ko  -->
+			<!-- ko if:offerDetails[0].offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferFacilityResponseDTO.principalOffsetAllowed -->
+			<li class="details-text-value" data-bind="text:$component.resource.casa.principalOffsetAllowed"></li>
+			<!-- /ko  -->
+		</ul>
+	</div>
+</div>

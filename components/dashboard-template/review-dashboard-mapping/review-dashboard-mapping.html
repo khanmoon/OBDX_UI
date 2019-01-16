@@ -1,0 +1,26 @@
+<div class="form-main-container">
+    <page-section params="baseModel : $baseModel,rootModel:$data, heading : ''">
+        <div class="oj-sm-12">
+            <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+        </div>
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.labels.mappingType , value :$component.nls.mappingType[$component.payload.mappedType]"></row>
+        <!-- ko if:$component.showRole -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.labels.mappingValue , value :$component.payload.mappedValue.label"></row>
+        <!-- /ko -->
+        <!-- ko if:!$component.showRole -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.labels.mappingValue , value :$component.payload.mappedValue"></row>
+        <!-- /ko -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.labels.template , value :$component.templateName"></row>
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button id="dialogtopupButton" class="action-button-primary" on-click="[[saveMapping]]">
+            <span data-bind="text:$component.nls.generic.common.save"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data, $data)]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+            <span data-bind="text:$component.nls.generic.common.back"></span>
+        </oj-button>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<modal-window params="baseModel : $baseModel, rootModel:$data, id:'aboutBox', closeHandler:$dashboard.resetModalComponent,header : nls.header ">
+  <div class="about">
+    <!-- ko if:obdx() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 about__product about-product">
+            <div class="about-product__logo">
+                <img data-bind="loadImage:'common/logo.svg'">
+            </div>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 about__details about-product-name">
+            <h3 class="about-product-name__short-name" data-bind="text : nls.productShortName"></h3>
+            <div class="about-product-name__fullname" data-bind="text : nls.productName"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 about__row about-row">
+            <oj-label class="about-row__label"><span data-bind="text:nls.version"></span></oj-label>
+            <div data-bind="text : obdx().version"></div>
+        </div>
+        <!-- ko if: obdx().buildnum -->
+        <div class="oj-flex-item oj-sm-12 about__row about-row">
+          <oj-label class="about-row__label"><span data-bind="text:nls.build"></span></oj-label>
+          <div data-bind="text : obdx().buildnum"></div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 about__row about-row">
+            <oj-label class="about-row__label"><span data-bind="text:nls.servicePack"></span></oj-label>
+            <div data-bind="text : obdx().servicePack"></div>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad about__footer about-footer">
+        <div class="oj-flex-item oj-sm-12 about-footer__row about-footer-row">
+            <oj-label class="about-footer-row__label"><span data-bind="text:nls.poweredBy"></span></oj-label>
+            <span class="about-footer-row__logo"><img data-bind="loadImage:'common/oracle_logo_sm.png',attr:{'aria-label':$component.nls.poweredByValue}"></span>
+        </div>
+        <div class="oj-flex-item about-footer__copyright about-footer-copyright">
+            <span class="about-footer-copyright__text" data-bind="text : nls.copyright"></span>
+        </div>
+        <div data-bind="template : {afterRender : showDialog}">
+        </div>
+    </div>
+    <!-- /ko -->
+  </div>
+</modal-window>

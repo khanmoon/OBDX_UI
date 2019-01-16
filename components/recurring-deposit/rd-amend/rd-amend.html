@@ -1,0 +1,102 @@
+<div class="form-main-container oj-flex  oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+             <div class="oj-flex-items-pad oj-sm-12 oj-md-12 oj-lg-6">
+             <page-section params="baseModel : $baseModel, rootModel : $component, heading :''">
+                    <account-input params="baseModel : $baseModel, rootModel: $component ,label : $component.resource.accountNumber,
+                        account : $component.selectedAccountValue,
+                        type: 'balance',
+                        additionalDetails : $component.additionalDetails,
+                        customURL : 'deposit?module=RD',
+                        taskCode:'TD_N_AMD_RD',
+                        validator:$component.validationTracker,
+                        readOnly: !!$component.selectedAccountDisplayValue"></account-input>
+                 <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.maturityInstruction, value :$component.resource.rollOverType[$component.amendModel.rollOverType()]"></row>
+                <oj-validation-group id="tracker123" valid="{{groupValid}}">
+                    <!-- ko if:payOutOptionsLoaded() -->
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-md-12">
+                        <oj-label for="payTo" class="oj-flex-item oj-lg-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.payTo"></span>
+                        </oj-label>
+                        <oj-select-one id="payTo" :aria-label="[[$component.resource.payTo]]" class="oj-flex-item oj-lg-6" placeholder="[[$component.resource.pleaseSelect]]" value="{{amendModel.payoutInstructions()[0].type}}" required on-value-changed="[[payOutOptionChanged]]">
+                            <!-- ko foreach:payOutOptionList -->
+                            <oj-option :id="[[code +$baseModel.incrementIdCount()]]" value="[[code]]"><span data-bind="text:description"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                    <!-- ko if:amendModel.payoutInstructions()[0].type() ==='O' -->
+                    <div class="oj-lg-7 oj-md-7">
+                   <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.resource.creditAccountNum,type : 'address' , account :$component.amendModel.payoutInstructions()[0].accountId.value ,additionalDetails : $component.additionalDetailsTransfer,validator:$component.validationTracker"></account-input>
+               </div>
+                    <!-- /ko -->
+                    <!-- ko if:amendModel.payoutInstructions()[0].type() ==='E' -->
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-md-12">
+                        <oj-label for="maturityAccount" class="oj-flex-item oj-lg-12 oj-md-12">
+                            <span data-bind="text:$component.resource.creditAccountNum"></span>
+                        </oj-label>
+                        <oj-input-text id="maturityAccount" class="oj-flex-item oj-lg-6 oj-md-5" value="{{amendModel.payoutInstructions()[0].account}}" required validators="[[$baseModel.getValidator('ACCOUNT')]]">
+                        </oj-input-text>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-md-12">
+                        <oj-label for="maturityAccountBeneficiaryName" class="oj-flex-item oj-lg-12 oj-md-12">
+                            <span data-bind="text:$component.resource.accountName"></span>
+                        </oj-label>
+                        <oj-input-text id="maturityAccountBeneficiaryName" class="oj-flex-item oj-lg-6 oj-md-5" value="{{amendModel.payoutInstructions()[0].beneficiaryName}}" required validators="[[$baseModel.getValidator('NAME')]]">
+                        </oj-input-text>
+                    </div>
+                    <oj-validation-group id="codeTracker" valid="{{codeValid}}">
+                        <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-md-12">
+                            <oj-label for="maturityAccountBankCode" class="oj-flex-item oj-lg-12 oj-md-12">
+                                <span data-bind="text:$component.resource.bankCode"></span>
+                            </oj-label>
+                            <oj-input-text id="maturityAccountBankCode" class="oj-flex-item oj-lg-6 oj-md-5" value="{{amendModel.payoutInstructions()[0].clearingCode}}" required validators="[[$baseModel.getValidator('BANK_CODE')]]">
+                            </oj-input-text>
+                        </div>
+                    </oj-validation-group>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-8 oj-md-8 oj-sm-12">
+                        <div class="oj-flex oj-flex-item oj-lg-3 oj-md-3 oj-sm-5">
+                            <oj-button id="bankCodeOpener" class="action-button-secondary" on-click="[[bankDetails]]">
+                                <span slot="startIcon" class="icons icon-confirm"></span>
+                                <span data-bind="text:$component.resource.generic.common.verify"></span>
+                            </oj-button>
+                        </div>
+                        <div class="recurringDepositAmend__bankLookUp">
+              <span data-bind="text:$component.resource.or"></span>
+            </div>
+                        <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-6 recurringDepositAmend__bankLookUp">
+                            <a href="#" class="form-button-link recurringDepositRedeem__bankLookUp" data-bind="text:$component.resource.lookUpBankCode,click:bankLookupHandler"></a>
+                        </div>
+                        <!-- ko if:$component.branchDetailsLoaded() -->
+                        <div data-bind="text:$component.amendModel.payoutInstructions()[0].bankName" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+                        <div data-bind="text:$component.amendModel.payoutInstructions()[0].address.line1" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+                        <div data-bind="text:$component.amendModel.payoutInstructions()[0].address.line2" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+                        <div data-bind="text:$component.amendModel.payoutInstructions()[0].address.city" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if:amendModel.payoutInstructions()[0].type() ==='I' -->
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-md-12">
+                        <oj-label for="maturityAccountPayout" class="oj-flex-item oj-lg-12 oj-md-12">
+                            <span data-bind="text:$component.resource.creditAccountNum"></span>
+                        </oj-label>
+                        <oj-input-text id="maturityAccountPayout" class="oj-flex-item oj-lg-6 oj-md-5" value="{{amendModel.payoutInstructions()[0].account}}" required validators="[[$baseModel.getValidator('ACCOUNT')]]">
+                        </oj-input-text>
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </oj-validation-group>
+        </page-section>
+                <div data-bind="component: {name: 'bank-look-up', params:{rootModel: $component,clearingCodeType:$component.amendModel.payoutInstructions()[0].networkType,accountType:'Domestic',networkCode :amendModel.payoutInstructions()[0].clearingCode,additionalBankDetails:$component.additionalBankDetails}}"></div>
+                <div class="button-container">
+                    <oj-button id="createButton" class="action-button-primary " on-click="[[$component.amendRD.bind($data,true)]]"><span slot="startIcon" class="icons icon-save"></span>
+                        <span data-bind="text:$component.resource.generic.common.save"></span>
+                    </oj-button>
+                    <oj-button class="action-button-tertiary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+                        <span data-bind="text:$component.resource.generic.common.back"></span>
+                    </oj-button>
+                </div>
+            </div>
+            <!-- ko if: $baseModel.large() -->
+            <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+                <help params="baseModel : $baseModel, rootModel : $component, transaction: 'rd-amend'"></help>
+            </div>
+            <!-- /ko -->
+        </div>

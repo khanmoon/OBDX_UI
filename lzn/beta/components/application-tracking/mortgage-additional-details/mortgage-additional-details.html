@@ -1,0 +1,76 @@
+<div class="oj-flex oj-flex-item" data-bind="text:$component.resource.fillAdditional">
+</div>
+<div class="oj-flex-item no-pad-cols">
+  <!-- ko if: $component.showComponents() -->
+  <div id="mortgageAdditionalInfoAccordion" class="accordion">
+    <!-- ko foreach: $component.uplTrackingDetails().additionalInfo.sections -->
+    <div class="card ">
+      <div class="card-header oj-flex oj-flex-items-pad">
+        <div class="">
+          <div class=""></div>
+          <div class="oj-sm-only-hide card-icon-container"><img class="card-icon" data-bind="loadImage:'origination/accordion/'+$data.component+'.png'" alt=""></div>
+        </div>
+        <div class="card-title oj-flex-item oj-sm-9 oj-md-8 oj-lg-8" data-bind="text: $component.accordionNames.accordionNames[$data.name]"></div>
+        <!-- ko if: !$data.isComplete() -->
+        <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+          <a href="javascript:void(0)" class="icon icon-arrow-right section-icon collapse-icon pull-right"></a>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: $data.isComplete() -->
+        <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+          <span class="icon icon-success section-icon pull-right done-icon"></span>
+        </div>
+        <!-- /ko -->
+      </div>
+      <!-- ko if : $index() === 0 && $component.offerLoaded() -->
+      <div class="card-body form-main-container" data-bind="component: { name: $data.component, params: { rootModel: $parent,
+                                      applicantObject :$component.applicantDetails()[0],
+                                      index:$index()
+                                    }}"></div>
+      <!-- /ko -->
+      <!-- ko if : $index()>0 && $component.uplTrackingDetails().additionalInfo.sections[$index()-1].isComplete() -->
+      <div class="card-body form-main-container" data-bind="component: { name: $data.component, params: { rootModel: $parent,
+                                      applicantObject :$component.applicantDetails()[0],
+                                      index:$index()
+                                    }}"></div>
+      <!-- /ko -->
+
+    </div>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+</div>
+<div class=" button-container product-button-panel">
+  <oj-button id="backButton" class="action-button-secondary last-2 " on-click="[[clickBackButton]]">
+    <span data-bind="text:$component.resource.back"></span>
+  </oj-button>
+  <oj-button id="returnToTrackerButton" class="action-button-secondary first-2 oj-button" on-click="[[function(){$baseModel.switchPage({homeComponent:{module:'application-tracking',component: 'application-tracking-base',query: {context: 'index'}}},true);}]]">
+    <span data-bind="text:$component.resource.return"></span>
+  </oj-button>
+  <oj-button id="confirmButton" class="action-button-primary first-2 oj-button pull-right" on-click="[[function(){$('#confirmAccountConfiguration').trigger('openModal')}]]">
+    <span data-bind="text:$component.resource.generic.common.confirm"></span>
+  </oj-button>
+</div>
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'confirmAccountConfiguration', header: $component.resource.generic.common.info">
+  <div class="message-text scroll" data-bind="text:$component.resource.confirmText"></div>
+  <div class="message-btn button-container">
+    <oj-button id="confirmButtonNo" class="form-button-secondary" on-click="[[function(){$('#confirmAccountConfiguration').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.generic.common.no"></span>
+    </oj-button>
+    <oj-button id="confirmButtonYes" class="form-button-primary" on-click="[[$component.confirmAccountConfiguration]]">
+      <span data-bind="text:$component.resource.generic.common.yes"></span>
+    </oj-button>
+  </div>
+</modal-window>
+<div class="oj-flex oj-flex-items-pad popUpWindow">
+  <div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+    <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'customPopupforDuplicate', header: $component.resource.generic.common.info">
+      <div class="message-text scroll" data-bind="text:$component.tempMessage()"></div>
+      <div class="message-btn button-container">
+        <oj-button id="customPopupforDuplicateutton" class="toUpperCase form-button-primary" on-click="[[$component.redirectHome]]">
+          <span data-bind="text:$component.resource.generic.common.ok"></span>
+        </oj-button>
+      </div>
+    </modal-window>
+  </div>
+</div>

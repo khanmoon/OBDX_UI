@@ -1,0 +1,68 @@
+<div class="oj-panel activity-history">
+
+    <!-- ko if: upcomingPaymentsLoaded() && upcomingPaymentsData.length>0-->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+            <h3 class="activity-history__heading" data-bind="text:$component.resource.upcomingPayments.smalltitle"></h3>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad activity-history__content">
+        <div class="oj-flex-item">
+            <oj-list-view id="listview_dashboard_scheduled-payments" :aria-label="[[$component.resource.upcomingPayments.smalltitle]]"
+                translations="[[{msgNoData:$component.resource.upcomingPayments.noupcomingpayments}]]" selection-mode="[['single']]"
+                item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.datasource]]">
+                <!--template loaded here-->
+            </oj-list-view>
+        </div>
+    </div>
+    <!-- ko ifnot:$component.datasource.data && $component.datasource.data.length>0 -->
+    <div class="oj-flex-item hide">
+        <oj-paging-control id="paging" slot="bottom" :page-size="[[8]]" data="[[$component.datasource()]]"></oj-paging-control>
+    </div>
+    <!-- /ko -->
+
+
+    <div class="oj-flex view-all">
+        <div class="oj-flex-item oj-sm-6 activity-history__view-all">
+            <a href="#" data-bind="attr:{'alt':$component.resource.upcomingPayments.viewallText,'title':$component.resource.upcomingPayments.viewallTitle},click :$component.openTab.bind($data,'payments','scheduled-payments')">
+                <span data-bind="text:$component.resource.upcomingPayments.viewall"></span>
+            </a>
+        </div>
+        <div class="oj-flex-item oj-sm-6 activity-history__repeatTransfer">
+            <a href="#" data-bind="attr:{'alt':$component.resource.upcomingPayments.setSI, 'title':$component.resource.upcomingPayments.setSITitle}, click:$component.openTab.bind($data,'standing-instructions', 'payments-money-transfer')">
+                <span class="oj-flex-item oj-sm-6" data-bind="text:$component.resource.upcomingPayments.setSI"></span>
+            </a>
+        </div>
+    </div>
+
+    <script type="text/html" id="content_template">
+        <li data-bind="attr: {id:externalReferenceNumber}">
+            <div class="oj-flex">
+              <div class="oj-flex-item oj-sm-3 oj-md-2 activity-date" data-bind='component: { name: "date-box", params: {date: date}}'></div>
+                <!-- <div class="oj-flex-item oj-sm-3 activity-date" data-bind="text: $baseModel.formatDate(date)"></div> -->
+                <div class="oj-flex-item oj-sm-6 oj-md-7 activity-desc vertical-align-middle" data-bind="text :name"></div>
+                <div class="oj-flex-item oj-sm-3 right activity-amt vertical-align-middle">
+                    <span class="debit" data-bind="text : $baseModel.formatCurrency(amount,currency)"></span>
+                </div>
+            </div>
+        </li>
+    </script>
+    <!-- /ko -->
+
+    <!-- ko if: upcomingPaymentsLoaded() && !upcomingPaymentsData.length>0 -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+            <h3 class="activity-history__heading" data-bind="text:$component.resource.upcomingPayments.smalltitle"></h3>
+        </div>
+        <div class="oj-flex-item oj-sm-12 upcoming-payments">
+            <img alt="" data-bind="loadImage:'dashboard/upcoming-payments.svg'">
+            <div class="upcoming-payments-msg" data-bind="text:$component.resource.upcomingPayments.noupcomingmsg"></div>
+        </div>
+            <div class="oj-flex-item oj-sm-12 view-all pointer center">
+                <a href="#" data-bind="click:$component.openTab.bind($data,'standing-instructions', 'payments-money-transfer')">
+                    <div class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.upcomingPayments.setSI"></div>
+                </a>
+            </div>
+    </div>
+    <!-- /ko -->
+</div>

@@ -1,0 +1,35 @@
+<div class="form-main-container ">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+            <!-- ko if: $component.accountDetailsLoaded() -->
+            <!-- ko if: $component.productDetails().offers.offerAdditionalDetails.standardFeature.addOnCardAllowed -->
+            <div data-bind='component: {name:"card-addon",params:{rootModel:$component,validator:$component.validationTracker}}'></div>
+            <!-- /ko -->
+
+            <!-- ko if: $component.productDetails().offers.offerAdditionalDetails.standardFeature.balanceTransferAllowed-->
+
+            <div data-bind='component: { name: "card-balance-transfer", params: { rootModel: $component,
+                            validator:$component.validationTracker}}'></div>
+        <!-- /ko -->
+        <!-- ko if: ((!$component.productDetails().offers.offerAdditionalDetails.standardFeature.addOnCardAllowed) && (!$component.productDetails().offers.offerAdditionalDetails.standardFeature.balanceTransferAllowed))-->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+                <oj-label><span data-bind="text:$component.resource.noCustomizationSupported"></span></oj-label>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: showContinue() -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <div class="oj-flex-item oj-md-10 oj-lg-10">
+                <oj-button id="submitAccountConfig" class="form-button-secondary" on-click="[[$component.submitAccountConfig]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+</oj-button>
+
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+
+</div>
+</div>

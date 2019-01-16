@@ -1,0 +1,58 @@
+<div class="form-main-container">
+
+    <page-section params="baseModel : $baseModel, rootModel : $data">
+		<oj-button id="userGroup_btnCreate" class="form-button-primary pull-right" on-click="[[createNew]]">
+      <span data-bind="text:$component.nls.common.createNew"></span>
+</oj-button>
+    </page-section>
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+ <!-- ko if:!$component.groupDetails.groupDetailsFetched() -->
+<div class="party-validate">
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+    <oj-label class="" for="partyIdWorkflowSearch"><span data-bind="text:$component.nls.userGroup.groupCode"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7">
+		<oj-input-text :aria-label="[[$component.nls.userGroup.groupCode]]" maxlength="20" require="" id="partyIdWorkflowSearch" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.groupDetails.userGroupName}}" validators="[[$baseModel.getValidator('APPLICATION_CODE')]]"></oj-input-text>
+
+  </div>
+  </div>
+
+    <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-label class="" for="groupCodedesc" require="true"><span data-bind="text:$component.nls.userGroup.groupDescription"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7">
+        <oj-input-text :aria-label="[[$component.nls.userGroup.groupDescription]]" maxlength="80" id="groupCodedesc" required="[[true]]" translations="[[{'required':{messageDetail:$component.nls.approvals.common.Empty}}]]" validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" value="{{$component.groupDetails.description}}"></oj-input-text>
+
+      </div>
+
+    </div>
+
+
+
+
+  </div>
+    <!-- /ko -->
+  </page-section>
+	<div class="button-container">
+    <oj-button id="searchButton" class="action-button-primary" on-click="[[fetchGroupDetailsCode]]">
+      <span data-bind="text:$component.nls.generic.common.search"></span>
+</oj-button>
+	<!-- ko ifnot:$component.groupDetails.groupDetailsFetched() -->
+	<oj-button id="cancelButton" class="action-button-secondary " on-click="[[cancel]]">
+      <span data-bind="text:$component.nls.generic.common.cancel"></span>
+</oj-button>
+<!-- /ko -->
+			<oj-button id="clearButton" class="action-button-tertiary" on-click="[[clear]]">
+      <span data-bind="text:$component.nls.generic.common.clear"></span>
+</oj-button>
+
+
+
+	</div>
+
+
+</div>

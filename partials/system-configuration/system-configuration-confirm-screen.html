@@ -1,0 +1,24 @@
+<!-- ko if: $component.mode()==='create' -->
+<div class="oj-flex oj-flex-items-pad button-container">
+	<oj-button class="action-button-primary" on-click="[[$component.confirmationModal]]">
+      <span data-bind="text:$component.nls.buttons.ok"></span>
+</oj-button>
+</div>
+<!-- /ko -->
+
+<!-- ko ifnot: $component.mode()==='create' -->
+<div class="oj-flex oj-flex-items-pad button-container">
+	<oj-button class="action-button-primary" on-click="[[$dashboard.switchModule.bind($data,$dashboard.application())]]">
+      <span data-bind="text:$component.nls.buttons.ok"></span>
+</oj-button>
+</div>
+<!-- /ko -->
+<modal-window class="message form-main-container" params="baseModel : $baseModel, rootModel : $component,id:'statementDialog', header: $component.nls.buttons.confirmation">
+	<div class="message-text label scroll" data-bind="html:$component.nls.message.restartSystem"></div>
+	<div class="message-btn button-container">
+		<oj-button class="action-button-primary" :id="[['okButton']]" on-click="[[function(){
+        $('#statementDialog').hide();}]]">
+      <span data-bind="text:$component.nls.buttons.ok"></span>
+</oj-button>
+	</div>
+</modal-window>

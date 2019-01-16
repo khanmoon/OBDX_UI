@@ -1,0 +1,91 @@
+<div class="oj-flex oj-flex-items-pad transaction-list-container">
+    <oj-toolbar aria-label=[[$component.resource.filter.filterToolbar]] aria-controls='controlled' id="filter-toolbar">
+        <div class="filter__label">
+            <oj-label for="transaction-list" class="oj-flex-item oj-lg-12 oj-sm-12">
+                <span data-bind="text:$component.resource.filter.filter"></span>
+            </oj-label>
+        </div>
+        <div class="menuFilters">
+            <oj-menu-button id="categoryMenuButton" class="filterButtons">
+                <span slot="startIcon" class="filter-icon icons icon-claim-money"></span>
+                <span data-bind="text:$component.resource.tableHeaders.categoryNsubcategory"></span>
+                <!-- id changed to avoid conflict categoryMenu -->
+                <oj-menu class="category-filter transaction-list-container" :id="categoryMenu" slot="menu" open-options.display="dropDown" on-oj-action="[[setCategoryFilterSize]]">
+                    <div class="oj-offcanvas-outer-wrapper offcanvas-box oj-disabled">
+                        <div id="categories-filter-wrapper" class="oj-flex oj-flex-items-pad oj-lg-12">
+                            <!-- start offcanvas -->
+                            <div id="startDrawer" class="oj-flex-item oj-lg-6 oj-sm-6 offcanvas-box__menu">
+                                <!-- ko foreach:$component.categoryList() -->
+                                <div class="offcanvas-box__menu__option" data-bind="attr:{id:'arrow'+ categoryId.replace(/[_.,:$\s]/g,'')}">
+                                    <a href="#" data-bind="attr:{'alt':$component.resource.filter.filterText,'title':$component.resource.filter.filter},click :$component.categoryFilterChangeHandler">
+                                        <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                                            <div class="oj-flex-item oj-lg-10 oj-sm-10" data-bind="text:name"></div>
+                                            <div class="oj-flex-item oj-lg-2 icons icon-arrow-right"></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                            <!-- main content-->
+                            <div id="subcategories-container" class="oj-flex-item oj-lg-6 oj-sm-6 offcanvas-box__main-content">
+                                <!-- ko if: $component.refreshSubCategories() -->
+                                <div class="oj-flex-item oj-lg-12 oj-sm-12 right">
+                                    <a href="#" data-bind="attr:{'alt':$component.resource.alt.refresh ,'title':$component.resource.alt.refreshText,'aria-label':$component.resource.alt.refresh },click:$component.resetCategoryFilter">
+                                        <div class="transaction-list__refresh__category icon-refresh">
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-sm-12 offcanvas-box__main-content__details">
+                                    <oj-checkboxset :id="[['subcategories'+ $baseModel.incrementIdCount()]]" class="transaction-list-checkboxset" value="{{selectedSubCategories}}" on-value-changed="[[checkBoxModeChangeHandler]]">
+                                        <oj-option class="oj-flex oj-lg-12 oj-sm-12 offcanvas-box__content-option" name="checkboxAll" :id="all" value="all" :checked="[[$component.tickAllCheckBoxes]]">
+                                            <div class="oj-lg-10 oj-sm-10 oj-choice-direction-column" data-bind="text:$component.resource.filter.all"></div>
+                                        </oj-option>
+                                        <!-- ko foreach:subcategoryList -->
+                                        <oj-option class="oj-flex oj-lg-12 oj-sm-12 offcanvas-box__content-option" name="checkboxOne" :id="[['sub-' + categoryId.replace(/[_.,:$\s]/g,'')]]" value="{{categoryId}}">
+                                            <span class="oj-choice-direction-column" data-bind="text:name"></span>
+                                        </oj-option>
+                                        <!-- /ko -->
+                                    </oj-checkboxset>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </div>
+                </oj-menu>
+            </oj-menu-button>
+        </div>
+        <div class="menuFilters">
+            <oj-menu-button class="filterButtons" id="accountFilterButton">
+                <span slot="startIcon" class="filter-icon icons icon-user"></span>
+                <span data-bind="text : $component.selectedAccountLabel"></span>
+                <oj-menu id="accountfiltermenu" slot="menu" on-oj-action="[[accountChangeHandler]]">
+                    <!-- ko foreach: $component.filterOptions()[0].filterList -->
+                    <oj-option :id="[[value]]" value="[[{label : label, value : value}]]">
+                        <span data-bind="text : label"></span>
+                    </oj-option>
+                    <!-- /ko -->
+                </oj-menu>
+            </oj-menu-button>
+        </div>
+        <div class="menuFilters">
+            <oj-menu-button class="filterButtons" id="durationfilter">
+                <span slot="startIcon" class="filter-icon icons icon-calendar"></span>
+                <span data-bind="text : $component.selectedDurationLabel"></span>
+                <oj-menu id="durationfiltermenu" slot="menu" on-oj-action="[[durationChangeHandler]]">
+                    <!-- ko foreach: $component.filterOptions()[1].filterList -->
+                    <oj-option :id="[[value]]" value="[[{label : label, value : value}]]">
+                        <span data-bind="text : label"></span>
+                    </oj-option>
+                    <!-- /ko -->
+                </oj-menu>
+            </oj-menu-button>
+        </div>
+        <div class="">
+            <a href="#" data-bind="attr:{'alt':$component.resource.alt.refresh ,'title':$component.resource.alt.refreshText,'aria-label':$component.resource.alt.refresh },click:$component.resetFilter">
+                <div class="transaction-list__refresh icon-refresh center">
+                </div>
+            </a>
+        </div>
+    </oj-toolbar>
+</div>
+<div data-bind="template: {afterRender: $component.afterRender}"></div>

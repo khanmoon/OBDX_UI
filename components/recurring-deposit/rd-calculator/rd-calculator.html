@@ -1,0 +1,137 @@
+<div class="form-main-container oj-flex  oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-items-pad oj-sm-12 oj-md-12 oj-lg-6">
+        <oj-validation-group id="maturityTracker" valid="{{maturityValid}}">
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading :''">
+                <div class="oj-flex-item oj-lg-12">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 calculator__header" data-bind="text:$component.resource.depositDetail.installmentsInformation">
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.depositDetail.maturityInformation">
+                        </div>
+                    </div>
+                    <div class="oj-flex-item button-container">
+                        <oj-button id="createButton" class="action-button-primary">
+                            <span data-bind="text:$component.resource.depositDetail.notknownMonthlyInstall"></span>
+                        </oj-button>
+                        <oj-button class="action-button-tertiary calculator__button" on-click="[[$dashboard.loadComponent.bind($data,'create-rd',null, null)]]">
+                            <span data-bind="text:$component.resource.depositDetail.knowMonthlyInstall"></span>
+                        </oj-button>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-md-12">
+                        <oj-label for="product" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+                            <span data-bind="text:$component.resource.depositDetail.selectProduct"></span>
+                        </oj-label>
+                        <!-- ko if:productsLoaded() -->
+                        <oj-select-one id="product" :aria-label="[[$component.resource.depositDetail.selectProduct]]" class="oj-flex-item oj-lg-7 oj-md-7 oj-sm-12" placeholder="[[$component.resource.pleaseSelect]]" value="{{calculateModel.productId}}" on-value-changed="[[productChangeHandler]]" required>
+                            <!-- ko foreach:productList -->
+                            <oj-option :id="[[productId+$baseModel.incrementIdCount()]]" value="[[productId]]"><span data-bind="text:name"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                        <!-- /ko -->
+                    </div>
+                    <div data-bind="component: {
+                    name: 'amount-input', params: {
+                    amount :$component.calculateModel.maturityAmount.amount,
+                    label : $component.resource.depositDetail.depositAmount,
+                    currency: $component.calculateModel.maturityAmount.currency,
+                    currencyListRequired : true,
+                    validator:$component.validationTracker,
+                    isMandatory:true,
+                    rootId:'rd-amount',
+                    currencyURL : $component.url(),
+                    currencyParser : $component.currencyParser,
+                    rootClass:'form-input',
+                    valueClasses : 'oj-lg-6 oj-md-5'
+                }
+            }">
+
+            </div>
+            <div class="oj-flex oj-flex-items-pad oj-lg-12">
+                        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                            <oj-label for="tenureYear" class="oj-flex-item oj-lg-12">
+                                <span data-bind="text:$component.resource.depositDetail.depositTenure"></span>
+                            </oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                            <div class="oj-flex oj-flex-items-pad">
+                                <!-- ko if:$component.isTenureListLoaded() -->
+                                <div class="oj-flex-item oj-sm-6 oj-md-2 oj-lg-3">
+                                    <oj-select-one id="tenureYear" :aria-label="[[$component.resource.depositDetail.label.years]]" class="oj-flex-item oj-lg-4" placeholder="[[$component.resource.depositDetail.label.years]]" value="{{calculateModel.tenure.year}}" required>
+                                        <!-- ko foreach:tenureYears -->
+                                        <oj-option :id="[[year+$baseModel.incrementIdCount()]]" value="[[year]]"><span data-bind="text:value"></span></oj-option>
+                                        <!-- /ko -->
+                                    </oj-select-one>
+                                </div>
+                                <div class="oj-flex-item oj-sm-6 oj-md-2 oj-lg-3">
+                                    <oj-select-one id="tenureMonth" class="oj-flex-item oj-lg-4" placeholder="[[$component.resource.depositDetail.label.months]]" value="{{calculateModel.tenure.month}}" :aria-label="[[$component.resource.depositDetail.label.months]]" required>
+                                        <!-- ko foreach:tenureMonths -->
+                                        <oj-option :id="[[month+$baseModel.incrementIdCount()]]" value="[[month]]"><span data-bind="text:value"></span></oj-option>
+                                        <!-- /ko -->
+                                    </oj-select-one>
+                                </div>
+                                <!-- /ko -->
+                                <!-- ko if:isTenureLoaded -->
+                                <oj-label for="tenure" class="oj-flex-item oj-lg-12 oj-md-12">
+                                    <span class="info-text-small" data-bind="text:tenureMessage"></span>
+                                </oj-label>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad calculator">
+                        <oj-label for="inflationRate" class="oj-flex-item oj-lg-12 oj-sm-12 oj-md-12">
+                            <span data-bind="text:$component.resource.depositDetail.rateOfInflation"></span>
+                        </oj-label>
+                        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+                            <a href="#" data-bind="click:leftClick" class="oj-lg-1 oj-md-2 oj-sm-2"><img data-bind="attr:{'aria-label':$component.resource.depositDetail.link.reduceInterest,alt:$component.resource.depositDetail.link.reduceInterest,title:$component.resource.depositDetail.alt.reduceInterestTitle},loadImage:'calculator/left-arrow.svg'" id="left" class="calculator__image"></a>
+                            <oj-input-text id="inflationRate" type="number" converter="[[{
+                   type:'number',options:{
+                     style:'percent',maximumFractionDigits:2,useGrouping:false}}]]" validators="[[$baseModel.getValidator('DECIMALS',$component.resource.depositDetail.emptyInterest,{type:'numberRange',options:{min:0.00,max:5}})]]" value="{{inflationRate}}" class="oj-lg-3 oj-md-2 oj-sm-4"></oj-input-text>
+                     <a href="#" data-bind="click:rightClick" class="oj-lg-1 oj-md-2 oj-sm-2">
+              <img data-bind="attr:{'aria-label':$component.resource.depositDetail.link.increaseInterest,alt:$component.resource.depositDetail.link.increaseInterest,title:$component.resource.depositDetail.alt.increaseInterestTitle},'aria-label':$component.resource.depositDetail.link.increaseInterest,loadImage:'calculator/right-arrow.svg'" id="right" class="calculator__image">
+            </a>
+        </div>
+    </div>
+                    <!-- ko if:$component.isInstallmentCalculated() -->
+                    <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-11 oj-md-6 oj-lg-6 calculator__response calculator-response">
+              <div class="calculator-response__text">
+                    <div data-bind="html:$baseModel.format($component.resource.depositDetail.monthlyInstallment, {
+                         amount: $baseModel.formatCurrency(createRDModel.principalAmount.amount(), createRDModel.principalAmount.currency())
+                     })"></div>
+              </div>
+            </div>
+             <!-- ko if: !$baseModel.small() -->
+            <a href="javascript:void(0)" class="calculator__link oj-flex-item" data-bind="attr:{alt:$component.resource.depositDetail.link.proceedForRd,title:$component.resource.depositDetail.alt.proceedForRd},text:$component.resource.depositDetail.link.proceedForRd,click:$component.createRd"></a>
+             <!-- /ko -->
+          </div>
+           <!-- ko if: $baseModel.small() -->
+            <div class="oj-flex oj-flex-items-pad oj-sm-12">
+            <a href="javascript:void(0)" class="calculator__link oj-flex-item" data-bind="attr:{alt:$component.resource.depositDetail.link.proceedForRd,title:$component.resource.depositDetail.alt.proceedForRd},text:$component.resource.depositDetail.link.proceedForRd,click:$component.createRd"></a>
+        </div>
+         <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+            </page-section>
+        </oj-validation-group>
+        <div class="oj-flex-item button-container">
+            <oj-button id="calculateButton" class="action-button-primary" on-click="[[calculateInstallment]]"><span slot="startIcon" class="icons icon-summary"></span>
+                <span data-bind="text:$component.resource.depositDetail.calculateInstallment"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" id="resetButton">
+                <span slot="startIcon" class="icons icon-refresh"></span>
+                <span data-bind="text: $component.resource.generic.common.reset" on-click="[[resetInstallment]]"></span>
+            </oj-button>
+        </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'rd-calculator'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- ko ifnot: $baseModel.small() -->
+<a class="back-link" href="#" data-bind="text: $component.resource.generic.common.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

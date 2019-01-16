@@ -1,0 +1,118 @@
+<div class="oj-flex oj-flex-items-pad">
+
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+    <oj-label class="" :for="[['title'+$index()]]">
+      <span data-bind="text:$component.resourceBundle.accessibleEntity.accessibleEntity.entityName"></span></oj-label>
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
+    <span data-bind="text:entityName"></span>
+  </div>
+</div>
+
+<!-- ko if: $component.userFullData().userType.toLowerCase() !== "administrator"-->
+<div class="oj-flex oj-flex-items-pad">
+
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+    <oj-label class="" :for="[['partyId'+$index()]]">
+      <span data-bind="text:$component.resourceBundle.fieldname.partyid"></span></oj-label>
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
+    <span data-bind="text:partyInfo.party.displayValue"></span>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: $component.userFullData().userType.toLowerCase() !== 'administrator'-->
+<div class="oj-flex oj-flex-items-pad">
+
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+    <oj-label class="" :for="[['partyName'+$index()]]">
+      <span data-bind="text:$component.resourceBundle.fieldname.partyname"></span></oj-label>
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
+    <!-- ko with: partyInfo-->
+    <span data-bind="text:partyName"></span>
+    <!-- /ko -->
+  </div>
+</div>
+<!-- /ko -->
+
+<!-- ko if: $component.userFullData().userType.toLowerCase() !== 'administrator'-->
+
+  <!-- ko ifnot: isLimitPackageAttached-->
+  <div class="oj-flex oj-flex-items-pad">
+
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+      <oj-label class="" :for="[['limit'+$index()]]">
+        <span data-bind="text:$component.resourceBundle.fieldname.limit"></span></oj-label>
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
+      <span data-bind="text:$component.resourceBundle.info.noLimitAssigned"></span>
+    </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: isLimitPackageAttached-->
+
+  <!-- ko foreach: limitPackage -->
+  <!-- ko if: $data.selectedLimitPackage-->
+  <div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+      <oj-label class="" :for="[['limit'+$index()]]">
+        <span data-bind="text:$data.description"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
+      <span data-bind="text:$data.selectedLimitPackage"></span>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->
+
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.nls.internalAccessPoints.internalAccessPoints.selectedAccessPoints"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+    <oj-checkboxset :id="[['internal_'+$baseModel.incrementIdCount()]]" labelled-by="accessPoint" class="oj-choice-direction-row" value="{{selectedAccessPoints}}" disabled="[[true]]">
+      <!-- ko  if: $component.transactionDetails  -->
+      <!-- ko foreach: $component.accessPoint() -->
+      <!-- ko if: $component.isAccessPointFetched() -->
+      <oj-option value="[[value]]">
+        <span data-bind="text:text"></span>
+      </oj-option>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko  if: $component.transactionDetails === undefined -->
+      <!-- ko foreach: accessPointList -->
+      <oj-option value="[[value]]">
+        <span data-bind="text:text"></span>
+      </oj-option>
+      <!-- /ko -->
+      <!-- /ko -->
+    </oj-checkboxset>
+  </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$component.nls.fieldname.role"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9" data-bind="attr:{'aria-label': $component.nls.fieldname.role}">
+    <!-- ko if: $parent.childRoleEnumsLoaded -->
+    <oj-checkboxset id="checkboxSetId" class="oj-choice-direction-row" disabled="[[true]]" value="{{$parent.userFullData().applicationRoles}}">
+      <!-- ko foreach: $parent.childRoleEnums -->
+      <oj-option value="{{applicationRoleName}}">
+        <span data-bind="text:applicationRoleName"></span>
+      </oj-option>
+      <!-- /ko -->
+    </oj-checkboxset>
+    <!-- /ko -->
+  </div>
+</div>

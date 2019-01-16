@@ -1,0 +1,118 @@
+<div class="">
+  <!-- ko if: showComponents() -->
+  <div id="personalDetailsAccordion" class="accordion">
+    <!-- ko foreach: productDetails().application().currentApplicationStage.applicantStages -->
+    <div class="card ">
+      <div class="card-header oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-10 oj-md-9 oj-lg-9">
+          <div class="oj-flex oj-flex-items-pad card-icons-title">
+            <div class="accordion-strip"></div>
+            <div class="card-icon-container">
+              <div class="card-icon icons icon" data-bind="css: 'icon-' + $data.id"></div>
+            </div>
+            <h2 class="card-title oj-flex-item" data-bind="text: $data.accordionTitle(), attr:{'aria-label':$data.accordionTitle()}"></h2>
+          </div>
+        </div>
+        <div class="card-expander oj-flex-item oj-sm-2 oj-md-3 oj-lg-3">
+          <!-- ko if: !$data.isComplete() -->
+          <a href="#" class="icons icon  pull-right icon-arrow-right section-icon collapse-icon" data-bind="attr:{alt: $component.resource.personalDetails.iconClick, title: $component.resource.personalDetails.iconClickTitle}"></a>
+          <!-- /ko -->
+          <!-- ko if: $data.isComplete() -->
+          <span class="icons icon icon-success section-icon pull-right done-icon"></span>
+          <!-- /ko -->
+        </div>
+      </div>
+      <div class="">
+        <!-- ko if : $index()===0 -->
+        <div class="card-body form-main-container" data-bind="component: { name: $data.id, params: { rootModel: $parent,
+                                                    coApplicant:$data.coappNumber?true:false,
+                                                    applicantObject: $data.coappNumber?$component.applicantDetails()[$data.coappNumber]:$component.applicantDetails()[0],
+                                                    applicantAccordion:$component.productDetails().application().currentApplicationStage.applicantAccordion,
+                                                    applicantStages: $component.productDetails().application().currentApplicationStage.applicantStages[$index()],
+                                                    index:$index()
+                                                    }}"></div>
+        <!-- /ko -->
+        <!-- ko if : $index()>0 && $component.productDetails().application().currentApplicationStage.applicantStages[$index()-1].isComplete() -->
+        <div class="card-body form-main-container" data-bind="component: { name: $data.id, params: { rootModel: $parent,
+                                               coApplicant:$data.coappNumber?true:false,
+                                               applicantObject: $data.coappNumber?$component.applicantDetails()[$data.coappNumber]:$component.applicantDetails()[0],
+                                               applicantAccordion:$component.productDetails().application().currentApplicationStage.applicantAccordion,
+                                               applicantStages: $component.productDetails().application().currentApplicationStage.applicantStages[$index()],
+                                               index:$index()
+                                               }}"></div>
+        <!-- /ko -->
+
+      </div>
+    </div>
+    <!-- /ko -->
+  </div>
+
+
+
+  <span data-bind="template:{afterRender:$component.initializeAccordion}"></span>
+
+  <!-- /ko -->
+  <!-- ko if: displaySubmitButton() -->
+
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <!-- ko if: !($component.productDetails().productClassName==='TERM_DEPOSITS' ||  $component.productDetails().productClassName==='CASA') -->
+    <oj-button raised="" id="personalInfoSubmit" class="action-button-primary first-3" on-click="[[$component.validateEmploymentProfile]]" disabled="[[!$component.productDetails().application().currentApplicationStage.applicantStages[$component.productDetails().application().currentApplicationStage.applicantStages.length-1].isComplete()]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if:($component.productDetails().productClassName==='TERM_DEPOSITS' ||  $component.productDetails().productClassName==='CASA') -->
+    <oj-button raised="" id="personalInfoSubmit" class="action-button-primary first-3" on-click="[[$component.validateEmploymentProfile]]" disabled="[[!$component.productDetails().application().currentApplicationStage.applicantStages[$component.productDetails().application().currentApplicationStage.applicantStages.length-1].isComplete()]]">
+      <span data-bind="text:$component.resource.generic.common.revSubmit"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button raised="" id="cancel" class="action-button-secondary last-3 oj-button" on-click="[[$component.showPluginComponent.bind($data,'cancel-application')]]">
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+    </oj-button>
+    <!-- ko if: !$component.productDetails().isRegistered -->
+    <!-- ko ifnot:($component.productDetails().productType==='AUTOMOBILE' ||  $component.productDetails().productType==='LOANS') -->
+    <!-- ko if: $component.productDetails().requirements.noOfCoApplicants >0 -->
+    <oj-button raised="" id="saveForLater" class="action-button-secondary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]" disabled="[[!$component.productDetails().application().currentApplicationStage.applicantStages[$component.productDetails().requirements.noOfCoApplicants].isComplete()]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.productDetails().requirements.noOfCoApplicants >0 -->
+    <oj-button raised="" id="saveForLater" class="action-button-secondary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]" disabled="[[!$component.productDetails().application().currentApplicationStage.applicantStages[0].isComplete()]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if:($component.productDetails().productType==='AUTOMOBILE' ||  $component.productDetails().productType==='LOANS') -->
+    <!-- ko if: $component.productDetails().requirements.noOfCoApplicants >0 -->
+    <oj-button raised="" id="saveForLater" class="action-button-secondary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]" disabled="[[!$component.productDetails().application().currentApplicationStage.applicantStages[$component.productDetails().requirements.noOfCoApplicants+1].isComplete()]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.productDetails().requirements.noOfCoApplicants >0 -->
+    <oj-button raised="" id="saveForLater" class="action-button-secondary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]" disabled="[[!$component.productDetails().application().currentApplicationStage.applicantStages[1].isComplete()]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: $component.productDetails().isRegistered -->
+    <!-- ko if:($component.productDetails().productType==='AUTOMOBILE' ||  $component.productDetails().productType==='LOANS') -->
+    <!-- ko if: $component.productDetails().requirements.noOfCoApplicants >0 -->
+    <oj-button raised="" id="saveForLater" class="action-button-secondary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]" disabled="[[!$component.productDetails().application().currentApplicationStage.applicantStages[$component.productDetails().requirements.noOfCoApplicants+1].isComplete()]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.productDetails().requirements.noOfCoApplicants >0 -->
+    <oj-button raised="" id="saveForLater" class="action-button-secondary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]" disabled="[[!$component.productDetails().application().currentApplicationStage.applicantStages[1].isComplete()]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko ifnot:($component.productDetails().productType==='AUTOMOBILE' ||  $component.productDetails().productType==='LOANS') -->
+    <oj-button raised="" id="saveForLater" class="action-button-secondary oj-button" on-click="[[$component.showPluginComponent.bind($data,'user-creation')]]">
+      <span data-bind="text:$component.resource.generic.common.saveLater"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+</div>

@@ -1,0 +1,30 @@
+<div data-bind="with:$component.payeeDetails()">
+      <div class="">
+<!-- ko if:!('adhocPaymentFlag' in $component) -->
+          <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.recipientname , value :name"></row>
+<!-- /ko -->
+      </div>
+      <div class="">
+          <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.accounttype , value :$component.payments.payee.accinternal"></row>
+          <internal-account-input class="oj-flex oj-flex-items-pad oj-sm-12" params="{
+           baseModel:$baseModel,
+           account : ko.observable(accountNumber),
+           label:$component.payments.payee.accountnumber,
+           required:true,
+           readOnly: true
+          }">
+          </internal-account-input>
+           <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.accountname , value :accountName,dataClass :'highlight-text'"></row>
+         
+      </div>
+      <div class="">
+<!-- ko if:!('adhocPaymentFlag' in $component) -->
+           <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.accountnickname , value :nickName"></row>
+<!-- /ko -->
+      </div>
+      <!-- ko if:$component.userSegment === "CORP" && !('adhocPaymentFlag' in $component) -->
+      <div class="">
+           <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.payeeaccesstype,value :$component.payments.payee[payeeAccessType]"></row>
+      </div>
+      <!-- /ko -->
+</div>

@@ -1,0 +1,43 @@
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+        <oj-label class="pull-left"><span data-bind="text:resource.name"></span></oj-label>
+    </div>
+    <div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item label">
+        <!-- ko ifnot : data.primaryInfo.suffix -->
+        <!-- ko ifnot : data.primaryInfo.middleName -->
+        <span data-bind="text: $baseModel.format(resource.FirstLast,{firstName:data.primaryInfo.firstName(),lastName:data.primaryInfo.lastName()})"></span>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if : data.primaryInfo.suffix  -->
+        <!-- ko ifnot : data.primaryInfo.middleName -->
+        <span data-bind="text: $baseModel.format(resource.FirstLastSuffix,{firstName:data.primaryInfo.firstName(),lastName:data.primaryInfo.lastName(),suffix:data.primaryInfo.suffix})"></span>
+        <!-- /ko -->
+        <!-- ko if : data.primaryInfo.middleName -->
+        <span data-bind="text: $baseModel.format(resource.FirstMiddleLastSuffix,{firstName:data.primaryInfo.firstName(),middleName:data.primaryInfo.middleName,lastName:data.primaryInfo.lastName(),suffix:data.primaryInfo.suffix})"></span>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if : data.primaryInfo.middleName  -->
+        <!-- ko ifnot : data.primaryInfo.suffix -->
+        <span data-bind="text: $baseModel.format(resource.FirstMiddleLast,{firstName:data.primaryInfo.firstName(),middleName:data.primaryInfo.middleName,lastName:data.primaryInfo.lastName()})"></span>
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+        <oj-label><span data-bind="text:resource.dateOfBirth"></span></oj-label>
+    </div>
+    <div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item label">
+        <span data-bind="text : $baseModel.dateConverter.format(data.primaryInfo.birthDate())"></span>
+    </div>
+</div>
+<!-- ko if : data.selectedValues().crmReferenceCode -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-3 oj-flex-item label">
+        <oj-label><span data-bind="text:resource.hearAboutUs"></span></oj-label>
+    </div>
+    <div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item label">
+        <span data-bind="text : data.selectedValues().crmReferenceCode"></span>
+    </div>
+</div>
+<!-- /ko -->

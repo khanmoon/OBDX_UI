@@ -1,0 +1,95 @@
+@mixin alternate-option($color) {
+  .oj-combobox-input {
+    color: $color;
+  }
+
+  .oj-select-arrow,
+  .oj-select-chosen {
+    color: $color;
+  }
+}
+$options: oj-select oj-combobox;
+@each $option in $options {
+  .#{$option} {
+    font-size: var(--form-input-text);
+    min-width: 6rem;
+
+    #{ &}-choice {
+      @extend %form-control;
+    }
+    $parent: #{&};
+
+    &.oj-disabled #{&}-choice {
+      border-color: var(--form-input-border-color);
+      background: var(--form-input-background-disable);
+      color: var(--form-input-color-disable);
+      border-bottom: 0;
+      padding: 0;
+      height: auto;
+
+      #{$parent}-arrow {
+        display: none;
+      }
+
+      #{$parent}-chosen {
+        color: var(--form-input-color-disable);
+        font-size: var(--form-input-text);
+      }
+    }
+    @at-root .alternate-primary #{&} #{&}-choice {
+      @include alternate(var(--base-color-secondary-text));
+      @include alternate-option(var(--base-color-secondary-text));
+    }
+    @at-root .alternate-secondary #{&} #{&}-choice {
+      @include alternate(var(--banner-text-secondary));
+      @include alternate-option(var(--banner-text-secondary));
+    }
+
+    &-multi {
+      &.oj-disabled #{$parent}-choices,
+      &.oj-disabled #{$parent}-selected-choice {
+        border-color: var(--form-input-border-color);
+        background: var(--form-input-background-disable);
+        color: var(--form-input-color-disable);
+
+        @if $parent == ".oj-select" {
+          border-bottom: 0;
+          padding: 0;
+        } @else {
+          input {
+            display: none;
+          }
+        }
+      }
+
+      #{$parent}-selected-choice {
+        color: var(--form-input-color-base);
+      }
+    }
+  }
+}
+
+.oj-combobox-input {
+  background-color: transparent;
+  font-size: var(--form-input-text);
+}
+
+.oj-select-arrow {
+  height: var(--form-line-height);
+  line-height: var(--form-line-height);
+  padding: 0 0.6rem;
+  color: var(--form-input-color-base);
+  position: relative;
+  @include right(0);
+}
+
+.oj-listbox-result{
+  &#{'s'} li {
+    padding: 0.5rem 0.2rem;
+    color: var(--form-input-color-base);
+  }
+  &-label {
+    line-height: 1.3rem;
+    min-height: auto;
+  }
+}

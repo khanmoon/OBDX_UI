@@ -1,0 +1,49 @@
+<div class="form-main-container">
+
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <!-- ko ifnot: showConfirmationForCreate -->
+
+            <!-- ko if: showEditableForm -->
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading :">
+            </page-section>
+            <!-- /ko -->
+
+            <!-- ko if: isAccessCreated -->
+            <!-- ko ifnot: showEditableForm -->
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading :">
+            </page-section>
+            <!-- /ko -->
+            <!-- /ko -->
+
+
+            <!-- ko ifnot: isAccessCreated -->
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading :">
+            </page-section>
+            <!-- /ko -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.partyID , value : $component.party.displayValue()"></row>
+
+            <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.partyName , value :$component.partyName()"></row>
+
+            <!-- ko if: selectedUserId  -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.userID , value :selectedUserId"></row>
+
+            <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.userName , value :selectedUserName"></row>
+
+            <!-- /ko -->
+            <!-- /ko -->
+        </page-section>
+        <!-- ko ifnot: isAccessCreated -->
+        <div data-bind="component: {name:'mapping-modules' , params:{rootModel:$data }}">
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: isAccessCreated -->
+        <!-- ko if: refreshed -->
+        <div data-bind="component: {name:'mapping-modules' , params:{rootModel:$data }}">
+        </div>
+
+        <!-- /ko -->
+        <!-- /ko -->
+
+
+    </div>

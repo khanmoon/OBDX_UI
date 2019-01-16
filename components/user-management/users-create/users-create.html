@@ -1,0 +1,49 @@
+<div class="form-main-container">
+  <!-- ko ifnot:(updateConfrimFlag || createConfrimFlag) -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <!-- ko if:isNewUser -->
+      <oj-validation-group id="tracker" valid="{{validationTracker}}">
+        <div data-bind="template: { name: 'admin/create-panel'}"></div>
+      </oj-validation-group>
+      <!-- /ko -->
+      <!-- ko if:isUpdateUser -->
+      <div data-bind="template: { name: 'admin/update-panel'}">
+      </div>
+      <!-- /ko -->
+      <!-- ko if:createReviewFlag -->
+      <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.generic.common.review , reviewHeader :$component.nls.info.addCreateReviewHeaderMsg}}"></div>
+      <div data-bind="component: { name: 'review-user-create',params:{rootModel:$component}}"></div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+          <span data-bind="text:$component.nls.common.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-primary" on-click="[[backOnCreateReview]]">
+          <span data-bind="text:$component.nls.common.edit"></span>
+        </oj-button>
+        <oj-button class="action-button-primary" on-click="[[createUser]]">
+          <span data-bind="text:$component.nls.common.confirm"></span>
+        </oj-button>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:updateReviewFlag -->
+      <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.generic.common.review , reviewHeader :$component.nls.info.addCreateReviewHeaderMsg}}"></div>
+      <div data-bind="component: { name: 'review-user-create',params:{rootModel:$component}}"></div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+          <span data-bind="text:$component.nls.common.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-primary" on-click="[[backOnReview]]">
+          <span data-bind="text:$component.nls.common.edit"></span>
+        </oj-button>
+        <oj-button class="action-button-primary" on-click="[[updateUser]]">
+          <span data-bind="text:$component.nls.common.confirm"></span>
+        </oj-button>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- /ko -->
+
+
+</div>

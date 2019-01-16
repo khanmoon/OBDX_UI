@@ -1,0 +1,225 @@
+<div class="form-main-container goal">
+    <!-- ko if:stageOne() && isLoaded() -->
+    <div class="oj-flex oj-flex-items-pad goal__banner goal-banner">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-8 goal-banner__header goal-banner-header">
+            <div class="goal-banner-header__content goal-banner-header-content">
+                <!-- ko if:$component.content() -->
+                <img class="goal-banner-header-content__icon" id="imagepreview" data-bind="attr:{alt:$component.goal.account.imgCategoryAttr,
+                    title:$component.goal.account.imgCategory,'src':'data:image/gif;base64,'+content()}">
+                <a href="#" class="icons icon-remarks goal-banner-header-content__remarkIcon img__editIcon" data-bind="attr:{'alt':$component.goal.account.imgCategoryEdit,'title':$component.goal.account.imgCategoryEditAttr},click:$component.chooseFile"></a>
+                <!-- /ko -->
+                <div class="goal-banner-header-content__fileInput">
+                    <input id="createinputimage" type="file" name="files[]" multiple>
+                    <oj-label for="createinputimage" class="icons icon-file-upload"><span data-bind="text:$component.nls"></span></oj-label>
+                    <div data-bind="template: {afterRender: $component.afterRender}"></div>
+                </div>
+            </div>
+            <div class="goal-banner-header__section goal-banner-header-section">
+                <div class="goal-banner-header-section__value" data-bind="text:$component.caption().categoryName"></div>
+            </div>
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+                <oj-validation-group id="createGoalTracker">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 goal-name">
+                        <oj-label for="goalName"><span data-bind="text:$component.goal.account.goalName"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                        <oj-input-text required id="goalName" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('APPLICATION_NAME',$component.goal.account.invalidName)]]" value="{{goalName}}"></oj-input-text>
+                    </div>
+                </div>
+                <div data-bind="component: {
+                name: 'amount-input', params: {
+                amount : $component.targetAmount,
+                label : $component.goal.account.goalAmount,
+                isMandatory: false,
+                currency: $component.baseCurrency(),
+                minimumAmount: $component.productDetails.goalAmountParameters[0].minAmount.amount,
+                maximumAmount: $component.productDetails.goalAmountParameters[0].maxAmount.amount,
+                converter:$baseModel.formatCurrency,
+                validator: $component.validationTracker,
+                rootId:'goal-amount',
+                rootClass:'form-input'
+            }
+          }">
+                    <div id="notif1" class="info-text-small">
+                        <div data-bind="text:$baseModel.format($data.goal.account.amountRange,{minAmount:$baseModel.formatCurrency($data.productDetails.goalAmountParameters[0].minAmount.amount,$data.productDetails.goalAmountParameters[0].currency),maxAmount:$baseModel.formatCurrency($data.productDetails.goalAmountParameters[0].maxAmount.amount,$data.productDetails.goalAmountParameters[0].currency)})"></div>
+                    </div>
+                </div>
+                <div data-bind="component: {
+                name: 'amount-input', params: {
+                amount :$component.initialAmount,
+                label : $component.goal.account.initialAmount,
+                isMandatory: false,
+                currency: $component.baseCurrency(),
+                minimumAmount: $component.productDetails.goalAmountParameters[0].minAmount.amount,
+                maximumAmount: $component.targetAmount,
+                converter:$baseModel.formatCurrency,
+                validator: $component.validationTracker,
+                rootId:'ini-amount',
+                rootClass:'form-input'
+            }
+          }">
+                    <div id="notif2" class="info-text-small">
+                        <div data-bind="text:$baseModel.format($data.goal.account.amountRange,{minAmount:$baseModel.formatCurrency($data.productDetails.goalAmountParameters[0].minAmount.amount,$data.productDetails.goalAmountParameters[0].currency),maxAmount:$baseModel.formatCurrency($data.targetAmount()-1,$data.productDetails.goalAmountParameters[0].currency)})"></div>
+                    </div>
+                </div>
+                <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.goal.account.contributionAccount,taskCode : $component.currentTask(),
+            type : 'balance' , account : contributionAccount, adtnlFetched : true, additionalDetails: additionalDetailsInitial, validator:$component.validationTracker">
+                </account-input>
+                <div data-bind="component: {
+                name: 'amount-input', params: {
+                amount :$component.remainingAmount,
+                label : $component.goal.account.remainingAmount,
+                isMandatory: false,
+                currency: $component.baseCurrency(),
+                readOnly:true,
+                converter:$baseModel.formatCurrency,
+                validator: $component.validationTracker,
+                rootId:'remain-amount',
+                rootClass:'form-input'
+            }
+          }">
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 goal-tenure">
+                        <oj-label for="tenure"><span data-bind="text:$component.goal.account.tenure"></span></oj-label>
+                    </div>
+                    <div id="tenure" class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 goal-tenure-select">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-6 oj-md-3 oj-lg-3">
+                                <oj-select-one required id="goalyear" on-value-changed="[[$component.tenureYearHandler]]" disabled="[[$component.isTenureDisabled()]]" value="{{$component.yearValue}}">
+                                    <!-- ko foreach:$component.productYears() -->
+                                    <oj-option value="{{value}}"><span data-bind="text:year"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                                <oj-label for="goalyear"><span data-bind="text:$component.goal.account.years"></span></oj-label>
+                            </div>
+
+                            <div class="oj-flex-item oj-sm-6 oj-md-3 oj-lg-3">
+                                <oj-select-one required id="goalmonth" on-value-changed="[[$component.tenureMonthHandler]]" disabled="[[$component.isTenureDisabled()]]" value="{{$component.monthValue}}">
+                                    <!-- ko foreach:$component.productMonths() -->
+                                    <oj-option value="{{value}}"><span data-bind="text:month"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                                <oj-label for="goalmonth"><span data-bind="text:$component.goal.account.months"></span></oj-label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="goal__sectionInfo goal-sectionInfo">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                                <h5 data-bind="text:$component.goal.account.onMaturity"></h5>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                                <oj-checkboxset id="checkboxSetId" value="{{maturityFlag}}">
+                                    <oj-option value="maturityManuallySelected" id="maturityFlag">
+                                        <span for="maturityFlag" data-bind="text:$component.goal.account.onMaturitycheckBox"></span>
+                                    </oj-option>
+                                </oj-checkboxset>
+                            </div>
+                        </div>
+                        <!--maturity details component-->
+                        <!-- ko if:maturityFlag()[0] === "maturityManuallySelected" -->
+                        <div data-bind='component:{name:"maturity-details",
+             params:{rootModel: $component,details:$component.maturityDetails(),validator: $component.validationTracker}}'></div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <div class="goal__sectionInfo goal-sectionInfo">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                            <h5 data-bind="text:$component.goal.account.onSI"></h5>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                            <oj-checkboxset id="checkboxSetId1" value="{{SIFlag}}">
+                                <oj-option value="SISelected" id="SIFlag"><span for="SIFlag" data-bind="text:$component.goal.account.SIFlag"></span></oj-option>
+                            </oj-checkboxset>
+                        </div>
+                    </div>
+                    <!-- ko if:SIFlag()[0] === "SISelected" -->
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                            <oj-label for="scheduleType"><span data-bind="text:$component.goal.account.frequency"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                            <oj-buttonset-one id="scheduleType" value="{{$component.frequency}}">
+                                <!-- ko foreach: scheduleTypes -->
+                                <oj-option name="scheduleType" value="{{id}}" :id="[[id]]" disabled="[[$data.isDisabled]]"><span data-bind="attr: {for: id}, text: label"></span></oj-option>
+                                <!-- /ko -->
+                            </oj-buttonset-one>
+                        </div>
+                    </div>
+                    <!-- ko if:isCalculated() -->
+                    <div data-bind="component: {
+                    name: 'amount-input', params: {
+                    amount : $component.contributionAmount,
+                    label : $baseModel.format($component.goal.account.frequencyInvestment,{frequency:frequency()?frequency():''}),
+                    isMandatory: true,
+                    minimumAmount: $component.productDetails.goalAmountParameters[0].minAmount.amount,
+                    maximumAmount: $component.targetAmount,
+                    currency: $component.baseCurrency(),
+                    converter:$baseModel.formatCurrency,
+                    validator: $component.validationTrackerSI,
+                    rootId:'si-amount',
+                    rootClass:'form-input'
+                }
+              }">
+                        <div id="notif3" class="info-text-small">
+                            <div data-bind="text:$baseModel.format($data.goal.account.amountRange,{minAmount:$baseModel.formatCurrency($data.productDetails.goalAmountParameters[0].minAmount.amount,$data.productDetails.goalAmountParameters[0].currency),maxAmount:$baseModel.formatCurrency($data.targetAmount(),$data.baseCurrency())})"></div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                            <oj-label for="startDate">
+                                <span data-bind="text:$component.goal.account.startDate"></span>
+                            </oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-9 oj-md-12 oj-lg-12">
+                            <oj-input-date required :id="startDate" value="{{startDate}}" max="[[$component.expectedMaturityDate()]]" min="[[$component.minDate()]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                            <oj-label for="endDate"><span data-bind="text:$component.goal.account.endDate"></span></oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-9 oj-md-12 oj-lg-12">
+                            <oj-input-date required :id="endDate" value="{{endDate}}" max="[[$component.expectedMaturityDate()]]" min="[[$component.minDateTomorrow()]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+                            <div class="oj-flex-item oj-sm-12">
+                                <oj-label class="info-text" id="sienddate-desc"><span data-bind="text:$component.goal.account.sidisclaimer"></span></oj-label>
+                            </div>
+                        </div>
+                    </div>
+                    <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.goal.account.siAccount,taskCode : $component.currentTask(),
+                type : 'balance' , additionalDetails: additionalDetailsContribution,isMandatory:true,validator: $component.validationTrackerSI, account : siAccount">
+                    </account-input>
+                    <!-- /ko -->
+                </div>
+                <div class="oj-flex oj-flex-items-pad button-container">
+                    <oj-button class="action-button-primary" id="button-create" on-click="[[$component.uploadImage]]"><span slot="startIcon" class="icons icon-create"></span>
+                        <span data-bind="text:$component.goal.account.create"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                        <span data-bind="text:$component.goal.account.cancel"></span>
+                    </oj-button>
+                </div>
+                <!-- /ko -->
+                </oj-validation-group>
+            </page-section>
+        </div>
+        <!-- ko if: $baseModel.large() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'create-goal'"></help>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+</div>
+<!-- ko if: $baseModel.large() -->
+<a class="back-link" href="#" data-bind="text: $component.goal.account.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

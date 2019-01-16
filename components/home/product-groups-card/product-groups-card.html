@@ -1,0 +1,23 @@
+<!-- ko if: showCard() -->
+<div class="form-main-container product-group-card ">
+
+    <div class="product-group-name oj-flex oj-flex-items-pad">
+        <h3 data-bind="text:$component.data.description"> </h3>
+    </div>
+  <!-- ko if:!$component.actionCardData().productType -->
+    <div class="product-group-card-text oj-flex oj-flex-items-pad">
+        <div data-bind="text: $component.resource[$baseModel.format($component.resource.class, {productClass:$component.actionCardData().productClass,index:($index()?'':1)})]"></div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:$component.actionCardData().productType -->
+    <div class="product-group-card-text oj-flex oj-flex-items-pad">
+        <div data-bind="text: $component.resource[$baseModel.format($component.resource.subClass, {productClass:$component.actionCardData().productClass,productSubClass:$component.actionCardData().productType,index:($index()?'':1)})]"></div>
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad">
+        <oj-button class="form-button-primary" id="applyBtn" :id="[['applyBtn_'+$index()]]" :aria-label="[[$baseModel.format($component.resource.applyButton,{productGroup:$component.data.description})]]" on-click="[[$component.selectProduct.bind($data,$component.filteredProducts()[$index()])]]">
+      <span data-bind="text:$component.resource.proceed"></span>
+</oj-button>
+    </div>
+</div>
+<!-- /ko -->

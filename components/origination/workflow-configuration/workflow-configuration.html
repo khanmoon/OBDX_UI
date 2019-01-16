@@ -1,0 +1,496 @@
+<div class="form-main-container workflow-configuration">
+
+  <!-- ko if : $component.flowsLoaded -->
+  <!-- ko if: $component.loadViewScreen     -->
+  <!-- header -->
+  <div class="oj-flex oj-flex-items-pad edit-screen">
+    <div class="oj-flex-item">
+
+      <h3 data-bind="text:$component.resource.viewScreen">f</h3>
+      <hr>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+          <oj-label class="margin-top-bottom"><span data-bind="text:$component.resource.productClassInfo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+          <span class="margin-top-bottom" data-bind="text: $component.currentProductClass()"></span>
+        </div>
+      </div>
+
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+          <oj-label class="margin-top-bottom"><span data-bind="text:$component.resource.productInfo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+          <span class="margin-top-bottom" data-bind="text: $component.currentProduct().substring($component.currentProduct().indexOf('|')).substring(1)"></span>
+
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+          <oj-label class="margin-top-bottom"><span data-bind="text:$component.resource.flowType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+          <span class="margin-top-bottom" data-bind="text: $component.resource.default"></span>
+        </div>
+      </div>
+
+
+      <br>
+      <h3 data-bind="text:$component.resource.productFlow"></h3>
+      <hr>
+
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad workflow-config">
+    <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6">
+      <div class="workflow-box">
+        <ul id="header1" class="ui-sortable head">
+          <!-- ko foreach:headArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+        <ul id="sortable2" class="ui-sortable body">
+          <!-- ko foreach:bodyArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+        <ul class="tail">
+          <!-- ko foreach:tailArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-tertiary" on-click="[[$component.gotoMainScreen]]">
+      <span data-bind="text:$component.resource.back"></span>
+</oj-button>
+    <oj-button class="action-button-secondary" on-click="[[function(){$('#cancelFlow').trigger('openModal')}]]">
+      <span data-bind="text:$component.resource.cancel"></span>
+</oj-button>
+    <!-- ko ifnot:isDefault -->
+    <oj-button class="action-button-primary" on-click="[[function(){$('#activateFlow').trigger('openModal')}]]">
+      <span data-bind="text:$component.resource.applyFlow"></span>
+</oj-button>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+
+  <!-- next screen  -->
+
+  <!-- ko if : $component.flowsLoaded -->
+  <!-- ko if: $component.loadCustomViewScreen    -->
+  <!-- header -->
+  <div class="oj-flex oj-flex-items-pad edit-screen">
+    <div class="oj-flex-item">
+
+      <h3 data-bind="text:$component.resource.customViewScren"></h3>
+      <hr>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+          <oj-label class="margin-top-bottom"><span data-bind="text:$component.resource.productClassInfo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+          <span class="margin-top-bottom" data-bind="text: $component.currentProductClass()"></span>
+        </div>
+      </div>
+
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+          <oj-label class="margin-top-bottom"><span data-bind="text:$component.resource.productInfo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+          <span class="margin-top-bottom" data-bind="text: $component.currentProduct().substring($component.currentProduct().indexOf('|')).substring(1)"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+          <oj-label class="margin-top-bottom"><span data-bind="text:$component.resource.flowType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+          <span class="margin-top-bottom" data-bind="text:$component.resource.customFlow"></span>
+        </div>
+      </div>
+
+
+      <br>
+      <h3 data-bind="text:$component.resource.productFlow"></h3>
+      <hr>
+
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad workflow-config">
+    <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+      <div class="workflow-box">
+        <oj-label><span data-bind="text:$component.resource.customFlowView"></span></oj-label>
+        <ul id="header2" class="ui-sortable head">
+          <!-- ko foreach:customHeadArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+        <ul id="sortable2" class="ui-sortable body">
+          <!-- ko foreach:customBodyArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+        <ul class="tail">
+          <!-- ko foreach:customTailArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+      <!-- ko if:loadDefaultFlowDisplay -->
+      <div class="workflow-box">
+        <oj-label><span data-bind="text:$component.resource.defaultFlowView"></span></oj-label>
+        <ul id="header3" class="ui-sortable">
+          <!-- ko foreach:headArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+        <ul id="sortable2" class="ui-sortable body">
+          <!-- ko foreach:bodyArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+        <ul class="">
+          <!-- ko foreach:tailArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+      <!-- ko ifnot: loadReviewButton -->
+      <!-- ko if: loadDefaultFlowDisplay -->
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="form-button-rounded" on-click="[[$component.defaultFlowDisplay]]">
+      <span data-bind="text:$component.resource.hideDefaultFlowDisplay"></span>
+</oj-button>
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot: loadDefaultFlowDisplay -->
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="form-button-rounded" on-click="[[$component.defaultFlowDisplay]]">
+      <span data-bind="text:$component.resource.showDefaultFlowDisplay"></span>
+</oj-button>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <!-- ko if:isDefault -->
+    <oj-button class="action-button-primary" on-click="[[function(){$('#activateFlow').trigger('openModal')}]]">
+      <span data-bind="text:$component.resource.applyFlow"></span>
+</oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-secondary" on-click="[[$component.goToEditScreen]]">
+      <span data-bind="text:$component.resource.editFlow"></span>
+</oj-button>
+    <oj-button class="action-button-secondary" on-click="[[function(){$('#cancelFlow').trigger('openModal')}]]">
+      <span data-bind="text:$component.resource.cancel"></span>
+</oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[$component.gotoMainScreen]]">
+      <span data-bind="text:$component.resource.back"></span>
+</oj-button>
+
+
+
+  </div>
+
+  <!-- /ko -->
+  <!-- /ko -->
+
+  <!-- next screen  -->
+
+  <!-- ko if : $component.flowsLoaded -->
+  <!-- ko if: $component.loadEditScreen    -->
+  <!-- header common for edit and review screen-->
+  <div class="oj-flex oj-flex-items-pad edit-screen">
+    <div class="oj-flex-item">
+      <!-- ko if: loadReviewButton -->
+      <h3 data-bind="text:$component.resource.reviewScreen"></h3>
+      <hr>
+      <!-- /ko -->
+      <!-- ko ifnot: loadReviewButton -->
+      <!-- ko if: loadCreateScreen -->
+      <h3 data-bind="text:$component.resource.createScreen"></h3>
+      <hr>
+      <!-- /ko -->
+      <!-- ko ifnot: loadCreateScreen -->
+      <h3 data-bind="text:$component.resource.editScreen"></h3>
+      <hr>
+      <!-- /ko -->
+      <!-- /ko -->
+
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+          <oj-label class="margin-top-bottom"><span data-bind="text:$component.resource.productClassInfo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+          <span class="margin-top-bottom" data-bind="text: $component.currentProductClass()"></span>
+        </div>
+      </div>
+
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+          <oj-label class="margin-top-bottom"><span data-bind="text:$component.resource.productInfo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+          <span class="margin-top-bottom" data-bind="text: $component.currentProduct().substring($component.currentProduct().indexOf('|')).substring(1)"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+          <oj-label class="margin-top-bottom"><span data-bind="text:$component.resource.flowType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+          <span class="margin-top-bottom" data-bind="text:$component.resource.customFlow"></span>
+        </div>
+      </div>
+
+
+      <br>
+      <h3 data-bind="text:$component.resource.productFlow"></h3>
+      <hr>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad workflow-config">
+    <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+      <div class="workflow-box">
+        <!-- ko if:loadReviewButton -->
+        <oj-label><span data-bind="text:$component.resource.customFlowView"></span></oj-label>
+        <!-- /ko -->
+        <!-- ko ifnot:loadReviewButton -->
+
+        <oj-label><span data-bind="text:$component.resource.dragDrop"></span></oj-label>
+        <!-- /ko -->
+        <ul id="header4" class="ui-sortable head">
+          <!-- ko if: customHeadArray().length > 0 -->
+          <!-- ko foreach: customHeadArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko ifnot: customHeadArray().length > 0 -->
+          <!-- ko foreach: headArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+          <!-- /ko -->
+        </ul>
+        <ul id="sortable" class="ui-sortable body movable">
+          <!-- ko if:customBodyArray().length > 0 -->
+          <!-- ko foreach:customBodyArray -->
+          <li class="ui-sortable-handle" data-bind="attr: { id: id, uiWeightage:uiWeightage }">
+            <h3 class="icon-move" data-bind="text:name, attr: {'id': 'movable' + $index()}"></h3>
+          </li>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko ifnot:customBodyArray().length > 0 -->
+          <!-- ko foreach:bodyArray -->
+          <li class="ui-sortable-handle" data-bind="attr: { id: id, uiWeightage:uiWeightage }">
+            <h3 class="icon-move" data-bind="text:name, attr: {'id': 'movable' + $index()}"></h3>
+          </li>
+          <!-- /ko -->
+          <!-- /ko -->
+        </ul>
+        <ul class="tail">
+          <!-- ko if: customTailArray().length > 0 -->
+          <!-- ko foreach: customTailArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko ifnot: customTailArray().length > 0 -->
+          <!-- ko foreach: tailArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+          <!-- /ko -->
+        </ul>
+      </div>
+    </div>
+
+    <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+      <!-- ko if:loadDefaultFlowDisplay -->
+      <div class="workflow-box">
+        <oj-label><span data-bind="text:$component.resource.defaultFlowView"></span></oj-label>
+        <ul id="header5" class="ui-sortable">
+          <!-- ko foreach:headArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+        <ul id="sortable2" class="ui-sortable body">
+          <!-- ko foreach:bodyArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+        <ul class="">
+          <!-- ko foreach:tailArray -->
+          <li class="ui-sortable-handle" data-bind="'id':id">
+            <h3 data-bind="text:name"></h3>
+          </li>
+          <!-- /ko -->
+        </ul>
+      </div>
+      <!-- /ko -->
+    </div>
+
+    <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+      <!-- ko ifnot: loadReviewButton -->
+      <!-- ko if: loadDefaultFlowDisplay -->
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="form-button-rounded" on-click="[[$component.defaultFlowDisplay]]">
+      <span data-bind="text:$component.resource.hideDefaultFlowDisplay"></span>
+</oj-button>
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot: loadDefaultFlowDisplay -->
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="form-button-rounded" on-click="[[$component.defaultFlowDisplay]]">
+      <span data-bind="text:$component.resource.showDefaultFlowDisplay"></span>
+</oj-button>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+  </div>
+  <!-- ko ifnot: loadReviewButton -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[$component.goToReviewScreen]]">
+      <span data-bind="text:$component.resource.save"></span>
+</oj-button>
+    <oj-button class="action-button-secondary" on-click="[[function(){$('#cancelFlow').trigger('openModal')}]]">
+      <span data-bind="text:$component.resource.cancel"></span>
+</oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[function(){$('#areYouSure').trigger('openModal')}]]">
+      <span data-bind="text:$component.resource.back"></span>
+</oj-button>
+
+  </div>
+  <!-- /ko -->
+  <!-- ko if: loadReviewButton -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[$component.goToConfirmScreen]]">
+      <span data-bind="text:$component.resource.confirm"></span>
+</oj-button>
+    <oj-button class="action-button-secondary" on-click="[[function(){$('#cancelFlow').trigger('openModal')}]]">
+      <span data-bind="text:$component.resource.cancel"></span>
+</oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.goBackToEditScreen]]">
+      <span data-bind="text:$component.resource.editFlow"></span>
+</oj-button>
+
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- /ko -->
+
+</div>
+
+<modal-window class="message form-main-container message-text label" params="rootModel : $component,id:'cancelFlow', header:$component.resource.cancelFlowPopupHeader">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <div data-bind="text:$component.resource.cancelFlowPopUpText"></div>
+    </div>
+  </div>
+  <div class="message-btn button-container">
+
+    <oj-button id="cancelFlowButtonNo" class=" action-button-secondary" on-click="[[function(){$('#cancelFlow').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.common.no"></span>
+</oj-button>
+    <oj-button id="cancelFlowButtonYes" class=" action-button-primary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.resource.common.yes"></span>
+</oj-button>
+
+
+  </div>
+</modal-window>
+
+
+
+<modal-window class="message form-main-container message-text label" params="rootModel : $component,id:'activateFlow', header:$component.resource.activateFlowPopupHeader">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <div data-bind="text:$component.resource.activateFlowPopUpText"></div>
+    </div>
+  </div>
+  <div class="message-btn button-container">
+
+    <oj-button id="activateFlowButtonNo" class=" action-button-secondary" on-click="[[function(){$('#activateFlow').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.common.no"></span>
+</oj-button>
+    <oj-button id="activateFlowButtonYes" class=" action-button-primary" on-click="[[$component.goToActivateConfirmScreen]]">
+      <span data-bind="text:$component.resource.common.yes"></span>
+</oj-button>
+  </div>
+</modal-window>
+
+<modal-window class="message form-main-container" params="rootModel : $component,id:'deactivateMove', header:$component.resource.deactivateMovePopupHeader">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <div data-bind="text:$component.resource.deactivateMovePopUpText"></div>
+    </div>
+  </div>
+</modal-window>
+
+<modal-window class="message form-main-container message-text label" params="rootModel : $component,id:'areYouSure', header:$component.resource.areYouSurePopupHeader">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item">
+      <div data-bind="text:$component.resource.areYouSurePopUpText"></div>
+    </div>
+  </div>
+  <div class="message-btn button-container">
+
+    <oj-button id="activateFlowButtonCancelNo" class=" action-button-secondary" on-click="[[function(){$('#areYouSure').trigger('closeModal')}]]">
+      <span data-bind="text:$component.resource.common.no"></span>
+</oj-button>
+    <oj-button id="activateFlowButtonCancelYes" class=" action-button-primary" on-click="[[$component.goToCustomViewScreen]]">
+      <span data-bind="text:$component.resource.common.yes"></span>
+</oj-button>
+  </div>
+</modal-window>

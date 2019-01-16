@@ -1,0 +1,154 @@
+<!-- ko ifnot: showConfirmation -->
+<!-- ko ifnot: showConfirmationForCreate -->
+<div class="mapping-module">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <!-- ko if: $component.accessLevel() === 'LINKAGE' || $component.accessLevel() === 'USERLINKAGE' -->
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.fieldname.linkedModuleToMap">
+        </action-header>
+        <!-- /ko -->
+
+        <!-- ko if: $component.accessLevel() !== 'LINKAGE' && $component.accessLevel() !== 'USERLINKAGE'-->
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.fieldname.moduleToMap">
+        </action-header>
+        <!-- /ko -->
+
+        <div id="tabs-container">
+            <oj-tab-bar id="tabGroups" on-selection-changed="[[$component.selectedAccountTabChangeHandler]]">
+                <!-- tab bar -->
+                <ul class="tab-list">
+                    <!-- ko foreach: tabLists -->
+                    <li><span data-bind="text : text"></span></li>
+                    <!-- /ko -->
+                </ul>
+                <!-- ko foreach: tabLists -->
+                <div data-bind="template: { name: 'account-access/' + template}, attr: { id: id }"></div>
+                <!-- /ko -->
+            </oj-tab-bar>
+        </div>
+          <div data-bind="template : {afterRender : $component.activateTab}"></div>
+        <!-- ko if: showDisclaimer -->
+        <!-- ko ifnot: closeDisclaimer -->
+        <div id="disclaimer-container" class="disclaimer-container">
+            <div class="oj-flex">
+                <span class="oj-flex-item disclaimer-text" data-bind="text: nls.common.accountsTabVisitMessage"></span>
+                <a href="javascript:void(0)" data-bind="attr:{'aria-label':$component.nls.headers.disclaimerClose,'alt':nls.generic.cancel ,'title':nls.common.close }, click: $component.closeSPopup.bind()">
+                    <span class="icons icon-cancel"></span>
+                </a>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+
+    </page-section>
+
+
+    <div class="oj-flex oj-flex-items-pad button-container">
+
+        <!-- ko if: editButtonPressed   -->
+        <oj-button class="action-button-primary" on-click="[[$parent.LoadTransactionMappingComponent]]">
+      <span data-bind="text:nls.common.next"></span>
+</oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:nls.common.cancel"></span>
+</oj-button>
+        <oj-button class="action-button-tertiary" on-click="[[$component.backOnEdit]]">
+      <span data-bind="text:nls.common.back"></span>
+</oj-button>
+           <!--  /ko -->
+
+        <!-- ko if: isAccessCreated -->
+        <!-- ko ifnot: editButtonPressed -->
+        <oj-button class="action-button-primary" on-click="[[$parent.enableFormToUpdate]]">
+      <span data-bind="text:nls.common.edit"></span>
+</oj-button>
+
+        <oj-button class="action-button-primary" on-click="[[$parent.LoadTransactionMappingComponent]]">
+      <span data-bind="text:nls.common.next"></span>
+</oj-button>
+
+        <oj-button class="action-button-secondary" on-click="[[$component.deleteClicked]]">
+      <span data-bind="text:nls.common.delete"></span>
+</oj-button>
+<oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:nls.common.cancel"></span>
+</oj-button>
+        <oj-button class="action-button-tertiary" on-click="[[$component.backFirst]]">
+      <span data-bind="text:nls.common.back"></span>
+</oj-button>
+               
+        <!--  /ko -->
+        <!-- /ko -->
+        
+        <!-- ko ifnot: isAccessCreated -->
+        <oj-button class="action-button-primary" on-click="[[$parent.LoadTransactionMappingComponent]]">
+      <span data-bind="text:nls.common.next"></span>
+</oj-button>
+ 
+        <oj-button class="action-button-tertiary" on-click="[[$component.isDataModified]]">
+      <span data-bind="text:nls.common.back"></span>
+</oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:nls.common.cancel"></span>
+</oj-button>
+       <!--  /ko -->
+       
+    </div>
+</div>
+
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'backConfirmationModal',header: nls.headers.backHeader">
+    <div class="form-main-container message-text">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+                <span data-bind="text: nls.common.backMessage"></span>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button id="backYes" class="action-button-primary" on-click="[[$component.backFirst]]">
+      <span data-bind="text:nls.common.yes"></span>
+</oj-button>
+            <oj-button id="backNo" class="action-button-secondary" on-click="[[$component.hideBack]]">
+      <span data-bind="text:nls.common.no"></span>
+</oj-button>
+            
+        </div>
+    </div>
+</modal-window>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'deleteConfirmationModal',header: nls.headers.deleteHeader">
+    <div class="form-main-container message-text">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+                <!-- ko if: $component.accessLevel() === 'PARTY' -->
+                <span data-bind="html : $baseModel.format(nls.common.deletePartySetUpMessage,{partyId:$parent.party.displayValue(),partyName:$parent.partyName()})"></span>
+                <!--  /ko -->
+                <!-- ko if: $component.accessLevel() === 'USER' -->
+                <span data-bind="html : $baseModel.format(nls.common.deleteUserSetUpMessage,{userName:$parent.selectedUserName(),partyId:$parent.party.displayValue(),partyName:$parent.partyName()})"></span>
+                <!--  /ko -->
+                <!-- ko if: $component.accessLevel() === 'LINKAGE' -->
+                <span data-bind="html : $baseModel.format(nls.common.deleteLinkedPartySetUpMessage,{linkedPartyId:$parent.relatedPartyId().displayValue,linkedPartyName:$parent.relatedPartyName()})"></span>
+                <!--  /ko -->
+                <!-- ko if: $component.accessLevel() === 'USERLINKAGE' -->
+                <span data-bind="html : $baseModel.format(nls.common.deleteLinkedUserSetUpMessage,{userName:$parent.selectedUserName(),linkedPartyId:$parent.relatedPartyId().displayValue,linkedPartyName:$parent.relatedPartyName()})"></span>
+                <!--  /ko -->
+            </div>
+
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button id="delbackNo" class="action-button-secondary" on-click="[[$component.hideDelete]]">
+      <span data-bind="text:nls.common.no"></span>
+</oj-button>
+            <oj-button id="delbackYes" class="action-button-primary" on-click="[[$component.deleteAccess]]">
+      <span data-bind="text:nls.common.yes"></span>
+</oj-button>
+        </div>
+    </div>
+</modal-window>
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'confirmCancellationScreen'">
+    <div data-bind='component:{name: "confirmation", params:{rootModel: $component, hideDetails : false}}'>
+    </div>
+</modal-window>
+<!--  /ko -->
+
+<!-- /ko -->

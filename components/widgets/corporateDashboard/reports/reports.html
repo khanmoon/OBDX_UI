@@ -1,0 +1,44 @@
+
+<div class="oj-panel report">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <h3 class="report__header" data-bind="text:$component.nls.reportsDetails.labels.title">
+    </h3>
+    </div>
+  </div>
+  <!-- ko if: $component.dataSourceLoaded() -->
+  <div class="oj-flex">
+    <div class="oj-flex-item oj-sm-12">
+      <oj-list-view :id="[['reportlistView']]" :aria-label="[[$component.nls.reportsDetails.labels.reportList]]" selection-mode="[['none']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('report-template',true)}]]" data="[[$component.dataSource]]">
+      </oj-list-view>
+    </div>
+    <div class="oj-flex-item oj-sm-12 report__viewAll">
+    <a href="#" data-bind="click:$dashboard.loadComponent.bind($component,'report-list')">
+      <div data-bind="text:$component.nls.reportsDetails.labels.viewAll"></div>
+    </a>
+  </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot:$component.dataSourceLoaded() -->
+  <div class="oj-flex report__content report-content">
+    <div class="oj-flex-item oj-sm-12 report-content__noData">
+      <img data-bind="loadImage:'dashboard/reports.svg'">
+    </div>
+    <div class="oj-flex-item oj-sm-12 report-content__text" data-bind="text:$component.nls.reportsDetails.labels.noData"></div>
+      <div class="oj-flex-item oj-sm-12 report-content__subText info-text-small" data-bind="text:$component.nls.reportsDetails.labels.subData"></div>
+  </div>
+ <!-- /ko -->
+  <script type="text/html" id="report-template">
+    <li class="report__listView">
+      <div class="oj-flex">
+        <div class="oj-flex-item oj-sm-12 report__description" data-bind="text : description"></div>
+          <div class="oj-flex-item oj-sm-12 report__refNo"> <a href="#" data-bind="title: $component.Nls.reportId, alt : $component.Nls.reportId ,text:reportRequestId,click:$component.downloadReport.bind($data)"></a></div>
+          <div class="oj-flex-item oj-sm-12 report__date" data-bind="text : executionDate"></div>
+        <div class="oj-flex-item oj-sm-12 status" data-bind="css: status==='ERROR' ? 'rejected':  status==='PROCESSED' ? 'processed' : status === 'PENDING' ? 'in-progress' : 'in-progress' ">
+          <span class="icons" data-bind="css: status==='ERROR' ? 'icon-reject':  status==='PROCESSED' ? ' icon-success' : status === 'PENDING' ? ' icon-pre-processed' : ' icon-pre-processed'"></span><span data-bind="text:$component.nls.reportsDetails.labels.status[status]"></span>
+        </div>
+      </div>
+
+    </li>
+  </script>
+</div>

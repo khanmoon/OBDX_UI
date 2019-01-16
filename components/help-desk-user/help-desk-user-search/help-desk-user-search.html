@@ -1,0 +1,119 @@
+<!-- ko if :isHelpDeskAdmin()  -->
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-9">
+    <div class="form-main-container">
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <div class="oj-flex-item" data-bind='component:{name: "user-type", params:{rootModel: $data ,searchFor:"user",filter:"Administrator,Administrators"}}'>
+        </div>
+        <!-- ko if: $component.selectedUserType() !== undefined && $component.selectedUserType().length > 0 -->
+        <!-- ko if: ($component.selectedUserType().toLowerCase() === "corporateuser") || $component.selectedUserType().toLowerCase() === "retailuser" -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2 oj-label">
+            <oj-label for="userName">
+              <span data-bind="text:$component.nls.helpDeskUser.userName"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+            <oj-input-text id="userName" aria-labelledby="userName" value="{{userName}}" on-focusout="[[$component.userNameFocusOut]]" disabled="[[$component.userNameFlag]]"></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2 oj-label">
+            <oj-label for="partyId">
+              <span data-bind="text:$component.nls.helpDeskUser.partyId"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+            <oj-input-text id="partyId" aria-labelledby="partyId" value="{{partyID}}" on-focusout="[[$component.partyIdFocusOut]]" disabled="[[$component.partyIdFlag]]"></oj-input-text>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <!-- ko if: $component.selectedUserType() === undefined ||  $component.selectedUserType()[0] === undefined -->
+          <oj-button class="action-button-primary" id="searchBtn" disabled on-click="[[$component.fetchUsers]]">
+            <span data-bind="text:$component.nls.generic.common.search"></span>
+          </oj-button>
+          <!-- /ko -->
+          <!-- ko ifnot: $component.selectedUserType() === undefined  ||  $component.selectedUserType()[0] === undefined  -->
+          <oj-button class="action-button-primary" id="searchBtn" on-click="[[$component.fetchUsers]]">
+            <span data-bind="text:$component.nls.generic.common.search"></span>
+          </oj-button>
+          <!-- /ko -->
+          <!-- ko ifnot :userDataLoaded()  -->
+          <oj-button class="action-button-secondary" id="cancelBtn" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+          </oj-button>
+          <!-- /ko -->
+          <!-- ko if: $component.selectedUserType() === undefined ||  $component.selectedUserType()[0] === undefined -->
+          <oj-button class="action-button-tertiary" id="clearBtn" disabled on-click="[[$component.clear]]">
+            <span data-bind="text:$component.nls.generic.common.clear"></span>
+          </oj-button>
+          <!-- /ko -->
+          <!-- ko ifnot: $component.selectedUserType() === undefined  ||  $component.selectedUserType()[0] === undefined  -->
+          <oj-button class="action-button-tertiary" id="clearBtn" on-click="[[$component.clear]]">
+            <span data-bind="text:$component.nls.generic.common.clear"></span>
+          </oj-button>
+          <!-- /ko -->
+        </div>
+        <!-- ko if :userDataLoaded()  -->
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-table id="table" aria-label=$component.nls.helpDeskUser.searchResults data='[[pagingDatasource]]' columns-default.sortable='enabled' columns="[[[
+                      {headerText:nls.helpDeskUser.fullName},
+                      {headerText:nls.helpDeskUser.userName},
+                      {headerText:nls.helpDeskUser.partyId},
+                      {headerText:nls.helpDeskUser.userSegment},
+                      {headerText:nls.helpDeskUser.status}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('userIdTemplate', true)]]">
+              <caption class="hide-label" data-bind="text:$component.nls.helpDeskUser.helpDeskUserSearch"></caption>
+              <oj-paging-control id="paging" data='[[pagingDatasource]]' page-size='10' slot='bottom'>
+              </oj-paging-control>
+            </oj-table>
+          </div>
+        </div>
+        <script type="text/html" id="userIdTemplate">
+          <tr>
+            <td data-bind="text:$baseModel.format($component.nls.generic.common.name,{firstName:firstName,lastName:lastName})"></td>
+            <td>
+              <div>
+                <a href="javascript:void(0)" data-bind="text:$context.row.username,click:$component.logIn.bind($data,$root)"></a>
+              </div>
+            </td>
+            <td data-bind="text: partyId.displayValue"></td>
+            <td data-bind="text: $component.selectedUserType()"></td>
+            <!-- ko if :$context.row.lockStatus === 'UNLOCK' -->
+              <td data-bind="text:$component.nls.helpDeskUser.unlock"></td>
+            <!-- /ko -->
+            <!-- ko if :$context.row.lockStatus === 'LOCK' -->
+              <td data-bind="text:$component.nls.helpDeskUser.lock"></td>
+            <!-- /ko -->
+          </tr>
+        </script>
+        <oj-button class="action-button-secondary" id="cancelBtn" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+          <span data-bind="text:$component.nls.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+
+        <modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'createSessionError',header:$component.nls.helpDeskUser.createSessionError">
+          <div class="message-box">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <div class="dialog-text"><span data-bind="text:$component.nls.helpDeskUser.createErrorMessage"></span></div>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad button-container">
+              <oj-button class="action-button-primary" id="okBtn" on-click="[[$component.closeDialogBox]]">
+                <span data-bind="text:$component.nls.generic.common.ok"></span>
+              </oj-button>
+            </div>
+          </div>
+        </modal-window>
+      </page-section>
+    </div>
+  </div>
+  <div class="oj-flex-item oj-sm-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'help-desk-user-search'"></help>
+  </div>
+
+</div>
+<!-- /ko -->

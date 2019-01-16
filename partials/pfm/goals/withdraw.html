@@ -1,0 +1,238 @@
+<div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <oj-validation-group id="withdrawGoalTracker">
+                <!-- ko if:$baseModel.small() -->
+                <div class="oj-flex oj-flex-items-pad goal__tab-header">
+                    <div class="oj-flex-item">
+                        <div class="goal__tab-header--small" id="page-header" data-bind="text:$component.resource.labels.withdraw"></div>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:redeemComplete() -->
+                <div class="oj-flex oj-flex-items-pad success-bar" role="alert">
+                    <div class="success-icon icons" data-bind="css: 'icon-success'"></div>
+                    <div class="success-msg oj-flex-item oj-sm-11" id="confirm" data-bind="text:$baseModel.format($component.resource.withdrawGoal.withdrawSuccessful,
+    {withdrawAmount:$baseModel.formatCurrency($component.tempwithdrawalamount(),$component.baseCurrency()),goalDataName:$component.goalData.name()})"></div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex oj-flex-items-pad goal__disclaimer goal-disclaimer">
+                    <!-- <div class="oj-flex-item oj-sm-12 ij-md-12 oj-lg-12"> -->
+                    <div class="icons icon-information goal-disclaimer__icon-info"></div>
+                    <div class="oj-flex-item oj-sm-11 goal-disclaimer__text" id="goaldisclaimer" data-bind="text:$component.resource.withdrawGoal.withdrawdisclaimer"></div>
+                    <!-- </div> -->
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12">
+                        <oj-label for="goalName"><span data-bind="text:$component.resource.withdrawGoal.currentValue"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-12">
+                        <oj-input-text id="goalName" disabled="[[true]]" value="{{$baseModel.formatCurrency($component.goalAmount(),$component.baseCurrency())}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12 label ">
+                        <oj-label for="accType"><span data-bind="text:$component.resource.withdrawGoal.natureOfWithdrawal"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-12 ">
+                        <oj-radioset id="accType" value="{{$component.withdrawalType}}" on-value-changed="[[valueChangeHandler]]" class="oj-choice-direction-row">
+                            <oj-option value="PARTIAL" id="partial" name="withdrawGoalradioButton"><span for="partial" data-bind="text:$component.resource.withdrawGoal.partial"></span></oj-option>
+                            <oj-option value="FULL" id="full" name="withdrawGoalradioButton"><span for="full" data-bind="text:$component.resource.withdrawGoal.full"></span></oj-option>
+                        </oj-radioset>
+                    </div>
+                    <!-- ko if:withdrawalType()==='FULL' -->
+                    <!-- <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label "></div> -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-12 ">
+                        <span data-bind="text:$component.resource.withdrawGoal.fullRedeemWarning">
+        </span>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <!-- ko if:withdrawalType()==='PARTIAL' -->
+                <div class="oj-flex oj-flex-items-pad oj-lg-7">
+                <div data-bind="component: {
+       name: 'amount-input', params: {
+       amount :$component.withdrawalamount,
+       minimumAmount:$component.minWithdrawAmount,
+       maximumAmount:$component.maxWithdrawAmount,
+       label : $component.resource.withdrawGoal.howMuchWouldYouLikeTowithdraw,
+       currency: $component.baseCurrency(),
+       converter:$baseModel.formatCurrency,
+       currencyListRequired : false,
+       validator:$component.validationTrackerForWithdrawal,
+       isMandatory:true,
+       rootId:'goal-target-amount',
+       currencyURL : '',
+       currencyParser :'',
+       rootClass:'form-input'
+       }
+       }">
+                    <div class="oj-flex-item">
+                        <span class="info-text-small" data-bind="text:$baseModel.format(resource.withdrawGoal.minMaxAmount,
+       {
+         min:$baseModel.formatCurrency(ko.utils.unwrapObservable(goalData.productMin),baseCurrency()),
+         max:$baseModel.formatCurrency(ko.utils.unwrapObservable(goalData.productMax),baseCurrency())
+       })">
+     </span>
+                    </div>
+                </div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12">
+                        <oj-label for="maturity"><span data-bind="text:$component.goal.account.maturity"></span></oj-label>
+                    </div>
+                    <div id="maturity" class="oj-flex-item oj-sm-9 oj-md-6 oj-lg-12">
+                        <oj-select-one required :invalidcomponenttracker="[[$component.validationTrackerForWithdrawal]]" disabled="[[true]]" value="{{$component.goalData.payoutDetails.mode()}}">
+                            <!-- ko foreach: maturityList -->
+                            <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                </div>
+                <!-- ko if:$component.goalData.payoutDetails.mode() === 'Self' -->
+                <account-input required params="baseModel : $baseModel, rootModel: $data ,label : $component.resource.manageGoal.maturityAccountNumber,taskCode : $component.currentTask(),readOnly:true,
+        type : 'balance' , account : $component.goalData.payoutDetails.selfAccountId.value , additionalDetails: additionalDetails, validator:$component.validationTrackerForWithdrawal">
+                </account-input>
+                <!-- /ko -->
+                <!-- ko if:$component.goalData.payoutDetails.mode() === 'Domestic' -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12">
+                        <oj-label for="networkType"><span data-bind="text:$component.goal.account.networkType"></span></oj-label>
+                    </div>
+                    <div id="networkType" class="oj-flex-item oj-sm-9 oj-md-6 oj-lg-12">
+                        <oj-select-one id="networkType" required :invalidcomponenttracker="[[$component.validationTrackerForWithdrawal]]" disabled="[[true]]" value="{{$component.network}}" :placeholder="[[$component.goal.account.select]]" on-value-changed="[[networkTypeChanged]]">
+                            <!-- ko foreach: networkTypes -->
+                            <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12">
+                        <oj-label for="domesticAccount"><span data-bind="text:$component.resource.manageGoal.maturityAccountNumber"></span></oj-label>
+                    </div>
+                    <div id="domesticAccount" class="oj-flex-item oj-sm-9 oj-md-6 oj-lg-12">
+                        <oj-input-text required id="domesticAccount" :invalidcomponenttracker="[[$component.validationTrackerForWithdrawal]]" validators="[[$baseModel.getValidator('ACCOUNT')]]" disabled="[[true]]" value="{{$component.goalData.payoutDetails.accountId()}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12">
+                        <oj-label for="beneName"><span data-bind="text:$component.goal.account.beneName"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-9 oj-md-6 oj-lg-12">
+                        <oj-input-text required id="beneName" :invalidcomponenttracker="[[$component.validationTrackerForWithdrawal]]" validators="[[$baseModel.getValidator('NAME')]]" disabled="[[true]]" value="{{$component.goalData.payoutDetails.accountName()}}"></oj-input-text>
+                    </div>
+                </div>
+                <!-- Lookup code -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                        <oj-label for="domSwiftCode"><span data-bind="text:$component.goal.account.bankCode"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-9 oj-md-12 oj-lg-12">
+                        <!-- ko if:$component.additionalBankDetails()===null -->
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+                                <oj-input-text id="domSwiftCode" required :invalidcomponenttracker="[[$component.validateCodeTranckerForWithdrawal]]" validators="[[$baseModel.getValidator('BANK_CODE')]]" disabled="[[true]]" value="{{$component.goalAccountUpdatePayload.payoutDetails.bankCode}}"></oj-input-text>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if:$component.additionalBankDetails()!==null -->
+                        <div class="oj-flex oj-flex-items-pad" data-bind="with:$component.additionalBankDetails">
+                            <div class="oj-flex-item">
+                                <div data-bind="text:$component.bankCode()"></div>
+                                <div data-bind="text:name"></div>
+                                <div data-bind="text:branchAddress.line1"></div>
+                                <div data-bind="text:branchAddress.city"></div>
+                                <div data-bind="text:branchAddress.country"></div>
+                                <div class="">
+                                    <oj-button class="form-button-secondary" id="button" on-click="[[$component.resetCode]]">
+                                        <span data-bind="text:$component.resource.Generic.common.reset"></span>
+                                    </oj-button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <div data-bind="component: {name: 'bank-look-up', params:{rootModel: $component,
+                   clearingCodeType:$component.network,
+                   accountType:'Domestic',
+                   region: 'INDIA',
+                   networkCode:$component.goalData.payoutDetails.bankCode,
+                   additionalBankDetails:$component.additionalBankDetails}}">
+                </div>
+                <!-- ko if:detailsFetched() -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <span id="bankName" data-bind="text:$component.goal.account.bankName"></span>
+                    </div>
+                    <div id="bankName" class="oj-flex-item oj-sm-9 oj-md-6 oj-lg-4">
+                        <div data-bind="text:additionalBankDetails().name"></div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <span id="bankAddress" data-bind="text:$component.goal.account.bankAddress"></span>
+                    </div>
+                    <div id="bankAddress" class="oj-flex-item oj-sm-9 oj-md-6 oj-lg-4">
+                        <div data-bind="text:additionalBankDetails().branchName + ', ' + additionalBankDetails().branchAddress.line1"></div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                        <span id="bankCity" data-bind="text:$component.goal.account.bankCity"></span>
+                    </div>
+                    <div id="bankCity" class="oj-flex-item oj-sm-9 oj-md-6 oj-lg-4">
+                        <div data-bind="text:additionalBankDetails().branchAddress.city"></div>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- ko if:$component.goalData.payoutDetails.mode() === 'Internal' -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                        <oj-label for="internalAccount"><span data-bind="text:$component.resource.manageGoal.maturityAccountNumber"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-9 oj-md-12 oj-lg-12">
+                        <oj-input-text required id="internalAccount" :invalidcomponenttracker="[[$component.validationTrackerForWithdrawal]]" validators="[[$baseModel.getValidator('ACCOUNT')]]" disabled="[[true]]" value="{{$component.goalData.payoutDetails.accountId()}}"></oj-input-text>
+                    </div>
+                </div>
+                <!-- ko if:branchesLoaded() -->
+                <!-- /ko -->
+                <!-- /ko -->
+            </oj-validation-group>
+        </page-section>
+        <div class="oj-flex-items-pad oj-flex button-container right">
+            <oj-button class="action-button-primary " disabled="[[$component.disableWithdraw()]]" on-click="[[$component.showWithdrawWarning]]"><span slot="startIcon" class="icons icon-repay"></span>
+                <span data-bind="text:$component.resource.labels.withdraw"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary " on-click="[[$component.cancel]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resource.Generic.common.cancel"></span>
+            </oj-button>
+        </div>
+        <modal-window class="model-window" params="baseModel : $baseModel, rootModel : $component,id:'withdrawWarning',header:$component.resource.manageGoal.confirmation">
+            <div class="model-window__section">
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item model-window__section--small" data-bind="html:$baseModel.format($component.resource.withdrawGoal.withdrawWarning,
+    {withdrawAmount:$baseModel.formatCurrency($component.withdrawalamount(),$component.baseCurrency()),accountNumber:$component.tempAccountId()})"></div>
+                    </div>
+                </page-section>
+                <div class="button-container">
+                    <oj-button class="action-button-primary " on-click="[[$component.withdraw]]"><span slot="startIcon" class="icons icon-forward-arrow"></span>
+                        <span data-bind="text:resource.manageGoal.proceed"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary " on-click="[[$component.hideWithdrawWarning]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                        <span data-bind="text:resource.manageGoal.donotproceed"></span>
+                    </oj-button>
+                </div>
+            </div>
+        </modal-window>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'withdrawal'"></help>
+    </div>
+    <!-- /ko -->
+</div>

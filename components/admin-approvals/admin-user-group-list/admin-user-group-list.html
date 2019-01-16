@@ -1,0 +1,50 @@
+<div class="form-main-container">
+
+	<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+		<!--Input PartyId-->
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+				<label class="" for="groupCode" data-bind="text:$component.nls.userGroup.groupCode"></label>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+				<oj-input-text id="groupCode" readonly="{{$component.groupDetails.groupDetailsFetched()}}" value="{{$component.groupDetails.userGroupName()}}"></oj-input-text>
+            	</div>
+		</div>
+
+
+        <div class="oj-flex oj-flex-items-pad row-margin">
+			<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+				<label class="" for="groupDescription" data-bind="text:$component.nls.userGroup.groupDescription"></label>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+				<oj-input-text id="groupDescription" readonly="{{$component.groupDetails.groupDetailsFetched()}}" value="{{$component.groupDetails.description()}}"></oj-input-text>
+			</div>
+		</div>
+	</page-section>
+
+    <div class=" oj-flex oj-flex-items-pad  button-container ">
+			<oj-button id="userGroup_btnCreate" class="action-button-primary" on-click="[[createNew]]">
+      <span data-bind="text:$component.nls.common.createNew"></span>
+</oj-button>
+
+			<oj-button id="backbutton" class="action-button-secondary" on-click="[[$component.back]]">
+      <span data-bind="text:$component.nls.generic.common.back"></span>
+</oj-button>
+			<oj-button id="cancelButton" class="action-button-tertiary" on-click="[[cancel]]">
+      <span data-bind="text:$component.nls.generic.common.cancel"></span>
+</oj-button>
+
+    </div>
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+	<!-- ko if:dataLoaded() -->
+	<oj-table id="table" :aria-label="[[$component.nls.userGroup.title]]" columns="[[[{headerText:$component.nls.userGroup.groupCode,field:'name',template:'group_code'},{headerText:$component.nls.userGroup.groupDescription,field:'description'},{headerText:$component.nls.userGroup.users,field:'usercount'}]]]" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'single',column:'single'}]]" data="[[$component.datasource]]">
+	<caption class="hide-label" data-bind="text:$component.nls.userGroup.title"></caption>
+    <template slot="group_code">
+        <td>
+          <a href="javascript:void(0)" data-bind="text:$current.row.name,click:$component.onUserGroupSelected.bind($data,$current.row)"></a>
+        </td>
+    </template>
+	</oj-table>
+ <!-- /ko -->
+    </page-section>
+</div>

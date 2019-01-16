@@ -1,0 +1,112 @@
+<!-- ko if:$component.cardFormatsListListLoaded() || $component.cardFormatsListListLoaded() -->
+<!-- ko if: $component.cardOptionsRefreshed() -->
+<div class="oj-flex oj-flex-items-pad radio-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 radio-option-top-padding">
+    <oj-label :for="[['accountNo'+($index())]]">
+        <span data-bind="text:$component.resource.networkProvider"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5 radio-option-top-padding">
+    <oj-select-one required="[[true]]" :id="[['accountNo'+($index())]]" translations="[[{'required':{messageDetail:$component.resource.messages.cardType}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$component.changeCardformat]]" value="{{$component.currentCardType}}" :placeholder="''">
+            <!-- ko if: fundingOption==='CARD_CREDIT' -->
+            <!-- ko foreach: $component.creditCardFormatsList().data -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: fundingOption==='CARD_DEBIT' -->
+            <!-- ko foreach: $component.debitCardFormatsList().data -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+            <!-- /ko -->
+        </oj-select-one>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad radio-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label class="oj-label" :for="[['cardNumber']]">
+        <span data-bind="text:$component.resource.cardNumber"></span></oj-label>
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+    <oj-input-text required id="cardNumber" autocomplete="off" spellcheck="false" :maxlength="[[$component.cardMaxLength()]]" value="{{$component.aanNumber}}" translations="[[{'required':{messageDetail:$component.resource.messages.cardNumber}}]]" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+  </div>
+</div>
+<!-- ko if: $component.cardTypeRefreshed() -->
+<div class="oj-flex oj-flex-items-pad radio-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label class="oj-label" :for="[['expiryDate']]">
+        <span data-bind="text:$component.resource.expiryDate"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-lg-9" data-bind="attr:{'id': 'expiryDate', 'aria-label':$component.resource.expiryDate}">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-4 oj-md-2 oj-lg-2 ">
+        <oj-label class="oj-label" :for="[['expiryMonth'+($index())]]">
+        <span data-bind="text:$component.resource.month"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-8 oj-md-2 oj-lg-3">
+        <oj-select-one required :id="[['expiryMonth'+($index())]]" translations="[[{'required':{messageDetail:$component.resource.messages.cardExpMonth}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.expiryMonth}}" :placeholder="''">
+            <!-- ko foreach: $component.expiryDateMonth() -->
+            <oj-option value="{{$data}}"><span data-bind="text:$data"></span></oj-option>
+            <!-- /ko -->
+        </oj-select-one>
+      </div>
+
+      <div class="oj-flex-item oj-sm-4 oj-md-2 oj-lg-2">
+        <oj-label class="oj-label" :for="[['expiryYear'+($index())]]">
+        <span data-bind="text:$component.resource.year"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-8 oj-md-2 oj-lg-3">
+        <oj-select-one required :id="[['expiryYear'+($index())]]" translations="[[{'required':{messageDetail:$component.resource.messages.cardExpYear}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.expiryYear}}" :placeholder="''">
+            <!-- ko foreach: $component.expiryDateYear() -->
+            <oj-option value="{{$data}}"><span data-bind="text:$data"></span></oj-option>
+            <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad radio-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label class="oj-label" :for="[['nameOnCard']]">
+        <span data-bind="text:$component.resource.nameonCard"></span></oj-label>
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+    <oj-input-text required maxlength="25" autocomplete="off" spellcheck="false" :id="[['nameOnCard']]" value="{{$component.cardName}}" translations="[[{'required':{messageDetail:$component.resource.messages.cardName}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('PERSON_NAME')]]"></oj-input-text>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad radio-pad">
+  <div class="tooltip-section oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label class="span-label" :for="[['securityCode']]">
+        <span data-bind="text:$component.resource.securityCode"></span></oj-label>
+
+    <!-- ko if: $baseModel.large() -->
+    <!-- ko if:fundingOption==='CARD_CREDIT' -->
+    <div class="tooltip message-text label" id="whatisThisTextCredit_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.whatisThisTextCredit,toolTipId:'whatisThisTextCredit_tooltip'}}">
+    </div>
+    <!-- /ko -->
+    <!-- ko if: fundingOption==='CARD_DEBIT'-->
+    <div class="tooltip message-text label" id="whatisThisTextCredit_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.whatisThisTextDebit,toolTipId:'whatisThisTextCredit_tooltip'}}">
+    </div>
+
+    <!-- /ko -->
+
+    <span class="icon-help" id="whatisThisTextCredit_holder" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'whatisThisTextCredit_tooltip','whatisThisTextCredit_holder'), mouseout: $component.hideToolTip.bind($data,'whatisThisTextCredit_tooltip') }"></span>
+
+    <!-- /ko -->
+    <!-- ko ifnot: $baseModel.large() -->
+
+    <span class="icon-help" aria-hidden="true"><a href="#" data-bind="click:$component.showWhatIsThisText.bind($data,$component.fundingType()) ,attr:{alt: $component.resource.fundingTypeClick, title: $component.resource.fundingTypeClickTitle}"></a></span>
+
+    <!-- /ko -->
+
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+    <oj-input-password required maxlength="4" type="password" pattern="[0-9]*" autocomplete="off" spellcheck="false" :id="[['securityCode']]" value="{{$component.cvv}}" translations="[[{'required':{messageDetail:$component.resource.messages.cardCvv}}]]"></oj-input-password>
+  </div>
+
+
+</div>
+<!-- /ko -->
+<!-- /ko -->

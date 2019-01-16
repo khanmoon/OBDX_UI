@@ -1,0 +1,24 @@
+<div class="form-main-container side-menu">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2 side-menu__list">
+      <oj-navigation-list selection="{{selectedSideMenuItem}}">
+        <ul data-bind="foreach: sideMenuList">
+          <li data-bind="attr: {id: id}">
+            <a href="#" data-bind="text: $component.resource.menuItems[id]"></a>
+          </li>
+        </ul>
+      </oj-navigation-list>
+    </div>
+    <!-- ko if:!$baseModel.small() -->
+    <div class="oj-flex-item oj-lg-10 oj-md-10 side-menu-content">
+      <!-- ko if:$component.refreshSideMenuContent() -->
+      <div class="menu-option" data-bind="component: {name: $component.menuSelectionForSideMenu(), params:{rootModel: $data,data:$component.showDetailParams}}"></div>
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+  </div>
+
+</div>
+<!-- ko ifnot: $baseModel.small() -->
+<a class="back-link" href="#" data-bind="text: $component.resource.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

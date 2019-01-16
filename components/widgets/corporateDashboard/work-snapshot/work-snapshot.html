@@ -1,0 +1,81 @@
+<!-- ko ifnot: $baseModel.small() -->
+<!-- ko if: $component.defineStatus -->
+<div class="oj-panel work-snapshot">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+
+      <div class="work-snapshot__seperator work-snapshot-seperator">
+        <h3 class="work-snapshot-seperator__header" data-bind="text:$component.resource.heading"></h3>
+        <div class="work-snapshot-seperator__date work-snapshot-seperator-date">
+          <span class="work-snapshot-seperator-date__text" data-bind="text: $baseModel.format($component.resource.period,{date: $baseModel.formatDate($oj.IntlConverterUtils.dateToLocalIso($baseModel.getDate()))})"></span>
+        </div>
+      </div>
+      <ul class="oj-flex oj-flex-items-pad work-snapshot-list__container work-snapshot-list-container oj-sm-flex-wrap-nowrap">
+        <!-- ko foreach: $component.statusState -->
+        <li class="oj-flex-item work-snapshot-list-container__items work-snapshot-list-container-item">
+          <div class="work-snapshot-list-container-item__count" data-bind="text:totalCount"></div>
+          <div class="work-snapshot-list-container-item__name" data-bind="text:$data.name"></div>
+          <div class="work-snapshot-list-container-item__highlight" data-bind="css:$data.type"></div>
+        </li>
+        <!-- /ko -->
+      </ul>
+    </div>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 no-pad-cols work-snapshot__graph work-snapshot-graph">
+      <oj-chart class="work-snapshot-graph__chart" id="pieChart" type="pie" series="[[pieSeriesValue]]" animation-on-display="auto" animation-on-data-change="auto" hover-behavior="dim">
+      </oj-chart>
+    </div>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko ifnot: defineStatus -->
+<div class="oj-panel work-snapshot">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+      <div class="work-snapshot__seperator work-snapshot-seperator">
+        <span class="work-snapshot-seperator__header" data-bind="text:$component.resource.heading"></span>
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-4 oj-md-3 work-snapshot__noData">
+      <img data-bind="loadImage:'dashboard/transaction.svg'">
+    </div>
+    <div class="oj-flex-item oj-sm-8 work-snapshot__text work-snapshot-text">
+      <div class="oj-flex-item oj-sm-12 work-snapshot-text__header" data-bind="text:$component.resource.noData"></div>
+      <div class="oj-flex-item oj-sm-12 work-snapshot-text__subHeader info-text-small" data-bind="text:$component.resource.subData"></div>
+    </div>
+  </div>
+</div>
+<!-- /ko -->
+
+<!-- ko if: $baseModel.small() -->
+<!-- ko if: $component.defineStatus -->
+<div class="oj-panel work-snapshot">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+      <div class="work-snapshot__seperator work-snapshot-seperator">
+        <span class="work-snapshot-seperator__header" data-bind="text:$component.resource.heading"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <oj-chart class="work-snapshot-graph__chart" id="pieChart" type="pie" series="[[pieSeriesValue]]" animation-on-display="auto" animation-on-data-change="auto" hover-behavior="dim">
+    </oj-chart>
+  </div>
+
+  <div class="oj-flex-item oj-sm-4 work-snapshot__list work-snapshot-list">
+    <ul class="work-snapshot-list__container work-snapshot-list-container oj-sm-flex-wrap-nowrap">
+      <!-- ko foreach: $component.statusState -->
+      <li class="oj-flex-item work-snapshot-list-container__items work-snapshot-list-container-item">
+        <div class="work-snapshot-list-container-item__count" data-bind="text:totalCount"></div>
+        <div class="work-snapshot-list-container-item__name" data-bind="text:$data.name"></div>
+        <div class="work-snapshot-list-container-item__highlight" data-bind="css:$data.type"></div>
+      </li>
+      <!-- /ko -->
+    </ul>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->

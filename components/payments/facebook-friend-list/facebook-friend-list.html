@@ -1,0 +1,39 @@
+<div class="form-main-container">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+                <oj-label for="filterDepartId" class="hide-label"><span data-bind="text:$component.Nls.searchContact"></span></oj-label>
+                <oj-input-text id="filterDepartId" maxlength="30" on-raw-value-changed="[[$component.handleKeyUp]]" :placeholder="[[$component.Nls.searchContact]]"></oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex p2p">
+            <div class="oj-flex-item oj-sm-12">
+                <oj-list-view id="listview" item.renderer="[[$component.renderer]]" item.focusable="[[$component.itemOnly]]" data="[[$component.dataSource]]" drill-mode="none" group-header-position="sticky">
+                </oj-list-view>
+            </div>
+        </div>
+    </page-section>
+</div>
+<script type="text/html" id="group_template">
+    <li>
+        <span data-bind="text: id"></span>
+    </li>
+</script>
+<script type="text/html" id="item_template">
+    <li>
+        <img class="avatar" data-bind="attr: {src: picture}" role="presentation">
+        <div class="container-p2p">
+            <div class="friend-item">
+                <span data-bind="text: name"></span>
+            </div>
+        </div>
+        <oj-label class="hide-label" :for="[[id]]"><span data-bind="text:name"></span></oj-label>
+        <div class="container-p2p pull-right">
+            <div class="friend-item">
+                <oj-radioset :aria-label="[[name]]" class="oj-choice-direction-row" on-value-changed="[[$component.selectContact]]">
+                    <oj-option :data-id="[[id]]" name="rbb" :id="[[id]]" :value="[[id]]"><span data-bind="attr: {for: id}"></span></oj-option>
+                </oj-radioset>
+            </div>
+        </div>
+    </li>
+</script> 

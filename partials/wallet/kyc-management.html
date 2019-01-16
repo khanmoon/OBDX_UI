@@ -1,0 +1,65 @@
+   <!-- ko if:$component.stageFour() -->
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+   <div class="oj-flex oj-flex-items-pad">
+      <oj-label class="oj-lg-3 oj-flex-item"><span data-bind="text:$component.wallet.report.mobilenumber"></span></oj-label>
+      <div class="oj-lg-8 oj-flex-item" data-bind="text:reportData().mobileNo"></div>
+   </div>
+   <div class="oj-flex oj-flex-items-pad">
+      <oj-label class="oj-lg-3 oj-flex-item"><span data-bind="text:$component.wallet.report.emailid"></span></oj-label>
+      <div class="oj-lg-8 oj-flex-item" data-bind="text:reportData().emailId"></div>
+   </div>
+   <div class="oj-flex oj-flex-items-pad">
+      <oj-label class="oj-lg-3 oj-flex-item"><span data-bind="text:$component.wallet.report.openeddate"></span></oj-label>
+      <div class="oj-lg-8 oj-flex-item" data-bind="text:$baseModel.formatDate(reportData().accountOpeningDate)"></div>
+   </div>
+   <div class="oj-flex oj-flex-items-pad">
+      <oj-label class="oj-lg-3 oj-flex-item"><span data-bind="text:$component.wallet.report.status"></span></oj-label>
+      <div class="oj-lg-8 oj-flex-item" data-bind="text:$component.wallet.report.'+reportData().kycStatus)"></div>
+   </div>
+   <div class="oj-flex oj-flex-items-pad" required data-bind="component:{name: 'comment-box',
+      params:{
+      rootModel: $root,
+      maxlength:40,
+      label:$component.wallet.report.description,
+      rootId:'payComment',
+      rootClass:'form-input',
+      required:true,
+      validator:$component.validationTracker,
+      comment:$component.reportUpdateDesc}}"></div>
+   <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-lg-3 oj-flex-item ">
+         <oj-label for="frequency"><span data-bind="text:$component.wallet.report.updateStatus"></span></oj-label>
+      </div>
+      <div class="oj-lg-8 oj-flex-item">
+         <!-- ko if:kycStatusArray().length>0 -->
+         <oj-select-one id="frequency" required value="{{$component.kycStatus}}">
+            <!-- ko foreach:kycStatusArray() -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+         </oj-select-one>
+
+         <!-- /ko -->
+        </div>
+      </div>
+   </page-section>
+   <div class="button-container">
+     <oj-button class="action-button-primary" id="cbutton" on-click="[[cancel]]">
+      <span data-bind="text:$component.common.cancel"></span>
+</oj-button>
+      <oj-button class="action-button-primary" id="button" on-click="[[updateReport]]">
+      <span data-bind="text:$component.common.submit"></span>
+</oj-button>
+   </div>
+   <!-- /ko -->
+  <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+   <!-- ko if:$component.stageFive() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <oj-label><span data-bind="text:$component.wallet.report.kycupdatemsg"></span></oj-label>
+    </div>
+     <div class="button-container">
+        <oj-button class="action-button-primary" id="button" on-click="[[refreshList]]">
+      <span data-bind="text:$component.common.done"></span>
+</oj-button>
+     </div>
+   <!-- /ko -->
+   </page-section>

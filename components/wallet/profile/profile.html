@@ -1,0 +1,77 @@
+<!-- ko if:dataFetched() -->
+<div class=" wallets_container">
+<div class="otpscreen">
+<div class="oj-panel form-main-container card-action-container">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading :''">
+    <div class="section">
+
+        <div class="wallets-action-label">
+              <oj-label for="payeeId"><span data-bind="text:$component.wallet.profile.firstname"></span></oj-label>
+        </div>
+        <div class="oj-row customizedinput">
+          <oj-input-text id="lastName" maxlength="35" required readonly="{{readOnly}}" value="{{details.editProfileDTO.firstName}}"></oj-input-text>
+        </div>
+        <div class="wallets-action-label">
+              <oj-label for="payeeId"><span data-bind="text:$component.wallet.profile.lastname"></span></oj-label>
+        </div>
+        <div class="oj-row customizedinput">
+          <oj-input-text id="lastName" maxlength="35" required readonly="{{readOnly}}" value="{{details.editProfileDTO.lastName}}"></oj-input-text>
+        </div>
+        <div class="wallets-action-label">
+              <oj-label for="payeeId"><span data-bind="text:$component.wallet.profile.lastLogin"></span></oj-label>
+        </div>
+        <div class="oj-row">
+          <div data-bind="text:$baseModel.formatDate(loginTime(),'dd MMM yyyy , HH:MM:SS')"></div>
+        </div>
+
+        <div class="wallets-action-label">
+              <oj-label for="payeeId"><span data-bind="text:$component.wallet.profile.email"></span></oj-label>
+        </div>
+        <div class="oj-row">
+          <div data-bind="text:user().emailId"></div>
+        </div>
+
+        <div class="wallets-action-label">
+              <oj-label for="payeeId"><span data-bind="text:$component.wallet.profile.mobile"></span></oj-label>
+        </div>
+        <div class="oj-row">
+          <div data-bind="text:user().mobileNo"></div>
+        </div>
+
+        <div class="wallets-action-label">
+              <oj-label for="payeeId"><span data-bind="text:$component.wallet.profile.dob"></span></oj-label>
+        </div>
+        <div class="oj-row">
+          <div data-bind="text:$baseModel.formatDate(user().dob)"></div>
+        </div>
+        <div class="button-container">
+            <!-- ko ifnot:editDone() -->
+                <!-- ko if:readOnly() -->
+                <oj-button id="" class="action-button-primary" on-click="[[editProfile]]">
+      <span data-bind="text:$component.common.edit"></span>
+</oj-button>
+                <img data-bind="loadImage:'wallet/wallet-farward-white.png'">
+                <!-- /ko -->
+                <!-- ko ifnot:readOnly() -->
+                <oj-button id="" class="action-button-primary" on-click="[[saveProfile]]">
+      <span data-bind="text:$component.common.save"></span>
+</oj-button>
+                <img data-bind="loadImage:'wallet/wallet-farward-white.png'">
+                <!-- /ko -->
+                <a class="action-button-link" href="javascript:void(0)" data-bind="text:$component.common.cancel,click:$dashboard.hideDetails"></a>
+            <!-- /ko -->
+            <!-- ko if:editDone() -->
+                <oj-button id="" class="action-button-primary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:$component.common.done"></span>
+</oj-button>
+                <img data-bind="loadImage:'wallet/wallet-tick-white.png'">
+            <!-- /ko -->
+
+        </div>
+    </div>
+  </page-section>
+
+</div>
+</div>
+</div>
+<!-- /ko -->

@@ -1,0 +1,37 @@
+$inputs: oj-inputtext oj-inputpassword oj-inputnumber oj-textarea oj-inputdatetime;
+@each $input in $inputs {
+$parent : $input;
+  .#{$input} {
+    max-width: 96%;
+    @if $parent == "oj-textarea" {
+      max-width: 100%;
+    }
+    min-width: inherit;
+    #{&}-input {
+      @extend %form-control;
+      @if $parent == "oj-textarea" {
+        border: 0.05rem solid var(--form-input-border-color);
+        &:focus {
+          border: 0.05rem solid var(--form-input-color-focus);
+        }
+      }
+    }
+    @at-root .alternate-primary #{&} #{&}-input {
+      @include alternate(var(--base-color-secondary-text));
+    }
+    @at-root .alternate-secondary #{&} #{&}-input {
+      @include alternate(var(--banner-text-secondary));
+    }
+
+    &.oj-disabled #{&}-input {
+      border-color: var(--base-background-primary);
+      background: var(--form-input-background-disable);
+      color: var(--form-input-color-disable);
+      padding: 0;
+    }
+
+    &.oj-read-only #{&}-input {
+      font-size: var(--form-input-text);
+    }
+  }
+}

@@ -1,0 +1,247 @@
+<!-- ko if: noRequests -->
+<div class=" oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+  <help params="baseModel : $baseModel, rootModel : $component, transaction: 'service-request-initial'"></help>
+</div>
+<!-- /ko -->
+<!-- ko ifnot: noRequests -->
+<div class="service-requests-search">
+  <div class="oj-flex">
+    <div class="oj-sm-9">
+      <div class="form-main-container">
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-3 oj-md-3 oj-lg-3">
+              <label for="serviceRequestName" :aria-label="[[$component.resource.serviceRequestHeader]]" data-bind="text: $component.resource.searchByRequestName"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+              <oj-input-text id="serviceRequestName" :aria-label="[[$component.resource.typeRequestName]]" maxlength="40" value="{{$component.requestNameParameter}}" placeholder="{{$component.resource.typeRequestName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.invalidEntry,{
+                           type:'length',options:{
+                               min:0,max:40}})]]"></oj-input-text>
+            </div>
+          </div>
+          <!-- ko if: moreOptions -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-3 oj-md-3 oj-lg-3">
+              <label for="serviceRequestDescription" :aria-label="[[$component.resource.searchByRequestDescription]]" data-bind="text: $component.resource.searchByRequestDescription"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+              <oj-input-text id="serviceRequestDescription" :aria-label="[[$component.resource.typeDescription]]" maxlength="40" value="{{$component.descriptionParameter}}" placeholder="{{$component.resource.typeDescription}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.invalidEntry,{
+                           type:'length',options:{
+                               min:0,max:40}})]]"></oj-input-text>
+            </div>
+          </div>
+          <!-- ko if:moduleTypesLoaded -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-3 oj-md-3 oj-lg-3">
+              <label for="module" data-bind="text: $component.resource.productName"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+              <oj-select-one value="{{moduleTypeParameter}}" id="module" placeholder="{{$component.resource.selectProduct}}">
+                <!-- ko foreach: $component.moduleData -->
+                <oj-option value="[[code]]">
+                  <span data-bind="text: label"></span>
+                </oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if:transactionTypesLoaded -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-3 oj-md-3 oj-lg-3">
+              <label for="requestType" data-bind="text: $component.resource.requestType"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-5 oj-md-5 oj-lg-5">
+              <oj-select-one id="requestType" placeholder="{{$component.resource.transactionTypePlaceholder}}" value="{{taskTypeParameter}}">
+                <!-- ko foreach: $component.transactionTypeData -->
+                <oj-option value="[[code]]">
+                  <span data-bind="text: label"></span>
+                </oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <div class="oj-flex oj-flex-items-pad ">
+            <div class="oj-flex-item oj-sm-3 oj-md-3 oj-lg-3 search-padding">
+              <!-- ko if: moreOptions -->
+              <a href="javascript:void(0)" data-bind="click :$component.showOptions">
+                <span data-bind="text:$component.resource.lessOptions"></span>
+                <span class="icons icon-arrow-up arrow-style"></span>
+              </a>
+              <!-- /ko -->
+              <!-- ko ifnot:moreOptions -->
+              <a href="javascript:void(0)" data-bind="click :$component.showOptions">
+                <span data-bind="text:$component.resource.moreOptions"></span>
+                <span class="icons icon-arrow-down arrow-style"></span>
+              </a>
+              <!-- /ko -->
+            </div>
+          </div>
+
+          <div class="oj-flex button-container">
+            <oj-button class="action-button-primary" on-click="[[$component.searchRequests]]">
+              <span data-bind="text:$component.resource.search"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+              <span data-bind="text: $component.resource.cancel"></span>
+            </oj-button>
+            <oj-button class="action-button-tertiary" on-click="[[$component.closeSearchResults]]">
+              <span data-bind="text: $component.resource.clear"></span>
+            </oj-button>
+          </div>
+          <!-- ko if: searchResults -->
+          <div class="oj-flex table-padding">
+            <div class="oj-flex-item oj-sm-11">
+              <oj-table class="table-resize" id="table" :aria-label="[[$component.resource.searchByRequestName]]" data="[[dataSource]]" columns-default.sortable="enabled" selection-mode='{"row":"single","column":"single"}' columns="[[headerText]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('sr_template',true)]]">
+                <caption class="hide-label" data-bind="text:$component.resource.searchResult"></caption>
+                <oj-paging-control id="paging" data='[[dataSource]]' page-size='10' slot='bottom'>
+                </oj-paging-control>
+              </oj-table>
+              <script type="text/html" id="sr_template">
+                <tr class="record">
+                  <td>
+                    <a href="javascript:void(0)" data-bind="text:name, click:$component.onSelectedInTable.bind($data,$context.row)"></a>
+                  </td>
+                  <td>
+                    <span data-bind="text:description"></span>
+                  </td>
+                  <td>
+                    <span data-bind="text:product"></span>
+                  </td>
+                  <td>
+                    <span data-bind="text:taskType"></span>
+                  </td>
+                  <td>
+                    <a href="javascript:void(0)" data-bind="text:activationStatus, click:$component.editAtivationStatus.bind($data,$context.row)"></a>
+                    <a href="javascript:void(0)" class="oj-lg-3 oj-flex-item icon icon-remarks" data-bind="attr:{alt:$component.resource.alt,title:$component.resource.title},click:$component.editAtivationStatus.bind($data,$context.row)"></a>
+                  </td>
+                  <td>
+                    <a class="icons icon-copy copy-icon-size" href="javascript:void(0)" data-bind="attr:{'title':$component.resource.hoverText},click :$component.copyAlert.bind($data,$context.row)"></a>
+                  </td>
+                </tr>
+              </script>
+            </div>
+          </div>
+          <!-- /ko -->
+        </page-section>
+        <div class="recent-request-padding">
+          <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.recentServiceRequests">
+            <div class="oj-flex-item recent-panel-padding">
+              <!-- ko foreach: $component.recentServiceRequest -->
+              <div class="oj-flex">
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-5" data-bind="attr:{'id':'recentRequest' + ($baseModel.incrementIdCount())}">
+                  <!-- ko if: $component.recentServiceRequestHover -->
+                  <div class="oj-flex">
+                    <div class="">
+                      <img alt="" data-bind="loadImage : 'dashboard/quick-access/view-standing-instructions.svg'" class="recent-request-image">
+                      </img>
+                    </div>
+                    <div class="oj-flex-item oj-sm-8 oj-lg-10">
+                      <a href="#" data-bind="click:$component.viewData">
+                        <div class="oj-flex-item">
+                          <h5 data-bind="text:$data.label"></h5>
+                        </div>
+                      </a>
+                      <div class="oj-flex-item">
+                        <span data-bind="text:$component.resource.createdOn"></span>
+                        <span class="center" data-bind="text:$data.date"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /ko -->
+                </div>
+                <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2 copy-icon-style">
+                  <a class="icons icon-copy copy-icon-size " href="javascript:void(0)" data-bind="attr:{'title':$component.resource.hoverText}, click :$component.copyAlert"></a>
+                </div>
+              </div>
+              <!-- /ko -->
+            </div>
+          </page-section>
+        </div>
+      </div>
+    </div>
+    <div class="oj-sm-3 help-panel">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'service-request-search-create'"></help>
+    </div>
+  </div>
+</div>
+<!-- /ko -->
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'filter', header: $component.resource.confirmation">
+  <div class="form-main-container">
+    <!-- ko if: moreOptions -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item message-text label scroll" data-bind="html:$component.resource.filterNeeded">
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: moreOptions -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item message-text label scroll" data-bind="html:$component.resource.enterRequestName">
+      </div>
+    </div>
+    <!-- /ko -->
+    <div class="message-btn button-container">
+      <oj-button class="action-button-primary" :id="[['okButton2']]" on-click="[[$component.closePopUp]]">
+        <span data-bind="text:$component.resource.ok"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'actStat', header: $component.resource.updateActivatioStatus">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-lg-2">
+      <label data-bind="text:$component.resource.statusLabel"></label>
+    </div>
+    <div class="oj-flex-item oj-lg-2">
+      <div id="sampleDemo" class="demo-padding demo-container">
+        <div id="componentDemoContent" class="switch-module">
+          <div id="formId">
+            <oj-switch id="switch" value="{{isChecked}}"></oj-switch>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="oj-flex-item oj-lg-8">
+      <label data-bind="text:($component.isChecked()) ? $component.resource.active : $component.resource.inactive"></label>
+    </div>
+    <!-- ko if: statusCheck -->
+    <label class="activation-error" data-bind="text:($component.isCheckedStore()===$component.isChecked()) ? $component.statusChangeMsg : ''"></label>
+    <!-- /ko -->
+  </diV>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-lg-2">
+      <label data-bind="text:$component.resource.remarksLabel"></label>
+    </div>
+    <div class="oj-flex-item oj-lg-9">
+      <oj-text-area valid="{{remarksValid}}" id="text-area-remarks" value="{{justification}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.statusErrorMessage,{
+                       type: 'length',
+                       options: {
+                           min: 0,
+                           max: 200
+                       }})]]"></oj-text-area>
+    </div>
+  </diV>
+  <div class="message-btn button-container">
+    <oj-button class="action-button-primary resize-button" :id="[['okButton1']]" on-click="[[$component.changeStatus.bind($baseModel, $component)]]">
+      <span class="resize-button" data-bind="text:$component.resource.ok"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" :id="[['cancelButton']]" on-click="[[$component.closePopUp]]">
+      <span data-bind="text:$component.resource.cancel"></span>
+    </oj-button>
+  </div>
+</modal-window>
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'copyRequest', header: $component.resource.confirmCopy">
+  <div class="form-main-container">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item message-text label scroll" data-bind="html:$component.resource.copyMessage">
+      </div>
+    </div>
+    <div class="message-btn button-container">
+      <oj-button class="action-button-primary" :id="[['okButton']]" on-click="[[$component.copyComponent]]">
+        <span data-bind="text:$component.resource.ok"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>

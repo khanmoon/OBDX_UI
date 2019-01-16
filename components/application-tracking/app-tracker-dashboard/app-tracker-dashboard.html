@@ -1,0 +1,53 @@
+<div class=" dashboard-container">
+	<div data-bind='component:{name: "app-tracker-summary", params:{rootModel: $data }}'></div>
+	<!-- ko if:$component.isSummaryLoaded() -->
+	<div data-bind='component: { name: "app-tracker-dashboard-view", params: { rootModel: $parent }}'></div>
+	<!-- /ko -->
+</div>
+
+<!-- ko if:$component.isSummaryLoaded() -->
+<!-- ko ifnot : ($component.appDetails().loanSummaryResponse && $component.appDetails().loanSummaryResponse.id) || ($component.appDetails().creditCardSummaryResponse && $component.appDetails().creditCardSummaryResponse.id) || ($component.appDetails().termDepositSummaryResponse && $component.appDetails().termDepositSummaryResponse.accountId) || ($component.appDetails().demandDepositSummaryResponse && $component.appDetails().demandDepositSummaryResponse.accountId) -->
+<div class="button-container product-button-panel" data-bind="if: $component.currentUser().isPrimaryApplicant()">
+	<oj-button id="backButton1" class="action-button-secondary last-2" on-click="[[function(){$baseModel.switchPage({homeComponent:{module:'application-tracking',component: 'application-tracking-base'},context: 'index'},true);}]]">
+		<span data-bind="text:$component.resource.return"></span>
+	</oj-button>
+</div>
+<!-- /ko -->
+<!-- ko if : ($component.appDetails().loanSummaryResponse && $component.appDetails().loanSummaryResponse.id) || ($component.appDetails().creditCardSummaryResponse && $component.appDetails().creditCardSummaryResponse.id) || ($component.appDetails().termDepositSummaryResponse && $component.appDetails().termDepositSummaryResponse.accountId) || ($component.appDetails().demandDepositSummaryResponse && $component.appDetails().demandDepositSummaryResponse.accountId) -->
+<div class="button-container product-button-panel" data-bind="if: $component.currentUser().isPrimaryApplicant()">
+	<oj-button id="backButton1" class="action-button-secondary" on-click="[[function(){$baseModel.switchPage({homeComponent:{module:'application-tracking',component: 'application-tracking-base', query: {context:'index'}}},true, true);}]]">
+		<span data-bind="text:$component.resource.return"></span>
+	</oj-button>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'confirmCancellationModelWindow', header: $component.resource.generic.common.info">
+	<div class="message-text scroll">
+		<span data-bind="text:$component.resource.cancelApplicationModelHeading"></span>
+		<br>
+		<div>
+			<span data-bind="text:$component.resource.cancelApplicationModelMessage"></span>
+
+		</div>
+	</div>
+	<div class="message-btn button-container">
+		<oj-button id="backButton" class="form-button-secondary" on-click="[[function(){$('#confirmCancellationModelWindow').trigger('closeModal')}]]">
+			<span data-bind="text:$component.resource.no"></span>
+		</oj-button>
+		<oj-button id="okButton" class="form-button-primary" on-click="[[cancelApplication]]">
+			<span data-bind="text:$component.resource.yes"></span>
+		</oj-button>
+	</div>
+</modal-window>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'successfullyCancelledModalWindow', header: $component.resource.generic.common.info">
+	<div class="message-text scroll">
+		<span data-bind="text:$baseModel.format($component.resource.cancelApplicationSuccessMessage,{productType: $component.applicationSummary().productType})"></span>
+	</div>
+	<div class="message-btn button-container">
+		<oj-button id="successBackButton" class="form-button-primary" on-click="[[function(){$baseModel.switchPage({homeComponent:{module:'application-tracking',component: 'application-tracking-base'},context: 'index'},true);}]]">
+			<span data-bind="text:$component.resource.generic.common.ok"></span>
+		</oj-button>
+	</div>
+</modal-window>

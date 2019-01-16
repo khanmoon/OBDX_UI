@@ -1,0 +1,28 @@
+<!-- ko if:$component.detailsLoaded  -->
+<div class="form-main-container service-requests">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+      <page-section class="review" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.refNumber, value : $component.id_ref().id"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.dateRequested, value : $baseModel.formatDate($component.id_ref().creationDate)"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.reqType, value : $component.id_ref().requestTypeDescription"></row>
+        <div data-bind="template:{name:'service-request/retail/'+$component.partialName, data:{requestDetails:$component.requestDetails}}"></div>
+
+        <div id="train-container">
+          <oj-train id="train" class="oj-train-stretch" selected-step="{{currentStepValue}}" steps="[[stepArray]]">
+          </oj-train>
+          <div data-bind="template:{afterRender: $component.renderLabels}"></div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-tertiary icon icon-back-arrow" on-click="[[$dashboard.hideDetails]]" slot="startIcon">
+            <span data-bind="text:$component.resource.serviceRequest.back"></span>
+          </oj-button>
+        </div>
+      </page-section>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'service-requests'"></help>
+    </div>
+  </div>
+</div>
+<!-- /ko  -->

@@ -1,0 +1,220 @@
+<!-- ko if: $component.mode() === "REVIEW" -->
+<div data-bind="template: { name: 'review-screen/review-banner-template', data: {header: $component.resourceBundle.generic.common.review,reviewHeader:$component.resourceBundle.info.reviewMessage}}">
+</div>
+<!-- /ko --> 
+<div class="form-main-container">
+        <!-- ko ifnot: $component.mode()==="SUCCESS" -->   
+        <page-section params="baseModel : $baseModel, rootModel: $data, heading:''">
+            <row params="baseModel : $baseModel,rootModel:$parent,label:$component.resourceBundle.transaction.transactionName, value : $component.transactionName()"></row>
+            
+            <div class="oj-flex oj-flex-items-pad row-group">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                    <oj-label for="userType"><span data-bind="text:$component.resourceBundle.common.userType"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+                  <!-- ko if: showuserTypeList()  -->
+                    <oj-checkboxset id="userType" class="oj-choice-direction-column" disabled="[[disabledState]]" value="{{userType}}">
+                        <!-- ko foreach: userTypeOptions  -->
+                        <oj-option value="{{value}}" :id="[['purpose_'+ $index()]]">
+                            <span data-bind="text:label, attr : {'for' :'purpose_' + $index()}"></span>
+                        </oj-option>
+                        <!-- /ko -->
+                    </oj-checkboxset>
+                    <!-- /ko -->
+                </div>
+            </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+              <oj-label for="blackoutType"><span data-bind="text:$component.resourceBundle.transaction.blackoutType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-10 oj-md-6 oj-lg-4 ">
+            <oj-buttonset-one id="blackoutType" disabled="[[disabledState]]" value="{{selectedTypes}}">
+                <oj-option name="selectedTypeButton" value="{{'FULL'}}" disabled="[[!'']]" :id="[['full']]">
+                    <span data-bind="attr: {for: 'full'},text: $component.resourceBundle.transaction.full"></span>
+                </oj-option>
+                <oj-option name="selectedTypeButton" value="{{'DAILY'}}" :id="[['recurring']]">
+                    <span data-bind="attr: {for: 'recurring'},text: $component.resourceBundle.transaction.recurring"></span>
+                </oj-option>
+            </oj-buttonset-one>
+        </div>
+        </div>
+
+            <!-- ko if: !recurring() -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-3 label">
+                    <oj-label for="date"><span data-bind="text:$component.resourceBundle.datetime.startOn"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-2">
+                    <!-- ko ifnot: approverReview() -->
+                    <oj-input-date id="date" name="date" value="{{$component.startDate}}" converter="[[$baseModel.dateConverter]]" disabled="[[disabledState]]"></oj-input-date>
+                    <!-- /ko -->
+                    <!-- ko if: approverReview() -->
+                    <span data-bind="text:$baseModel.formatDate(startDate)"></span>
+                    <!-- /ko -->
+                </div>
+                  <div class="oj-sm-11 oj-md-4 oj-lg-3">
+                    <oj-label for="stime" class="hide-label">
+                        <span data-bind="text:$component.resourceBundle.datetime.startOn"></span>
+                    </oj-label>
+                    <!-- ko ifnot: approverReview() -->
+                    <oj-input-time id="stime" name="date" value="{{$component.blackoutTime()[0].startTime}}" converter="[[$baseModel.timeConverter]]" disabled="[[disabledState]]" time-picker="[[{
+                                                      timeIncrement:'00:01:00:00'}]]"></oj-input-time>
+                      <!-- /ko -->
+                      <!-- ko if: approverReview() -->
+                    <span data-bind="text:$component.blackoutTime()[0].startTime"></span>
+                      <!-- /ko -->
+                  </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                  <oj-label for="end"><span data-bind="text:$component.resourceBundle.datetime.endOn"></span></oj-label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-2">
+                    <!-- ko ifnot: approverReview() -->
+                    <oj-input-date id="end" name="date" value="{{$component.endDate}}" converter="[[$baseModel.dateConverter]]" disabled="[[disabledState]]"></oj-input-date>
+                    <!-- /ko -->
+                    <!-- ko if: approverReview() -->
+                    <span data-bind="text:$baseModel.formatDate(endDate)"></span>
+                    <!-- /ko -->
+                  </div>
+                  <div class="oj-sm-11 oj-md-4 oj-lg-3">
+                    <oj-label class="hide-label" for="endTime"><span data-bind="text:$component.resourceBundle.datetime.endOn"></span></oj-label>
+                    <!-- ko ifnot: approverReview() -->
+                    <oj-input-time id="endTime" name="date" value="{{$component.blackoutTime()[0].endTime}}" converter="[[$baseModel.timeConverter]]" time-picker="[[{
+                        timeIncrement:'00:01:00:00'}]]" disabled="[[disabledState]]"></oj-input-time>
+                    <!-- /ko -->
+                    <!-- ko if: approverReview() -->
+                    <span data-bind="text:$component.blackoutTime()[0].endTime"></span>
+                    <!-- /ko -->
+                  </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: recurring() -->
+           <div class="oj-flex oj-flex-items-pad">
+           <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+               <oj-label for=""><span data-bind="text:$component.resourceBundle.datetime.dateRange"></span></oj-label>
+           </div>
+           <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-5 label">
+               <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+                        <oj-label><span data-bind="text:$component.nls.datetime.from"></span></oj-label>
+                    </div>
+                    <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                        <span data-bind="text:$baseModel.formatDate(rstartDate)"></span>
+                    </div>
+
+                    <div class="oj-sm-12 oj-md-8 oj-lg-1">
+                        <oj-label><span data-bind="text:$component.nls.datetime.to"></span></oj-label>
+                    </div>
+                    <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                        <span data-bind="text:$baseModel.formatDate(rendDate)"></span>
+                    </div>
+                </div>
+            </div>
+           </div>
+
+             <!-- ko foreach :$component.blackoutTime() -->
+
+             <!-- ko if: $index() === 0 -->
+               <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                        <oj-label>
+                            <span data-bind="text:$component.resourceBundle.datetime.time"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-5 label">
+                         <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+                             <oj-label :for="[['stime_'+$index()]]">
+                                <span data-bind="text:$component.resourceBundle.datetime.from"></span>
+                             </oj-label>
+                            </div>
+                            <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                                <!-- ko ifnot: $component.approverReview() -->
+                                <oj-input-time name="date" :id="[['stime_'+$index()]]" value="{{startTime}}" converter="[[$baseModel.timeConverter]]" disabled="[[$component.disabledState]]" time-picker="[[{
+                                    timeIncrement:'00:01:00:00'}]]"></oj-input-time>
+                                <!-- /ko -->
+                                <!-- ko if: $component.approverReview() -->
+                                  <span data-bind="text:startTime"></span>
+                                <!-- /ko -->
+                            </div>
+
+                            <div class="oj-sm-12 oj-md-8 oj-lg-1">
+                                <oj-label :for="[['etime_'+$index()]]"><span data-bind="text:$component.resourceBundle.datetime.to"></span></oj-label>
+                            </div>
+                            <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                               <!-- ko ifnot: $component.approverReview() -->
+                               <oj-input-time id="end" name="date" :id="[['etime_'+$index()]]" value="{{endTime}}" converter="[[$baseModel.timeConverter]]" disabled="[[$component.disabledState]]" time-picker="[[{
+                                   timeIncrement:'00:01:00:00'}]]"></oj-input-time>
+                               <!-- /ko -->
+                               <!-- ko if: $component.approverReview() -->
+                                 <span data-bind="text:endTime"></span>
+                               <!-- /ko -->
+                            </div>
+                       </div>
+                     </div>
+                     </div>
+
+                   <!-- /ko -->
+                   <!-- ko if: $index() > 0 -->
+                      <div class="oj-flex oj-flex-items-pad">
+
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+                        </div>
+
+                          <div class="oj-flex-item oj-sm-11 oj-md-4 oj-lg-5 label">
+                            <div class="oj-flex oj-flex-items-pad">
+
+                                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-2">
+                                   <oj-label :for="[['sttime_'+$index()]]"><span data-bind="text:$component.resourceBundle.datetime.from"></span></oj-label>
+                                </div>
+                                   <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                                    <!-- ko ifnot: $component.approverReview() -->
+                                     <oj-input-time name="date" :id="[['sttime_'+$index()]]" value="{{startTime}}" converter="[[$baseModel.timeConverter]]" disabled="[[$component.disabledState]]" time-picker="[[{
+                                         timeIncrement:'00:01:00:00'}]]"></oj-input-time>
+                                    <!-- /ko -->
+                                    <!-- ko if: $component.approverReview() -->
+                                        <span data-bind="text:startTime"></span>
+                                    <!-- /ko -->
+                                  </div>
+                                  <div class="oj-sm-12 oj-md-8 oj-lg-1">
+                                     <oj-label :for="[['entime_'+$index()]]"><span data-bind="text:$component.resourceBundle.datetime.to"></span></oj-label>
+                                   </div>
+                                   <div class="oj-sm-12 oj-md-8 oj-lg-3">
+                                     <!-- ko ifnot: $component.approverReview() -->
+                                     <oj-input-time name="date" :id="[['entime_'+$index()]]" value="{{endTime}}" converter="[[$baseModel.timeConverter]]" disabled="[[$component.disabledState]]" time-picker="[[{
+                                         timeIncrement:'00:01:00:00'}]]"></oj-input-time>
+                                      <!-- /ko -->
+                                      <!-- ko if: $component.approverReview() -->
+                                      <span data-bind="text:endTime"></span>
+                                      <!-- /ko -->
+                                   </div>
+
+                                </div>
+                              </div>
+
+                      </div>
+                   <!-- /ko -->
+
+           <!-- /ko -->
+
+            <!-- /ko -->
+  </page-section>
+
+        <!-- /ko -->
+    <!-- ko if: $component.mode() === "REVIEW" -->
+        <div class="oj-flex oj-flex-items-pad button-container ">
+            <oj-button id="confirmButton" class="action-button-primary" on-click="[[$component.confirm]]">
+            <span data-bind="text:$component.resourceBundle.common.confirm"></span>
+            </oj-button>
+            <oj-button id="backbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.resourceBundle.transaction.confirmMsg)]]">
+            <span data-bind="text:$component.resourceBundle.common.cancel"></span>
+            </oj-button>
+            <oj-button id="editButton" class="action-button-tertiary" on-click="[[$component.edit]]">
+            <span data-bind="text:$component.resourceBundle.common.back"></span>
+            </oj-button>
+        </div>
+    <!-- /ko -->
+    </div>

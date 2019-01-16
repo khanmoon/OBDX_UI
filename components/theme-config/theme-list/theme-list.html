@@ -1,0 +1,103 @@
+<div>
+    <div class="oj-flex">
+        <div class="oj-flex-item oj-sm-9">
+            <div class="form-main-container">
+                <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+                        <div data-bind='component:{name: "nav-bar",
+                                              params:{rootModel: $data,menuOptions: menuOptions, uiOptions:uiOptions,navBarDescription:$component.resourceBundle.navBarDescription}}'>
+                        </div>
+                    <!-- ko if: $component.menuSelection()==='branding' -->
+                    <div class="oj-flex">
+                        <oj-table :aria-label="[[$component.resourceBundle.alts.themeTable]]" columns="[[[{headerText:$component.resourceBundle.tableHeaders.themeName,field:'brandName'},
+                                {headerText:$component.resourceBundle.tableHeaders.themeDesc,field:'brandDescription'},
+                                {headerText:$component.resourceBundle.tableHeaders.dateCreated,field:'creationDate',renderer: $oj.KnockoutTemplateUtils.getRenderer('formattedDate', true)},
+                                {headerText:$component.resourceBundle.tableHeaders.actions,renderer: $oj.KnockoutTemplateUtils.getRenderer('theme-actions', true)}]]]"
+                            data="[[datasource]]">
+                            <caption class="hide-label" data-bind="text:$component.resourceBundle.alts.themeList"></caption>
+                        </oj-table>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: $component.menuSelection()==='mapping' -->
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-3">
+                            <label for="selectMappingTypeOptions" data-bind="text:$component.resourceBundle.mappingType"></label>
+                        </div>
+                        <div class="oj-flex-item oj-sm-3">
+                            <oj-select-one id="selectMappingTypeOptions" value="{{mappingType}}" :placeholder="[[$component.resourceBundle.selectMapping]]">
+                                <!-- ko foreach:entities -->
+                                <oj-option value="{{$data}}">
+                                    <span data-bind="text:$component.resourceBundle.entities[$data]"></span>
+                                </oj-option>
+                                <!-- /ko -->
+                            </oj-select-one>
+                        </div>
+
+                    </div>
+                    <div class="oj-flex">
+                        <!-- ko if:showMapping() -->
+                        <oj-table columns="[[[{headerText:$component.resourceBundle.tableHeaders.themeId,field:'brandId'},
+                                {headerText:$component.resourceBundle.tableHeaders.mappedValue,field:'mappedValue'},
+                                {headerText:$component.resourceBundle.tableHeaders.mappingType,field:'mappedType'},
+                                {headerText:$component.resourceBundle.tableHeaders.dateCreated,field:'creationDate',renderer: $oj.KnockoutTemplateUtils.getRenderer('formattedDate', true)},
+                                {headerText:$component.resourceBundle.tableHeaders.actions,renderer: $oj.KnockoutTemplateUtils.getRenderer('mapping-actions', true)}]]]"
+                            data="[[$component.mappingList]]">
+                            <caption class="hide-label" data-bind="text:$component.resourceBundle.alts.themeList"></caption>
+                        </oj-table>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                    <script type="text/html" id="theme-actions">
+                        <td>
+                            <div>
+                                <a class="pull-left" href="#" data-bind="attr:{'alt':$component.resourceBundle.alts.viewTheme,
+                                  'title':$baseModel.format($component.resourceBundle.generic.common.clickHere,{action:$component.resourceBundle.alts.viewTheme}) },text:$component.resourceBundle.btns.view,
+                                  click:$component.viewTheme.bind($data, $context.row)"></a>
+                            </div>
+                        </td>
+                    </script>
+                    <script type="text/html" id="mapping-actions">
+                        <td>
+                            <div>
+                                <a class="pull-left" href="#" data-bind="attr:{'alt':$component.resourceBundle.alts.deleteMapping,
+                                  'title':$baseModel.format($component.resourceBundle.generic.common.clickHere,{action:$component.resourceBundle.alts.deleteMapping}) },
+                                  text:$component.resourceBundle.generic.common.delete,click:$component.deleteMapping.bind($context.row, $context.row)"></a>
+                            </div>
+                        </td>
+                    </script>
+                    <script type="text/html" id="formattedDate">
+                        <td>
+                            <div>
+                                <span data-bind="text:$baseModel.formatDate($context.row.creationDate)"></span>
+                            </div>
+                        </td>
+                    </script>
+                </page-section>
+            </div>
+        </div>
+        <div class="oj-flex-item oj-sm-3 help-panel">
+            <!-- ko if:$component.menuSelection()==='branding' -->
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'brand-list'"></help>
+            <!-- /ko -->
+            <!-- ko if:$component.menuSelection()==='mapping' -->
+            <help params="baseModel : $baseModel, rootModel : $component, transaction: 'brand-mapping'"></help>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'deleteMappingConfirm',header:$component.resourceBundle.alts.deleteMapping">
+    <div class="form-main-container message-text">
+        <div class="oj-flex oj-flex-items-pad">
+            <span class="oj-flex-item" data-bind="text:$component.resourceBundle.deleteMsg"></span>
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button id="dialogtopupButton" class="action-button-primary" on-click="[[confirmDelete]]">
+                <span class="icons icon-confirm" slot="startIcon"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.yes"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[$component.closeDelete]]">
+                <span class="icons icon-cancel" slot="startIcon"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.no"></span>
+            </oj-button>
+        </div>
+    </div>
+</modal-window>

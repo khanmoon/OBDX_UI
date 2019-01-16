@@ -1,0 +1,72 @@
+<oj-validation-group id="filterTracker" valid="{{filterGroupValid}}">
+<div class="oj-flex oj-flex-items-pad">
+   <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+    <div class="oj-flex oj-flex-items-pad">
+       <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="lcLinkage-radioset"><span data-bind="text:$component.resourceBundle.labels.lcLinkage"></span></oj-label>
+       </div>
+       <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+          <oj-radioset id="lcLinkage-radioset" :aria-label="[[$component.resourceBundle.labels.lcLinkage]]" class="oj-choice-direction-row" id="lcLinkage-radioset" required="[[true]]" disabled="[[$component.disableLcDetails]]" value="{{$component.filterValues.lcLinked}}">
+            <oj-option value="true" id="yesLinkage" name="lcLinked">
+              <span for="yesLinkage" data-bind="text:$component.resourceBundle.generic.common.yes"></span>
+            </oj-option>
+            <oj-option value="false" id="noLinkage" name="lcLinked">
+              <span for="noLinkage" data-bind="text:$component.resourceBundle.generic.common.no"></span>
+            </oj-option>
+          </oj-radioset>
+       </div>
+     </div>
+ </div>
+
+ <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+ <!-- ko if:$component.filterValues.lcLinked()=== 'true' -->
+ <!-- ko if: $component.lcLookupFlag() === 'true'-->
+ <div class="oj-flex oj-flex-items-pad">
+   <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+       <oj-label class="align-right" for="lcNumber"><span data-bind="text:$component.resourceBundle.labels.lcNumber"></span></oj-label>
+   </div>
+
+   <div class="oj-flex-item oj-sm-8 oj-md-7 oj-lg-5">
+     <oj-input-text id="lcNumber" type="text" maxlength="16" disabled="[[$component.disableLcDetails]]" :invalidcomponenttracker="[[$component.filterValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidLCNumber,{type:'length',options:{
+         min:1,max:16}})]]" value="{{$component.filterValues.lcNumber}}"></oj-input-text>
+   </div>
+
+   <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+       <oj-button class="form-button-secondary verify-button" on-click="[[loadLCDetails]]">
+      <span data-bind="text:$component.resourceBundle.common.labels.verify"></span>
+</oj-button>
+   </div>
+   <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 look-up-link">
+     <a href="#" class="form-button-link" data-bind="attr:{'title':$component.resourceBundle.common.labels.lcLookupTitle},
+     text:$component.resourceBundle.common.labels.lcLookup,click:$component.openLCLookup">
+     </a>
+   </div>
+
+ </div>
+<!-- /ko -->
+<!-- ko ifnot: $component.lcLookupFlag() === 'true'-->
+ <div class="oj-flex oj-flex-items-pad">
+   <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+       <oj-label class="align-right" for="lcNumber"><span data-bind="text:$component.resourceBundle.labels.lcNumber"></span></oj-label>
+   </div>
+   <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+     <div id="applicantName" type="text" data-bind="text: $component.filterValues.lcNumber"></div>
+   </div>
+   <!-- ko ifnot: $component.letterOfCreditDetails-->
+ <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+    <oj-button class="form-button-secondary" on-click="[[$component.resetLC]]">
+      <span data-bind="text:$component.resourceBundle.common.labels.reset"></span>
+</oj-button>
+ </div>
+ <!-- /ko -->
+ </div>
+ <!-- /ko -->
+ <!-- /ko -->
+
+ </div>
+</div>
+</oj-validation-group>
+
+
+ <div data-bind="component: {name: 'lc-lookup', params:{rootModel: $component,
+         lcDetails:$component.lcDetails}}"></div>

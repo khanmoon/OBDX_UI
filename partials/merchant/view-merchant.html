@@ -1,0 +1,177 @@
+<div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.merchantid"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.code"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.merchantdesc"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.description"></span></oj-label>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+          <a href="javascript:void(0)" data-bind="attr:{alt:$component.resource.qrCode,title:$component.resource.clickHereForQrCode},click:$component.showQRCode">
+            <span class="icon icon-qr-code"></span>
+            <span class="qrCode" data-bind="text: $component.resource.qrCode"></span>
+          </a>
+        </div>
+        </div>
+
+        <action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.merchant.accounts"></action-header>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <h6 data-bind="text:$component.resource.merchant.creditAccountDetails"></h6>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.accounttype"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.accountType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.accountidnumber"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.merchantAccount"></span></oj-label>
+            </div>
+            <!-- <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <label data-bind="text:$component.resource.merchant.branch"></label>
+            </div> -->
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.branchesMap[$component.branch()]"></span></oj-label>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <h6 data-bind="text:$component.resource.merchant.serviceCharge"></h6>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-checkboxset id="checkboxSetId2" value={{$component.commissionAccountFlagArray}} disabled="[[$component.viewMode()]]"><oj-option value="commissionAccountFlag" id="commissionAccountFlag"><span for="commissionAccountFlag" data-bind="text:$component.resource.merchant.commissionAccountFlag"></span></oj-option></oj-checkboxset>
+            </div>
+        </div>
+        <!-- ko if:commissionAccountFlag() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.accounttype"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.commissionAccountType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.accountidnumber"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.commissionAccount"></span></oj-label>
+            </div>
+            <!-- <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <label data-bind="text:$component.resource.merchant.branch"></label>
+            </div> -->
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.branchesMap[$component.commissionBranch()]"></span></oj-label>
+            </div>
+        </div>
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-checkboxset id="checkboxSetId3" disabled="[[$component.viewMode()]]" value={{$component.userAccountFlagArray}}><oj-option value="userAccountFlag" id="userAccountFlag"><span for="userAccountFlag" data-bind="text:$component.resource.merchant.userAccountFlag"></span></oj-option></oj-checkboxset>
+            </div>
+        </div>
+        <action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.merchant.responseRedirections"></action-header>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <h6 data-bind="text:$component.resource.merchant.successfultransactions"></h6>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.staticurl"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.static_success_url"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.dynamicurl"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.dynamic_success_url"></span></oj-label>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <h6 data-bind="text:$component.resource.merchant.failedtransactions"></h6>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.staticurl"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.static_failure_url"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.dynamicurl"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.dynamic_failure_url"></span></oj-label>
+            </div>
+        </div>
+
+        <action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.merchant.checksumDetails"></action-header>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.checksumtype"></span></oj-label>
+            </div>
+            <!-- ko if: !$component.checksumType() -->
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.resource.merchant.none"></span></oj-label>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.checksumType"></span></oj-label>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.checksumAlgorithm"></span></oj-label>
+            </div>
+            <!-- ko if:!$component.checksumAlgorithm() -->
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.resource.merchant.none"></span></oj-label>
+            </div>
+            <!-- /ko -->
+
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.checksumAlgorithm"></span></oj-label>
+            </div>
+
+        </div>
+
+    <!-- ko if:$component.checksumAlgorithm() && $component.checksumAlgorithm() !== "none" -->
+     <div class="oj-flex oj-flex-items-pad">
+
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+                <oj-label><span data-bind="text:$component.resource.merchant.securityKey"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+                <oj-label><span data-bind="text:$component.securityKey"></span></oj-label>
+            </div>
+    </div>
+      <!-- /ko -->

@@ -1,0 +1,62 @@
+<div class="form-main-container">
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+		<label for="mappingCode" data-bind="text: $component.nls.fieldname.mappingCode"></label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6 label">
+		<oj-input-text maxlength="20" id="mappingCode" :aria-label="[[$component.nls.fieldname.mappingCode]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{mappingCode}}"></oj-input-text>
+	</div>
+
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+		<label for="mappingDesc" data-bind="text: $component.nls.fieldname.mappingDesc"></label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6 label">
+		<oj-input-text maxlength="80" id="mappingDesc" :aria-label="[[$component.nls.fieldname.mappingDesc]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{mappingDesc}}"></oj-input-text>
+	</div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+		<label for="usertype" class="talign-left" data-bind="text: $component.nls.fieldname.groupCode"></label>
+	</div>
+	<!-- ko if: groupCodeEnumsLoaded -->
+	<div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+		<oj-select-one id="usertype" :placeholder="[[nls.fieldname.select]]" value="{{selectedUserGroupId}}">
+			<!-- ko foreach: groupCodeEnums -->
+			<oj-option value="{{groupCodeId}}"><span data-bind="text:groupCodeName"></span></oj-option>
+			<!-- /ko -->
+		</oj-select-one>
+
+	</div>
+	<!-- /ko -->
+</div>
+</page-section>
+</div>
+
+<div class="oj-flex oj-flex-items-pad button-container">
+	<oj-button class="action-button-primary" on-click="[[$component.fetchMapping]]">
+      <span data-bind="text:$component.nls.buttons.search"></span>
+</oj-button>
+<oj-button class="action-button-secondary" on-click="[[$component.resetForm]]">
+		<span data-bind="text:$component.nls.buttons.clear"></span>
+</oj-button>
+	<oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.nls.buttons.cancel"></span>
+</oj-button>
+
+</div>
+<!-- ko if: mappingDataLoaded -->
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.fieldname.mappingDetails">
+
+<oj-table id="table" :aria-label="[[$component.nls.fieldname.mappingDetails]]" columns-default="[[{sortable:'enabled'}]]" columns="[[[{headerText:$component.nls.fieldname.mappingCode,field:'mappingCode','renderer': $oj.KnockoutTemplateUtils.getRenderer('mapping_link', true) },{headerText:$component.nls.fieldname.mappingDesc,field:'mappingDesc'},{headerText:$component.nls.fieldname.groupCode,field:'userGroupName'}]]]" data="[[$component.mappingDatasource]]">
+<caption class="hide-label" data-bind="text:$component.nls.fieldname.mappingDetails"></caption>
+</oj-table>
+<script type="text/html" id="mapping_link">
+	<td>
+		<a href="javascript:void(0)" data-bind="text:$context.row.mappingCode, click:$component.fetchMappingDetails.bind($data,$context.row) "></a>
+	</td>
+</script>
+</page-section>
+
+<!-- /ko -->

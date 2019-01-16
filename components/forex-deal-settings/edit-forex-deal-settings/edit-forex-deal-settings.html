@@ -1,0 +1,124 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="form-main-container oj-flex-item oj-sm-9">
+        <!-- ko if:$component.stageTwo() -->
+        <div class="oj-flex-item oj-lg-7">
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.editForexDealSettings.label1">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div data-bind="css: $component.forexDealTimerFlag() ? 'oj-lg-12' : 'oj-lg-4'">
+                        <oj-table id='table' data='[[pairsdataSource]]' :aria-label="[[$component.resource.editForexDealSettings.dealsListTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('rowtemplate', true)]]" columns="[[$component.forexDealTimerFlag() ? [{headerText:$component.resource.editForexDealSettings.currCombo},{headerText:$component.resource.editForexDealSettings.refreshTimeFrame},{headerText:$component.resource.editForexDealSettings.deleteAction}] : [{headerText:$component.resource.editForexDealSettings.currCombo},{headerText:$component.resource.editForexDealSettings.deleteAction}]]]">
+                        </oj-table>
+                    </div>
+                    <div class="oj-flex-item oj-lg-12">
+                        <oj-paging-control id="paging" data='[[pairsdataSource]]' page-size='10' slot='bottom'>
+                        </oj-paging-control>
+                    </div>
+                </div>
+            </page-section>
+            <script type="text/html" id="rowtemplate">
+                <!-- ko ifnot:action -->
+                <tr class="oj-sm-12 oj-md-4 oj-lg-6">
+                    <td data-bind="css : $component.forexDealTimerFlag() ? 'oj-lg-3' : 'oj-lg-8'">
+                        <div class="oj-label-inline">
+                            <span data-bind="text: currencyPair"></span>
+                        </div>
+                    </td>
+                    <!-- ko if:$component.forexDealTimerFlag() -->
+                    <td class="oj-lg-6">
+                        <div class="oj-label-inline">
+                            <span data-bind="text: timeFrame"></span>
+                        </div>
+                    </td>
+                    <!-- /ko -->
+                    <td data-bind="css: $component.forexDealTimerFlag() ? 'oj-lg-3' : 'oj-lg-4'">
+                        <div class="oj-flex oj-flex-items-pad oj-label-inline edit-forex-deal">
+                            <!-- ko if:$component.forexDealTimerFlag() -->
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 edit">
+                                <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.editForexDealSettings.editMsg,'title':$component.resource.editForexDealSettings.editMsgTitle}, click:$component.editPair.bind($data)">
+                        <span class="icons icon-remarks"></span></a>
+                            </div>
+                            <!-- /ko -->
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 right">
+                                <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.editForexDealSettings.deletemsg,'title':$component.resource.editForexDealSettings.deleteIconTitle}, click:$component.deletePair.bind($data)">
+                        <span class="icons icon-delete"></span></a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                <!-- ko if:action -->
+                <tr class="oj-sm-12 oj-md-4 oj-lg-6">
+                    <td class="oj-lg-3">
+                        <div class="oj-label-inline">
+                            <span data-bind="text: currencyPair"></span>
+                        </div>
+                    </td>
+                    <td class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-lg-4">
+                            <oj-input-text id="mins" value="{{mins}}" class=" oj-lg-3" placeholder="{{$component.resource.editForexDealSettings.mm}}" validators="[[$baseModel.getValidator('NUMBERS',$component.resource.editForexDealSettings.errorMessage.minorError,{type: 'numberRange',options: {min: 0, max: 59}})]]"></oj-input-text>
+                        </div>
+                        <div class="oj-flex-item oj-lg-2">
+                            <oj-label for="mins" class="oj-lg-2 oj-label-inline">
+                                <span data-bind="text: $component.resource.editForexDealSettings.mins"></span>
+                            </oj-label>
+                        </div>
+                        <div class="oj-flex-item oj-lg-4">
+                            <oj-input-text id="secs" value="{{secs}}" class=" oj-lg-3" placeholder="{{$component.resource.editForexDealSettings.ss}}" validators="[[$baseModel.getValidator('NUMBERS',$component.resource.editForexDealSettings.errorMessage.minorError,{type: 'numberRange',options: {min: 0, max: 59}})]]"></oj-input-text>
+                        </div>
+                        <div class="oj-flex-item oj-lg-2">
+                            <oj-label for="secs" class="oj-lg-2 oj-label-inline">
+                                <span data-bind="text: $component.resource.editForexDealSettings.secs"></span>
+                            </oj-label>
+                        </div>
+                    </td>
+                    <td class="oj-lg-3">
+                        <div class="oj-flex oj-flex-items-pad oj-label-inline edit-forex-deal">
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 edit">
+                                <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.editForexDealSettings.saveMsg,'title':$component.resource.editForexDealSettings.saveMsgTitle}, click:$component.saveEdited.bind($data)">
+                                    <span class="icons icon-save">
+                                    </span>
+                            </a>
+                            </div>
+                            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6 right">
+                                <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.editForexDealSettings.deletemsg,'title':$component.resource.editForexDealSettings.deleteIconTitle}, click:$component.deletePair.bind($data)">
+                            <span class="icons icon-delete"></span>
+                            </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!-- /ko -->
+            </script>
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button class="action-button-primary" id="button-save" on-click="[[save]]">
+                    <span data-bind="text:$component.resource.editForexDealSettings.save"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$dashboard.openDashBoard.bind()]]">
+                    <span data-bind="text:$component.resource.editForexDealSettings.cancel"></span>
+                </oj-button>
+                <oj-button class="action-button-tertiary" id="button-reset" on-click="[[reset]]">
+                    <span data-bind="text:$component.resource.editForexDealSettings.reset"></span>
+                </oj-button>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'view-forex-deal-settings'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'deleteTemplate',         header:$component.deleteModalHeader">
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() },
+        text: $component.deleteModalMessage"></div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary btn proceed-main-btn" id="button-yes" on-click="[[$component.delete]]">
+            <span data-bind="text:$component.resource.editForexDealSettings.yes"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary btn proceed-main-btn" id="button-no" on-click="[[$component.closePopup]]">
+            <span data-bind="text:$component.resource.editForexDealSettings.no"></span>
+        </oj-button>
+    </div>
+</modal-window>

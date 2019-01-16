@@ -1,0 +1,132 @@
+<div class="form-main-container view-bills">
+  <!-- ko if: $baseModel.small() -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 trade-heading-banner">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12">
+          <oj-label for="billNo"><span data-bind="text:$component.resourceBundle.labels.billNo"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12">
+          <span for="billNo" data-bind="text:$component.collectionDetails.id"></span>
+        </div>
+      </div>
+   </div>
+  </div>
+  <!-- /ko -->
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : $baseModel.small() === false ?$baseModel.format($component.resourceBundle.labels.billNumber,{billNumber:$component.collectionDetails.id}):''">
+
+    <div class="oj-flex oj-flex-items-pad">
+
+      <!-- ko if: $baseModel.medium() -->
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-2" data-bind='component: {name: "nav-bar",
+      params:{rootModel: $data, menuOptions: menuOptions, uiOptions: uiOptions,
+        navBarDescription: $component.resourceBundle.leftMenu.viewBillDetails}}'></div>
+      <!-- /ko -->
+
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2 view-lc-menu">
+    <oj-navigation-list  :aria-label="[[$component.resourceBundle.leftMenu.viewBillMenu]]" drill-mode="none" selection='[["main"]]' >
+        <ul id="listview">
+          <!-- ko foreach:menuOptions -->
+         <li class="oj-flex oj-flex-items-pad grid-row-group" data-bind="attr: {id: $data.id}">
+           <a href="#" data-bind="text:$data.label,click:$component.showSection.bind($data,$data.data,$data.templatePath)"></a>
+         </li>
+         <!-- /ko -->
+        </ul>
+    </oj-navigation-list>
+  </div>
+<!-- /ko -->
+
+  <!-- ko if : sectionName() === $component.resourceBundle.leftMenu.viewBillDetails -->
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-10" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+        <oj-accordion id="tradeFinanceAccordion">
+          <!-- ko foreach:stages -->
+          <!-- ko if: visible() === 'true' -->
+          <oj-collapsible expanded="[[expanded]]">
+            <h3 slot="header">
+               <span>
+                 <span data-bind="text: stageName"></span>
+               </span>
+            </h3>
+            <div class="stage-content" data-bind="template:{name : templateName}"> </div>
+          </oj-collapsible>
+          <!-- /ko -->
+          <!-- /ko -->
+          </oj-accordion>
+        <div class="button-container">
+          <!-- ko ifnot: $baseModel.small() -->
+             <oj-button id="cancel" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+               <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+            </oj-button>
+          <!-- /ko -->
+           <oj-button id="back" class="action-button-tertiary" on-click="[[goBack]]">
+             <span slot="startIcon" class="icons icon-back-arrow"></span>
+              <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+          </oj-button>
+        </div>
+      </div>
+
+      <!-- /ko -->
+
+   <!-- ko ifnot : sectionName() === $component.resourceBundle.leftMenu.viewBillDetails -->
+   <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-10">
+     <div data-bind="template:{name : sectionName}"></div>
+     <div class="button-container" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+       <!-- ko ifnot: $baseModel.small() -->
+       <oj-button id="goCancel" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+         <span slot="startIcon" class="icons icon-cancel"></span>
+         <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+      </oj-button>
+       <!-- /ko -->
+        <oj-button id="goBack" class="action-button-tertiary" on-click="[[goBack]]">
+          <span slot="startIcon" class="icons icon-back-arrow"></span>
+          <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+       </oj-button>
+     </div>
+   </div>
+  <!-- /ko -->
+
+  </div>
+
+  <!-- ko if: $baseModel.small() -->
+  <a href="#" data-bind="click: $component.showFloatingPanel">
+    <div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+  </a>
+  <floating-panel params="baseModel : $baseModel, panelId: 'panelDD', rootModel: $component">
+    <ul>
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data, $component.resourceBundle.leftMenu.viewBillDetails, $component.resourceBundle.leftMenu.viewBillDetails)">
+          <span class="icons icon-summary"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.viewBillDetails"></span>
+        </a>
+      </li>
+      <!-- ko if : $component.collectionDetails.lcReferenceOur -->
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data, $component.resourceBundle.leftMenu.discrepancies,'trade-finance/view-collections/discrepancies-details')">
+          <span class="icons icon-issue"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.discrepancies"></span>
+        </a>
+      </li>
+      <!-- /ko -->
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data, $component.resourceBundle.leftMenu.viewSwiftMessages,'trade-finance/swift-message')">
+          <span class="icons icon-mailbox-view"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.viewSwiftMessages"></span>
+        </a>
+      </li>
+      <li>
+        <a href="#" data-bind="click : showSection.bind($data, $component.resourceBundle.leftMenu.viewAdvice,'trade-finance/advices')">
+          <span class="icons icon-review"></span>
+          <span data-bind="text:$component.resourceBundle.leftMenu.viewAdvice"></span>
+        </a>
+      </li>
+      </ul>
+
+  </floating-panel>
+  <!-- /ko -->
+
+</page-section>
+
+
+</div>

@@ -1,0 +1,78 @@
+<!-- ko if:$component.fundingOtionsListLoaded() -->
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <div class="oj-flex oj-flex-items-pad margin-top-20">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-md-offset-1 oj-lg-offset-1 ">
+      <h4 class="form-heading" data-bind="text:$component.resource.urFundingSource"></h4>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item  oj-md-offset-1 oj-lg-offset-1 ">
+      <span class="text" id="mainlabelid" data-bind="text:$component.resource.specifyMethod"></span>
+    </div>
+  </div>
+
+  <div class=" oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-md-offset-1 oj-lg-offset-2">
+    <div class="">
+      <div required id="radiosetBasicDemoId" aria-labelledby="mainlabelid">
+        <oj-radioset id="fundingDetails" class="oj-choice-direction-row" value="{{fundingType}}" on-value-changed="[[$component.getAccountFundingList.bind($data,$data)]]">
+          <!-- ko foreach: $component.fundingOptionsList-->
+          <div class="oj-radioset-wrapper">
+            <oj-option value="[[code]]">
+              <span data-bind="text:$component.resource.fundingOption[code]"></span>
+            </oj-option>
+          </div>
+          <!-- ko if:$component.fundingType()==='CARD_CREDIT' && code==='CARD_CREDIT' -->
+          <div class="">
+            <div data-bind="template:{name:'origination/card-payment', data:{fundingOption:$component.fundingType()}}"></div>
+          </div>
+          <!-- /ko  -->
+          <!-- ko if:$component.fundingType()==='CARD_DEBIT'  && code==='CARD_DEBIT'-->
+          <div class="">
+            <div data-bind="template:{name:'origination/card-payment', data:{fundingOption:$component.fundingType()}}"></div>
+          </div>
+          <!-- /ko  -->
+          <!-- ko if:$component.fundingType()==='DDAO'  && code==='DDAO'-->
+          <div class="">
+            <div data-bind="template:{name:'origination/linked-account-payment', data:{fundingOption:$component.fundingType()}}"></div>
+          </div>
+          <!-- /ko  -->
+          <!-- ko if:$component.fundingType()==='COLL'  && code==='COLL'-->
+          <div class="">
+            <div data-bind="template:{name:'origination/linked-account-payment', data:{fundingOption:$component.fundingType()}}"></div>
+          </div>
+          <!-- /ko  -->
+          <!-- ko if:$component.fundingType()==='LATER'  && code==='LATER'-->
+          <div class="oj-flex oj-flex-items-pad-group">
+
+          </div>
+          <!-- /ko  -->
+          <!-- /ko  -->
+        </oj-radioset>
+      </div>
+    </div>
+  </div>
+</page-section>
+<!-- /ko  -->
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item left oj-sm-12">
+    <oj-button id="submitAccountFunding" class="form-button-secondary" :aria-label="[[$component.resource.submitAccountFunding]]" on-click="[[$component.checkAccountFundingInfo.bind($data,$component)]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+  </div>
+</div>
+
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+  <modal-window class="message form-main-container" params="baseModel : $baseModel, rootModel : $component,id:'SAVEFUNDINGSOURCE', header: $component.resource.generic.common.info">
+    <div class="message-text label scroll" data-bind="html:$component.resource.securityReason"></div>
+    <div class="message-btn button-container">
+      <oj-button id="saveButton" class="action-button-primary" on-click="[[$component.saveAccountFundingInfo.bind($data)]]">
+        <span data-bind="text:$component.resource.generic.common.yes"></span>
+      </oj-button>
+      <oj-button id="hideButton" class="action-button-secondary" on-click="[[function(){$('#SAVEFUNDINGSOURCE').trigger('closeModal')}]]">
+        <span data-bind="text:$component.resource.generic.common.no"></span>
+      </oj-button>
+    </div>
+  </modal-window>
+</div>

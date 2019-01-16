@@ -1,0 +1,27 @@
+<div class="percentage-graph">
+<div class="oj-flex oj-flex-items-pad percentage-graph__header percentage-header" data-bind="with:progressBarData">
+
+	<!-- ko if:showLabel -->
+    <div class="oj-flex-item oj-sm-12 percentage-header__label">
+        <span data-bind="attr:{id : 'progressLabel-' + uniqueId},text:label"></span>
+    </div>
+    <!-- /ko -->
+
+    <div class="oj-flex-item oj-sm-12">
+        <oj-status-meter-gauge class="svg__percentageBar"
+                  id="rogauge"
+                  tooltip.renderer="[[$component.toolTipCallBack]]"
+                  min="0"
+                  max="{{max}}"
+                  thresholds="[[thresholdValues]]"
+                  value="{{value}}"
+                  metric-label.rendered="off"
+                  metric-label.scaling="none"
+                  plot-area.rendered="on"
+                  animationDuration =2000
+                  animationOnDisplay="auto"
+                  readonly></oj-status-meter-gauge>
+              </div>
+</div>
+</div>
+<div data-bind="template: {afterRender: $component.afterRender}"></div>

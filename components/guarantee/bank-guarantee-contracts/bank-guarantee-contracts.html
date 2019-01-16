@@ -1,0 +1,101 @@
+<div class="page-section-content">
+   <oj-validation-group id="contractsTracker" valid="{{contractsGroupValid}}">
+   <!-- ko if:$component.dataLoaded -->
+   <div class="oj-flex oj-flex-items-pad">
+     <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+         <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <label for="contractTable" class="align-left" data-bind="text: $component.resourceBundle.contractsDetails.labels.tableHeader"></label>
+         </div>
+         <!-- ko ifnot:$baseModel.small() -->
+         <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 doc-table">
+            <oj-table id="contractTable" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('row_tmpl_contract', true)]]" columns="[[[{headerTemplate:'hdr_contract_checkbox_tmpl',sortable:'none',style:'width: 10%'},{headerText:$component.resourceBundle.contractsDetails.labels.condition,style:'width: 20%'},{headerText:$component.resourceBundle.contractsDetails.labels.description,style:'width: 70%'}]]]" edit-mode="[['rowEdit']]" data="[[$component.datasourceForContracts]]">
+               <caption class="hide-label" data-bind="text:$component.resourceBundle.contractsDetails.labels.contractsRequired"></caption>
+               <template slot="hdr_contract_checkbox_tmpl">
+                     <oj-checkboxset on-value-changed='[[$component.selectAllContractsListener]]' value="{{$component.allContractsSelected}}"><oj-option value="true" id="headerboxForDoc_labelID" name="selectionParentContract"><span class="oj-checkbox-label hide-label" for="headerboxForDoc_labelID" data-bind="text:$component.resourceBundle.contractsDetails.labels.contractsRequired"></span></oj-option></oj-checkboxset>
+               </template>
+              </oj-table>
+            <oj-paging-control id="paging" slot="bottom" :page-size="[[5]]" data="[[$component.datasourceForContracts]]">
+            </oj-paging-control>
+         </div>
+      <!-- /ko -->
+
+      <!-- ko if:$baseModel.small() -->
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-checkboxset value="{{$component.allContractsSelected}}"><oj-option value="true" id="headerboxForDoc" name="selectionParentContract"><span class="oj-checkbox-label" for="headerboxForDoc" data-bind="text:$component.resourceBundle.common.labels.selectAll"></span></oj-option></oj-checkboxset>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+            <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('contract_list_card',true)}]]" selection-mode="[['single']]" data="[[$component.datasourceForContracts]]">
+            </oj-list-view>
+            <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[2]]" data="[[$component.datasourceForContracts]]">
+            </oj-paging-control>
+        </div>
+      </div>
+      <!-- /ko -->
+      </div>
+   </div>
+   <!-- /ko -->
+   <!-- ko if : $component.mode() === 'CREATE' -->
+   <div class="oj-flex oj-flex-items-pad">
+     <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <oj-button id="continueButton" class="action-button-secondary" on-click="[[continueFunc]]">
+            <span slot="startIcon" class="icons icon-submit"></span>
+            <span data-bind="text:$component.resourceBundle.common.labels.continue"></span>
+        </oj-button>
+     </div>
+   </div>
+ <!-- /ko -->
+ </oj-validation-group>
+</div>
+
+
+
+<script type="text/html" id="row_tmpl_contract">
+   <tr class="bg-contracts-record">
+     <td>
+         <oj-checkboxset class="checkBoxSetId" value="{{contractSelected}}">
+           <oj-option value="true" name="contractSelected" :id="[['name_'+ $baseModel.incrementIdCount()]]">
+             <span class="oj-checkbox-label hide-label" data-bind="text:condition, attr : {'for' :'name_' + $baseModel.incrementIdCount()}"></span>
+           </oj-option>
+         </oj-checkboxset>
+     </td>
+     <td>
+       <div class="oj-flex oj-sm-12 oj-md-12 oj-lg-12">
+         <label class="hide-label" data-bind="text:$component.resourceBundle.contractsDetails.labels.condition, attr : {'for' :'tenor_' + $baseModel.currentIdCount()}"></label>
+           <span type="text" data-bind="attr : {'id' :'code_' + $baseModel.currentIdCount()}, text:condition"></span>
+       </div>
+     </td>
+     <td>
+       <div class="oj-flex">
+         <label class="hide-label" data-bind="text:$component.resourceBundle.contractsDetails.labels.description, attr : {'for' :'description_' + $baseModel.currentIdCount()}"></label>
+         <oj-text-area :id="[['description_'+ $baseModel.currentIdCount()]]" disabled="[[$data.contractSelected()[0] ==='true'? false:true]]" required="[[true]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL',$component.resourceBundle.tradeFinanceErrors.documentDetails.invalidContractDesc,{type:'length',options:{
+                 min:0,max:1000}})]]" value="{{description}}"></oj-text-area>
+         </div>
+     </td>
+   </tr>
+</script>
+
+<script type="text/html" id="contract_list_card">
+  <li data-bind="attr: {id: $data.condition}">
+
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-checkboxset value="{{contractSelected}}"><oj-option value="true" name="contractSelected" :id="[['name_'+ condition]]"><span class="oj-checkbox-label description" data-bind="text:condition, attr : {'for' :'name_' + condition}"></span></oj-option></oj-checkboxset>
+              </div>
+            </div>
+          </div>
+
+            <div class="oj-flex-item oj-sm-12 doc-card">
+            <label class="hide-label" data-bind="text:$component.resourceBundle.contractsDetails.labels.description, attr : {'for' :'description_' + condition}"></label>
+            <oj-text-area :id="[['description_'+ condition]]" disabled="[[$data.contractSelected()[0] ==='true'? false:true]]" required="[[true]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL',$component.resourceBundle.tradeFinanceErrors.documentDetails.invalidContractDesc,{type:'length',options:{
+                    min:0,max:1000}})]]" value="{{description}}"></oj-text-area>
+            <!-- , -->
+              </div>
+  </div>
+  </li>
+</script>

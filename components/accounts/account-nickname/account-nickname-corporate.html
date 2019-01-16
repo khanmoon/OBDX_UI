@@ -1,0 +1,52 @@
+<div class="oj-flex oj-flex-items-pad cust-details">
+    <!-- ko if: nicknameEditable()-->
+    <!-- ko ifnot: showNicknameInput()-->
+    <!-- ko if: hasAccountNickname() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 cust-details-heading nickname">
+        <span data-bind=" text:nickname "></span>
+        <a href="#" data-bind="click: editNickname ">
+            <!-- <img data-bind="loadImage: 'account-nickname/edit.png'" />  -->
+            <span class="icons icon-edit"></span>
+        </a>
+        <a href="#" data-bind="click: deleteNickname ">
+            <!-- <img data-bind="loadImage: 'account-nickname/close.png'" />  -->
+            <span class="icons icon-close"></span>
+        </a>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: hasAccountNickname() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 cust-details-heading nickname">
+        <span data-bind=" text:$component.locale.searchFields.labels.addNickname"></span>
+        <a href="#" data-bind="click: addNickname">
+            <!-- <img data-bind="loadImage:'account-nickname/add.png'" /> -->
+            <span class="icons icon-plus-circle"></span>
+        </a>
+
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: showNicknameInput()-->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 cust-details-heading nickname">
+        <span class="oj-choice-row-inline">
+              <oj-label for="nicknameInput" class="hide-label"><span data-bind="text:$component.locale.searchFields.labels.nicknameInput"></span></oj-label>
+              <oj-input-text id="nicknameInput" required maxlength="20" value="{{nicknameFromInput}}"></oj-input-text></span>
+        <a href="#" data-bind="click: saveNickname">
+            <!-- <img data-bind="loadImage: 'account-nickname/save.png'" />  -->
+            <span class="icons icon-save"></span>
+        </a>
+        <!-- back button -->
+        <a href="#" data-bind="click: goBack ">
+            <!-- <img data-bind="loadImage: 'account-nickname/close.png'" />  -->
+            <span class="icons icon-close"></span>
+          </a>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko ifnot: nicknameEditable()-->
+    <!-- ko if: hasAccountNickname() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 cust-details-heading nickname">
+        <span data-bind=" text:nickname "></span>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>

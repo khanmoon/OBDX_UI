@@ -1,0 +1,147 @@
+<!-- ko if : $component.mode()==='VIEW' || $component.mode()==='REVIEW' -->
+
+<row params="baseModel : $baseModel, rootModel : $root, label : $component.nls.message_template.recipientType , value :selectedRecipientType()"></row>
+<row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.message_template.locale , value :$component.nls.locale[localeSelected()]"></row>
+<row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.message_template.alertType , value :$component.nls.alertType[recipientAlertType()]"></row>
+<row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.message_template.destinationType"></row>
+
+<!-- ko foreach:$component.messageTemplate.messageTemplateDTO -->
+<!-- ko if: $data.destinationType()==='EMAIL' -->
+<div data-bind="template: { name: 'alerts/email-template',data:$component}"></div>
+<!-- /ko -->
+<!-- ko if: $data.destinationType()==='SECURE_MAIL_BOX' -->
+<div data-bind="template: { name: 'alerts/secure-mail-box-template',data:$component}"></div>
+<!-- /ko -->
+<!-- ko if: $data.destinationType()==='SMS' -->
+<div data-bind="template: { name: 'alerts/sms-template',data:$component}"></div>
+<!-- /ko -->
+<!-- ko if: $data.destinationType()==='PUSH_NOTIFICATION' -->
+<div data-bind="template: { name: 'alerts/push-template',data:$component}"></div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko foreach:$component.messageTemplate.messageTemplateDTO.dataAttributes -->
+<row params="baseModel : $baseModel, rootModel : $root, label : $baseModel.format($component.nls.message_template.dataAttributeIndex, {index: ($index()+1)}),value: attributeId"> </row>
+<row params="baseModel : $baseModel, rootModel : $root, label : $baseModel.format($component.nls.message_template.attributeMaskIndex, {index: ($index()+1)}),value: attributeMask"> </row>
+<!-- /ko -->
+
+<!-- /ko -->
+
+<!-- ko if : $component.mode()==='CREATE' || $component.mode()==='EDIT' -->
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5 label">
+    <oj-label for="recipientTypes"><span data-bind="text:$component.nls.message_template.recipientType"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6">
+    <!-- ko if : checkSelect() -->
+    <oj-select-one id="recipientTypes" required :id="[['recipientTypes'+ $index()]]" :aria-label="[[$component.nls.message_template.recipientType]]" on-value-changed="[[$component.recipientTypeChangeHandler]]" :invalidcomponenttracker="[[$component.invalidTracker]]"
+      :placeholder="[[$component.nls.genericTemplate.select]]" value="{{selectedRecipientType}}">
+      <!-- ko foreach: $component.recipientTypes() -->
+      <!-- ko if : $data.children -->
+      <!-- ko foreach: children -->
+      <oj-optgroup label="[[$data.label]]">
+        <!-- ko foreach: $data.children -->
+        <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+        <!-- /ko -->
+      </oj-optgroup>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+    </oj-select-one>
+    <!-- /ko -->
+  </div>
+</div>
+
+<!-- ko if: $component.localeLoaded -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5 label">
+    <oj-label for="localeType"><span data-bind="text:$component.nls.message_template.locale"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+    <oj-select-one id="localeType" required :id="[['localeType'+ $index()]]" :aria-label="[[$component.nls.message_template.locale]]" on-value-changed="[[$component.localeChangeHandler]]" :invalidcomponenttracker="[[$component.invalidTracker]]" :placeholder="[[$component.nls.genericTemplate.select]]"
+      value="{{localeSelected}}">
+      <!-- ko foreach : locales -->
+      <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+      <!-- /ko -->
+    </oj-select-one>
+  </div>
+</div>
+<!-- /ko -->
+
+<!-- ko if: alertTypeLoaded -->
+<!-- ko if:alertType() ==="S" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5 label">
+    <oj-label for="recipientAlertType"><span data-bind="text:$component.nls.message_template.alertType"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-6">
+    <oj-select-one id="recipientAlertType" required :id="[['recipientAlertTypes'+ $index()]]" :aria-label="[[$component.nls.message_template.alertType]]" on-value-changed="[[$component.recipientAlertTypeChangeHandler]]" :invalidcomponenttracker="[[$component.invalidTracker]]"
+      :placeholder="[[$component.nls.genericTemplate.select]]" value="{{recipientAlertType}}">
+      <!-- ko foreach : alertTypeList -->
+      <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+      <!-- /ko -->
+    </oj-select-one>
+  </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if:alertType()==="M" -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+    <oj-label class="">
+      <span data-bind="text:$component.nls.message_template.alertType"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+    <span class="break-word nameSpan" data-bind="text:$component.nls.alertType[$component.alertType()]"></span>
+  </div>
+</div>
+
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5 align">
+    <oj-label for="destinationType"><span data-bind="text:$component.nls.message_template.destinationType"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-7">
+    <!-- ko if:destinationTypes().length>0 -->
+    <oj-checkboxset id="alerts" value="{{templates}}">
+      <!-- ko foreach:destinationTypes() -->
+
+      <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+
+      <span>
+        <!-- ko if: $component.showTemplateEmail() && $component.saveEditEmail() && code==='EMAIL'  -->
+        <a href="javascript:void(0)" data-bind="text:$component.nls.genericTemplate.edit,click: $component.editEmail"></a>
+        <!-- /ko -->
+        <!-- ko if: $component.showTemplateSecure() && $component.saveEditSecure() && code==='SECURE_MAIL_BOX' -->
+        <a href="javascript:void(0)" data-bind="text:$component.nls.genericTemplate.edit,click: $component.editSecure"></a>
+        <!-- /ko -->
+        <!-- ko if: $component.showTemplateSms() && $component.saveEditSms() && code==='SMS' -->
+        <a href="javascript:void(0)" data-bind="text:$component.nls.genericTemplate.edit,click: $component.editSms"></a>
+        <!-- /ko -->
+        <!-- ko if: $component.showTemplatePush() && $component.saveEditPush() && code==='PUSH_NOTIFICATION' -->
+        <a href="javascript:void(0)" data-bind="text:$component.nls.genericTemplate.edit,click: $component.editPush"></a>
+        <!-- /ko -->
+      </span>
+
+      <!-- ko if: $component.showTemplateEmail() && $component.saveEditEmail()===false && code==='EMAIL' -->
+      <div class="destination-templates" data-bind="template: { name: 'alerts/email-template',data:$component}"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.showTemplateSecure() && $component.saveEditSecure()===false && code==='SECURE_MAIL_BOX' -->
+      <div class="destination-templates" data-bind="template: { name: 'alerts/secure-mail-box-template',data:$component}"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.showTemplateSms() && $component.saveEditSms()===false && code==='SMS' -->
+      <div class="destination-templates" data-bind="template: { name: 'alerts/sms-template',data:$component}"></div>
+      <!-- /ko -->
+      <!-- ko if: $component.showTemplatePush() && $component.saveEditPush()===false && code==='PUSH_NOTIFICATION' -->
+      <div class="destination-templates" data-bind="template: { name: 'alerts/push-template',data:$component}"></div>
+      <!-- /ko -->
+
+      <!-- /ko -->
+    </oj-checkboxset>
+    <!-- /ko -->
+  </div>
+</div>
+<!-- /ko -->

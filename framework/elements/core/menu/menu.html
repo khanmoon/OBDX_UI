@@ -1,0 +1,160 @@
+<div data-bind="template: {afterRender : $component.getRootContext($root)}"></div>
+<div class="menu-container">
+  <a href="#" tabindex="0" aria-hidden="true"></a>
+  <div class="welcome-box">
+    <!-- ko if:$baseModel.small() -->
+    <!-- ko if:$root.isUserDataSet() -->
+    <div class="welcome-box-item">
+      <div>
+        <span data-bind="text : $baseModel.format($component.nls.welcome,{firstName : $dashboard.userData.userProfile.firstName, lastName : $dashboard.userData.userProfile.lastName})"></span>
+      </div>
+      <div class="info" data-bind="text : $baseModel.format($component.nls.lastLogin,{lastLoginDate : $baseModel.formatDate($dashboard.userData.userProfile.lastLoginTime, 'dateTimeFormat')})"></div>
+    </div>
+    <!-- /ko -->
+    <div class="welcome-box-item">
+      <div class="alternate-primary" data-bind="component: {name:'entity-switch', params:{rootModel : $root}}"></div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $component.showRoleSwitcher() -->
+    <div class="welcome-box-item">
+      <oj-label class="alternate-primary" for="roleswitcher">
+        <span data-bind="text:$component.nls.roles.currentView"></span>
+      </oj-label>
+      <oj-select-one class="alternate-primary" id="roleswitcher" value="{{$root.currentRole}}" on-value-changed=[[$component.roleSwitcherChanged]]>
+        <!-- ko foreach: $component.userMappedRoles  -->
+        <oj-option value="{{moduleName}}">
+          <span data-bind="text:$component.nls.roles[moduleName]"></span>
+        </oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:$component.languageOptions().length > 1 -->
+    <div class="welcome-box-item">
+      <oj-label class="alternate-primary hide-label" for="switchLanguage">
+        <span data-bind="text:$component.nls.changeLanguage"></span>
+      </oj-label>
+      <oj-select-one class="alternate-primary" id="switchLanguage" value="{{$baseModel.getLocale()}}" on-value-changed="[[$component.switchLanguage]]" :placeholder="[[$component.nls.selectLanguage]]">
+        <!-- ko foreach: $component.languageOptions -->
+        <oj-option value="{{code}}">
+          <span data-bind="text:description"></span>
+        </oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+  </div>
+  <!-- ko if: $component.menuLoaded() -->
+  <oj-navigation-list root-label=" " tabindex="-1" class="mobileMenu" drill-mode="sliding" selection="{{selectedItem}}" item.selectable="{{$component.itemOnly}}">
+    <ul>
+      <!-- ko foreach: $component.listItem -->
+      <!-- ko if:$component.currentSegment==='ANON' -->
+      <!-- ko if:name==='login' -->
+      <!-- ko ifnot:$root.isUserDataSet() -->
+      <li data-bind="attr: {id: name}">
+        <a href="#" data-bind="attr:{'alt':$component.nls.menu.groups[name]  }">
+          <span class="oj-navigationlist-item-icon icons" data-bind="css:$data.icon"></span>
+          <!-- ko text: $component.nls.menu.groups[name] -->
+          <!-- /ko -->
+        </a>
+      </li>
+      <!-- /ko -->
+      <!-- ko if:$root.isUserDataSet() -->
+      <li data-bind="attr: {id: name}">
+        <a href="#" data-bind="attr:{'alt':$component.nls.menu.groups['logout']  }">
+          <span class="oj-navigationlist-item-icon icons" data-bind="css:$data.icon"></span>
+          <!-- ko text: $component.nls.menu.groups.logout -->
+          <!-- /ko -->
+        </a>
+      </li>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if:(name!=='login' && name!=='claim-payment-dashboard' && name!=='register') -->
+      <li data-bind="attr: {id: name}">
+        <a href="#" data-bind="attr:{'alt':$component.nls.menu.groups[name]  }">
+          <span class="oj-navigationlist-item-icon icons" data-bind="css:$data.icon"></span>
+          <!-- ko text: $component.nls.menu.groups[name] -->
+          <!-- /ko -->
+        </a>
+      </li>
+      <!-- /ko -->
+      <!-- ko if:name==='claim-payment-dashboard' -->
+      <!-- ko ifnot:$root.isUserDataSet() -->
+      <li data-bind="attr: {id: name}">
+        <a href="#" data-bind="attr:{'alt':$component.nls.menu.groups[name]  }">
+          <span class="oj-navigationlist-item-icon icons" data-bind="css:$data.icon"></span>
+          <!-- ko text: $component.nls.menu.groups[name] -->
+          <!-- /ko -->
+        </a>
+      </li>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if:name==='register' -->
+      <!-- ko ifnot:$root.isUserDataSet() -->
+      <li data-bind="attr: {id: name}">
+        <a href="#" data-bind="attr:{'alt':$component.nls.menu.groups[name]  }">
+          <span class="oj-navigationlist-item-icon icons" data-bind="css:$data.icon"></span>
+          <!-- ko text: $component.nls.menu.groups[name] -->
+          <!-- /ko -->
+        </a>
+      </li>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if:$component.currentSegment!=='ANON' -->
+      <li data-bind="attr: {id: name}">
+        <!-- ko if:name==='login' -->
+        <!-- ko ifnot:$root.isUserDataSet() -->
+        <a href="#" data-bind="attr:{'alt':$component.nls.menu.groups[name]  }">
+          <span class="oj-navigationlist-item-icon icons" data-bind="css:$data.icon"></span>
+          <!-- ko text: $component.nls.menu.groups[name] -->
+          <!-- /ko -->
+        </a>
+        <!-- /ko -->
+        <!-- ko if:$root.isUserDataSet() -->
+        <a href="#" data-bind="attr:{'alt':$component.nls.menu.groups['logout']  }">
+          <span class="oj-navigationlist-item-icon icons" data-bind="css:$data.icon"></span>
+          <!-- ko text: $component.nls.menu.groups.logout -->
+          <!-- /ko -->
+        </a>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if:(name!=='login') -->
+        <a href="#" data-bind="attr:{'alt':$component.nls.menu.groups[name]  }">
+          <span class="oj-navigationlist-item-icon icons" data-bind="css:$data.icon"></span>
+          <!-- ko text: $component.nls.menu.groups[name] -->
+          <!-- /ko -->
+        </a>
+        <!-- /ko -->
+        <!-- ko if: $data.submenus -->
+        <ul>
+          <!-- ko foreach:submenus -->
+          <li data-bind="attr: {id: $parent.name + '~' + name}">
+            <!-- ko if: $data.submenus -->
+            <a href="#" data-bind="attr:{'alt':$component.nls.menu.groups[name]  }">
+              <!-- ko text: $component.nls.menu.groups[name] -->
+              <!-- /ko -->
+            </a>
+            <ul>
+              <!-- ko foreach:submenus -->
+              <li data-bind="attr: {id: $parentContext.$parent.name + '~' + $parent.name + '~' + name}">
+                <a href="#" data-bind="text:$component.nls.menu.groups[name]"></a>
+              </li>
+              <!-- /ko -->
+            </ul>
+            <!-- /ko -->
+            <!-- ko ifnot:$data.submenus -->
+            <a href="#" data-bind="text:$component.nls.menu.groups[name]"></a>
+            <!-- /ko -->
+          </li>
+          <!-- /ko -->
+        </ul>
+        <!-- /ko -->
+      </li>
+      <!-- /ko -->
+      <!-- /ko -->
+    </ul>
+  </oj-navigation-list>
+  <!-- /ko -->
+</div>

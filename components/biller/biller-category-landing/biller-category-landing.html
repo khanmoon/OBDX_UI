@@ -1,0 +1,105 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+  <div class="oj-flex-item oj-lg-9 oj-md-12 oj-sm-12 design-biller">
+    <div class="form-main-container">
+       <!-- ko if: $component.isLanding() -->
+    <page-section params="rootModel : $data, heading : ''">
+        <!-- ko if: $component.categoriesLoaded() -->
+         <oj-validation-group id="categoryTracker">
+        <div class="oj-flex oj-flex-items-pad">
+          <oj-label for="billerCategory" class="oj-flex-item oj-lg-3 oj-md-8 oj-sm-12 label"><span data-bind=" text:$component.resource.billerCategory.category"></span></oj-label>
+          <oj-select-one class="oj-flex-item oj-lg-4 oj-md-8 oj-sm-12" required id="billerCategory" :invalidcomponenttracker="[[$component.invalidTracker]]" :placeholder="[[$component.resource.common.select]]" value="{{$component.billerCategory}}">
+            <!-- ko foreach: $component.sortedBillerCategoryRel -->
+            <oj-option value="{{categoryCode}}"><span data-bind="text:category"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+    </oj-validation-group>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-md-12 oj-lg-12 oj-sm-12">
+                <a href="javascript:void(0)" data-bind="attr:{alt:$component.resource.billerCategory.alt,title:$component.resource.billerCategory.title},click:$dashboard.loadComponent.bind($data,'biller-category-maintenance',{},$component),text:$component.resource.billerCategory.manage">
+                </a>
+            </div>
+        </div>
+    </page-section>
+    <div class="oj-flex-item button-container">
+
+                <oj-button class="action-button-primary" on-click="[[$component.filterBillerCategoryMap]]">
+      <span data-bind="text:$component.resource.common.search"></span>
+</oj-button>
+<!-- ko if : !$component.mappingListLoaded() && !$component.isEdit() -->
+<oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+<span data-bind="text:$component.resource.common.cancel"></span>
+</oj-button>
+ <!-- /ko -->
+              </div>
+    <!-- /ko -->
+
+<!-- ko if: $component.mappingListLoaded() -->
+<!-- ko if : $component.refreshTable -->
+<page-section params="rootModel : $component, heading : ''">
+<div class="oj-flex oj-flex-items-pad">
+
+<script type="text/html" id="icon-delete-template">
+        <td>
+        <!-- ko if: $component.isEdit() -->
+            <a href="javascript:void(0)" data-bind="attr:{altDelete:$component.resource.billerCategory.altDelete,titleDelete:$component.resource.billerCategory.titleDelete},click:$component.deleteBiller.bind($data,$context.row.id)">
+            <div class="icon icon-delete delete-icon"></div>
+            </a>
+            <!-- /ko -->
+        </td>
+
+</script>
+
+        <oj-table id="listTable" :aria-label="[[$component.resource.billerCategory.billerCategory]]" columns="[[[{headerText:$component.resource.billerCategory.billerCode,headerClassName:'left',field:'id',sortable:'none'},{headerText:$component.resource.billerCategory.billerName,headerClassName:'left',field:'description',sortable:'none'},{headerText:$component.isEdit()?$component.resource.billerCategory.action:'',headerClassName:'left',renderer: $oj.KnockoutTemplateUtils.getRenderer('icon-delete-template', true),sortable:'none'}]]]" selection-mode="[[{column:'none',row:'none'}]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.categoryDetailsDataSource()]]">
+        </oj-table>
+  </div>
+</page-section>
+    <!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <!-- ko if : $component.isEdit() -->
+    <oj-button id="back" class="action-button-tertiary" on-click="[[$component.cancel]]">
+      <span data-bind="text:$component.resource.common.back"></span>
+</oj-button>
+    <!-- /ko -->
+    <!-- ko if : !$component.isEdit() -->
+    <oj-button id="editBiller" class="action-button-primary" on-click="[[$component.editBiller]]">
+      <span data-bind="text:$component.resource.common.edit"></span>
+</oj-button>
+
+    <oj-button id="closeTableView" class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:$component.resource.common.done"></span>
+</oj-button>
+<!-- ko if : $component.mappingListLoaded() -->
+<oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+<span data-bind="text:$component.resource.common.cancel"></span>
+</oj-button>
+<!-- /ko -->
+    <!-- /ko -->
+</div>
+
+<modal-window params="rootModel : $component,id:'deleteBiller', header : $component.resource.billerCategory.billerdelete, closeHandler : cancelDeleteBiller">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-12"><span data-bind="text : $baseModel.format($component.resource.billerCategory.deleteBiller, { billerId : $component.billerDescription()})"><span>
+    </div>
+<div class="oj-flex-item button-container">
+        <oj-button id="confirmDelete" class="form-button-primary" on-click="[[$component.deleteBiller]]">
+      <span class="icons icon-delete" slot="startIcon"></span><span data-bind="text:$component.resource.common.delete"></span>
+</oj-button>
+        <oj-button id="cancelDelete" class="form-button-secondary" on-click="[[$component.cancelDeleteBiller]]">
+      <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resource.common.cancel"></span>
+</oj-button>
+    </div>
+    </div>
+</modal-window>
+
+<!-- /ko -->
+</div>
+</div>
+<!-- ko if: $baseModel.large() -->
+ <div class="oj-flex-item oj-lg-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'biller-category-landing'"></help>
+  </div>
+  <!-- /ko -->
+</div>

@@ -1,0 +1,220 @@
+
+<div class="template-list-container">
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-9">
+<div class="form-main-container">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+
+        <div class="oj-flex oj-flex-items-pad  oj-sm-12">
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+            <oj-label for="limitPackageCode" id="limitPackageCode">
+              <span data-bind="text:$component.nls.limit_package_search.code_search"></span>
+            </oj-label>
+          </div>
+
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-2">
+            <oj-input-text id="limitPackageCode" on-submitifenter="[[submitIfEnter]]" validators="[[$baseModel.getValidator('APPLICATION_NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" :aria-label="[[$component.nls.limit_package_search.code_search]]"
+              value="{{searchParameters.name}}"></oj-input-text>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad  oj-sm-12">
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+            <oj-label for="limitPackageDesc" id="limitPackageDesc">
+              <span data-bind="text:$component.nls.limit_package_search.desc_search"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-4">
+            <oj-input-text id="limitPackageDesc" on-submitifenter="[[submitIfEnter]]" validators="[[$baseModel.getValidator('APPLICATION_DESCRIPTION')]]" :invalidcomponenttracker="[[$component.validationTracker]]" :aria-label="[[$component.nls.limit_package_search.desc_search]]"
+              value="{{searchParameters.description}}"></oj-input-text>
+          </div>
+        </div>
+
+        <!-- ko ifnot: showOptionRecords -->
+        <div class="oj-flex oj-flex-items-pad  oj-sm-12">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+          <a href="javascript:void(0)" data-bind="click:$component.showOptions">
+                <span class="form-button-link" data-bind="text:$component.nls.limit_package_search.showMoreOptions">	</span>
+                <span class="icon icon-arrow-down">
+        </span>
+            </a>
+        </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: showOptionRecords -->
+        <!-- ko ifnot:isCorpAdmin -->
+
+        <div class="oj-flex oj-flex-items-pad ">
+
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+
+            <oj-label for="searchPackage_role" id="searchPackage_role">
+              <span data-bind="text:$component.nls.limit_package_search.role"></span>
+            </oj-label>
+          </div>
+          <oj-select-one class="oj-flex-item  oj-lg-4" :id="[['searchPackage_role']]" required="[[true]]" translations="[[{'required':{messageDetail:nls.limit_package_search.please_select}}]]" value="{{searchParameters.assignableEntities[0].key.value}}" :placeholder="[[$component.nls.limit_package_search.select_roles]]">
+            <!-- ko foreach:limitsData().enterpriseRoles  -->
+            <oj-option value="{{enterpriseRoleId}}"><span data-bind="text:enterpriseRoleName"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+            <oj-label for="accessType" id="accessTypeLabel">
+              <span data-bind="text:$component.nls.limit_package_search.access_point"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-4">
+            <oj-radioset class="oj-choice-direction-row" id="accessPointType" labelled-by="accessTypeLabel" value="{{searchParameters.accessPointGroupType}}" required="[[true]]">
+              <oj-option :id="[['AccessPoint']]" value="{{'SINGLE'}}"><span data-bind="text:$component.nls.limit_package_search.access_point_search"></span></oj-option>
+              <oj-option :id="[['AccessPointGroup']]" value="{{'GROUP'}}"><span data-bind="text:$component.nls.limit_package_search.access_point_group_search"></span></oj-option>
+            </oj-radioset>
+          </div>
+        </div>
+        <!-- ko if:$component.searchParameters.accessPointGroupType ==="SINGLE" -->
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3">
+          </div>
+          <oj-select-one class="oj-flex-item  oj-lg-4" :id="[['searchPackage_accessPoint']]" required="[[true]]" translations="[[{'required':{messageDetail:nls.limit_package_search.access_point}}]]" value="{{searchParameters.accessPointValue}}" :placeholder="[[$component.nls.limit_package_search.access_point]]"
+            options="[[groupData]]"> </oj-select-one>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.searchParameters.accessPointGroupType ==="GROUP" -->
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3">
+          </div>
+          <oj-select-one class="oj-flex-item  oj-lg-4" :id="[['searchPackage_accessPoint']]" required="[[true]]" translations="[[{'required':{messageDetail:nls.limit_package_search.access_point}}]]" value="{{searchParameters.accessPointValue}}" :placeholder="[[$component.nls.limit_package_search.access_point]]"
+            :invalidComponentTracker="[[$component.validationTracker]]">
+            <!-- ko foreach:limitsData().accessPointGroup()  -->
+            <oj-option value="{{accessPointGroupId}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad ">
+
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+            <oj-label for="searchPackage_currency" id="searchPackage_currency">
+              <span data-bind="text:$component.nls.limit_package_search.currency"></span>
+            </oj-label>
+          </div>
+          <oj-select-one class="oj-flex-item  oj-lg-4" :id="[['searchPackage_currency']]" required="[[true]]" translations="[[{'required':{messageDetail:nls.limit_package_search.currency}}]]" value="{{searchParameters.currency}}" :placeholder="[[$component.nls.limit_package_search.currency]]">
+            <!-- ko foreach:limitsData().currencies -->
+            <oj-option value="{{code}}"><span data-bind="text:code"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+        <!--<div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+            <label for="fromDate" data-bind="text:$component.nls.limit_package_search.fromDate"></label>
+          </div>
+          <div class="oj-flex-item  oj-lg-4">
+            <oj-input-date id="fromDate" max="[[$component.today]]" value="{{searchParameters.fromDate}}" class="oj-inputdatetime-date-only oj-component oj-inputdatetime oj-form-control oj-complete"><div class="oj-inputdatetime-input-container" role="combobox" aria-haspopup="true" tabindex="-1" id="ui-id-100"><input data-oj-internal="" type="text" data-oj-popup-ui-id-97-parent="" placeholder="" class="oj-inputdatetime-input oj-component-initnode" aria-describedby="98_inputHelp"id="fromDate|input"><span class="oj-inputdatetime-input-trigger"><span title="Select Date" class="oj-inputdatetime-calendar-icon oj-clickable-icon-nocontext oj-component-icon oj-enabled oj-default"></span><div class="oj-helper-hidden-accessible" aria-hidden="true" id="98_inputHelp">Press Key down or Key up for access to Calendar</div></span></div></oj-input-date>
+          </div>
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-2 label">
+            <label for="toDate" span data-bind="text:$component.nls.limit_package_search.toDate"></label>
+          </div>
+          <div class="oj-flex-item  oj-lg-3">
+            <oj-input-date id="toDate" min="[[searchParameters.fromDate]]" max="[[$component.today]]" value="{{searchParameters.toDate}}" class="oj-inputdatetime-date-only oj-component oj-inputdatetime oj-form-control oj-complete"><div class="oj-inputdatetime-input-container" role="combobox" aria-haspopup="true" tabindex="-1"><input data-oj-internal="" type="text" data-oj-popup-ui-id-98-parent="" placeholder="" class="oj-inputdatetime-input oj-component-initnode" aria-describedby="100_inputHelp"id="toDate|input"><span class="oj-inputdatetime-input-trigger"><span title="Select Date" class="oj-inputdatetime-calendar-icon oj-clickable-icon-nocontext oj-component-icon oj-enabled oj-default"></span><div class="oj-helper-hidden-accessible" aria-hidden="true" id="100_inputHelp">Press Key down or Key up for access to Calendar</div></span></div></oj-input-date>
+          </div>
+        </div>-->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item  oj-sm-12 oj-md-6 oj-lg-3 label">
+            <label for="generationDate" data-bind="text: $component.nls.limit_package_search.updationDate"> </label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
+            <oj-input-date :id="[['frDt']]" max="[[$component.today]]" value="{{searchParameters.fromDate}}"
+            :placeholder="[[$component.nls.limit_package_search.fromDate]]"></oj-input-date>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
+            <oj-input-date :id="[['tDt']]" min="[[searchParameters.fromDate]]" max="[[$component.today]]" value="{{searchParameters.toDate}}" :placeholder="[[$component.nls.limit_package_search.toDate]]" ></oj-input-date>
+          </div>
+          <div data-bind="template:{afterRender: $component.fileRefIdValueChangeHandler}"></div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad  oj-sm-12">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+          <a href="javascript:void(0)" data-bind="click:$component.showLessOptions, attr:{'aria-label': $component.nls.limit_package_search.showMoreOptions}">
+                                  <span class="form-button-link" data-bind="text:$component.nls.limit_package_search.showLessOptions"> </span>
+                                  <span class="icon icon-arrow-up"></span>
+                              </a>
+        </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad  oj-sm-12">
+          <div class="oj-flex-item button-container">
+            <oj-button class="action-button-primary" on-click="[[$component.showPackageList]]">
+              <span data-bind="text:$component.nls.btns.search"></span>
+            </oj-button>
+              <!-- ko ifnot:$component.showPackageData() -->
+            <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0, void 0)]]">
+              <span data-bind="text:$component.nls.btns.cancel"></span>
+            </oj-button>
+            <!-- /ko -->
+
+            <oj-button class="action-button-tertiary" on-click="[[clearSearchParams]]">
+              <span data-bind="text:$component.nls.btns.clear"></span>
+            </oj-button>
+          </div>
+        </div>
+
+        <!-- ko if:$component.showPackageData() -->
+        <oj-table id="table" :aria-label="[[$component.nls.limit_package_search.search_result]]" data="[[pagingDatasource]]" columns-default.sortable='enabled' columns='[[headerText]]'>
+          <caption class="hide-label" data-bind="text:$component.nls.limit_package_search.search_result"></caption>
+          <oj-paging-control id="paging" data='[[pagingDatasource]]' page-size='10' slot='bottom'>
+          </oj-paging-control>
+        </oj-table>
+
+        <script type="text/html" id="amountWithCurrencyField">
+          <td>
+            <div>
+              <a href="javascript:void(0)" data-bind="text:$context.row.name,click:$component.showPackageDetails.bind($data,$context.row)"></a>
+            </div>
+          </td>
+        </script>
+
+        <script type="text/html" id="descriptionTemplate">
+          <td>
+            <span data-bind="text:$context.row.desc"></span>
+          </td>
+        </script>
+        <script type="text/html" id="accessPointTemplate">
+          <td>
+            <span data-bind="text:$context.row.accessPointValue"></span>
+          </td>
+        </script>
+        <script type="text/html" id="currencyTemplate">
+          <td>
+            <span data-bind="text:$context.row.currency"></span>
+          </td>
+        </script>
+        <script type="text/html" id="lastUpdatedTemplate">
+          <td>
+            <span data-bind="text:$context.row.lastUpdatedOn"></span>
+          </td>
+        </script>
+        <script type="text/html" id="rolesTemplate">
+          <td>
+            <span data-bind="text:$context.row.role"></span>
+          </td>
+        </script>
+
+        <!-- /ko -->
+      </page-section>
+      <!-- ko if:$component.showPackageData() -->
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0, void 0)]]">
+      <span data-bind="text:$component.nls.btns.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+      </div>
+    </div>
+
+    <div class="oj-flex-item oj-sm-3 help-panel">
+
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'financial-limit-package'"></help>
+    </div>
+
+  </div>
+
+  </div>

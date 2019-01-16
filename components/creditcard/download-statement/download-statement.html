@@ -1,0 +1,84 @@
+<div class="eStatement">
+
+  <div class="oj-flex oj-flex-items-pad eStatement__details eStatement-details">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 eStatement-details__selectNote">
+        <div data-bind="html : $component.resource.eStatement.selectNote"></div>
+    </div>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+      <label data-bind="attr:{for: 'selectYear'},text:$component.resource.eStatement.year"></label>
+      <oj-select-one :id="[['selectYear']]" :placeholder="[[$component.resource.common.select]]" value="{{$component.selectedStatementYear}}">
+        <!-- ko foreach: statementYears -->
+          <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3">
+      <label data-bind="attr:{for: 'selectMonth'},text:$component.resource.eStatement.month"></label>
+      <oj-select-one :id="[['selectMonth']]" :placeholder="[[$component.resource.common.select]]" value="{{$component.selectedStatementMonth}}">
+        <!-- ko foreach: statementMonths -->
+              <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6 eStatement-details__searchButton">
+      <oj-button class="form-button-primary" on-click="[[fetchEstatement]]">
+      <span class="icons icon-subscribe" slot="startIcon"></span><span data-bind="text:$component.resource.eStatement.search"></span>
+</oj-button>
+    </div>
+
+</div>
+
+<!-- ko if:statementsFetched -->
+<!-- ko ifnot:$baseModel.small() -->
+<div class="oj-flex oj-flex-items-pad eStatement__table-data">
+    <oj-table :aria-label="[[$component.resource.eStatement.tableHeading]]" columns="[[[{
+																									 headerText:$component.resource.eStatement.fromDate,field:'fromDate'},{
+																									  headerText:$component.resource.eStatement.toDate,field:'toDate'},{
+                                                     headerText:$component.resource.eStatement.download,field:'downloadLink',template:'download_link'}]]]" columns-default="[[{sortable:'enabled'}]]" data="[[datasource]]">
+    <caption class="hide-label" data-bind="text:$component.resource.eStatement.tableName"></caption>
+    </oj-table>
+    <script type="text/html" id="download_link">
+      <td>
+        <a href="#" data-bind="attr:{alt:$component.resource.eStatement.typePDF,title:$component.resource.eStatement.typePDF,'aria-label':$component.resource.eStatement.typePDF},text: $component.resource.eStatement.typePDF, click: $component.getpdf.bind($data)"></a>
+      </td>
+    </script>
+</div>
+<!-- /ko -->
+<!-- ko if:$baseModel.small() -->
+<div class="grid-main-container" params="rootModel : $data, heading : ''">
+    <label class="hide-label" data-bind="attr:{'for':'listview'},text:$component.resource.eStatement.tableHeading"></label>
+    <oj-list-view id="listview" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template_download',true)}]]" data="[[$component.datasource]]">
+    </oj-list-view>
+
+    <div class="center">
+        <oj-paging-control slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.datasource]]"></oj-paging-control>
+    </div>
+
+    <script type="text/html" id="content_template_download">
+
+        <li data-bind="attr: {id: ('download-statement-item'+$data.uniqueId)}">
+
+            <div class="oj-flex oj-flex-items-pad">
+
+                <div class="oj-flex-item" data-bind="text: $data.fromDate"></div>
+
+                <div class="oj-flex-item" data-bind="text : $data.toDate"></div>
+                <div class="oj-flex-item ">
+                   <a href="#" data-bind="text: $component.resource.eStatement.typePDF, click: $component.getpdf.bind($data)"></a>
+                </div>
+
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+            </div>
+        </li>
+    </script>
+    </div>
+    <!-- /ko -->
+<!-- /ko -->
+<br>
+<br>
+</div>

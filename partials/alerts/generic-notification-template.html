@@ -1,0 +1,112 @@
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="pull-left alert-icons oj-lg-12">
+
+      <!-- ko foreach:$current.row.activityEventAction.alertDTO.recipientMessageTemplates-->
+      <!-- ko if:keyDTO.recipient=== $component.validRecipient() && keyDTO.recipientCategory=== $component.validRecipientCategory() && alertType === $component.validAlertType()-->
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 pull-left">
+          <!-- ko if:$current.row.emailExists -->
+          <!-- ko if:$current.row.emailSelected -->
+          <a href="javascript:void(0)" data-bind="attr:{'aria-label':$component.resourceBundle.subscription.alertType},click: $component.unSubscribedPreference.bind($data,$parents[0].accountId,$current.row,'EMAIL')">
+            <span class="icons icon-mailbox">
+              <span class="badge">
+                <span class="icons icon-check"></span>
+              </span>
+            </span>
+          </a>
+          <!-- /ko -->
+          <!-- ko ifnot:$current.row.emailSelected -->
+          <a href="javascript:void(0)" data-bind="attr:{'aria-label':$component.resourceBundle.subscription.alertType},click:$component.subscribedPreference.bind($data,$parents[0].accountId,$current.row,'EMAIL')">
+            <span class="icons icon-mailbox"></span>
+          </a>
+          <!-- /ko -->
+          <!-- /ko -->
+
+          <!-- ko ifnot:$current.row.emailExists -->
+
+          <a href="javascript:void(0)" data-bind="" class="disabled">
+            <span class="icons icon-mailbox "></span>
+          </a>
+
+          <!-- /ko -->
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 pull-left">
+          <!-- ko if:$current.row.smsExists -->
+          <!-- ko if:$current.row.smsSelected -->
+          <a href="javascript:void(0)" data-bind="attr:{'aria-label':$component.resourceBundle.subscription.alertType},click:$component.unSubscribedPreference.bind($data,$parents[0].accountId,$current.row,'SMS')">
+            <span class="icons icon-sms">
+              <span class="badge">
+                <span class="icons icon-check"></span>
+              </span>
+            </span>
+          </a>
+          <!-- /ko -->
+          <!-- ko ifnot:$current.row.smsSelected -->
+          <a href="javascript:void(0)" data-bind="attr:{'aria-label':$component.resourceBundle.subscription.alertType},click:$component.subscribedPreference.bind($data,$parents[0].accountId,$current.row,'SMS')">
+            <span class="icons icon-sms"></span>
+          </a>
+          <!-- /ko -->
+          <!-- /ko -->
+
+          <!-- ko ifnot:$current.row.smsExists -->
+
+          <a href="javascript:void(0)" data-bind="" class="disabled">
+            <span class="icons icon-sms"></span>
+          </a>
+
+          <!-- /ko -->
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 pull-left">
+          <!-- ko if:$current.row.mailboxExists -->
+          <!-- ko if:$current.row.mailboxSelected -->
+          <a href="javascript:void(0)" data-bind="attr:{'aria-label':$component.resourceBundle.subscription.alertType},click:$component.unSubscribedPreference.bind($data,$parents[0].accountId,$current.row,'SECURE_MAIL_BOX')">
+            <span class="icons icon-on-screen-alerts">
+              <span class="badge">
+                <span class="icons icon-check"></span>
+              </span>
+            </span>
+          </a>
+          <!-- /ko -->
+          <!-- ko ifnot:$current.row.mailboxSelected -->
+          <a href="javascript:void(0)" data-bind="attr:{'aria-label':$component.resourceBundle.subscription.alertType},click:$component.subscribedPreference.bind($data,$parents[0].accountId,$current.row,'SECURE_MAIL_BOX')">
+            <span class="icons icon-on-screen-alerts"></span>
+          </a>
+          <!-- /ko -->
+          <!-- /ko -->
+
+          <!-- ko ifnot:$current.row.mailboxExists -->
+          <a href="javascript:void(0)" data-bind="" class="disabled">
+            <span class="icons icon-on-screen-alerts"></span>
+          </a>
+          <!-- /ko -->
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 pull-left">
+          <!-- ko if:$current.row.pushNotificationExists -->
+          <!-- ko if:$current.row.pushNotificationSelected -->
+          <a href="javascript:void(0)" data-bind="attr:{'aria-label':$component.resourceBundle.subscription.alertType},click:$component.unSubscribedPreference.bind($data,$parents[0].accountId,$current.row,'PUSH_NOTIFICATION')">
+            <span class="icons icon-push-notifications">
+              <span class="badge">
+                <span class="icons icon-check"></span>
+              </span>
+            </span>
+          </a>
+          <!-- /ko -->
+          <!-- ko ifnot:$current.row.pushNotificationSelected -->
+          <a href="javascript:void(0)" data-bind="attr:{'aria-label':$component.resourceBundle.subscription.alertType},click:$component.subscribedPreference.bind($data,$parents[0].accountId,$current.row,'PUSH_NOTIFICATION')">
+            <span class="icons icon-push-notifications "></span>
+          </a>
+          <!-- /ko -->
+          <!-- /ko -->
+
+          <!-- ko ifnot:$current.row.pushNotificationExists -->
+          <a href="javascript:void(0)" data-bind="" class="disabled">
+            <span class="icons icon-push-notifications"></span>
+          </a>
+          <!-- /ko -->
+        </div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+  </div>

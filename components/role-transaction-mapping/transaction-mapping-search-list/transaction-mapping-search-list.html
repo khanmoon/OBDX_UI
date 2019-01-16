@@ -1,0 +1,73 @@
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : nls.common.appRoleDetails">
+</page-section>
+
+
+      <div  class="transaction-mapping-tab" data-bind='component:{name: "nav-bar",
+      params:{rootModel: $data,menuOptions: menuOptions, uiOptions:uiOptions,navBarDescription:$component.nls.navBarDescription}}'>
+      </div>
+    <!-- ko if: $component.selectedItem()==='internal'-->
+    <!-- ko if: $component.resultListLoaded()-->
+    <!-- ko foreach:$component.roleListInternal -->
+    <!-- ko if: roleListDataSource.data.length-->
+    <oj-table :id="[['internal_'+$baseModel.incrementIdCount()]]" :aria-label="[[roleListDataSource.data[0].userType]]" columns="[[[{headerText:roleListDataSource.data[0].userType,field:'name',style:'width: 25%',template:('rolelist_template_internal'+ $baseModel.currentIdCount())}]]]"
+      columns-default="[[{sortable:'enabled'}]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('rolelist_template_internal'+ $baseModel.currentIdCount(), true)]]" data="[[roleListDataSource]]" selection-mode="[[{row:'multiple',column:'multiple'}]]">
+      <caption class="hide-label" data-bind="text:roleListDataSource.data[0].userType"></caption>
+      <template slot="'rolelist_template_internal'+ $baseModel.currentIdCount()">
+        <tr class="record">
+          <td>
+            <a href="#" data-bind="text:applicationRoleName"></a>
+          </td>
+          <td>
+            <span data-bind="text:applicationRoleDescription"></span>
+          </td>
+        </tr>
+      </template>
+    </oj-table>
+    <script type="text/html" data-bind="attr:{id:'rolelist_template_internal'+ $baseModel.currentIdCount()}">
+      <tr class="record">
+        <td>
+          <a href="#" data-bind="text:applicationRoleName ,click:$component.appRoleRead.bind($data) "></a>
+        </td>
+        <td>
+          <span data-bind="text:applicationRoleDescription"></span>
+        </td>
+      </tr>
+    </script>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+
+
+<!-- ko if: $component.selectedItem()==='external'-->
+<!-- ko if: $component.resultListLoaded()-->
+<!-- ko foreach:$component.roleListExternal -->
+<!-- ko if: roleListDataSource.data.length-->
+<oj-table :id="[['external_'+$baseModel.incrementIdCount()]]" :aria-label="[[roleListDataSource.data[0].userType]]" columns="[[[{headerText:roleListDataSource.data[0].userType,field:'name',style:'width: 25%',template:('rolelist_template_external'+ $baseModel.currentIdCount())}]]]"
+  columns-default="[[{sortable:'enabled'}]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('rolelist_template_external'+ $baseModel.currentIdCount(), true)]]" data="[[roleListDataSource]]" selection-mode="[[{row:'multiple',column:'multiple'}]]">
+  <caption class="hide-label" data-bind="text:roleListDataSource.data[0].userType"></caption>
+  <template slot="'rolelist_template_external'+ $baseModel.currentIdCount()">
+    <tr class="record">
+      <td>
+        <a href="#" data-bind="text:applicationRoleName"></a>
+      </td>
+      <td>
+        <span data-bind="text:applicationRoleDescription"></span>
+      </td>
+    </tr>
+  </template>
+</oj-table>
+<script type="text/html" data-bind="attr:{id:'rolelist_template_external'+ $baseModel.currentIdCount()}">
+  <tr class="record">
+    <td>
+      <a href="#" data-bind="text:applicationRoleName,click:$component.appRoleRead.bind($data)"></a>
+    </td>
+    <td>
+      <span data-bind="text:applicationRoleDescription"></span>
+    </td>
+  </tr>
+</script>
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->

@@ -1,0 +1,26 @@
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-sm-12 oj-md-12">
+        <oj-label class="label oj-flex-item oj-sm-12">
+            <span data-bind="text:$component.resource.spendCategory.subcategorylabel"></span>
+        </oj-label>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-10">
+            <oj-label class="hide-label" :for="[['CategoryName'+$baseModel.incrementIdCount()]]">
+                <span data-bind="text:$component.resource.spendCategory.subcatdesc"></span></oj-label>
+            <oj-input-text maxlength="40" required :id="[['CategoryName'+$baseModel.currentIdCount()]]" value="{{$data.name}}" validators="[[[$component.validateName]]]" required></oj-input-text>
+        </div>
+        <!-- ko if:!$data.isOld -->
+        <div class="oj-flex-item oj-sm-1 oj-md-1 oj-lg-1">
+            <a href="#" data-bind="attr:{'alt':$component.resource.alt.removeText ,'title':$component.resource.alt.remove },click:$component.deleteSub">
+    <span class="icons icon-delete"></span>
+    </a>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.subCategoryArray().length === $index() + 1 -->
+        <div class="oj-flex-item oj-sm-1 oj-md-1 oj-lg-1">
+            <a href="#" data-bind="attr:{'alt':$component.resource.alt.addText ,'title':$component.resource.alt.add },click:$component.addSub">
+                <div class="icons icon-add"></div>
+            </a>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

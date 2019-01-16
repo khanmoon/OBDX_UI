@@ -1,0 +1,92 @@
+<div class="message-user-list">
+
+  <div id="pagingControlDemo">
+    <oj-table class="mailbox-controls__table-content mailbox-controls-table-content" id="table" columns-default="[[{sortable:'enabled'}]]" columns="[[[{headerRenderer:renderHeadCheckBox,renderer:renderCheckBox,sortable:'none'}].concat($baseModel.large()?[{headerText:'',template:'attachment_template',className:'break-word',field:'attachment'}]:[]).concat($baseModel.large()?[
+      {headerText: $component.loadedComponent() === 'sent-mails' ? $component.nls.mailbox.headers.to : $component.nls.mailbox.headers.from,template:'fromTemplate',field:'messageUserMappings'}]:[]).concat([
+      {headerText:$component.nls.mailbox.headers.subject,template:'subject_template',className:'break-word',field:'subject'}])
+      .concat($baseModel.large()?[{headerText:$component.loadedComponent() ==='sent-mails'? $component.nls.mailbox.headers.sentTime:$component.nls.mailbox.labels.receivedTime,
+      template:'date-time',style:'width:25%',field:'creationDate'}]:[])]]" data="[[arrayDataSource]]">
+      <caption class="hide-label" data-bind="text:$component.nls.mailbox.headers.mailListAdmin"></caption>
+
+      <template slot="fromTemplate">
+                      <td>
+                        <!-- ko ifnot:$current.row.readStatus -->
+                        <div class="mailbox-controls-table-content__read">
+                          <span data-bind="text:$current.data[0].username"></span>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if:$current.row.readStatus -->
+                        <div class="mailbox-controls-table-content__unread">
+                          <span data-bind="text:$current.data[0].username"></span>
+                        </div>
+                        <!-- /ko -->
+                      </td>
+                         </template>
+      <template slot="subject_template">
+            <td>
+              <!-- ko ifnot:$current.row.readStatus -->
+              <div class="mailbox-controls-table-content__read">
+                <a href="javascript:void(0)" data-bind="attr:{'alt':$current.row.subject,'title':$component.nls.mailbox.headers.readTitle},text:$current.row.subject, click:$component.onMessageRowClicked.bind($data, $current.row)"></a>
+              </div>
+              <!-- /ko -->
+              <!-- ko if:$current.row.readStatus -->
+              <div class="mailbox-controls-table-content__unread">
+                <a href="javascript:void(0)" data-bind="attr:{'alt':$current.row.subject,'title':$component.nls.mailbox.headers.unreadTitle},text:$current.row.subject, click:$component.onMessageRowClicked.bind($data, $current.row)"></a>
+              </div>
+              <!-- /ko -->
+            </td>
+              </template>
+      <template slot="date-time">
+                <td>
+                  <!-- ko ifnot:$current.row.readStatus -->
+                  <div class="mailbox-controls-table-content__read">
+                    <span data-bind="text:$baseModel.formatDate($current.row.creationDate,'dateTimeStampFormat')"></span>
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if:$current.row.readStatus -->
+                  <div class="mailbox-controls-table-content__unread">
+                    <span data-bind="text:$baseModel.formatDate($current.row.creationDate,'dateTimeStampFormat')"></span>
+                  </div>
+                  <!-- /ko -->
+                </td>
+              </template>
+      <template slot="attachment_template">
+                <td>
+                  <!-- ko if: $current.row.contentDTO &&$current.row.contentDTO.length>0-->
+                  <!-- ko ifnot:$current.row.readStatus  -->
+                  <div class="mailbox-controls-table-content__read">
+                    <span class="icons icon-attachment"></span>
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if:$current.row.readStatus  -->
+                  <div class="mailbox-controls-table-content__unread">
+                    <span class="icons icon-attachment"></span>
+                  </div>
+                  <!-- /ko -->
+                  <!-- /ko -->
+                </td>
+              </template>
+      <template slot="reference_no">
+                <td>
+                  <!-- ko ifnot:$current.row.readStatus -->
+                  <div class="mailbox-controls-table-content__read">
+                    <span data-bind="text:$current.row.interactionId"></span>
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if:$current.row.readStatus -->
+                  <div class="mailbox-controls-table-content__unread">
+                    <span data-bind="text:$current.row.interactionId"></span>
+                  </div>
+                  <!-- /ko -->
+                </td>
+              </template>
+    </oj-table>
+
+    <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" page-size='10' data="[[arrayDataSource]]"></oj-paging-control>
+
+  </div>
+
+
+
+
+</div>

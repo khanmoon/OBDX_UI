@@ -1,0 +1,62 @@
+<div class="oj-flex">
+  <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-9">
+<div class="form-main-container">
+
+<div class=" oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
+  <oj-validation-group id="eventtracker" valid="{{valid}}">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+      <div data-bind='component: {name: "nav-bar", params:{rootModel: $component, menuOptions: $component.menuOptions, uiOptions: $component.uiOptions, navBarDescription: $component.nls.navBarDescription}}'></div>
+      
+      <div class="oj-flex oj-flex-items-pad"></div>
+      <!-- ko if:showDropDown -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+          <label for="createEventDescription" data-bind="text:$component.nls.events.labels.eventDescription"></label>
+
+        </div>
+        <div class="oj-col oj-sm-12 oj-md-8 oj-lg-6">
+
+          <oj-select-one id="createEventDescription" placeholder="[[$component.nls.events.labels.eventDescription]]" value="{{$component.actionAndEventId}}" required>
+            <!-- ko foreach: eventActivityList -->
+            <oj-option value="{{eventId}}"><span data-bind="text:eventName"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:showDropDownLocale -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+          <label for="createLocale" data-bind="text:$component.nls.events.labels.locale"></label>
+        </div>
+        <div class="oj-col oj-sm-12 oj-md-8 oj-lg-6">
+
+          <oj-select-one id="createLocale" placeholder="[[$component.nls.events.labels.locale]]" value="{{$component.value}}" required>
+            <!-- ko foreach: localeListData -->
+            <oj-option value="{{value}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+
+        </div>
+      </div>
+      <!-- /ko -->
+    </page-section>
+    <div class="oj-row button-container">
+      <oj-button class="action-button-primary" on-click="[[search]]">
+        <span data-bind="text:$component.nls.headers.SEARCH"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+        <span data-bind="text:$component.nls.genericAlert.cancel"></span>
+      </oj-button>
+    </div>
+  </oj-validation-group>
+  </div>
+
+</div>
+</div>
+<div class="oj-flex-item oj-sm-3 help-panel">
+  <help params="baseModel : $baseModel, rootModel : $component, transaction: 'sms-banking'"></help>
+</div>
+
+</div>

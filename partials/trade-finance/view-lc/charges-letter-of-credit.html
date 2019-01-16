@@ -1,0 +1,160 @@
+<div class="page-section-content">
+  <!-- ko if : $component.chargesDetailsLoaded() -->
+  <!-- ko ifnot:$baseModel.small() -->
+    <div class="oj-flex oj-flex-items-pad grid-row-group">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+    <oj-table id="commissionTable" class="commision-table" :aria-label="[[$component.resourceBundle.instructionsDetails.labels.commissionTable]]" columns="[[[{headerText:$component.resourceBundle.labels.lcCommision,style:'width: 50%'},{headerText:$component.resourceBundle.labels.percentage,style:'width: 25%',footerRenderer:$component.totalCommissionLabelFunc},{headerText:$component.resourceBundle.common.labels.amount,style:'width: 25%',headerClassName:'right',className:'right',footerRenderer:$component.totalFunc,footerClassName:'right'}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('commission_template', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.commissionDataSource]]">
+        <caption class="hide-label" data-bind="text:$component.resourceBundle.heading.importLC"></caption>
+    </oj-table>
+    <oj-paging-control class="oj-flex-item oj-sm-12" id="pagingOne" slot="bottom" :page-size="[[5]]" data="[[$component.commissionDataSource]]">
+    </oj-paging-control>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+      <oj-table id="chargesTable" class="charge-table" :undefined="[[undefined]]" columns="[[[{headerText:$component.resourceBundle.instructionsDetails.labels.charges,style:'width: 50%'},{headerText:$component.resourceBundle.labels.account,style:'width: 25%',footerRenderer:$component.totalLabelFunc},{headerText:$component.resourceBundle.common.labels.amount,style:'width: 25%',headerClassName:'right',className:'right',footerRenderer:$component.totalFunc,footerClassName:'right'}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('charges_template', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.chargesDataSource]]">
+          <caption class="hide-label" data-bind="text:$component.resourceBundle.heading.importLC"></caption>
+      </oj-table>
+      <oj-paging-control class="oj-flex-item oj-sm-12" id="pagingTwo" slot="bottom" :page-size="[[5]]" data="[[$component.chargesDataSource]]">
+      </oj-paging-control>
+      </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if:$baseModel.small() -->
+  <!-- ko if:$component.chargesOrCommissionSelection()=== "COMMISION" -->
+  <div class="oj-flex grid-main-container">
+    <div class="oj-flex-item oj-sm-12">
+        <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('commision_list_card',true)}]]" selection-mode="[['single']]" data="[[commissionDataSource]]">
+        </oj-list-view>
+        <!-- ko if: $component.commisionList().length > 0 -->
+        <div class="oj-flex oj-flex-items-pad total-amount-footer">
+          <div class="oj-flex-item oj-sm-6" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+            <h5 data-bind="text: $component.resourceBundle.labels.totalCommission"></h5>
+          </div>
+          <div class="oj-flex-item oj-sm-6" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+            <h5 class="right" data-bind="text:$component.totalCommision()"></h5>
+          </div>
+        </div>
+        <!-- /ko -->
+        <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="pagingThree" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.commissionDataSource]]">
+        </oj-paging-control>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if:$component.chargesOrCommissionSelection()==="CHARGES" -->
+  <div class="oj-flex grid-main-container">
+    <div class="oj-flex-item oj-sm-12">
+        <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('charges_list_card',true)}]]" selection-mode="[['single']]" data="[[chargesDataSource]]">
+        </oj-list-view>
+          <!-- ko if: $component.chargesList().length > 0 -->
+        <div class="oj-flex oj-flex-items-pad total-amount-footer">
+          <div class="oj-flex-item oj-sm-6" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+            <h5 data-bind="text: $component.resourceBundle.labels.totalCharges"></h5>
+          </div>
+          <div class="oj-flex-item oj-sm-6" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+            <h5 class="right" data-bind="text:$component.totalCharges()"></h5>
+          </div>
+        </div>
+        <!-- /ko -->
+        <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="pagingFour" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.chargesDataSource]]">
+        </oj-paging-control>
+    </div>
+  </div>
+  <!-- /ko -->
+  <script type="text/html" id="commision_list_card">
+    <li>
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 description" data-bind="text: $data.commitment">
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 grid-row-group" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-6">
+              <label data-bind="text: $component.resourceBundle.labels.percentage"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-6">
+              <div class="right" data-bind="text:$baseModel.format($component.resourceBundle.labels.comissionWithPercent,{comission:commission})"></div>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-6">
+              <label data-bind="text: $component.resourceBundle.common.labels.amount"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-6">
+              <div class="right" data-bind="text:$baseModel.formatCurrency(amount.amount,amount.currency)"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </li>
+  </script>
+
+  <script type="text/html" id="charges_list_card">
+    <li>
+      <div class="oj-flex oj-flex-items-pad">
+
+        <div class="oj-flex-item oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 description" data-bind="text: $data.chargesForAmendment">
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 grid-row-group" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+              <label data-bind="text:$component.resourceBundle.labels.account"></label>
+              <div data-bind="text:account.displayValue"></div>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-6">
+              <label data-bind="text: $component.resourceBundle.common.labels.amount"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-6">
+              <div class="right" data-bind="text:$baseModel.formatCurrency(amount.amount,amount.currency)"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </li>
+  </script>
+
+  <!-- /ko -->
+  <!-- /ko -->
+</div>
+
+
+<script type="text/html" id="commission_template">
+    <tr>
+       <td>
+        <span data-bind="text:commitment"></span>
+      </td>
+      <td>
+        <span data-bind="text:$baseModel.format($component.resourceBundle.labels.comissionWithPercent,{comission:commission})"></span>
+      </td>
+      <td>
+        <span data-bind="text:$baseModel.formatCurrency(amount.amount,amount.currency)"></span>
+      </td>
+  </tr>
+</script>
+<script type="text/html" id="charges_template">
+    <tr>
+       <td>
+        <span data-bind="text:chargesForAmendment"></span>
+      </td>
+      <td>
+        <span data-bind="text:account.displayValue"></span>
+      </td>
+      <td>
+        <span data-bind="text:$baseModel.formatCurrency(amount.amount,amount.currency)"></span>
+      </td>
+  </tr>
+</script>

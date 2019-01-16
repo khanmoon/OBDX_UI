@@ -1,0 +1,32 @@
+<div class="oj-flex-item">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item" data-bind="text:$component.confirmScreenResources.confirm.actions.nextAction">
+  </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad ">
+    <ul class="confirm-screen__list">
+      <li>
+        <a href="#" data-bind="click:$dashboard.openDashBoard">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToDashboard},loadImage:'dashboard/quick-access/dashboard.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToDashboard"></div>
+        </a>
+      </li>
+      <!-- ko if: $component.constants.userSegment === "RETAIL" -->
+      <li>
+        <a href="#" data-bind="click:$component.openTransaction.bind($data,'loan-details','loans', 'loan')">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToAccountDetails},loadImage:'dashboard/quick-access/account-details.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToAccountDetails"></div>
+        </a>
+      </li>
+      <!-- /ko -->
+      <!-- ko if: $component.constants.userSegment === "CORP" -->
+      <li>
+        <a href="#" data-bind="click:$dashboard.switchModule.bind($data,'loans')">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),'title':$component.confirmScreenResources.confirm.actions.goToAccountDetails},loadImage:'dashboard/quick-access/account-details.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToAccountDetails"></div>
+        </a>
+      </li>
+      <!-- /ko -->
+    </ul>
+  </div>
+</div>

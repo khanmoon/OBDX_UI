@@ -1,0 +1,106 @@
+<div class="oj-flex">
+  <div data-bind="css: $component.mode() === 'reviewAfterCreate' ||$component.mode() === 'reviewAfterUpdate' ? 'oj-flex-item oj-sm-12' : 'oj-flex-item oj-sm-9'">
+    <div class="form-main-container">
+      <!-- ko if : mode() === 'reviewAfterCreate' ||mode() === 'reviewAfterUpdate' -->
+      <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+      <!-- /ko -->
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.accessPointGroup.groupCode , value :$component.groupCode"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.accessPointGroup.description , value :$component.description"></row>
+        <!-- ko if : $component.groupType() !== undefined -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label for="groupType" id="groupTypeLabel">
+              <span data-bind="text:$component.nls.accessPointGroup.groupType"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-3">
+            <oj-radioset class="oj-choice-direction-row" id="groupType" labelled-by="groupTypeLabel" value="{{groupType}}" disabled="true">
+              <oj-option :id="[[$component.nls.accessPointGroup.internal+'Group']]" value="[[$component.nls.accessPointGroup.internal]]"><span data-bind="text:$component.nls.accessPointGroup.internal"></span></oj-option>
+              <oj-option :id="[[$component.nls.accessPointGroup.external+'Group']]" value="[[$component.nls.accessPointGroup.external]]"><span data-bind="text:$component.nls.accessPointGroup.external"></span></oj-option>
+            </oj-radioset>
+          </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-lg-3 label">
+            <oj-label>
+              <span class="accesspoint-group__table-label" data-bind="text:$component.nls.accessPointGroup.accessPoints"></span>
+            </oj-label>
+          </div>
+          <div class="oj-flex-item oj-lg-3">
+            <!-- ko if : $component.groupType()===$component.nls.accessPointGroup.internal -->
+            <div class="oj-flex spacing-table">
+              <div class="oj-flex-item oj-sm-12">
+                <oj-table id="internal-table" data-bind="attr:{'aria-label':$component.nls.accessPointGroup.internal}" data='[[internalDataSource]]' selection-mode='{"row": "multiple", "column": "multiple"}' columns='{{internalColumns}}'>
+                </oj-table>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if : $component.groupType()===$component.nls.accessPointGroup.external -->
+            <div class="oj-flex spacing-table">
+              <div class="oj-flex-item oj-sm-12">
+                <oj-table id="external-table" :aria-label="[[$component.nls.accessPointGroup.external]]" data="[[externalDataSource]]" selection-mode='{"row": "multiple", "column": "multiple"}' columns="{{externalColumns}}">
+                </oj-table>
+              </div>
+            </div>
+            <!-- /ko -->
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <!-- ko if : mode() === 'reviewAfterCreate' || mode() === 'reviewAfterUpdate' -->
+          <oj-button class="action-button-primary" id="confirmBtn" on-click="[[confirm]]">
+            <span data-bind="text:$component.nls.generic.common.confirm"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" id="cancelBtn" on-click="[[cancel]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" id="backBtn" on-click="[[backReview]]">
+            <span data-bind="text:$component.nls.generic.common.back"></span>
+          </oj-button>
+          <!-- /ko -->
+          <!-- ko if : mode() === 'view'-->
+          <!-- ko if : $component.showButtons()-->
+          <oj-button class="action-button-primary" id="editBtn" on-click="[[updateAccessPointGroup]]">
+            <span data-bind="text:$component.nls.generic.common.edit"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" id="cancelBtn" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+            <span data-bind="text:$component.nls.generic.common.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" id="backBtn" on-click="[[backView]]">
+            <span data-bind="text:$component.nls.generic.common.back"></span>
+          </oj-button>
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+
+        <modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'reviewCancel',header:$component.nls.accessPointGroup.reviewwarning">
+          <div class="message-box">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <div class="dialog-text"><span data-bind="text:$component.nls.accessPointGroup.cancelMessage"></span></div>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad button-container">
+              <oj-button class="action-button-primary" id="yesBtn" on-click="[[yes]]">
+                <span data-bind="text:$component.nls.generic.common.yes"></span>
+              </oj-button>
+              <oj-button class="action-button-secondary" id="noBtn" on-click="[[no]]">
+                <span data-bind="text:$component.nls.generic.common.no"></span>
+              </oj-button>
+            </div>
+          </div>
+        </modal-window>
+
+      </page-section>
+    </div>
+  </div>
+  <!-- ko if : mode() === 'view' -->
+  <!-- ko if : $component.showButtons()-->
+  <div class="oj-flex-item oj-sm-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'access-point-group-create'"></help>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+</div>

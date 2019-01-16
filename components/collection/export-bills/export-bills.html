@@ -1,0 +1,395 @@
+<div class="form-main-container trade-finance">
+<oj-validation-group id="exportBillsTracker" valid="{{exportBillsValidGroup}}">
+  <!-- ko ifnot:$baseModel.small() -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+              <div class="oj-flex oj-flex-items-pad grid-row-group">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                      <label for="billNumber" data-bind="text: $component.resourceBundle.labels.billRefNo"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+                    <oj-input-text id="billNumber" type="text" maxlength="40" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resourceBundle.tradeFinanceErrors.bills.invalidBillNumber,{type:'length',options:{
+                                  min:0,max:40}})]]" value="{{$component.model.billNumber}}"></oj-input-text>
+                  </div>
+              </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+              <div class="oj-flex oj-flex-items-pad grid-row-group">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                      <label for="lcStatus" data-bind="text: $component.resourceBundle.common.labels.status"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+                    <oj-select-one id="lcStatus" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" required value="{{$component.model.status}}">
+                        <!-- ko foreach: $component.billStatusArray -->
+                      <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+                      <!-- /ko -->
+                  </oj-select-one>
+                  </div>
+              </div>
+          </div>
+
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+              <div class="oj-flex oj-flex-items-pad grid-row-group">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                      <label for="drawerName" data-bind="text: $component.resourceBundle.labels.drawer"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+                    <oj-select-one id="drawerName" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[$component.drawerNameArray]]" value="{{$component.model.drawerName}}">
+                  </oj-select-one>
+                  </div>
+              </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+                  <div class="oj-flex oj-flex-items-pad grid-row-group">
+                      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                          <label for="draweeName" data-bind="text: $component.resourceBundle.labels.drawee"></label>
+                      </div>
+                      <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-8">
+                        <oj-input-text id="draweeName" type="text" minlength="0" maxlength="40" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.tradeFinanceErrors.bills.invalidDraweeName,{type:'length',options:{
+                                      min:0,max:40}})]]" value="{{$component.model.draweeName}}"></oj-input-text>
+                      </div>
+                  </div>
+              </div>
+        </div>
+
+
+        <div class="oj-flex oj-flex-items-pad ">
+            <!-- ko ifnot:moreSearchOptions() -->
+            <div class="oj-flex-item oj-flex-items-pad">
+                <a href="javascript:void(0)" data-bind="click:showMoreSearchOptions" class="pull-left">
+                    <span class="form-button-link" data-bind="text:$component.resourceBundle.common.labels.moreOptions"></span>
+                    <span class="icon icon-arrow-down arrow"></span>
+                </a>
+            </div>
+            <!-- /ko -->
+        </div>
+
+        <!-- ko if : moreSearchOptions() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+              <div class="oj-flex oj-flex-items-pad grid-row-group">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                      <label for="fromAmount" data-bind="text: $component.resourceBundle.labels.billAmount"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-6 oj-md-5 oj-lg-4">
+                    <oj-input-text id="fromAmount" type="text" maxlength="15" value="{{$component.model.fromAmount}}" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[[validateFromAmount]]]" :placeholder="[[$component.resourceBundle.common.labels.from]]"></oj-input-text>
+                </div>
+
+                  <div class="oj-flex-item oj-sm-6 oj-md-5 oj-lg-4">
+                    <label for="toAmount" class="hide-label" data-bind="text: $component.resourceBundle.labels.billAmount"></label>
+                    <oj-input-text id="toAmount" type="text" maxlength="15" value="{{$component.model.toAmount}}" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[[validateToAmount]]]" :placeholder="[[$component.resourceBundle.common.labels.to]]"></oj-input-text>
+                  </div>
+              </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+              <div class="oj-flex oj-flex-items-pad grid-row-group">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                      <label for="fromDate" data-bind="text: $component.resourceBundle.labels.billDate"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-6 oj-md-5 oj-lg-4">
+                    <oj-input-date id="fromDate" converter="[[$baseModel.dateConverter]]" :placeholder="[[$component.resourceBundle.common.labels.from]]" max="[[$component.maxFromIssueDate()]]" value="{{$component.model.issueDatefrom}}"></oj-input-date>
+                </div>
+
+                  <div class="oj-flex-item oj-sm-6 oj-md-5 oj-lg-4">
+                    <label for="ToDate" class="hide-label" data-bind="text: $component.resourceBundle.labels.billDate"></label>
+                    <oj-input-date id="ToDate" converter="[[$baseModel.dateConverter]]" :placeholder="[[$component.resourceBundle.common.labels.to]]" min="[[$component.model.issueDatefrom]]" max="[[$component.maxToIssueDate()]]" value="{{$component.model.issueDateto}}"></oj-input-date>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-flex-items-pad">
+            <a href="javascript:void(0)" data-bind="click:showMoreSearchOptions" class="pull-left">
+                <span class="form-button-link" data-bind="text:$component.resourceBundle.common.labels.lessOptions"></span>
+                <span class="icon icon-arrow-up arrow"></span>
+            </a>
+        </div>
+      </div>
+
+        <!-- /ko -->
+
+        <div class="button-container search-buttons">
+          <oj-button class="action-button-primary" on-click="[[searchExportBills]]">
+                <span slot="startIcon" class="icons icon-search"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.search"></span>
+          </oj-button>
+           <!-- ko ifnot: dataSourceCreated -->
+          <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+                <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+          </oj-button>
+          <!-- /ko -->
+          <oj-button class="action-button-tertiary" on-click="[[reset]]">
+                <span slot="startIcon" class="icons icon-refresh"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.reset"></span>
+          </oj-button>
+        </div>
+    </page-section>
+    <!-- /ko -->
+</oj-validation-group>
+    <!-- ko if: dataSourceCreated -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+    <!-- ko if: listExportBills().length > 0 -->
+
+      <div class="oj-flex oj-flex-items-pad grid-row-group flex-right">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+              <a href="javascript:void(0)" class="padding-tb pull-right" data-bind="click:$component.download">
+                <span class="icons icon-download icon-2x icon-padding-right"></span>
+                <span data-bind="text:$component.resourceBundle.common.labels.downloadPdf"></span>
+              </a>
+          </div>
+      </div>
+
+      <!-- ko ifnot:$baseModel.large() -->
+      <div class="oj-flex grid-main-container">
+        <div class="oj-flex-item oj-sm-12">
+            <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('exportBills_list_card',true)}]]" selection-mode="[['single']]" data="[[dataSource]]">
+            </oj-list-view>
+            <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.dataSource]]">
+            </oj-paging-control>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <!-- ko if:$baseModel.large() -->
+        <div class="oj-flex oj-flex-items-pad grid-row-group">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <oj-table id="printTable" :aria-label="[[$component.resourceBundle.general.billTables]]" columns="[[[{headerText:$component.resourceBundle.labels.billRefNo},{headerText:$component.resourceBundle.labels.drawee},{headerText:$component.resourceBundle.labels.releaseAgainst},{headerText:$component.resourceBundle.labels.transactionDate},{headerText:$component.resourceBundle.common.labels.status},{headerText:$component.resourceBundle.labels.billAmount,headerClassName:'right',className:'right'}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('billList_template', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[dataSource]]">
+                <caption class="hide-label" data-bind="text:$component.resourceBundle.heading.exportBills"></caption>
+            </oj-table>
+            <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSource]]">
+            </oj-paging-control>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko ifnot: listExportBills().length > 0 -->
+        <div class="oj-flex oj-flex-items-pad padding-tb">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.resourceBundle.tradeFinanceErrors.messages.noRecordFound">
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad padding-tb info-text-small">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <div class="icons icon-information icon-2x icon-padding-right pull-left" data-bind="css: { 'oj-flex-item oj-sm-1': $baseModel.small()}"></div>
+            <div data-bind="text: $component.resourceBundle.tradeFinanceErrors.diclaimers.authDisclaimer, css: { 'oj-flex-item oj-sm-11 disclaimer': $baseModel.small()}"></div>
+          </div>
+        </div>
+
+      <!-- ko if: dataSourceCreated && !$baseModel.small()-->
+      <div class="button-container">
+      <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+        <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+</oj-button>
+      </div>
+      <!-- /ko -->
+
+      </page-section>
+      <!-- /ko -->
+
+    <modal-window class="full-width-modal" params="baseModel:$baseModel, rootModel:$data, id:'searchModal', header:$component.resourceBundle.labels.searchExportBills, display:'full-screen'">
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-flex-items-pad oj-sm-12 oj-md-6 oj-lg-6">
+              <div class="oj-flex grid-row-group">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                      <label for="billNumberOfModal" data-bind="text: $component.resourceBundle.labels.billRefNo"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                    <oj-input-text id="billNumberOfModal" type="text" minlength="0" maxlength="40" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidBeneficiaryName,{type:'length',options:{
+                                  min:0,max:40}})]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.model.billNumber}}"></oj-input-text>
+
+                  </div>
+              </div>
+          </div>
+
+          <div class="oj-flex-item oj-flex-items-pad oj-sm-12 oj-md-6 oj-lg-6">
+              <div class="oj-flex grid-row-group">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                      <label for="drawerNameOfModal" data-bind="text: $component.resourceBundle.labels.drawer"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                    <oj-select-one id="drawerNameOfModal" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[$component.drawerNameArray]]" value="{{$component.model.drawerName}}">
+                  </oj-select-one>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-flex-items-pad oj-sm-12 oj-md-6 oj-lg-6">
+            <div class="oj-flex grid-row-group">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <label for="draweeNameOfModal" data-bind="text: $component.resourceBundle.labels.drawee"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                  <oj-input-text id="draweeNameOfModal" type="text" minlength="0" maxlength="40" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidDraweeName,{type:'length',options:{
+                                min:0,max:40}})]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.model.draweeName}}"></oj-input-text>
+                </div>
+            </div>
+        </div>
+        <div class="oj-flex-item oj-flex-items-pad oj-sm-12 oj-md-6 oj-lg-6">
+              <div class="oj-flex grid-row-group">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                      <label for="fromAmountOfModal" data-bind="text: $component.resourceBundle.labels.billAmount"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-5">
+                      <oj-input-text id="fromAmountOfModal" type="text" maxlength="15" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[[validateFromAmount]]]" :placeholder="[[$component.resourceBundle.common.labels.from]]"></oj-input-text>
+                  </div>
+                  <div class="oj-flex-item oj-sm-1">
+                  </div>
+
+                  <div class="oj-flex-item oj-sm-5">
+                    <label for="toAmountOfModal" class="hide-label" data-bind="text: $component.resourceBundle.common.labels.to"></label>
+                      <oj-input-text id="toAmountOfModal" type="text" maxlength="15" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[[validateToAmount]]]" :placeholder="[[$component.resourceBundle.common.labels.to]]"></oj-input-text>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-flex-items-pad oj-sm-12 oj-md-6 oj-lg-6">
+              <div class="oj-flex grid-row-group">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                      <label for="fromDateOfModal" data-bind="text: $component.resourceBundle.labels.billDate"></label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-5">
+                      <oj-input-date id="fromDateOfModal" converter="[[$component.dateConverter]]" :placeholder="[[$component.resourceBundle.common.labels.from]]" max="[[$component.maxFromIssueDate()]]" value="{{$component.model.issueDatefrom}}"></oj-input-date>
+                  </div>
+                  <div class="oj-flex-item oj-sm-1">
+                  </div>
+                  <div class="oj-flex-item oj-sm-5">
+                    <label for="ToDateOfModal" class="hide-label" data-bind="text: $component.resourceBundle.common.labels.to"></label>
+                      <oj-input-date id="ToDateOfModal" converter="[[$component.dateConverter]]" :placeholder="[[$component.resourceBundle.common.labels.to]]" min="[[$component.model.issueDatefrom]]" max="[[$component.maxToIssueDate()]]" value="{{$component.model.issueDateto}}"></oj-input-date>
+                  </div>
+              </div>
+          </div>
+          <div class="oj-flex-item oj-flex-items-pad oj-sm-12 oj-md-6 oj-lg-6">
+            <div class="oj-flex grid-row-group">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <label for="lcStatusOfModal" data-bind="text: $component.resourceBundle.common.labels.status"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+                <oj-select-one id="lcStatusOfModal" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" value="{{$component.model.status}}">
+                    <!-- ko foreach: $component.billStatusArray -->
+                    <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+                </div>
+            </div>
+          </div>
+      </div>
+        <div class="button-container">
+          <oj-button class="action-button-primary" on-click="[[$component.filterList]]">
+            <span slot="startIcon" class="icons icon-search"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.search"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" on-click="[[$component.resetFilterModel]]">
+            <span slot="startIcon" class="icons icon-refresh"></span>
+            <span data-bind="text:$component.resourceBundle.generic.common.reset"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" on-click="[[$component.hideSearchModal]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+              <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+        </oj-button>
+      </div>
+    </modal-window>
+
+    <!-- ko if: $baseModel.small() -->
+    <a href="#" data-bind="click: $component.openFilterModal">
+      <div class="floating-button"><span class="icons icon-filter"></span></div>
+    </a>
+    <!-- /ko -->
+
+
+<script type="text/html" id="billList_template">
+    <tr>
+       <td>
+        <a href="#" data-bind="text:$data.billNumber,click:$component.onBillSelected.bind($data)"></a>
+      </td>
+      <td>
+        <span data-bind="text:drawee"></span>
+      </td>
+      <td>
+        <span data-bind="text:releaseAgainst"></span>
+      </td>
+      <td>
+        <span data-bind="text:transactionDate"></span>
+      </td>
+      <td>
+        <span data-bind="text:status"></span>
+      </td>
+      <td>
+        <span data-bind="text:billAmount"></span>
+      </td>
+
+  </tr>
+</script>
+
+<script type="text/html" id="exportBills_list_card">
+  <li data-bind="attr: {id: $data.templateId}">
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-md-12 oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item description">
+              <a href="javascript:void(0)" data-bind="text: $data.billNumber,click:$component.onBillSelected.bind($data)"></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.labels.drawer"></label>
+            <div data-bind="text: $data.drawee"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.labels.releaseAgainst"></label>
+            <div data-bind="text: $data.releaseAgainst"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text: $component.resourceBundle.labels.transactionDate"></label>
+            <div data-bind="text: $data.transactionDate"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <label data-bind="text:$component.resourceBundle.common.labels.status"></label>
+            <div data-bind="text: $data.status"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-6 oj-md-12">
+            <label data-bind="text: $component.resourceBundle.labels.billAmount"></label>
+          </div>
+          <div class="oj-flex-item oj-sm-6 oj-md-12" data-bind="css: { 'right': $baseModel.small() }">
+            <span data-bind="text: $data.billAmount"></span>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </li></script></div>

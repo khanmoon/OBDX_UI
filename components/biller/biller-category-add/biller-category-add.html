@@ -1,0 +1,113 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+<div data-bind="css:reviewLoaded() ? 'oj-lg-12 oj-flex-itembiller-category':'oj-lg-9 oj-flex-item biller-category'">
+    <div class="form-main-container">
+    <!-- ko if :reviewLoaded() -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.header.review , reviewHeader : $component.resource.billerCategory.reviewHeaderMsg}}"></div>
+     <!-- /ko -->
+    <div data-bind="css:reviewLoaded() ? 'oj-lg-12':'oj-lg-9'">
+    <!-- ko if :!reviewLoaded() && categoriesLoaded() -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-3 oj-md-2 oj-sm-12 label">
+                <oj-label for="billerCategory"><span data-bind=" text:$component.resource.billerCategory.category"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-lg-4 oj-md-4 oj-sm-12">
+                <oj-select-one id="billerCategory" value="{{$component.billerCategory}}" on-value-changed="{{$component.categoryChangeHandler}}" placeholder="{{$component.resource.common.select}}" invalidcomponenttracker="{{$component.invalidTracker}}" required="true">
+                    <!-- ko foreach: $component.categoriesList -->
+                    <oj-option value="[[categoryId]]"><span data-bind="text: name"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+    <!-- ko if:$component.refresh -->
+        <div class="oj-flex oj-flex-items-pad">
+                <oj-label class="oj-flex-item oj-lg-3 oj-md-2 oj-sm-12 label"><span data-bind=" text:$component.resource.billerCategory.billers"></span></oj-label>
+            <!-- ko if: !$component.availableBillers().length -->
+            <div class="oj-flex-item oj-lg-8 oj-md-2 oj-sm-12 label">
+                <span data-bind=" text:$component.resource.billerCategory.noBillersmsg"></span>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $component.availableBillers().length>0 -->
+            <div class="oj-flex-item oj-lg-6 oj-md-4 oj-sm-12">
+                <ul class="biller-category-add__list no-pad-cols no-margin" data-bind="attr:{'aria-label':$component.resource.billerCategory.billerCategory}" id="billerMapList">
+                    <!-- ko foreach : $component.availableBillerslist() -->
+                    <li data-bind="attr: {id: 'biller' + $baseModel.currentIdCount()}">
+                        <div class="oj-flex oj-flex-items-pad">
+                            <div class="oj-flex-item oj-lg-8 oj-sm-5 no-pad-cols">
+                                <oj-select-one value="{{selectedBiller}}" on-value-changed="{{$component.billerCodeChangeHandler}}" placeholder="{{$component.resource.common.select}}" invalidcomponenttracker="{{$component.invalidTracker}}" required="true">
+                                    <!-- ko foreach: $data.availableOptions -->
+                                    <oj-option value="[[$data.id]]"><span data-bind="text: $data.name"></span></oj-option>
+                                    <!-- /ko -->
+                                </oj-select-one>
+                            </div>
+                            <!-- ko if: $component.availableBillerslist().length>1 -->
+                            <div class="oj-flex-item oj-sm-2 item-cancel-icon">
+                                <a href="javascript:void(0)" data-bind="attr:{alt:$component.resource.billerCategory.altBiller,title:$component.resource.billerCategory.titleBiller},click:$component.removeBiller.bind($data, $data)">
+                                    <div class="icon icon-close" aria-hidden="true"></div>
+                                </a>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </li>
+                    <!-- /ko -->
+                </ul>
+                <div class="no-pad-cols">
+                    <a href="javascript:void(0)" data-bind="attr:{alt:$component.resource.common.add,title:$component.resource.billerCategory.addMoreBiller},text:$component.resource.common.add" on-click="[[addBiller]]"></a>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+
+    <!-- /ko -->
+        </page-section>
+    <div class="oj-flex-items-pad button-container">
+  <!-- ko if:$component.refresh -->
+        <oj-button id="mapBiller" class="action-button-primary" on-click="[[$component.review]]" disabled="[[!$component.availableBillerslist().length || !$component.availableBillers().length]]">
+      <span data-bind="text:$component.resource.billerCategory.mapBiller"></span>
+  </oj-button>
+<!-- /ko -->
+        <oj-button  id="backMapBiller" class="action-button-tertiary " on-click="[[$component.back]]">
+      <span data-bind="text:$component.resource.common.back"></span>
+  </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- ko if :reviewLoaded() -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading :''">
+        <div class="oj-flex oj-flex-items-pad">
+                <oj-label class="oj-flex-item oj-lg-2 label"><span data-bind=" text:$component.resource.billerCategory.billerCategory"></span></oj-label>
+            <div class="oj-flex-item oj-lg-6 label" data-bind="text:$component.selectedBillerCategory()"></div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <!-- ko if :!reviewLoaded() -->
+                <oj-label class="oj-flex-item oj-sm-12"><span data-bind=" text:$component.resource.billerCategory.billers"></span></oj-label>
+            <!-- /ko -->
+            <div class="oj-flex-item oj-lg-8 oj-md-2 oj-sm-12">
+                <oj-table id="reviewTable" :aria-label="[[$component.resource.billerCategory.billerCategory]]" columns="[[[{headerText:$component.resource.billerCategory.billerCode,headerClassName:'left',field:'billerId',sortable:'none'},{headerText:$component.resource.billerCategory.billerName,field:'billerDescription',headerClassName:'left',sortable:'none'}]]]" selection-mode="[[{column:'none',row:'none'}]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.mappingDataSource]]">
+                    <caption class="hide-label" data-bind="text:$component.resource.billerCategory.billerCategory"></caption>
+                </oj-table>
+            </div>
+        </div>
+    </page-section>
+    <div class="oj-flex-items-pad button-container">
+        <oj-button id="confirmMapBiller" class="action-button-primary" on-click="[[$component.mapBiller]]">
+      <span data-bind="text:$component.resource.common.confirm"></span>
+</oj-button>
+ <!-- ko if: $baseModel.large() -->
+            <oj-button id="openDashBoard" class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+                <span data-bind="text:$component.resource.common.cancel"></span>
+            </oj-button>
+            <!-- /ko -->
+            <oj-button id="back" class="action-button-tertiary" on-click="[[$component.back]]">
+                <span data-bind="text:$component.resource.common.back"></span>
+            </oj-button>
+    </div>
+    <!-- /ko -->
+</div>
+</div>
+</div>
+ <!-- ko if :!reviewLoaded() && $baseModel.large()-->
+<div class="oj-flex-item oj-lg-3 oj-sm-only-hide oj-md-only-hide help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'biller-category-add'"></help>
+  </div>
+  <!-- /ko -->
+</div>

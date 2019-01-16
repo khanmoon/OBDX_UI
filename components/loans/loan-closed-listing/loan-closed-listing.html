@@ -1,0 +1,62 @@
+
+  <!-- ko if:displayFlag() -->
+  <!-- ko if:$baseModel.small() -->
+  <oj-film-strip maxItemsPerPage="1" arrowPlacement="adjacent" arrowVisibility="hover">
+    <!-- ko foreach: $component.closedLoanCards -->
+    <div data-bind="component: {name: 'card', params:{rootModel: $parent,
+    data:{
+      'topLeftPanel':
+      {
+    'title': partyName,
+    'description': productDTO.description,
+    'features': [id.displayValue,$baseModel.format($component.locale.cardDetails.listingPercent,{value:$baseModel.formatNumber((interestRate)/100,'percent')})]
+     },
+     'topRightPanel':[{
+      'label':$data.module==='CON'?$component.locale.cardDetails.conventional:$component.locale.cardDetails.islamic,
+      'class':''
+    }],
+    'bottomRightPanel': {
+       'label':$component.locale.cardDetails.balance_heading ,
+       'value': $baseModel.formatCurrency(outstandingAmount.amount, outstandingAmount.currency)
+     },
+     clickHandler: $component.showFunction.bind($data,'loan-details',$data, $component)
+        }
+  }
+  }, attr:{'id':'card_'+id.displayValue},style : {width : $parent.maxCardWidth() + 'px'}">
+    </div>
+    <!-- /ko -->
+  </oj-film-strip>
+  <!-- /ko -->
+  <!-- ko if:!$baseModel.small() -->
+  <oj-masonry-layout>
+    <!-- ko foreach: $component.closedLoanCards -->
+    <div data-bind="css:'oj-masonrylayout-tile-2x2',component: {name: 'card', params:{rootModel: $parent,
+    data:{
+      'topLeftPanel':{
+    'title': partyName,
+    'description': productDTO.description,
+    'features': [id.displayValue,$baseModel.format($component.locale.cardDetails.listingPercent,{value:$baseModel.formatNumber((interestRate)/100,'percent')})]
+     },
+     'topRightPanel':[{
+      'label':$data.module==='CON'?$component.locale.cardDetails.conventional:$component.locale.cardDetails.islamic,
+      'class':''
+    }],
+    'bottomRightPanel': {
+       'label':$component.locale.cardDetails.balance_heading ,
+       'value': $baseModel.formatCurrency(outstandingAmount.amount, outstandingAmount.currency)
+     },
+     clickHandler: $dashboard.loadComponent.bind($data,'loan-details',$data, $component)
+    }
+  }
+  }, attr:{'id':'card_'+id.displayValue}">
+    </div>
+    <!-- /ko -->
+  </oj-masonry-layout>
+
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- ko if:!displayFlag() -->
+  <div class="oj-flex-item oj-sm-12 center activity-row-margin">
+    <h2><div data-bind="text:$component.locale.loanDetails.noData"></div></h2>
+  </div>
+  <!-- /ko -->

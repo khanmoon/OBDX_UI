@@ -1,0 +1,76 @@
+<div class="form-main-container">
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header: $component.resource.reviewCaption,reviewHeader:$component.resource.reviewHeader}}">
+  </div>
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading :''">
+    <!-- ko foreach: $component.displayData -->
+    <!-- ko if: type==="PDAD" -->
+    <!-- ko if: displayValues()[0] -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <label data-bind="text:label"></label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+        <label data-bind="text:$component.resource.accountNumber"></label>
+        <span data-bind="text:displayValues()[0]"></span>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+        <label data-bind="text:$component.resource.debitCard"></label>
+        <span data-bind="text:displayValues()[1]"></span>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: type==="PDCS" -->
+    <!-- ko if: displayValues()[0] -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <label data-bind="text:label"></label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+        <label data-bind="text:$component.resource.country"></label>
+        <span data-bind="text:displayValues()[0]"></span>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 label">
+        <label data-bind="text:$component.resource.state"></label>
+        <span data-bind="text:displayValues()[1]"></span>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: type==="SCH" || type==="SBH" -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <b>
+          <span data-bind="text:values"></span>
+        </b>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: type==="PDAD" || type==="PDCS" || type==="SBH" ||type==="SCH" -->
+    <!-- ko if: displayValues()[0] -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <label data-bind="text:label"></label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <span data-bind="text:displayValues"></span>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+  </page-section>
+  <div class="oj-flex button-container">
+    <oj-button class="action-button-primary" id="save-button" type="submit" on-click="[[$component.createRequest]]">
+      <span data-bind="text:$component.resource.confirm"></span>
+    </oj-button>
+    <!-- ko ifnot: $baseModel.small() -->
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text: $component.resource.cancel"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-tertiary" on-click="[[$component.onBack]]">
+      <span data-bind="text: $component.resource.back"></span>
+    </oj-button>
+  </div>
+</div>

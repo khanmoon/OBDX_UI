@@ -1,0 +1,301 @@
+<div class="form-main-container review-fatca-container">
+  <div class="review-text-heading">
+    <span class="icons icon-information"></span>
+    <span class="" data-bind="text: $component.resource.reviewHeader"></span>
+  </div>
+  <!-- ko if: $component.formType === "INDIVIDUAL" -->
+  <div class="oj-flex review-header">
+    <div class="oj-flex-item oj-sm-9 oj-md-7 oj-lg-6">
+      <h3 class="" id="customerIdentificationInfo">
+        <span data-bind="text: $component.resource.heading.customerIdentificationInfo"></span>
+      </h3>
+    </div>
+    <div class="oj-flex-item oj-lg-3">
+      <a href="javascript:void(0)" class="" :alt="{{$baseModel.format($component.resource.editSection, {sectionName: $component.resource.heading.customerIdentificationInfo})}}"
+        :title="{{$baseModel.format($component.resource.editSectionTitle, {sectionName: $component.resource.heading.customerIdentificationInfo})}}"
+        data-bind="click : $component.editSection.bind($data, 'customer-identification-info')">
+        <span class="icon-edit"></span>
+      </a>
+    </div>
+  </div>
+  <page-section class="" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.customerIdentificationInfo.title, value : $component.fatcaComplianceData.selectedValues().title"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.customerIdentificationInfo.fullName, value : $component.fatcaComplianceData.identificationInfo.fullName"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.customerIdentificationInfo.addressType, value : $component.fatcaComplianceData.selectedValues().addressType"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.address, value :[$component.fatcaComplianceData.identificationInfo.addressDetails.line1, $component.fatcaComplianceData.identificationInfo.addressDetails.line2, $component.fatcaComplianceData.identificationInfo.addressDetails.city, $component.fatcaComplianceData.selectedValues().state, $component.fatcaComplianceData.selectedValues().country, $component.fatcaComplianceData.identificationInfo.addressDetails.zipCode]"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.customerIdentificationInfo.mailingAddress, value :[$component.fatcaComplianceData.identificationInfo.mailingAddress.line1, $component.fatcaComplianceData.identificationInfo.mailingAddress.line2, $component.fatcaComplianceData.identificationInfo.mailingAddress.city, $component.fatcaComplianceData.selectedValues().statesMailing, $component.fatcaComplianceData.selectedValues().countryMailing, $component.fatcaComplianceData.identificationInfo.mailingAddress.zipCode]"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.customerIdentificationInfo.nationality, value : $component.fatcaComplianceData.selectedValues().nationality"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.customerIdentificationInfo.countryOfBirth, value : $component.fatcaComplianceData.selectedValues().countryOfBirth"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.customerIdentificationInfo.placeOfBirth, value : $component.fatcaComplianceData.identificationInfo.cityOfBirth"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.customerIdentificationInfo.identificationType, value : $component.fatcaComplianceData.selectedValues().identificationType"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.customerIdentificationInfo.identificationNumber, value : $component.fatcaComplianceData.identificationInfo.identificationNumber"></row>
+    <!-- ko if: $component.fatcaComplianceData.identificationInfo.fathersName -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.customerIdentificationInfo.fathersName, value : $component.fatcaComplianceData.identificationInfo.fathersName"></row>
+    <!-- /ko -->
+    <!-- ko if: $component.fatcaComplianceData.identificationInfo.spouseName -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.customerIdentificationInfo.spousesName, value : $component.fatcaComplianceData.identificationInfo.spouseName"></row>
+    <!-- /ko -->
+  </page-section>
+  <div class="oj-flex review-header">
+    <div class="oj-flex-item oj-sm-9 oj-md-7 oj-lg-6">
+      <h3 class="" id="additionalkycInfo">
+        <span data-bind="text: $component.resource.heading.additionalkycInfo"></span>
+      </h3>
+    </div>
+    <div class="oj-flex-item oj-lg-3">
+      <a href="javascript:void(0)" :alt="{{$baseModel.format($component.resource.editSection, {sectionName: $component.resource.heading.additionalkycInfo})}}"
+        :title="{{$baseModel.format($component.resource.editSectionTitle, {sectionName: $component.resource.heading.additionalkycInfo})}}"
+        data-bind="click : $component.editSection.bind($data, 'additional-kyc-info')">
+        <span class="icon-edit"></span>
+      </a>
+    </div>
+  </div>
+  <page-section class="" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.additionalkycInfo.occupation, value : $component.fatcaComplianceData.selectedValues().occupationDetails"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.additionalkycInfo.grossAnnualIncome, value : $component.fatcaComplianceData.kycInfo.grossAnnualIncome"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.additionalkycInfo.pepStatus, value : $component.fatcaComplianceData.selectedValues().pepStatus"></row>
+  </page-section>
+  <div class="oj-flex review-header">
+    <div class="oj-flex-item oj-sm-9 oj-md-7 oj-lg-6">
+      <h3 class="" id="taxResidencyInfo">
+        <span data-bind="text: $component.resource.heading.taxResidencyInfo"></span>
+      </h3>
+    </div>
+    <div class="oj-flex-item oj-lg-3">
+      <a href="javascript:void(0)" :alt="{{$baseModel.format($component.resource.editSection, {sectionName: $component.resource.heading.taxResidencyInfo})}}"
+        :title="{{$baseModel.format($component.resource.editSectionTitle, {sectionName: $component.resource.heading.taxResidencyInfo})}}"
+        data-bind="click : $component.editSection.bind($data, 'tax-residency-info')">
+        <span class="icon-edit"></span>
+      </a>
+    </div>
+  </div>
+  <page-section class="" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.taxResidencyInfo.ques5, value : ($component.fatcaComplianceData.taxResidencyInfoDTO.domesticEntity() === 'true') ? $component.resource.generic.common.no : $component.resource.generic.common.yes"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.taxResidencyInfo.ques1, value : ($component.fatcaComplianceData.taxResidencyInfoDTO.domesticTaxResident() === 'true') ? $component.resource.generic.common.no : $component.resource.generic.common.yes"></row>
+    <!-- ko if: $component.fatcaComplianceData.taxResidencyInfoDTO.domesticTaxResident() !== "true" || $component.fatcaComplianceData.taxResidencyInfoDTO.domesticEntity() !== "true" -->
+    <!-- ko foreach: $component.fatcaComplianceData.taxResidencyInfoDTO.nonDomesticTaxResidencyInfo -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.taxResidencyInfo.countryOfTaxResidence, value : $component.fatcaComplianceData.selectedValues().taxResidenceCountry[$index()]"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.taxResidencyInfo.tinAvailable, value : ($data.tinAvailable() === 'true') ? $component.resource.generic.common.yes : $component.resource.generic.common.no"></row>
+    <!-- ko ifnot: $data.tinAvailable() === "true" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.taxResidencyInfo.reasonForNonAvailability, value : $data.tinNonAvailabilityReason"></row>
+    <!-- /ko -->
+    <!-- ko if: $data.tinAvailable() === "true" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.taxResidencyInfo.taxIdentificationType, value : $data.taxIdentifierType"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.taxResidencyInfo.TIN, value : $data.tin"></row>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.taxResidencyInfo.ques2, value : ($component.fatcaComplianceData.taxResidencyInfoDTO.usCitizen() === 'true') ? $component.resource.generic.common.yes : $component.resource.generic.common.no"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.taxResidencyInfo.ques3, value : ($component.fatcaComplianceData.taxResidencyInfoDTO.sptStatus() === 'true') ? $component.resource.generic.common.yes : $component.resource.generic.common.no"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.taxResidencyInfo.ques4, value : ($component.fatcaComplianceData.taxResidencyInfoDTO.usGreenCardOwner() === 'true') ? $component.resource.generic.common.yes : $component.resource.generic.common.no"></row>
+  </page-section>
+  <div class="oj-flex review-header">
+    <div class="oj-flex-item oj-sm-9 oj-md-7 oj-lg-6">
+      <h3 class="" id="customerDeclarationHeader">
+        <span data-bind="text: $component.resource.heading.declaration"></span>
+      </h3>
+    </div>
+    <div class="oj-flex-item oj-lg-3">
+      <a href="javascript:void(0)" :alt="{{$baseModel.format($component.resource.editSection, {sectionName: $component.resource.heading.declaration})}}"
+        :title="{{$baseModel.format($component.resource.editSectionTitle, {sectionName: $component.resource.heading.declaration})}}"
+        data-bind="click : $component.editSection.bind($data, 'fatca-declaration')">
+        <span class="icon-edit"></span>
+      </a>
+    </div>
+  </div>
+  <page-section class="" params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <label data-bind="text: $component.resource.declaration.declarationText1"></label>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <label data-bind="text: $component.resource.declaration.declarationText2"></label>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <label data-bind="text: $component.resource.declaration.declarationText3"></label>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <oj-label class="hide-label" for="declarationCheckbox">
+          <span data-bind="text:$component.entityResource.declaration.declarationAccept"></span>
+        </oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <oj-checkboxset id="declarationCheckbox" disabled value="{{$component.declaration}}" required>
+          <oj-option value="accept">
+            <span data-bind="text: $baseModel.format($component.resource.declaration.declarationAccept, {fullName: $component.fatcaComplianceData.identificationInfo.fullName})"></span>
+          </oj-option>
+        </oj-checkboxset>
+      </div>
+    </div>
+  </page-section>
+  <!-- /ko -->
+  <!-- ko if: $component.formType === "ENTITY" -->
+  <div class="oj-flex review-header">
+    <div class="oj-flex-item oj-sm-9 oj-md-7 oj-lg-6">
+      <h3 class="" id="enitityIdentificationHeader">
+        <span data-bind="text: $component.entityResource.heading.entityIdentification"></span>
+      </h3>
+    </div>
+    <div class="oj-flex-item oj-lg-3">
+      <a href="javascript:void(0)" :alt="{{$baseModel.format($component.resource.editSection, {sectionName: $component.entityResource.heading.entityIdentification})}}"
+        :title="{{$baseModel.format($component.resource.editSectionTitle, {sectionName: $component.entityResource.heading.entityIdentification})}}"
+        data-bind="click : $component.editSection.bind($data, 'entity-identification-info')">
+        <span class="icon-edit"></span>
+      </a>
+    </div>
+  </div>
+  <page-section class="" params="baseModel : $baseModel, rootModel : $data, heading: ''">
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityIdentificationInfo.entityName, value : $component.fatcaComplianceData.identificationInfo.fullName"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityIdentificationInfo.currentLegalAddress, value :[$component.fatcaComplianceData.identificationInfo.addressDetails.line1, $component.fatcaComplianceData.identificationInfo.addressDetails.line2, $component.fatcaComplianceData.identificationInfo.addressDetails.city, $component.fatcaComplianceData.selectedValues().state, $component.fatcaComplianceData.selectedValues().country, $component.fatcaComplianceData.identificationInfo.addressDetails.zipCode]"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityIdentificationInfo.mailingAddress, value :[$component.fatcaComplianceData.identificationInfo.mailingAddress.line1, $component.fatcaComplianceData.identificationInfo.mailingAddress.line2, $component.fatcaComplianceData.identificationInfo.mailingAddress.city, $component.fatcaComplianceData.selectedValues().statesMailing, $component.fatcaComplianceData.selectedValues().countryMailing, $component.fatcaComplianceData.identificationInfo.mailingAddress.zipCode]"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityIdentificationInfo.orgCountry, value : $component.fatcaComplianceData.selectedValues().countryOfIncorporation"></row>
+  </page-section>
+  <div class="oj-flex review-header">
+    <div class="oj-flex-item oj-sm-9 oj-md-7 oj-lg-6">
+      <h3 class="" id="taxResidencyInfoHeader">
+        <span data-bind="text: $component.entityResource.heading.taxResidencyInfo"></span>
+      </h3>
+    </div>
+    <div class="oj-flex-item oj-lg-3">
+      <a href="javascript:void(0)" :alt="{{$baseModel.format($component.resource.editSection, {sectionName: $component.entityResource.heading.taxResidencyInfo})}}"
+        :title="{{$baseModel.format($component.resource.editSectionTitle, {sectionName: $component.entityResource.heading.taxResidencyInfo})}}"
+        data-bind="click : $component.editSection.bind($data, 'entity-tax-residency-info')">
+        <span class="icon-edit"></span>
+      </a>
+    </div>
+  </div>
+  <page-section class="" params="baseModel : $baseModel, rootModel : $data, heading: ''">
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.taxResidencyInfo.ques1, value : (($component.fatcaComplianceData.taxResidencyInfoDTO.domesticEntity() === 'true') ? $component.resource.generic.common.no : $component.resource.generic.common.yes)"></row>
+    <!-- ko ifnot: $component.fatcaComplianceData.taxResidencyInfoDTO.domesticEntity() === "true" -->
+    <!-- ko foreach: $component.fatcaComplianceData.taxResidencyInfoDTO.nonDomesticTaxResidencyInfo -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.taxResidencyInfo.countryOfTaxResidence, value : $component.fatcaComplianceData.selectedValues().taxResidenceCountry[$index()]"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.taxResidencyInfo.tinAvailable, value : $data.tinAvailable() === 'true' ? $component.resource.generic.common.yes : $component.resource.generic.common.no"></row>
+    <!-- ko ifnot: $data.tinAvailable() === "true" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.taxResidencyInfo.reasonForNonAvailability, value : $data.tinNonAvailabilityReason"></row>
+    <!-- /ko -->
+    <!-- ko if: $data.tinAvailable() === "true" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.taxResidencyInfo.taxIdentificationType, value : $data.taxIdentifierType"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.taxResidencyInfo.TIN, value : $data.tin"></row>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.taxResidencyInfo.ques2, value : ($component.fatcaComplianceData.taxResidencyInfoDTO.usIncorporatedEntity() === 'true') ? $component.resource.generic.common.yes : $component.resource.generic.common.no"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.taxResidencyInfo.ques3, value : ($component.fatcaComplianceData.taxResidencyInfoDTO.nonDomesticBenificialOwners() === 'true') ? $component.resource.generic.common.yes : $component.resource.generic.common.no"></row>
+  </page-section>
+  <div class="oj-flex review-header">
+    <div class="oj-flex-item oj-sm-9 oj-md-7 oj-lg-6">
+      <h3 class="" id="enitityCertificationHeader">
+        <span data-bind="text: $component.entityResource.heading.entityCertification"></span>
+      </h3>
+    </div>
+    <div class="oj-flex-item oj-lg-3">
+      <a href="javascript:void(0)" :alt="{{$baseModel.format($component.resource.editSection, {sectionName: $component.entityResource.heading.entityCertification})}}"
+        :title="{{$baseModel.format($component.resource.editSectionTitle, {sectionName: $component.entityResource.heading.entityCertification})}}"
+        data-bind="click : $component.editSection.bind($data, 'entity-certification')">
+        <span class="icon-edit"></span>
+      </a>
+    </div>
+  </div>
+  <page-section class="" params="baseModel : $baseModel, rootModel : $data, heading: ''">
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.Pleaseselectacategorytowhichtheentitybelongs, value : ($component.fatcaComplianceData.entityCertification.entityFinancialInstitution() === 'true') ? $component.entityResource.entityCertification.FinancialInstitution : $component.entityResource.entityCertification.NonFinancialInstitution"></row>
+    <!-- ko if: $component.fatcaComplianceData.entityCertification.entityFinancialInstitution() === "true" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.FinancialInstitution, value : ($component.fatcaComplianceData.entityCertification.financialInstitutionDetails.investmentEntity() === 'true') ? $component.entityResource.entityCertification.AnInvestmentEntity : $component.entityResource.entityCertification.DepositoryInstitutionCustodialInstitutionorSpecifiedInsuranceCompany"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.GIINAvailable, value : ($component.fatcaComplianceData.entityCertification.financialInstitutionDetails.giinAvailable() === 'true') ? $component.resource.generic.common.yes : $component.resource.generic.common.no"></row>
+    <!-- ko if: $component.fatcaComplianceData.entityCertification.financialInstitutionDetails.giinAvailable() === "true" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.EnterGIIN, value : $component.fatcaComplianceData.entityCertification.financialInstitutionDetails.giin"></row>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.fatcaComplianceData.entityCertification.financialInstitutionDetails.giinAvailable() === "true" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.ReasonForNA, value : $component.fatcaComplianceData.entityCertification.financialInstitutionDetails.reasonForNonAvailability"></row>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko ifnot: $component.fatcaComplianceData.entityCertification.entityFinancialInstitution() === "true" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.NonFinancialInstitution, value : ($component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNFE() === 'true') ? $component.entityResource.entityCertification.ActiveNonFinancialEntity : $component.entityResource.entityCertification.PassiveNonFinancialEntity"></row>
+    <!-- ko if: $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNonFinancialEntityType() === "COR" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.Nameoftheestablishedsecuritiesmarketonwhichthecorporationisregularlytraded, value : $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.nameOfEstablishedSecuritiesMarket"></row>
+    <!-- /ko -->
+    <!-- ko if: $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNonFinancialEntityType() === "REL" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.Nameoftherelatedcorporationwhosestockistraded, value : $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.stockTradedCorporation"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.Natureofrelation, value : $component.fatcaComplianceData.selectedValues().natureOfRelation"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.Nameoftheestablishedsecuritiesmarketonwhichthestockoftherelatedcorporationisregularlytraded, value : $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.nameOfEstablishedSecuritiesMarket"></row>
+    <!-- /ko -->
+    <!-- ko if: $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNonFinancialEntityType() === "GOV" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.SubCategoryofActiveNFE, value : $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.subCategoryOfActiveNFE"></row>
+    <!-- /ko -->
+    <!-- ko if: $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNonFinancialEntityType() === "INT" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.SubCategoryofActiveNFE, value : $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.subCategoryOfActiveNFE"></row>
+    <!-- /ko -->
+    <!-- ko if: $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.activeNonFinancialEntityType() === "OTH" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.entityCertification.SubCategoryofActiveNFE, value : $component.fatcaComplianceData.entityCertification.nonFinancialInstitutionDetails.subCategoryOfActiveNFE"></row>
+    <!-- /ko -->
+    <!-- /ko -->
+  </page-section>
+  <div class="oj-flex review-header">
+    <div class="oj-flex-item oj-sm-9 oj-md-7 oj-lg-6">
+      <h3 class="" id="declarationHeader">
+        <span data-bind="text: $component.entityResource.heading.declaration"></span>
+      </h3>
+    </div>
+    <div class="oj-flex-item oj-lg-3">
+      <a href="javascript:void(0)" :alt="{{$baseModel.format($component.resource.editSection, {sectionName: $component.entityResource.heading.declaration})}}"
+        :title="{{$baseModel.format($component.resource.editSectionTitle, {sectionName: $component.entityResource.heading.declaration})}}"
+        data-bind="click : $component.editSection.bind($data, 'fatca-declaration')">
+        <span class="icon-edit"></span>
+      </a>
+    </div>
+  </div>
+  <page-section class="" params="baseModel : $baseModel, rootModel : $data, heading: ''">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <label data-bind="text: $component.entityResource.declaration.declarationText1"></label>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <label data-bind="text: $component.entityResource.declaration.declarationText2"></label>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <label data-bind="text: $component.entityResource.declaration.declarationText3"></label>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12">
+        <oj-label class="hide-label" for="declarationCheckbox">
+          <span data-bind="text:$component.entityResource.declaration.declarationAccept"></span>
+        </oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <oj-checkboxset id="declarationCheckbox" disabled value="{{$component.declaration}}" required>
+          <oj-option value="accept">
+            <span data-bind="text:$component.entityResource.declaration.declarationAccept">
+            </span>
+          </oj-option>
+        </oj-checkboxset>
+      </div>
+    </div>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.declaration.representativeFullName, value : $component.fatcaComplianceData.representativeFullName"></row>
+    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.entityResource.declaration.representativeDesignation, value : $component.fatcaComplianceData.designation"></row>
+  </page-section>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="submitFatcaCompliance" class="action-button-primary" on-click="[[confirmFatcaCompliance]]">
+      <span class="icons icon-submit" slot="startIcon"></span>
+      <span data-bind="text:$component.resource.generic.common.confirm"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$data)]]">
+      <span class="icons icon-cancel" slot="startIcon"></span>
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+    </oj-button>
+    <oj-button id="backFromReview" class="action-button-secondary" on-click="[[back]]">
+      <span class="icons icon-back-arrow" slot="startIcon"></span>
+      <span data-bind="text:$component.resource.generic.common.back"></span>
+    </oj-button>
+  </div>
+</div>

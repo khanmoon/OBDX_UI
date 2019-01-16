@@ -1,0 +1,26 @@
+<div id="container">
+    <div class="oj-sm-11 oj-flex-item">
+        <!-- ko if: dataFetched -->
+        <!-- ko if: listDataReady()-->
+        <div class="oj-flex oj-flex-items-pad category_row_padding">
+            <!-- ko foreach: categories() -->
+            <div class="oj-sm-12 oj-md-6 oj-lg-6 oj-flex-item category_col_padding">
+                <div class="oj-panel oj-panel-alt2 " data-bind="component: {name: 'action-card', params:{ data :{data : categoryId.replace(/ /g,''),tableName: tableName,
+                            title : categoryId,
+                            card_text : $data
+                          }, clickHandler:$component.actionCardClick }},attr:{'id':'category'+$index()}">
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko ifnot: dataFetched -->
+        <div class="se-pre-con"></div>
+        <!-- /ko -->
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <oj-button class="form-button-secondary" id="action-button-back" type="submit" on-click="[[$dashboard.loadComponent.bind($data,'configurations-home',{},$component)]]">
+      <span data-bind="text:$component.resource.backButton"></span>
+</oj-button></div>
+</div>

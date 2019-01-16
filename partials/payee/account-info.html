@@ -1,0 +1,55 @@
+<!-- Account number -->
+<oj-validation-group id="tracker">
+  <!-- ko if: $data.paymentType === "INTERNAL" -->
+    <internal-account-input class="oj-flex oj-flex-items-pad oj-sm-12" params="{
+     baseModel:$baseModel,
+     account : $component.accountNumber,
+     label:$component.payments.payee.accountnumber,
+     confirmStyleAccount: true,
+     required:true
+    }">
+    </internal-account-input>
+  <!-- /ko -->
+<!-- ko if:!$component.fromAdhoc && $data.paymentType !== "INTERNAL" -->
+  <div class="oj-flex oj-flex-items-pad oj-sm-12">
+      <div class="oj-flex-item oj-sm-12 ">
+          <oj-label for="accNumber"><span data-bind="text:$component.payments.payee.accountnumber"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 ">
+          <oj-input-password autocomplete="off" ondrop="return false" id="accNumber" value="{{$component.accountNumber}}" validators="[[$component.accountNoValidator]]" required></oj-input-password>
+      </div>
+  </div>
+<!-- /ko -->
+  <!-- ko if:$component.fromAdhoc && $data.paymentType !== "INTERNAL" -->
+    <div class="oj-flex oj-flex-items-pad oj-sm-12">
+      <div class="oj-flex-item oj-sm-12 ">
+          <oj-label for="accNumber"><span data-bind="text:$component.payments.payee.accountnumber"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 ">
+          <oj-input-text ondrop="return false" id="accNumber" value="{{$component.accountNumber}}" validators="[[$component.accountNoValidator]]" required></oj-input-text>
+      </div>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if:!$component.fromAdhoc && $data.paymentType !== "INTERNAL" -->
+  <div class="oj-flex oj-flex-items-pad oj-sm-12">
+	<div class="oj-flex-item oj-sm-12">
+          <oj-label for="confirmAccNumber"><span data-bind="text:$component.payments.payee.confirmAccountNumber"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+          <oj-input-text ondragstart="return false" ondrop="return false" id="confirmAccNumber" value="{{$component.ConfirmaccountNumber}}" validators="[[$component.confirmAccountNoValidator]]" required></oj-input-text>
+      </div>
+  </div>
+  <!-- /ko -->
+
+<!-- Account name -->
+  <div class="oj-flex oj-flex-items-pad oj-sm-12">
+      <div class="oj-flex-item oj-sm-12 ">
+          <oj-label for="accName"> <span data-bind="text:$component.payments.payee.accountname"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 ">
+          <oj-input-text id="accName" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.accountName}}" required></oj-input-text>
+      </div>
+  </div>
+  <!-- ko template : { afterRender: $component.restrictedEvent } --> <!-- /ko -->
+</oj-validation-group>

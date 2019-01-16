@@ -1,0 +1,71 @@
+<!-- ko if: $component.currenciesLoaded()  -->
+<div class="requirements" data-bind="with:productDetails().requirements">
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-10 ">
+
+      <h3 class=" primary-heading" data-bind="text:$component.resource.td.header"></h3>
+
+    </div>
+  </div>
+
+  <div class="">
+
+    <div data-bind="component: {
+                name: 'amount-input', params: {
+                    amount :requestedAmount.amount,
+                    label : $component.resource.td.depositAmount,
+                    labelClasses : 'oj-lg-2 label oj-md-4 oj-lg-offset-1 oj-md-offset-1',
+                    valueClasses :'oj-lg-7 oj-md-7 amount-input',
+                    currency: $component.transferCurrency,
+                    currencyListRequired : true,
+                    currencyParser : $component.currencyParser,
+                    converter:$baseModel.formatCurrency,
+                    validator:$component.validationTracker,
+                    isMandatory:true,
+                    maxlength:15,
+                    rootId:'deposit-amount',
+                    rootClass:'form-input',
+                    inline:'origination',
+                    formattedAmount: ko.observable()
+                }
+            }"></div>
+
+  </div>
+
+  <div class="">
+    <div data-bind='component: {
+        name: "loan-tenure", params: {
+            tenureYears :requestedTenure.years,
+            tenureMonths :requestedTenure.months,
+            maxVal: 20,
+            label: $component.resource.loan.tenure,
+            labelClasses: "oj-lg-offset-1 oj-md-offset-1",
+            validator:$component.validationTracker,
+            isMandatory:true,
+            rootId:"tenureSelectYears",
+            rootClass:"form-input",
+            yearsId:"tenure-years",
+            monthsId:"tenure-months",
+
+
+        }
+    }'></div>
+  </div>
+
+  <!-- ko if: $component.frequencyOptionsLoaded() -->
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-1">
+      <oj-label class="main-label" for="frequency-type"><span data-bind="text:$component.resource.td.frequency"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+      <oj-select-one id="frequency-type" required translations="[[{'required':{messageDetail:$component.resource.messages.frequency}}]]" :placeholder="" value="{{frequency}}">
+        <!-- ko foreach: $parent.repaymentFrequencyData() -->
+        <oj-option value="{{$data}}"><span data-bind="text:$component.resource.td.frequencyList[$data]"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+  <!-- /ko -->
+
+</div>
+<!-- /ko -->

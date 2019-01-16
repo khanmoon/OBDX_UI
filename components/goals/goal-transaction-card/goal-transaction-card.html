@@ -1,0 +1,29 @@
+<div class="goal-transaction-card" data-bind="with:cardData">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-5">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <div class="goal-transaction-card-date__day" data-bind="text:transactionDate.getDate()<10?('0' + transactionDate.getDate()):transactionDate.getDate()">
+              </div>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+              <div class="goal-transaction-card-date__dateBlock">
+                  <span data-bind="text:$oj.LocaleData.getMonthNames()[transactionDate.getMonth()].substr(0, 3)"></span>
+                  <span data-bind="text:transactionDate.getFullYear()"></span>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="oj-flex-item oj-sm-7 right" data-bind="text:externalReferenceNumber"></div>
+  </div>
+  <div class="oj-flex oj-flex oj-flex-items-pad goal-transaction-card__description">
+      <div class="oj-flex-item oj-sm-12" data-bind="text:description"></div>
+  </div>
+  <div class="oj-flex oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12" data-bind="text:transactionType"></div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad goal-transaction-card__amount">
+      <div class="oj-flex-item oj-sm-12" data-bind="text:$baseModel.formatCurrency(amount,$component.baseCurrency())">
+      </div>
+  </div>
+</div>

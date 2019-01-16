@@ -1,0 +1,260 @@
+$accordion-font-size-small: 1rem;
+$letter-spacing-25: 0;
+$label-text-size: 1rem;
+$review-title-font-size: var(--base-font-size-h3);
+$review-title-font-color: var(--base-text-primary);
+$review-icon-bgcolor: var(--base-background-tertiary);
+$review-strip-color: var(--base-text-primary);
+$review-bottom-border-color: var(--base-border-default);
+$review-font-size-small: $accordion-font-size-small;
+$review-height-small: 3.1rem;
+$accordions: "account-funding","basic-primary-info","account-holder", "primary-registration", "occupation-info", "contact-info", "identity-info", "income-info","liabilities-info","assets-info","expense-info","vehicle-info","property-info","offers","funding-table","requirements";
+
+.review {
+  .form-container {
+    .oj-flex {
+      padding-bottom: 1.6rem;
+    }
+  }
+
+  .review-text {
+    @include single-padding(left,8.8rem);
+    padding-bottom: 1.3rem;
+    color: black;
+    font-size: 1.1rem;
+    @include mq(small) {
+      @include single-padding(left,1.3rem);
+      font-size: 1rem;
+      @include single-padding(right,1.3rem);
+    }
+    @include mq(medium) {
+      @include single-padding(left,2.5rem);
+    }
+  }
+
+  .card {
+    margin-bottom: 0.6rem;
+
+    &.form-container {
+      margin-top: 0.6rem;
+      margin-bottom: 0;
+      padding-top: 0;
+      @include mq(small) {
+        padding-top: 0;
+      }
+      @include mq(medium) {
+        padding-top: 0;
+      }
+    }
+
+    .card-header {
+      padding: 0;
+      @include margin(0, 1.9rem, 1.3rem, 0);
+      border-bottom: 0.05rem solid $review-bottom-border-color;
+
+      &.oj-flex {
+        padding-bottom: 0;
+      }
+
+      .card-title {
+        color: $review-title-font-color;
+        @include single-padding(left,0.5rem !important);
+        letter-spacing: $letter-spacing-25;
+        font-size: $review-title-font-size;
+        font-weight: var(--base-font-weight-regular);
+        padding-top: 1.3rem;
+        margin: 0;
+        @include mq(small) {
+          padding-top: 0.9rem !important;
+          @include single-padding(left,0.9rem !important);
+          padding-bottom: 0.9rem !important;
+        }
+        @include mq(medium) {
+          @include single-padding(left,2.7rem !important);
+        }
+      }
+
+      .accordion-strip {
+        width: 0.6rem;
+        height: 4.4rem;
+        background-color: $review-strip-color;
+        position: absolute;
+        @include mq(small) {
+          width: 0.3rem;
+          height: $review-height-small;
+          margin-top: -1.6rem;
+        }
+      }
+
+      .edit {
+        @include float(right);
+        padding-top: 1rem;
+        @include single-padding(right,1.9rem);
+        font-size: 1.2rem;
+        color: var(--base-color-primary);
+        @include mq(small) {
+          padding-top: 0.3rem;
+          padding-bottom: 0;
+          @include single-padding(right,0.6rem);
+          font-size: 1.5rem;
+        }
+      }
+
+      .edit-info {
+        margin-top: 0;
+      }
+
+      .card-icon-container {
+        color: var(--base-color-secondary);
+        position: initial;
+        height: 4rem;
+        width: 4rem;
+        @include single-margin(left,0.6rem);
+        text-align: center;
+        font-size: 3rem;
+
+        .card-icon {
+          font-size: 2.6rem;
+          color: var(--base-color-secondary);
+          @each $accordion in $accordions {
+            &.icon-#{$accordion}:before {
+              vertical-align: middle;
+            }
+          }
+        }
+      }
+
+      .oj-flex-item {
+        @include single-padding(left,0);
+        @include single-padding(right,0);
+      }
+    }
+  }
+
+  .section-info {
+    .section-heading {
+      font-weight: var(--base-font-weight-bold);
+      color: $review-title-font-color;
+      font-size: 1rem;
+    }
+
+    label {
+      line-height: inherit;
+    }
+
+    .link {
+      line-height: inherit;
+    }
+
+    .card-text {
+      padding-bottom: 1.3rem;
+      padding-top: 0;
+    }
+  }
+
+  .disclosures {
+    .card-title {
+      display: inline-block;
+    }
+
+    .card-text {
+      padding-top: 0;
+      display: block;
+      @include single-padding(right,0.6rem);
+      @include single-padding(left,0.6rem);
+    }
+
+    .card-text-label {
+      padding-top: 0;
+      display: block;
+      @include single-padding(right,0.6rem);
+      @include single-padding(left,0.6rem);
+    }
+
+    .link {
+      @include single-padding(left,0.25em);
+      @include single-padding(right,0.25em);
+      padding-top: 0.2rem;
+    }
+
+    .section-heading {
+      font-weight: var(--base-font-weight-bold);
+      color: $review-title-font-color;
+      font-size: 1rem;
+    }
+  }
+}
+
+.conscent {
+  div:nth-child(1) {
+    padding-bottom: 1.3rem !important;
+  }
+
+  div:not(:nth-child(1)) {
+    padding-bottom: 0.6rem;
+  }
+}
+
+.filmstrip {
+  background-color: var(--color-white);
+  max-width: 57.5rem;
+  margin: 0 auto 1.3rem;
+  border: none;
+  padding: 0;
+  height: 5.6rem;
+  text-align: center;
+  @include mq(small) {
+    height: 3.8rem;
+    max-width: 25rem;
+    margin: 0 0.6rem 0.6rem;
+    width: initial;
+  };
+  @include mq(medium) {
+    max-width: 43.1rem;
+  };
+
+  .oj-filmstrip-container {
+    display: flex;
+  }
+
+  .padding-top {
+    padding-top: 1.6rem;
+  }
+
+  .filmstrip-text {
+    //padding-top: 2.2rem;
+    //padding-bottom: 2.2rem;
+    display: block;
+    color: var(--base-text-secondary);
+    font-size: 1.9rem;
+    letter-spacing: $letter-spacing-25;
+    @include mq(small) {
+      font-size: 1rem;
+    };
+  }
+
+  .oj-filmstrip-arrow-icon.oj-end,
+  .oj-filmstrip-arrow-icon.oj-start {
+    position: initial;
+    @include single-padding(left,0.6rem);
+    cursor: pointer;
+    @include mq(small) {
+      @include single-padding(left,0);
+    };
+  }
+
+  .oj-filmstrip-arrow-container {
+    width: 3.1rem;
+    height: 5.6rem;
+    background-color: var(--base-text-primary);
+    @include mq(small) {
+      height: 3.8rem;
+      width: 1.9rem;
+    };
+  }
+
+  .oj-filmstrip-arrow-icon.oj-bottom:before,
+  .oj-filmstrip-arrow-icon.oj-bottom:before {
+    color: var(--color-white);
+  }
+}

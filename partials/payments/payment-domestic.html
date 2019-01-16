@@ -1,0 +1,28 @@
+<!-- ko if:isPurposeListLoaded() -->
+<!-- ko if : transactionPurposeList().length > 0 -->
+ <div class="oj-flex oj-flex-items-pad">
+     <div class="oj-flex-item oj-sm-12  label">
+         <oj-label for="purpose"><span data-bind="text:$component.payments.moneytransfer.purpose"></span></oj-label>
+     </div>
+     <div class="oj-flex-item oj-sm-12 oj-lg-8">
+
+         <oj-select-one id="purpose" required on-value-changed="[[purposeChanged]]" value="{{purpose}}" :placeholder="[[$component.payments.common.select]]">
+             <!-- ko foreach:transactionPurposeList() -->
+                 <oj-option value="{{value+'_'+text}}"><span data-bind="text:text"></span></oj-option>
+             <!-- /ko -->
+         </oj-select-one>
+
+     </div>
+ </div>
+ <!-- /ko -->
+<!-- ko if:otherPurpose() -->
+       <div class="oj-flex oj-flex-items-pad">
+           <div class="oj-flex-item oj-sm-12  label">
+              <oj-label class="hide-label" :for="[['comment'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.payments.common.comment"></span></oj-label>
+           </div>
+           <div class="oj-flex-item oj-sm-12  oj-lg-8">
+               <oj-input-text required :id="[['comment'+($baseModel.currentIdCount())]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('COMMENTS')]]" value="{{otherPurposeValue}}"></oj-input-text>
+           </div>
+       </div>
+   <!-- /ko -->
+ <!-- /ko -->

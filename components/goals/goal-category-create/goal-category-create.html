@@ -1,0 +1,42 @@
+<!-- ko if:stageOne() -->
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-9">
+        <div class="form-main-container">
+            <div data-bind="template: { name: 'goals/goal-category-create' }"></div>
+            <div class="oj-flex oj-flex-items-pad button-container right">
+                <oj-button class="action-button-primary" id="addCategory" on-click="[[addCategory]]">
+                    <span data-bind="text:$component.common.save"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" id="cancel" on-click="[[$dashboard.openDashBoard]]">
+                    <span data-bind="text:$component.common.cancel"></span>
+                </oj-button>
+                <oj-button class="action-button-tertiary" id="back" on-click="[[back]]">
+                    <span data-bind="text:$component.common.back"></span>
+                </oj-button>
+            </div>
+        </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'goal-category-create'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko if:stageTwo() -->
+<div class="form-main-container">
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.common.review , reviewHeader : $component.goal.reviewHeaderMsg}}"></div>
+    <div data-bind="template: { name: 'goals/review-goal-category-create' }"></div>
+    <div class="oj-flex oj-flex-items-pad button-container right">
+        <oj-button class="action-button-primary" id="uploadImage" on-click="[[uploadImage]]">
+            <span data-bind="text:$component.common.confirm"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="openDashBoard" on-click="[[$dashboard.openDashBoard]]">
+            <span data-bind="text:$component.common.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" id="backReview" on-click="[[backReview]]">
+            <span data-bind="text:$component.common.back"></span>
+        </oj-button>
+    </div>
+</div>
+<!-- /ko -->

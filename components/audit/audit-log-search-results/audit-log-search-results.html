@@ -1,0 +1,66 @@
+<div class="user-list-details">
+
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : nls.header.userList">
+
+
+        <div id="pagingControlAll" class="full-width">
+
+            <oj-table id="table" :aria-label="[[$component.nls.header.details]]" columns="[[[{headerText:nls.header.dateTime,field:'startTime',style:'width: 20%'},{headerText:nls.header.userName,style:'width: 20%',field:'userId'},{headerText:nls.header.partyData,style:'width: 30%',field:'partyName'},{headerText:nls.header.userType,style:'width: 30%',field:'userType'},{headerText:nls.header.event,style:'width: 30%',field:'activity'},{headerText:nls.header.action,style:'width: 30%',field:'action'},{headerText:nls.header.reference,style:'width: 30%',field:'referenceNo'},{headerText:nls.header.status,style:'width: 20%',field:'status'}]]]" columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'multiple',column:'multiple'}]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('list_template', true)]]" data="[[paginationDataSource]]">
+                <caption class="hide-label" data-bind="text:$component.nls.header.details"></caption>
+            </oj-table>
+            <oj-paging-control id="paging_1" slot="bottom" :page-size="[[10]]" data="[[paginationDataSource]]"></oj-paging-control>
+        </div>
+        <!-- ko if:$component.loadResults() -->
+
+
+        <script type="text/html" id="list_template">
+            <tr class="record">
+                <td>
+                    <span data-bind="text:$baseModel.formatDate(startTime,'dateTimeStampFormat')"></span>
+                </td>
+
+                <td>
+                   <a href="#" data-bind="click:$component.openJSON.bind($data)">
+                     <span class="linktext" data-bind="text:userId">
+                     </span>
+                   </a>
+                   <br>
+                     <span data-bind="text:userName"></span>
+                 </td>
+
+                <td>
+                    <span data-bind="text:partyId.displayValue"></span><br>
+                    <span data-bind="text:partyName"></span>
+                </td>
+
+                <td>
+                    <span data-bind="text:userType"></span>
+                </td>
+
+                <td>
+                    <span data-bind="text:activity"></span>
+
+                </td>
+                <td>
+                    <span data-bind="text:action"></span>
+
+                </td>
+
+                <td>
+                    <span data-bind="text:referenceNo"></span>
+                </td>
+                <td>
+                    <!-- ko if:status==='Success' -->
+                    <span class="greentext" data-bind="text:status"></span>
+                    <!-- /ko -->
+
+                    <!-- ko if:status==='Failed'  -->
+                    <span class="redtext" data-bind="text:status"></span>
+                    <!-- /ko -->
+                </td>
+            </tr>
+        </script>
+
+        <!-- /ko -->
+    </page-section>
+</div>

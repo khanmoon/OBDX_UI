@@ -1,0 +1,208 @@
+<div class="oj-flex print-user-search">
+    <div class="oj-flex-item oj-sm-9 oj-lg-9">
+
+        <div class="form-main-container">
+
+            <!-- <div class="oj-flex-item oj-lg-9">
+  <div class="oj-flex-item" data-bind='component:{name: "user-type", params:{rootModel: $data ,searchFor:"user"}}'>
+  </div> -->
+            <page-section params="baseModel : $baseModel, rootModel : $data, rootParams: $component">
+                <div class="oj-flex oj-flex-items-pad">
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <oj-label class="" for="usertype"><span data-bind="text:$component.nls.fieldname.userType"></span></oj-label>
+                    </div>
+
+                    <!-- ko if: userTypeEnumsLoaded -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+                        <oj-select-one :aria-label="[[nls.fieldname.select]]" id="usertype" disabled="[[diableUserType]]" :placeholder="[[nls.fieldname.select]]" value="{{selectedUserType}}" on-value-changed="[[userTypeOptionChangeHandler]]">
+                            <!-- ko foreach: userTypeEnums -->
+                            <oj-option value="{{enterpriseRoleId}}"><span data-bind="text:enterpriseRoleName"></span></oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <label for="userName" data-bind="text: $component.nls.fieldname.userName"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+                        <oj-input-text :aria-label="[[$component.nls.fieldname.userName]]" id="userName" maxlength="80" value="{{userName}}"></oj-input-text>
+                    </div>
+                </div>
+                <!-- ko if: showOptionRecords -->
+                <!-- ko if: ($component.selectedUserType() === "corporateuser") || $component.selectedUserType() === "retailuser" -->
+                <div class="oj-flex oj-flex-items-pad">
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <label for="partyId" data-bind="text: $component.nls.fieldname.partyId"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+                        <oj-input-text :aria-label="[[$component.nls.fieldname.partyId]]" id="partyId" maxlength="80" value="{{partyId}}"></oj-input-text>
+                    </div>
+                </div>
+
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- ko if: showOptionRecords -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <label for="firstName" data-bind="text: $component.nls.fieldname.firstName"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+                        <oj-input-text :aria-label="[[$component.nls.fieldname.firstName]]" id="firstName" maxlength="80" value="{{firstName}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <label for="lastName" data-bind="text: $component.nls.fieldname.lastName"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+                        <oj-input-text :aria-label="[[$component.nls.fieldname.lastName]]" id="lastName" maxlength="80" value="{{lastName}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <label for="emailId" data-bind="text: $component.nls.fieldname.emailId"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+                        <oj-input-text :aria-label="[[$component.nls.fieldname.emailId]]" id="emailId" maxlength="80" value="{{emailId}}"></oj-input-text>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <label for="mobileNumber" data-bind="text: $component.nls.fieldname.mobileNumber"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+                        <oj-input-text :aria-label="[[$component.nls.fieldname.mobileNumber]]" id="mobileNumber" maxlength="80" value="{{mobileNumber}}"></oj-input-text>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <label for="fromDate" data-bind="text: $component.nls.fieldname.passwordGenerationFromDate"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+                        <oj-input-date :aria-label="[[$component.nls.fieldname.passwordGenerationFromDate]]" id="fromDate" value="{{passwordgenerationFromDate}}" converter="[[$component.dateConverter]]"></oj-input-date>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <label for="toDate" data-bind="text: $component.nls.fieldname.passwordGenerationToDate"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+                        <oj-input-date :aria-label="[[$component.nls.fieldname.passwordGenerationToDate]]" id="toDate" value="{{passwordGenerationToDate}}" converter="[[$component.dateConverter]]"></oj-input-date>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <label for="passwordType" data-bind="text: $component.nls.fieldname.passwordType"></label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-4">
+                        <oj-buttonset-one on-value-changed="[[filterResults]]" value="{{$component.passwordGenerationType}}">
+                            <oj-option name="approvalTypeValue" value="{{'CREATE'}}" :id="[['newpasswordsrequest']]">
+                                <span data-bind="attr: {for: 'newpasswordsrequest'}, text:nls.fieldname.newpasswords"></span>
+                            </oj-option>
+                            <oj-option name="approvalTypeValue" value="{{'RESET'}}" :id="[['resetPasswordsrequest']]">
+                                <span data-bind="attr: {for: 'resetPasswordsrequest'}, text:nls.fieldname.resetPasswords"></span>
+                            </oj-option>
+                            <oj-option name="approvalTypeValue" :id="[['allPasswordsrequest']]">
+                                <span data-bind="attr: {for: 'allPasswordsrequest'}, text:nls.fieldname.allPasswords"></span>
+                            </oj-option>
+                        </oj-buttonset-one>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+
+                    <!-- ko ifnot: showOptionRecords -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <!-- ko if: userTypeSelectionIdle -->
+
+                        <a href="javascript:void(0)">
+                            <span class="form-button-link" data-bind="text:$component.nls.fieldname.showMoreOptions">	</span>
+                            <span class="icon icon-arrow-down">
+</span>
+                        </a>
+                        <!-- /ko -->
+                        <!-- ko ifnot: userTypeSelectionIdle -->
+                        <a href="javascript:void(0)" data-bind="click:$component.showOptions">
+                            <span class="form-button-link" data-bind="text:$component.nls.fieldname.showMoreOptions">	</span>
+                            <span class="icon icon-arrow-down">
+  </span>
+                        </a>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: showOptionRecords -->
+                    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+                        <a href="javascript:void(0)" data-bind="click:$component.showLessOptions, attr:{'aria-label': $component.nls.fieldname.showLessOptions}">
+                            <span class="form-button-link" data-bind="text:$component.nls.fieldname.showLessOptions"> </span>
+                            <span class="icon icon-arrow-up">
+          </span>
+                        </a>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <div class="oj-flex-item button-container">
+                    <oj-button class="action-button-primary" on-click="[[$component.fetchUsers]]">
+                        <span data-bind="text:nls.buttons.search"></span>
+                    </oj-button>
+                    <!-- ko ifnot: showList() -->
+                    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+                        <span data-bind="text:nls.buttons.cancel"></span>
+                    </oj-button>
+                    <!-- /ko -->
+
+                    <oj-button class="action-button-tertiary" on-click="[[$component.clearForm]]">
+                        <span data-bind="text:nls.buttons.clear"></span>
+                    </oj-button>
+                </div>
+                <!-- ko if: showList() -->
+                <div id="pagingControlAll" class="full-width">
+                    <oj-table id="table_userSearch" :aria-label="[[$component.nls.header.ariaLabelName]]" columns="[[[{headerRenderer:renderHeadCheckBox,renderer:renderCheckBox,sortable:'none'},{headerText:nls.header.fullName,field:'fullName'},{headerText:nls.header.userName,field:'userID'},{headerText:nls.header.printStatus,field:'printStatus'}]]]"
+                        columns-default="[[{sortable:'enabled'}]]" selection-mode="[[{row:'multiple',column:'multiple'}]]" data="[[$parent.paginationDataSource]]">
+                        <caption class="hide-label" data-bind="text:$component.nls.header.ariaLabelName"></caption>
+                        </oj-table>
+                        <oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[$parent.paginationDataSource]]"></oj-paging-control>
+                </div>
+                <div class="oj-flex-item button-container">
+                    <oj-button class="action-button-primary" on-click="[[$component.printUsersList]]" disabled="[[!$component.enablePrint()]]">
+                        <span data-bind="text:nls.buttons.print"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+                        <span data-bind="text:nls.buttons.cancel"></span>
+                    </oj-button>
+                </div>
+                <!-- /ko -->
+            </page-section>
+        </div>
+    </div>
+    <div class="oj-flex-item oj-sm-3 oj-lg-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'user-print-information'"></help>
+    </div>
+</div>
+
+<modal-window params="baseModel : $baseModel, rootModel : $data,id:'printDocs', header : $component.nls.header.documentList">
+    <!-- ko if: documentListLoaded -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+            <oj-checkboxset id="checkboxSetId" aria-labelledby="inlineLabelId2" class="oj-choice-direction-row" :aria-label="[[$component.nls.fieldname.selectDocs]]" value="{{selectedDocuments}}">
+                <!-- ko foreach: printList -->
+                <oj-option value="{{code}}" :id="[['Document_'+ $index()]]"><span data-bind="text: description, attr : {'for' :'Document_' + $index()}"></span></oj-option>
+                <!-- /ko -->
+            </oj-checkboxset>
+        </div>
+    </div>
+    <div class="oj-flex-item button-container">
+      <oj-button class="action-button-primary" on-click="[[print]]">
+          <span data-bind="text:$component.nls.buttons.ok"></span>
+      </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[hideModalWindow]]">
+            <span data-bind="text:$component.nls.buttons.cancel"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+</modal-window>

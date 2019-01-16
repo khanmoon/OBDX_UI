@@ -1,0 +1,50 @@
+
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+        <oj-label for="userSegment"><span data-bind="text:$component.nls.common.userSegment"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-5">
+        <!-- ko if: $component.isUserFetched() -->
+        <oj-select-one id="userSegment" value="{{selectedUser}}" placeholder="{{nls.headings.select}}">
+          <!-- ko foreach: $component.userSegment() -->
+            <oj-option value="[[value]]"><span data-bind="text: text"></span>
+            </oj-option>
+            <!-- /ko -->
+        </oj-select-one>
+          <!-- /ko -->
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+        <oj-label for="accessType"><span data-bind="text:$component.nls.common.accessType"></span></oj-label>
+    </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-5">
+          <!-- ko if: $component.isAccessPointFetched() -->
+          <oj-select-one id="accessPoint" value="{{selectedAccessPoint}}" :aria-label="[[$component.nls.common.accessType]]" placeholder="{{nls.headings.select}}">
+            <!-- ko foreach: $component.accessPointType() -->
+              <oj-option value="[[value]]"><span data-bind="text: text"></span>
+              </oj-option>
+              <!-- /ko -->
+          </oj-select-one>
+            <!-- /ko -->
+      </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+        <oj-label for="appRoleName"><span data-bind="text:$component.nls.common.appRoleName"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-5">
+      <oj-input-text id="appRoleName" maxlength="80" value="{{appRoleName}}"></oj-input-text>
+    </div>
+</div>
+<div class="oj-sm-6 oj-md-6 oj-lg-12 oj-flex-item pull-right button-container">
+    <oj-button class="action-button-primary" on-click="[[$component.searchApplicationRoles]]">
+      <span data-bind="text:$component.nls.generic.common.search"></span>
+</oj-button>
+    <oj-button class="action-button-secondary" id="apply" on-click="[[$component.resetForm]]">
+      <span data-bind="text:$component.nls.generic.common.reset"></span>
+</oj-button>
+</div>
+</page-section>

@@ -1,0 +1,170 @@
+<div class="form-main-container">
+  <div class="oj-flex">
+    <div class=" oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+          <!-- ko if: refreshData -->
+          <div class="oj-flex-item oj-sm-10 oj-md-3 oj-lg-3">
+            <span data-bind="text: $component.resource.refineText"></span>
+          </div>
+          <div class="oj-flex-item oj-sm-2 oj-md-9 oj-lg-9">
+            <a href="javascript:void(0)" class="oj-flex-item icon icon-refresh icon-size" data-bind="attr:{'aria-label':$component.resource.refreshSearch},click :$component.refreshSearch"></a>
+          </div>
+          <!-- ko if: productNamesLoaded -->
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+            <oj-select-one id="product-name" :aria-label="[[$component.resource.productPlaceHolder]]" value="{{$component.productName}}"
+              on-value-changed="[[showCategoriesList]]" placeholder="{{$component.resource.productPlaceHolder}}">
+              <!-- ko foreach: $component.productData -->
+              <oj-option value="[[label]]">
+                <span data-bind="text: label"></span>
+              </oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+          <!-- /ko -->
+          <!-- ko if: categoryTypesLoaded -->
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+            <oj-select-one id="category-name" :aria-label="[[$component.resource.categoryPlaceHolder]]" value="{{$component.category}}"
+              on-value-changed="[[fetchList]]" placeholder="{{$component.resource.categoryPlaceHolder}}">
+              <!-- ko foreach: $component.categoryData -->
+              <oj-option value="[[label]]">
+                <span data-bind="text: label"></span>
+              </oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+          <div class="oj-flex oj-sm-12 oj-md-12 oj-lg-12">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+              <oj-input-date id="start-date" :aria-label="[[$component.resource.fromDate]]" value="{{$component.startDate}}" converter="[[$baseModel.dateConverter]]"
+                placeholder="{{$component.resource.fromDate}}"></oj-input-date>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+              <oj-input-date id="end-date" :aria-label="[[$component.resource.toDate]]" value="{{$component.endDate}}" converter="[[$baseModel.dateConverter]]"
+                placeholder="{{$component.resource.toDate}}" on-value-changed="[[fetchList]]"></oj-input-date>
+            </div>
+            <!-- ko if: statusesLoaded -->
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+              <oj-select-one id="status-select" :aria-label="[[$component.resource.statusPlaceHolder]]" value="{{$component.statusValue}}"
+                placeholder="{{$component.resource.statusPlaceHolder}}" on-value-changed="[[fetchList]]">
+                <!-- ko foreach: $component.statusesData -->
+                <oj-option value="[[code]]">
+                  <span data-bind="text: label"></span>
+                </oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+            <!-- /ko -->
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot: categoryTypesLoaded -->
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+            <oj-input-date id="start-date" :aria-label="[[$component.resource.fromDate]]" value="{{$component.startDate}}" converter="[[$baseModel.dateConverter]]"
+              placeholder="{{$component.resource.fromDate}}"></oj-input-date>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+            <oj-input-date id="end-date" :aria-label="[[$component.resource.toDate]]" value="{{$component.endDate}}" converter="[[$baseModel.dateConverter]]"
+              placeholder="{{$component.resource.toDate}}" on-value-changed="[[fetchList]]"></oj-input-date>
+          </div>
+          <!-- ko if: statusesLoaded -->
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+            <oj-select-one id="status-select" :aria-label="[[$component.resource.statusPlaceHolder]]" value="{{$component.statusValue}}"
+              placeholder="{{$component.resource.statusPlaceHolder}}" on-value-changed="[[fetchList]]">
+              <!-- ko foreach: $component.statusesData -->
+              <oj-option value="[[code]]">
+                <span data-bind="text: label"></span>
+              </oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+        <!-- ko if: searchResults -->
+        <!-- ko if: $baseModel.large() -->
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-table class="table-resize" id="searchResulTable" :aria-label="[[$component.resource.searchResult]]" data="[[dataSource]]" columns-default.sortable="enabled"
+              selection-mode='{"row":"single","column":"single"}' columns="[[headerText]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('sr_template',true)]]">
+              <caption class="hide-label" data-bind="text:$component.resource.searchResult"></caption>
+              <oj-paging-control id="paging" data='[[dataSource]]' page-size='10' slot='bottom'>
+              </oj-paging-control>
+            </oj-table>
+            <script type="text/html" id="sr_template">
+              <tr class="record">
+                <td>
+                  <span data-bind="text:date"></span>
+                </td>
+                <td>
+                  <a href="javascript:void(0)" data-bind="text:name, click:$component.onSelectedInTable.bind($data,$context.row)"></a>
+                </td>
+                <td>
+                  <span data-bind="text:refNo"></span>
+                </td>
+                <td>
+                  <span data-bind="text:status"></span>
+                </td>
+              </tr>
+            </script>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: $baseModel.large() -->
+        <div params="rootModel : $data, heading : ''">
+          <oj-list-view id="listview-mobile" selection-mode="[['none']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('data-template',true)}]]"
+            data="[[dataSource]]">
+          </oj-list-view>
+          <oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]"
+            data="[[dataSource]]">
+          </oj-paging-control>
+        </div>
+        <script type="text/html" id="data-template">
+          <li>
+            <div class="oj-flex">
+              <div class="oj-flex-item oj-sm-6">
+                <label data-bind="text:$component.resource.datePlaceHolder"></label>
+              </div>
+              <div class="oj-flex-item oj-sm-6 right">
+                <span data-bind="text:date"></span>
+              </div>
+            </div>
+            <div class="oj-flex">
+              <div class="oj-flex-item oj-sm-6">
+                <label data-bind="text:$component.resource.requestName"></label>
+              </div>
+              <div class="oj-flex-item oj-sm-6 right">
+                <a href="javascript:void(0)" data-bind="text:name, click:$component.onSelectedInTable.bind($data)"></a>
+              </div>
+            </div>
+            <div class="oj-flex">
+              <div class="oj-flex-item oj-sm-6">
+                <label data-bind="text:$component.resource.referenceNo"></label>
+              </div>
+              <div class="oj-flex-item oj-sm-6 right">
+                <span data-bind="text:refNo"></span>
+              </div>
+            </div>
+            <div class="oj-flex">
+              <div class="oj-flex-item oj-sm-6">
+                <label data-bind="text:$component.resource.statusPlaceHolder"></label>
+              </div>
+              <div class="oj-flex-item oj-sm-6 right">
+                <span data-bind="text:status"></span>
+              </div>
+            </div>
+          </li>
+        </script>
+        <!-- /ko -->
+        <!-- /ko -->
+      </page-section>
+    </div>
+    <!-- ko ifnot: $baseModel.small() -->
+    <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'service-requests-track'"></help>
+    </div>
+    <!-- /ko -->
+  </div>
+</div>
+<!-- ko ifnot: $baseModel.small() -->
+<a class="back-link" href="#" data-bind="text: $component.resource.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

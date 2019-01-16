@@ -1,0 +1,232 @@
+<div class="form-main-container">
+
+  <!-- ko ifnot: showReviewScreen -->
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+    <!-- ko if: showEditableForm -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading :">
+    </page-section>
+    <!-- /ko -->
+
+    <!-- ko if: isAccessCreated -->
+    <!-- ko ifnot: showEditableForm -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading :">
+    </page-section>
+    <!-- /ko -->
+    <!-- /ko -->
+
+
+    <!-- ko ifnot: isAccessCreated -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading :">
+    </page-section>
+    <!-- /ko -->
+    <!-- ko if: $component.accessLevel() !== "LINKAGE" && $component.accessLevel() !== "USERLINKAGE" -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.partyID , value : $component.party.displayValue()"></row>
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.partyName , value :$component.partyName()"></row>
+    <!-- ko if: $component.selectedUserId  -->
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.userID , value : $component.selectedUserId()"></row>
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : nls.fieldname.userName , value :$component.selectedUserName()"></row>
+    <!-- /ko -->
+
+    <!-- /ko -->
+    <!-- ko if: $component.accessLevel() === "LINKAGE" || $component.accessLevel() === "USERLINKAGE" -->
+
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <div class="oj-flex oj-flex-items-pad ">
+
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <oj-label><span data-bind="text:nls.fieldname.parentPartyID"></span></oj-label>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <span data-bind="text:$component.party.displayValue()"></span>
+          </div>
+
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <oj-label><span data-bind="text:nls.fieldname.parentPartyName"></span></oj-label>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <span data-bind="text:$component.partyName()"></span>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2 ">
+        <div class="oj-flex oj-flex-items-pad ">
+        </div>
+        <div class="oj-flex oj-flex-items-pad ">
+          <span class="icon icon-arrow-right arrow-icon-size"></span>
+        </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <oj-label><span data-bind="text:nls.fieldname.linkedPartyID"></span></oj-label>
+          </div>
+
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <span data-bind="text:relatedPartyId().displayValue"></span>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <oj-label><span data-bind="text:nls.fieldname.linkedPartyName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <span data-bind="text:relatedPartyName()"></span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- ko if: $component.selectedUserId  -->
+
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <oj-label><span data-bind="text:nls.fieldname.userID"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <span data-bind="text:$component.selectedUserId()"></span>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <oj-label><span data-bind="text:nls.fieldname.userName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <span data-bind="text:$component.selectedUserName()"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- /ko -->
+
+
+    <!-- /ko -->
+
+
+    <div class="mapping-module">
+      <!-- ko if: $component.accessLevel() === 'LINKAGE' || $component.accessLevel() === 'USERLINKAGE' -->
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.fieldname.linkedTransMapping">
+      </action-header>
+      <!-- /ko -->
+      <!-- ko if: $component.accessLevel() !== 'LINKAGE' &&  $component.accessLevel() !== 'USERLINKAGE' -->
+
+      <action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.fieldname.transMapping">
+      </action-header>
+      <!-- /ko -->
+
+      <div id="tabs-container-select">
+        <oj-tab-bar id="tabGroups-select" on-selection-changed="[[selectedTaskTabChangeHandler]]">
+          <!-- tab bar -->
+          <ul class="tab-list">
+            <!-- ko foreach: tabLists -->
+            <li><span data-bind="text : text"></span></li>
+            <!-- /ko -->
+          </ul>
+          <!-- ko foreach: tabLists -->
+          <div data-bind="template: { name: 'account-access/' + template}, attr: { id: id }"></div>
+          <!-- /ko -->
+        </oj-tab-bar>
+      </div>
+      <div data-bind="template : {afterRender : $component.activateTab}"></div>
+      <!-- ko if: showTransactionMsg -->
+      <!-- ko ifnot: closeDisclaimerMsg -->
+      <div id="disclaimer-container" class="disclaimer-container">
+        <div class="oj-flex">
+          <span class="oj-flex-item disclaimer-text" data-bind="text: nls.common.transactionTabVisitMessage"></span>
+          <a href="javascript:void(0)" data-bind="attr:{'aria-label':$component.nls.headers.disclaimerClose,'alt': nls.generic.cancel,'title':nls.common.close }, click: $component.closeSPopup.bind()">
+                        <span class="icons icon-cancel"></span>
+                    </a>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+
+    </div>
+
+  </page-section>
+  <div class="oj-flex oj-flex-items-pad button-container">
+
+    <!-- ko if: $component.isAccessCreated -->
+    <!-- ko if: $component.editButtonPressed -->
+    <oj-button class="action-button-primary" on-click="[[$component.showReview]]">
+      <span data-bind="text:nls.common.save"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:nls.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:nls.common.back"></span>
+    </oj-button>
+       
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko ifnot: $component.isAccessCreated -->
+    <oj-button class="action-button-primary" on-click="[[$component.showReview]]">
+      <span data-bind="text:nls.common.save"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+      <span data-bind="text:nls.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:nls.common.back"></span>
+    </oj-button>
+    
+    <!-- /ko -->
+
+    <!-- ko if: $component.isAccessCreated -->
+    <!-- ko ifnot: $component.editButtonPressed -->
+    <oj-button class="action-button-primary" on-click="[[$component.enableFormToUpdate]]">
+      <span data-bind="text:nls.common.edit"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:nls.common.cancel"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:nls.common.back"></span>
+    </oj-button>
+      
+    <!--  /ko -->
+    <!-- /ko -->
+
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.showReviewScreen -->
+  <!-- ko if: $component.accessLevel() === "PARTY" -->
+  <div data-bind="component: {name:'review-party-access-management' , params:{rootModel:$component }}">
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.accessLevel() === "USER" -->
+  <div data-bind="component: {name:'review-user-access-management' , params:{rootModel:$component }}">
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.accessLevel() === "LINKAGE" -->
+  <div data-bind="component: {name:'review-linked-party-access-management' , params:{rootModel:$component }}">
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: $component.accessLevel() === "USERLINKAGE" -->
+  <div data-bind="component: {name:'review-linked-user-access-management' , params:{rootModel:$component }}">
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+
+</div>

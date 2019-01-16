@@ -1,0 +1,29 @@
+<div class="oj-flex-item oj-sm-9">
+  <div class="form-main-container">
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header: $component.Nls.review,reviewHeader: $component.Nls.reviewMessage}}">
+    </div>
+    <!-- ko if: $component.partyDetail -->
+    <page-section params="baseModel : $baseModel, rootModel : $component">
+      <div data-bind="template: { name: 'file-upload/party-detail', data:$component.partyDetail}" class="label"></div>
+    </page-section>
+    <!-- /ko -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.Nls.details">
+      <div class="row-group label">
+        <div data-bind="template: { name: 'file-upload/file-identifier-details',data:$component.fiRegistrationPayload}" class="label"></div>
+        <div data-bind="template: { name: 'file-upload/template-details',data:$component.selectedTemplate}" class="label"></div>
+        <div data-bind="template: { name: 'file-upload/approval-type',data:$component.fiRegistrationPayload}" class="label"></div>
+      </div>
+    </page-section>
+    <div class="button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.submit]]">
+        <span data-bind="text:$component.Nls.confirm"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.Nls.cancelTransaction)]]">
+        <span data-bind="text:$component.Nls.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+        <span data-bind="text:$component.Nls.back"></span>
+      </oj-button>
+    </div>
+  </div>
+</div>

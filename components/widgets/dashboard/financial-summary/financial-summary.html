@@ -1,0 +1,41 @@
+<!-- ko if:showSummaryData -->
+
+<!-- ko foreach:{data:Object.keys(accounts)} -->
+
+<action-widget params="baseModel : $baseModel, rootModel: $parent,header:$component.nls.labels[$data]">
+    <div class="financial-summary">
+        <div class="oj-flex oj-flex-items-pad">
+            <!-- ko if:$baseModel.small() -->
+            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-1 financial-summary__account financial-summary-account">
+                <a href="#" data-bind="attr:{alt:accounts[$parent].moreAlt,title:accounts[$parent].moreTitle},click:$component.showSummaryDetails.bind($data,$parent)">
+                    <span class="icons icon-more financial-summary-account__icons"></span>
+                </a>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex-item oj-sm-12 oj-md-11 oj-lg-11">
+                <!-- ko foreach:accounts[$parent].ccywisePosition -->
+                <div class="oj-flex oj-flex-items-pad financial-summary__data financial-summary-data">
+                    <div class="oj-flex-item oj-sm-2 oj-md-3 oj-lg-3 financial-summary-data__currency" data-bind="text:currency"></div>
+                    <div class="oj-flex-item oj-sm-2 oj-md-4 oj-lg-4 no-pad-cols financial-summary-data__accountNo" data-bind="html:$baseModel.format($component.nls.labels.numberOfAccounts, { count : noOfAccount })"></div>
+                    <div class="oj-flex-item oj-sm-8 oj-md-4 oj-lg-5 financial-summary-data__total-value" data-bind="text:$baseModel.formatCurrency(totalBal,currency)"></div>
+                </div>
+                <!-- /ko -->
+            </div>
+
+            <!-- ko ifnot:$baseModel.small() -->
+            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-1 financial-summary__account financial-summary-account">
+                <a href="#" data-bind='click:$component.showSummaryDetails.bind($data,$parent),attr:{"aria-label":accounts[$parent].moreTitle, alt:accounts[$parent].moreAlt,title:accounts[$parent].moreTitle}'>
+                    <span class="icons icon-more financial-summary-account__icons"></span>
+                </a>
+            </div>
+            <!-- /ko -->
+        </div>
+
+        <div class="hide" data-bind="template:{name:accounts[$parent].htmlTemplate,data:accounts[$parent]},fadeVisible:accounts[$parent].hideDetailsTable"></div>
+
+    </div>
+</action-widget>
+
+<!-- /ko -->
+
+<!-- /ko -->

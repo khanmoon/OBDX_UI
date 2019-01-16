@@ -1,0 +1,65 @@
+<!-- ko if: !$dashboard.userData.firstLoginFlowDone -->
+<div class="oj-flex-item  user-login-configuration__extra-space" data-bind="template: {name: 'headers/headers'}"></div>
+<!-- /ko -->
+
+<div class="form-main-container ">
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex oj-flex-items-pad  oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-7">
+        <!-- ko if:refresh -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+          <oj-validation-group id="TaskValidater">
+            <!-- ko if:$component.isQuestionListLoaded() -->
+            <!-- ko foreach : questionListMap -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12">
+                <oj-label :for="[['question_'+$index()]]"> <span data-bind="text:$component.nls.userSecurityQuestion.labels.securityQuestion"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12">
+                <oj-select-one required :id="[['question_'+$index()]]" :aria-label="[['question_'+$index()]]" :placeholder="[[$component.nls.userSecurityQuestion.labels.select]]" disabled="[[false]]" value="{{questionId}}" on-value-changed="[[$component.valueChangeHandler.bind($data,$index())]]">
+                  <!-- ko foreach : availableQuestionList -->
+                  <oj-option value="{{questionId}}"><span data-bind="text:question"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12">
+                <oj-label :for="[['answer_'+$index()]]"> <span data-bind="text:$component.nls.userSecurityQuestion.labels.answer"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12">
+                <oj-input-text type="text" required :id="[['answer_'+$index()]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{answer}}"></oj-input-text>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+          </oj-validation-group>
+        </page-section>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-primary " on-click="[[showReviewScreen]]"><span slot="startIcon" class="icons icon-save"></span>
+            <span data-bind="text:$component.nls.common.save"></span>
+          </oj-button>
+          <!-- ko if:$dashboard.userData.firstLoginFlowDone -->
+          <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]"><span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.nls.common.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary " on-click="[[$component.back]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.nls.common.back"></span>
+          </oj-button>
+          <!-- /ko -->
+          <!-- ko if: !$dashboard.userData.firstLoginFlowDone -->
+          <oj-button class="action-button-secondary " on-click="[[$component.loadNextComponent]]"><span slot="startIcon" class="icons icon-forward-arrow"></span>
+            <span data-bind="text:$component.nls.userSecurityQuestion.labels.skip"></span>
+          </oj-button>
+          <!-- /ko -->
+        </div>
+      </div>
+      <!-- ko if:  $baseModel.large() -->
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-5">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'security-notes'"></help>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>

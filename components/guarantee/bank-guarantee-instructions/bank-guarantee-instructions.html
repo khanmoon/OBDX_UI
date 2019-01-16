@@ -1,0 +1,42 @@
+<div class="page-section-content">
+<oj-validation-group id="instructionsTracker" valid="{{instructionsGroupValid}}">
+    <!-- first row -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label class="align-right" for="chargesAccountType"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.chargesAccount"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                  <oj-select-one id="chargesAccountType" required="[[true]]" :invalidcomponenttracker="[[$component.instructionsValidationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[chargesAccountType]]" value="{{chargesAccountValue}}">
+
+                  </oj-select-one>
+              </div>
+            </div>
+          </div>
+        </div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+                <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="instructionsToBank" class="align-left"><span data-bind="text:$component.resourceBundle.instructions.instructionsToBank"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                    <oj-text-area id="instructionsToBank" type="text" maxlength="780" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.instructionDetails.invalidInstructions,{type:'length',options:{
+                                  min:0,max:780}})]]" value="{{$component.guaranteeDetails.instruction}}">                    </oj-text-area>
+                </div>
+            </div>
+            </div>
+          </div>
+    </oj-validation-group>
+    <!-- ko if : $component.mode() === 'CREATE' -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <oj-button id="continueButtonInstructions" class="action-button-secondary" on-click="[[continueFunc]]">
+            <span slot="startIcon" class="icons icon-submit"></span>
+            <span data-bind="text:$component.resourceBundle.common.labels.continue"></span>
+          </oj-button>
+      </div>
+    </div>
+    <!-- /ko -->
+</div>

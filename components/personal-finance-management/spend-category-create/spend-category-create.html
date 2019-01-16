@@ -1,0 +1,52 @@
+<!-- ko if:stageOne() -->
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <oj-validation-group id="createCategoryTracker">
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-label for="categoryName" class="label oj-flex-item oj-sm-12">
+                <span data-bind="text:$component.resource.spendCategory.categoryName"></span>
+            </oj-label>
+            <oj-input-text maxlength="40" id="categoryName" class="oj-flex-item oj-sm-12" required value="{{$component.fromRecategorization?$component.newRecategorizationCategory:$component.categoryName}}" validators="[[[$component.validateName]]]" required>
+            </oj-input-text>
+        </div>
+    </oj-validation-group>
+    <!-- ko if:$component.fromRecategorization -->
+    <oj-validation-group id="createRecategorizationTracker">
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-label for="subCategoryName" class="label oj-flex-item oj-sm-12">
+                <span data-bind="text:$component.resource.spendCategory.subcategorylabel"></span></oj-label>
+            <oj-input-text maxlength="40" id="subCategoryName" class="oj-flex-item oj-sm-12" value="{{$component.newRecategorizationSubCategory}}" validators="[[[$component.validateName]]]" required></oj-input-text>
+        </div>
+    </oj-validation-group>
+    <div class="oj-flex oj-flex-items-pad ">
+        <div class="oj-flex-item oj-sm-12">
+            <a href="#" data-bind="attr:{'alt':$component.resource.alt.removeAlt ,'title':$component.resource.alt.removeTitle ,'aria-label':$component.resource.common.cancel},text:$component.resource.recategorize.cancelcategoryaddmsg, click:$component.cancelcategoryadd"></a>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot:$component.fromRecategorization -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+            <!-- ko if:$component.subCategoryArray().length === 0 -->
+            <a href="#" data-bind="attr:{'alt':$component.resource.alt.addAlt ,'title':$component.resource.spendCategory.subCategoryDetails ,'aria-label':$component.resource.alt.addTitle},click:$component.addSub">
+      <span class="icons icon-add"></span>
+      <span class="oj-flex-item oj-sm-12" data-bind="text :$component.resource.spendCategory.subCategoryDetails"></span>
+    </a>
+            <!-- /ko -->
+        </div>
+    </div>
+    <div id="create-subcategory-container">
+        <!-- ko foreach:$component.subCategoryArray() -->
+        <div class="oj-flex oj-flex-items-pad" data-bind="template: { name:'spend-analysis/create-subcategory-retail'}"></div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container right">
+    <oj-button class="action-button-primary" id="save" on-click="[[$component.fromRecategorization?$component.saveRecategorization:addCategory]]"><span slot="startIcon" class="icons icon-save"></span>
+        <span data-bind="text:$component.resource.common.save"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary" id="cancel" on-click="[[$component.fromRecategorization?$component.closeWindow:$component.closeModalWindow]]"><span slot="startIcon" class="icons icon-cancel"></span>
+        <span data-bind="text:$component.resource.common.cancel"></span>
+    </oj-button>
+</div>
+<!-- /ko -->

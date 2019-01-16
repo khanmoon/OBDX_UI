@@ -1,0 +1,245 @@
+<oj-validation-group id="fbtracker">
+  <div class="oj-flex oj-flex-items-pad form-builder">
+    <div class=" oj-flex oj-sm-9">
+      <!-- ko if: $component.panelData -->
+      <div class=" oj-flex-item oj-sm-3">
+        <oj-navigation-list :aria-label="[[$component.resource.ariaLabel]]" drill-mode="collapsible" selection="{{$component.selectedValue}}" class="oj-navigation-list-item-text-wrap form-builder__nav-list">
+          <ul>
+            <!-- ko foreach: $component.menuItems -->
+            <li data-bind="attr:{'id':id}">
+              <a href="#" data-bind=" text:header"></a>
+              <ul>
+                <!-- ko foreach: data -->
+                <!-- ko if: id === "h1ph" -->
+                <li data-bind="attr:{'id':id}" class="oj-disabled">
+                  <span data-bind="text:text"></span>
+                </li>
+                <!-- /ko -->
+                <!-- ko ifnot: id === "h1ph" -->
+                <li data-bind="attr:{'id':id}">
+                  <a href="#" data-bind="click:$component.addComponent">
+                    <!-- ko if: id === "FFTB" -->
+                    <span class="icon icon-text"></span>
+                    <!-- /ko -->
+                    <!-- ko if: id === "FFRB" -->
+                    <span class="icon icon-radio"></span>
+                    <!-- /ko -->
+                    <!-- ko if: id === "FFMC" -->
+                    <span class="icon icon-check"></span>
+                    <!-- /ko -->
+                    <!-- ko if: id === "FFDL" -->
+                    <span class="icon icon-drop-down"></span>
+                    <!-- /ko -->
+                    <!-- ko if: id === "FFFU" -->
+                    <span class="icon icon-upload"></span>
+                    <!-- /ko -->
+                    <!-- ko if: id === "FFMS" -->
+                    <span class="icon icon-multi-select"></span>
+                    <!-- /ko -->
+                    <!-- ko if: id === "cmsg" -->
+                    <span class="icon icon-confirm"></span>
+                    <!-- /ko -->
+                    <!-- ko if: id === "cmsg" -->
+                    <span data-bind="text:text"></span>
+                    <!-- /ko -->
+                    <!-- ko ifnot: id === "cmsg" -->
+                    <span data-bind="text:text"></span>
+                    <!-- /ko -->
+                  </a>
+                </li>
+                <!-- /ko -->
+                <!-- /ko -->
+              </ul>
+            </li>
+            <!-- /ko -->
+          </ul>
+        </oj-navigation-list>
+      </div>
+      <!-- /ko -->
+      <div class="oj-flex-item oj-sm-9" id="formBuilder">
+        <div class="form-builder__section" id="form-builder-section-scrollable">
+          <div class="oj-flex oj-flex-items-pad page-header-control">
+            <div class="oj-flex-item oj-md-12 page-header__banner">
+              <span data-bind="text:$component.resource.pageHeader"></span>
+            </div>
+            <div class="oj-flex page-header__middle">
+              <div class="oj-flex-item oj-sm-4">
+              </div>
+              <div class="oj-flex-item oj-sm-4">
+                <oj-input-text id="form-header" :aria-label="[[$component.resource.formHeader]]" placeholder="{{$component.resource.formHeader}}" value="{{$component.formHeaderName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+                                 type: 'length',
+                                 options: {
+                                     min: 1,
+                                     max: 120
+                                 }})]]" required></oj-input-text>
+              </div>
+              <!-- ko if: showSave -->
+              <div class="oj-flex-item oj-sm-1 form-builder__icon">
+                <a href="javascript:void(0)" on-click="[[$component.headerSave]]" data-bind="attr:{'title':$component.resource.saveHeader}">
+                  <span class="icons icon-save"></span>
+                </a>
+              </div>
+              <!-- /ko -->
+            </div>
+          </div>
+          <!-- ko if: $component.componentsArray().length -->
+          <oj-list-view id="listview" :aria-label="[[$component.resource.listViewLabel]]" data="[[dataProvider]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('Comp_temp', true)]]">
+          </oj-list-view>
+          <!-- /ko -->
+          <script type="text/html" id="Comp_temp">
+            <!-- ko if: data.id === "FFTB" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="attr: { id: data.id+'_'+($context.key+1) }, component:{name: $component.selectedComponent(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "FFRB" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.radioComponent(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "FFFU" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.uploadComponent(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "SCH" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.thirdComponent(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "PDSS" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.salutation(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "PDGS" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.gender(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "SBH" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.nextComponent(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "FFMC" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.checkboxset(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "PDDP" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.datePicker(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "PDAN" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.accountNumberComponent(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "FFDL" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.dropListComponent(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "FFTC" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.toggle(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "PDCS" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.country(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "FFMS" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.multiSelectComponent(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+            <!-- ko if: data.id === "PDAD" -->
+            <li data-bind="attr: { id: data.id+'_'+($context.key+1) }" class="oj-listview-item">
+              <div data-bind="component:{name: $component.accountNumberDebitCardComponent(), params:{rootModel: $component, id:data.id+'_'+($context.key+1), index:$context.index, payload: payload}}"></div>
+            </li>
+            <!-- /ko -->
+          </script>
+          <!-- ko if: confirmData -->
+          <div class="oj-flex oj-flex-items-pad form-builder__confirm" id="confirm_mssg_element">
+            <div class="oj-flex-item oj-sm-3">
+              <oj-label for="text" class="oj-label-inline"><span data-bind="text:$component.resource.confirmMessage"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-1">
+            </div>
+            <div class="oj-flex-item oj-sm-4 ">
+              <oj-input-text id="text" value="{{$component.confirmMessageData}}"></oj-input-text>
+            </div>
+          </div>
+          <!-- /ko -->
+          <div class="oj-flex oj-flex-items-pad form-builder__end-element" id="end_elemental">
+          </div>
+        </div>
+      </div>
+      <div class="button-container">
+        <oj-button class="action-button-primary" id="next-button" type="submit" on-click="[[$component.loadPreviewScreen]]">
+          <span data-bind="text:$component.resource.next"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="cancel-button" type="submit" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+          <span data-bind="text:$component.resource.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" id="back-button" type="submit" on-click="[[$component.loadBasicDetails]]">
+          <span data-bind="text:$component.resource.back"></span>
+        </oj-button>
+      </div>
+    </div>
+    <div class="oj-flex oj-sm-3 form-builder__info-note">
+      <div class="oj-flex oj-flex-items-pad information-wrapper">
+        <div class="oj-flex-item oj-sm-5"></div>
+        <a href="javascript:void(0)" data-bind="attr:{'title':$component.resource.clickToUpload}">
+          <oj-file-picker class="oj-filepicker-custom" selection-mode="single" selecton="click" accept='[".jpg"]' on-oj-select="[[fileSelectListener]]" data-bind="attr: {'id': 'document-upload'}">
+            <div class="icons icon-upload form-builder__upload-icon" slot="trigger">
+            </div>
+          </oj-file-picker>
+        </a>
+        <div class="oj-flex-item oj-sm-12 information-wrapper-heading center">
+          <!-- ko if: uploadFile -->
+          <span class="icon icon-success"></span>
+          <span data-bind="text:$component.uploadIcon"></span>
+          <!-- /ko -->
+          <!-- ko ifnot: uploadFile -->
+          <span data-bind="text:$component.resource.clickToUpload"></span>
+          <!-- /ko -->
+        </div>
+        <div class="oj-flex-item oj-sm-12 information-wrapper-heading center">
+          <oj-input-text placeholder="{{$component.resource.infoHeader}}" :aria-label="[[$component.resource.infoHeader]]" value="{{$component.infoHeaderName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+            type: 'length',
+            options: {
+                min: 1,
+                max: 80
+            }})]]" required></oj-input-text>
+        </div>
+        <div class="oj-flex-item oj-sm-12 information-wrapper-contents ">
+          <oj-text-area id="text-area" :aria-label="[[$component.resource.infoDataText]]" value="{{$component.InfoData}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+                             type: 'length',
+                             options: {
+                                 min: 1,
+                                 max: 500
+                             }})]]" required>
+          </oj-text-area>
+        </div>
+      </div>
+    </div>
+  </div>
+</oj-validation-group>
+<modal-window class="message form-main-container" params="baseModel : $baseModel, rootModel : $component,id:'filter', header: $component.resource.uploadHeader">
+  <div class="form-main-container">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item message-text label scroll" data-bind="html:$component.resource.uploadsuccessful">
+      </div>
+    </div>
+    <div class="message-btn button-container">
+      <oj-button class="action-button-primary" :id="[['okButtonUpload']]" on-click="[[$component.closePopUp]]">
+        <span data-bind="text:$component.resource.ok"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>

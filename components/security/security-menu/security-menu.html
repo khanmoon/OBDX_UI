@@ -1,0 +1,47 @@
+<!-- ko if:$baseModel.small() -->
+<div class="form-main-container alerts-menu-list">
+  <!-- ko if: $component.dataLoaded() -->
+  <oj-navigation-list selection="{{selectedSecurityItem}}" class="mobileMenu">
+    <ul>
+      <!-- ko foreach:$component.listItem -->
+      <li class="list-spacing" data-bind="attr: {id: id}">
+        <a href="#" data-bind="attr:{'alt':$component.resource.labels[id]  }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-2">
+              <img class="alert-image imageHeight" data-bind="loadImage: $data.iconImage">
+            </div>
+            <div class="oj-flex-item oj-sm-7 alert-name icon-spacing">
+              <span data-bind="text:$component.resource.labels[id]"></span>
+            </div>
+            <div data-bind="attr: {id: id+'-currently-present'}" class="oj-flex-item oj-sm-3 alert-name">
+
+            </div>
+          </div>
+        </a>
+      </li>
+      <!-- /ko -->
+    </ul>
+  </oj-navigation-list>
+  <!-- /ko -->
+</div>
+<script type="text/html" id="check-mark">
+  <span class="icons icon-check"></span>
+</script>
+<!-- /ko -->
+<!-- ko if:!$baseModel.small() -->
+<oj-navigation-list edge="top" selection="{{selectedSecurityItem}}" overflow="popup" div class="nav-bar security-nav-bar"
+  data-bind="attr:{'aria-label':'navBarDescription'}">
+  <ul class="nav-bar__container nav-bar-list" data-bind="foreach:listItem">
+    <li class="nav-bar-list__item nav-bar-item max-width-for-tab" data-bind="attr:{'id':id}">
+      <a class="nav-bar-item__link nav-bar-item-link" href="#" data-bind="attr:{'alt':$component.resource.labels[id] ,'title':$baseModel.format($component.resource.clickHere,{action:$component.resource.labels[id]})}">
+        <div class="nav-bar-item-link__text" data-bind="html:$component.resource.labels[id]"></div>
+      </a>
+    </li>
+  </ul>
+</oj-navigation-list>
+
+<!-- ko if:$component.refresh() -->
+<div class="menu-option" data-bind="component: {name: $component.menuSelection(), params:{rootModel: $data,data:$component.showDetailParams}}"></div>
+<!-- /ko -->
+
+<!-- /ko -->

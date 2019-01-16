@@ -1,0 +1,29 @@
+<row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.accountId, value : $data.requestDetails.accountId.displayValue"></row>
+
+<!-- ko if: $component.requestDetails.applicationDTO.name -->
+<row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.nameOnCard, value : $component.requestDetails.applicationDTO.name"></row>
+
+<!-- /ko -->
+<!-- ko if: $component.requestDetails.applicationDTO.deliveryOption -->
+<row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.deliveryOption, value : $component.requestDetails.applicationDTO.deliveryOption"></row>
+
+<!-- /ko -->
+
+<!-- ko if: $component.requestDetails.applicationDTO.dateOfBirth -->
+<row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.dateOfBirth, value : $baseModel.formatDate($component.requestDetails.applicationDTO.dateOfBirth)"></row>
+
+<!-- /ko -->
+<!-- ko if: $component.requestDetails.applicationDTO.reason -->
+<row params="baseModel : $baseModel, rootModel : $parent, label : $component.requestDetailsTemplate.detail.reason, value : $component.requestDetails.applicationDTO.reason"></row>
+<!-- /ko -->
+
+<!-- ko if: $component.requestDetails.applicationDTO.address -->
+<div class="oj-flex oj-flex-items-pad">
+<div class="required oj-flex-item oj-sm-12 label">
+  <oj-label for="DeliveryLocation"><span data-bind="text:$component.requestDetailsTemplate.detail.address"></span></oj-label>
+</div>
+<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+  <div id="DeliveryLocation" data-bind="template:{name:'service-request/retail/address', data:{address:$component.requestDetails.applicationDTO.address}}"></div>
+</div>
+</div>
+<!-- /ko -->

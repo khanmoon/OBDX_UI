@@ -1,0 +1,18 @@
+<div class="form-main-container service-requests">
+  <div data-bind='component:{name: "service-requests-main", params:{rootModel: $component }}'></div>
+
+  <!-- ko ifnot: $component.constants.userSegment === 'RETAIL' -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button class="action-button-secondary" on-click="[[$dashboard.hideDetails]]">
+      <span data-bind="text:$component.resource.serviceRequest.cancel"></span>
+</oj-button>
+  </div>
+  <!-- /ko -->
+
+</div>
+
+<!-- ko if: $component.constants.userSegment === 'RETAIL' -->
+<!-- ko ifnot: $baseModel.small() -->
+<a class="back-link" href="#" data-bind="text: $component.resource.serviceRequest.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->
+<!-- /ko -->

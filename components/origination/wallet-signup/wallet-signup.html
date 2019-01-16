@@ -1,0 +1,30 @@
+<div class=" oj-row">
+  <!-- ko if:!loadCustomComponent() -->
+  <div class="wallet-signup-block">
+    <div class="oj-col">
+      <div class="heading"> <span data-bind="text:$component.resource.wallet.signuptitle"></span> </div>
+    </div>
+    <div class="oj-col button-container">
+      <div class="oj-col">
+        <oj-button id="button" class="action-button-primary" on-click="[[save]]">
+          <span data-bind="text:$component.resource.wallet.signup"></span>
+        </oj-button>
+        <img data-bind="loadImage:'wallet/wallet-farward-white.png'">
+      </div>
+      <div class="oj-col">
+        <oj-button id="button" class="action-button-primary" on-click="[[signIn]]">
+          <span data-bind="text:$component.resource.wallet.login"></span>
+        </oj-button>
+        <img data-bind="loadImage:'wallet/wallet-farward-white.png'">
+      </div>
+      <div class="oj-col">
+        <oj-button id="button" class="action-button-secondary forgotpassword" on-click="[[$component.forgotPassword]]"><span data-bind="text:$component.resource.wallet.forgotpassword"></span></oj-button>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if:loadCustomComponent() -->
+  <div data-bind="component:{name:customComponentName, params:{rootModel: $root }}"></div>
+  <!-- /ko -->
+
+</div>

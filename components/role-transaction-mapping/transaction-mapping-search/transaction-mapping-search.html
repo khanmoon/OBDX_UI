@@ -1,0 +1,40 @@
+<div class="form-main-container">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+      <oj-label for="userSegment"><span data-bind="text:$component.nls.common.userSegment"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+      <!-- ko if: $component.isRoleFetched() -->
+      <oj-select-one id="userSegment" value="{{selectedUser}}" placeholder="{{nls.headings.select}}">
+        <!-- ko foreach: $component.userSegment() -->
+        <oj-option value="[[value]]"><span data-bind="text: text"></span>
+        </oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5 label">
+      <oj-label for="appRoleName"><span data-bind="text:$component.nls.common.appRoleName"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-6 label">
+      <oj-input-text id="appRoleName" maxlength="80" value="{{appRoleName}}"></oj-input-text>
+    </div>
+    <div class="oj-sm-6 oj-md-6 oj-lg-12 oj-flex-item pull-right button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.searchApplicationRoles]]">
+        <span data-bind="text:$component.nls.generic.common.search"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" id="cancel" on-click="[[$component.cancel]]">
+        <span data-bind="text:$component.nls.generic.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" id="reset" on-click="[[$component.resetForm]]">
+        <span data-bind="text:$component.nls.generic.common.clear"></span>
+      </oj-button>
+    </div>
+  </div>
+  <!-- ko if: roleListLoaded()  -->
+  <div class="oj-flex-item">
+    <div data-bind='component:{name: "transaction-mapping-search-list", params:{roleListInternal:$component.roleListInternal,roleListLoaded:$component.roleListLoaded,selectedUser:$component.selectedUser,resultListLoaded:$component.resultListLoaded,roleListDataSourceArray:$component.roleListDataSourceArray,roleListExternal:$component.roleListExternal}}'>
+    </div>
+  </div>
+  <!-- /ko -->
+</div>

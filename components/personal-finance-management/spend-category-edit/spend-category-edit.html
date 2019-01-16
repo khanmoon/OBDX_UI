@@ -1,0 +1,37 @@
+<!-- ko if:stageOne() -->
+<div class="form-main-container spend-category">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <oj-validation-group id="spendEditTracker">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+                <oj-label class="label" for="categoryName"><span data-bind="text:$component.resource.spendCategory.categoryName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+                <oj-input-text maxlength="40" id="categoryName" required value="{{$component.categoryName}}" validators="[[[$component.validateName]]]"></oj-input-text>
+            </div>
+        </div>
+        <!-- ko if:$component.subCategoryArray().length === 0 -->
+        <div class="oj-flex oj-flex-items-pad form-title-heading">
+            <a href="#" data-bind="attr:{'alt':$component.resource.alt.addText ,'title':$component.resource.alt.add },click:$component.addSub">
+        <span class="icons icon-add"></span>
+        <span class="" data-bind="text :$component.resource.spendCategory.subCategoryDetails"></span>
+      </a>
+        </div>
+        <!-- /ko -->
+        <div id="edit-subcategory-container">
+            <!-- ko foreach:$component.subCategoryArray() -->
+            <div data-bind="template: { name:'spend-analysis/edit-subcategory-retail'}"></div>
+            <!-- /ko -->
+        </div>
+</oj-validation-group>
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container right">
+        <oj-button class="action-button-primary" id="buttonsave" on-click="[[editCategory]]"><span slot="startIcon" class="icons icon-save"></span>
+            <span data-bind="text:$component.resource.common.save"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="cancel" on-click="[[$component.closeModalWindow]]"><span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.resource.common.cancel"></span>
+        </oj-button>
+    </div>
+</div>
+<!-- /ko -->

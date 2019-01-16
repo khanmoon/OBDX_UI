@@ -1,0 +1,175 @@
+<div class="wallet-api-test">
+<!-- ko if:stageOne() -->
+  <a href="javascript:void(0)" data-bind="click:show.bind($data,'credit')">
+    <div>CREDITAPI TEST</div>
+  </a>
+  <a href="javascript:void(0)" data-bind="click:show.bind($data,'debit')">
+    <div>DEBITAPI TEST</div>
+  </a>
+  <a href="javascript:void(0)" data-bind="click:show.bind($data,'kyc')">
+    <div>KYC THIRD PARTY TEST</div>
+  </a>
+<!-- /ko -->
+<!-- ko if:stageTwo() -->
+<div class="wallet-api-test__review">
+      <!-- ko if:customComponent()==='credit' -->
+      CREDIT API SCREEN
+      <div data-bind="with:creditAPIModel">
+      <div class="oj-row">
+          <div data-bind="component: {
+                  name: 'amount-input', params: {
+                  amount :transactionAmount.amount,
+                  label : $component.wallet.dummyMerchant.amount,
+                  currency: transactionAmount.currency,
+                  converter:$baseModel.formatCurrency,
+                  currencyListRequired : false,
+                  validator:$component.validationTracker,
+                  isMandatory:true,
+                  rootId:'dd-amount',
+                  currencyURL : 'enumerations/gender',
+                  currencyParser : $component.currencyParser,
+                  rootClass:'form-input'
+              }
+            }"></div>
+      </div>
+      <div class="oj-row">
+          <div data-bind="component:{name: 'comment-box',
+                        params:{
+                        rootModel: $root,
+                        maxlength:40,
+                        label:$component.wallet.dummyMerchant.comment,
+                        rootId:'payComment',
+                        rootClass:'form-input',
+                        required:false,
+                        validator:$component.validationTracker,
+                        comment:comments}}"></div>
+      </div>
+      <div class="oj-row">
+          <div class="oj-lg-4 oj-col"><oj-label for="text-input">Merchant ID</oj-label></div>
+          <div class="oj-lg-8 oj-col">
+          <oj-input-text id="text-input" type="text" value="{{merchantId}}"></oj-input-text>
+          </div>
+      </div>
+      <div class="oj-row">
+          <div class="oj-lg-4 oj-col"><oj-label for="text-input">External Reference Number</oj-label></div>
+          <div class="oj-lg-8 oj-col">
+          <oj-input-text id="text-input" type="text" value="{{externalReferenceNo}}"></oj-input-text>
+          </div>
+      </div>
+      <div class="oj-row">
+          <div class="oj-lg-4 oj-col"><oj-label for="text-input">Wallet Identifier(Email/Mobile)</oj-label></div>
+          <div class="oj-lg-8 oj-col">
+          <oj-input-text id="text-input" type="text" value="{{walletIdentifier}}"></oj-input-text>
+          </div>
+      </div>
+      <div class="oj-row">
+          <div class="oj-lg-4 oj-col"><oj-label for="text-input">Wallet Identifier Detail</oj-label></div>
+          <div class="oj-lg-8 oj-col">
+          <oj-input-text id="text-input" type="text" value="{{walletDetail}}"></oj-input-text>
+          </div>
+      </div>
+      <oj-button id="button" on-click="[[$component.credit]]">
+      <span data-bind="text:$component.wallet.dummyMerchant.submit"></span>
+</oj-button>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:customComponent()==='debit' -->
+      DEBIT API SCREEN
+      <div data-bind="with:debitAPIModel">
+      <div class="oj-row">
+          <div data-bind="component: {
+                  name: 'amount-input', params: {
+                  amount :transactionAmount.amount,
+                  label : $component.wallet.dummyMerchant.amount,
+                  currency: transactionAmount.currency,
+                  converter:$baseModel.formatCurrency,
+                  currencyListRequired : true,
+                  validator:$component.validationTracker,
+                  isMandatory:true,
+                  rootId:'dd-amount',
+                  currencyURL : 'enumerations/gender',
+                  currencyParser : $component.currencyParser,
+                  rootClass:'form-input'
+              }
+            }"></div>
+      </div>
+      <div class="oj-row">
+          <div data-bind="component:{name: 'comment-box',
+                        params:{
+                        rootModel: $root,
+                        maxlength:40,
+                        label:$component.wallet.dummyMerchant.comment,
+                        rootId:'payComment',
+                        rootClass:'form-input',
+                        required:false,
+                        validator:$component.validationTracker,
+                        comment:comments}}"></div>
+      </div>
+      <div class="oj-row">
+          <div class="oj-lg-4 oj-col"><oj-label for="text-input">Merchant ID</oj-label></div>
+          <div class="oj-lg-8 oj-col">
+          <oj-input-text id="text-input" type="text" value="{{merchantId}}"></oj-input-text>
+          </div>
+      </div>
+      <div class="oj-row">
+          <div class="oj-lg-4 oj-col"><oj-label for="text-input">External Reference Number</oj-label></div>
+          <div class="oj-lg-8 oj-col">
+          <oj-input-text id="text-input" type="text" value="{{externalReferenceNo}}"></oj-input-text>
+          </div>
+      </div>
+      <div class="oj-row">
+          <div class="oj-lg-4 oj-col"><oj-label for="text-input">Wallet Identifier(Email/Mobile)</oj-label></div>
+          <div class="oj-lg-8 oj-col">
+          <oj-input-text id="text-input" type="text" value="{{walletIdentifier}}"></oj-input-text>
+          </div>
+      </div>
+      <div class="oj-row">
+          <div class="oj-lg-4 oj-col"><oj-label for="text-input">Wallet Identifier Detail</oj-label></div>
+          <div class="oj-lg-8 oj-col">
+          <oj-input-text id="text-input" type="text" value="{{walletDetail}}"></oj-input-text>
+          </div>
+      </div>
+      <oj-button id="button" on-click="[[$component.debit]]">
+      <span data-bind="text:$component.wallet.dummyMerchant.submit"></span>
+</oj-button>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:customComponent()==='kyc' -->
+      KYC THIRD PARTY TEST
+      <div data-bind="with:kycUpdateModel.updatedWallets()[0]">
+        <div class="oj-row">
+            <div class="oj-lg-4 oj-col"><oj-label for="text-input">Email Id</oj-label></div>
+            <div class="oj-lg-8 oj-col">
+            <oj-input-text id="text-input" type="text" value="{{emailId}}"></oj-input-text>
+            </div>
+        </div>
+        <div class="oj-row">
+            <div class="oj-lg-4 oj-col"><oj-label for="text-input">Mobile Number</oj-label></div>
+            <div class="oj-lg-8 oj-col">
+            <oj-input-text id="text-input" type="text" maxlength="10" value="{{mobileNo}}"></oj-input-text>
+            </div>
+        </div>
+        <oj-button id="button" on-click="[[$component.kycUpdate]]">
+      <span data-bind="text:$component.wallet.dummyMerchant.submit"></span>
+</oj-button>
+      </div>
+      <!-- /ko -->
+</div>
+<!-- /ko -->
+<!-- ko if:stageThree() -->
+<div>
+      <!-- ko if:customComponent()==='credit' -->
+      CREDIT API SCREEN confirm
+      <div data-bind="text:$component.hostRefNumber"></div>
+      <!-- /ko -->
+      <!-- ko if:customComponent()==='debit' -->
+      DEBIT API SCREEN confirm
+      <div data-bind="text:$component.hostRefNumber"></div>
+      <!-- /ko -->
+      <!-- ko if:customComponent()==='kyc' -->
+      KYC UPDATE confirm
+      <pre>KYC update successfully completed</pre>
+      <!-- /ko -->
+</div>
+<!-- /ko -->
+</div>

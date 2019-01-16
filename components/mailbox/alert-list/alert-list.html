@@ -1,0 +1,94 @@
+<div class="mailbox">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="form-main-container">
+
+
+            <!-- ko if: alertMessageListLoaded() -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item no-pad-cols mailbox__controls mailbox-controls">
+                    <button class="icons icon-refresh mailbox-controls__icons" data-bind="attr:{'aria-label':$component.nls.mailbox.labels.refresh},click : $component.refreshAlerts "></button>
+                    <!-- ko if:toShow -->
+                    <button class="icons icon-delete mailbox-controls__icons" data-bind="attr:{'aria-label':$component.nls.mailbox.labels.delete},click: showModalWindow.bind($data), enable: true"></button>
+                    <!-- /ko -->
+                    <!-- ko ifnot:toShow -->
+                    <button class="icons icon-delete disabled mailbox-controls__icons" data-bind="attr:{'aria-label':$component.nls.mailbox.labels.delete},click:showModalWindow.bind($data), enable: false"></button>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div id="pagingControlDemo">
+                <oj-table class="mailbox-controls__table-content mailbox-controls-table-content" id="AlertTable" :aria-label="[[$component.nls.mailbox.headers.alertList]]" columns="[[[{headerRenderer:renderHeadCheckBox,renderer:renderCheckBox,sortable:'none'},{headerText:$component.nls.mailbox.headers.subject,field:'subject',style:'width: 70%','renderer': $oj.KnockoutTemplateUtils.getRenderer('subject_template', true)},{headerText:$component.nls.mailbox.headers.received,field:'creationDate',style:'width: 25%',template:'date-time'}]]]" data="[[paginationDataSource]]">
+                    <caption class="hide-label" data-bind="text:$component.nls.mailbox.headers.alertList"></caption>
+                    </oj-table>
+                    <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[paginationDataSource]]"></oj-paging-control>
+
+                    <script type="text/html" id="subject_template">
+                        <td>
+
+                            <!-- ko ifnot:$context.row.readStatus -->
+                            <div class="mailbox-controls-table-content__read">
+                                <a href="#" data-bind="attr:{'alt':$data.subject,'title':$component.nls.mailbox.headers.readTitle},text:$context.row.subject, click:$component.onMessageRowClicked.bind($data,$context.row)"></a>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if:$context.row.readStatus -->
+                            <div class="mailbox-controls-table-content__unread">
+                                <a href="#" data-bind="attr:{'alt':$data.subject,'title':$component.nls.mailbox.headers.unreadTitle},text:$context.row.subject, click:$component.onMessageRowClicked.bind($data,$context.row)"></a>
+                            </div>
+                            <!-- /ko -->
+
+                        </td>
+                    </script>
+
+            </div>
+
+            <!-- /ko -->
+
+            <modal-window class="" params="baseModel : $baseModel, rootModel : $data, id:'deleteAlertsConfirmation', header :$component.nls.mailbox.headers.alerts ">
+                <div class="form-main-container">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item">
+                            <div class="">
+                                <div class="oj-flex oj-flex-items-pad">
+                                    <div class="oj-flex-item">
+                                        <!-- ko if: $component.s() === "s" -->
+                                        <div data-bind="text: $baseModel.format($component.nls.mailbox.alerts.selectedAlert, {count: $component.messages().length})"></div>
+                                        <!-- /ko -->
+                                        <!-- ko if: $component.s() !== "s" -->
+                                        <div data-bind="text: $component.nls.mailbox.alerts.selectAlert"></div>
+                                        <!-- /ko -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad button-container">
+                        <oj-button id="cancel" class="action-button-secondary" on-click="[[closeModal]]">
+      <span data-bind="text:nls.mailbox.buttons.cancel"></span>
+</oj-button>
+                        <oj-button id="confirm" class="action-button-primary" on-click="[[submit]]">
+      <span data-bind="text:$component.nls.mailbox.buttons.confirm"></span>
+</oj-button>
+                    </div>
+                </div>
+
+            </modal-window>
+            <!-- ko if: showDetailedMessage -->
+            <div class="" data-bind='component:{name: "alert-detail", params:{rootModel:$component,data:$data}}'>
+            </div>
+            <!-- /ko -->
+        </div>
+    </page-section>
+</div>
+<script type="text/html" id="date-time">
+    <td>
+        <!-- ko ifnot:readStatus -->
+        <div class="mailbox-controls-table-content__read">
+            <span data-bind="text:$baseModel.formatDate($data.creationDate,'dateTimeStampFormat')"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:readStatus -->
+        <div class="mailbox-controls-table-content__unread">
+            <span data-bind="text:$baseModel.formatDate($data.creationDate,'dateTimeStampFormat')"></span>
+        </div>
+        <!-- /ko -->
+    </td>
+</script>

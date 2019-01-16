@@ -1,0 +1,54 @@
+<div class=" form-main-container">
+  <!-- ko if:feedbackReviewHeader -->
+  <div class="review-text-heading oj-flex oj-sm-12 oj-lg-10">
+    <span class="icons icon-information"></span>
+    <span class="oj-sm-10 oj-lg-10 oj-flex-item left" data-bind="text:$component.resource.reviewHeader"></span>
+  </div>
+  <!-- /ko -->
+    <!-- ko foreach: $component.componentsToLoad-->
+    <div class="oj-flex">
+      <div class="oj-lg-8 header-underline">
+      <div class="oj-flex-item oj-lg-4">
+        <h2 class="comp-title" data-bind="attr:{id:'titleForScale'+$index()},
+               text: label"></h2>
+      </div>
+        <!-- ko ifnot:$component.fromApproval -->
+      <div class="oj-flex-item oj-lg-8 label right">
+        <a class="icon-remarks icon-property" href="javascript:void(0)" data-bind="click:$component.edit,attr:{'aria-label':label}"></a>
+      </div>
+        <!-- /ko -->
+    </div>
+    </div>
+    <div class="align-feedback" data-bind="component: {name:id , params:{rootModel:$component }}">
+    </div>
+    <!-- /ko -->
+  <!-- ko ifnot:fromApproval -->
+  <!-- ko ifnot:showViewFlag -->
+  <div class="button-container">
+    <div class="oj-flex-items oj-lg-8">
+      <oj-button class="action-button-primary" id="confirm-button" type="submit" on-click="[[$component.addTemplate]]">
+        <span data-bind="text:$component.resource.confirmButton"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" id="CancelButton" type="submit" on-click="[[$dashboard.openDashBoard]]">
+        <span data-bind="text:$component.resource.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" id="backButton" type="submit" on-click="[[toLastStep]]">
+        <span data-bind="text:$component.resource.back"></span>
+      </oj-button>
+    </div>
+  </div>
+  <!-- /ko -->
+    <!-- ko if:showViewFlag -->
+    <div class="button-container">
+      <div class="oj-flex-items oj-lg-8">
+        <oj-button class="action-button-secondary" id="CancelButton" type="submit" on-click="[[$dashboard.openDashBoard]]">
+          <span data-bind="text:$component.resource.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" id="backButton" type="submit" on-click="[[backToSearch]]">
+          <span data-bind="text:$component.resource.back"></span>
+        </oj-button>
+      </div>
+    </div>
+  <!-- /ko -->
+  <!-- /ko -->
+</div>

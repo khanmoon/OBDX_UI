@@ -1,0 +1,86 @@
+<oj-validation-group :id="[[$component.id+'track']]">
+  <div class="oj-flex oj-flex-items-pad country-states-control">
+    <div class="oj-flex-item oj-md-12 country-states-control__banner">
+      <span data-bind="text:$component.resource.countryAndStates"></span>
+    </div>
+    <div class="oj-flex country-states-control__middle">
+    <div class="oj-flex-item oj-sm-5">
+        <oj-input-text :id="[['textBox1'+$component.id]]" :aria-label="[[$component.resource.typeValue]]" placeholder="{{$component.resource.labelNamePlaceHolder}}" value="{{$component.formField().label}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+               type: 'length',
+               options: {
+                   min: 0,
+                   max: 80
+               }})]]" disabled="{{$component.isDisabled}}" required>
+        </oj-input-text>
+    </div>
+    <!-- ko if: $component.buttonShow -->
+    <div class="oj-flex-item oj-sm-6 icon-style right country-states-control__icon">
+      <a class="icon-size" href="javascript:void(0)" on-click="[[$component.showHideDetails]]">
+        <div class="icons icon-setting"></div>
+      </a>
+    </div>
+    <div class="oj-flex-item oj-sm-1 country-states-control__icon">
+      <a class="icon-size" href="javascript:void(0)" on-click="[[$component.deleteCountryStates]]">
+        <div class="icons icon-delete"></div>
+      </a>
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex-item oj-sm-5">
+      <oj-select-one id="selectCountry" :aria-label="[[$component.resource.selectCountry]]"  value="{{selectedOption}}" placeholder="{{$component.resource.selectCountry}}">
+        <!-- ko foreach:optionList -->
+        <oj-option value="{{description}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+    <div class="oj-flex-item oj-sm-5">
+      <oj-select-one id="selectState" :aria-label="[[$component.resource.selectState]]" value="{{selectedOption}}" placeholder="{{$component.resource.selectState}}">
+        <!-- ko foreach:optionList -->
+        <oj-option value="{{description}}"><span data-bind="text:description"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+  </div>
+    <!-- ko if:isDetails -->
+    <div class="oj-md-12 country-states-control__section">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-3">
+                <oj-label :for="[[$component.uniqueId()+3]]" class="oj-label-inline"><span data-bind="text:$component.resource.validations"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-1">
+            </div>
+            <div class="oj-flex-item oj-sm-8">
+                <oj-radioset labelled-by="mainlabelid" :id="[[$component.uniqueId()+3]]" class="oj-choice-direction-row" value="{{$component.formField().validation.isMandatory}}" disabled="{{$component.isDisabled}}">
+                    <oj-option value="{{true}}"><span data-bind="text:$component.resource.mandatory"></span></oj-option>
+                    <oj-option value="{{false}}"><span data-bind="text:$component.resource.optional"></span></oj-option>
+                </oj-radioset>
+            </div>
+        </div>
+        <!-- ko if: JSON.parse($component.formField().validation.isMandatory()) -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-3">
+                <oj-label for="[['error'+$component.id]]"  class="oj-label-inline"><span data-bind="text:$component.resource.errorMessage"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-1">
+            </div>
+            <div class="oj-flex-item oj-sm-5">
+                <oj-input-text :id="[['error'+$component.id]]" :aria-label="[[$component.resource.errorMessagePlaceHolder]]" placeholder="{{$component.resource.errorMessagePlaceHolder}}" value="{{$component.formField().errorMessage}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.resource.validationMessage,{
+                         type: 'length',
+                         options: {
+                             min: 0,
+                             max: 200
+                         }})]]" disabled="{{$component.isDisabled}}" required>
+                </oj-input-text>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: $component.buttonShow -->
+        <div class="oj-flex button-container">
+            <oj-button class="action-button-primary" on-click="[[$component.saveCountryStates]]" disabled="{{$component.isDisabled}}">
+                <span data-bind="text:$component.resource.save"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+  </div>
+</oj-validation-group>

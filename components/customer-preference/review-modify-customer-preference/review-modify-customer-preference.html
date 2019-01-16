@@ -1,0 +1,132 @@
+
+<!-- ko ifnot:showConfirmationScreen -->
+<div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.nls.generic.common.review , reviewHeader :$component.nls.info.reviewEditMessage}}"></div>
+
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : nls.party.partyID , value :$component.partyIDdisplayValue()"></row>
+
+    <row params="baseModel : $baseModel, rootModel : $parent, label : nls.party.partyName , value :cpData().partyName"></row>
+
+<action-header params="baseModel : $baseModel, rootModel : $data, heading :nls.headings.details">
+</action-header>
+
+<!-- ko if:cpData().gracePeriod && cpData().gracePeriod!=="" -->
+<row params="baseModel : $baseModel, rootModel : $parent, label : nls.party.GracePeriod, value:$baseModel.format($component.nls.party.gracePeriodDays,
+    {gracePeriod:cpData().gracePeriod})"></row>
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+        <oj-label class=""><span data-bind="text:nls.party.ApprovalType"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+        <oj-buttonset-one disabled="[['true']]" value="{{cpData().approvalType}}"><oj-option name="approvalTypeValue" value="{{'SE'}}" :id="[['approvaltypeseq']]"><span data-bind="attr: {for: 'approvaltypeseq'},text:nls.fieldname.sequential"></span></oj-option><oj-option name="approvalTypeValue" value="{{'NSE'}}" :id="[['approvaltypeparallel']]"><span data-bind="attr: {for: 'approvaltypeparallel'},text:nls.fieldname.parallel"></span></oj-option><oj-option name="approvalTypeValue" value="{{'ZE'}}" :id="[['noapprovaltype']]"><span data-bind="attr: {for: 'noapprovaltype'}, text:nls.fieldname.noApproval"></span></oj-option></oj-buttonset-one>
+    </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+       <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+           <oj-label class=""><span data-bind="text:nls.party.channelAccess"></span></oj-label>
+       </div>
+       <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+           <oj-buttonset-one disabled="[['true']]" value="{{$component.channelAccessValue}}"><oj-option name="channelAccessValue" value="{{'true'}}" :id="[['isenable']]"><span data-bind="attr: {for: 'isenable'}, text:nls.common.enable"></span></oj-option><oj-option name="channelAccessValue" value="{{'false'}}" :id="[['isdisable']]"><span data-bind="attr: {for: 'isdisable'},text:nls.common.disable"></span></oj-option></oj-buttonset-one>
+       </div>
+</div>
+  <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+         <oj-label class="oj-flex-item oj-lg-12 oj-sm-12">
+              <span data-bind="text: nls.party.dealCreationAllowed"></span>
+            </oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+        <oj-buttonset-one disabled="{{'true'}}" value="{{$component.isForexDealCreationAllowed}}">
+        <oj-option name="forexDealAllowedValue" value="{{'true'}}" :id="[['isdealcreationallowed']]"><span data-bind="attr: {for: 'isdealcreationallowed'},text :nls.common.enable"></span>
+      </oj-option>
+      <oj-option name="forexDealAllowedValue" value="{{'false'}}" :id="[['forexDealCreationDisabled']]"><span data-bind="attr: {for: 'forexDealCreationDisabled'},text :nls.common.disable"></span>
+    </oj-option>
+  </oj-buttonset-one>
+      </div>
+    </div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+        <oj-label class=""><span data-bind="text:nls.party.enableCorpAdministrator"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+        <oj-buttonset-one :id="[['isCorpAdminEnabled']]" disabled="[['true']]" value="{{$component.isCorpAdminEnabled}}"><oj-option value="{{'ENABLED'}}" :id="[['CorpAdminEnabled']]" :name="[['corpAdmin']]"><span data-bind="attr: {for:'CorpAdminEnabled'},text:nls.common.enable"></span></oj-option><oj-option value="{{'DISABLED'}}" :id="[['corpAdminDisabled']]" :name="[['corpAdmin']]"><span data-bind="attr: {for: 'corpAdminDisabled'},text:nls.common.disable"></span></oj-option></oj-buttonset-one>
+
+    </div>
+</div>
+<!-- ko if:$component.isCorpAdminEnabled() ==='ENABLED' -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+    <oj-label class="" for="lgid"><span data-bind="text:nls.party.allowedRoles"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+    <!-- ko foreach: cpData().allowedRoles -->
+    <div class="oj-flex-item oj-sm-12">
+    <span class="oj-choice-item" data-bind="text: $data"></span>
+  </div>
+    <!-- /ko -->
+  </div>
+</div>
+  <!-- /ko -->
+<action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.party.CumulativeLevel"></action-header>
+  <!-- ko ifnot:$component.cpData().limitPackagesUtilizedByParty.length-->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12">
+  <span class="oj-choice-item" data-bind="text: $component.nls.party.noLimitsAssigned"></span>
+</div>
+</div>
+  <!-- /ko -->
+  <!-- ko if:$component.cpData().limitPackagesUtilizedByParty.length-->
+  <div class="oj-flex oj-flex-items-pad">
+  	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+  		<h5 data-bind="text: $component.nls.party.accessPointGroup"></h5>
+  	</div>
+  	<h5 class="oj-flex-item" data-bind="text: $component.nls.party.limitPackage">
+  	</h5>
+  </div>
+  <!-- /ko -->
+  <!-- ko foreach: $component.cpData().limitPackagesUtilizedByParty -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : accessPointValue , value :key.id"></row>
+  <!-- /ko -->
+  <action-header params="baseModel : $baseModel, rootModel : $data, heading : nls.party.UserLevel"></action-header>
+  <!-- ko ifnot:$component.cpData().limitPackagesUtilizedByUser.length-->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+    <span class="oj-choice-item" data-bind="text: $component.nls.party.noLimitsAssigned"></span>
+  </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko if:$component.cpData().limitPackagesUtilizedByUser.length-->
+  <div class="oj-flex oj-flex-items-pad">
+  	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+  		<h5 data-bind="text: $component.nls.party.accessPointGroup"></h5>
+  	</div>
+  	<h5 class="oj-flex-item" data-bind="text: $component.nls.party.limitPackage">
+  	</h5>
+  </div>
+  <!-- /ko -->
+  <!-- ko foreach: $component.cpData().limitPackagesUtilizedByUser -->
+    <row params="baseModel : $baseModel, rootModel : $parent, label : accessPointValue , value :key.id"></row>
+  <!-- /ko -->
+
+</page-section>
+
+<!-- ko if:isActionReuired -->
+
+<div class="oj-flex oj-flex-items-pad button-container">
+  <oj-button class="action-button-primary" on-click="[[$component.updateCP]]">
+    <span data-bind="text:nls.common.confirm"></span>
+</oj-button>
+    <oj-button class="action-button-secondary" on-click="[[$component.cancelOnUpdateReview]]">
+      <span data-bind="text:nls.common.cancel"></span>
+</oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[$component.backReview]]">
+      <span data-bind="text:nls.common.back"></span>
+</oj-button>
+</div>
+<!-- /ko -->
+
+<!-- /ko -->

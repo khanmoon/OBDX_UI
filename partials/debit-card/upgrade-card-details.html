@@ -1,0 +1,108 @@
+<div class="oj-flex oj-flex-items-pad information-wrapper">
+  <div class="oj-flex-item">
+    <div class="">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item">
+          <h4 data-bind="text: $baseModel.format($component.resource.cardTypeDetails.benefitsHeader, {cardType: debitCardType})"></h4>
+        </div>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-lg-4">
+        <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+              <h4 data-bind="text: $component.resource.cardTypeDetails.domestic"></h4>
+            </div>
+          </div>
+          <!-- ko foreach: $data.domestic -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-6">
+              <label class="" data-bind="text: $data.benefitLimitName"></label>
+            </div>
+            <div class="oj-flex-item oj-lg-6">
+              <span class="cust-name oj-flex-item oj-lg-4" data-bind="text: $baseModel.formatCurrency($data.benefitLimitAmount.amount, $data.benefitLimitAmount.currency)"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+          <div class="row-group">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <h4 data-bind="text: $component.resource.cardTypeDetails.international"></h4>
+              </div>
+            </div>
+            <!-- ko foreach: $data.international -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-lg-6">
+                <label class="" data-bind="text: $data.benefitLimitName"></label>
+              </div>
+              <div class="oj-flex-item oj-lg-6">
+                <span class="cust-name oj-flex-item oj-lg-4" data-bind="text: $baseModel.formatCurrency($data.benefitLimitAmount.amount, $data.benefitLimitAmount.currency)"></span>
+              </div>
+            </div>
+            <!-- /ko -->
+          </div>
+          <!-- ko foreach: $data.other -->
+          <div class="row-group">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-lg-6">
+                <label class="" data-bind="text: $data.benefitLimitName"></label>
+              </div>
+              <!-- ko if: $data.benefitLimitAmount -->
+              <div class="oj-flex-item oj-lg-6">
+                <span class="cust-name oj-flex-item oj-lg-4" data-bind="text: $baseModel.formatCurrency($data.benefitLimitAmount.amount, $data.benefitLimitAmount.currency)"></span>
+              </div>
+              <!-- /ko -->
+              <!-- ko if: $data.benefitValue -->
+              <div class="oj-flex-item oj-lg-6">
+                <span class="cust-name oj-flex-item oj-lg-4" data-bind="text: $data.benefitValue"></span>
+              </div>
+              <!-- /ko -->
+            </div>
+          </div>
+          <!-- /ko -->
+        </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-lg-4">
+        <div class="">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+              <h4 data-bind="text: $component.resource.cardTypeDetails.offers"></h4>
+            </div>
+          </div>
+        </div>
+        <!-- ko foreach: $data.offers -->
+        <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-6">
+              <!-- ko if: $data.amount -->
+              <label class="" data-bind="text: $baseModel.format($component.resource.cardTypeDetails[$data.offerText], {discount: discount, company: company, amount: amount})"></label>
+              <!-- /ko -->
+              <!-- ko ifnot: $data.amount -->
+              <label class="" data-bind="text: $baseModel.format($component.resource.cardTypeDetails[$data.offerText], {discount: discount, company: company})"></label>
+              <!-- /ko -->
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-lg-4">
+        <div class="">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+              <h4 data-bind="text: $component.resource.cardTypeDetails.rewards"></h4>
+            </div>
+          </div>
+        </div>
+        <!-- ko foreach: $data.rewards -->
+        <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-6">
+              <label class="" data-bind="text: $baseModel.format($component.resource.cardTypeDetails[$data.rewardsText], {paybackPoints: paybackPoints, expenditureAmount: expenditureAmount})"></label>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+  </div>

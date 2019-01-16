@@ -1,0 +1,73 @@
+<div class="oj-flex oj-sm-flex-items-initial">
+<div class="form-main-container oj-sm-9">
+<!-- ko if:refresh() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <!-- ko if:viewMode() -->
+    <div data-bind="template: { name:'merchant/view-merchant'}"></div>
+    <modal-window class="message" params="baseModel : $baseModel, rootModel : $component, id:'deleteMerchant', header:$component.resource.common.delete">
+            <div class="form-main-container message-text">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item">
+                        <span data-bind="text:$baseModel.format($component.resource.merchant.deleteaccount, {
+                        name: $component.merchantCode})">
+                        </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad button-container">
+                    <oj-button id="deleteYes" class="action-button-primary" on-click="[[deleteMerchant]]">
+                        <span data-bind="text:$component.resource.generic.common.yes"></span>
+                    </oj-button>
+                    <oj-button id="deleteNo" class="action-button-secondary" on-click="[[$component.hidePopup]]">
+                        <span data-bind="text:$component.resource.generic.common.no"></span>
+                    </oj-button>
+                </div>
+            </div>
+    </modal-window>
+
+    <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'qrCode',header:$component.resource.qrCode">
+            <view-qr-code params="baseModel : $baseModel, rootModel : $component,id:$component.merchantCode"></view-qr-code>
+    </modal-window>
+
+    <div class="oj-flex oj-flex-items-pad  button-container">
+        <oj-button class="action-button-primary" on-click="[[$component.editMerchant]]">
+            <span data-bind="text:$component.resource.common.edit"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" on-click="[[$component.openPopup]]">
+            <span data-bind="text:$component.resource.common.delete"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="cancel" on-click="[[$dashboard.openDashBoard.bind()]]">
+            <span data-bind="text:$component.resource.common.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" id="cancel1" on-click="[[$component.back]]">
+            <span data-bind="text:$component.resource.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko if:reviewMode() -->
+    <action-header params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.common.review"></action-header>
+
+    <div data-bind="template: { name:'merchant/view-merchant'}"></div>
+    <div class="oj-flex oj-flex-items-pad  button-container right">
+
+        <oj-button class="action-button-primary" on-click="[[$component.back]]">
+            <span data-bind="text:$component.resource.common.edit"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary" id="cancel" on-click="[[$dashboard.openDashBoard.bind()]]">
+            <span data-bind="text:$component.resource.common.cancel"></span>
+        </oj-button>
+        <oj-button class="action-button-tertiary" on-click="[[$component.createMerchant]]">
+            <span data-bind="text:$component.resource.common.confirm"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+    </page-section>
+<!-- /ko -->
+</div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'merchant-view'"></help>
+    </div>
+    <!-- /ko -->
+</div>
+

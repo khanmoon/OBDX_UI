@@ -1,0 +1,50 @@
+<div class="oj-flex oj-flex-item payment-overview">
+    <div class="" data-bind="css:$component.reviewMode?'oj-sm-12 oj-lg-12':'oj-sm-8 oj-lg-10'">
+        <div class="oj-flex oj-flex-items-pad payment-overview__element">
+            <div class="oj-flex-item details" data-bind="css:$component.reviewMode?'oj-sm-6 oj-lg-3':'oj-sm-12 oj-lg-4'">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.billPayment.biller, value :billerName"></row>
+            </div>
+            <div class="oj-flex-item details" data-bind="css:$component.reviewMode?'oj-sm-6 oj-lg-3':'oj-sm-12 oj-lg-4'">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.billPayment.relationshipNumber, value :relationshipNumber"></row>
+            </div>
+            <div class="oj-flex-item details" data-bind="css:$component.reviewMode?'oj-sm-6 oj-lg-3':'oj-sm-12 oj-lg-4'">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.billPayment.amount, value :amount"></row>
+            </div>
+            <!-- ko if: $component.reviewMode -->
+            <div class="oj-flex-item details oj-sm-6 oj-lg-3">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.label.billNumber, value :billNumber"></row>
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- ko if: $component.reviewMode -->
+        <div class="oj-flex oj-flex-items-pad payment-overview__element">
+            <div class="oj-flex-item details oj-sm-6 oj-lg-3">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.label.billDate, value :billDate"></row>
+            </div>
+         <div class="oj-flex-item details" data-bind="css:$component.reviewMode?'oj-sm-6 oj-lg-3':'oj-sm-12 oj-lg-4'">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.billPayment.transferFrom, value :debitAccountId"></row>
+         </div>
+            <!-- ko if: note -->
+            <div class="oj-flex-item details oj-sm-6 oj-lg-3">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.label.note, value : note"></row>
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+
+    </div>
+    <!-- ko ifnot: $component.reviewMode -->
+    <div class="oj-flex-item" data-bind="css:$component.masterBatchArray().length > 1?'oj-lg-1 oj-sm-2 left':'oj-lg-2 oj-sm-4 right'">
+        <a class="action-icon" href="#" data-bind="attr:{'aria-label':$component.resource.billPayment.editTitle,'alt':$component.resource.billPayment.edit,'title':$component.resource.billPayment.editTitle },click:$component.editSavedPayment">
+            <div class="icons icon-remarks center"></div>
+        </a>
+    </div>
+    <!-- ko if: $component.masterBatchArray().length > 1 -->
+    <div class="oj-flex-item oj-lg-1 oj-sm-2 right payment-overview__delete">
+        <a class="action-icon" href="#" data-bind="attr:{'aria-label':$component.resource.billPayment.deleteTitle, 'alt':$component.resource.generic.common.delete ,'title':$component.resource.billPayment.deleteTitle },click:$component.removePayment.bind($data, $component.referenceHandle.id)">
+            <div class="icons icon-delete center"></div>
+        </a>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>

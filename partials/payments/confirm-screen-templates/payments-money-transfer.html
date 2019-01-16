@@ -1,0 +1,63 @@
+
+<!-- ko if:$component.securityCode -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+      <oj-label><span data-bind="text:$component.payments.payee.securityCode"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-8">
+      <oj-label><span data-bind="text:$component.securityCode"></span></oj-label>
+  </div>
+</div>
+<!-- /ko -->
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-flex-item right">
+               <a data-id="favoriteIcon" href="#" data-bind="attr:{'alt':$component.payments.moneytransfer.addFavoriteText,'title':$component.payments.moneytransfer.addFavoriteTextTitle},click:addToFavorites">
+                   <span class="icon icon-heart icon-2x" id="favorite"></span>
+               </a>
+            </div>
+            <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-flex-item">
+            <a href="#" data-bind="attr:{'alt':$component.payments.moneytransfer.repeatTransferText,'title':$component.payments.moneytransfer.repeatTransfer},click:setUpRepeatTransfer"><span class="icons icon-undo icon-2x"></span></a>
+            </div>
+           
+        </div>
+      
+
+        <div class=" oj-flex oj-flex-items-pad button-container">
+            <oj-button data-id="doneButton" class="action-button-primary " on-click="[[paymentDone]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.payments.common.done"></span>
+</oj-button>
+        </div>
+
+    
+
+    <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'favoritesDialog',header:$component.payments.moneytransfer.favorite ">
+
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+              <div data-bind="text:$baseModel.format($component.payments.moneytransfer.favadded,{name:customPayeeName()})">
+              </div>
+              </page-section>
+
+            <div class="button-container">
+                <oj-button class="action-button-secondary " on-click="[[cancelFavourite]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.payments.common.cancel"></span>
+</oj-button>
+                <oj-button data-id="okButton" class="action-button-primary " on-click="[[persistFavorites]]"><span slot="startIcon" class="icons icon-ok"></span>
+      <span data-bind="text:$component.payments.common.ok"></span>
+</oj-button>
+            </div>
+
+    </modal-window>
+
+
+    <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'favoritesSuccessDialog',header :$component.payments.moneytransfer.favorite">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <span data-bind="text:$baseModel.format($component.payments.moneytransfer.favsuccess,{name:$component.customPayeeName()})"></span>
+        </page-section>
+            <div class="button-container">
+                <oj-button class="action-button-primary " on-click="[[$component.paymentDone]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.payments.common.done"></span>
+</oj-button>
+            </div>
+
+    </modal-window>

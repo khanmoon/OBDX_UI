@@ -1,0 +1,26 @@
+<div data-bind="with:$component.domestic">
+    <div class="">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.recipientname,value :name()"></row>
+    </div>
+    <div class="">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.drafttype , value :$component.payments.payee.accdomestic"></row>
+        <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.draftfavouring ,  value :nickName()"></row>
+        <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.draftpayableatcity ,  value :payAtCity()"></row>
+    </div>
+    <div class="">
+        <!-- ko if:demandDraftDeliveryDTO.deliveryMode!=='BRN' -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.deliverdraftto ,value :$component.payments.payee.domestic.msgtype.myaddress"></row>
+        <!-- /ko -->
+        <!-- ko if:demandDraftDeliveryDTO.deliveryMode ==='BRN' -->
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.domestic.deliverdraftto ,value :$component.payments.payee.domestic.msgtype.branchaddress"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.addressDetails -->
+        <div data-bind="template: { name: 'common/review/address',data:$component.addressDetails }"></div>
+        <!-- /ko -->
+    </div>
+    <!-- ko if:$component.userSegment === "CORP" -->
+    <div class="">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.payeeaccesstype , value :$component.payments.payee[$component.payeeAccessType]"></row>
+    </div>
+    <!-- /ko -->
+</div>

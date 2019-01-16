@@ -1,0 +1,46 @@
+<div class="eStatement">
+
+  <div class="oj-flex oj-flex-items-pad eStatement__details eStatement-details">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 eStatement-details__selectNote">
+      <div data-bind="html : $component.resource.eStatement.selectNote"></div>
+    </div>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+      <label class="" data-bind="attr:{for: 'selectYear'},text:$component.resource.eStatement.year"></label>
+      <oj-select-one :id="[['selectYear']]" :placeholder="[[$component.resource.common.select]]" value="{{$component.selectedStatementYear}}">
+        <!-- ko foreach: statementYears -->
+        <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+      <label class="" data-bind="attr:{for: 'selectMonth'},text:$component.resource.eStatement.month"></label>
+
+      <oj-select-one :id="[['selectMonth']]" :placeholder="[[$component.resource.common.select]]" value="{{$component.selectedStatementMonth}}">
+        <!-- ko foreach: statementMonths -->
+        <oj-option value="{{value}}"><span data-bind="text:text"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 eStatement-details__searchButton">
+
+      <oj-button class="action-button-primary" on-click="[[listEstatements]]">
+        <span slot="startIcon" class="icons icon-search"></span><span data-bind="text:$component.resource.eStatement.search"></span>
+      </oj-button>
+    </div>
+  </div>
+
+  <!-- ko if:statementsFetched -->
+  <div class="oj-flex oj-flex-items-pad eStatement__table-data">
+    <oj-table :aria-label="[[$component.resource.eStatement.tableName]]" columns="[[[{headerText:$component.resource.eStatement.statementNo,field:'statementNo'},{headerText:$component.resource.eStatement.fromDate,field:'fromDate'},{headerText:$component.resource.eStatement.toDate,field:'toDate'},{headerText:$component.resource.eStatement.download,renderer:$oj.KnockoutTemplateUtils.getRenderer('download_link',true)}]]]"
+      data="[[datasource]]">
+      <caption class="hide-label" data-bind="text:$component.resource.eStatement.tableHeading"></caption>
+    </oj-table>
+    <script type="text/html" id="download_link">
+      <td>
+        <a href="#" data-bind="text: $component.resource.eStatement.typePDF, click: $component.downLoadStatement.bind($data,$context.row)"></a>
+      </td>
+    </script>
+  </div>
+  <!-- /ko -->
+</div>

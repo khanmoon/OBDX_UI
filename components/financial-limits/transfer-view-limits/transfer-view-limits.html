@@ -1,0 +1,55 @@
+<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+    <!-- ko if: $component.showGraph() -->
+    <!-- ko if: $component.selectedTransactionData() -->
+    <div data-bind="with:$component.selectedTransactionData().transactionalLimitData ">
+        <div class="oj-flex oj-flex-items-pad limitamount">
+            <!-- ko if:$baseModel.small() -->
+            <div class="oj-flex-item oj-sm-4 oj-md-5 oj-lg-5">
+                <label for="minimum" data-bind="text:$component.limitResource.minimum"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-8 oj-md-7 oj-lg-7">
+                <div id="minimum" class="amount" data-bind="text:$baseModel.formatCurrency(miniAmount,miniCurrency)"></div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:!$baseModel.small() -->
+            <div class="oj-flex-item oj-sm-2 oj-md-5 oj-lg-2">
+                <label for="minimum" data-bind="text:$component.limitResource.minimum"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-10 oj-md-7 oj-lg-4">
+                <div id="minimum" class="amount" data-bind="text:$baseModel.formatCurrency(miniAmount,miniCurrency)"></div>
+            </div>
+            <!-- ko if:!$baseModel.small() -->
+            <div class="oj-flex-item oj-sm-2 oj-md-5 oj-lg-2">
+                <label for="maximum" data-bind="text:$component.limitResource.maximum"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-10 oj-md-7 oj-lg-4">
+                <div id="maximum" class="amount" data-bind="text:$baseModel.formatCurrency(maxAmount,maxCurrency)"></div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad limitamount">
+            <!-- ko if:$baseModel.small() -->
+            <div class="oj-flex-item oj-sm-4 oj-md-5 oj-lg-5">
+                <label for="maximum" data-bind="text:$component.limitResource.maximum"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-8 oj-md-7 oj-lg-7">
+                <div id="maximum" class="amount" data-bind="text:$baseModel.formatCurrency(maxAmount,maxCurrency)"></div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad oj-flex-item " data-bind='component:{name: "limits-graph", params:{rootModel: $component, data: $component.selectedTransactionData(),accessPointValue : $component.selectedChannelTypeNameValue()}}'></div>
+    <div class="oj-flex oj-flex-items-pad oj-sm-12 oj-md-3 oj-lg-12 view-limits__knowmore">
+        <div class="view-limits__knowmore__iconStylingKnowMore">
+            <div class="icon icon-2x icon-information" aria-hidden="true"></div>
+        </div>
+        <div class="oj-flex-item oj-sm-11 oj-md-3 oj-lg-11 labels">
+            <oj-label id="msg" class="labels">
+                <span data-bind="text:$component.limitResource.knowMoreInfo"></span>
+            </oj-label>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>

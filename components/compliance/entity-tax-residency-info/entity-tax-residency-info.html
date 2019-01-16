@@ -1,0 +1,55 @@
+<!-- ko if: $component.taxResidencyInfoLoaded -->
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+  <div class="oj-flex-item oj-sm-12">
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+      <div class="row-group">
+        <oj-validation-group id="taxResidencyInfoTracker">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="taxResidencyQues1" id="taxResidencyQues1Label"><span data-bind="text:$component.resource.taxResidencyInfo.ques1"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-12 oj-md-12">
+              <oj-radioset class="oj-choice-direction-row" id="taxResidencyQues1" aria-labelledby="taxResidencyQues1Label" value="{{$component.fatcaComplianceData.taxResidencyInfoDTO.domesticEntity}}" translations="[[{'required':{messageDetail:$component.resource.messages.domesticTaxResident}}]]" on-value-changed="[[$component.taxResidentOtherCountryChanged]]">
+                <oj-option id="yesQues1" value="false"><span data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+                <oj-option id="noQues1" value="true"><span data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+              </oj-radioset>
+            </div>
+          </div>
+          <!-- ko ifnot: $component.fatcaComplianceData.taxResidencyInfoDTO.domesticEntity() === "true" -->
+          <!-- ko foreach: $component.fatcaComplianceData.taxResidencyInfoDTO.nonDomesticTaxResidencyInfo -->
+          <div class="" data-bind="template: { name: 'compliance/tax-resident-other-country'}"></div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="taxResidencyQues2" id="taxResidencyQues2Label"><span data-bind="text:$component.resource.taxResidencyInfo.ques2"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-12 oj-md-12">
+              <oj-radioset class="oj-choice-direction-row" id="taxResidencyQues2" aria-labelledby="taxResidencyQues2Label" value="{{$component.fatcaComplianceData.taxResidencyInfoDTO.usIncorporatedEntity}}" translations="[[{'required':{messageDetail:$component.resource.messages.domesticTaxResident}}]]" on-value-changed="[[$component.taxResidentOtherCountryChanged]]">
+                <oj-option id="yesQues2" value="true"><span data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+                <oj-option id="noQues2" value="false"><span data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+              </oj-radioset>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12">
+              <oj-label for="taxResidencyQues3" id="taxResidencyQues3Label"><span data-bind="text:$component.resource.taxResidencyInfo.ques3"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-lg-12 oj-md-12">
+              <oj-radioset class="oj-choice-direction-row" id="taxResidencyQues3" aria-labelledby="taxResidencyQues3Label" translations="[[{'required':{messageDetail:$component.resource.messages.sPTstatus}}]]" value="{{$component.fatcaComplianceData.taxResidencyInfoDTO.nonDomesticBenificialOwners}}">
+                <oj-option id="yesQues3" value="true"><span data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+                <oj-option id="noQues3" value="false"><span data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+              </oj-radioset>
+            </div>
+          </div>
+        </oj-validation-group>
+      </div>
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="continueTaxResidencyInfo" class="action-button-primary" on-click="[[continueTaxResidencyInfo]]">
+        <span data-bind="text:$component.resource.continue"></span>
+      </oj-button>
+    </div>
+  </div>
+</div>
+<!-- /ko -->

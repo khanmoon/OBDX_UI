@@ -1,0 +1,33 @@
+<div class="oj-panel object-card" data-bind="style: { cursor: numberCount()===0 ? 'default' : 'pointer' }">
+	<div class="oj-flex oj-flex-items-pad object-card__header object-card-header">
+		<div class="oj-flex-item oj-sm-8">
+		 <h3 class="object-card-header__title" data-bind="text:cardData.title"></h3>
+	  </div>
+		<div class="oj-flex-item oj-sm-4 right object-card-header__view-all">
+		  <a href="#" data-bind="attr:{alt:cardData.linkTextAlt, title:cardData.linkTextTitle},click :numberCount()===0 ? null : clickHandler ,text:cardData.linkText, style: { cursor: numberCount()===0 ? 'default' : 'pointer' }"></a>
+	  </div>
+		<!-- ko if : cardData.subtitle -->
+		<span class="oj-flex-item object-card-header__subtitle" data-bind="text:cardData.subtitle"></span>
+		<!-- /ko -->
+
+	</div>
+	<div class="oj-flex oj-flex-items-pad object-card__content object-card-content">
+		<!-- ko if : imageSrc() -->
+		<!-- <div class="oj-flex-item  oj-sm-12 object-card-content__icon">
+				<img data-bind="attr:{'alt':$component.cardData.title ,'title':$component.cardData.description },loadImage:imageSrc()"/>
+			</div> -->
+		<!-- /ko -->
+		<!-- ko ifnot: ($component.numberCount()===undefined) -->
+		<div class="oj-flex-item oj-sm-12 object-card__content object-card-content">
+			<span class="object-card-content__count" data-bind="text:numberCount()"></span>
+			<span class="object-card-content__description" data-bind="text:cardData.description"></span>
+		</div>
+		<!-- /ko -->
+	</div>
+	<!-- <div class="object-card__footer object-card-footer">
+		<a class="object-card-footer__link object-card-link" href="#" data-bind="attr:{'alt':$baseModel.format('{linkText} {title}', {linkText: cardData.linkText, title: cardData.title}) ,'title':$baseModel.format('{linkText} {title}', {linkText: cardData.linkText, title: cardData.title}),'aria-label':$baseModel.format('{linkText} {title}', {linkText: cardData.linkText, title: cardData.title}) },click : clickHandler">
+			<span class="object-card-link__text" data-bind="text:cardData.linkText,style: { cursor: numberCount()===0 ? 'default' : 'pointer' }"></span>
+			<span class="object-card-link__icon"><span data-bind="style: { cursor: numberCount()===0 ? 'default' : 'pointer' }" class="icon icon-forward-arrow"/></span>
+		</a>
+	</div> -->
+</div>

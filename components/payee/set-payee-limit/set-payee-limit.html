@@ -1,0 +1,43 @@
+  <!-- ko if:$component.stageFour() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div data-bind="component: {
+        name: 'amount-input', params: {
+        amount :$component.payeeLimit,
+        label : $component.payments.payee.setlimit,
+        currency: $component.tempcurrency(),
+        converter:$baseModel.formatCurrency,
+        currencyListRequired : false,
+        validator:$component.validationTracker,
+        isMandatory:true,
+        rootId:'payee-limit',
+        currencyURL : '',
+        currencyParser :'',
+        rootClass:'form-input'
+        }
+        }"></div>
+    </page-section>
+    <div class="oj-flex oj-flex-items-pad  button-container">
+        <oj-button class="action-button-primary " on-click="[[reviewLimit]]"><span slot="startIcon" class="icons icon-update"></span>
+      <span data-bind="text:$component.payments.common.update"></span>
+</oj-button>
+    </div>
+<!-- /ko -->
+
+<!-- ko if:$component.stageFive() -->
+    
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.payments.payee.review">
+        <row params="baseModel : $baseModel, rootModel : $component,
+   label : $component.payments.payee.setlimit ,
+   value :$baseModel.formatCurrency($component.payeeLimit(),$component.tempcurrency())"></row>
+    </page-section>
+    
+    <div class="oj-flex oj-flex-items-pad  button-container">
+        <oj-button class="action-button-secondary " on-click="[[cancelReviewLimit]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.payments.common.cancel"></span>
+</oj-button>
+        <oj-button class="action-button-primary " on-click="[[confirmLimit]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.payments.common.confirm"></span>
+</oj-button>
+
+    </div>
+    <!-- /ko -->

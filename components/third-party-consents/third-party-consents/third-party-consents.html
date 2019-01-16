@@ -1,0 +1,47 @@
+<div class="form-main-container third-party-consents">
+    <!-- ko if : dataLoaded() -->
+    <!-- ko if : confirmScreen() -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+    <!-- /ko -->
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <!-- ko if : displayAccessPoints() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+            <div class="navlistcontainer  third-party-consents__accesspoint-tab-container">
+                <oj-navigation-list id="tabGroups" selection="{{selectedAccessPointTab}}" edge="[[$baseModel.large()?'top':'start']]">
+                    <ul>
+                        <!-- ko foreach: accessPointTabs -->
+                        <li data-bind="attr:{ id: id},css: $baseModel.large() === true ? 'third-party-consents__accesspoint-tab-container__image' :'third-party-consents__accesspoint-tab-container__mobile-view-image'">
+                            <a href="javascript:void(0)" data-bind="click:$component.accessPointTabChangeHandler">
+                            <img class="third-party-consents__access-point-logo" data-bind="attr: { src: image,alt:name},css: $baseModel.large() === true ? 'third-party-consents__access-point-logo' :'third-party-consents__mobile-view-logo'" />
+                            </a>
+                        </li>
+                        <!-- /ko -->
+                    </ul>
+                </oj-navigation-list>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if : accountTabLoaded() && displayAccounts()-->
+        <div class="oj-flex-item" data-bind='component:{name: "account-access",params:{rootModel: $data  }}'>
+        </div>
+        <!-- /ko -->
+
+
+    </page-section>
+    <!-- /ko -->
+    <!-- ko if: accessPointNotFound -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 third-party-consents__account-list__message">
+                <span data-bind="text:nls.labels.accessPointNotAvailable"></span>
+            </div>
+            <div class="oj-flex-item  button-container">
+                <oj-button class="action-button-primary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+                    <span data-bind="text:$component.nls.generic.common.ok"></span>
+                </oj-button>
+            </div>
+        </div>
+    </page-section>
+    <!-- /ko -->
+</div>

@@ -1,0 +1,314 @@
+ <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between bill-payments">
+  <div class="form-main-container oj-flex-item oj-sm-12 oj-md-12 oj-lg-7">
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.billerPaymentDetails.billerRegistration.billerNickName()">
+      <oj-validation-group id="tracker" valid="{{groupValid}}">
+
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                  <oj-label for="billerName"><span data-bind="text:$component.resourceBundle.labels.billerName"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+                  <div id="billerName" data-bind="text: $component.billerPaymentDetails.billerName"></div>
+                </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                  <oj-label for="billerLocation"><span data-bind="text:$component.resourceBundle.labels.billerLocation"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+                  <div id="billerLocation" data-bind="text:$component.billerPaymentDetails.location"></div>
+                </div>
+            </div>
+
+            <!-- ko foreach:$component.relationshipDetails -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                  <oj-label for="billerRelationship" :for="[['billerLabel_'+ $index()]]"><span data-bind="text:$data.label"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+                  <div data-bind="text: $data.value, attr : {'for' :'billerLabel_' + $index()}"></div>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                <oj-label for="customerName"><span data-bind="text:$component.resourceBundle.labels.customerName"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+                <div id="customerName" data-bind="text: $component.billerPaymentDetails.customerName"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12">
+                <span class="info-text-small">
+                  <!-- ko text: $baseModel.format($component.resourceBundle.messages.paymentSupported, {"paymentTypes": $component.paymentTypeFunction()})  -->
+                  <!-- /ko -->
+                </span>
+              </div>
+            </div>
+
+            <!-- ko if: $component.supportedAccounts().length > 1 -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12">
+                    <oj-label class="oj-label" for="accType"><span data-bind="text:$component.resourceBundle.labels.paymentType"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-12">
+                    <oj-buttonset-one id="accType" value="{{$component.currentAccountType}}" on-value-changed="[[accountTypeChanged]]">
+                      <!-- ko foreach:$component.supportedAccounts() -->
+                      <oj-option value="{{$data}}">
+                        <span data-bind="text:$component.resourceBundle.labels[$data]"></span>
+                      </oj-option>
+                      <!-- /ko -->
+                    </oj-buttonset-one>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <div class="oj-flex oj-flex-items-pad">
+           <!-- ko if: $component.accountsLoaded() === 'true' -->
+             <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 no-pad-cols" data-bind="component:{name: 'account-input', params:{baseModel : $baseModel, rootModel: $data ,label :$component.resourceBundle.labels.billerAccount,
+                 account : $component.billerPaymentDetails.debitAccount.value ,additionalDetails : additionalDetails,
+                 type : $component.currentAccountType() === 'CASA' ? 'balance' : 'nodeValue',
+                 accountsParser: $component.currentAccountType() === 'CREDITCARD' ? ko.utils.unwrapObservable($component.creditCardParser) : $component.currentAccountType() === 'DEBITCARD' ? ko.utils.unwrapObservable($component.debitCardParser) : null,
+                 customURL: ko.utils.unwrapObservable($component.customURL),
+                 no_data_message: $component.currentAccountType() === 'CREDITCARD' ? $component.resourceBundle.labels.creditMessage: $component.currentAccountType() === 'DEBITCARD' ? $component.resourceBundle.labels.debitMessage :null,
+                 validator:$component.invalidTracker}}">
+               </div>
+           <!-- /ko -->
+           <!-- ko if: $component.creditAccounts.length !== 0 && $component.currentAccountType() === 'CREDITCARD' -->
+           <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+           <div class="oj-flex oj-flex-items-pad">
+               <div class="oj-flex-item oj-sm-12">
+                   <oj-label for="expDate"><span data-bind="text:$component.resourceBundle.labels.expiryDate"></span></oj-label>
+               </div>
+               <div class="oj-flex-item oj-sm-4">
+                 <oj-label class="hide-label" for="expmonth"><span data-bind="text:$component.resourceBundle.labels.expiryDate"></span></oj-label>
+                   <oj-select-one id="expmonth" :invalidcomponenttracker="[[$component.invalidTracker]]" value="{{expiryMonth}}">
+                       <!-- ko foreach: monthEnumList -->
+                       <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                       <!-- /ko -->
+                   </oj-select-one>
+               </div>
+               <div class="oj-flex-item oj-sm-4">
+                 <oj-label class="hide-label" for="expyear"><span data-bind="text:$component.resourceBundle.labels.expiryDate"></span></oj-label>
+                   <oj-select-one id="expyear" :invalidcomponenttracker="[[$component.invalidTracker]]" value="{{expiryYear}}">
+                       <!-- ko foreach: yearEnumList -->
+                       <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                       <!-- /ko -->
+                   </oj-select-one>
+               </div>
+           </div>
+         </div>
+           <!-- /ko -->
+         </div>
+
+            <!-- ko if: $component.dueDate() -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                <oj-label for="billDueDate"><span data-bind="text:$component.resourceBundle.labels.billDueDate"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+                <div id="billDueDate" data-bind="text: $baseModel.formatDate(ko.utils.unwrapObservable($component.dueDate()))"></div>
+              </div>
+            </div>
+              <!-- /ko -->
+
+              <!-- ko if: $component.billerDetails.billerType === 'RECHARGE' -->
+              <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                    <oj-label for="rechargePlan"><span data-bind="text:$component.resourceBundle.labels.selectPlan"></span></oj-label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+                    <oj-select-one id="rechargePlan" options="[[planArray]]" value="{{$component.billerPaymentDetails.planId}}" :placeholder="{{$component.resourceBundle.generic.common.select}}">
+                    </oj-select-one>
+                  </div>
+              </div>
+              <!-- /ko -->
+
+            <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                    <!-- ko ifnot: $component.billerDetails.billerType === 'RECHARGE' -->
+                    <oj-label for="paymentAmount">
+                      <span data-bind="text: $component.resourceBundle.labels.paymentAmount"></span>
+                    </oj-label>
+                      <!-- /ko -->
+                      <!-- ko if: $component.billerDetails.billerType === 'RECHARGE' -->
+                      <oj-label for="paymentAmount">
+                        <span data-bind="text: $component.resourceBundle.labels.rechargeAmount"></span>
+                      </oj-label>
+                        <!-- /ko -->
+                  </div>
+                  <!-- ko if: $component.billerDetails.billerType === 'PRESENTMENT' || $component.presentmentPayment() === true -->
+                  <!-- ko if: $component.excessPayment() === false &&  $component.partPayment() === false-->
+                  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+                    <div id="paymentAmount" data-bind="text: $component.billerPaymentDetails.billAmount.amount"></div>
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if: $component.excessPayment() === true &&  $component.partPayment() === false-->
+                  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-3">
+                    <oj-input-text id="paymentAmount" maxlength="20" value="{{$component.billerPaymentDetails.billAmount.amount}}" converter="{{$component.currenyConverter()}}" validators="{{$component.validateAmount}}" required></oj-input-text>
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if: $component.excessPayment() === false &&  $component.partPayment() === true-->
+                  <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-3">
+                    <oj-input-text id="paymentAmount" maxlength="20" value="{{$component.billerPaymentDetails.billAmount.amount}}" converter="{{$component.currenyConverter()}}" validators="{{$component.validateAmount}}" required></oj-input-text>
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if: $component.excessPayment() === true &&  $component.partPayment() === true -->
+                  <div class="oj-flex-item oj-sm-6 oj-md-3 oj-lg-3">
+                    <oj-input-text id="paymentAmount" maxlength="20" value="{{$component.billerPaymentDetails.billAmount.amount}}" converter="{{$component.currenyConverter()}}" validators="{{$component.validateAmount}}" required></oj-input-text>
+                  </div>
+                  <!-- /ko -->
+                  <!-- /ko -->
+                  <!-- ko ifnot: $component.billerDetails.billerType === 'PRESENTMENT' || $component.presentmentPayment() === true || $component.billerDetails.billerType === 'RECHARGE'-->
+                  <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+                    <oj-input-text id="paymentAmount" maxlength="20" value="{{$component.billerPaymentDetails.billAmount.amount}}" converter="{{$component.currenyConverter()}}" validators="{{$component.validateAmount}}" required></oj-input-text>
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if: $component.billerDetails.billerType === 'RECHARGE'-->
+                  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-5">
+                    <oj-input-text id="rechargeAmount" maxlength="20" value="{{$component.billerPaymentDetails.billAmount.amount}}" converter="{{$component.currenyConverter()}}" validators="{{$component.validateAmount}}" required disabled="[[$component.rechargeFlag() === true ? true : false]]"></oj-input-text>
+                  </div>
+                  <!-- /ko -->
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <a data-id="viewLimits" href="#" class="form-button-link" data-bind="attr:{for : 'view-limit-button' + $baseModel.incrementIdCount(),'alt':$component.resourceBundle.registerBillerError.labels.viewLimits,'title':$component.resourceBundle.registerBillerError.labels.mylimits},click:$data.viewLimits,text:$component.resourceBundle.registerBillerError.labels.viewLimits">
+                    </a>
+                </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+             <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+               <oj-label id="payLabelId">
+                 <!-- ko text: $component.resourceBundle.labels.pay  -->
+                 <!-- /ko -->
+               </oj-label>
+             </div>
+             <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+               <oj-radioset class="oj-choice-direction-row" id="pay" labelled-by="payLabelId" value="{{$component.billerPaymentDetails.isPayLater}}">
+                   <oj-option id="payNow" value="false"><span data-bind="text:  $component.resourceBundle.labels.payNow"></span></oj-option>
+                   <oj-option id="payLater" value="true"><span data-bind="text:  $component.resourceBundle.labels.payLater"></span></oj-option>
+               </oj-radioset>
+             </div>
+
+             <!-- ko if: $component.billerPaymentDetails.isPayLater() === 'true' -->
+             <!-- ko ifnot: $component.billerDetails.billerType === 'PRESENTMENT' || $component.presentmentPayment() === true -->
+             <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+               <oj-radioset class="oj-choice-direction-row" id="pay" labelled-by="payLabelId" value="{{$component.billerPaymentDetails.isRecurring}}">
+                   <oj-option id="oneTime" value="false"><span data-bind="text:  $component.resourceBundle.labels.ONE_TIME"></span></oj-option>
+                   <!-- ko if: $component.schedulePayFlag() === false -->
+                   <oj-option id="recurring" value="true"><span data-bind="text:  $component.resourceBundle.labels.RECURRING"></span></oj-option>
+                    <!-- /ko -->
+               </oj-radioset>
+             </div>
+
+             <!-- ko if:$component.billerPaymentDetails.isRecurring() === 'true' -->
+            <div class="oj-flex oj-flex-items-pad">
+
+             <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-3">
+                 <oj-label id="scheduledDateLabelId" class="hide-label">
+                   <!-- ko text: $component.resourceBundle.labels.scheduledDate  -->
+                   <!-- /ko -->
+                 </oj-label>
+                <oj-input-date :id="[['transferondate'+ $baseModel.currentIdCount()]]" value="{{$component.billerPaymentDetails.paymentDate}}" min="[[$oj.IntlConverterUtils.dateToLocalIso(formattedTomorrow())]]" required="[[$component.isLaterDateRequired()]]" converter="[[$baseModel.dateConverter]]" placeholder="{{$component.resourceBundle.labels.selectStartDate}}"></oj-input-date>
+             </div>
+
+             <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-3">
+               <oj-label id="endDateLabelId" class="hide-label">
+                 <!-- ko text: $component.resourceBundle.labels.endDate  -->
+                 <!-- /ko -->
+               </oj-label>
+              <oj-input-date :id="[['transferondate'+ $baseModel.currentIdCount()]]" value="{{$component.billerPaymentDetails.billerRegistration.autopayInstructions.endDate}}" min="[[$oj.IntlConverterUtils.dateToLocalIso(formattedTomorrow())]]" required="[[$component.isLaterDateRequired()]]" converter="[[$baseModel.dateConverter]]" placeholder="{{$component.resourceBundle.labels.selectEndDate}}"></oj-input-date>
+             </div>
+
+             <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-4">
+               <oj-label id="frequencyTypeLabelId" class="hide-label">
+                 <!-- ko text: $component.resourceBundle.labels.frequencyType  -->
+                 <!-- /ko -->
+               </oj-label>
+               <oj-select-one id="frequencyType" labelled-by="frequencyTypeLabelId" required options="[[frequencyList]]" value="{{$component.billerPaymentDetails.billerRegistration.autopayInstructions.frequency}}" placeholder="{{$component.resourceBundle.labels.selectFrequency}}">
+               </oj-select-one>
+             </div>
+           </div>
+             <!-- /ko -->
+             <!-- /ko -->
+
+             <!-- ko if:$component.billerPaymentDetails.isRecurring() === 'false' -->
+              <!-- ko ifnot: $component.billerDetails.billerType === 'PRESENTMENT' || $component.presentmentPayment() === true -->
+             <div class="oj-flex oj-flex-items-pad">
+                 <div class="oj-flex-item oj-sm-10 oj-md-10 oj-lg-10">
+                     <oj-input-date class="input-date-width" :id="[['transferondate'+ $baseModel.currentIdCount()]]" value="{{$component.billerPaymentDetails.paymentDate}}" min="[[$oj.IntlConverterUtils.dateToLocalIso(formattedTomorrow())]]" converter="[[$baseModel.dateConverter]]" placeholder="{{$component.resourceBundle.labels.scheduledDate}}" required></oj-input-date>
+                 </div>
+             </div>
+             <!-- /ko -->
+             <!-- ko if: $component.billerDetails.billerType === 'PRESENTMENT' || $component.presentmentPayment() === true -->
+             <div class="oj-flex oj-flex-items-pad">
+               <div class="oj-flex-item oj-sm-10 oj-md-10 oj-lg-10">
+                 <oj-label id="scheduledDateLabelId" class="hide-label">
+                   <!-- ko text: $component.resourceBundle.labels.scheduledDate  -->
+                   <!-- /ko -->
+                 </oj-label>
+                 <oj-input-date class="input-date-width" :id="[['transferondate'+ $baseModel.currentIdCount()]]" value="{{$component.billerPaymentDetails.paymentDate}}" min="[[$oj.IntlConverterUtils.dateToLocalIso(formattedTomorrow())]]" required="[[$component.isLaterDateRequired()]]" converter="[[$baseModel.dateConverter]]" placeholder="{{$component.resourceBundle.labels.scheduledDate}}"></oj-input-date>
+               </div>
+            </div>
+            <!-- /ko -->
+             <!-- /ko -->
+
+             <!-- /ko -->
+           </div>
+          </oj-validation-group>
+      </page-section>
+            <div class="oj-flex oj-flex-items-pad button-container">
+              <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[$component.submit]]">
+                <span slot="startIcon" class="icons icon-submit"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.submit"></span>
+              </oj-button>
+              <oj-button id="cancelbutton" class="action-button-tertiary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.messages.cancelOperation)]]">
+                <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+              </oj-button>
+            </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+          <help params="baseModel : $baseModel, rootModel : $component, transaction: 'bill-payment'"></help>
+      </div>
+  </div>
+  <modal-window params="baseModel : $baseModel, rootModel : $component, header:$component.resourceBundle.registerBillerError.labels.mylimits, id:'viewlimits-bill-payment' + $component.incrementId">
+    <!-- ko if : $component.viewLimitsFlag() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+      <!-- ko if: $component.loadAccessPointList() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$component.resourceBundle.registerBillerError.labels.channel"></span>
+          <a class="oj-label-inline" id="channel-disclaimer" href="#" data-bind="attr:{title:$component.resourceBundle.registerBillerError.labels.showInformation},click:$component.channelPopup.bind($data,true)">
+  <span class="icons icon-2x icon-information iconStyling"></span></a>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4">
+          <oj-select-one :id="[['channel']]" value="{{selectedChannelIndex}}" on-value-changed="[[channelTypeChangeHandler]]" :placeholder="[[$component.resourceBundle.registerBillerError.labels.pleaseSelect]]">
+            <!-- ko foreach:$component.channelList -->
+            <oj-option value="[[$index]]"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: viewLimitsFlag() && $component.selectedChannel() -->
+      <div data-bind="component:{name:'transfer-view-limits', params:{rootModel: $component,type:'EB_F_BP',accessPointValue:$component.selectedChannelType}}">
+      </div>
+      <!-- /ko -->
+
+    </page-section>
+    <!-- /ko -->
+    <div class="button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.closeLimitsModal]]">
+        <span data-bind="text:$component.resourceBundle.generic.common.ok"></span>
+      </oj-button>
+    </div>
+  </modal-window>
+  <oj-popup id="channel-popup" modality="modeless" tail="simple" position.my.horizontal="start" position.my.vertical="top" position.at.horizontal="right" position.at.vertical="bottom">
+    <span data-bind="text:$component.resourceBundle.registerBillerError.labels.showInformation"></span>
+  </oj-popup>

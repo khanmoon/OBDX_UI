@@ -1,0 +1,74 @@
+<div class="form-main-container aggregate-register-accounts">
+
+<div data-bind="template : {afterRender : $component.onPageLoad.bind($data,$root.queryMap)}"></div>
+<!-- ko if: dataSourceCreated() -->
+  <div class="oj-flex-item">
+         <h4 class="quick-links__heading" tabindex="-1" id="MyAccountHeading" data-bind="text:$component.resourceBundle.labels.regAccount"></h4>
+	</div>
+	</br>
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-9">
+       <page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.resourceBundle.labels.accountSummary">
+				<oj-table id="table" class="limitsTable" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('register_aggregate_accounts',true)]]"
+				 data="[[datasource]]">
+           <caption data-bind="text:$component.resourceBundle.labels.selectAccount"></caption>
+         </oj-table>
+
+         <script type="text/html" id="register_aggregate_accounts">
+              <tr>
+                  <td>
+										<!-- ko ifnot: $component.checkName($component.resourceBundle.labels[actType]) === null ||  $component.checkName($component.resourceBundle.labels[actType]) === '' -->
+											<div class="oj-flex oj-flex-items-pad">
+													<h2 data-bind="text:$component.resourceBundle.labels[actType]"></h2>
+											</div>
+
+												<!-- /ko -->
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                           <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+                             <span data-bind="attr:{
+																	 for: acctNo},text:acctNoDisplay"></span></br>
+                           </div>
+                        </div>
+                        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+                          <span data-bind="text:$baseModel.formatCurrency($context.row.amount, $context.row.currency)"></span>
+                        </div>
+                    </div>
+                  </td>
+              </tr>
+         </script>
+       </page-section>
+     </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+    <span data-bind="text:$component.resourceBundle.labels.next"></span>
+	</div>
+	</br>
+	</br>
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+			<img class="displayImage-showImg__maxwidth" data-bind="attr:{title:$component.resourceBundle.title},loadImage:'account-aggregation/LinkAccountConfirm.png'"
+			/>
+			</br>
+      <a href="#" class="oj-flex-item oj-sm-4" data-bind="click: $component.GotoLinkAccount">
+        <span data-bind="text:$component.resourceBundle.labels.linkAccount"></span>
+      </a>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5">
+			<img class="displayImage-showImg__maxwidth" data-bind="attr:{title:$component.resourceBundle.title},loadImage:'account-aggregation/DashboardConfirm.png'"
+			/>
+			</br>
+      <a href="#" class="oj-flex-item oj-sm-4" data-bind="click: $component.GotoDashboard">
+        <span data-bind="text:$component.resourceBundle.labels.backtoDashboard"></span>
+      </a>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad button-container">
+     <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[OkButton]]">
+         <span data-bind="text:$component.resourceBundle.labels.ok"></span>
+     </oj-button>
+</div>
+<!-- /ko -->
+</div>

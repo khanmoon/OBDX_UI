@@ -1,0 +1,177 @@
+<!-- ko if:stageOne() -->
+<div class="oj-flex debit-card-hotlisting-cust-details oj-sm-flex-items-initial">
+	<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+		<div class="label" data-bind="text:$component.locale.customerName">
+		</div>
+		<div class="cust-name" data-bind="text:$baseModel.format($component.locale.fullName, {firstName: $dashboard.userData.userProfile.firstName, middleName: $dashboard.userData.userProfile.middleName, lastName: $dashboard.userData.userProfile.lastName})">
+		</div>
+	</div>
+	<!-- ko if: $component.params && $component.params.cardHolderName -->
+	<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+		<div class="label" data-bind="text:$component.locale.nameOnCard">
+		</div>
+		<div class="cust-name" data-bind="text:$component.params.cardHolderName">
+		</div>
+	</div>
+	<!-- /ko -->
+	<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+		<div class="label" data-bind="text:$component.locale.accountNumber">
+		</div>
+		<div class="cust-name" data-bind="text:$component.params.accountId.displayValue">
+		</div>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+		<div class="label" data-bind="text:$component.locale.hotlisting.cardNo">
+		</div>
+		<div class="cust-name" data-bind="text:$component.cardObject.cardNo.displayValue">
+		</div>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1">
+		<div class="label" data-bind="text:$component.locale.cardType">
+		</div>
+		<div class="cust-name" data-bind="text:$component.params.cardType">
+		</div>
+	</div>
+	<!-- ko if:$component.params.expiryDate -->
+	<div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1">
+		<div class="label" data-bind="text:$component.locale.validThru">
+		</div>
+		<div class="cust-name" data-bind="text:$baseModel.formatDate($component.params.expiryDate)">
+		</div>
+	</div>
+	<!-- /ko -->
+	<div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1">
+		<div class="label" data-bind="text:$component.locale.cardStatus">
+		</div>
+		<div class="cust-name" data-bind="text:$component.cardObject.cardStatus">
+		</div>
+	</div>
+</div>
+<!-- /ko -->
+
+<div class="form-main-container">
+	<div class="oj-flex">
+		<div class="oj-flex-item">
+			<!-- ko ifnot:loadConfirm -->
+			<!-- ko if:isDataLoaded() -->
+			<!-- ko if:stageOne() -->
+			<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+				<div class="oj-form-layout page-section">
+					<div class="oj-flex oj-flex-items-pad">
+						<div class="oj-flex-item oj-sm-12 label">
+							<oj-label for="blockTypeSelect"><span data-bind="text:$component.locale.common.blockType"></span></oj-label>
+						</div>
+						<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+							<oj-select-one id="blockTypeSelect" value="{{$component.selectBlockType}}">
+								<!-- ko foreach: $component.blockTypeList -->
+								<oj-option value="{{code}}"><span data-bind="text: description"></span></oj-option>
+								<!-- /ko -->
+							</oj-select-one>
+						</div>
+					</div>
+					<!-- ko if:$component.selectBlockType()==="HOTLIST" -->
+					<div class="oj-flex oj-flex-items-pad  ">
+						<div class="oj-flex-item oj-sm-12 label">
+							<oj-label for="combobox"><span data-bind="text:$component.locale.common.reason"></span></oj-label>
+						</div>
+						<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+							<!-- ko if:$component.reasonsArray().length>0 -->
+							<oj-select-one id="combobox" required="[[true]]" translations="[[{'required':{messageDetail:$component.locale.common.reason2}}]]"
+							 :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.locale.messages.transactions.select]]"
+							 value="{{$component.selectedReason}}">
+								<!-- ko foreach:$component.reasonsArray() -->
+								<oj-option value="{{code+'-'+description}}"><span data-bind="text:description"></span></oj-option>
+								<!-- /ko -->
+							</oj-select-one>
+							<!-- /ko -->
+						</div>
+					</div>
+
+					<div class="oj-flex oj-flex-items-pad">
+						<div class="oj-flex-item oj-sm-12">
+							<span data-bind="text:$component.locale.hotlisting.hotlistReplaceCard">
+							</span>
+						</div>
+					</div>
+					<div class="oj-flex oj-flex-items-pad">
+						<div class="oj-flex-item oj-sm-12">
+							<oj-radioset id="replaceConfirmationSet" aria-labelledby="mainlabelid" value="{{$component.replaceConfirmationType}}"
+							 class="oj-choice-direction-row">
+								<oj-option value="OPTION_YES" id="yes" name="replacing"><span for="yes" data-bind="text:$component.locale.generic.common.yes"></span></oj-option>
+								<oj-option value="OPTION_NO" id="no" name="replacing"><span for="no" data-bind="text:$component.locale.generic.common.no"></span></oj-option>
+							</oj-radioset>
+						</div>
+					</div>
+					<!-- /ko -->
+				</div>
+			</page-section>
+
+			<!-- ko if:$component.replaceConfirmationType() === 'OPTION_YES' -->
+			<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+				<div class="row-group">
+					<div class="oj-flex oj-flex-items-pad">
+						<div class="required oj-flex-item oj-sm-12 label">
+							<oj-label for="DeliveryLocation"><span data-bind="text:$component.locale.common.DeliveryLocation"></span></oj-label>
+						</div>
+						<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+							<div id="DeliveryLocation" data-bind='component : { name: "address", params: { rootModel:$root,validator:$component.validationTracker, address: addressDetails}}'></div>
+						</div>
+					</div>
+				</div>
+			</page-section>
+			<!-- /ko -->
+
+			<div class="oj-flex oj-flex-items-pad button-container">
+				<oj-button id="button" class="action-button-primary " on-click="[[$component.submit]]"><span slot="startIcon" class="icons icon-submit"></span>
+					<span data-bind="text:$component.locale.common.submit"></span>
+				</oj-button>
+				<oj-button class="action-button-secondary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+					<span data-bind="text:$component.locale.generic.common.back"></span>
+				</oj-button>
+			</div>
+			<!-- /ko -->
+			<!-- /ko -->
+			<!-- /ko -->
+
+		</div>
+		<!-- ko if: $baseModel.large() -->
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+			<help params="baseModel : $baseModel, rootModel : $component, transaction: 'debit-card-block'"></help>
+		</div>
+		<!-- /ko -->
+		<!-- ko ifnot: $baseModel.large() -->
+		<a href="#" data-bind="click: $component.showFloatingPanel">
+			<div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+		</a>
+		<floating-panel params="baseModel : $baseModel, panelId: 'panelDebitCard5', rootModel: $component">
+			<ul>
+				<li>
+					<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reissue-card',cardObject,$data)">
+						<span class="icons icon-limit"></span>
+						<span data-bind="text: $component.locale.buttons.reissueCard"></span></a>
+				</li>
+				<li>
+					<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'upgrade-card',cardObject,$data)">
+						<span class="icons icon-card-preference"></span>
+						<span data-bind="text: $component.locale.buttons.upgradeCard"></span></a>
+				</li>
+				<li>
+					<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'debit-card-hotlisting',cardObject,$data)">
+						<span class="icons icon-cancel-card"></span>
+						<span data-bind="text: $component.locale.buttons.blockCards"></span></a>
+				</li>
+				<li>
+					<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'reset-pin',cardObject,$data)">
+						<span class="icons icon-refresh"></span>
+						<span data-bind="text: $component.locale.buttons.resetPin"></span></a>
+				</li>
+				<li>
+					<a href="#" data-bind="click: $dashboard.loadComponent.bind($data,'debit-card-pin-request',cardObject,$data)">
+						<span class="icons icon-request-pin"></span>
+						<span data-bind="text: $component.locale.buttons.pinRequest"></span></a>
+				</li>
+			</ul>
+		</floating-panel>
+		<!-- /ko -->
+	</div>

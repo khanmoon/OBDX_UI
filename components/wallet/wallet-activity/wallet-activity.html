@@ -1,0 +1,346 @@
+<!--wallet activity list dashboard screen-->
+<!-- ko if: $baseModel.small() -->
+
+<!-- ko if: showBalanceInfo -->
+<div data-bind="component:{name: 'wallet-info-panel', params:{rootModel: $parent }}"></div>
+<!-- /ko -->
+
+<div class="oj-panel activity-small grid-main-container">
+
+	<div class="oj-row last-activity">
+		<div class="oj-col oj-sm-8 label">
+			<!-- ko if:$component.searchCriteria()==='LNT' -->
+			<div data-bind="text: $component.wallet.activity.Last10Transactions"></div>
+			<!-- /ko -->
+			<!-- ko if:$component.searchCriteria()==='SPD' -->
+			<div data-bind="text:dateSweep"></div>
+			<!-- /ko -->
+			<div data-bind="text: typeOfTransaction"></div>
+		</div>
+		<a href="javascript:void(0)" data-bind="click : showFilterDialog">
+		<div class="oj-col oj-sm-4 right">
+			<img data-bind="loadImage:'wallet/filters.svg',attr:{alt: $component.wallet.activity.alt,title: $component.wallet.activity.title}">
+		</div>
+		</a>
+	</div>
+	<!-- ko if:detailsFetched -->
+	<oj-list-view id="listview" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('mobile_template',true)}]]" data="[[dataSource]]">
+
+	</oj-list-view>
+
+	<div class="center">
+		<oj-paging-control id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[dataSource]]">
+		</oj-paging-control>
+	</div>
+	<!-- /ko -->
+
+	<script type="text/html" id="mobile_template">
+
+		<li data-bind="attr: {id: $data.txnRefNumber?$data.txnRefNumber:$data.name}">
+			<div class="oj-row">
+				<div class="oj-col oj-sm-5 activity-date" data-bind="text: $baseModel.formatDate(transactionDate)"></div>
+				<div class="oj-col oj-sm-7 break-word ref-no-text right" data-bind="text : $data.txnRefNumber ? '#' + $data.txnRefNumber : '-'"></div>
+				<!-- ko if: $data["comments"] && $data.comments!=="null" -->
+				<div class="oj-col activity-desc" data-bind="text : comments"></div>
+				<!-- /ko -->
+				<!-- ko if: $data["name"] && $data.name!=="null" -->
+				<div class="oj-col activity-desc" data-bind="text : name"></div>
+				<!-- /ko -->
+				<!-- ko if: $data.status!=="null" -->
+				<!-- ko if: $component.componentIdentifier!=='requestFunds' -->
+				<div class="oj-col right activity-desc" data-bind="text : $data.status"></div>
+				<!-- /ko -->
+				<!-- ko if: $component.componentIdentifier==='requestFunds' -->
+				<div class="oj-col right activity-desc" data-bind="text : $component.wallet.activity[$data.status]"></div>
+				<!-- /ko -->
+				<!-- /ko -->
+				<div class="last-activity">
+					<div class="oj-col right activity-amt">
+						<!-- ko if: $component.componentIdentifier==='activity' -->
+						<!-- ko if: transactionType==="D" -->
+						<span class="debit" data-bind="text : $baseModel.formatCurrency(amountInTransactionCurrency.amount, amountInTransactionCurrency.currency)"></span>
+						<span class="debit" data-bind="text:$component.wallet.activity.dr"></span>
+						<!-- /ko -->
+						<!-- ko if: transactionType=== "C" -->
+						<span class="credit" data-bind="text : $baseModel.formatCurrency(amountInTransactionCurrency.amount, amountInTransactionCurrency.currency)"></span>
+						<span class="credit" data-bind="text:$component.wallet.activity.cr"></span>
+						<!-- /ko -->
+						<!-- /ko -->
+						<!-- ko if:$component.componentIdentifier==='unclaimedFunds' -->
+						<span class="debit" data-bind="text : $baseModel.formatCurrency(amountInTransactionCurrency.amount, amountInTransactionCurrency.currency)"></span>
+
+						<!-- /ko -->
+						<!-- ko if: $component.componentIdentifier==='requestFunds' -->
+						<span class="credit" data-bind="text : $baseModel.formatCurrency(amountInTransactionCurrency.amount, amountInTransactionCurrency.currency)"></span>
+
+						<!-- /ko -->
+					</div>
+				</div>
+			</div>
+		</li>
+	</script>
+
+</div>
+
+<!-- /ko -->
+
+
+<!--wallet activity list expand all screen-->
+<!-- ko ifnot: $baseModel.small() -->
+
+<!-- ko if: showBalanceInfo -->
+<div data-bind="component:{name: 'wallet-info-panel', params:{rootModel: $parent }}"></div>
+<!-- /ko -->
+
+<div id="viewDetails" class="activity-large grid-main-container">
+
+	<div class="oj-row form-row-highlighted filter-header">
+		<div class="oj-col oj-sm-12 oj-md-3 oj-lg-3">
+				<oj-label class="hide-label" for="select1"><span data-bind="text:$component.wallet.activity.search"></span></oj-label>
+			<oj-select-one id="select1" value="{{searchCriteria}}" on-value-changed="[[optionChangedHandler]]">
+                    <oj-option value="LNT"><span data-bind="text:$component.wallet.activity.Last10Transactions"></span></oj-option>
+					<oj-option value="SPD"><span data-bind="text:$component.wallet.activity.DateRange"></span></oj-option>
+              </oj-select-one>
+		</div>
+		<!-- ko if:dateRange -->
+		<div class="no-pad-cols oj-col oj-sm-12 oj-md-5 oj-lg-5">
+			<oj-label for="date3 "><span data-bind="text:$component.wallet.activity.from"></span></oj-label>
+			<span>
+						<oj-input-date id="date3" value="{{fromDateSelected}}" max="[[$component.todayDate()]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+					</span>
+			<oj-label for="date4"><span data-bind="text:$component.wallet.activity.to"></span></oj-label>
+			<span>
+						<oj-input-date id="date4" value="{{toDateSelected}}" min="[[fromDateSelected]]" max="[[$component.todayDate()]]" converter="[[$baseModel.dateConverter]]"></oj-input-date> </span>
+		</div>
+		<!-- /ko -->
+		<div class="oj-col oj-sm-12 oj-md-2 oj-lg-2">
+			<!-- ko if:$component.componentIdentifier==='activity' -->
+			<oj-label class="hide-label" :for="[['componentIdentifier'+$baseModel.incrementIdCount()]]"><span data-bind="text:$component.wallet.activity.componentIdentifier"></span></oj-label>
+			<oj-select-one :id="[['componentIdentifier'+$baseModel.currentIdCount()]]" value="{{type}}" on-value-changed="[[optionChangedHandler]]">
+                    <oj-option value="A"><span data-bind="text:$component.wallet.activity.all"></span></oj-option>
+										<oj-option value="D"><span data-bind="text:$component.wallet.activity.Debit"></span></oj-option>
+										<oj-option value="C"><span data-bind="text:$component.wallet.activity.Credit"></span></oj-option>
+              </oj-select-one>
+			<!-- /ko -->
+			<!-- ko if:$component.componentIdentifier==='requestFunds' -->
+			<oj-label class="hide-label" :for="[['componentIdentifier'+$baseModel.incrementIdCount()]]"><span data-bind="text:$component.wallet.activity.componentIdentifier"></span></oj-label>
+			<oj-select-one :id="[['componentIdentifier'+$baseModel.currentIdCount()]]" value="{{type}}" on-value-changed="[[optionChangedHandler]]">
+									<oj-option value="AL"><span data-bind="text:$component.wallet.activity.all"></span></oj-option>
+									<oj-option value="SNT"><span data-bind="text:$component.wallet.activity.SNT"></span></oj-option>
+									<oj-option value="DEC"><span data-bind="text:$component.wallet.activity.DEC"></span></oj-option>
+							</oj-select-one>
+			<!-- /ko -->
+			<!-- ko if:$component.componentIdentifier==='unclaimedFunds' -->
+			<oj-label class="hide-label" :for="[['componentIdentifier'+$baseModel.incrementIdCount()]]">
+
+			<span data-bind="text:$component.wallet.activity.componentIdentifier"></span></oj-label>
+			<oj-select-one :id="[['componentIdentifier'+$baseModel.currentIdCount()]]" value="{{type}}" on-value-changed="[[optionChangedHandler]]">
+									<oj-option value="ALL"><span data-bind="text:$component.wallet.activity.all"></span></oj-option>
+									<oj-option value="P"><span data-bind="text:$component.wallet.activity.active"></span></oj-option>
+									<oj-option value="E"><span data-bind="text:$component.wallet.activity.expired"></span></oj-option>
+						</oj-select-one>
+			<!-- /ko -->
+		</div>
+	</div>
+	<!-- ko if:detailsFetched -->
+	<div class="oj-row oj-flex grid-table-header">
+		<!-- ko if:activityData().length>0 -->
+		<!-- ko if:$component.componentIdentifier==='unclaimedFunds' -->
+		<a href="javascript:void(0)" data-bind="click : sortByDate">
+		<div class="oj-lg-2 oj-md-2 oj-sm-12 oj-col">
+			<span data-bind="text : $component.wallet.activity.serviceRequest.date"></span>
+			<span class="left"><span id="sortButton" class="icon icon-sort"></span> </span>
+		</div></a>
+		<div class="oj-lg-4 oj-md-4 oj-sm-6 oj-col" data-bind="text:$component.wallet.activity.description "></div>
+		<div class="oj-lg-2 oj-md-2 oj-sm-6 oj-col" data-bind="text: $component.wallet.activity.refNo"></div>
+		<div class="oj-lg-2 oj-md-2 oj-sm-6 oj-col right" data-bind="text: $component.wallet.activity.Amount"></div>
+		<div class="oj-lg-2 oj-md-2 oj-sm-6 oj-col right" data-bind="text: $component.wallet.activity.status"></div>
+		<!-- /ko -->
+		<!-- ko if:$component.componentIdentifier==='requestFunds' -->
+		<a href="javascript:void(0)" data-bind="click : sortByDate">
+		<div class="oj-lg-2 oj-md-2 oj-sm-12 oj-col">
+			<span data-bind="text : $component.wallet.activity.requestdate')"></span>
+			<span class="left"><span id="sortButton" class="icon icon-sort"></span> </span>
+		</div></a>
+		<div class="oj-lg-3 oj-md-3 oj-sm-6 oj-col" data-bind="text: $component.wallet.activity.requestedfrom"></div>
+		<div class="oj-lg-3 oj-md-3 oj-sm-6 oj-col" data-bind="text:$component.wallet.activity.description "></div>
+		<div class="oj-lg-2 oj-md-2 oj-sm-6 oj-col right" data-bind="text: $component.wallet.activity.Amount"></div>
+		<div class="oj-lg-2 oj-md-2 oj-sm-6 oj-col right" data-bind="text: $component.wallet.activity.requeststatus"></div>
+		<!-- /ko -->
+		<!-- ko if:$component.componentIdentifier==='activity' -->
+		<a href="javascript:void(0)" data-bind="click : sortByDate">
+		<div class="oj-lg-2 oj-md-2 oj-sm-12 oj-col">
+			<span data-bind="text : $component.wallet.activity.date"></span>
+			<span class="left"><span id="sortButton" class="icon icon-sort"></span> </span>
+		</div></a>
+		<div class="oj-lg-5 oj-md-5 oj-sm-6 oj-col" data-bind="text:$component.wallet.activity.description"></div>
+		<div class="oj-lg-3 oj-md-3 oj-sm-6 oj-col" data-bind="text: $component.wallet.activity.refNo"></div>
+		<div class="oj-lg-2 oj-md-2 oj-sm-6 oj-col right" data-bind="text: $component.wallet.activity.Amount"></div>
+		<!-- /ko -->
+		<!-- /ko -->
+	</div>
+
+
+	<oj-list-view id="listview" :page-size="[[10]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[dataSource]]">
+
+	</oj-list-view>
+
+	<div class="oj-col">
+		<oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSource]]">
+		</oj-paging-control>
+	</div>
+
+	<script type="text/html" id="content_template">
+
+		<li data-bind="attr: {id: $data.txnRefNumber?$data.txnRefNumber:$data.name}">
+			<div class="oj-row">
+				<div class="oj-lg-2 oj-md-2 oj-sm-12 oj-col">
+					<date-box params="baseModel : $baseModel, date:transactionDate"></date-box>
+				</div>
+				<!-- ko if:$component.componentIdentifier==='activity' -->
+				<div class="oj-lg-5 oj-md-5 oj-sm-12 oj-col">
+					<div class="oj-row">
+						<div class="oj-col">
+							<div class="activity-desc" data-bind="text : comments"></div>
+						</div>
+						<div class="oj-col">
+							<!-- ko if: $data["name"] && $data.name!=="null" -->
+							<div class="activity-desc" data-bind="text : name"></div>
+							<!-- /ko -->
+						</div>
+					</div>
+				</div>
+				<!-- /ko -->
+				<!-- ko if:$component.componentIdentifier==='unclaimedFunds' -->
+				<div class="oj-lg-4 oj-md-4 oj-sm-12 oj-col">
+					<div class="oj-row">
+						<div class="oj-col">
+							<div class="activity-desc" data-bind="text : comments"></div>
+						</div>
+						<div class="oj-col">
+							<!-- ko if: $data["name"] && $data.name!=="null" -->
+							<div class="activity-desc" data-bind="text : name"></div>
+							<!-- /ko -->
+						</div>
+					</div>
+				</div>
+				<!-- /ko -->
+				<!-- ko if:$component.componentIdentifier==='activity' -->
+				<div class="oj-lg-3 oj-md-3 oj-sm-6 oj-col">
+					<div class="activity-desc" data-bind="text : $data.txnRefNumber"></div>
+				</div>
+				<!-- /ko -->
+				<!-- ko if:$component.componentIdentifier==='unclaimedFunds' -->
+				<div class="oj-lg-2 oj-md-2 oj-sm-6 oj-col">
+					<div class="activity-desc" data-bind="text : $data.txnRefNumber"></div>
+				</div>
+				<!-- /ko -->
+				<!-- ko if:$component.componentIdentifier==='activity' -->
+				<div class="oj-lg-2 oj-md-3 oj-sm-6 oj-col activity-amt">
+					<!-- ko if: $data.transactionType -->
+					<!-- ko if: transactionType==="D" -->
+					<span class="debit" data-bind="text : $baseModel.formatCurrency(amountInTransactionCurrency.amount, amountInTransactionCurrency.currency)"></span>
+					<span class="debit" data-bind="text:$component.wallet.activity.dr"></span>
+					<!-- /ko -->
+					<!-- ko if: transactionType=== "C" -->
+					<span class="credit" data-bind="text : $baseModel.formatCurrency(amountInTransactionCurrency.amount, amountInTransactionCurrency.currency)"></span>
+					<span class="credit" data-bind="text:$component.wallet.activity.cr"></span>
+					<!-- /ko -->
+					<!-- /ko -->
+				</div>
+				<!-- /ko -->
+				<!-- ko if:$component.componentIdentifier==='unclaimedFunds' -->
+				<div class="oj-lg-2 oj-md-2 oj-sm-6 oj-col right activity-amt">
+					<!-- ko if: $data.amountInTransactionCurrency -->
+					<span class="debit" data-bind="text : $baseModel.formatCurrency(amountInTransactionCurrency.amount, amountInTransactionCurrency.currency)"></span>
+					<!-- /ko -->
+				</div>
+				<!-- /ko -->
+				<!-- ko if:$component.componentIdentifier==='unclaimedFunds' -->
+				<div class="oj-lg-2 oj-md-2 oj-sm-6 oj-col right">
+					<div class="activity-desc" data-bind="text : $data.status"></div>
+				</div>
+				<!-- /ko -->
+				<!-- ko if:$component.componentIdentifier==='requestFunds' -->
+				<div class="oj-lg-3 oj-md-3  oj-col">
+					<div class="activity-desc" data-bind="text : name"></div>
+				</div>
+				<div class="oj-lg-3 oj-md-3  oj-col">
+					<div class="activity-desc" data-bind="text : comments"></div>
+				</div>
+				<div class="oj-lg-2 oj-md-2  oj-col right activity-amt">
+					<!-- ko if: $data.amountInTransactionCurrency -->
+					<span class="credit" data-bind="text : $baseModel.formatCurrency(amountInTransactionCurrency.amount, amountInTransactionCurrency.currency)"></span>
+					<!-- /ko -->
+				</div>
+				<div class="oj-lg-2 oj-md-2  oj-col right">
+					<div class="activity-desc" data-bind="text : $component.wallet.activity[$data.status]"></div>
+				</div>
+				<!-- /ko -->
+			</div>
+		</li>
+	</script>
+	<!-- /ko -->
+</div>
+
+<!-- /ko -->
+
+
+<!--model window to show filter list on mobile-->
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'filterCriteriaSelectionDialog' ">
+	<div>
+		<div class="form-main-container">
+			<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+
+				<div class="row-group">
+
+					<oj-radioset id="radiosetBasicDemoId" aria-labelledby="mainlabelid" value="{{$component.searchCriteria}}" on-value-changed="[[toggleDateRange]]" class="oj-choice-direction-row"><oj-option value="LNT" id="LNT" name="period"><span for="LNT" data-bind="text: $component.wallet.activity.Last10Transactions"></span></oj-option><oj-option value="SPD" id="SPD" name="period"><span for="SPD" data-bind="text: $component.wallet.activity.DateRange"></span></oj-option></oj-radioset>
+
+					<div class="oj-col oj-sm-10 oj-md-5 oj-lg-5">
+						<!-- ko if:$component.dateRange -->
+						<div class="oj-row">
+						<div class="oj-col">
+	<oj-label class="hide-label" for="date132"><span data-bind="text:$component.wallet.activity.fromDate"></span></oj-label>
+	<oj-input-date id="date132" value="{{$component.fromDateSelected}}" max="[[$component.todayDate()]]" converter="[[$baseModel.dateConverter]]" required="[[$component.dateRange()]]"></oj-input-date>
+</div>
+
+				<div class="oj-col">
+  <oj-label class="hide-label" for="date"><span data-bind="text:$component.wallet.activity.toDate"></span></oj-label>
+	<oj-input-date id="date" value="{{$component.toDateSelected}}" min="[[$component.fromDateSelected]]" max="[[$component.todayDate()]]" converter="[[$baseModel.dateConverter]]" required="[[$component.dateRange()]]"></oj-input-date>
+</div>
+</div>
+						<!-- /ko -->
+					</div>
+
+				</div>
+			</page-section>
+			<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+				<!-- ko if:$component.componentIdentifier==='activity' -->
+				<div class="row-group">
+					<oj-radioset id="radioTransactionType" aria-labelledby="mainlabelid" value="{{$component.type}}" class="oj-choice-direction-row"><oj-option value="A" id="A" name="type1"><span for="A" data-bind="text: $component.wallet.activity.all"></span></oj-option><oj-option value="D" id="D" name="type1"><span for="D" data-bind="text: $component.wallet.activity.Debit"></span></oj-option><oj-option value="C" id="C" name="type1"><span for="C" data-bind="text: $component.wallet.activity.Credit"></span></oj-option></oj-radioset>
+				</div>
+				<!-- /ko -->
+				<!-- ko if:$component.componentIdentifier==='unclaimedFunds' -->
+				<div class="row-group">
+					<oj-radioset id="radioTransactionType" aria-labelledby="mainlabelid" value="{{$component.type}}" class="oj-choice-direction-row"><oj-option value="ALL" id="ALL" name="type1"><span for="ALL" data-bind="text: $component.wallet.activity.all"></span></oj-option><oj-option value="P" id="P" name="type1"><span for="P" data-bind="text: $component.wallet.activity.active"></span></oj-option><oj-option value="E" id="E" name="type1"><span for="E" data-bind="text: $component.wallet.activity.expired"></span></oj-option></oj-radioset>
+				</div>
+				<!-- /ko -->
+				<!-- ko if:$component.componentIdentifier==='requestFunds' -->
+				<div class="row-group">
+					<oj-radioset id="radioTransactionType" aria-labelledby="mainlabelid" value="{{$component.type}}" class="oj-choice-direction-row"><oj-option value="AL" id="AL" name="type1"><span for="AL" data-bind="text: $component.wallet.activity.all"></span></oj-option><oj-option value="DEC" id="DEC" name="type1"><span for="DEC" data-bind="text: $component.wallet.activity.DEC"></span></oj-option><oj-option value="SNT" id="SNT" name="type1"><span for="SNT" data-bind="text: $component.wallet.activity.SNT"></span></oj-option></oj-radioset>
+				</div>
+				<!-- /ko -->
+			</page-section>
+
+			<div class="oj-row center ">
+				<div class="oj-col button-container">
+					<oj-button class="action-button-primary" on-click="[[$component.filterTransaction.bind($data,searchCriteria(),type())]]">
+      <span data-bind="text:$component.wallet.activity.filter"></span>
+</oj-button>
+					<img data-bind="loadImage:'wallet/wallet-farward-white.png'">
+				</div>
+			</div>
+		</div>
+	</div>
+</modal-window>

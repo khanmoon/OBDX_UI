@@ -1,0 +1,110 @@
+<div class="form-main-container oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <!-- ko if:$baseModel.large() && $component.dataSourceLoaded() -->
+            <div class="oj-flex oj-flex-items-pad">
+                <oj-table id='casaNomineeTable' :aria-label="[[$component.resource.casaNominee.accountListTable]]" data="[[accountsdataSource]]" columns-default='{"sortable": "disabled"}' columns='[[[{
+                "headerText": resource.casaNominee.accountNumber,
+                "renderer": $oj.KnockoutTemplateUtils.getRenderer("account_Number", true),
+                "headerClassName": "alignContentLeft"
+            },
+            {
+                "headerText": resource.casaNominee.primaryHolderName,
+                "field": "primaryHolderName",
+                "headerClassName" : "alignContentLeft"
+            },
+            {
+                "headerText": resource.casaNominee.holdingPattern,
+                "field": "holdingPattern",
+                "sortable": "enabled",
+                "sortProperty": "holdingPattern",
+                 "headerClassName" : "alignContentLeft"
+                
+            },
+            {
+                "headerText": resource.casaNominee.nominee,
+                "field": "nomineeType",
+                "sortable": "enabled",
+                "sortProperty": "nomineeType",
+                 "headerClassName" : "alignContentLeft"
+            },
+            {
+                "headerText": resource.casaNominee.action,
+                "renderer": $oj.KnockoutTemplateUtils.getRenderer("action_link", true),
+                 "headerClassName" : "alignContentLeft"
+            }
+        ]]]'>
+                    <oj-paging-control id="paging" data='[[accountsdataSource]]' page-size='10' slot='bottom'>
+                    </oj-paging-control>
+                </oj-table>
+            </div>
+            <!-- /ko -->
+            <script type="text/html" id="account_Number">
+                <td>
+                    <div data-bind="text:$context.row.accountNumber.displayValue"></div>
+                </td>
+            </script>
+            <script type="text/html" id="action_link">
+                <td>
+                    <a href="javascript:void(0)" data-bind="attr:{alt:$baseModel.format($component.resource.casaNominee.alt, {action: $component.resource.casaNominee.actionLabels[$context.row.action]}),title:$baseModel.format($component.resource.casaNominee.title, {action: $component.resource.casaNominee.actionLabels[$context.row.action]})},
+                    text:$component.resource.casaNominee.actionLabels[$context.row.action], click:$component.actionHandler.bind($data,$context.row)"></a>
+                </td>
+            </script>
+            <!-- oj pop up -->
+            <oj-popup id="popup" class="hide" modality="modeless" tail="simple" position.at.horizontal="end" position.at.vertical="bottom" position.my.horizontal="[[$baseModel.small()?'right':'start']]" position.my.vertical="top">
+                <div class="casa-nominee-list-container">
+                    <div class="oj-flex oj-flex-items-pad nomineePopup">
+                        <div class="oj-flex-item no-pad-cols">
+                            <div data-bind="text:$component.resource.casaNominee.tooltipMsg1"></div>
+                            <div data-bind="text:$component.resource.casaNominee.tooltipMsg2"></div>
+                        </div>
+                    </div>
+                </div>
+            </oj-popup>
+            <!-- ko if:!$baseModel.large() && $component.dataSourceLoaded() -->
+            <script type="text/html" id="card_template">
+                <li data-bind="attr: {id: $data['accountNumber']}">
+                    <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                        <div class="oj-flex-item" data-bind="css:$baseModel.small()?'no-pad-cols':''">
+                            <label data-bind="text:$component.resource.casaNominee.accountNumber"></label>
+                            <div data-bind="text: accountNumber.displayValue"></div>
+                        </div>
+                        <div class="oj-flex-item right" data-bind="css:$baseModel.small()?'no-pad-cols':''">
+                            <div><a href="#" data-bind="text:$component.resource.casaNominee.actionLabels[action],
+                            click:$component.actionHandler.bind($data)"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                        <div class="oj-flex-item" data-bind="css:$baseModel.small()?'no-pad-cols':''">
+                            <label data-bind="text:$component.resource.casaNominee.primaryHolderName"></label>
+                            <div data-bind="text: primaryHolderName"></div>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                        <div class="oj-flex-item" data-bind="css:$baseModel.small()?'no-pad-cols':''">
+                            <label data-bind="text:$component.resource.casaNominee.holdingPattern"></label>
+                            <div data-bind="text: holdingPattern"></div>
+                        </div>
+                    </div>
+                    <div class="oj-flex oj-flex-items-pad oj-sm-12">
+                        <div class="oj-flex-item" data-bind="css:$baseModel.small()?'no-pad-cols':''">
+                            <label data-bind="text:$component.resource.casaNominee.nominee"></label>
+                            <div data-bind="text: nomineeType"></div>
+                        </div>
+                    </div>
+                </li>
+            </script>
+            <oj-list-view id="listview" :aria-label=$component.resource.casaNominee.accountListTable data="[[accountsdataSource]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('card_template', true)]]" selection-mode="single">
+                <oj-paging-control id="paging" data='[[accountsdataSource]]' page-size='5' slot='bottom'>
+                </oj-paging-control>
+            </oj-list-view>
+            <!-- /ko -->
+        </page-section>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'casa-nominee-list'"></help>
+    </div>
+    <!-- /ko -->
+</div>

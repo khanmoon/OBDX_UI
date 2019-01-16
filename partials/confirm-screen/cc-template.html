@@ -1,0 +1,219 @@
+<!-- ko if:$component.params.serviceNos -->
+
+<div class="oj-flex oj-flex-items-pad cust-details oj-sm-flex-items-initial" data-bind="with : $component.params.serviceNos">
+  <!-- ko foreach: items -->
+  <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-2">
+    <div class="label" data-bind="text:$data.label">
+    </div>
+    <div class="cust-name" data-bind="text:$data.value">
+    </div>
+  </div>
+  <!-- /ko -->
+</div>
+
+<!-- /ko -->
+<!-- ko if:$component.params.confirmScreenExtensions.flagActivateCard-->
+<page-section class="review" ="" params="baseModel : $baseModel, rootModel : $component, heading : ''">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 label">
+      <oj-label for="totalDue"><span data-bind="text:$component.resource.creditCardDetails.cardNumber"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12">
+      <span data-bind="text:$component.params.confirmScreenExtensions.cardNumber"></span>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 label">
+      <oj-label for="totalDue"><span data-bind="text:$component.resource.creditCardDetails.selectReason"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12">
+      <span data-bind="text:$component.params.confirmScreenExtensions.activateReason"></span>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 label">
+      <oj-label for="totalDue"><span data-bind="text:$component.resource.creditCardDetails.comments"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12">
+      <span data-bind="text:$component.params.confirmScreenExtensions.comment"></span>
+    </div>
+  </div>
+</page-section>
+<!-- /ko -->
+<!-- ko if:$component.params.confirmScreenExtensions.flagPinRequest-->
+<page-section class="review" ="" params="baseModel : $baseModel, rootModel : $component, heading : ''">
+  <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 label ">
+          <oj-label for="cardNumber" class=""><span data-bind="text:$component.resource.requestPin.cardNumber"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <span data-bind="text:$component.creditCardIdDisplay"></span>
+      </div>
+  </div>
+
+  <div data-bind="template: { name: 'common/review/address',data:$component.addressDetails }"></div>
+</page-section>
+<!-- /ko -->
+<!-- ko if:$component.params.confirmScreenExtensions.flagCardPay-->
+<page-section class="review" ="" params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+    <div class="row-group">
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.pay.amount, value :$baseModel.formatCurrency($component.params.confirmScreenExtensions.confData.amount.amount, $component.params.confirmScreenExtensions.confData.amount.currency)"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.resource.pay.sourceAccount, value :$component.params.confirmScreenExtensions.confData.debitAccountId.displayValue"></row>
+    </div>
+
+</page-section>
+<!-- /ko -->
+<!-- ko if:$component.params.confirmScreenExtensions.flagBlockCard-->
+<page-section class="review" ="" params="baseModel : $baseModel, rootModel : $component, heading : ''">
+  <div class="row-group">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 label">
+        <oj-label for="totalDue"><span data-bind="text:$component.resource.blockCard.cardNo"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <span data-bind="text:creditCardDisplayId"></span>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 label">
+        <oj-label for="totalDue"><span data-bind="text:$component.resource.blockCard.action"></span></oj-label>
+      </div>
+      <!-- ko if:$component.replaceConfirmationType() === 'OPTION_NO' -->
+      <div class="oj-flex-item oj-sm-12">
+        <span data-bind="text:$component.params.confirmScreenExtensions.actionType"></span>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:$component.replaceConfirmationType() === 'OPTION_YES' -->
+      <div class="oj-flex-item oj-sm-12">
+        <span data-bind="text:$baseModel.format($component.resource.blockCard.replace,{action:$component.params.confirmScreenExtensions.actionType})"></span>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 label">
+        <oj-label for="totalDue"><span data-bind="text:$component.resource.blockCard.reason"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <span data-bind="text:$component.resource.blockCard[$component.params.confirmScreenExtensions.reasonType]"></span>
+      </div>
+    </div>
+    <!-- ko if:$component.replaceConfirmationType() === 'OPTION_YES' -->
+    <div class="" data-bind="template: { name: 'common/review/address',data:$component.addressDetails }"></div>
+    <!-- /ko -->
+  </div>
+</page-section>
+<!-- /ko -->
+<!-- ko if:$component.params.confirmScreenExtensions.flagAutoPay-->
+<page-section class="review" ="" params="baseModel : $baseModel, rootModel : $component, heading : ''">
+  <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 label ">
+          <oj-label for="cardNumber" class=""><span data-bind="text:$component.resource.autopay.cardNumber"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12">
+        <span data-bind="text:$component.creditCardIdDisplay"></span>
+      </div>
+  </div>
+    <div class="row-group">
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.resource.autopay.payAmtType, value: $component.resource.autopay[$component.payAmtType()]"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label :$component.resource.autopay.sourceAccount, value :$component.params.confirmScreenExtensions.confData.accountId.displayValue"></row>
+    </div>
+</page-section>
+<!-- /ko -->
+<!-- ko if:$component.params.confirmScreenExtensions.flagAddOnCard-->
+<page-section class="review" ="" params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+    <div class="row-group">
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 label">
+              <oj-label for="addressType" class=""><span data-bind="text:$component.resource.addonCard.cardNumber"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <span data-bind="text:$component.creditCardIdDisplay"></span>
+          </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="cardfor"><span data-bind="text:$component.resource.addonCard.cardfor"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:resource.addonCard[$component.selectedRelationship()]"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="nameOnCard"><span data-bind="text:$component.resource.addonCard.nameOnCard"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$component.name"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="newCreditLimit"><span data-bind="text:$component.resource.addonCard.newCreditLimit"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$baseModel.formatCurrency(updatecreditLimit(), creditLimitCurrency())"></span>
+        </div>
+      </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 label">
+          <oj-label for="newCashLimit"><span data-bind="text:$component.resource.addonCard.newCashLimit"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12">
+          <span data-bind="text:$baseModel.formatCurrency(updatecashLimit(), cashLimitCurrency())"></span>
+        </div>
+      </div>
+
+      <div class="" data-bind="template: { name: 'common/review/address',data:$component.addressDetails }"></div>
+
+    </div>
+</page-section>
+<!-- /ko -->
+
+<!-- ko if:$component.params.responseNo -->
+
+<div class="oj-flex oj-flex-items-pad cust-details oj-sm-flex-items-initial" data-bind="with : $component.params.responseNo">
+  <!-- ko foreach: items -->
+  <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-2">
+    <div class="label" data-bind="text:$data.label">
+    </div>
+    <div class="cust-name" data-bind="text:$data.value">
+    </div>
+  </div>
+  <!-- /ko -->
+</div>
+
+<!-- /ko -->
+
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item" data-bind="text:$component.confirmScreenResources.confirm.actions.nextAction">
+  </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad ">
+  <div class="oj-flex-item">
+    <ul class="confirm-screen__list">
+      <li>
+        <a href="#" data-bind="click:$dashboard.openDashBoard">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),
+          'title':$component.confirmScreenResources.confirm.actions.goToDashboard},
+          loadImage:'dashboard/quick-access/dashboard.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToDashboard"></div>
+        </a>
+      </li>
+      <li>
+        <a href="#" data-bind="click:$component.openTransaction.bind($data,'card-details', 'creditcard', 'cards/credit?expand=ALL')">
+          <img data-bind="attr:{'alt':$baseModel.format($component.confirmScreenResources.confirm.actions.clickHere,{details:$component.confirmScreenResources.confirm.actions.goToAccountDetails}),
+          'title':$component.confirmScreenResources.confirm.actions.goToAccountDetails},
+          loadImage:'dashboard/quick-access/account-details.svg'">
+          <div data-bind="text:$component.confirmScreenResources.confirm.actions.goToAccountDetails"></div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

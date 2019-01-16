@@ -1,0 +1,228 @@
+<div class="attach-documents">
+<!-- ko if : $component.allowAttachments -->
+<div class="oj-flex oj-flex-items-pad grid-row-group flex-right">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <a href="javascript:void(0)" class="padding-tb pull-right initiate-link" data-bind="click:$component.uploadDocs">
+          <span class="icons icon-attachment icon-2x icon-padding-right"></span>
+          <span data-bind="text:$component.attachDocResourceBundle.documents.labels.attachDocument"></span>
+        </a>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko if : (!$component.allowAttachments && $component.allowAttachments !== undefined) && $component.mode() === 'VIEW'-->
+<div id="warning-container" class="oj-flex oj-flex-items-pad warning-container">
+  <div class="oj-flex-item warning-text">
+    <span class="warning-msg" data-bind="text : $component.resourceBundle.tradeFinanceErrors.messages.attachDocWarning"></span>
+    <a href="#" data-bind="attr:{'alt':$component.resourceBundle.generic.common.cancel ,'title':$component.resourceBundle.generic.common.closeDialog }, click: $component.fadeOutWarningContainer">
+        <span class="icons icon-cancel warning-icon"></span>
+    </a>
+  </div>
+</div>
+<!-- /ko -->
+
+
+<!-- ko ifnot : $component.mode() === 'CREATE' || $component.mode() === 'EDIT'  -->
+  <!-- ko if : $component.attachDocList().length === 0 -->
+  <div class="oj-flex oj-flex-items-pad padding-tb">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() },
+      text: $component.attachDocResourceBundle.tradeFinanceErrors.messages.noDocsAttached">
+    </div>
+  </div>
+  <!-- /ko -->
+<!-- /ko -->
+
+<!-- ko if : attachDocList().length > 0 -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <!-- ko ifnot:$baseModel.small() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 doc-table">
+      <oj-table id="attachDocTable" :aria-label="[[$component.resourceBundle.instructionsDetails.labels.documentTable]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('row_tmpl_attach_document', true)]]" columns="[[$component.attachDocTblColumns]]" data="[[datasourceForAttachDocument]]">
+        <caption class="hide-label" data-bind="text:$component.attachDocResourceBundle.documents.labels.attachedDocuments"></caption>
+      </oj-table>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:$baseModel.small() -->
+    <div class="oj-flex-item oj-sm-12 grid-main-container">
+        <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('attach_doc_list_card',true)}]]" selection-mode="[['single']]" data="[[datasourceForAttachDocument]]">
+        </oj-list-view>
+        <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.templateDatasource]]">
+        </oj-paging-control>
+    </div>
+    <!-- /ko -->
+  </div>
+</div>
+<!-- /ko -->
+
+<!-- ko if : $component.allowAttachments -->
+<!-- ko if : $component.mode() === 'CREATE' || $component.mode() === 'EDIT' -->
+<div class="oj-flex oj-flex-items-pad padding-tb info-text-small">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <span class="icons icon-information icon-2x icon-padding-right pull-left"></span>
+    <span data-bind="text: 'Attached documents will not be saved with Draft / Template.'"></span>
+  </div>
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad padding-tb info-text-small">
+  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+    <span class="icons icon-information icon-2x icon-padding-right pull-left"></span>
+    <span data-bind="text: $component.attachDocResourceBundle.tradeFinanceErrors.messages.note"></span>
+  </div>
+</div>
+<!-- /ko -->
+
+</div>
+<script type="text/html" id="row_tmpl_attach_document">
+  <tr>
+    <td>
+      <span class="draft-no" data-bind="text:$component.getRowId($context.rowContext.status.rowIndex)"></span>
+      <!-- ko if: $component.mode() === 'VIEW' && $data.newDocument -->
+      <span class="trade-badge" data-bind="text:$component.attachDocResourceBundle.common.labels.new"></span>
+      <!-- /ko -->
+    </td>
+    <td>
+      <a href="#" data-bind="attr:{ title: $data.contentId.displayValue},text:$data.contentId.displayValue,click:$component.downloadDocument.bind($data,$data.contentId.value)">
+      </a>
+    </td>
+    <td data-bind="text: $data.category">
+    </td>
+    <td data-bind="text: $data.type">
+    </td>
+    <td class="content doc-remarks" data-bind="text: $data.remarks">
+    </td>
+    <!-- ko if : $component.allowAttachments -->
+    <td>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex oj-sm-12 oj-md-12 oj-lg-12 flex-right">
+          <a href="#" data-bind="attr : {'id' :'delete_' + $context.rowContext.status.rowIndex}, click:$component.deleteDocument.bind($data)">
+              <span class="icons icon-delete icon-2x icon-padding-right" data-bind="attr:{ title: $component.attachDocResourceBundle.generic.common.remove}"></span>
+          </a>
+        </div>
+      </div>
+    </td>
+    <!-- /ko -->
+  </tr>
+</script>
+
+<script type="text/html" id="attach_doc_list_card">
+  <li data-bind="attr: {id: $data.contentId.value}">
+    <div class="oj-flex oj-flex-items-pad">
+
+      <div class="oj-flex-item oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-9 description">
+              <a href="#" data-bind="attr:{ title: $component.attachDocResourceBundle.documents.labels.docId, alt: $component.attachDocResourceBundle.documents.labels.docId},
+              text:$data.contentId.displayValue,
+              click:$component.downloadDocument.bind($data,$data.contentId.value)">
+              </a>
+              <!-- ko if: $component.mode() === 'VIEW' && $data.newDocument -->
+             <span class="trade-badge" data-bind="text:$component.attachDocResourceBundle.common.labels.new"></span>
+             <!-- /ko -->
+            </div>
+
+            <!-- ko if : $component.mode() === 'CREATE' || $component.mode() === 'EDIT' || $component.mode() === 'VIEW' -->
+            <div class="oj-flex-item oj-sm-3 right">
+              <a href="#" data-bind="attr : {title: $component.attachDocResourceBundle.generic.common.remove,
+                alt: $component.attachDocResourceBundle.generic.common.remove}, click:$component.deleteDocument.bind($data)">
+                  <span class="icons icon-delete"></span>
+              </a>
+            </div>
+            <!-- /ko -->
+          </div>
+        </div>
+
+      <div class="oj-flex-item oj-sm-12" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <label data-bind="text: $component.attachDocResourceBundle.documents.labels.docCategory"></label>
+            <div data-bind="text: $data.category"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <label data-bind="text: $component.attachDocResourceBundle.documents.labels.docType"></label>
+            <div data-bind="text: $data.type"></div>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <label data-bind="text: $component.attachDocResourceBundle.documents.labels.remarks"></label>
+            <div class="content" data-bind="text: $data.remarks"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </li>
+</script>
+
+<modal-window class="full-width-modal" params="baseModel : $baseModel, rootModel : $data, id:'uploadDocs', header: $component.attachDocResourceBundle.documents.labels.attachDocument">
+
+  <div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.large() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <label for="docCategory" data-bind="text: $component.attachDocResourceBundle.documents.labels.docCategory"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-select-one id="docCategory" required="[[true]]" :invalidcomponenttracker="[[$component.attachedDocumentsValidationTracker]]" :placeholder="[[$component.attachDocResourceBundle.common.labels.pleaseSelect]]" on-value-changed="[[$component.categoryChangeHandler]]" options="[[$component.categoryOptions]]" value="{{$component.docCategory}}">
+           </oj-select-one>
+        </div>
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.large() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <label for="docType" data-bind="text: $component.attachDocResourceBundle.documents.labels.docType"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-select-one id="docType" required="[[true]]" :invalidcomponenttracker="[[$component.attachedDocumentsValidationTracker]]" :placeholder="[[$component.attachDocResourceBundle.common.labels.pleaseSelect]]" options="[[$component.categoryTypeOptions]]" value="{{$component.docType}}">
+             </oj-select-one>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.large() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <label for="remarks" data-bind="text: $component.attachDocResourceBundle.documents.labels.remarks"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-6">
+          <oj-text-area id="remarks" maxlength="455" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL',$component.attachDocResourceBundle.tradeFinanceErrors.documentDetails.invalidClauseDesc,{type:'length',options:{
+              min:1,max:455}})]]" required="[[true]]" value="{{$component.docRemarks}}"></oj-text-area>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.large() || $baseModel.medium() }">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <label for="documentInput" data-bind="text: $component.attachDocResourceBundle.documents.labels.chooseFileToAttach"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6">
+          <div id="fileUpload" class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 " data-bind="component:{name:'file-input',params:{rootModel: $component , id:'documentInput'}}">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[$component.upload]]">
+        <span slot="startIcon" class="icons icon-upload"></span>
+        <span data-bind="text:$component.attachDocResourceBundle.generic.common.fileInput.upload"></span>
+    </oj-button>
+    <oj-button class="action-button-secondary btn proceed-main-btn" on-click="[[$component.hideUploadDocs]]">
+        <span slot="startIcon" class="icons icon-cancel"></span>
+        <span data-bind="text:$component.attachDocResourceBundle.generic.common.cancel"></span>
+    </oj-button>
+  </div>
+
+</modal-window>

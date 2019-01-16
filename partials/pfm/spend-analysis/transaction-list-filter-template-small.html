@@ -1,0 +1,76 @@
+<div id="navlistcontainer">
+    <oj-navigation-list id="ojNavigationList-filter" drill-mode="collapsible" on-oj-before-expand="[[$component.beforeExpand]]">
+        <ul>
+            <li id="filter-Text" class="oj-disabled transaction-list__filter-list-option">
+                <span href="#" data-bind="text:$component.resource.filter.filter">
+                      </span>
+                <a href="#" data-bind="attr:{'alt':$component.resource.alt.refresh ,'title':$component.resource.alt.refreshTitle,'aria-label':$component.resource.alt.refresh },click:$component.resetFilter">
+                    <div class="transaction-list__refresh icon-refresh">
+                    </div>
+                </a>
+            </li>
+            <li id="category-filter">
+                <a href="#">
+                          <span class="filter-icon icons icon-claim-money"></span>
+                          <span class="transaction-list__filter-list-option__label" data-bind="text:$component.resource.tableHeaders.categoryNsubcategory"></span>
+                      </a>
+                <ul id="ul-filter-on-category-subcategory">
+                    <!-- ko foreach:$component.categoryList() -->
+                    <li data-bind="attr:{id : 'li-filter-on-category-subcategory-' + categoryId}">
+                        <a href="#" data-bind="click :$component.categoryFilterChangeHandler">
+                              <span data-bind="text:name"></span>
+                          </a>
+                        <ul id="ul-filter-on-subcategory">
+                            <li id="li-filter-on-subcategory">
+                                <oj-checkboxset :id="[['subcategories'+ $baseModel.incrementIdCount()]]" value="{{$component.selectedSubCategories}}" on-value-changed="[[$component.checkBoxModeChangeHandler]]">
+                                    <oj-option class="oj-flex oj-lg-12 oj-sm-12 offcanvas-box__content-option" name="checkboxAll" :id="[['all' + categoryId]]" value="all" :checked="[[$component.tickAllForCategoryMap()[categoryId]]]">
+                                        <div class="oj-lg-10 oj-sm-10 oj-choice-direction-column" data-bind="text:$component.resource.filter.all"></div>
+                                    </oj-option>
+                                    <!-- ko foreach:subcategoryList -->
+                                    <oj-option class="oj-flex oj-lg-12 oj-sm-12 offcanvas-box__content-option" name="checkboxOne" :id="[['sub-' + categoryId.replace(/[_.,:$\s]/g,'')]]" value="{{categoryId}}">
+                                        <span class="oj-choice-direction-column" data-bind="text:name"></span>
+                                    </oj-option>
+                                    <!-- /ko -->
+                                </oj-checkboxset>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- /ko -->
+                </ul>
+            </li>
+            <li class="transaction-list__filter-list-option" id="filter-on-accounts" data-bind="with : $component.filterOptions()[0]">
+                <a href="#">
+                          <span class="filter-icon icons icon-user"></span>
+                          <span class="transaction-list__filter-list-option__label" data-bind="text:$component.resource.filter.accounts"></span>
+                      </a>
+                <ul id="ul-filter-on-accounts-options">
+                    <li id="li-filter-on-accounts-options">
+                        <oj-radioset id="filter-on-accounts-radio-set" value="{{$component.selectedAccountRadio}}" on-value-changed="[[$component.accountRadioChanged]]">
+                            <!-- ko foreach: filterList -->
+                            <oj-option class="oj-flex oj-lg-12 oj-sm-12" name="accounts" :id="[['radio-'+ value]]" :value="[[value]]">
+                              <span data-bind="text:label, attr:{for:'radio-' + value}"></span>
+                            </oj-option>
+                            <!-- /ko -->
+                        </oj-radioset>
+                    </li>
+                </ul>
+            </li>
+            <li class="transaction-list__filter-list-option" id="filter-on-duration" data-bind="with : $component.filterOptions()[1]">
+                <a href="#">
+                          <span class="filter-icon icons icon-calendar"></span>
+                          <span class="transaction-list__filter-list-option__label" data-bind="text:$component.resource.filter.duration"></span>
+                      </a>
+                <ul id="ul-filter-on-duration-options">
+                    <li id="li-filter-on-duration-options">
+                        <oj-radioset id="filter-on-duration-radio-set" value="{{$component.selectedDurationRadio}}" on-value-changed="[[$component.durationRadioChanged]]">
+                            <!-- ko foreach: filterList -->
+                            <oj-option class="oj-flex oj-lg-12 oj-sm-12" name="duration" :id="[['radio-'+ value]]" :value="[[value]]"><span data-bind="text:label, attr:{for:'radio-' + value}"></span>
+                            </oj-option>
+                            <!-- /ko -->
+                        </oj-radioset>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </oj-navigation-list>
+</div>

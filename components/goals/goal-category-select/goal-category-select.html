@@ -1,0 +1,38 @@
+<div class="pfm">
+    <div class="form-main-container category">
+      <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+          <!-- ko if:isLoaded() -->
+          <!-- ko if:categories().length > 0 -->
+          <div class="oj-flex oj-flex-items-pad category__cardssection">
+              <!-- ko foreach: categories -->
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4" data-bind="component: {name: 'category-card', params:{
+              data: {
+                data:$data.categoryId,
+                card_text:$data.categoryId,
+                description:$data.categoryName,
+                caption:$component.goal.calculator.categoryCaptions[$data.categoryName],
+                image:$data.content,
+                defaultImage:'goals/category/goal-category-default.png'
+              } ,clickHandler:$component.actionCardClick
+              }
+            }">
+          </div>
+              <!-- /ko -->
+          </div>
+
+
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+        <!-- ko if: $baseModel.large() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+          <help params="baseModel : $baseModel, rootModel : $component, transaction: 'goal-category-select'"></help>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+</div>
+<!-- ko if: $baseModel.large() -->
+<a class="back-link" href="#" data-bind="text: $component.goal.calculator.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

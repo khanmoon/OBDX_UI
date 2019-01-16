@@ -1,0 +1,100 @@
+<!-- ko if: $component.primaryDataLoaded() -->
+<div class="oj-flex oj-flex-items-pad application-form-text cust-label">
+    <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1">
+        <span class="text" data-bind="text:$component.resource.yourInfo"></span>
+        <span><a class="link" href="#" data-bind="click: function(){$('#privacyAndSecurityPolicy').show().trigger('openModal')},text:$component.resource.privacyAndSecurityPolicy ,attr:{alt: $component.resource.privacyAndSecurityPolicyClick, title: $component.resource.privacyAndSecurityPolicyClickInfo}"></a></span>
+
+    </div>
+</div>
+<div class="" data-bind="with:applicantObject().primaryInfo">
+    <div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2">
+                <oj-label :for="[['firstName']]"><span data-bind="text:$component.resource.firstName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+                <oj-input-text required maxlength="30" name="firstName" autocomplete="off" spellcheck="false" :id="[['firstName']]" translations="[[{'required':{messageDetail:$component.resource.messages.firstName}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL',$component.resource.messages.firstName,{
+                                    type:'length',options:{
+                                      min:1,max:80}})]]" value="{{primaryInfo.firstName}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"></oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2">
+                <div class="oj-label ">
+                    <oj-label :for="[['middleName']]"></oj-label>
+                </div>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+                <oj-input-text maxlength="30" name="middleName" autocomplete="off" spellcheck="false" :id="[['middleName']]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL',$component.resource.messages.middleName,{
+                                    type:'length',options:{
+                                      min:0,max:80}})]]" value="{{primaryInfo.middleName}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"></oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2">
+                <oj-label :for="[['lastName']]"><span data-bind="text:$component.resource.lastName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+                <oj-input-text required maxlength="30" name="lastName" autocomplete="off" spellcheck="false" :id="[['lastName']]" translations="[[{'required':{messageDetail:$component.resource.messages.lastName}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL',$component.resource.messages.lastName,{
+                                    type:'length',options:{
+                                      min:1,max:80}})]]" value="{{primaryInfo.lastName}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"></oj-input-text>
+            </div>
+        </div>
+        <!-- ko if : $component.suffixLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2">
+                <oj-label :for="[['suffix']]"></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+                <oj-select-one :id="[['suffix']]" value="{{primaryInfo.suffix}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]" :placeholder="">
+                    <!-- ko foreach: $component.suffixOptions -->
+                    <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                    <!-- /ko -->
+                    </oj-select-one>
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2">
+                <oj-label :for="[['dateOfBirth']]"><span data-bind="text:$component.resource.dateOfBirth"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-input-date required autocomplete="off" spellcheck="false" :id="[['dateOfBirth']]" translations="[[{'required':{messageDetail:$component.resource.messages.dob}}]]" converter="[[$component.dateConverter]]" validators="[{
+        type:'dateTimeRange',options:{
+          max:$component.todayIsoDate,messageDetail:{'rangeOverflow':$component.resource.messages.dob}}}]" value="{{primaryInfo.birthDate}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]" datepicker="[[{yearRange:'c-100:c'}]]"></oj-input-date>
+            </div>
+        </div>
+        <!-- ko if : !$component.applicantObject().primaryInfo.disableInputs() -->
+        <!-- ko if : $component.hearAboutLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1  oj-lg-offset-2 oj-label">
+                <oj-label :for="[['hearAboutUs']]"><span data-bind="text:$component.resource.hearAboutUs"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-select-one required :id="[['hearAboutUs']]" translations="[[{'required':{messageDetail:$component.resource.messages.validOption}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$component.salutionChanged]]" value="{{howDidYouHearAboutUs().crmReferenceCode}}" :placeholder="">
+                    <!-- ko foreach: $component.hearAbout -->
+                    <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item right oj-lg-10 oj-md-10">
+        <oj-button id="submitPrimary" class="form-button-secondary" on-click="[[$component.submitApplicant]]"><span data-bind="text:$component.resource.generic.common.continue"></span></oj-button>
+    </div>
+</div>
+
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'loginsuccess'">
+    <div class="message-text scroll" data-bind="text:$component.resource.messages.successText"></div>
+    <div class="message-btn button-container">
+        <oj-button id="" class="toUpperCase" on-click="[[$component.login]]"> <span data-bind="text:$component.resource.generic.common.login"></span></oj-button>
+    </div>
+</modal-window>
+<!-- /ko -->

@@ -1,0 +1,55 @@
+<div class="oj-flex-item financial-position">
+
+    <action-widget params="baseModel : $baseModel, rootModel:$data,
+                                header:nls.accountDetails.labels.title,
+                                onDashboard: $dashboard.isDashboard()">
+        <div class="oj-flex oj-flex-items-pad financial-position__party-id financial-position-party-id">
+            <label class="financial-position-party-id__label" data-bind="attr:{for: $baseModel.incrementIdCount()}, text:$component.nls.accountDetails.labels.partyDropDown"></label>
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 financial-position-party-id__select">
+                <oj-select-one :id="[[$baseModel.currentIdCount()]]" value="{{$component.selectedPartyID}}">
+                    <!-- ko foreach: $component.segregatedSummary -->
+                    <oj-option value="{{id}}"><span data-bind="text:name"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="financial-position__netWorth financial-position-netWorth oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 label center" data-bind="css:{netWorthMargin :$baseModel.large()}">
+                <label for="netWorth" data-bind="text:$component.nls.accountDetails.labels.netWorth"></label>
+                <div id="netWorth" class="financial-position-netWorth__highlighted-text" data-bind="text:netWorth()"></div>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 label center financial-position__chart financial-position-chart">
+                <label for="assestsPieChart" data-bind="text:$component.nls.accountDetails.labels.assets"></label>
+                <oj-chart id="assestsPieChart" class="financial-position-chart__pieChart"
+                  type="pie"
+                  series="[[assetsPieSeriesValue]]"
+                  rootAttributes= "[[{class: ($baseModel.small() ? 'full-width' : '')}]]"
+                  animation-on-display="auto"
+                  animation-on-data-change="auto"
+                  pie-center-label="[[labelValue1]]"
+                  style-defaults.pieInnerRadius="[[ko.toJS(innerRadius)]]"
+                  sliceGaps= "[[ko.toJS(1)]]"
+                  legend="[[{rendered: ko.toJS('on'),position: ko.toJS('bottom')}]]"
+                  tooltip= "[[tooltipCallback]]">
+              </oj-chart>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 label center financial-position__chart financial-position-chart">
+                <label for="liabilitiesPieChart" data-bind="text:$component.nls.accountDetails.labels.liabilities"></label>
+                <oj-chart id="liabilitiesPieChart" class="financial-position-chart__pieChart"
+                  type="pie"
+                  series="[[liabilitiesPieSeriesValue]]"
+                  animation-on-display="auto"
+                  animation-on-data-change="auto"
+                  pie-center-label="[[labelValue1]]"
+                  style-defaults.pieInnerRadius="[[ko.toJS(innerRadius)]]"
+                  sliceGaps= "[[ko.toJS(1)]]"
+                  legend="[[{rendered: ko.toJS('on'),position: ko.toJS('bottom')}]]"
+                  tooltip= "[[tooltipCallback]]">
+              </oj-chart>
+            </div>
+        </div>
+      
+    </action-widget>
+
+</div>

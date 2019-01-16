@@ -1,0 +1,253 @@
+<div class="oj-flex oj-flex-items-pad cust-details">
+	<!-- ko if:activityAccountsLoaded -->
+
+	<div class="oj-flex-item oj-lg-3 oj-md-3 oj-sm-12 cust-name" data-bind="html: partyName "></div>
+	<div class="oj-flex-item oj-lg-3 oj-md-3 oj-sm-12 cust-details-heading">
+		<oj-label class="hide-label" :for="[['accountSelect'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.accountNumber"></span></oj-label>
+		<oj-select-one class="cust-details-heading-list" data-id="selectedAccount" options="[[displayAccountList]]" :id="[['accountSelect'+($baseModel.currentIdCount())]]" on-value-changed="[[searchForAccount]]" value="{{accountID}}">
+
+			</oj-select-one>
+	</div>
+	<!-- /ko -->
+</div>
+
+
+
+<!--	Back button is to be implemented inside the dashboard itself. No need to define it separately inside each individual components. -->
+
+
+<div id="viewDetails" class="grid-main-container">
+
+	<div class="oj-flex oj-flex-items-pad form-row-highlighted">
+		<div class="oj-flex-item oj-md-3 oj-lg-3">
+			<oj-label class="hide-label" :for="[['periodSelect'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.currentPeriod"></span></oj-label>
+			<oj-select-one data-id="selectedPeriod" :id="[['periodSelect'+($baseModel.currentIdCount())]]" value="{{searchCriteria}}" on-value-changed="[[searchCriteriaChangedHandler]]">
+				<oj-option value="CPR"><span data-bind="text:$component.resource.currentPeriod"></span></oj-option>
+				<oj-option value="PMT"><span data-bind="text:$component.resource.PrevMonth"></span></oj-option>
+				<oj-option value="PQT"><span data-bind="text:$component.resource.PrevQuarter"></span></oj-option>
+				<oj-option value="SPD"><span data-bind="text:$component.resource.DateRange"></span></oj-option>
+			</oj-select-one>
+
+		</div>
+
+
+		<div class="no-pad-cols oj-flex-item oj-md-5 oj-lg-5">
+			<!-- ko if:dateRange -->
+			<div class="oj-flex">
+			<div class="oj-flex-item date-range">
+				<oj-label :for="[['date'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.from"></span></oj-label>
+			</div>
+			<div class="oj-flex-item">
+				<oj-input-date data-id="fromDate" :id="[['date'+($baseModel.currentIdCount())]]" value="{{fromDateSelected}}" max="[[$component.todayDate()]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+			</div>
+			<div class="oj-flex-item">
+				<oj-label :for="[['date'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.to"></span></oj-label>
+			</div>
+			<div class="oj-flex-item">
+				<oj-input-date data-id="toDate" id="date" :id="[['date'+($baseModel.currentIdCount())]]" value="{{toDateSelected}}" min="[[fromDateSelected]]" max="[[$component.todayDate()]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+			</div>
+		</div>
+			<!-- /ko -->
+
+		</div>
+
+		<modal-window params="baseModel : $baseModel, rootModel : $data, id:'statementDialog', header : showPhysicalStatement() ? $component.resource.Statement : accountNumberAlreadySubscribed() ? $component.resource.unsubscribeHeader : $component.resource.eStatement">
+				<!-- ko if:showeStatement() -->
+				<div data-bind="component: {name:'electronic-statement', params: {rootModel:$data} }">
+				</div>
+				<!-- /ko -->
+				<!-- ko if:showPhysicalStatement() -->
+				<div data-bind="component: {name:'physical-statement', params:{rootModel:$data}}">
+				</div>
+				<!-- /ko -->
+		</modal-window>
+
+
+		<div class="oj-flex-item oj-md-2 oj-lg-2">
+			<oj-label class="hide-label" :for="[['selectTransactionType'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.all"></span></oj-label>
+			<oj-select-one :id="[['selectTransactionType'+($baseModel.currentIdCount())]]" value="{{type}}" on-value-changed="[[transactionOptionChangeHandler]]">
+				<oj-option value="A"><span data-bind="text:$component.resource.all"></span></oj-option>
+				<oj-option value="D">
+				<span data-bind="text:$component.resource.Debit"></span></oj-option>
+				<oj-option value="C">
+				<span data-bind="text:$component.resource.Credit"></span></oj-option>
+			</oj-select-one>
+		</div>
+
+		<div class="oj-flex oj-flex-items-pad right activity-btn-container">
+			<!-- ko if: ($component.baseURL()==='accounts/demandDeposit/') -->
+			<div class="oj-flex-item oj-sm-4 center">
+				<a href="#" data-bind="click: saveStatement,attr:{alt:$component.resource.saveText,title:$component.resource.save,'aria-label':$component.resource.save}"><span id="save" class="icons icon-download"></span></a>
+			</div>
+
+			<div class="oj-flex-item oj-sm-4 center no-pad-cols">
+				<!-- <img class="" id="sub" data-bind="loadImage:'account-activity/subscribe-e-statement.svg',click: eStatementSubsciption,attr:{alt:$component.resource.estatement,title:$component.resource.estatement}" /> -->
+				<a href="#" data-bind="click: eStatementSubsciption,attr:{alt:$component.resource.estatementText,title:$component.resource.estatement,'aria-label':$component.resource.estatement}"><span id="sub" class="icons icon-subscription"></span></a>
+			</div>
+
+			<div class="oj-flex-item oj-sm-4 center">
+				<!-- <img id="req" data-bind="loadImage:'account-activity/request-physical-statement.svg',click: physicalStatementRequest,attr:{alt:$component.resource.reqStatement,title:$component.resource.reqStatement}" /> -->
+				<a href="#" data-bind="click: physicalStatementRequest,attr:{alt:$component.resource.reqStatementText,title:$component.resource.reqStatement,'aria-label':$component.resource.reqStatement}"><span id="req" class="icons icon-view-statement"></span></a>
+			</div>
+			<!-- /ko -->
+
+			<!-- ko if: ($component.baseURL()==='accounts/deposit/') -->
+
+			<div class="oj-flex-item oj-sm-4 center">
+				 
+			</div>
+			<div class="oj-flex-item oj-sm-4 center">
+				<!-- <img id="save" data-bind="loadImage:'account-activity/save.svg',click: saveStatement,attr:{alt:$component.resource.save,title:$component.resource.save}" /> -->
+				<a href="#" data-bind="click: saveStatement,attr:{alt:$component.resource.saveText,title:$component.resource.save,'aria-label':$component.resource.save}"><span id="save" class="icons icon-download"></span></a>
+			</div>
+
+			<div class="oj-flex-item oj-sm-4 center">
+				<!-- <img id="req" data-bind="loadImage:'account-activity/request-physical-statement.svg',click: physicalStatementRequest,attr:{alt:$component.resource.reqStatement,title:$component.resource.reqStatement}" /> -->
+				<a href="#" data-bind="click: physicalStatementRequest,attr:{alt:$component.resource.reqStatementText,title:$component.resource.reqStatement,'aria-label':$component.resource.reqStatement}"><span id="req" class="icons icon-view-statement"></span></a>
+			</div>
+
+
+			<!-- /ko -->
+
+
+			<!-- ko if: ($component.baseURL()==='accounts/loan/') -->
+
+			<div class="oj-flex-item oj-sm-4 center">
+				 
+			</div>
+			<div class="oj-flex-item oj-sm-4 center">
+				 
+			</div>
+
+			<div class="oj-flex-item oj-sm-4 center">
+				<!-- <img id="save" data-bind="loadImage:'account-activity/save.svg',click: saveStatement,attr:{alt:$component.resource.save,title:$component.resource.save}" /> -->
+				<a href="#" data-bind="click: saveStatement,attr:{alt:$component.resource.saveText,title:$component.resource.save,'aria-label':$component.resource.save}"><span id="save" class="icons icon-download"></span></a>
+			</div>
+
+			<!-- /ko -->
+
+		</div>
+
+	</div>
+
+
+
+	<!-- ko if: summaryLoaded -->
+	<div class="oj-flex oj-flex-items-pad grid-sub-header" id="balanceHeader">
+		<div class="oj-lg-6 oj-md-6 oj-flex-item">
+			<span data-bind="text: $component.resource.openingBalance">
+			</span>
+			<span> </span>
+			<span data-bind="text: openingBalance ">
+			</span>
+		</div>
+
+		<div class="oj-lg-6 oj-md-6 oj-flex-item right">
+			<span data-bind="text: $component.resource.closingBalance">
+			</span>
+			<span> </span>
+			<span class="pull-right" data-bind="text: closingBalance">
+			</span>
+		</div>
+	</div>
+	<!-- /ko -->
+
+
+	<div class="oj-flex oj-flex-items-pad grid-table-header">
+		<div data-bind="css : showBalance() ? 'oj-lg-1 oj-md-1 oj-flex-item' : 'oj-lg-1 oj-md-1  oj-flex-item'">
+
+			<span data-bind="text : $component.resource.date">
+
+				</span>
+			<!--
+			<span class="left"><span id="sortButton" class="icon icon-sort-desc"></span></span>
+-->
+
+		</div>
+		<div data-bind="text:$component.resource.description, css : showBalance() ? 'oj-lg-4 oj-md-3 oj-flex-item' : 'oj-lg-6 oj-md-6 oj-flex-item' ">
+		</div>
+		<div data-bind="text: $component.resource.refNo, css : showBalance() ? 'oj-lg-2 oj-md-2  oj-flex-item' : 'oj-lg-2 oj-md-2 oj-flex-item'">
+		</div>
+		<div data-bind="text: $component.resource.Amount, css : showBalance() ? 'oj-lg-3 oj-md-3 oj-flex-item right' : 'oj-lg-3 oj-md-3 oj-flex-item right'">
+		</div>
+		<!-- ko if:showBalance -->
+		<div class="oj-lg-2 oj-md-3 oj-sm-4 oj-flex-item right" data-bind="text: $component.resource.Balance">
+		</div>
+		<!-- /ko -->
+
+
+
+	</div>
+	<!-- ko if:$component.detailsFetched -->
+	<oj-label class="hide-label" :for="[['listview'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.accountInfo"></span></oj-label>
+	<oj-list-view :id="[['listview'+($baseModel.currentIdCount())]]" :page-size="[[10]]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[dataSource]]">
+
+	</oj-list-view>
+
+	<div class="oj-flex-item">
+		<oj-paging-control id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSource]]">
+		</oj-paging-control>
+		<!-- <div data-bind="component: {name: 'virtual-paging', params:{rootModel: $parent, data: $data, limit: 10, dataSource: dataSource, totalRecords:$component.totalRecords(), url:$component.transactionUrl(), convertingFunction:convertingFunction}}"></div> -->
+	</div>
+
+
+	<script type="text/html" id="content_template">
+
+		<li data-bind="attr: {id: key.transactionReferenceNumber + key.subSequenceNumber}">
+
+			<div class="oj-flex oj-flex-items-pad grid-row-group">
+				<div data-bind="css : $component.showBalance() ? 'oj-lg-1 oj-md-1 oj-flex-item' : 'oj-lg-1 oj-md-1 oj-flex-item'">
+					<span data-bind="component:{name: $component.componentName, params:{date: transactionDate }}"></span>
+				</div>
+				<div data-bind="css : $component.showBalance() ? 'oj-lg-4 oj-md-3 oj-flex-item break-word' : 'oj-lg-6 oj-md-6 oj-flex-item break-word' ">
+					<span data-bind="text : $data.description"></span> 
+				</div>
+
+
+
+				<div data-bind="css : $component.showBalance() ? 'oj-lg-2 oj-md-2  oj-flex-item break-word ref-no-text' : 'oj-lg-2 oj-md-2 oj-flex-item break-word ref-no-text'">
+					<span data-id="referenceNum" data-bind="text : $data.key.transactionReferenceNumber"></span>
+				</div>
+
+
+				<div data-bind="css : $component.showBalance() ? 'oj-lg-3 oj-md-3  oj-flex-item right activity-amt' : 'oj-lg-3 oj-md-3  oj-flex-item right activity-amt'">
+
+					<!-- ko if: $data.transactionType -->
+
+					<!-- ko if: transactionType === "D" -->
+					<span class="debit" data-bind="text : $baseModel.formatCurrency(amountInAccountCurrency.amount, amountInAccountCurrency.currency)"></span>
+					<span class="debit" data-bind="text:$component.resource.Dr"></span>
+					<!-- /ko -->
+					<!-- ko if: transactionType === "C" -->
+					<span class="credit" data-bind="text : $baseModel.formatCurrency(amountInAccountCurrency.amount, amountInAccountCurrency.currency)"></span>
+					<span class="credit" data-bind="text:$component.resource.Cr"></span>
+					<!-- /ko -->
+					<!-- /ko -->
+				</div>
+
+
+
+				<!-- ko if: $component.showBalance-->
+
+				<!-- ko if: $data.runningBalance-->
+				<div class="oj-lg-2 oj-md-3 oj-flex-item right bal-amt-text">
+					<span class="" data-bind="text : $baseModel.formatCurrency(runningBalance.amount, runningBalance.currency)"></span>
+				</div>
+				<!-- /ko -->
+				<!-- /ko -->
+
+
+			</div>
+
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
+			</div>
+
+		</li>
+	</script>
+
+	<!-- /ko -->
+	<div class="oj-flex oj-flex-items-pad button-container">
+		<oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]"><span class="icons icon-back-arrow" slot="startIcon"></span><span data-bind="text:$component.resource.back"></span></oj-button>
+	</div>
+</div>

@@ -1,0 +1,647 @@
+<div class=" oj-sm-12 oj-md-12 oj-flex-item text-align-center button-container">
+    <oj-buttonset-one class="action-button-style" id="actionset" on-value-changed="[[handleActionChange]]" value="{{action}}">
+        <!-- ko foreach: actionRadios -->
+        <oj-option name="action" value="{{id}}" :id="[[id]]"><span class="label-color " data-bind="attr: {for: id}, text:label"></span></oj-option>
+        <!-- /ko -->
+    </oj-buttonset-one>
+</div>
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-form">
+        <div class="oj-flex oj-flex-items-pad">
+        </div>
+        <!-- ko if: showAddScreen -->
+        <div class="oj-form">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="propertyIdInputtext" :id="[['serviceIdLabel']]"><span data-bind="text:$component.resource.serviceIdLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="propertyIdInputtext" required :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" value="{{addServiceId}}"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="processInputtext" :id="[['processLabel']]"><span data-bind="text:$component.resource.processLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="processInputtext" required :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" value="{{addProcess}}"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="urlInputtext" :id="[['urlLabel']]"><span data-bind="text:$component.resource.urlLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="urlInputtext" required :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" value="{{addUrl}}"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="nameSpaceInputtext" :id="[['nameSpaceLabel']]"><span data-bind="text:$component.resource.nameSpaceLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="nameSpaceInputtext" :maxlength="[[2000]]" value="{{addNameSpace}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="serviceInputtext" :id="[['serviceLabel']]"><span data-bind="text:$component.resource.serviceLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="serviceInputtext" :maxlength="[[2000]]" value="{{addService}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="stubClassInputtext" :id="[['stubClassLabel']]"><span data-bind="text:$component.resource.stubClassLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="stubClassInputtext" :maxlength="[[2000]]" value="{{addStubClass}}"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="stubServiceInputtext" :id="[['stubServiceLabel']]"><span data-bind="text:$component.resource.stubServiceLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="stubServiceInputtext" :maxlength="[[2000]]" value="{{addStubService}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="proxyClassNameInputtext" :id="[['proxyClassNameLabel']]"><span data-bind="text:$component.resource.proxyClassNameLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="proxyClassNameInputtext" :maxlength="[[2000]]" value="{{addProxyClassName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="endPointNameInputtext" :id="[['endpointNameLabel']]"><span data-bind="text:$component.resource.endpointNameLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="endPointNameInputtext" :maxlength="[[2000]]" value="{{addEndPointName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="endPointUrlInputtext" :id="[['endPointUrlLabel']]"><span data-bind="text:$component.resource.endPointUrlLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="endPointUrlInputtext" :maxlength="[[2000]]" value="{{addEndPointUrl}}"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="timeOutInputtext" :id="[['timeOutLabel']]"><span data-bind="text:$component.resource.timeOutLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="timeOutInputtext" :maxlength="[[40]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" value="{{addTimeOut}}"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="ipInputtext" :id="[['ipLabel']]"><span data-bind="text:$component.resource.ipLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="ipInputtext" :maxlength="[[2000]]" value="{{addIp}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="portInputtext" :id="[['portLabel']]"><span data-bind="text:$component.resource.portLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="portInputtext" :maxlength="[[2000]]" value="{{addPort}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="userInputtext" :id="[['userLabel']]"><span data-bind="text:$component.resource.userLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="userInputtext" :maxlength="[[2000]]" value="{{addUser}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="passwordInputtext" :id="[['passwordLabel']]"><span data-bind="text:$component.resource.passwordLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-password id="passwordInputtext" type="password" :maxlength="[[2000]]" value="{{addPassword}}"></oj-input-password>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="httpBasicAuthConnectorInputtext" :id="[['httpBasicAuthConnectorLabel']]"><span data-bind="text:$component.resource.httpBasicAuthConnectorLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="httpBasicAuthConnectorInputtext" :maxlength="[[2000]]" value="{{addHttpBasicAuthConnector}}"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="httpBasicAuthRealmInputtext" :id="[['httpBasicAuthRealmLabel']]"><span data-bind="text:$component.resource.httpBasicAuthRealmLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="httpBasicAuthRealmInputtext" :maxlength="[[2000]]" value="{{addHttpBasicAuthRealm}}"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="securityPolicyInputtext" :id="[['securityPolicyLabel']]"><span data-bind="text:$component.resource.securityPolicyLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="securityPolicyInputtext" :maxlength="[[2000]]" value="{{addSecurityPolicy}}"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="anonymousSecurityPolicyInputtext" :id="[['anonymousSecurityPolicyLabel']]"><span data-bind="text:$component.resource.anonymousSecurityPolicyLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="anonymousSecurityPolicyInputtext" :maxlength="[[2000]]" value="{{addAnonymousSecurityPolicy}}"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-3">
+                    <span>
+                     <oj-label for="anonymousSecurityKeyNameInputtext" :id="[['anonymousSecurityKeyNameLabel']]"><span data-bind="text:$component.resource.anonymousSecurityKeyNameLabel"></span></oj-label>
+                    </span>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                    <span>
+                     <oj-input-text id="anonymousSecurityKeyNameInputtext" :maxlength="[[2000]]" value="{{addAnonymousSecurityKeyName}}"></oj-input-text>
+                     </span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad  row_padding button-container">
+                <div class="oj-flex-item oj-sm-6 oj-md-1">
+                    <oj-button class="form-button-secondary" type="submit" :id="[['add']]" on-click="[[addProperty]]">
+                        <span data-bind="text:$component.resource.addLabel"></span>
+                    </oj-button>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</page-section>
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-sm-12 oj-md-4 oj-lg-4 oj-flex-item placeholder_border">
+            <oj-input-text id="filterInput" class="oj-inputtext-nocomp" value="{{configValue}}" placeholder="{{$component.resource.filterPlaceholder}}" data-bind="attr:{ valueUpdate:'afterkeydown'" onkeydown="if (event.keyCode===13) document.getElementById('filterButton').click()" onkeyup="if (event.keyCode===27) document.getElementById('resetButton').click()">
+            </oj-input-text>
+        </div>
+        <div class="oj-sm-6 oj-md-1 oj-md-offset-1 oj-flex-item">
+            <oj-button class="form-button-secondary" id="filterButton" type="submit" on-click="[[filterData]]">
+                <span data-bind="text:$component.resource.filterButton"></span>
+            </oj-button>
+        </div>
+        <div class="oj-sm-6 oj-md-1 oj-md-offset-1 oj-flex-item">
+            <oj-button class="form-button-secondary" id="resetButton" type="submit" on-click="[[resetData]]">
+                <span data-bind="text:$component.resource.resetButton"></span>
+            </oj-button>
+        </div>
+        <div class="oj-sm-12 oj-md-only-hide oj-flex-item">
+            <hr>
+        </div>
+    </div>
+</page-section>
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="oj-form">
+        <div id="searchLoading" data-bind="visible:isLoading"><span data-bind="text: $component.resource.searching"></span></div>
+        <!-- ko if:dataRefreshed() -->
+        <!-- ko if: properties()().length > 0 -->
+        <div class="oj-flex oj-flex-items-pad oj-sm-only-hide property-header-row">
+            <div class="oj-md-5 oj-lg-5 oj-flex-item property-header" data-bind="text: $component.resource.propIdLabel"></div>
+            <div class="oj-md-only-hide oj-lg-1 oj-flex-item property-header"></div>
+        </div>
+        <!-- ko foreach: properties() -->
+        <div class="oj-flex oj-flex-items-pad property-header-sm">
+            <div class="oj-sm-12 oj-md-10 oj-lg-11 oj-flex-item wrap">
+                <span class="oj-md-hide property-label-sm" data-bind="text: $component.resource.propIdLabel"></span>
+                <span class="property-text-sm" data-bind="text : $baseModel.format($component.resource.webServiceTitle,{serviceId:serviceId,process:process})"></span>
+            </div>
+            <div class="oj-sm-12 oj-md-1 oj-lg-1 oj-flex-item detailButton">
+                <!-- ko if: $data.showPropflag  -->
+                <span>
+                     <a href="javascript:void(0)" class="icon icon-arrow-down section-icon collapse-icon" data-bind="click: $parent.hideProp, attr:{alt: $component.resource.hidePropAlt, title: $component.resource.hidePropTitle}"></a>
+                   </span>
+                <!-- /ko -->
+                <!-- ko ifnot: $data.showPropflag  -->
+                <span>
+                     <a href="javascript:void(0)" class="icon icon-arrow-right section-icon collapse-icon" data-bind="click: $parent.showProp,attr:{alt: $component.resource.showPropAlt, title: $component.resource.showPropTitle}"></a>
+                   </span>
+                <!-- /ko -->
+            </div>
+        </div>
+        <!-- ko if: $data.showPropflag  -->
+        <div class="oj-form">
+            <!-- ko if: !($data.enableReset()) -->
+            <div class="">
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-12">
+                        <div id="ackPopup">
+                            <oj-popup id="ackPopup">
+                            </oj-popup>
+                            <oj-label :id="[['ackLabel']]"><span data-bind="text:$component.ackMsg"></span></oj-label>
+                        </div>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span class="required">
+            <oj-label :id="[['serviceIdLabel'+$index()]]" :for="[['serviceIdInputtext'+$index()]]"><span data-bind="text:$component.resource.serviceIdLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text required :id="[['serviceIdInputtext'+$index()]]" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[true]]" value="{{serviceId}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span class="required">
+                     <oj-label :id="[['processLabel'+$index()]]" :for="[['processInputtext'+$index()]]"><span data-bind="text:$component.resource.processLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text required :id="[['processInputtext'+$index()]]" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[true]]" value="{{process}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span class="required">
+                     <oj-label :id="[['urlLabel'+$index()]]" :for="[['urlLabelInputtext'+$index()]]"><span data-bind="text:$component.resource.urlLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text required :id="[['urlLabelInputtext'+$index()]]" :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" disabled="[[!isActive()]]" value="{{url}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['nameSpaceLabel'+$index()]]" :for="[['nameSpaceLabelInputtext'+$index()]]"><span data-bind="text:$component.resource.nameSpaceLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['nameSpaceLabelInputtext'+$index()]]" :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" disabled="[[!isActive()]]" value="{{nameSpace}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['serviceLabel'+$index()]]" :for="[['serviceLabelInputtext'+$index()]]"><span data-bind="text:$component.resource.serviceLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['serviceLabelInputtext'+$index()]]" :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" disabled="[[!isActive()]]" value="{{service}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['stubClassLabel'+$index()]]" :for="[['stubClassInputtext'+$index()]]"><span data-bind="text:$component.resource.stubClassLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['stubClassInputtext'+$index()]]" :maxlength="[[2000]]" disabled="[[!isActive()]]" value="{{stubClass}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['stubServiceLabel'+$index()]]" :for="[['stubServiceInputtext'+$index()]]"><span data-bind="text:$component.resource.stubServiceLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['stubServiceInputtext'+$index()]]" :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" disabled="[[!isActive()]]" value="{{stubService}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['proxyClassNameLabel'+$index()]]" :for="[['proxyClassNameInputtext'+$index()]]"><span data-bind="text:$component.resource.proxyClassNameLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['proxyClassNameInputtext'+$index()]]" :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" disabled="[[!isActive()]]" value="{{proxyClassName}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['endpointNameLabel'+$index()]]" :for="[['endpointNameInputtext'+$index()]]"><span data-bind="text:$component.resource.endpointNameLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['endpointNameInputtext'+$index()]]" :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" disabled="[[!isActive()]]" value="{{endpointName}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['endPointUrlLabel'+$index()]]" :for="[['endPointUrlInputtext'+$index()]]"><span data-bind="text:$component.resource.endPointUrlLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['endPointUrlInputtext'+$index()]]" :maxlength="[[2000]]" disabled="[[!isActive()]]" value="{{endPointUrl}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['timeOutLabel'+$index()]]" :for="[['timeOutInputtext'+$index()]]"><span data-bind="text:$component.resource.timeOutLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['timeOutInputtext'+$index()]]" :maxlength="[[40]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" disabled="[[!isActive()]]" value="{{timeOut}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['ipLabel'+$index()]]" :for="[['ipInputtext'+$index()]]"><span data-bind="text:$component.resource.ipLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['ipInputtext'+$index()]]" :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" disabled="[[!isActive()]]" value="{{ip}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['portLabel'+$index()]]" :for="[['portInputtext'+$index()]]"><span data-bind="text:$component.resource.portLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['portInputtext'+$index()]]" :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" disabled="[[!isActive()]]" value="{{port}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['userLabel'+$index()]]" :for="[['userInputtext'+$index()]]"><span data-bind="text:$component.resource.userLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['userInputtext'+$index()]]" :maxlength="[[2000]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL')]]" disabled="[[!isActive()]]" value="{{user}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['passwordLabel'+$index()]]" :for="[['passwordInputtext'+$index()]]"><span data-bind="text:$component.resource.passwordLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-password type="password" :id="[['passwordInputtext'+$index()]]" :maxlength="[[2000]]" disabled="[[!isActive()]]" value="{{password}}"></oj-input-password>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['httpBasicAuthConnectorLabel'+$index()]]" :for="[['httpBasicAuthConnectorInputtext'+$index()]]"><span data-bind="text:$component.resource.httpBasicAuthConnectorLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['httpBasicAuthConnectorInputtext'+$index()]]" :maxlength="[[2000]]" disabled="[[!isActive()]]" value="{{httpBasicAuthConnector}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['httpBasicAuthRealmLabel'+$index()]]" :for="[['httpBasicAuthRealmInputtext'+$index()]]"><span data-bind="text:$component.resource.httpBasicAuthRealmLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['httpBasicAuthRealmInputtext'+$index()]]" :maxlength="[[2000]]" disabled="[[!isActive()]]" value="{{httpBasicAuthRealm}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['securityPolicyLabel'+$index()]]" :for="[['securityPolicyInputtext'+$index()]]"><span data-bind="text:$component.resource.securityPolicyLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['securityPolicyInputtext'+$index()]]" :maxlength="[[2000]]" disabled="[[!isActive()]]" value="{{securityPolicy}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['anonymousSecurityPolicyLabel'+$index()]]" :for="[['anonymousSecurityPolicyInputtext'+$index()]]"><span data-bind="text:$component.resource.anonymousSecurityPolicyLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['anonymousSecurityPolicyInputtext'+$index()]]" :maxlength="[[2000]]" disabled="[[!isActive()]]" value="{{anonymousSecurityPolicy}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex-item oj-sm-12 oj-md-3">
+                        <span>
+                     <oj-label :id="[['anonymousSecurityKeyNameLabel'+$index()]]" :for="[['anonymousSecurityKeyNameInputtext'+$index()]]"><span data-bind="text:$component.resource.anonymousSecurityKeyNameLabel"></span></oj-label>
+                        </span>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-md-offset-2">
+                        <span>
+                     <oj-input-text :id="[['anonymousSecurityKeyNameInputtext'+$index()]]" :maxlength="[[2000]]" disabled="[[!isActive()]]" value="{{anonymousSecurityKeyName}}"></oj-input-text>
+                     </span>
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad" data-bind="if: showEditRow()">
+            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-md-offset-3">
+                <oj-button class="form-button-secondary" type="submit" :id="[['edit'+$index()]]" on-click="[[$component.editProperty]]">
+                    <span data-bind="text:$component.resource.editLabel"></span>
+                </oj-button>
+            </div>
+            <div class="oj-flex-item oj-md-1">
+                <div class="oj-flex-item oj-sm-12 oj-md-1 oj-md-offset-1">
+                    <oj-button class="form-button-secondary" type="submit" :id="[['delete'+$index()]]" on-click="[[$component.deleteConfirm]]">
+                        <span data-bind="text:$component.resource.deleteLabel"></span>
+                    </oj-button>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad" data-bind="if: showUpdateRow()">
+                <div class="oj-flex-item oj-sm-12 oj-md-2 oj-md-offset-3">
+                    <oj-button class="form-button-secondary" type="submit" :id="[['update'+$index()]]" on-click="[[$component.updateProperty]]">
+                        <span data-bind="text:$component.resource.updateLabel"></span>
+                    </oj-button>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-1">
+                    <oj-button class="form-button-secondary" type="submit" :id="[['cancel'+$index()]]" on-click="[[$component.cancel]]">
+                        <span data-bind="text:$component.resource.cancelLabel"></span>
+                    </oj-button>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-1 reset-button-left-margin">
+                    <oj-button class="form-button-secondary" type="submit" :id="[['reset'+$index()]]" on-click="[[$component.reset]]">
+                        <span data-bind="text:$component.resource.resetLabel"></span>
+                    </oj-button>
+                </div>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad">
+                <hr>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: properties()().length === 0 -->
+            <div class="oj-flex oj-flex-items-pad">
+                <span class="oj-sm-12 property-label-sm" data-bind="text:noRecFound()"></span>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: dataFiltered -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-sm-12 oj-md-4 oj-flex-item">
+                    <oj-button class="form-button-secondary" id="action-button-back" type="submit" on-click="[[showConfigScreen]]">
+                        <span data-bind="text:$component.resource.backLabel"></span>
+                    </oj-button>
+                </div>
+                <div class="oj-sm-12 oj-md-8 oj-flex-item">
+                    <oj-paging-control class="floatRight" id="paging" slot="bottom" :page-size="[[10]]" data="[[$parent.dataSource]]">
+                    </oj-paging-control>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div id="dialogWrapperDelete">
+            <oj-dialog id="deleteConfirm" title="$component.resource.confirm">
+                <div slot="body" data-bind="text: $component.resource.errorDialogLabel">
+                </div>
+                <div slot="footer">
+                    <oj-button class="form-button-secondary" id="okButtonDelete" type="submit" on-click="[[deleteConfirm]]">
+                        <span data-bind="text:$component.resource.ok"></span></oj-button>
+                </div>
+            </oj-dialog>
+        </div>
+        <div id="dialogWrapperConfirm">
+            <oj-dialog id="confirmDialog" title="$component.resource.confirmation">
+                <div slot="body" data-bind="text: $component.resource.errorDialogLabel">
+                </div>
+                <div slot="footer">
+                    <oj-button class="form-button-secondary" id="okButtonDelete" type="submit" on-click="[[confirmClick]]">
+                        <span data-bind="text:$component.resource.ok"></span></oj-button>
+                </div>
+            </oj-dialog>
+        </div>
+    </div>
+</page-section>

@@ -1,0 +1,99 @@
+<div class="form-main-container">
+  <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <div class="main-train">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+        <oj-train id="train" class="oj-train-stretch" on-oj-before-select="[[$component.trainHandler]]" selected-step="{{selectedStepValue}}" steps="[[stepArray]]">
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+          <div data-bind="component:{name: $component.selectedStepValue(), params:{rootModel: $component}}"></div>
+        </div>
+      </div>
+    </div>
+    <oj-validation-group id="tracker" valid="{{validationTracker}}">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+          <oj-label for="appRoleName"><span data-bind="text:$component.nls.common.appRoleName"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-5">
+          <oj-input-text id="appRoleName" maxlength="40" value="{{appRoleName}}" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.nls.approle.validName,{
+             type:'length',options:{
+                 min:1,max:40}})]]"></oj-input-text>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+          <oj-label for="appDescription"><span data-bind="text:$component.nls.common.desc"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-5">
+          <oj-input-text id="appDescription" maxlength="200" value="{{appDescription}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SOME_SPECIAL',$component.nls.approle.validDesc,{
+             type:'length',options:{
+                 min:1,max:200}})]]"></oj-input-text>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+          <oj-label for="userSegment"><span data-bind="text:$component.nls.common.userSegment"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-3">
+          <!-- ko if: $component.isUserFetched() -->
+          <oj-select-one id="userSegment" value="{{selectedUser}}" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" placeholder="{{nls.headings.select}}">
+            <!-- ko foreach: $component.userSegment() -->
+            <oj-option value="[[value]]"><span data-bind="text: text"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+          <!-- /ko -->
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+          <oj-label for="accessType"><span data-bind="text:$component.nls.common.accessType"></span></oj-label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-3">
+          <!-- ko if: $component.isAccessTypeFetched() -->
+          <oj-select-one id="accessType" value="{{selectedAccessType}}" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" placeholder="{{nls.headings.select}}">
+            <!-- ko foreach: $component.accessPointType() -->
+            <oj-option value="[[value]]"><span data-bind="text: text"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+          <!-- /ko -->
+        </div>
+      </div>
+
+      <!-- ko if: $component.selectedAccessType() == "EXT" -->
+      <!-- ko if: $component.isScopeFetched() -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 label">
+          <oj-label for="scopeName"><span data-bind="text:$component.nls.common.scopeName"></span></oj-label>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-3">
+
+          <oj-select-one id="scopeName" value="{{selectedScopeType}}" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" placeholder="{{nls.headings.select}}">
+            <!-- ko foreach: $component.scopes -->
+            <oj-option value="[[value]]"><span data-bind="text: text"></span>
+            </oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </oj-validation-group>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.mapTrans]]">
+        <span data-bind="text:$component.nls.common.mapTransaction"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <span data-bind="text:$component.nls.generic.common.cancel"></span>
+      </oj-button>
+      <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+        <span data-bind="text:$component.nls.generic.common.back"></span>
+      </oj-button>
+    </div>
+  </page-section>
+</div>

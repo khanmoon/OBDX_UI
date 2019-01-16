@@ -1,0 +1,146 @@
+<div class="form-main-container ">
+  <div class=" ">
+    <div class="page-container">
+
+      <div data-bind="template:{name:'origination/requirements/' +$component.requirementsPartial()}"></div>
+
+      <div class="requirements" data-bind="with:productDetails().requirements">
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-1 oj-md-offset-1">
+            <oj-label class="oj-label" for="co-applicant"><span data-bind="text:$component.resource.coApplicant"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4  oj-lg-3 label">
+            <oj-buttonset-one id="noOfCoApplicants" required :aria-label="[[$component.resource.coApplicant]]"
+              on-value-changed="[[$component.coapplicantsSelected]]" value="{{noOfCoApplicants}}" disabled="[[$component.disableCoAppPartyId()]]">
+              <oj-option name="applicationTypes" class="applicationTypes" value="{{'1'}}" :id="[['coAppYes']]"><span
+                  :for="[['coAppYes']]" data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+              <oj-option name="applicationTypes" class="applicationTypes" value="{{'0'}}" :id="[['coAppNo']]"><span
+                  :for="[['coAppNo']]" data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+            </oj-buttonset-one>
+          </div>
+        </div>
+        <!-- ko if:$component.coApplicantExists() -->
+        <div class="oj-flex oj-flex-items-pad ">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-1 oj-md-offset-1">
+            <oj-label class="oj-label" for="co-applicantExistingUser"><span data-bind="text:$component.resource.isExistingUser"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4  oj-lg-3 label">
+            <oj-buttonset-one id="co-applicantExistingUser" required :aria-label="[[$component.resource.isExistingUser]]"
+              on-value-changed="[[$component.coApplicantLogin]]" value="{{$component.coApplicantExistingUser}}"
+              disabled="[[$component.disableCoAppPartyId()]]">
+              <oj-option name="ExistingApplicant" class="ExistingApplicant" value="{{'OPTION_YES'}}" :id="[['coAppUserYes']]"><span
+                  :for="[['coAppUserYes']]" data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+              <oj-option name="ExistingApplicant" class="ExistingApplicant" value="{{'OPTION_NO'}}" :id="[['coAppUserNo']]"><span
+                  :for="[['coAppUserNo']]" data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+            </oj-buttonset-one>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.loginNeeded() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-1 oj-md-offset-1">
+            <oj-label :for="[['userIdOfCoApplicant'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.userIdOfCoApplicant"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+            <oj-input-text oncopy="return false" autocomplete="off" ondragstart="return false" onselectstart="return false"
+              onpaste="return false" onmousedrop="return false" required maxlength="100" :id="[['userIdOfCoApplicant'+($baseModel.currentIdCount())]]"
+              translations="[[{'required':{messageDetail:$component.resource.messages.coappId}}]]"
+              :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[$component.disableCoAppPartyId()]]"
+              value="{{$component.userId}}"></oj-input-text>
+          </div>
+          <!-- ko if:$component.isTokenValid() -->
+          <div class="oj-flex-item oj-sm-3 oj-md-1 oj-lg-1">
+            <div class="success-icon"><img data-bind="loadImage:'origination/app-tracker/tick.png'"></div>
+          </div>
+          <!-- /ko -->
+        </div>
+        <!-- ko ifnot:$component.isTokenValid() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-10 oj-lg-10 oj-lg-offset-1 oj-md-offset-1">
+            <oj-label class="oj-label" for="co-applicantExistingUser"><span data-bind="text:$component.resource.verifyCoApp"></span></oj-label>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:$component.isTokenValid() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-1 oj-md-offset-1">
+            <oj-label id="modeOfPreferenceId" :for="[['modeOfPreference']]"><span data-bind="text:$component.resource.modeOfPreference"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-5 no-pad-cols">
+            <div class="oj-option-row">
+              <oj-checkboxset id="modeOfPreference" class="" aria-labelledby="modeOfPreferenceId" translations="[[{'required':{messageDetail:$component.resource.messages.modeOfPreference}}]]"
+                required="[[true]]" value="{{$component.preferenceMode}}">
+                <oj-option value="email" id="emailId"><span for="emailId" data-bind="text: $component.resource.email"></span></oj-option>
+                <oj-option value="sms" id="smsId"><span for="smsId" data-bind="text: $component.resource.sms"> </span></oj-option>
+              </oj-checkboxset>
+            </div>
+          </div>
+        </div>
+        <!-- ko ifnot:$component.isTokenValid() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-4 oj-md-offset-5">
+            <oj-button raised="" id="verify" class="form-button-secondary" on-click="[[$component.verifyEmail]]"
+              disabled="[[$component.disableVerifyButton()]]">
+              <span data-bind="text:$component.resource.verify"></span>
+            </oj-button>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko foreach: $component.coApplicantsRelation -->
+        <div class="oj-flex oj-flex-items-pad hide">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-1 oj-md-offset-1">
+            <div class="oj-label">
+              <oj-label :for="[['coApplicantRelation-'+($index()+1)]]">
+                <span data-bind="text:$component.resource.relation"></span></oj-label>
+            </div>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-select-one :id="[['coApplicantRelation-'+($index()+1)]]" :placeholder="" on-value-changed="[[$component.changeCoApplicantRelation]]"
+              value="{{$component.coApplicantsRelation()[$index()]}}">
+              <!-- ko foreach: $component.relations() -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row-group">
+
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <oj-button id="apply" class="action-button-primary first-2" raised="" on-click="[[$component.submitRequirements]]"
+      disabled="[[$component.disableRequirementContinue()||($component.loginNeeded()&&!$component.disableCoAppPartyId())]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+    <oj-button raised="" id="cancel" class="action-button-secondary last-2" on-click="[[$component.exitApplication]]">
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+    </oj-button>
+  </div>
+
+
+</div>
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+  <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'EXITAPPLICATION', header: $component.resource.generic.common.info">
+    <div class="message-text scroll" data-bind="text:$component.resource.generic.common.exit"></div>
+    <div class="message-btn button-container">
+
+      <oj-button id="saveButton" class="action-button-primary" on-click="[[function(){$baseModel.registerComponent('product-home','widgets/pre-login');$dashboard.switchModule('home',true);}]]">
+        <span data-bind="text:$component.resource.generic.common.yes"></span>
+      </oj-button>
+      <oj-button id="hideButton" class="action-button-secondary" on-click="[[function(){$('#EXITAPPLICATION').trigger('closeModal')}]]">
+        <span data-bind="text:$component.resource.generic.common.no"></span>
+      </oj-button>
+
+    </div>
+  </modal-window>
+</div>
+<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'otpGeneration', header: $component.resource.generic.common.info">
+  <div class="" data-bind="component:{name:'otp-verification',params:{rootModel:$component,baseUrl:$component.baseUrl(),callback:verifyEmail,
+                                                  callbackFailure:function(){$('#otpGeneration').trigger('closeModal');},
+                                                  cancelCallback:function(){$('#otpGeneration').trigger('closeModal');}}}"></div>
+</modal-window>

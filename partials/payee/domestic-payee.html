@@ -1,0 +1,75 @@
+<div data-bind="template: { name: 'payee/account-info' }"></div>
+<!-- Lookup code -->
+<div class="oj-flex oj-flex-items-pad">
+
+    <!-- ko if: $component.AdhocFlag() && $component.region() === "INDIA" -->
+    <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 ">
+        <oj-label class="oj-flex-item oj-lg-12">
+            <span id="payvia" data-bind="text:$component.payments.payee.domestic.payvia"></span>
+        </oj-label>
+    </div>
+        <!-- ko if:isNetworkTypesLoaded() -->
+        <div class="oj-flex-item oj-sm-12 ">
+              <oj-radioset id="payvia" aria-labelledby="payvia" required class="oj-choice-direction-row" value="{{$component.network}}" on-value-changed="[[$component.networkTypeChanged]]">
+                <!-- ko foreach:domesticNetworkTypes -->
+                <oj-option name="rbb" value="{{value}}" :id="[[value]]">
+                  <span data-bind="text:$component.payments.payee.domestic.india[text],attr: {for: value}"></span>
+                </oj-option>
+                <!-- /ko -->
+              </oj-radioset>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <div class="oj-flex-item oj-sm-12 ">
+        <oj-label for="domSwiftCode"><span data-bind="text:$parent.payments.payee.domestic.india.ifsc"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 ">
+        <!-- ko ifnot:$component.additionalBankDetails() -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-6">
+                <oj-validation-group id="verify-code-tracker" valid="{{groupValid}}">
+                    <oj-input-text id="domSwiftCode" required validators="[[validateCode]]" value="{{$component.bankDetailsCode}}"></oj-input-text>
+                </oj-validation-group>
+            </div>
+            <div class="oj-flex-item oj-sm-6">
+                <oj-button data-id="verify" class="form-button-secondary " on-click="[[verifyCode]]">
+                    <span slot="startIcon" class="icons icon-verify"></span>
+                    <span data-bind="text:$parent.payments.common.verify"></span>
+                </oj-button>
+            </div>
+            <div class="oj-flex-item">
+                <a data-id="lookupifsccode" href="#" class="form-button-link" data-bind="attr:{'alt':$parent.payments.payee.domestic.india.lookupifsccodeTitle,'title':$parent.payments.payee.domestic.india.lookupifsccode},text:$parent.payments.payee.domestic.india.lookupifsccode,
+                  click:openLookup"></a>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.additionalBankDetails() -->
+        <div class="oj-flex oj-flex-items-pad" data-bind="with:$component.additionalBankDetails">
+            <div class="oj-flex-item">
+                <div data-bind="text:$component.bankDetailsCode()"></div>
+                <div data-bind="text:name"></div>
+                <div data-bind="text:branchAddress.line1"></div>
+                <div data-bind="text:branchAddress.city"></div>
+                <div data-bind="text:branchAddress.country"></div>
+                <div class="">
+                    <oj-button class="form-button-secondary" id="resetbutton" on-click="[[$component.resetCode]]">
+                        <span data-bind="text:$parent.payments.common.reset"></span>
+                    </oj-button>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>
+<!-- ko if:refreshLookup() -->
+<div data-bind="component: {name: 'bank-look-up', params:{rootModel: $component,
+                    clearingCodeType:$component.network,
+                    accountType:'Domestic',
+                    region:$component.region(),
+                    networkCode:$component.bankDetailsCode,
+                    additionalBankDetails:$component.additionalBankDetails}}">
+</div>
+<!-- /ko -->

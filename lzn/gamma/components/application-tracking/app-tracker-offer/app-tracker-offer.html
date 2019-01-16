@@ -1,0 +1,131 @@
+<!-- ko if:dataLoaded() -->
+<div class="upl-offer-container">
+	<!-- ko if:$component.applicationInfo().currentApplicationStatus() === 'APPROVED' || $component.applicationInfo().currentApplicationStatus() === 'REJECTED' -->
+	<div class="status-history-card">
+		<div class="oj-flex oj-flex-items-pad padding-left">
+			<div class="oj-flex-item view-item-text oj-lg-8 oj-md-8">
+				<oj-label class="offer-document-class"><span data-bind="text:$component.resource.decisionLetter"></span></oj-label>
+
+			</div>
+			<div class="oj-flex-item view-item-text oj-lg-3 oj-md-3">
+				<a href="javascript:void(0)" data-bind="click : function(){$component.downloadDocument($component.applicationInfo().currentApplicationId());}" target="_blank ,attr:{alt: $component.resource.offerContainerClick, title: $component.resource.offerContainerClick}">
+					<span class="icon-file-pdf section-icon download-icon pull-right"></span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<!-- /ko -->
+	<!-- ko if:$component.applicationInfo().currentApplicationStatus() === 'APPROVED' && ($component.applicationInfo().currentSubmissionStatus() === 'VERIFYING' || $component.applicationInfo().currentSubmissionStatus() === 'FUNDED') -->
+	<div class="">
+		<div class="status-history-card">
+			<div class="oj-flex oj-flex-items-pad padding-left">
+				<div class="oj-flex-item view-item-text">
+					<oj-label><span data-bind="text:$component.resource.alreadyAccepted"></span></oj-label>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /ko -->
+	<!-- ko if:$component.applicationInfo().currentApplicationStatus() === 'REJECTED'  && $component.applicationInfo().currentSubmissionStatus() === 'UNDEFINED' -->
+	<div class="">
+		<div class="status-history-card">
+			<div class="oj-flex oj-flex-items-pad padding-left">
+				<div class="oj-flex-item view-item-text">
+					<oj-label><span data-bind="text:$component.resource.alreadyRejected"></span></oj-label>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /ko -->
+	<!-- ko if:$component.applicationInfo().currentApplicationStatus() === 'APPROVED' && ($component.applicationInfo().currentSubmissionStatus() === 'AUTO_APPROVED' || $component.applicationInfo().currentSubmissionStatus() === 'UNDEFINED') -->
+	<div class="status-history-card">
+		<div class="oj-flex oj-flex-items-pad padding-left">
+			<div class="oj-flex-item view-item-text">
+				<oj-label><span data-bind="text:$component.resource.offerAccept"></span></oj-label>
+			</div>
+		</div>
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-10">
+				<div class="oj-option-row">
+					<oj-checkboxset id="offerAcceptance" class="" aria-labelledby="offerAcceptanceId" value="{{$component.agreement}}">
+						<oj-option value="tnc1Checked" id="tnc1"><span for="tnc1" data-bind="text:$baseModel.format($component.resource.tnc3, {firstName: $component.applicationInfo().remarks()})"></span></oj-option>
+					</oj-checkboxset>
+				</div>
+			</div>
+		</div>
+		<div class="oj-flex oj-flex-items-pad button-container">
+			<div class="oj-flex-item right oj-lg-10 oj-md-10">
+				<oj-button class="form-button-primary" on-click="[[function(){acceptOffer()}]]">
+					<span data-bind="text:$component.resource.generic.common.yes"></span>
+				</oj-button>
+				<oj-button class="form-button-secondary" on-click="[[function(){rejectOffer()}]]">
+					<span data-bind="text:$component.resource.generic.common.no"></span>
+				</oj-button>
+			</div>
+		</div>
+	</div>
+	<!-- /ko -->
+
+	<!-- ko if: $component.applicationInfo().currentApplicationStatus() !== 'APPROVED' && $component.applicationInfo().currentApplicationStatus() !== 'REJECTED' -->
+	<div class="">
+		<div class="status-history-card">
+			<div class="oj-flex oj-flex-items-pad padding-left">
+				<div class="oj-flex-item view-item-text">
+					<oj-label><span data-bind="text:$component.resource.noOffer"></span></oj-label>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /ko -->
+
+</div>
+<!-- /ko -->
+
+
+
+
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+	<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'ACCEPTOFFER', header: $component.resource.generic.common.info">
+		<div class="message-text scroll" data-bind="text:$component.resource.acceptSuccess"></div>
+		<div class="message-btn button-container">
+			<oj-button id="hideButton" class="form-button-primary" on-click="[[function(){$baseModel.switchPage({homeComponent:{module:'application-tracking',component:'application-tracking-base', query: {context:'index'}}},true, true);}]]">
+				<span data-bind="text:$component.resource.ok"></span>
+			</oj-button>
+		</div>
+	</modal-window>
+</div>
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+	<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'ERROR', header: $component.resource.generic.common.error">
+		<div class="message-text scroll" data-bind="text:$component.resource.errorContacting"></div>
+		<div class="message-btn button-container">
+			<oj-button id="hideButton" class="oj-button form-button-primary" on-click="[[function(){$('#ERROR').trigger('closeModal')}]]">
+				<span data-bind="text:$component.resource.ok"></span>
+			</oj-button>
+		</div>
+	</modal-window>
+</div>
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+	<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'REJECTOFFER', header: $component.resource.generic.common.info">
+		<div class="message-text scroll" data-bind="text:$component.resource.rejectSuccess"></div>
+		<div class="message-btn button-container">
+			<oj-button id="hideButton" class="oj-button form-button-primary" on-click="[[function(){$baseModel.switchPage({homeComponent:{module:'application-tracking',component:'application-tracking-base', query: {context:'index'}}},true, true);}]]">
+				<span data-bind="text:$component.resource.ok"></span>
+			</oj-button>
+		</div>
+	</modal-window>
+</div>
+<div class="oj-flex oj-flex-items-pad popUpWindow">
+	<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+		<modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'customPopupforDuplicateOffer', header: $component.resource.generic.common.error">
+			<div class="message-text scroll" data-bind="text:$component.tempMessageOffer()"></div>
+			<div class="message-btn button-container">
+				<oj-button id="customPopupforDuplicateOfferButton" class="toUpperCase form-button-primary" on-click="[[$component.redirectHomeOffer]]">
+					<span data-bind="text:$component.resource.ok"></span>
+				</oj-button>
+			</div>
+		</modal-window>
+	</div>
+</div>

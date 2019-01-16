@@ -1,0 +1,168 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between biller-category">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-9">
+        <oj-validation-group id="tracker" valid="{{groupValid}}">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+        <div class="grid-main-container table-data">
+            <div class="oj-flex oj-flex-items-pad grid-row-group">
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 border_bottom">
+                    <h5 class="heading" data-bind="text : $component.resourceBundle.labels.billerIcon"></h5>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 border_bottom">
+                    <h5 class="heading" data-bind="text : $component.resourceBundle.labels.billerCategory"></h5>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 border_bottom justify-center">
+                    <h5 class="heading" data-bind="text : $component.resourceBundle.labels.mappedBiller"></h5>
+                </div>
+                <div class="oj-flex-item oj-lg-1 border_bottom"></div>
+                <div class="oj-flex-item oj-lg-1 border_bottom"></div>
+                <div class="oj-flex-item oj-lg-1 border_bottom"></div>
+            </div>
+            <!-- ko if: dataSourceCreated() -->
+            <!-- ko if: $component.billerCategoryArray().length === 0 -->
+                <div class="oj-flex oj-flex-items-pad add-link" data-bind="text: $component.resourceBundle.labels.noData"></div>
+            <!-- /ko -->
+            <!-- ko if: $component.billerCategoryArray().length > 0 -->
+            <div id="scrollableDiv" class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 scroll-list">
+                <oj-list-view id="listview" data-bind="attr:{'aria-label' : $component.resourceBundle.labels.templateName}" data="[[categoryDataSource]]" item.renderer="[[renderer]]" dnd.reorder.items="[[reorderEnable]]" on-oj-reorder="[[handleReorder]]" scroll-policy="loadMoreOnScroll" scroll-policy-options.fetch-size="5">
+                </oj-list-view>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+              
+            <div class="add-link">
+                <a href="javascript:void(0)" data-bind="attr:{id: 'addLink', alt:$component.resourceBundle.labels.addCategory,title:$component.resourceBundle.labels.billerCategory}, text: $component.resourceBundle.labels.addCategory, click:$component.addNewRow"></a>
+            </div>
+        </div>
+        </page-section>
+        </oj-validation-group>
+        <div class="button-container">
+            <!-- ko if: priorityUpdated() -->
+            <oj-button id="cancel" class="action-button-primary" on-click="[[updatePriority]]">
+            <span data-bind="text:$component.resourceBundle.labels.update"></span>
+            </oj-button>
+            <!-- /ko -->
+            <oj-button id="cancel" class="action-button-tertiary" on-click="[[back]]">
+            <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+            </oj-button>
+        </div>
+    </div>
+
+    <div class="oj-sm-12 oj-md-12 oj-lg-3 oj-sm-only-hide oj-md-only-hide pull-right help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'biller-manage-category'"></help>
+    </div>
+ </div>
+    <script type="text/html" id="category_icons">
+    <li data-bind="attr: {id:categoryId()}">
+        <!-- ko if:mode() === "CREATE" || mode() === "EDIT" -->
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-label class="hide-label" :for="[['category'+$baseModel.incrementIdCount()]]">
+            <span data-bind="text:$component.resourceBundle.labels.billerLogo"></span></oj-label>
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+                <image-upload params="baseModel : $baseModel, rootModel:$component,
+                      label: $component.resourceBundle.labels.billerIcon,
+                      preview:$component.preview,
+                      imageId:$component.imageId1,
+                      fileId:$component.fileId1,
+                      imageUploaded : !$component.isImageExist(),
+                      file:$component.file,
+                      template:$component.template">
+                </image-upload>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+                <oj-input-text :id="[['category'+$baseModel.currentIdCount()]]" value="{{billerCategoryName}}" placeholder="{{$component.resourceBundle.labels.enterName}}" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidCategory,{
+                               type: 'length',
+                               options: {
+                                   min: 1,
+                                   max: 20}})]]" required>
+                </oj-input-text>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 justify-center">
+                <span data-bind="text :mappedBillers"></span>
+            </div>
+            <div class="oj-flex-item oj-lg-1">
+                <a href="javascript:void(0)" data-bind="attr: {id: 'save_'+categoryId(), alt:$component.resourceBundle.generic.common.save,title:$component.resourceBundle.labels.billerCategory}, click: $component.uploadAndConfirm.bind($data)">
+                    <div class="icon icon-save biller-category__icon" aria-hidden="true"></div>
+                 </a>
+            </div>
+            <div class="oj-flex-item oj-lg-1">
+                <a href="javascript:void(0)" data-bind="attr:{id: 'close_'+categoryId(), alt:$component.resourceBundle.labels.close,title:$component.resourceBundle.labels.billerCategory},click:$component.removeCategory.bind($data,categoryId())">
+                    <div class="icon icon-close biller-category__icon" aria-hidden="true"></div>
+                </a>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:mode() === "LIST" -->
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+          <oj-avatar role="img" size="sm" initials="[[initials]]" data-bind="attr:{'aria-label': billerCategoryName}" src="[[billerCategoryLogo]]" class="oj-avatar-image">
+          </oj-avatar>
+            <!-- <img class="biller-category-logo" data-bind="attr:{'src':billerCategoryLogo}"> -->
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+            <span data-bind="text :$data.billerCategoryName()"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2 justify-center">
+            <span data-bind="text :$data.mappedBillers"></span>
+        </div>
+        <div class="oj-flex-item oj-lg-1">
+            <a href="javascript:void(0)" data-bind="attr:{id: 'edit_'+categoryId() ,alt:$component.resourceBundle.labels.addCategory,title:$component.resourceBundle.labels.billerCategory}, click:$component.editData.bind($data)">
+                <div class="icon icon-edit biller-category__icon" aria-hidden="true"></div>
+             </a>
+        </div>
+        <div class="oj-flex-item oj-lg-1">
+            <a href="javascript:void(0)" data-bind="attr:{alt:$component.resourceBundle.labels.deleteCategory,title:$component.resourceBundle.labels.billerCategory},click:$component.confirmDelete.bind($data)">
+                <div class="icon icon-delete biller-category__icon" aria-hidden="true"></div>
+            </a>
+            <!-- ko if:mode === "CREATE"-->
+            <a href="javascript:void(0)" data-bind="attr:{alt:$component.resourceBundle.labels.removeCategory,title:$component.resourceBundle.labels.billerCategory},click:$component.removeCategory.bind($data)">
+            <div class="icon icon-close biller-category__icon" aria-hidden="true"></div>
+            </a>
+            <!-- /ko -->
+        </div>
+        <div class="oj-flex-item oj-lg-1">
+          <div data-bind="attr: {id: categoryId() +'_draghandle', 'aria-labelledby': categoryId() + '_draghandle',
+          'aria-label': 'Reorder ' + billerCategoryName() + ', draggable'}" role="button" tabindex="0" class="icons icon-move"></div>
+        </div>
+        </div>
+    <!-- /ko -->
+    </li>
+    </script>
+    <modal-window params="rootModel : $component, id:'deleteCategory', header: $component.resourceBundle.labels.billerCategory">
+        <div class="oj-flex oj-flex-items-pad center">
+           <oj-label><span data-bind="text:$component.resourceBundle.labels.deleteCategoryMsg"></span></oj-label>
+        </div>
+        <div class="button-container">
+            <oj-button id="confirmDelete" class="form-button-primary" on-click="[[$component.deleteCategory.bind($data)]]">
+                <span class="icons icon-delete" slot="startIcon"></span><span data-bind="text:$component.resourceBundle.generic.common.delete"></span>
+            </oj-button>
+            <oj-button id="cancelDelete" class="form-button-secondary" on-click="[[$component.cancelDeleteCategory]]">
+                <span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+            </oj-button>
+        </div>
+    </modal-window>
+    <modal-window params="rootModel : $component, id:'success', header: $component.resourceBundle.generic.common.SUCCESS">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item">
+                <span data-bind="text:$component.successMessage"></span>
+            </div>
+        </div> 
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label">
+          <span data-bind="text: $component.resourceBundle.confirmScreen.status"></span>
+          <span data-bind="text: $component.status"></span>
+        </div>
+        </div> 
+        <!-- ko if:$component.transactionID -->
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label">
+          <span data-bind="text: $component.resourceBundle.labels.referenceNo"></span>
+          <span data-id="referenceNo" data-bind="text: $component.transactionID, dataId : 'referenceNo'"></span>
+        </div>
+        </div> 
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button id="success" class="form-button-primary" on-click="[[$component.closeDialog]]">
+                <span data-bind="text:$component.resourceBundle.generic.common.ok"></span>
+            </oj-button>
+        </div>
+    </modal-window>

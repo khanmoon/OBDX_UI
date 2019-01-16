@@ -1,0 +1,86 @@
+<div class="oj-flex">
+<div class="oj-flex-item oj-sm-9">
+<div class="form-main-container add-ext-bank">
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-3 label">
+                <oj-label for="bankName">
+                  <!-- ko text: $component.resourceBundle.labels.bankName  -->
+                  <!-- /ko -->
+                </oj-label>
+              </div>
+              <div class="oj-flex-item oj-lg-offset-2 oj-lg-4 oj-md-6 oj-sm-12">
+                <oj-input-text id="bankName" value="{{$component.bankName}}"
+                 validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.messages.invalidExtBank,{
+                               type: 'length',
+                               options: {
+                                   min: 0,
+                                   max: 100}})]]">
+                  </oj-input-text>
+              </div>
+          </div>
+        </page-section>
+
+        <div class="button-container">
+            <oj-button id="search" class="action-button-primary" on-click="[[getListBanks]]">
+            <span data-bind="text:$component.resourceBundle.generic.common.search"></span>
+            </oj-button>
+            <!-- ko ifnot: dataSourceCreated() -->
+            <oj-button id="cancel" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+               <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+          </oj-button>
+          <!-- /ko -->
+            <oj-button id="reset" class="action-button-tertiary" on-click="[[$component.reset]]">
+            <span data-bind="text:$component.resourceBundle.generic.common.clear"></span>
+            </oj-button>
+        </div>
+
+        <!-- ko if: dataSourceCreated() -->
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+              <div class="oj-flex">
+                  <!-- <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12"> -->
+                    <oj-table id="table" aria-label=$component.resourceBundle.labels.addExtBank
+                     data='[[pagingDatasource]]'
+                      columns='[[headerText]]'>
+                    <caption class="hide-label" data-bind="text:$component.resourceBundle.labels.templateName"></caption>
+                    <oj-paging-control id="paging" data='[[pagingDatasource]]' page-size='10' slot='bottom'>
+                    </oj-paging-control>
+                    </oj-table>
+                  <!-- </div> -->
+
+              </div>
+              <div class="button-container">
+                  <oj-button id="cancel" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+                     <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                </oj-button>
+             </div>
+
+         </page-section>
+
+         <!-- /ko -->
+      </div>
+</div>
+</div>
+</div>
+<!-- ko if: $baseModel.large() -->
+<div class="oj-flex-item oj-sm-3 pull-right help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'add-ext-bank'"></help>
+</div>
+<!-- /ko -->
+</div>
+
+    <script type="text/html" id="bank_link">
+                <td>
+                 <a href="javascript:void(0)" data-bind="attr:{alt:$component.resourceBundle.labels.alt,title:$component.resourceBundle.labels.title},text:$context.row.bankName,click:$component.viewBankDetails.bind($data,$context.row.bankCode)"></a>
+                 <!--<div data-bind="text:$context.row.bankCode"></div>-->
+               </td>
+    </script>
+
+    <script type="text/html" id="bank_photo">
+     <div  class ="uploadImage-fileUpload__maxwidth">
+      <img  data-bind="attr: {'id': $context.row.bankLogo, 'src': $component.retrieveLogoImage1($context.row.bankLogo)  }"></img>
+
+  </script>

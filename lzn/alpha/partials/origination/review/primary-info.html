@@ -1,0 +1,101 @@
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-md-10 oj-lg-10">
+    <h4 class="section-heading" data-bind="text:resource.legalName"></h4>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label><span data-bind="text:resource.name"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <!-- ko ifnot : data.primaryInfo.middleName -->
+    <span data-bind="text: $baseModel.format(resource.salFirstLast,{salutation:data.selectedValues().salutation,firstName:data.primaryInfo.firstName(),lastName:data.primaryInfo.lastName()})"></span>
+    <!-- /ko -->
+    <!-- ko if : data.primaryInfo.middleName  -->
+    <span data-bind="text: $baseModel.format(resource.salFirstMiddleLast,{salutation:data.selectedValues().salutation,firstName:data.primaryInfo.firstName(),middleName:data.primaryInfo.middleName,lastName:data.primaryInfo.lastName()})"></span>
+    <!-- /ko -->
+  </div>
+</div>
+
+<!-- ko if : data.primaryInfo.aliasNamePresent  -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label><span data-bind="text:resource.alternateName"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <!-- ko ifnot : data.primaryInfo.aliasName.middleName -->
+    <span data-bind="text: $baseModel.format(resource.salFirstLast,{salutation:data.selectedValues().salutation,firstName:data.primaryInfo.aliasName.firstName(),lastName:data.primaryInfo.aliasName.lastName()})"></span>
+    <!-- /ko -->
+    <!-- ko if : data.primaryInfo.aliasName.middleName  -->
+    <span data-bind="text: $baseModel.format(resource.salFirstMiddleLast,{salutation:data.selectedValues().salutation,firstName:data.primaryInfo.aliasName.firstName(),middleName:data.primaryInfo.aliasName.middleName,lastName:data.primaryInfo.aliasName.lastName()})"></span>
+    <!-- /ko -->
+  </div>
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-md-10 oj-lg-10">
+    <h4 class="section-heading" data-bind="text:resource.otherDetails"></h4>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label><span data-bind="text:resource.dateOfBirth"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text : $baseModel.formatDate(data.primaryInfo.birthDate)"></span>
+  </div>
+</div>
+<!-- ko if : data.selectedValues.gender  -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label><span data-bind="text:resource.gender"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text : data.selectedValues().gender"></span>
+  </div>
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label><span data-bind="text:resource.maritalStatus"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text : data.selectedValues().maritalStatus"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label><span data-bind="text:resource.noOfDependents"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text : data.primaryInfo.noOfDependants"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label><span data-bind="text:resource.countryOfCitizenship"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text : data.selectedValues().citizenship"></span>
+  </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label><span data-bind="text:resource.isPermanentResident"></span></oj-label>
+
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text : data.primaryInfo.isPermanentResidence() ? resource.generic.common.yes : resource.generic.common.no"></span>
+
+  </div>
+</div>
+<!-- ko ifnot : data.primaryInfo.isPermanentResidence -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+  <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+    <oj-label><span data-bind="text:resource.countryOfResidence"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+    <span data-bind="text : data.selectedValues().residentCountry"></span>
+  </div>
+</div>
+<!-- /ko -->

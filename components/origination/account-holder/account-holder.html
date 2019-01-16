@@ -1,0 +1,112 @@
+<!-- ko if: $component.showAcccountHolderPref() -->
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <div class="">
+    <div data-bind="with:applicantObject().accountHolder.savingsHolderConfiguration.accountHolderPreferenceDTO[0]">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 oj-label">
+          <oj-label for="isDebitCardNeeded"><span data-bind="text:$component.resource.debitCard"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-buttonset-one id="isDebitCardNeeded" :aria-label="[[$component.resource.debitCard]]" on-value-changed="[[$component.isDebitCardNeededShowHide]]" value="{{$component.isDebitCardNeeded}}">
+            <oj-option id="isDebitCardNeededYes" name="isDebitCardNeeded" class="isDebitCardNeeded" value="{{'OPTION_YES'}}"><span for="isDebitCardNeededYes" data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+            <oj-option id="isDebitCardNeededNo" name="isDebitCardNeeded" class="isDebitCardNeeded" value="{{'OPTION_NO'}}"><span for="isDebitCardNeededNo" data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+          </oj-buttonset-one>
+        </div>
+      </div>
+      <!-- ko if: $component.isDebitCardNeeded() === "OPTION_YES" -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+          <oj-label class="oj-label" for="cardName"><span data-bind="text:$component.resource.cardName"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+          <oj-input-text maxlength="100" autocomplete="off" id="cardName" spellcheck="false" required value="{{embossName}}" translations="[[{'required':{
+          messageDetail:$component.resource.messages.cardName}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPACE',$component.resource.messages.cardName,{
+            type: 'length',
+            options: {
+              min: 1,
+              max: 100
+            }
+          })]]"></oj-input-text>
+        </div>
+      </div>
+      <!-- ko if : $component.cardDesignList.loaded -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2">
+          <oj-label for="debitCardType"><span data-bind="text:$component.resource.cardType"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4">
+          <oj-select-one id="debitCardType" required translations="[[{'required':{messageDetail:$component.resource.messages.cardType}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{cardType}}" :placeholder="">
+            <!-- ko foreach: $component.cardDesignList -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 oj-label">
+          <oj-label for="isChequeBookNeeded"><span data-bind="text:$component.resource.isChequeBookNeeded"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-buttonset-one id="isChequeBookNeeded" :aria-label="[[$component.resource.isChequeBookNeeded]]" on-value-changed="[[$component.isChequeBookNeededShowHide]]" value="{{$component.isChequeBookNeeded}}">
+            <oj-option id="isChequeBookNeededYes" name="isChequeBookNeeded" class="isChequeBookNeeded" value="{{'OPTION_YES'}}"><span for="isChequeBookNeededYes" data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+            <oj-option id="isChequeBookNeededNo" name="isChequeBookNeeded" class="isChequeBookNeeded" value="{{'OPTION_NO'}}"><span for="isChequeBookNeededNo" data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+          </oj-buttonset-one>
+        </div>
+      </div>
+      <!-- ko if: $component.isChequeBookNeeded() === "OPTION_YES" -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+          <oj-label for="numberOfLeaves"><span data-bind="text:$component.resource.chequeBookRequest.NumberOfLeaves"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-select-one id="numberOfLeaves" required translations="[[{'required':{
+                                  messageDetail:$component.resource.messages.noOfLeaves}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.resource.chequeBookRequest.select]]" value="{{chequeBookLeaves}}">
+            <!-- ko foreach: $component.numberOfLeavesOptions -->
+            <oj-option value="{{code}}"><span data-bind="text:$baseModel.format($component.resource.chequeBookRequest.chequeBookLeaveOption,{'leavesCount':code})"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 oj-label">
+          <oj-label for="isStatementNeeded"><span data-bind="text:$component.resource.isStatementNeeded"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-buttonset-one id="isStatementNeeded" :aria-label="[[$component.resource.isStatementNeeded]]" on-value-changed="[[$component.isStatementNeededShowHide]]" value="{{$component.isStatementNeeded}}">
+            <oj-option id="isStatementNeededYes" name="isStatementNeeded" class="isStatementNeeded" value="{{'OPTION_YES'}}"><span for="isStatementNeededYes" data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+            <oj-option id="isStatementNeededNo" name="isStatementNeeded" class="isStatementNeeded" value="{{'OPTION_NO'}}"><span for="isStatementNeededNo" data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+          </oj-buttonset-one>
+        </div>
+      </div>
+      <!-- ko if: $component.isStatementNeeded() === "OPTION_YES" -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-3 oj-lg-offset-2 ">
+          <oj-label class="oj-label" for="statementFrequency"><span data-bind="text:$component.resource.statementFrequency"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+          <oj-select-one required id="statementFrequency" translations="[[{'required':{
+                                          messageDetail:$component.resource.messages.statementFrequency}}]]" :placeholder="[[$component.resource.chequeBookRequest.select]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{statementFrequency}}">
+            <!-- ko foreach: $component.statementFrequencyData() -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+      </div>
+      <!-- /ko -->
+    </div>
+  </div>
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item left oj-sm-12">
+    <oj-button raised="" id="submit-account" class="form-button-secondary" :aria-label="[[$component.resource.submitAccount]]" on-click="[[$component.saveAccountHolderInfo]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+
+  </div>
+
+</div>
+<!-- /ko -->

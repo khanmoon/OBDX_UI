@@ -1,0 +1,202 @@
+<!-- ko ifnot: $baseModel.small()-->
+<div class="feedbackContainer">
+  <div class="feedbackFormContainer">
+
+    <!-- ko if:templateLoaded-->
+    <div class=" oj-flex flex-height">
+      <div class="oj-flex-item oj-lg-5 oj-md-5 oj-sm-12 video-container">
+        <video data-bind="loadImage:'feedback/feedback.mp4'" autoplay loop>
+          </video>
+      </div>
+      <div class="oj-flex-item oj-lg-7 oj-md-7 oj-sm-12 rating-align">
+        <div class="oj-flex-items right">
+          <a class="icons icon-cancel icon-property" href="javascript:void(0)" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]"></a>
+        </div>
+        <!-- ko if:showThankYou-->
+        <div class=" oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item background-color-thank-you">
+            <div class="oj-flex-item center">
+            </div>
+            <div class="oj-flex-item center">
+            </div>
+            <div class="oj-flex-item center">
+            </div>
+            <div class="oj-flex-item center show-text">
+              <h3><label class="show-thank-you" data-bind="text: $component.resource.thankYouQuote"></label></h3>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:showThankYou-->
+        <div class="oj-flex oj-flex-items-pad">
+          <!-- ko if:$component.hideOverallquestion -->
+          <div class="oj-flex-item oj-sm-12 center">
+            <h3 data-bind="text: $component.overallQuestion"></h3>
+          </div>
+          <!-- /ko -->
+        </div>
+        <div>
+          <!-- ko if:$component.showGauge -->
+          <div class="oj-flex oj-flex-items-pad rating-align__ratingGauge">
+            <oj-rating-gauge class="scale-rating" id="ratingGuage" :aria-label="[[$component.resource.feedbackText]]" value="{{ratingW5}}" on-value-changed="[[$component.ratingChangeHandler]]" selected-state.shape="[[$component.customShape]]" selected-state.color="yellow"
+              hover-state.color="[[$component.ratingColor]]" hover-state.shape="[[$component.customShape]]" unselected-state.shape="[[$component.customShape]]" changed-state.shape="[[$component.customShape]]" changed-state.color="[[$component.ratingColor]]"
+              selected-state.color="red" unselected-state.color="[[$component.ratingBgColor]]">
+            </oj-rating-gauge>
+            <div data-bind="template : {afterRender : $component.ratingFocus}"></div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if: $component.feedbackLoaded -->
+          <!-- ko ifnot: $component.nonDefaultFeedback -->
+          <div class="oj-flex overall-containt-padding">
+            <div class="oj-flex-item oj-sm-12 rating-align__question">
+              <label data-bind="attr:{id:'selectOptionsForQuestion'},
+                 text: $component.fetchedQuestion"></label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 options-content-padding">
+              <oj-checkboxset class="oj-checkbox-label" id="checkboxSetAgreeIdForUser" value={{$component.selectedOptions}}>
+                <!-- ko foreach: $component.fetchedOptions -->
+                <oj-option value="[[optionId]]"><span data-bind="text: optionDescription"></span></oj-option>
+                <!-- /ko -->
+              </oj-checkboxset>
+            </div>
+
+          </div>
+          <!-- /ko -->
+
+          <div class="oj-flex-item oj-sm-12 content-padding">
+            <oj-text-area id="textArea" placeholder="{{$component.resource.inputPlaceHolder}}" value="{{$component.comments}}"> </oj-text-area>
+          </div>
+          <div class="oj-flex-item oj-sm-12 content-padding">
+            <oj-button class="action-button-primary" id="next-button" type="submit" on-click="[[$component.captureFeedback]]">
+              <span data-bind="text:$component.resource.submit"></span>
+            </oj-button>
+          </div>
+          <!-- /ko -->
+        </div>
+        <!-- ko if:$component.hideOverallquestion -->
+        <!-- ko ifnot:$component.FetchedTaskCode ==="GENERIC" -->
+        <div class="oj-flex option-box">
+          <div class="oj-flex-item oj-sm-6 left">
+            <a href="javascript:void(0)" data-bind="text:$component.resource.skip,click:$dashboard.openDashBoard.bind(void 0,void 0)"></a>
+          </div>
+          <div class="oj-flex-item oj-sm-6 right">
+            <a href="javascript:void(0)" data-bind="text:$component.resource.neverAskMeAgain,click:$component.neverAskMeAgain"></a>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+
+    </div>
+
+    <!-- /ko -->
+
+
+  </div>
+
+</div>
+<!-- /ko -->
+
+<!-- ko if: $baseModel.small()-->
+<div class="feedbackContainer">
+  <div class="feedbackFormContainer">
+
+    <!-- ko if:templateLoaded-->
+
+    <div class=" oj-flex flex-height">
+
+      <div class="oj-flex-item oj-md-4 oj-sm-12">
+        <div class="oj-flex-item image__close right">
+          <a class="icons icon-cancel icon-property" href="javascript:void(0)" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]"></a>
+        </div>
+        <div class="oj-flex-item">
+          <video class="video-property" data-bind="loadImage:'feedback/feedback_mobile.mp4'" autoplay loop>
+            </video>
+        </div>
+      </div>
+      <div class="oj-flex-item oj-md-8 oj-sm-12 rating-align">
+        <!-- ko if:showThankYou-->
+        <div class=" oj-flex">
+          <div class="oj-flex-item background-color-thank-you">
+            <div class="oj-flex-item center">
+            </div>
+            <div class="oj-flex-item center">
+            </div>
+            <div class="oj-flex-item center">
+            </div>
+            <div class="oj-flex-item center show-text">
+              <h2><label class="show-thank-you" data-bind="text: $component.resource.thankYouQuote"></label></h2>
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:showThankYou-->
+        <div class="oj-flex oj-flex-items-pad">
+          <!-- ko if:$component.hideOverallquestion -->
+          <div class="oj-flex-item oj-sm-12 rating-align__question-header">
+            <h3 data-bind="text: $component.overallQuestion"></h3>
+          </div>
+          <!-- /ko -->
+        </div>
+        <div>
+          <!-- ko if:$component.showGauge -->
+          <div class="oj-flex oj-flex-items-pad rating-align__ratingGauge">
+            <oj-rating-gauge class="scale-rating" id="ratingGuage" :aria-label="[[$component.resource.feedbackText]]" value="{{ratingW5}}" on-value-changed="[[$component.ratingChangeHandler]]" selected-state.shape="[[$component.customShape]]" selected-state.color="yellow"
+              hover-state.color="[[$component.ratingColor]]" hover-state.shape="[[$component.customShape]]" unselected-state.shape="[[$component.customShape]]" changed-state.shape="[[$component.customShape]]" changed-state.color="[[$component.ratingColor]]"
+              selected-state.color="red" unselected-state.color="[[$component.ratingBgColor]]">
+            </oj-rating-gauge>
+          </div>
+          <!-- /ko -->
+          <!-- ko if: $component.feedbackLoaded -->
+          <!-- ko ifnot: $component.nonDefaultFeedback -->
+          <div class="oj-flex">
+            <div class="oj-flex-item oj-sm-12 rating-align__question">
+              <label data-bind="attr:{id:'selectOptionsForQuestion'},
+                 text: $component.fetchedQuestion"></label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 .content-padding">
+              <oj-checkboxset class="oj-checkbox-label" id="checkboxSetAgreeIdForUser" value={{$component.selectedOptions}}>
+                <!-- ko foreach: $component.fetchedOptions -->
+                <oj-option value="[[optionId]]"><span data-bind="text: optionDescription"></span></oj-option>
+                <!-- /ko -->
+              </oj-checkboxset>
+            </div>
+
+          </div>
+          <!-- /ko -->
+          <div class="oj-flex-item oj-sm-12 content-padding">
+            <oj-text-area id="textArea" placeholder="{{$component.resource.inputPlaceHolder}}" value="{{$component.comments}}"> </oj-text-area>
+          </div>
+          <div class="oj-flex-item oj-sm-12 content-padding">
+            <oj-button class="action-button-primary" id="next-button" type="submit" on-click="[[$component.captureFeedback]]">
+              <span data-bind="text:$component.resource.submit"></span>
+            </oj-button>
+          </div>
+          <!-- /ko -->
+        </div>
+        <!-- ko if:$component.hideOverallquestion -->
+        <!-- ko ifnot:$component.FetchedTaskCode ==="GENERIC" -->
+        <div class="oj-flex option-box">
+          <div class="oj-flex-item oj-sm-6 left">
+            <a href="javascript:void(0)" data-bind="text:$component.resource.skip,click:$dashboard.openDashBoard.bind(void 0,void 0)"></a>
+          </div>
+          <div class="oj-flex-item oj-sm-6 right">
+            <a href="javascript:void(0)" data-bind="text:$component.resource.neverAskMeAgain,click:$component.neverAskMeAgain"></a>
+          </div>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+      </div>
+
+    </div>
+    <!-- /ko -->
+
+
+  </div>
+
+</div>
+
+<!-- /ko -->

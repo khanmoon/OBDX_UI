@@ -1,0 +1,99 @@
+<div class="page-section-content">
+
+  <!-- ko if: $component.dataSourceForGuarentee() -->
+
+  <!-- ko if: $component.guaranteeList().length > 0 -->
+ <!-- ko ifnot:$baseModel.small() -->
+  <div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 grid-row-group" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+
+            <oj-table id="printTable" :aria-label="[[$component.resourceBundle.guarentee.guaranteeTable]]" columns="[[[{headerText:$component.resourceBundle.guarentee.refNo},{headerText:$component.resourceBundle.common.labels.date},{headerText:$component.resourceBundle.guarentee.awbNo},{headerText:$component.resourceBundle.common.labels.amount,headerClassName:'right',className:'right'}]]]" row-renderer="[[$oj.KnockoutTemplateUtils.getRenderer('guarenteeList_template', true)]]" columns-default="[[{sortable:'enabled'}]]" data="[[dataSourceForGuarentee]]">
+                <caption class="hide-label" data-bind="text:$component.resourceBundle.heading.importLC"></caption>
+            </oj-table>
+
+            <oj-paging-control class="oj-flex-item oj-sm-12" id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSourceForGuarentee]]">
+            </oj-paging-control>
+
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:$baseModel.small() -->
+    <div class="oj-flex grid-main-container">
+      <div class="oj-flex-item oj-sm-12">
+          <oj-list-view id="listview-txn-card" class="cards" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('guarantee_list_card',true)}]]" selection-mode="[['single']]" data="[[dataSourceForGuarentee]]">
+          </oj-list-view>
+          <oj-paging-control class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-12" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[10]]" data="[[$component.dataSourceForGuarentee]]">
+          </oj-paging-control>
+      </div>
+    </div>
+    <script type="text/html" id="guarantee_list_card">
+      <li data-bind="attr: {id: $data.guaranteeRefNo}">
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item oj-sm-12">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 description">
+                <a href="javascript:void(0)" data-bind="text: $data.guaranteeRefNo"></a>
+                </div>
+              </div>
+            </div>
+
+          <div class="oj-flex-item oj-sm-12 grid-row-group">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <label data-bind="text: $component.resourceBundle.common.labels.date"></label>
+                <div data-bind="text: $baseModel.formatDate(guaranteeDate)"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <label data-bind="text: $component.resourceBundle.guarentee.awbNo"></label>
+                <div data-bind="text: $data.awbNumber"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-6">
+                <label data-bind="text: $component.resourceBundle.common.labels.amount"></label>
+              </div>
+              <div class="oj-flex-item oj-sm-6">
+                <div class="right" data-bind="text: $baseModel.formatCurrency(guaranteeAmount.amount, guaranteeAmount.currency)"></div>
+              </div>
+            </div>
+
+            </div>
+        </div>
+      </li>
+    </script>
+    <!-- /ko -->
+
+    <!-- /ko -->
+
+    <!-- ko ifnot: $component.guaranteeList().length > 0 -->
+    <div class="oj-flex oj-flex-items-pad info-message">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }, text: $component.resourceBundle.tradeFinanceErrors.messages.noGuarantees">
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <!-- /ko -->
+
+</div>
+<script type="text/html" id="guarenteeList_template">
+    <tr>
+       <td>
+        <a href="#" data-bind="text:$data.guaranteeRefNo"></a>
+      </td>
+      <td>
+        <span data-bind="text:$baseModel.formatDate(guaranteeDate)"></span>
+      </td>
+      <td>
+        <span data-bind="text:$data.awbNumber"></span>
+      </td>
+      <td>
+        <span data-bind="text:$baseModel.formatCurrency(guaranteeAmount.amount, guaranteeAmount.currency)"></span>
+      </td>
+  </tr>
+</script>

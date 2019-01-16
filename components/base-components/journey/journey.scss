@@ -1,0 +1,127 @@
+$journey-bg-color:#456990;
+$journey-connector:#F45B69;
+.journey {
+    background: $journey-bg-color;
+    color: var(--color-white);
+    *,
+    *::after,
+    *::before {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    &__timeline {
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
+    &__timeline header {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    &__timeline ol {
+        font-size: 0;
+        width: 100vw;
+        padding: 10.9rem 0;
+        transition: all 1s;
+    }
+    &__timeline ol li {
+        position: relative;
+        display: inline-block;
+        list-style-type: none;
+        width: 10rem;
+        height: 0.2rem;
+        background: var(--base-background-primary);
+    }
+    &__timeline ol li:last-child {
+        width: 17.5rem;
+    }
+    &__timeline ol li:not(:first-child) {
+        @include single-margin(left,0.9rem);
+    }
+    &__timeline ol li:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+@include left(calc(100% + 0.1rem))
+        bottom: 0;
+        width: 0.8rem;
+        height: 0.8rem;
+        transform: translateY(-50%);
+        border-radius: 50%;
+        background: $journey-connector;
+    }
+    &__timeline ol li div.block {
+        position: absolute;
+@include left(calc(100% + 0.4rem))
+        width: 17.5rem;
+        padding: 0.9rem;
+        font-size: 0.6rem;
+        white-space: normal;
+        color: black;
+        background: var(--base-background-primary);
+        .icons {
+@include padding(0.3rem, 0.3rem, 0.3rem, 0);
+            @include float(left);
+            width: 1.9rem;
+            font-size: 1.6rem;
+        }
+        img {
+            @include float(left);
+            width: 1.9rem;
+            @include single-padding(right,0.3rem);
+        }
+        .contents {
+            @include float(left);
+            width:calc(100% - 1.9rem)
+        }
+    }
+    &__timeline ol li div.block::before {
+        content: '';
+        position: absolute;
+        top: 100%;
+@include left(0)
+        width: 0;
+        height: 0;
+        border-style: solid;
+    }
+    &__timeline ol li:nth-child(odd) div.block {
+        top: -1rem;
+        transform: translateY(-100%);
+    }
+    &__timeline ol li:nth-child(odd) div.block::before {
+        top: 100%;
+        border-width: 0.5rem 0.5rem 0 0;
+        border-color: var(--color-white) transparent transparent transparent;
+    }
+    &__timeline ol li:nth-child(even) div.block {
+        top: calc(100% + 1rem);
+    }
+    &__timeline ol li:nth-child(even) div.block::before {
+        top: -0.5rem;
+        border-width: 0.5rem 0 0 0.5rem;
+        border-color: transparent transparent transparent var(--color-white);
+    }
+    &__timeline .arrows {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.3rem;
+        .arrow {
+            font-size: 1.3rem;
+            border-radius: 50%;
+            padding: 0.6rem;
+            border: 0;
+        }
+    }
+    &__timeline .arrows .arrow__prev {
+        @include single-margin(right,1.3rem);
+    }
+    &__timeline .arrows .disabled {
+        opacity: 0.5;
+    }
+    &__timeline .arrows img {
+        width: 2.8rem;
+        height: 2.8rem;
+    }
+}

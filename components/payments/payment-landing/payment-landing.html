@@ -1,0 +1,14 @@
+<oj-list-view class="quick-links-list" id="payment-options-list" data="[[datasource]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('pmt_options_template', true)]]" selection-mode="single">
+</oj-list-view>
+<script type="text/html" id="pmt_options_template">
+    <li class="quick-links-list__item quick-links-list-item">
+        <a href="#" data-bind="click:$component.clickHandler.bind($data,$data),attr:{alt:$component.resource.alt[$data.id],title:$component.resource.title[$data.id]}">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-2 no-pad-cols">
+                    <img class="quick-links-list-item__icon" data-bind="loadImage:'dashboard/quick-access/' + $data.icon + '.svg',attr:{alt:$component.resource.alt[$data.id],title:$component.resource.title[$data.id]}">
+                </div>
+                <div class="oj-flex-item oj-sm-10 quick-links-list-item__label no-pad-cols" data-bind="text:$component.resource.label[$data.id]"></div>
+            </div>
+        </a>
+    </li>
+</script>

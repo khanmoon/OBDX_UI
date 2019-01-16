@@ -1,0 +1,31 @@
+
+<!-- ko if:dataLoaded() -->
+<div data-bind="with:$component.paymentDetails()">
+  <div class="row-group">
+      <row params="baseModel : $baseModel, rootModel : $component, label : isDraft?$component.resource.favouring:$component.resource.beneficiaryName, value :payeeName,dataClass :''"></row>
+
+
+      <row params="baseModel : $baseModel, rootModel : $component, label : isDraft?$component.resource.draftType:$component.resource.accountType , value :accountType,dataClass :''"></row>
+
+      <!-- ko if:accountNumber -->
+      <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.accountNumber , value :accountNumber,dataClass :''"></row>
+      
+      <!-- /ko -->
+
+      <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.fromAccount , value :fromAccount,dataClass :''"></row>
+      <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.amount , value :amount,dataClass :''"></row>
+      <!-- ko if:type === 'REC' -->
+      <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.transFreq , value :frequency,dataClass :''"></row>
+      <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.startDate , value :startDate,dataClass :''"></row>
+      <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.endDate , value :endDate,dataClass :''"></row>
+      <!-- /ko -->
+      <!-- ko if:type === 'NONREC' -->
+      <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.transferon , value :endDate,dataClass :''"></row>
+      <!-- /ko -->
+      <!-- ko if:$data.transactionType !== 'SELFFT_SI' && $data.transactionType !== 'SELFFT_PAYLATER' -->
+      <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.purpose , value :purpose,dataClass :''"></row>
+      <!-- /ko -->
+      <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.note , value :remarks,dataClass :''"></row>
+  </div>
+</div>
+<!-- /ko -->

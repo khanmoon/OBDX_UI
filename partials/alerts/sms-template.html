@@ -1,0 +1,144 @@
+<!-- ko if : $component.mode()==='CREATE' || $component.mode()==='EDIT'-->
+<oj-validation-group id="smstracker" valid="{{groupValidSms}}">
+
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+		<oj-label for="content"><span data-bind="text:$component.nls.message_template.smsContent"></span></oj-label>
+	</div>
+
+	<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+	<text-editor params="baseModel : $baseModel, rootModel:$data,id:'contentSMS'+index,data:smsContent,containerClass:'oj-sm-12',height:'200px',label:$component.nls.message_template.smsContent,,validate:$component.editorValidator()[$component.index].validateSms">
+	</text-editor>
+  </div>
+</div>
+
+<oj-validation-group id="tracker" valid="{{groupValid}}">
+
+<!-- ko if: dataAttributeList().length >0 -->
+<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+			<oj-label><span data-bind="text:$component.nls.message_template.setAttributeMask"></span></oj-label>
+	</div>
+
+<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+<!-- ko if:showSmsAttributeLabel -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+		<oj-label><span data-bind="text:$component.nls.message_template.dataAttribute"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+		<oj-label for="fetchAttributeMasks"><span data-bind="text:$component.nls.message_template.attributeMask"></span></oj-label>
+	</div>
+</div>
+<!-- /ko -->
+
+	<!-- ko foreach:smsAttributeList -->
+	<div class="oj-flex oj-flex-items-pad grid-row-group">
+			<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-6 label">
+					<span data-bind="attr:{'id':('smsAttributeId'+$component.index+$index())},text:attributeId"></span>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5 label">
+					<span data-bind="attr:{'id':('smsAttributeMask'+$component.index+$index())},text:attributeMask"></span>
+			</div>
+			<div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1 deleteMask">
+			 <a href="javascript:void(0)" class="icon icon-delete pull-right" data-bind="click: $component.deleteAttribute.bind($data,$index,'SMS')"></a>
+		 </div>
+	</div>
+	<!-- /ko -->
+	<!-- ko if: $component.buttonToDropDownSms()===false && smsAttributes().length>0 -->
+			<oj-button class="oj-flex-item help-button form-button-rounded" on-click="[[$component.addRow.bind($data,smsAttributes,smsAttributeList,'SMS')]]">
+      <span data-bind="text:$component.nls.message_template.addNew"></span>
+</oj-button>
+	<!-- /ko -->
+	<!-- ko if : ($component.buttonToDropDownSms()) -->
+  <div class="oj-flex oj-flex-items-pad">
+<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+  <oj-label class="hide-label" for="attributeId"><span data-bind="text:$component.nls.message_template.attributeId"></span></oj-label>
+									 <oj-select-one id="attributeIdSelect" required :id="[[('attributeIdSelect'+$component.index+$index())]]" :aria-label="[[$component.nls.message_template.attributeId]]" :placeholder="[[$component.nls.genericTemplate.select]]" on-value-changed="[[$component.attributeSelected]]" value="{{smsAttributeId}}">
+											 <!-- ko foreach : $component.smsAttributes -->
+											 <oj-option value="{{attributeId}}"><span data-bind="text:attributeId"></span></oj-option>
+											 <!-- /ko -->
+										 </oj-select-one>
+</div>
+
+
+<!-- ko ifnot : ($component.attributeMaskEnable()[$component.attributeSelectionOrder]) === true -->
+	<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+									 <oj-input-text id="fetchAttributeMasks" type="text" required :id="[[('fetchAttributeMasks'+$component.index+$index())]]" :aria-label="[[$component.nls.message_template.attributeMask]]" validators="[[$baseModel.getValidator('ATTRIBUTE_MASK')]]" value="{{smsAttributeMask}}"></oj-input-text>
+
+
+</div>
+<!-- /ko -->
+
+<!-- ko if : ($component.attributeMaskEnable()[$component.attributeSelectionOrder]) === true-->
+	<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+									 <oj-input-text id="fetchAttributeMasks" type="text" required :id="[[('fetchAttributeMasks'+$component.index+$index())]]" :aria-label="[[$component.nls.message_template.attributeMask]]" validators="[[$baseModel.getValidator('ATTRIBUTE_MASK')]]" readonly="{{true}}" value="{{smsAttributeMask}}"></oj-input-text>
+
+</div>
+<!-- /ko -->
+
+
+								 <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
+								 	<oj-button class="oj-flex-item help-button form-button-rounded" on-click="[[$component.add.bind($data,smsAttributeList,'SMS')]]">
+      <span data-bind="text:$component.nls.message_template.addNew"></span>
+</oj-button>
+								</div>
+              </div>
+
+  <!-- /ko -->
+
+</div>
+
+</div>
+<!-- /ko -->
+</oj-validation-group>
+
+<div class="oj-flex oj-flex-items-pad button-container">
+	<oj-button class="action-button-primary" on-click="[[saveSms]]">
+		<span data-bind="text:$component.nls.genericTemplate.save"></span>
+	</oj-button>
+</div>
+</oj-validation-group>
+
+<!-- /ko -->
+<!-- ko if : $component.mode()==='VIEW' || $component.mode()==='REVIEW'-->
+<action-header params="baseModel : $baseModel, rootModel : $data, heading :$component.nls.message_template.sms "></action-header>
+		<div class="oj-flex oj-flex-items-pad row">
+			<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 row__label label-container">
+				<oj-label class="label-container__label"><span data-bind="text:$component.nls.message_template.smsContent"></span></oj-label>
+			</div>
+
+			<div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 row__value" data-bind="css: $data.dataClass, html : smsContent">
+			</div>
+
+		</div>
+		<!-- ko if:smsAttributeList().length>0 -->
+
+		<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+			<strong data-bind="text:$component.nls.message_template.setAttributeMask"></strong>
+		</div>
+		</div>
+
+
+
+		<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+			<oj-label><span data-bind="text:$component.nls.message_template.dataAttribute"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 label">
+			<oj-label for="fetchAttributeMasks"><span data-bind="text:$component.nls.message_template.attributeMask"></span></oj-label>
+		</div>
+		</div>
+		<!-- ko foreach:smsAttributeList -->
+		<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+		<span data-bind="text:attributeId,attr:{id:'smsAttributeId'+ $component.index+$index()}"></span>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+		<span data-bind="text:attributeMask,attr:{id:'smsAttributeMask'+ $component.index+$index()}"></span>
+		</div>
+		</div>
+		<!-- /ko -->
+		<!-- /ko -->
+<!-- /ko -->

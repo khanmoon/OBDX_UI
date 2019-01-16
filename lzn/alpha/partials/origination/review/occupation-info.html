@@ -1,0 +1,81 @@
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.occupationType"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text: data.temp_selectedValues().type"></span>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.occupationStatus"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text: data.temp_selectedValues().status"></span>
+    </div>
+</div>
+<!-- ko if: (typeof data.type === 'function' ? (Object.prototype.toString.call(data.type()) === '[object Array]' ? data.type()[0] !== 'NotApplicable' : data.type() !== 'NotApplicable') : (data.type!=='NotApplicable')) -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.employerName"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text: data.employerName"></span>
+    </div>
+</div>
+<!-- ko if: data.designation && data.designation !== '' -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.designation"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text: data.designation"></span>
+    </div>
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.startDate"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text: $baseModel.formatDate(data.startDate)"></span>
+    </div>
+</div>
+<!-- ko if : data.endDate -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.endDate"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text: $baseModel.formatDate(data.endDate)"></span>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko if: data.grossAnnualSalary.amount() !== '' -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.grossAnnualSalary"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text: $baseModel.formatCurrency(data.grossAnnualSalary.amount(),data.grossAnnualSalary.currency)"></span>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko if: data.employerAddress.line1 && data.employerAddress.line1 !== '' -->
+<div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.address"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <!-- ko if: data.employerAddress.line2 -->
+        <span class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddress, {line1: data.employerAddress.line1, line2: data.employerAddress.line2, city: data.employerAddress.city})"></span>
+        <div class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddressCountryZip, {state: data.employerAddress.state,country: data.employerAddress.country, zip: data.employerAddress.postalCode})"></div>
+        <!-- /ko -->
+        <!-- ko ifnot: data.employerAddress.line2 -->
+        <span class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddress2, {line1: data.employerAddress.line1, city: data.employerAddress.city})"></span>
+        <div class="oj-flex-items-pad" data-bind="text:$baseModel.format(resource.reviewAddressCountryZip, {state: data.employerAddress.state, country: data.employerAddress.country, zip: data.employerAddress.postalCode})"></div>
+        <!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<!-- /ko -->

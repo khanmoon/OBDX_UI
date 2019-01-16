@@ -1,0 +1,48 @@
+<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+    <search-report params='baseModel : $baseModel, rootParams: $component,readOnly:false,report:"useractivity"'></search-report>
+</page-section>
+<!-- ko if:stageThree() -->
+    <div class="grid-main-container">
+      <!-- ko if:reportData().length>0 -->
+      <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+      <div class="row-group">
+          <div class="oj-flex oj-flex-items-pad">
+             <oj-label class="oj-lg-2 oj-flex-item"><span data-bind="text:$component.wallet.report.name"></span></oj-label>
+             <div class="oj-lg-8 oj-flex-item" data-bind="text:$component.walletData().firstName+''+$component.walletData().lastName"></div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+             <oj-label class="oj-lg-2 oj-flex-item"><span data-bind="text:$component.wallet.report.emailid"></span></oj-label>
+             <div class="oj-lg-8 oj-flex-item" data-bind="text:$component.walletData().emailId"></div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+             <oj-label class="oj-lg-2 oj-flex-item"><span data-bind="text:$component.wallet.report.mobilenumber"></span></oj-label>
+             <div class="oj-lg-8 oj-flex-item" data-bind="text:$component.walletData().mobileNo"></div>
+          </div>
+      </div>
+      </page-section>
+        <div class="right">
+           <img title="Download" class="downloadimg" data-bind="loadImage:'wallet/download-statement.svg',
+           click:$component.downloadPDF.bind($data,'useractivity')">
+        </div>
+        <div class="oj-flex oj-flex-items-pad oj-flex grid-table-header">
+              <div class="oj-lg-3  oj-flex-item" data-bind="text:$component.wallet.report.datetime "></div>
+              <div class="oj-lg-7  oj-flex-item" data-bind="text:$component.wallet.report.activity "></div>
+              <div class="oj-lg-2  oj-flex-item" data-bind="text: $component.wallet.report.status"></div>
+        </div>
+      <!-- /ko -->
+        <oj-list-view selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.datasource()]]">
+        </oj-list-view>
+        <div class="oj-flex oj-flex-items-pad">
+          <oj-paging-control class="oj-lg-11 oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.datasource()]]"></oj-paging-control>
+        </div>
+        <script type="text/html" id="content_template">
+          <li>
+              <div class="oj-flex oj-flex-items-pad oj-flex grid-row-group">
+                    <div class="oj-flex-item oj-lg-3" data-bind="text:$baseModel.formatDate($data.startTime)"></div>
+                    <div class="oj-flex-item oj-lg-7" data-bind="text:resourceDesc"></div>
+                    <div class="oj-flex-item oj-lg-2 activity-status" data-bind="text:status"></div>
+              </div>
+          </li>
+        </script>
+    </div>
+<!-- /ko -->

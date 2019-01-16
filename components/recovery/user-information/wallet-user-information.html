@@ -1,0 +1,52 @@
+<div class=" wallets_container">
+  <div class=" oj-panel form-main-container card-action-container">
+  <!-- ko if:forgotPassword() -->
+  <div class="header">
+      <div class="title_primary" data-bind="text:$component.wallet.forgotpasswordtitle"></div>
+      <div class="title_secondary" data-bind="text:$component.wallet.enterdetails"></div>
+  </div>
+  <!-- ko if:userInformation -->
+   <page-section params="baseModel : $baseModel, rootModel : $data, heading :'' ">
+    <div class="section">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="wallets-action-label">
+              <oj-label for="id"><span data-bind="text:$component.wallet.username"></span></oj-label>
+            </div>
+            <div class="">
+                <oj-input-text id="id" type="text" required :maxlength="[[35]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{userId}}"></oj-input-text>
+            </div>
+        </div>
+
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="wallets-action-label">
+              <oj-label for="dob"><span data-bind="text:$component.wallet.dateOfBirth"></span></oj-label>
+          </div>
+          <div class="">
+              <oj-input-date id="dob" required value="{{dateOfBirth}}" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+          </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-primary" type="submit" on-click="[[verify]]">
+      <span data-bind="text:$component.common.continue"></span>
+</oj-button><oj-button class="action-button-secondary" id="button-cancel" on-click="[[cancelClicked]]">
+      <span data-bind="text:$component.common.cancel"></span>
+</oj-button>
+      </div>
+    </div>
+   </page-section>
+ <!-- /ko -->
+
+ <!-- ko if:verification -->
+    <otp-verification params="baseModel : $baseModel, 
+                    rootModel : $component,
+                    callback:OtpAuthentication,
+                    baseUrl:baseURL
+                    ">
+    </otp-verification>
+     <!-- /ko -->
+     <!-- /ko -->
+  <!-- ko if:!forgotPassword() -->
+      <div data-bind="component:{name: customComponentName, params:{rootModel: $component}}"></div>
+ <!-- /ko -->
+</div>
+</div>

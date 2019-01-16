@@ -1,0 +1,148 @@
+%action-button {
+  border-width: var(--button-border-width);
+  border-radius: var(--button-border-radius);
+  box-shadow: none;
+  text-shadow: none;
+}
+
+%help-button {
+  border-width: var(--button-border-width);
+  border-radius: var(--button-border-radius);
+  box-shadow: none;
+  text-shadow: none;
+}
+
+%form-button {
+  border-width: var(--button-border-width);
+  border-radius: var(--button-border-radius);
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: var(--button-align);
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    /* IE10+ CSS styles go here */
+  }
+  padding: 1.3rem 0.6rem;
+  @include mq(small) {
+    padding: 0 0.6rem 1.3rem;
+  }
+
+  &.flex-right {
+    justify-content: flex-end;
+  }
+}
+
+.oj-button.oj-button-full-chrome {
+  margin: 0 0.5rem;
+  @include mq(small){
+    margin:0.5rem;
+  }
+
+  &:first-child {
+    @include single-margin(left,0);
+  }
+
+  &:last-child {
+    @include single-margin(right,0);
+  }
+
+  &.action-button {
+    &-primary {
+      @extend %action-button;
+      @include btn-variant(var(--button-primary-foreground), var(--button-primary-background), var(--button-primary-border-color));
+    }
+
+    &-secondary {
+      @extend %action-button;
+      @include btn-variant(var(--button-secondary-foreground), var(--button-secondary-background), var(--button-secondary-border-color));
+    }
+
+    &-tertiary {
+      @extend %action-button;
+      @include btn-variant(var(--button-tertiary-foreground), var(--button-tertiary-background), var(--button-tertiary-border-color));
+      @include mq(small){
+        @include single-margin(left,0);
+      }
+    }
+  }
+
+  &.help-button {
+    @extend %help-button;
+    @include btn-variant(var(--button-help-color), var(--button-help-background), var(--button-help-border-color));
+  }
+
+  &.form-button {
+    &-primary {
+      @extend %form-button;
+      @include form-btn-variant(var(--button-primary-foreground), var(--button-primary-background), var(--button-primary-border-color));
+
+      &.rounded {
+        border-radius: var(--form-input-button-border-radius);
+      }
+    }
+
+    &-secondary {
+      @extend %form-button;
+      @include form-btn-variant(var(--button-secondary-foreground), var(--button-secondary-background), var(--button-secondary-border-color));
+
+      &.round {
+        border-radius: var(--form-input-button-border-radius);
+      }
+    }
+  }
+}
+.oj-buttonset{
+  padding:0.6rem 0;
+  .oj-button-jqui.oj-button-full-chrome {
+    @extend %action-button;
+    background-image: none;
+    &.oj-default, &.oj-hover {
+      .oj-button-label {
+        color: var(--button-primary-background);
+      }
+      background-color: var(--button-primary-foreground);
+    }
+
+    &.oj-selected {
+      .oj-button-label {
+        color: var(--button-primary-foreground);
+      }
+      background-color: var(--button-primary-background);
+      border-color: var(--button-primary-border-color);
+    }
+  }
+}
+
+.floating-button {
+  border: none;
+  border-radius: 50%;
+  color: var(--color-white); //box-shadow: 0.2rem 0.2rem 0.3rem rgba(0,0,0,.3);
+  box-shadow: 0 0.1rem 0.1rem 0 rgba(0, 0, 0, 0.14), 0 0.1rem 0.3rem 0 rgba(0, 0, 0, 0.12), 0 0.2rem 0.1rem -0.1rem rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  position: fixed;
+  background: var(--button-primary-background);
+  bottom: 5rem;
+  @include right(0.6rem);
+  @include float(right);
+  z-index: 2;
+  width: 2.8rem;
+  height: 2.8rem;
+  line-height: 3.2rem;
+  text-align: center;
+  &:focus {
+    outline: none;
+  }
+  .icons {
+    color: var(--color-white);
+  }
+}
+
+.oj-inputnumber .oj-buttonset .oj-button.oj-default {
+  border-color: var(--form-input-border-color);
+}
+html:not([dir="rtl"]) .oj-buttonset .oj-button-text-icon-end .oj-button-icon.oj-end, html:not([dir="rtl"]) .oj-buttonset .oj-button-text-icons .oj-button-icon.oj-end, html:not([dir="rtl"]) .oj-button-text-icon-end .oj-button-icon.oj-end, html:not([dir="rtl"]) .oj-button-text-icons .oj-button-icon.oj-end {
+    @include single-margin(right, .85714rem);
+	  @include single-margin(left, .42857rem);
+}

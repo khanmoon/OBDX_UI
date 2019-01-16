@@ -1,0 +1,28 @@
+<div class="form-main-container">
+    <!-- ko if:$component.params.transferData && $component.params.transferData.reviewMode -->
+    <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header : $component.resource.common.review , reviewHeader : ($component.isStandingInstruction() && $component.paynowWithSI && $component.paynowWithSI().length > 0) ? $component.payments.common.reviewHeaderMsgPayNowSI : $component.resource.paymentDetails.reviewHeaderMsg}}"></div>
+    <!-- /ko -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ($component.params.transferData && $component.params.transferData.reviewMode)?'':$component.resource.paymentDetails.header">
+        <!-- ko if:$component.isDataLoaded() -->
+        <div data-bind="template: { name: 'payments/review-payment-self' }"></div>
+        <!-- /ko -->
+    </page-section>
+    <!-- ko if:$component.params.transferData && $component.params.transferData.reviewMode -->
+    <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" id="verifyPaymentbutton" on-click="[[verifyPayment]]">
+            <span slot="startIcon" class="icons icon-confirm"></span>
+            <span data-bind="text:$component.resource.generic.common.confirm"></span>
+        </oj-button>
+        <!-- ko if:!$baseModel.small() -->
+        <oj-button class="action-button-secondary" id="cancel" on-click="[[$dashboard.openDashBoard.bind($component.resource.common.cancelConfirm)]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.resource.generic.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->        
+        <oj-button data-id="cancelPayment" class="action-button-tertiary" id="cancelPaymentbutton" on-click="[[$dashboard.hideDetails]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+            <span data-bind="text:$component.resource.generic.common.back"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+</div>

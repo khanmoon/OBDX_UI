@@ -1,0 +1,231 @@
+<!-- ko if: $component.existingAddOnLoaded() -->
+
+<!-- ko if : $component.salutationsLoaded() -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label label oj-lg-offset-2 oj-md-offset-1">
+		<oj-label for="salutation"><span data-bind="text:$component.resource.salutation"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+		<oj-select-one id="salutation" required translations="[[{'required':{messageDetail:$component.resource.messages.salutation}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.addonCards()[$index()].applicantDTO.personalInfo.salutation}}" :placeholder="''">
+			<!-- ko foreach:$component.salutations() -->
+			<oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+			<!-- /ko -->
+			</oj-select-one>
+	</div>
+</div>
+<!-- /ko  -->
+
+
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label label oj-lg-offset-2 oj-md-offset-1">
+		<oj-label :for="[['firstName']]"><span data-bind="text:$component.resource.firstName"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+		<oj-input-text :id="[['firstName']]" translations="[[{'required':{messageDetail:$component.resource.messages.firstName}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.addonCards()[$index()].applicantDTO.personalInfo.firstName}}" required="[[true]]" validators="[[$baseModel.getValidator('NAME')]]"></oj-input-text>
+	</div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label label oj-lg-offset-2 oj-md-offset-1">
+		<div class="oj-label ">
+			<oj-label :for="[['middleName']]"></oj-label>
+		</div>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+		<oj-input-text :id="[['middleName']]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.addonCards()[$index()].applicantDTO.personalInfo.middleName}}" validators="[{
+                        type:'regExp',options:{
+                            pattern:'[a-zA-Z\-\']*',messageDetail:$component.resource.messages.name}},{
+                        type:'length',options:{
+                            min:0,max:35}}]"></oj-input-text>
+	</div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label label oj-lg-offset-2 oj-md-offset-1">
+		<oj-label :for="[['lastName']]"><span data-bind="text:$component.resource.lastName"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+		<oj-input-text :id="[['lastName']]" translations="[[{'required':{messageDetail:$component.resource.messages.lastName}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.addonCards()[$index()].applicantDTO.personalInfo.lastName}}" required="[[true]]" validators="[[$baseModel.getValidator('NAME')]]"></oj-input-text>
+	</div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1  oj-lg-offset-2">
+		<oj-label :for="[['dateOfBirth']]"><span data-bind="text:$component.resource.dateOfBirth"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+		<oj-input-date required autocomplete="off" spellcheck="false" :id="[['dateOfBirth']]" translations="[[{'required':{messageDetail:$component.resource.messages.dob}}]]" converter="[[$baseModel.dateConverter]]" max="[[$component.todayIsoDate]]" value="{{$component.addonCards()[$index()].applicantDTO.personalInfo.birthDate}}" datepicker="[[{yearRange:'c-100:c'}]]"></oj-input-date>
+	</div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+	<!-- ko if : $component.countriesLoaded() -->
+	<div class=" tooltip-section oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1  oj-lg-offset-2">
+		<oj-label for="countryOfCitizenship" class="span-label"><span data-bind="text:$component.resource.countryOfCitizenship"></span></oj-label>
+
+		<!-- ko if: $baseModel.large() -->
+		<div class="tooltip message-text label" id="countryOfCitizenship_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.citizenshipRequirement,toolTipId:'countryOfCitizenship_tooltip'}}">
+		</div>
+		<span class="icon-help" id="tool-tip-holder" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'countryOfCitizenship_tooltip','tool-tip-holder'), mouseout: $component.hideToolTip.bind($data,'countryOfCitizenship_tooltip') }"></span>
+		<!-- /ko -->
+		<!-- ko ifnot: $baseModel.large() -->
+		<span aria-hidden="true"> <a href="#" class="icon-help" data-bind="click: function(){$('#countryOfCitizenship').trigger('openModal')} ,attr:{alt: $component.resource.countryClick, title: $component.resource.countryClickTitle}"></a></span>
+		<!-- /ko -->
+
+
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+		<oj-select-one id="countryOfCitizenship" required translations="[[{'required':{messageDetail:$component.resource.messages.citizenship}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.addonCards()[$index()].applicantDTO.personalInfo.citizenship}}" :placeholder="''">
+			<!-- ko foreach: $component.countries() -->
+			<oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+			<!-- /ko -->
+			</oj-select-one>
+
+		<div class="mobile-tooltip-holder"></div>
+	</div>
+	<!-- /ko -->
+
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1  oj-lg-offset-2">
+		<div class="oj-label ">
+			<oj-label :for="[['isPermanentResident']]"><span data-bind="text:$component.resource.isPermanentResident"></span></oj-label>
+		</div>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+
+		<oj-buttonset-one id="isPermanentResident" :aria-label="[[$component.resource.isPermanentResident]]" on-value-changed="[[$component.savePermanentResidence.bind($data,$index())]]" value="{{$component.addonCards()[$index()].temp_permanentResident}}"><oj-option name="isPermanentResident" class="isPermanentResident" value="{{'OPTION_YES'}}" :id="[['isPermanentResidentYes'+($index())]]"></oj-option><oj-option name="isPermanentResident" class="isPermanentResident" value="{{'OPTION_NO'}}" :id="[['isPermanentResidentNo'+($index())]]"></oj-option></oj-buttonset-one>
+	</div>
+</div>
+
+
+
+
+<!-- ko ifnot: $component.addonCards()[$index()].applicantDTO.personalInfo.isPermanentResidence -->
+<div class="oj-flex oj-flex-items-pad">
+	<!-- ko if : $component.countriesLoaded() -->
+	<div class="tooltip-section oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1  oj-lg-offset-2">
+		<oj-label for="countryOfResidence" class="span-label"><span data-bind="text:$component.resource.countryOfResidence"></span></oj-label>
+
+		<!-- ko if: $baseModel.large() -->
+		<div class="tooltip message-text label" id="countryOfResidence_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.citizenshipRequirement,toolTipId:'countryOfResidence_tooltip'}}">
+		</div>
+		<span class="icon-help" id="tool-tip-countryOfResidence-holder" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'countryOfResidence_tooltip','tool-tip-countryOfResidence-holder'), mouseout: $component.hideToolTip.bind($data,'countryOfResidence_tooltip') }"></span>
+		<!-- /ko -->
+
+		<!-- ko ifnot: $baseModel.large() -->
+		<span aria-hidden="true"> <a href="#" class="icon-help" data-bind="click: function(){$('#countryOfCitizenship').trigger('openModal')} ,attr:{alt: $component.resource.countryOfCitizenshipClick, title: $component.resource.countryOfCitizenshipClick}"></a></span>
+		<!-- /ko -->
+
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+		<oj-select-one id="countryOfResidence" required translations="[[{'required':{messageDetail:$component.resource.messages.residentCountry}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.addonCards()[$index()].applicantDTO.personalInfo.residentCountry}}" :placeholder="''">
+			<!-- ko foreach: $component.countries() -->
+			<oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+			<!-- /ko -->
+			</oj-select-one>
+	</div>
+	<!-- /ko -->
+</div>
+<!-- /ko -->
+
+<!-- ko if: $component.addonCards()[$index()].temp_showAddressSwitch -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1  oj-lg-offset-2">
+		<div class="oj-label">
+			<oj-label :for="[['isSameAsPrimary'+($index())]]"><span data-bind="text:$component.resource.isAddressSameAsPrimary"></span></oj-label>
+		</div>
+	</div>
+
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+		<oj-buttonset-one :id="[['isSameAsPrimary'+($index())]]" on-value-changed="[[$component.saveAddress.bind($data,$index())]]" value="{{$component.addonCards()[$index()].temp_isAddressSameAsPrimary}}"><oj-option name="isSameAsPrimary" class="isSameAsPrimary" value="{{'OPTION_YES'}}" :id="[['isSameAsPrimaryYes'+($index())]]"></oj-option><oj-option name="isSameAsPrimary" class="isSameAsPrimary" value="{{'OPTION_NO'}}" :id="[['isSameAsPrimaryNo'+($index())]]"></oj-option></oj-buttonset-one>
+	</div>
+</div>
+<!-- /ko  -->
+<!-- ko if: $component.refreshAddresses() -->
+<div class="oj-flex oj-flex-items-pad application-form-text cust-label margin-top-20">
+	<div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+		<h4 class="form-heading" data-bind="text:$component.resource.resAddr"></h4>
+	</div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<span class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10 text" data-bind="text:$component.resource.poBoxes"></span>
+</div>
+<div class="" data-bind="with:$component.addonCards()[$index()].partyAddresses[0]">
+	<div class="oj-flex oj-flex-items-pad">
+
+		<!-- ko if: $component.accommodationDataLoaded() -->
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+			<oj-label :for="[['accomodationType'+($baseModel.incrementIdCount())]]">
+				<span data-bind="text:$component.resource.accomodationType"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+			<oj-select-one :id="[['accomodationType'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.accomodationType}}]]" on-value-changed="[[$component.accomodationtypeChanged.bind($data,$index())]]" value="{{accomodationType}}" disabled="[[$component.addonCards()[$index()].temp_isResAddressSameAsPrimary()]]" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="''">
+				<!-- ko foreach: $component.accomodationOptions -->
+				<oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+				<!-- /ko -->
+				</oj-select-one>
+		</div>
+		<!-- /ko -->
+	</div>
+	<div id="contactInfo">
+		<div data-bind='component: { name: "address-input", params: { rootModel: $component,
+                              id:"2",
+                              	disableInputs:$component.addonCards()[$index()].temp_isResAddressSameAsPrimary(),
+                            addressModel:$data.postalAddress,template:"templateUS",
+														addressValues:$component.addonCards()[$index()].selectedValues().currentAddress,
+                            validator:$component.validationTracker}}'></div>
+	</div>
+	<div class="oj-flex oj-flex-items-pad">
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+			<oj-label :for="[['stayingSince'+($baseModel.incrementIdCount())]]">
+			<span data-bind="text:$component.resource.stayingSince"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+			<oj-input-date id="stayingSince" autocomplete="off" spellcheck="false" :id="[['stayingSince'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.stayingSince}}]]" converter="[[$baseModel.dateConverter]]" on-value-changed="[[$component.checkStayingSince.bind($data,$index())]]" required="[[true]]" max="[[$component.todayIsoDate]]" value="{{stayingSince}}" datepicker="[[{yearRange:'c-100:c'}]]"></oj-input-date>
+		</div>
+	</div>
+
+</div>
+
+<!-- ko if:$component.addonCards()[$index()].temp_previousAddressRequired() -->
+
+<!-- ko if : $component.addonCards()[$index()].temp_showPreviousAddress() -->
+<div class="oj-flex oj-flex-items-pad application-form-text cust-label margin-top-20">
+	<div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+		<h4 class="form-heading" data-bind="text:$component.resource.prevResAddr"></h4>
+	</div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<span class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10 text" data-bind="text:$component.resource.poBoxes"></span>
+</div>
+<div data-bind="with:$component.addonCards()[$index()].partyAddresses[1]">
+	<div class="oj-flex oj-flex-items-pad">
+
+		<!-- ko if: $component.accommodationDataLoaded() -->
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+			<oj-label :for="[['accomodationType2'+($baseModel.incrementIdCount())]]">
+				<span data-bind="text:$component.resource.accomodationType"></span></oj-label>
+		</div>
+		<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+			<oj-select-one id="accomodationType2" :id="[['accomodationType2'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.accomodationType}}]]" on-value-changed="[[$component.prevaccomodationtypeChanged.bind($data,$index())]]" value="{{accomodationType}}" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="''">
+				<!-- ko foreach: $component.accomodationOptions -->
+				<oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+				<!-- /ko -->
+				</oj-select-one>
+		</div>
+		<!-- /ko -->
+	</div>
+	<div id="contactInfo">
+		<div data-bind='component: { name: "address-input", params: { rootModel: $component,
+										id:"2",
+										addressModel:$data.postalAddress,
+										addressValues:$component.addonCards()[$index()].selectedValues().previousAddress,
+										validator:$component.validationTracker}}'></div>
+	</div>
+</div>
+<!-- /ko  -->
+<!-- /ko  -->
+<!-- /ko  -->
+<!-- /ko  -->

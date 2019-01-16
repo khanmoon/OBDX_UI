@@ -1,0 +1,164 @@
+<div class="oj-flex oj-flex-items-pad template_dashboard_design">
+    <div class="oj-flex-item oj-sm-12">
+        <div class="right oj-flex-item tutorialVideo">
+            <a href="javascript:void(0)" data-bind="text:$component.resourceBundle.watchTutVid,attr:{alt: $baseModel.format($component.resourceBundle.generic.common.clickHere,{action:$component.resourceBundle.watchTutVid}),title:$component.resourceBundle.watchTutVid},click:$component.showTutVideo"></a>
+        </div>
+    </div>
+    <div class="oj-flex-item oj-sm-9">
+        <div class="design-dashboard__design-step2--topPanel">
+            <div class="oj-flex-item oj-sm-12 design_container" id="design_container">
+                <!-- ko foreach:desktopTemplate() -->
+                <div data-bind="htmlBound:html"></div>
+                <!-- /ko -->
+            </div>
+            <div class="button-container oj-flex">
+                <span class="oj-sm-12 helpTxt">
+                    <span class="icons icon-information"></span>
+                    <span data-bind="text:$component.resourceBundle.addRowInfo"></span>
+                </span>
+                <oj-button class="action-button-primary help-button" on-click="[[addRow]]">
+                    <span data-bind="text:$component.resourceBundle.labels.addRow"></span>
+                </oj-button>
+            </div>
+        </div>
+
+    </div>
+    <div class="oj-flex-item oj-sm-3" id="componentListing">
+        <div class="oj-flex oj-sm-12">
+
+        </div>
+        <div class="oj-flex oj-sm-12">
+            <input type="text" data-bind="value:$component.searchComponent,valueUpdate:'afterkeydown',attr: {'aria-label':$component.resourceBundle.compoSearch,placeholder:$component.resourceBundle.compoSearch}"
+                class="searchComponent">
+        </div>
+        <div class="oj-flex oj-sm-12 design-dashboard__design-step2--componentList">
+            <div class="container oj-flex oj-sm-12">
+                <ul id="componentList" class="connectedSortable">
+                    <!-- ko foreach:moduleComponentsDesktop() -->
+                    <li class="ui-state-highlight" data-bind="attr:{'componentName':componentName,'dd-el-width':width.large,'dd-el-height':height,'dd-el-module':module,'dd-el-input':JSON.stringify(input),'dd-el-icon':icon,'title':$baseModel.format($component.resourceBundle.titleInfo,{width:width.large})}">
+                        <!-- ko if:icon -->
+                        <span class="icons pull-left" data-bind="css:icon"></span>
+                        <!-- /ko -->
+                        <span class="pull-left name" data-bind="text:$component.componentNameNLS.names[module][componentName]"></span>
+                    </li>
+                    <!-- /ko -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <oj-menu id="dashboardContextMenu" class="hide" :aria-label="[[$component.resourceBundle.labels.gridChoice]]" on-oj-action="[[dashboardContextMenuAction]]"
+        on-oj-open="[[getContextMenuRow]]">
+        <oj-option id="1" value="1">
+            <span data-bind="text:$component.resourceBundle.labels.contextMenu.oneXone"></span>
+        </oj-option>
+        <oj-option value="2" id="2">
+            <span data-bind="text:$component.resourceBundle.labels.contextMenu.oneXtwo"></span>
+        </oj-option>
+        <oj-option value="3" id="3">
+            <span data-bind="text:$component.resourceBundle.labels.contextMenu.oneXthree"></span>
+        </oj-option>
+        <oj-option value="4" id="4">
+            <span data-bind="text:$component.resourceBundle.labels.contextMenu.oneXfour"></span>
+        </oj-option>
+        <oj-option value="custom" id="custom">
+            <span data-bind="text:$component.resourceBundle.labels.contextMenu.customGrid"></span>
+        </oj-option>
+        <oj-option value="removeMe" id="removeMe">
+            <span data-bind="text:$component.resourceBundle.labels.contextMenu.removeMe"></span>
+        </oj-option>
+    </oj-menu>
+
+
+    <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'customGrid',header:$component.resourceBundle.labels.contextMenu.customGrid">
+        <div class="form-main-container gridInputContainer message-text">
+            <!-- ko if:$component.refreshGridSizeInput() -->
+            <div class="oj-flex oj-flex-items-pad ">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+                    <oj-label :for="[['custom_grid_input']]">
+                        <span data-bind="text:$component.resourceBundle.labels.noOfGrids"></span>
+                    </oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5">
+                    <oj-select-one id="custom_grid_input" value="{{$component.customGridSize}}" required="[[true]]">
+                        <oj-option value="2">2</oj-option>
+                        <oj-option value="3">3</oj-option>
+                        <oj-option value="4">4</oj-option>
+                    </oj-select-one>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-6 oj-md-4 oj-lg-4">
+                    <oj-label :for="[['custom_grid_size']]">
+                        <span data-bind="text:$component.resourceBundle.labels.indivisualGridSize"></span>
+                    </oj-label>
+                </div>
+
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 oj-flex-items-pad">
+                    <div class="oj-flex oj-sm-12 oj-flex-items-pad" :id="[['custom_grid_size']]">
+                        <!-- ko foreach:$component.customGridDetails() -->
+                        <div class="oj-flex-item oj-sm-3">
+                            <oj-input-text required validators="[[$baseModel.getValidator('NUMBERS',$component.resourceBundle.errorMsg,{
+                            type:'numberRange',options:{min:3,max:10}})]]" value="{{$component.customGridDetails()[$index()]}}"></oj-input-text>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad hide customGridErrorMessage" id="customErrorMessage2">
+                <span data-bind="text:$component.resourceBundle.errorMsg2"></span>
+            </div>
+            <div class="oj-flex oj-flex-items-pad hide customGridErrorMessage" id="customErrorMessage3">
+                <span data-bind="text:$component.resourceBundle.errorMsg3"></span>
+            </div>
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <oj-button class="action-button-primary" on-click="[[$component.saveCustomGridSize.bind($data)]]">
+                    <span data-bind="text:resourceBundle.generic.common.done"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" on-click="[[$component.hideCustomGrid]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                </oj-button>
+            </div>
+        </div>
+    </modal-window>
+    <modal-window params="baseModel : $baseModel, rootModel : $component,id:'componentInputDialog',header:$component.resourceBundle.componentInput">
+        <div class="form-main-container message-text">
+            <div class="oj-flex oj-flex-items-pad">
+                <!-- ko if:$component.renderComponentInputs() -->
+                <!-- ko foreach:$component.inputDetails().options -->
+                <div class="oj-flex oj-sm-12 oj-flex-items-pad">
+                    <div class="oj-flex oj-sm-3 oj-flex-items-pad">
+                        <oj-label :for="[[$data+$index()]]">
+                            <span data-bind="text:$component.componentInputNLS[$component.componentInputSource().module][$component.componentInputSource().componentName][$data].name"></span>
+                        </oj-label>
+                    </div>
+                    <div class="oj-flex oj-sm-8 oj-flex-items-pad">
+                        <oj-select-one :id="[[$data+$index()]]" class="oj-sm-12" value="{{$component.componentInputValues()[$index()]}}">
+                            <!-- ko foreach:$component.inputDetails().values[$data] -->
+                            <oj-option value="{{$data}}">
+                                <span data-bind="text:$component.componentInputNLS[$component.componentInputSource().module][$component.componentInputSource().componentName][$parent].values[$data]"></span>
+                            </oj-option>
+                            <!-- /ko -->
+                        </oj-select-one>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+            </div>
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <div class="oj-flex-item">
+                    <oj-button class="action-button-primary" on-click="[[$component.componentInputEntered]]">
+                        <span data-bind="text:$component.resourceBundle.generic.common.confirm"></span>
+                    </oj-button>
+                </div>
+            </div>
+        </div>
+    </modal-window>
+    <modal-window params="baseModel : $baseModel, rootModel : $component,id:'tutorialVideo',header:$component.resourceBundle.TutVid, hideHeader: true,closeHandler:$component.pauseVideo">
+        <div class="form-main-container message-text">
+            <video class="watchVideo" autoplay controls controlsList="nodownload" data-bind="loadImage:'dashboard-design/UX/tutorial.mp4'">
+            </video>
+        </div>
+    </modal-window>
+</div>

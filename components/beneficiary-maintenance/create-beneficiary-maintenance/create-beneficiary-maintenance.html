@@ -1,0 +1,263 @@
+    <div class="form-main-container trade-finance">
+        <page-section params="baseModel : $baseModel, rootModel : $data">
+          <oj-validation-group id="tracker" valid="{{groupValid}}">
+            <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+              <h5 class="sub-heading" data-bind="text:$component.resourceBundle.heading.beneficiaryDetails"></h5>
+
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="beneficiaryName"><span data-bind="text:$component.resourceBundle.labels.beneficiaryName"></span></oj-label>
+                </div>
+                <!-- ko if: $component.params.mode !== 'EDIT' || $component.beneficiaryDetails.id() === null -->
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                  <oj-input-text id="beneficiaryName" type="text" maxlength="35" :invalidcomponenttracker="[[$component.invalidTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidBeneficiaryName,{
+                     type:'length',options:{
+                         min:1,max:35}})]]" value="{{$component.beneficiaryDetails.name}}" required="[[true]]"></oj-input-text>
+                </div>
+              <!-- /ko -->
+              <!-- ko if: $component.params.mode === 'EDIT' && $component.beneficiaryDetails.id() !== null -->
+                <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-7 content">
+                  <span id="beneficiaryName" data-bind="text: $component.beneficiaryDetails.name"></span>
+                </div>
+              <!-- /ko -->
+                </div>
+
+
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="addressline1"><span data-bind="text:$component.resourceBundle.labels.address"></span></oj-label>
+                </div>
+                 <!-- ko if: $component.params.mode !== 'EDIT' || $component.beneficiaryDetails.id() === null -->
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                  <oj-input-text id="addressline1" type="text" maxlength="35" :invalidcomponenttracker="[[$component.invalidTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.addressError,{
+                    type:'length',options:{
+                        min:1,max:35}})]]" value="{{$component.beneficiaryDetails.address.line1}}" required="[[true]]"></oj-input-text>
+                </div>
+
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                  <oj-label class="hide-label" for="addressline2"><span data-bind="text:$component.resourceBundle.labels.address"></span></oj-label>
+                  <oj-input-text id="addressline2" type="text" maxlength="35" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.addressError,{
+                                         type:'length',options:{
+                                             min:0,max:35}})]]" value="{{$component.beneficiaryDetails.address.line2}}"></oj-input-text>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                  <oj-label class="hide-label" for="addressline3"><span data-bind="text:$component.resourceBundle.labels.address"></span></oj-label>
+                  <oj-input-text id="addressline3" type="text" maxlength="35" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.addressError,{
+                                        type:'length',options:{
+                                            min:0,max:35}})]]" value="{{$component.beneficiaryDetails.address.line3}}"></oj-input-text>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: $component.params.mode === 'EDIT' && $component.beneficiaryDetails.id() !== null -->
+                <!-- ko if: $component.beneficiaryDetails.address -->
+                 <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-12 content">
+                   <span id="addressline1" data-bind="text: $component.beneficiaryDetails.address.line1"></span>
+                 </div>
+
+                 <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-12 content">
+                   <span id="addressline1" data-bind="text: $component.beneficiaryDetails.address.line2"></span>
+                 </div>
+
+                 <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-12 content">
+                   <span id="addressline1" data-bind="text: $component.beneficiaryDetails.address.line3"></span>
+                 </div>
+                <!-- /ko -->
+                <!-- /ko -->
+                  </div>
+
+                  <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-label for="applicantCountry"><span data-bind="text:$component.resourceBundle.labels.country"></span></oj-label>
+                  </div>
+
+                  <!-- ko if: $component.params.mode !== 'EDIT' || $component.beneficiaryDetails.id() === null -->
+                  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                    <!-- ko if: $component.dropdownListLoaded.country() -->
+                    <oj-select-one class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7" id="applicantCountry" :invalidcomponenttracker="[[$component.invalidTracker]]" required="[[true]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" value="{{$component.beneficiaryDetails.address.country}}">
+                    <!-- ko foreach: $component.beneCountryoptions() -->
+                        <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+                    <!-- /ko -->
+                    </oj-select-one>
+                    <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: $component.params.mode === 'EDIT' && $component.beneficiaryDetails.id() !== null -->
+                    <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-12 content">
+                       <span id="applicantCountry" data-bind="text: $component.dropdownLabels.country"></span>
+                    </div>
+                    <!-- /ko -->
+                  </div>
+
+              <!-- ko if: $component.params.mode !== 'EDIT' || $component.beneficiaryDetails.id() === null -->
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="beneficiaryNickName"><span data-bind="text:$component.resourceBundle.labels.nickName"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                  <oj-input-text id="beneficiaryNickName" type="text" maxlength="35" :invalidcomponenttracker="[[$component.invalidTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidBeneficiaryName,{
+                     type:'length',options:{
+                         min:1,max:35}})]]" value="{{$component.beneficiaryDetails.nickName}}" required="[[true]]"></oj-input-text>
+                </div>
+              </div>
+                <!-- /ko -->
+                <!-- ko if: $component.params.mode === 'EDIT' && $component.beneficiaryDetails.id() !== null -->
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-label for="beneficiaryNickName"><span data-bind="text:$component.resourceBundle.labels.nickName"></span></oj-label>
+                  </div>
+                  <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7 content">
+                    <span id="nickName" data-bind="text: $component.beneficiaryDetails.nickName"></span>
+                  </div>
+                </div>
+                  <!-- /ko -->
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+                <h5 class="sub-heading" data-bind="text:$component.resourceBundle.heading.bankDetails"></h5>
+
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-label for="bankSwiftCode"><span data-bind="text:$component.resourceBundle.labels.swiftCode"></span></oj-label>
+                  </div>
+                  <!-- ko if: $component.params.mode === 'EDIT' && $component.beneficiaryDetails.id() !== null -->
+                  <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-7 content">
+                  <span id="bankSwiftCode" data-bind="text: $component.beneficiaryDetails.swiftId"></span>
+                  </div>
+                  <!-- /ko -->
+                  </div>
+
+                 <!-- ko if: $component.params.mode !== 'EDIT' || $component.beneficiaryDetails.id() === null -->
+                  <div class="oj-flex oj-flex-items-pad">
+                  <!-- ko ifnot: $component.additionalBankDetails-->
+                  <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-4">
+                      <oj-input-text id="bankSwiftCode" maxlength="11" value="{{$component.beneficiaryDetails.swiftId}}"></oj-input-text>
+                  </div>
+
+                  <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4">
+                    <oj-button class="form-button-secondary verify-button" on-click="[[verifyCode]]">
+      <span data-bind="text:$component.resourceBundle.common.labels.verify"></span>
+</oj-button>
+                  </div>
+
+
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                      <a href="#" class="form-button-link" data-bind="attr:{'alt':$component.resourceBundle.common.labels.lookupswiftcodeTitle,'title':$component.resourceBundle.common.labels.commonlookupswiftcodeAlt},
+                        text:$component.resourceBundle.common.labels.lookupswiftcode,click:$component.openLookup">
+                      </a>
+                  </div>
+                  <!--/ko -->
+                  <!-- ko if: $component.additionalBankDetails-->
+                  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8" data-bind="with:$component.additionalBankDetails">
+                      <div data-bind="text:('code' in $data)?code:''"></div>
+                      <div data-bind="text:('name' in $data)?name:''"></div>
+                      <div data-bind="text:('line1' in branchAddress)?branchAddress.line1:''"></div>
+                      <div data-bind="text:('city' in branchAddress)?branchAddress.city:''"></div>
+                      <div data-bind="text:('country' in branchAddress)?branchAddress.country:''"></div>
+                      <div class="">
+                          <oj-button class="action-button-tertiary" on-click="[[$component.resetCode]]">
+                            <span slot="startIcon" class="icons icon-refresh"></span>
+                            <span data-bind="text:$component.resourceBundle.common.labels.reset"></span>
+                          </oj-button>
+                      </div>
+                  </div>
+                <!--/ko -->
+                </div>
+                <!-- /ko -->
+
+                <!-- ko if: $component.params.mode === 'EDIT' && $component.beneficiaryDetails.id() !== null -->
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-label for="bankName"><span data-bind="text:$component.resourceBundle.labels.bankName"></span></oj-label>
+                  </div>
+                    <!-- ko if: $component.additionalBankDetails() -->
+                 <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-12 content">
+                   <span id="bankName" data-bind="text: $component.additionalBankDetails().name"></span>
+                 </div>
+                 <!-- /ko -->
+                </div>
+
+                 <div class="oj-flex oj-flex-items-pad">
+                 <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                   <oj-label for="bankAddressline1"><span data-bind="text:$component.resourceBundle.labels.bankAddress"></span></oj-label>
+                 </div>
+                 <!-- ko if: $component.additionalBankDetails() -->
+                 <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-12 content">
+                   <span id="addressline1" data-bind="text:$component.additionalBankDetails().branchAddress.line1"></span>
+                 </div>
+                 <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-12 content">
+                   <span data-bind="text: $component.additionalBankDetails().branchAddress.line2"></span>
+                 </div>
+                 <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-12 content">
+                   <span data-bind="text: $component.additionalBankDetails().branchAddress.line3"></span>
+                 </div>
+                  <!-- /ko -->
+                 </div>
+
+                <!-- /ko -->
+
+
+                <div class="oj-flex oj-flex-items-pad">
+                  <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-label for="accessType"><span data-bind="text:$component.resourceBundle.labels.accessType"></span></oj-label>
+                  </div>
+                 <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                      <oj-radioset class="oj-choice-direction-row" id="accessType" required="[[true]]" value="{{$component.beneficiaryDetails.visibility}}"><oj-option value="PRIVATE" id="private" name="private"><span for="private" data-bind="text:$component.resourceBundle.labels.PRIVATE"></span></oj-option><oj-option value="PUBLIC" id="public" name="private"><span for="public" data-bind="text:$component.resourceBundle.labels.PUBLIC"></span></oj-option></oj-radioset>
+                  </div>
+                </div>
+
+
+                  <!-- ko if: $component.params.mode !== 'EDIT' || $component.beneficiaryDetails.id() === null -->
+                 <div class="oj-flex oj-flex-items-pad">
+                   <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                     <oj-label for="applicability"><span data-bind="text:$component.resourceBundle.labels.applicability"></span></oj-label>
+                   </div>
+                   <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                   <oj-checkboxset required="[[true]]" value="{{$component.transactionTypeArray}}"><oj-option value="LETTEROFCREDIT" :id="[['lc']]"><span data-bind="attr: {'for': 'lc' },text:$component.resourceBundle.labels.LETTEROFCREDIT">
+                         </span></oj-option><oj-option value="COLLECTIONS" :id="[['collections']]"><span data-bind="attr: {'for': 'collections' }, text:$component.resourceBundle.labels.COLLECTIONS">
+                         </span></oj-option><oj-option value="GUARANTEE" :id="[['guarantee']]"><span data-bind="attr: {'for':'guarantee' }, text:$component.resourceBundle.labels.GUARANTEE">
+                         </span></oj-option></oj-checkboxset>
+                    </div>
+                  </div>
+                     <!--/ko -->
+                     <!-- ko if: $component.params.mode === 'EDIT' && $component.beneficiaryDetails.id() !== null -->
+                     <div class="oj-flex oj-flex-items-pad">
+                       <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                         <oj-label for="applicability"><span data-bind="text:$component.resourceBundle.labels.applicability"></span></oj-label>
+                       </div>
+                       <div class="oj-flex-item oj-sm-7 oj-md-10 oj-lg-12 content">
+                         <span id="applicability" data-bind="text: $component.transactionTypeArray()"></span>
+                       </div>
+                     </div>
+                     <!-- /ko -->
+
+                </div>
+
+        </div>
+      </oj-validation-group>
+
+
+        <div class="oj-flex oj-flex-items-pad button-container">
+          <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[$component.save]]">
+            <span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.save"></span>
+</oj-button>
+          <!-- ko ifnot:$baseModel.small() -->
+          <oj-button id="cancelbutton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.tradeFinanceErrors.messages.cancelOperation)]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+</oj-button>
+          <!-- /ko -->
+          <oj-button class="action-button-tertiary btn proceed-main-btn" on-click="[[back]]">
+            <span slot="startIcon" class="icons icon-back-arrow"></span>
+      <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+</oj-button>
+
+        </div>
+
+        <div data-bind="component: {name: 'bank-look-up', params:{rootModel: $component,
+                clearingCodeType:$component.clearingCodeType,
+                networkCode:$component.beneficiaryDetails.swiftId,
+                accountType:'International',
+                additionalBankDetails:$component.additionalBankDetails}}"></div>
+                </page-section>
+</div>

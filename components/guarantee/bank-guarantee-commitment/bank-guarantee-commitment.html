@@ -1,0 +1,113 @@
+<div class="page-section-content">
+    <oj-validation-group id="commitmentTracker" valid="{{commitmentGroupValid}}">
+    <!-- first row -->
+    <div class="oj-flex oj-flex-items-pad">
+        <!-- first row first column-->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="beneRefNo"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.beneficiaryRefNo"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                  <oj-input-text id="beneRefNo" :invalidcomponenttracker="[[$component.commitmentValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resourceBundle.tradeFinanceErrors.guarantees.invalidBeneRefNo,{
+                   type:'length',options:{min:1,max:16}})]]" value="{{$component.guaranteeDetails.beneContractReferenceNo}}" required></oj-input-text>
+                </div>
+            </div>
+        </div>
+        <!-- end of first row first column-->
+        <!-- first row second column-->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="guaranteeAmount"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.guaranteeAmount"></span></oj-label>
+                </div>
+
+                <!-- ko if: $component.currencyListOptions().length > 0 -->
+                <oj-label for="currency" class="hide-label"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.currency"></span></oj-label>
+
+                <div class="oj-flex-item oj-sm-4 oj-md-3 oj-lg-3">
+                    <oj-select-one id="currency" required="[[true]]" :invalidcomponenttracker="[[$component.commitmentValidationTracker]]" options="[[$component.currencyListOptions]]" value="{{currency}}">
+                    </oj-select-one>
+                </div>
+                <!-- /ko -->
+
+                <div class="oj-flex-item oj-sm-8 oj-md-7 oj-lg-4">
+                  <oj-input-text id="guaranteeAmount" required :invalidcomponenttracker="[[$component.commitmentValidationTracker]]" validators="[[[validateGuaranteeAmount]]]" converter="[[{type:'number',options:{
+                            style:'currency',currency:typeof ko.utils.unwrapObservable($component.guaranteeDetails.contractAmount.currency) ==='string'? ko.utils.unwrapObservable($component.guaranteeDetails.contractAmount.currency):'',currencyDisplay:'symbol'}}]]" value="{{$component.guaranteeDetails.contractAmount.amount}}"></oj-input-text>
+                </div>
+            </div>
+            </div>
+        <!-- end of first row second column-->
+    </div>
+    <!--end of first row -->
+
+    <!-- second row -->
+    <div class="oj-flex oj-flex-items-pad">
+        <!-- second row first column-->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="effectiveDate"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.effectiveDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-6 oj-md-5 oj-lg-3">
+                    <oj-input-date id="effectiveDate" required="[[true]]" :placeholder="[[$component.resourceBundle.common.labels.selectDate]]" converter="[[$baseModel.dateConverter]]" value="{{$component.guaranteeDetails.effectiveDate}}" max="[[($component.guaranteeDetails.expiryDate() !== null ? $component.expiryDateMinusOne:($component.guaranteeDetails.closureDate() !== null ? $component.closureDateMinusOne:null))]]" min="[[$component.minEffectiveDate]]"></oj-input-date>
+                </div>
+            </div>
+        </div>
+
+        <!-- end of second row first column-->
+        <!-- second row second column-->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="expiryDate"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.expiryDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-6 oj-md-5 oj-lg-3">
+                  <oj-input-date id="expiryDate" required="[[true]]" converter="[[$baseModel.dateConverter]]" :placeholder="[[$component.resourceBundle.common.labels.selectDate]]" max="[[($component.guaranteeDetails.closureDate() !== null ? $component.closureDateMinusOne:null)]]" min="[[($component.guaranteeDetails.effectiveDate() !== null ? effectiveDate1:minExpiryDate)]]" value="{{$component.guaranteeDetails.expiryDate}}"></oj-input-date>
+                </div>
+            </div>
+        </div>
+        <!-- end of second row second column-->
+    </div>
+    <!--end of second row -->
+
+     <!-- third row -->
+    <div class="oj-flex oj-flex-items-pad">
+        <!-- third row first column-->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="closureDate"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.closureDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-6 oj-md-5 oj-lg-3">
+                    <oj-input-date id="closureDate" required="[[true]]" converter="[[$baseModel.dateConverter]]" :placeholder="[[$component.resourceBundle.common.labels.selectDate]]" min="[[($component.guaranteeDetails.expiryDate() !== null ? minClosureDate:($component.guaranteeDetails.effectiveDate() !== null ? effectiveDate2:minExpiryDate))]]" value="{{$component.guaranteeDetails.closureDate}}"></oj-input-date>
+                </div>
+            </div>
+        </div>
+        <!-- end of third row first column-->
+        <!-- third row second column-->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="expiryPlace"><span data-bind="text:$component.resourceBundle.commitmentDetails.labels.expiryPlace"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                  <oj-input-text id="expiryPlace" :invalidcomponenttracker="[[$component.commitmentValidationTracker]]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SPACE',$component.resourceBundle.tradeFinanceErrors.guarantees.invalidExpiryPlace,{type:'length',options:{min:1, max:29}})]]" value="{{$component.guaranteeDetails.expiryPlace}}" required></oj-input-text>
+                </div>
+            </div>
+        </div>
+        <!-- end of third row second column-->
+    </div>
+    <!--end of third row -->
+    </oj-validation-group>
+    <!-- ko if : $component.mode() === 'CREATE' -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <oj-button id="continueButtonCommitment" class="action-button-secondary" on-click="[[continueFunc]]">
+            <span slot="startIcon" class="icons icon-submit"></span>
+            <span data-bind="text:$component.resourceBundle.common.labels.continue"></span>
+        </oj-button>
+      </div>
+    </div>
+    <!-- /ko -->
+</div>

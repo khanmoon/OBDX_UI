@@ -1,0 +1,18 @@
+<!-- ko if:detailsLoaded() -->
+<page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading : $component.resource.header ">
+    <!-- Add Biller -->
+    <div class="row-group" data-bind="with:$component.billerDetails()">
+        <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.category  , value :categoryType"></row>
+         <row class="highlight-text" params="baseModel : $baseModel, rootModel : $component, label :  $component.resource.billerName , value :billerDescription"></row>
+         <!-- ko if:'relationshipNumber' in $component.billerDetails()?(relationshipNumber!==null && relationshipNumber !=='') : false -->
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.relationship1 , value :relationshipNumber"></row>
+         <!-- /ko -->
+         <!-- ko if:'consumerNumber' in $component.billerDetails()?(consumerNumber!==null && consumerNumber !=='') : false -->
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.relationship2 , value :consumerNumber"></row>
+         <!-- /ko -->
+         <!-- ko if:'accountRelationshipNumber' in $component.billerDetails()?(accountRelationshipNumber!==null &&  accountRelationshipNumber !==''):false -->
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.relationship3 , value :accountRelationshipNumber"></row>
+        <!-- /ko -->
+    </div>
+</page-section>
+<!-- /ko -->

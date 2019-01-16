@@ -1,0 +1,94 @@
+<!-- ko if: currenciesLoaded()  -->
+<div class="requirements" data-bind="with:productDetails().requirements">
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-10 ">
+
+      <div class=" primary-heading" data-bind="text:$component.resource.loan.header"></div>
+
+    </div>
+  </div>
+  <oj-validation-group id="requirementsTracker" valid="{{$component.groupValid}}">
+    <div class="oj-flex oj-flex-items-pad ">
+      <!-- ko if: $component.loanPurposeLoaded() -->
+      <div class="oj-flex-item label oj-sm-12 oj-md-4  oj-lg-3 oj-lg-offset-1">
+        <oj-label class="main-label" for="purpose-type"><span data-bind="text:$component.resource.loan.purpose"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-7  oj-lg-6 label">
+        <oj-select-one id="purpose-type" required translations="[[{'required':{messageDetail:$component.resource.messages.purpose}}]]" on-value-changed="[[$component.purposeChangedHandler]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder=""
+          value="{{purpose.code}}">
+          <!-- ko foreach: $component.purposeData -->
+          <oj-optgroup label="[[name]]">
+            <!-- ko foreach: purposeList -->
+            <oj-option value="{{code}}"><span data-bind="text:name"></span></oj-option>
+            <!-- /ko -->
+          </oj-optgroup>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+      <!-- /ko -->
+    </div>
+
+
+    <div data-bind="component: {
+                name: 'amount-input', params: {
+                    amount :requestedAmount.amount,
+                    label : $component.resource.loan.loanAmount,
+                    currency:$component.transferCurrency,
+                    labelClasses : 'oj-lg-3 oj-md-4 oj-lg-offset-1',
+                    valueClasses : 'oj-lg-8 oj-md-8',
+                    currencyParser : $component.currencyParser,
+                    currencyListRequired : true,
+                    converter:$root.formatCurrency,
+                    validator:$component.validationTracker,
+                    isMandatory:true,
+                    maxlength:15,
+                    rootId:'loan-amount',
+                    rootClass:'form-input',
+                    inline:true,
+                    formattedAmount: ko.observable()
+                }
+            }"></div>
+
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-1">
+        <oj-label><span data-bind="text:$component.resource.loan.term"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-2  oj-lg-2 label">
+        <oj-select-one required :id="[['years']]" translations="[[{'required':{messageDetail:$component.resource.messages.years}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="" value="{{requestedTenure.years}}">
+          <!-- ko foreach: $component.optionYears -->
+          <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+      <div class="oj-flex-item label oj-sm-12 oj-md-2  oj-lg-2  ">
+        <oj-label :for="[['years']]"><span data-bind="text:$component.resource.loan.years"></span></oj-label>
+      </div>
+
+
+      <div class="oj-flex-item oj-sm-12 oj-md-2  oj-lg-2 label">
+        <oj-select-one required :id="[['month']]" translations="[[{'required':{messageDetail:$component.resource.messages.months}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="" value="{{requestedTenure.months}}">
+          <!-- ko foreach: $component.optionMonths -->
+          <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+      <div class="oj-flex-item label oj-sm-12 oj-md-2  oj-lg-2 ">
+        <oj-label :for="[['month']]"><span data-bind="text:$component.resource.loan.months"></span></oj-label>
+      </div>
+    </div>
+
+
+    <div class="oj-flex oj-flex-items-pad ">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-lg-offset-1">
+        <oj-label class="oj-label" for="co-applicant"><span data-bind="text:$component.resource.coApplicant"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4  oj-lg-3 label">
+        <oj-buttonset-one id="noOfCoApplicants" required on-value-changed="[[$component.coapplicantsSelected]]" value="{{noOfCoApplicants}}" disabled="[[$component.disableCoAppPartyId()]]">
+          <oj-option name="applicationTypes" class="applicationTypes" value="{{'1'}}" :id="[['coAppYes']]"><span data-bind="attr: {for: 'coAppYes'},text:$component.resource.generic.common.yes"></span></oj-option>
+          <oj-option name="applicationTypes" class="applicationTypes" value="{{'0'}}" :id="[['coAppNo']]"><span data-bind="attr: {for: 'coAppNo'},text:$component.resource.generic.common.no"></span></oj-option>
+        </oj-buttonset-one>
+      </div>
+    </div>
+  </oj-validation-group>
+</div>
+<!-- /ko -->

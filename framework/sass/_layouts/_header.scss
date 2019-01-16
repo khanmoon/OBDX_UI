@@ -1,0 +1,264 @@
+
+.header {
+  .sticky {
+    position: fixed;
+    width: 100%;
+    background: var(--base-color-secondary);
+    z-index: 5;
+    top: 0;
+  }
+  .header-container {
+    color: var(--header-foreground-color);
+    background: var(--header-background-color);
+    max-width: 100vw;
+    z-index: 5;
+    transition: box-shadow 0.2s;
+    .helpdesk {
+      &-header-container {
+        background: var(--base-background-tertiary);
+        color: var(--base-text-secondary);
+        display: flex;
+        align-items: center;
+        &__icon {
+          @include single-padding(right, 3.8rem);
+        }
+        &__title {
+          @include single-padding(left, 3.2rem);
+        }
+        &-title {
+          &__text {
+            display: inline-block;
+          }
+        }
+      }
+    }
+    .fixed-header-container {
+      justify-content: space-around;
+      margin: 0 auto;
+      background-image: url($image-base-path + "/common/pattern.svg");
+      background-position: right center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: var(--base-dimension-header-height);
+      .logo-container {
+        .icon-menu {
+          padding: 0;
+          @include float(left);
+        }
+        .icon-logo {
+          display: inline-block;
+          width: 8rem;
+        }
+      }
+    }
+    .alternate-primary {
+      .oj-combobox {
+        max-width: 20rem;
+        width: 20rem;
+      }
+    }
+    .comp-title {
+      @include float(left);
+      padding: 0 1.6rem;
+      display: flex;
+      @include mq(small) {
+        padding: 0;
+      }
+      h2 {
+        font-size: var(--base-font-size-larger);
+        font-weight: var(--base-font-weight-regular);
+        color: var(--base-color-secondary-text);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        @include mq(small) {
+          font-size: var(--base-font-size-large);
+        }
+        @include mq(medium) {
+          font-size: var(--base-font-size-large);
+        }
+      }
+    }
+    .icon-logo {
+      height: 2.2rem;
+    }
+    .badge {
+      display: inline-block;
+      min-width: 0.6rem;
+      height: 0.6rem;
+      padding: 0.3rem;
+      font-size: var(--base-font-size-small);
+      font-weight: 400;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      border-radius: 0.6rem;
+      position: relative;
+      bottom: 0.4rem;
+      @include left(0);
+      margin: 0 -.8em;
+      border-radius: 3.1rem;
+      background: var(--base-color-danger);
+      color: var(--color-white);
+    }
+    .icon-menu-bar {
+      top: 0.2rem;
+      position: relative;
+      cursor: pointer;
+      color: var(--base-color-secondary-text);
+      font-size: calc(#{var(--base-font-size-default)} + 0.6rem);
+      @include mq(medium) {}
+      @include mq(small) {}
+    }
+    .icon-back-arrow {
+      display: block;
+      cursor: pointer;
+      @include float(left);
+      @include mq(small) {
+        font-size: calc(#{var(--base-font-size-default)} + 0.4rem);
+        color: var(--base-color-secondary-text);
+        @include single-padding(right, 0.6rem);
+      }
+      @include mq(medium) {
+        font-size: calc(#{var(--base-font-size-default)} + 0.6rem);
+        color: var(--base-color-secondary-text);
+      }
+      @include mq(large) {
+        font-size: calc(#{var(--base-font-size-default)} + 1.3rem);
+        color: var(--base-color-secondary-text);
+      }
+    }
+    .menu-bar-container {
+      background: transparent;
+      @include float(left);
+      &.active {
+        @include mq(small) {
+          width: 3.3rem;
+        }
+        @include mq(medium) {
+          width: 3.3rem;
+        }
+      }
+    }
+    .header-nav-container {
+      position: fixed;
+    }
+    .quick-menu {
+      &-container {
+        height: 3.8rem;
+        line-height: 3.8rem;
+        text-align: center;
+      }
+      &-label {
+        cursor: pointer;
+        font-size: var(--base-font-size-large);
+        padding: 0 0.5rem;
+        color: var(--base-color-secondary-text);
+        display: inline-block;
+        &:hover {
+          background: var(--base-color-secondary-darken);
+        }
+      }
+    }
+    .hamburger-icon {
+      svg {
+        width: 1.5rem;
+        margin: 0.4rem;
+        @include mq(small) {
+          margin: 0;
+        }
+        transform: translate3d(0, 0, 0);
+      }
+      path {
+        fill: none;
+        transition: stroke-dashoffset 0.5s cubic-bezier(0.25, -0.25, 0.75, 1.25), stroke-dasharray 0.5s cubic-bezier(0.25, -0.25, 0.75, 1.25);
+        stroke-width: 2rem;
+        stroke-linecap: round;
+        stroke: var(--header-foreground-color);
+        stroke-dashoffset: 0px;
+      }
+      path.top,
+      path.bottom {
+        stroke-dasharray: 240px 950px;
+      }
+      path.middle {
+        stroke-dasharray: 240px 240px;
+      }
+      &.cross {
+        path.top,
+        path.bottom {
+          stroke-dashoffset: -650px;
+        }
+        path.middle {
+          stroke-dashoffset: -115px;
+          stroke-dasharray: 1px 220px;
+        }
+      }
+    }
+  }
+  .notification-clear-all {
+    display: flex;
+    justify-content: flex-end;
+    background-color: var(--base-background-primary);
+    a {
+      padding: 0.2rem 0.5rem 0 0;
+    }
+  }
+  .nav-menu {
+    a {
+      color: var(--header-foreground-color);
+      font-weight: var(--base-font-weight-light);
+      .lastLogin {
+        font-size: var(--base-font-size-small);
+      }
+    }
+    ul {
+      list-style: none;
+      display: flex;
+      justify-content: flex-end;
+      margin: 0;
+      height: var(--base-dimension-header-height);
+      li {
+        a {
+          display: inline-flex;
+          .icons {
+            padding: 0 0.4rem;
+          }
+        }
+        @include single-padding(right, 1rem);
+        margin: auto 0;
+        display: inline-flex;
+        // .oj-button {
+        //   &.oj-hover,
+        //   &.oj-selected {
+        //     &.oj-button-half-chrome .oj-button-button {
+        //       background: transparent;
+        //       border-width: 0;
+        //     }
+        //   }
+        // }
+        &:last-child {
+          padding: 0;
+        }
+      }
+    }
+  }
+  &-mailbox-launcher {
+    width: 25.6rem;
+    min-height: 10rem;
+  }
+  &-profile-launcher {
+    width: 20rem;
+    ul {
+      list-style: none;
+      padding: 0;
+      li {
+        padding: 0.6rem 0;
+        &:hover {
+          background-color: var(--base-border-default);
+        }
+      }
+    }
+  }
+}

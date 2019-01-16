@@ -1,0 +1,91 @@
+<page-section params="baseModel : $baseModel, rootModel : $data, heading :nls.transactionJourney.pageHeader">
+<div class="oj-flex oj-flex-items-pad"><div class="oj-flex-item">
+    <div class="transaction-journey">
+        <div class="transaction-journey__train-box transaction-journey-train-box">
+            <div class="transaction-journey-train-box__train-header"><span data-bind="text:nls.transactionJourney.status.initiate"></span></div>
+            <div class="transaction-journey-train-box__block">
+                <a href="#" data-bind="attr:{'alt':$component.nls.transactionJourney.toggleTransactionDetailsAlt ,'title':$component.nls.transactionJourney.toggleTransactionDetails },click: toggleTransactionDetails">
+                  <span class="transaction-journey-train-box__block--icon-container">
+                    <span class="icons icon-arrow-up"></span></span>
+                </a>
+            </div>
+            <div class="transaction-journey-train-box__block-container transaction-journey-train-box-block-container">
+                <div class="transaction-journey-train-box-block-container__block-details transaction-journey-train-box-block-container-block-details">
+                    <div class="transaction-journey-train-box-block-container-block-details__icon transaction-journey-train-box-block-container-block-details-icon">
+                      <span class="icon transaction-journey-train-box-block-container-block-details-icon__check"></span></div>
+                    <div class="transaction-journey-train-box-block-container-block-details__details transaction-journey-train-box-block-container-block-details-details">
+                        <div class="transaction-journey-train-box-block-container-block-details-details__check" data-bind="text:$baseModel.format(nls.transactionJourney.fullName,{firstName:$component.transactionJourneyDetails().createdByDetails.firstName || '',middleName:$component.transactionJourneyDetails().createdByDetails.middleName || '',lastName:$component.transactionJourneyDetails().createdByDetails.lastName || ''})"></div>
+                        <div class="transaction-journey-train-box-block-container-block-details-details__transaction-date" data-bind="text:$baseModel.formatDate(transactionJourneyDetails().creationDate,'dateTimeFormat')"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="transaction-journey__train-box">
+            <div class="transaction-journey-train-box__train-header"><span data-bind="text:nls.transactionJourney.status.approve"></span></div>
+            <div class="transaction-journey-train-box__block">
+              <a href="#" data-bind="attr:{'alt':$component.nls.transactionJourney.toggleTransactionDetailsAlt ,'title':$component.nls.transactionJourney.toggleTransactionDetails },click: toggleTransactionDetails">
+                <span class="transaction-journey-train-box__block--icon-container"><span id="approvedDetailsIcon" class="icons icon-arrow-up"></span></span>
+              </a>
+            </div>
+            <div class="transaction-journey-train-box__block-container transaction-journey-train-box-block-container">
+                <!-- ko foreach:$component.approvedDetails() -->
+                <div class="transaction-journey-train-box-block-container__block-details transaction-journey-train-box-block-container-block-details">
+                    <div class="transaction-journey-train-box-block-container-block-details__icon transaction-journey-train-box-block-container-block-details-icon">
+                      <span class="icon" data-bind="css:{'transaction-journey-train-box-block-container-block-details-icon__check':(icon==='check'),'transaction-journey-train-box-block-container-block-details-icon__close':(icon==='close')}"></span></div>
+                    <div class="transaction-journey-train-box-block-container-block-details__details transaction-journey-train-box-block-container-block-details-details">
+                        <div data-bind="css:{'transaction-journey-train-box-block-container-block-details-details__transaction-success':(icon==='check'),'transaction-journey-train-box-block-container-block-details-details__transaction-failed':(icon==='close')},text:$baseModel.format($parent.nls.transactionJourney.fullName,{firstName:updatedByDetails.firstName || '',middleName:updatedByDetails.middleName || '',lastName:updatedByDetails.lastName || ''})"></div>
+                        <div class="transaction-journey-train-box-block-container-block-details-details__transaction-date" data-bind="text:$baseModel.formatDate(lastUpdatedDate,'dateTimeFormat')"></div>
+                        <!-- ko if:remarks -->
+                        <div>
+                          <span class="icons icon-remarks"></span>
+                          <span data-bind="text: remarks"></span>
+                        </div>
+                        <!-- /ko -->
+
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="transaction-journey__train-box">
+            <div class="transaction-journey-train-box__train-header"><span data-bind="text:nls.transactionJourney.status.process"></span></div>
+            <div class="transaction-journey-train-box__block">
+              <a href="#" data-bind="attr:{'alt':$component.nls.transactionJourney.toggleTransactionDetailsAlt ,'title':$component.nls.transactionJourney.toggleTransactionDetails },click: toggleTransactionDetails">
+                <span class="transaction-journey-train-box__block--icon-container"><span id="processedDetailsIcon" class="icons icon-arrow-up"></span></span>
+              </a>
+            </div>
+            <div class="transaction-journey-train-box__block-container transaction-journey-train-box-block-container">
+                <!-- ko foreach:$component.processedDetails() -->
+                <div class="transaction-journey-train-box-block-container__block-details transaction-journey-train-box-block-container-block-details">
+                    <div class="transaction-journey-train-box-block-container-block-details__icon transaction-journey-train-box-block-container-block-details-icon">
+                      <span class="icon" data-bind="css:{'transaction-journey-train-box-block-container-block-details-icon__check':(icon==='check'),'transaction-journey-train-box-block-container-block-details-icon__close':(icon==='close')}"></span></div>
+                    <div class="transaction-journey-train-box-block-container-block-details__details transaction-journey-train-box-block-container-block-details-details">
+                        <!-- ko if:customMsg -->
+                        <div class="oj-flex-item no-pad-cols" data-bind="css:{'transaction-journey-train-box-block-container-block-details-details__transaction-success':(icon==='check'),'transaction-journey-train-box-block-container-block-details-details__transaction-failed':(icon==='close')},text:customMsg"></div>
+                          <!-- /ko -->
+                          <!-- ko if:reference -->
+                          <div class="referenceno" data-bind="text:$baseModel.format($parent.nls.transactionJourney.transactionReference,{ref:reference})"></div>
+                          <!-- /ko -->
+                        <div class="oj-flex-item no-pad-cols transaction-journey-train-box-block-container-block-details-details__transaction-date" data-bind="text:$baseModel.formatDate(lastUpdatedDate,'dateTimeFormat')"></div>
+                        <!-- ko if:remarks -->
+                          <div>
+                            <span class="icons icon-remarks"></span>
+                            <span data-bind="text: remarks"></span>
+                          </div>
+                        <!-- /ko -->
+
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="transaction-journey__connector" data-bind="style:{width:$component.dividerWidth(),left:$component.dividerPosition()}"></div>
+        <!-- ko if:$baseModel.small() -->
+        <div class="smallOnlyJourney">
+          <div class="smallOnlyJourney__train-box"></div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div></div>
+</page-section>

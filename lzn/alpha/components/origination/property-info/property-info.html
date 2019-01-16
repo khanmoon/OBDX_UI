@@ -1,0 +1,154 @@
+<!-- ko if: $component.propertyInfoDataLoaded() -->
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <div data-bind="with:$component.productDetails().requirements">
+    <div class="oj-flex oj-flex-items-pad application-form-text cust-label margin-top-20">
+      <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <h4 class="form-heading" data-bind="text: $component.resource.propertyDetails"></h4>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-2 oj-md-offset-1">
+        <oj-label for="ownershipType"><span data-bind="text:$component.resource.ownershipType"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4 padding-top-5">
+        <oj-buttonset-one id="ownershipType" :aria-label="[[$component.resource.ownershipType]]" on-value-changed="[[$component.ownershipTypeChange]]" value="{{$component.ownershipDefault}}">
+          <oj-option name="ownershipTypeSet" class="ownershipTypeSet" value="{{'SINGLE'}}" :id="[['Single']]"><span data-bind="attr: {for: 'Single'},text:$component.resource.single"></span></oj-option>
+          <oj-option name="ownershipTypeSet" class="ownershipTypeSet" value="{{'JOINT'}}" :id="[['Joint']]"><span data-bind="attr: {for: 'Joint'},text:$component.resource.joint"></span></oj-option>
+        </oj-buttonset-one>
+      </div>
+    </div>
+    <!-- ko if: $component.ownershipDefault() === "SINGLE" -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-2 oj-md-offset-1">
+        <oj-label :for="[['ownersId'+($baseModel.currentIdCount())]]"><span data-bind="text:$component.resource.ownersOfTheProperty"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5">
+        <oj-select-one required :id="[['ownersId'+($baseModel.currentIdCount())]]" value="{{propertyDetails.ownership[0].partyName}}" on-value-changed="[[$component.ownersChangeHandler]]" disabled="[[$component.disableInputs()]]" :placeholder="">
+          <!-- ko foreach: $component.owners() -->
+          <oj-option value="{{$baseModel.format($component.resource.generic.common.name,{firstName:$data.personalInfo.firstName,lastName:$data.personalInfo.lastName})}}"><span data-bind="text:$baseModel.format($component.resource.generic.common.name,{firstName:$data.personalInfo.firstName,lastName:$data.personalInfo.lastName})"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $component.ownershipDefault() === "JOINT" -->
+    <div class="oj-flex oj-flex-items-pad no-inner-flex-margin">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-2 oj-md-offset-1">
+        <oj-label><span data-bind="text:$component.resource.ownersOfTheProperty"></span></oj-label>
+      </div>
+      <div class="oj-flex-item label oj-sm-12 oj-md-3 oj-lg-3 padding-top-5">
+        <!-- ko foreach: propertyDetails.ownership -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <span data-bind="text : partyName()"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $component.propertyTypesInfoLoaded() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-2 oj-md-offset-1">
+        <oj-label :for="[['propertyType'+($baseModel.currentIdCount())]]"><span data-bind="text:$component.resource.typeOfTheProperty"></span></oj-label>
+      </div>
+
+      <!-- ko foreach: $component.propertyTypes() -->
+      <!-- ko if: code === "RESIDENTIAL_PROPERTY" -->
+      <div class="oj-flex-item label oj-sm-12 oj-md-3 oj-lg-3 padding-top-5">
+        <span data-bind="text: value"></span>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $component.propertySubTypesInfoLoaded() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-lg-offset-2 oj-md-offset-1">
+        <oj-label :for="[['propertySubType'+($baseModel.currentIdCount())]]"><span data-bind="text:$component.resource.subTypeOfTheProperty"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5">
+        <oj-select-one required :id="[['propertySubType'+($baseModel.currentIdCount())]]" value="{{propertyDetails.propertySubType}}" disabled="[[$component.disableInputs()]]" :placeholder="">
+
+          <!-- ko foreach: $component.propertySubTypes() -->
+          <oj-option value="{{code}}"><span data-bind="text:value"></span></oj-option>
+          <!-- /ko -->
+        </oj-select-one>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: $component.disableInputs() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-2 label oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:$component.resource.purchasePrice"></span></oj-label>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5">
+        <span data-bind="text : $baseModel.formatCurrency(propertyDetails.purchasePrice.amount(), propertyDetails.purchasePrice.currency)"></span>
+      </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.disableInputs() -->
+    <div data-bind="component: {
+                          name: 'amount-input', params: {
+                              amount :propertyDetails.purchasePrice.amount,
+                              label : $component.resource.purchasePrice,
+                              currency: propertyDetails.purchasePrice.currency,
+                              labelClasses : 'oj-lg-2 label oj-md-3 oj-lg-offset-2 oj-md-offset-1',
+                              valueClasses : 'oj-lg-6 oj-md-7',
+                              currencyListRequired : false,
+                              disableInputs: $component.disableInputs(),
+                              converter:$component.formatCurrency,
+                              validator:$component.validationTracker,
+                              isMandatory:true,
+                              maxlength:15,
+                              rootId:'purchase-amount',
+                              inline:'origination',
+                              rootClass:'form-input'
+                          }
+                      }">
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex oj-flex-items-pad application-form-text cust-label margin-top-20">
+      <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <h4 class="form-heading" data-bind="text: $component.resource.addressOfTheProperty"></h4>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item no-pad-cols">
+        <div required data-bind='component: {
+                                            name: "address-input",
+                                            params: {
+                                            validator: $component.validationTracker,
+                                            disableInputs: $component.disableInputs(),
+                                            rootModel: $component,
+                                            addressModel:propertyDetails.address}}'>
+        </div>
+      </div>
+    </div>
+    <!-- ko if: $component.showResidenceButtonset() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 oj-md-offset-1">
+        <div class="oj-label ">
+          <oj-label for="isPrimaryResidence"><span data-bind="text:$component.resource.primaryPlaceOfResidence"></span></oj-label>
+        </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+        <oj-buttonset-one id="isPrimaryResidence" :aria-label="[[$component.resource.primaryPlaceOfResidence]]" on-value-changed="[[$component.setPrimaryResidence]]" value="{{$component.primaryResidentDefault}}" disabled="[[$component.disableInputs()]]">
+          <oj-option name="isPrimaryResidence" class="isPrimaryResidence" value="{{'OPTION_YES'}}" :id="[['YesIsPrimaryResidence']]"><span :for="[['YesIsPrimaryResidence']]" data-bind="text:$component.resource.generic.common.yes"></span></oj-option>
+          <oj-option name="isPrimaryResidence" class="isPrimaryResidence" value="{{'OPTION_NO'}}" :id="[['NoIsPrimaryResidence']]"><span :for="[['NoIsPrimaryResidence']]" data-bind="text:$component.resource.generic.common.no"></span></oj-option>
+        </oj-buttonset-one>
+      </div>
+    </div>
+
+    <!-- /ko -->
+
+  </div>
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container ">
+  <div class="oj-flex-item oj-lg-10 oj-md-10">
+    <oj-button raised="" id="propertyInfoSubmit" class="form-button-secondary " :aria-label="[[$component.resource.propertyInfoSubmit]]" on-click="[[$component.savePropertyInfo]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+  </div>
+</div>
+<!-- /ko -->

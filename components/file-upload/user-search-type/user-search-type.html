@@ -1,0 +1,22 @@
+<!-- ko if:(isAdmin()) -->
+<modal-window params="baseModel : $baseModel, rootModel : $data,id:'choicePopup',closeHandler:closeHandler, header : $component.nls.userSelection">
+  <div class="form-main-container">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-lg-12" data-bind="text: $component.nls.chooseUserType"></div>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12 vertical-ruler">
+      <oj-radioset id="workflowType" value="{{$component.mappingType}}" on-value-changed="[[$component.MappingTypeSelected]]" class="oj-choice-direction-row">
+        <oj-option :id="[[$component.nls.adminUser]]" value="[[$component.nls.adminUser]]">
+          <span data-bind="text:$component.nls.adminUser"></span>
+        </oj-option>
+        <oj-option :id="[[$component.nls.corporateUser]]" value="[[$component.nls.corporateUser]]">
+          <span data-bind="text:$component.nls.corporateUser"></span>
+        </oj-option>
+      </oj-radioset>
+    </div>
+  </div>
+  <div data-bind="template : {afterRender : $component.showModal}"></div>
+</modal-window>
+<!-- /ko -->

@@ -1,0 +1,25 @@
+<div class="full-width">
+    <!-- ko if : transactionListLoaded -->
+    <oj-table id="corporateActivityLogTable" columns-default="[[{sortable:'enabled'}]]" columns="[[[{headerText:$component.Nls.activityLogDetails.labels.date,template:'date-time',field:'creationDate'},{headerText:$component.Nls.activityLogDetails.labels.description,field:'description'},{headerText:$component.Nls.activityLogDetails.labels.partyName,field:'partyName'},{headerText:$component.Nls.activityLogDetails.labels.referenceNo,template:'approvalStatus',field:'transactionId',template:'approval_link'},{headerText:$component.Nls.activityLogDetails.labels.status,template:'activityStatus',field:'status'}]]]" data="[[paginationDataSource]]">
+           <caption class="hide-label" data-bind="text:$component.Nls.activityLogDetails.labels.title"></caption>
+           <template slot="approval_link">
+               <td>
+                   <a href="javascript:void(0)" data-bind="attr:{title: $baseModel.format($component.Nls.activityLogDetails.labels.linkDetails,{transactionId:$current.row.transactionId})},text:$current.row.transactionId,click:$dashboard.loadComponent.bind($data,'transaction-detail', $current.row),attr:{alt:$component.Nls.activityLogDetails.labels.referenceNo,title:$baseModel.format($component.Nls.activityLogDetails.clickHere,{accountNo:$current.row.transactionId})}"></a>
+               </td>
+           </template>
+
+           <template slot="date-time">
+               <td>
+                   <div data-bind='component:{name: "date-time", params:{rootModel: $component,date:$current.row.creationDate}}'></div>
+               </td>
+           </template>
+           <template slot="activityStatus">
+               <td>
+                    <div data-bind="template : {name : 'approvals/status', data : {status :$current.row.processingStatus ,noOfApprovalSteps: $current.row.noOfApprovalSteps, nls : $component.Nls.activityLogDetails.status}}"></div>
+               </td>
+           </template>
+    </oj-table>
+    <oj-paging-control slot="bottom" :id="[[$component.Nls.activityLogDetails.labels.title + ($baseModel.currentIdCount())]]" :page-size="[[10]]" data="[[paginationDataSource]]"></oj-paging-control>
+
+    <!-- /ko -->
+</div>

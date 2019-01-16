@@ -1,0 +1,11 @@
+<div>
+    <!-- ko if:$component.count()>0 -->
+    <div data-bind="component: {name: 'object-card',
+    params:{rootModel: $data, image: image, data:cardData,count:$component.count(),
+    clickHandler: $dashboard.loadComponent.bind($data,'service-request-list',serviceRequests())}
+    } "></div>
+    <!-- /ko -->
+    <!-- ko if:$component.count()<1 -->
+    <div data-bind="component: {name: 'object-card', params:{rootModel: $root, image: image, data:cardData,count:$component.count()}}"></div>
+    <!-- /ko -->
+</div>

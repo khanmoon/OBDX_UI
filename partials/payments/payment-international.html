@@ -1,0 +1,26 @@
+<oj-validation-group id="internationalTracker">
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+        <oj-label for="correspondencecharges"><span data-bind="text:$component.payments.moneytransfer.correspondencecharges"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-5">
+        <!-- ko if:isChargesLoaded() -->
+            <oj-select-one required id="correspondencecharges" :placeholder="[[$component.payments.common.select]]" value="{{charges}}">
+                    <!-- ko foreach:correspondenceCharges() -->
+                        <oj-option value="{{value+'_'+text}}"><span data-bind="text:text"></span></oj-option>
+                    <!-- /ko -->
+            </oj-select-one>
+        <!-- /ko -->
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12">
+        <oj-label for="paymentdetails">
+            <span data-bind="text:$component.payments.moneytransfer.paymentdetails"></span>
+        </oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-8">
+        <oj-input-text id="paymentdetails" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('PAYMENT_DETAILS')]]" value="{{otherDetails}}" required></oj-input-text>
+    </div>
+</div>
+</oj-validation-group>

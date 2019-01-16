@@ -1,0 +1,57 @@
+<div>
+<!-- ko ifnot : module -->
+	<a href="#" data-bind="attr:{'alt':$component.cardData.description ,'title':$component.cardData.title}, click : $component.actionCardClick.bind($data,cardData.card_text)">
+		<div class="oj-panel oj-flex oj-flex-items-pad action-card">
+			<div class="oj-flex-item oj-sm-12 action-card__title" data-bind="text:cardData.title">
+			</div>
+			<div class="oj-flex-item oj-sm-8 action-card__description" data-bind="html:cardData.description">
+			</div>
+			<!-- ko if : cardData.image -->
+			<img class="action-card__icon" data-bind="attr:{'alt':$component.cardData.title ,'title':$component.cardData.description },loadImage:cardData.image">
+			<!-- /ko -->
+		</div>
+	</a>
+<!-- /ko -->
+<!-- ko if : module === "WALLET"  -->
+	<a href="#" class="action-card oj-panel" data-bind="attr:{'alt':$component.cardData.description ,'title':$component.cardData.title },click:$component.actionCardClick.bind($data,cardData.card_text)">
+		<div class="oj-flex oj-flex-items-pad" data-bind="attr:{class:cardData.className}">
+			<div class="oj-flex-item oj-lg-9 oj-md-9 oj-sm-9">
+				<div class="action-card-title" data-bind="text:cardData.title"></div>
+			</div>
+			<div class="oj-flex-item oj-lg-3 oj-md-3 oj-sm-3 right">
+				<div class="user-bg-corner">
+					<!-- ko if : cardData.image -->
+					<img data-bind="attr:{'alt':$component.cardData.description ,'title':$component.cardData.title },loadImage:cardData.image">
+					<!-- /ko -->
+				</div>
+			</div>
+		</div>
+		<div class="oj-flex oj-flex-items-pad">
+			<div class="oj-flex-item">
+				<div class="action-card-desc" data-bind="text:cardData.description"></div>
+			</div>
+		</div>
+	</a>
+<!-- /ko -->
+<!-- ko if : module === "GOAL"  -->
+	<a href="#" data-bind="attr:{'alt':$component.cardData.className ,'title':$component.cardData.description },click:$component.actionCardClick.bind($data,cardData.card_text)">
+		<div class="action-card oj-panel goals">
+			<div class="oj-flex oj-flex-items-pad" data-bind="attr:{class:cardData.className}">
+				<div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12 center">
+					<div class="user-bg-corner">
+						<!-- ko if : cardData.image -->
+						<img data-bind="loadImage:cardData.image">
+						<!-- /ko -->
+					</div>
+				</div>
+			</div>
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item">
+					<div class="action-card-desc" data-bind="text:cardData.description"></div>
+				</div>
+			</div>
+
+		</div>
+	</a>
+<!-- /ko -->
+</div>

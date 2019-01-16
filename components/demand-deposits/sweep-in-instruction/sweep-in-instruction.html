@@ -1,0 +1,215 @@
+<!-- ko if:detailDataFetched -->
+<!-- ko ifnot:showConfirmScreen -->
+<div class="oj-flex">
+	<div class="oj-flex-item">
+		<div data-bind="component:{name: 'account-nickname', params:{rootModel:$data,params:detailViewResponse(),editable:true,module:'demand-deposits'}}"></div>
+	</div>
+</div>
+<!-- /ko -->
+<!-- /ko -->
+
+<div class="form-main-container">
+	<div class="oj-flex oj-flex-items-pad">
+		<div data-bind="css:'oj-flex-item oj-sm-12 oj-md-8 oj-lg-8'">
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item">
+					<label data-bind="text:$component.resource.labels.linkedAccount"></label>
+				</div>
+			</div>
+			<div class="oj-flex oj-flex-items-pad oj-lg-12">
+				<div class="oj-flex-item oj-sm-12 ">
+					<oj-radioset class="oj-choice-direction-row" :aria-label="[[$component.resource.labels.linkedAccount]]" value="{{accountType}}" on-value-changed="[[accountTypeChangeHandler]]" disabled="[[radioSetDisabled]]">
+						<oj-option value="casa" id="casa"><span for="casa" data-bind="text:$component.resource.labels.casa"></span></oj-option>
+						<oj-option value="td" id="td"><span for="td" data-bind="text:$component.resource.labels.td"></span></oj-option>
+					</oj-radioset>
+				</div>
+				<!-- ko ifnot: $baseModel.small()-->
+				<!-- ko if: $component.linkedaccountsDataproviderLoaded()-->
+
+				<div class="oj-flex-item">
+					<oj-table translations='[[msgNoData]]' id='linked-accounts-table' data='[[linkedaccountsPagingDataprovider]]' data-bind="attr:{'aria-label':$component.resource.labels.linkedAccount}" columns='[[linkedAccountscolumnData]]'>
+						<caption class="hide-label" data-bind="text:$component.resource.labels.linkedAccount"></caption>
+					</oj-table>
+					<script type="text/html" id="delete_template">
+						<td>
+							<a class="icons icon-delete" href="javascript:void(0)" data-bind="click :$component.reviewDeleteAccount.bind($data,$context.cellContext.status.rowIndex) , attr:{alt: $component.resource.labels.delinkMessage, title: $component.resource.labels.delinkMessage}"></a>
+						</td>
+					</script>
+					<oj-paging-control id="linked-accouonts-paging" data='[[linkedaccountsPagingDataprovider]]' page-size='5' slot='bottom'>
+					</oj-paging-control>
+				</div>
+
+				<!-- /ko -->
+				<!-- /ko -->
+			</div>
+			<!-- ko if: $baseModel.small()-->
+			<!-- ko if: $component.linkedaccountsDataproviderLoaded()-->
+
+			<div class="oj-flex oj-flex-items-pad oj-lg-12">
+				<oj-list-view id="listview_AccountTable" class="oj-sm-12" translations='[[msgNoData]]' data="[[linkedaccountsPagingDataprovider]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('accountTable_template', true)]]" selection-mode="single">
+				</oj-list-view>
+				<oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[linkedaccountsPagingDataprovider]]">
+				</oj-paging-control>
+				<script type="text/html" id="accountTable_template">
+					<li>
+						<div id="delete_template" class="oj-label-inline float-right">
+							<a class="icons icon-delete" href="javascript:void(0)" data-bind="click :$component.reviewDeleteAccount.bind($data,$context.index) , attr:{alt: $component.resource.labels.delinkMessage, title: $component.resource.labels.delinkMessage}"></a>
+						</div>
+						<div class="oj-flex-item oj-sm-10 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+							<label data-bind="text:$component.resource.labels.accountNo"></label>
+							<div class="list-bottom-pad" data-bind="text:accountId"> </div>
+						</div>
+
+						<div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+							<label data-bind="text:$component.resource.labels.partyName"></label>
+							<div class="list-bottom-pad" data-bind="text:partyName"> </div>
+						</div>
+						<!-- ko if:  $component.accountType() === 'casa'-->
+						<div class="oj-flex-item oj-sm-12 oj-md-6" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+							<label data-bind="text:$component.resource.labels.balance"></label>
+							<div class="list-bottom-pad" data-bind="text:balance"> </div>
+						</div>
+						<!-- /ko -->
+
+
+					</li>
+				</script>
+
+
+			</div>
+			<!-- /ko -->
+			<!-- /ko -->
+
+			<!-- ko if:showButton -->
+			<div class="oj-flex oj-sm-12 oj-flex-items-pad list-top-pad" data-bind="css: { 'list-top-pad': $baseModel.small() }">
+				<div class="button-container">
+					<oj-button on-click="[[addAccount]]" class="help-button" id="addAccount">
+						<span slot="startIcon" class="icons icon-plus-circle"></span>
+						<span data-bind="text:$component.resource.labels.add"></span>
+					</oj-button>
+				</div>
+			</div>
+
+			<!-- /ko -->
+
+
+
+			<!-- ko ifnot:showButton -->
+			<div class="oj-flex oj-sm-12 oj-flex-items-pad" data-bind="css: { 'list-top-pad': $baseModel.small() }">
+				<div class="button-container">
+					<oj-button on-click="[[hideAccount]]" class="help-button" id="hideAccount">
+						<span slot="startIcon" class="icons icon-minus-circle"></span>
+						<span data-bind="text:$component.resource.labels.hide"></span>
+					</oj-button>
+				</div>
+			</div>
+			<!-- /ko -->
+
+			<!-- ko if:addAccountDataLoaded -->
+			<!-- ko ifnot: $baseModel.small() && $component.providerAccountsDataSourceLoaded()-->
+			<div class="oj-flex oj-flex-items-pad oj-lg-12 pravin">
+				<div class="oj-flex-item provier-data">
+					<oj-table id="table" class="provider-accounts-table" data='[[providerAccountsPagingDataSource]]' data-bind="attr:{'aria-label':$component.resource.labels.casa}" columns='[[providerAccountscolumnData]]' selection-mode='{"row": "multiple", "column": "multiple"}'>
+						<caption class="hide-label" data-bind="text:$component.resource.labels.providerAccount"></caption>
+					</oj-table>
+					<script type="text/html" id="checkbox_select">
+						<td>
+							<oj-checkboxset on-value-changed='[[$parent.selectListener]]' value='{{$context.row.isSelected}}'>
+								<oj-option :id="[['checkbox' + $context.cellContext.status.rowIndex]]" :aria-label="[[$context.cellContext.status.rowIndex]]" value='{{$context.cellContext.status.rowIndex}}'></oj-option>
+							</oj-checkboxset>
+						</td>
+					</script>
+					<oj-paging-control id="provider-account-paging" data='[[providerAccountsPagingDataSource]]' page-size='5' slot='bottom'>
+					</oj-paging-control>
+				</div>
+			</div>
+
+			<!-- /ko -->
+			<!-- ko if: $baseModel.small()-->
+
+			<div class="oj-flex oj-flex-items-pad">
+				<oj-list-view id="listview_ProviderAccountTable" class="oj-sm-12" data="[[providerAccountsPagingDataSource]]" item.renderer="[[$oj.KnockoutTemplateUtils.getRenderer('provideAccountTable_template', true)]]" selection-mode="multiple">
+				</oj-list-view>
+				<oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[providerAccountsPagingDataSource]]">
+				</oj-paging-control>
+
+				<script type="text/html" id="provideAccountTable_template">
+
+					<li>
+						<div class="oj-flex">
+							<div class="oj-flex-item oj-sm-2" data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+								<div id="checkbox_select">
+									<oj-checkboxset on-value-changed='[[$parent.selectListener]]' class="" :aria-label="[[$component.resource.labels.action]]" value='{{$context.data.isSelected}}'>
+										<oj-option :id="[['checkbox' + $context.index]]" :aria-label="[[$context.index]]" value='{{$context.index}}'></oj-option>
+									</oj-checkboxset>
+								</div>
+
+							</div>
+							<div class="oj-flex-item oj-sm-10 float-right">
+								<div class="oj-flex-item oj-sm-12 oj-md-6 " data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+									<label data-bind="text:$component.resource.labels.accountNo"></label>
+									<div class="list-bottom-pad" data-bind="text:accountId"> </div>
+								</div>
+								<div data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+									<label class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.labels.partyName"></label>
+									<div class="list-bottom-pad" data-bind="text:partyName"> </div>
+								</div>
+								<!-- ko if:  $component.accountType() === 'casa'-->
+								<div data-bind="css: { 'no-pad-cols': $baseModel.medium() }">
+									<label class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.labels.balance"></label>
+									<div class="list-bottom-pad" data-bind="text:balance"> </div>
+								</div>
+								<!-- /ko -->
+
+							</div>
+						</div>
+					</li>
+				</script>
+			</div>
+			<!-- /ko -->
+
+
+
+			<div class="oj-flex oj-sm-12 oj-flex-items-pad">
+				<div class="button-container">
+					<oj-button on-click="[[saveInstructions]]" class="action-button-primary" id="saveInstructions ">
+						<span slot="startIcon" class="icons icon-save"></span>
+						<span data-bind="text:$component.resource.generic.common.save"></span>
+					</oj-button>
+					<oj-button on-click="[[$dashboard.hideDetails]]" class="action-button-secondary" id="hideDetails">
+						<span slot="startIcon" class="icons icon-back-arrow"></span>
+						<span data-bind="text:$component.resource.generic.common.back"></span>
+					</oj-button>
+				</div>
+			</div>
+			<!-- /ko -->
+
+
+		</div>
+		<!-- ko ifnot: $baseModel.small()-->
+		<div class="oj-flex-item oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+			<help params="baseModel : $baseModel, rootModel : $component, transaction: 'sweep-in-instructions'"></help>
+		</div>
+		<!-- /ko -->
+
+	</div>
+	<modal-window params="baseModel : $baseModel, rootModel : $data, id:'deleteConfirmation', header :$component.resource.labels.SweepIn">
+		<div class="form-main-container">
+
+			<div class="oj-flex oj-flex-items-pad">
+				<div class="oj-flex-item">
+					<span data-bind="text: $component.resource.labels.deleteConfirmationMessage"></span>
+				</div>
+			</div>
+			<div class="oj-flex button-container">
+				<oj-button id="confirm" class="action-button-primary" on-click="[[$component.deleteAccount]]">
+					<span slot="startIcon" class="icons icon-submit"></span>
+					<span data-bind="text:$component.resource.generic.common.confirm"></span>
+				</oj-button>
+				<oj-button id="cancel" class="action-button-secondary" on-click="[[$component.closeDeleteAccountModalWindow]]">
+					<span slot="startIcon" class="icons icon-cancel"></span>
+					<span data-bind="text:$component.resource.generic.common.cancel"></span>
+				</oj-button>
+			</div>
+		</div>
+	</modal-window>

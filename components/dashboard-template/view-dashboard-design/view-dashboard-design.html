@@ -1,0 +1,148 @@
+<div class="form-main-container view-design-dashboard-container" id="viewDashboard">
+    <div class="form-main-container design-dashboard">
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+            <div class="oj-flex-bar-start oj-sm-12 switchView">
+                <oj-navigation-list id="dashboardSwitchView" :aria-label=[[$component.resourceBundle.switchView]] drill-mode="none" selection="{{viewType}}" edge="top" display="icons" class="oj-sm-condense pull-right">
+                    <ul>
+                        <li id="desktop">
+                            <a href="#">
+                                <span class="icon-auto-pay oj-navigationlist-item-icon"></span>
+                                <span data-bind="text:$component.resourceBundle.labels.desktopDesign"></span>
+                            </a>
+                        </li>
+                        <li id="tab">
+                            <a href="#">
+                                <span class="oj-navigationlist-item-icon">
+                                    <img data-bind="loadImage:'dashboard-design/UX/tab-icon.png'" alt="[[$component.resourceBundle.labels.tabDesign]]/">
+                                </span>
+                                <span data-bind="text:$component.resourceBundle.labels.tabDesign"></span>
+                            </a>
+                        </li>
+                        <li id="mobile">
+                            <a href="#">
+                                <span class="oj-navigationlist-item-icon">
+                                    <img data-bind="loadImage:'dashboard-design/UX/mobile-icon.png'" alt="[[$component.resourceBundle.labels.mobileDesign]]/">
+                                </span>
+                                <span data-bind="text:$component.resourceBundle.labels.mobileDesign"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </oj-navigation-list>
+            </div>
+            <!-- ko if:$component.showDesktopView() -->
+            <div id="desktop-review-container" class="oj-flex">
+                <img class="desktop-design-frame" data-bind="loadImage:'dashboard-design/UX/desktop-1280.svg'" alt="">
+                <!-- ko if:$component.startRendering() -->
+                <div class="oj-flex oj-sm-12 oj-flex-items-pad frame-contents">
+                    <div class="oj-flex-bar-start oj-sm-12 no-col-pads">
+                        <!-- <div class="oj-flex oj-sm-12"><span data-bind="text:$component.resourceBundle.labels.topPanel"></span></div> -->
+                        <div class="oj-flex oj-sm-12 design-dashboard__design-step2--topPanel">
+                            <div class="oj-flex oj-sm-12">
+                                <!-- ko foreach:dashboardDesign().layout.dashboardLayout.large -->
+                                <div class="oj-flex-item" data-bind="css:style">
+                                    <!-- ko if:childPanel.length===0 -->
+                                    <div class="component" data-bind="component:{name:componentName,params:{rootModel:$component,staticData:true,data:$data}}"></div>
+                                    <!-- /ko -->
+                                    <!-- ko if:childPanel.length>0 -->
+                                    <!-- ko foreach:childPanel -->
+                                    <div class="component" data-bind="component:{name:componentName,params:{rootModel:$component,staticData:true,data:$data}}"></div>
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- ko if:$component.showTabView() -->
+            <div id="tab-review-container" class="oj-flex">
+                <img class="tab-design-frame" data-bind="loadImage:'dashboard-design/UX/tablet-500.svg'" alt="">
+                <!-- ko if:$component.startRendering() -->
+                <div class="oj-flex oj-sm-12 oj-flex-items-pad frame-contents">
+                    <div class="oj-flex no-col-pads oj-sm-12 tab-container">
+                        <!-- <div class="oj-flex oj-sm-12"><span data-bind="text:$component.resourceBundle.labels.topPanel"></span></div> -->
+                        <div class="oj-flex oj-sm-12 design-dashboard__design-step2--topPanel">
+                            <div class="oj-flex oj-sm-12">
+                                <!-- ko foreach:dashboardDesign().layout.dashboardLayout.medium -->
+                                <div class="oj-flex-item" data-bind="css:style">
+                                    <!-- ko if:childPanel.length===0 -->
+                                    <div class="component" data-bind="component:{name:componentName,params:{rootModel:$component,staticData:true,data:$data}}"></div>
+                                    <!-- /ko -->
+                                    <!-- ko if:childPanel.length>0 -->
+                                    <!-- ko foreach:childPanel -->
+                                    <div class="component" data-bind="component:{name:componentName,params:{rootModel:$component,staticData:true,data:$data}}"></div>
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- ko if:$component.showMobileView() -->
+            <div id="mobile-review-container" class="oj-flex">
+                <img class="mobile-design-frame" data-bind="loadImage:'dashboard-design/UX/mobile-320.svg'" alt="">
+                <!-- ko if:$component.startRendering() -->
+                <div class="oj-flex-bar oj-sm-12 oj-flex-items-pad frame-contents view-design">
+                    <div class="oj-flex-bar no-pad-cols oj-sm-12 mobile-container">
+                        <!-- <div class="oj-flex oj-sm-12"><span data-bind="text:$component.resourceBundle.labels.topPanel"></span></div> -->
+                        <div class="oj-flex-bar oj-sm-12 design-dashboard__design-step2--topPanel">
+                            <div class="oj-flex oj-sm-12">
+                                <!-- ko foreach:dashboardDesign().layout.dashboardLayout.small -->
+                                <div class="oj-flex-item" data-bind="css:$data.style?$data.style:'oj-sm-12'">
+                                    <div class="component" data-bind="component:{name:componentName,params:{rootModel:$component,staticData:true,data:$data}}"></div>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <div class="oj-sm-12 center">
+                <a id="editCurrentDashboard" class="editDashboard" data-bind="click:$component.editDashboard" href="javascript:void(0)">
+                    <span class="icon-edit"></span>
+                    <span data-bind="text:$component.resourceBundle.generic.common.edit"></span>
+                </a>
+            </div>
+        </page-section>
+        <div class="button-container">
+            
+            <oj-button class="action-button-secondary" on-click="[[$component.confirmDelete]]">
+                <span data-bind="text:$component.resourceBundle.generic.common.delete"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard]]">
+                    <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                </oj-button>
+            <oj-button class="action-button-tertiary" on-click="[[$dashboard.hideDetails]]">
+                <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+            </oj-button>
+        </div>
+    </div>
+    <modal-window params="baseModel : $baseModel, rootModel : $component,id:'deleteDialog',header:$component.resourceBundle.designDelete">
+        <div class="form-main-container message-text">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item">
+                    <span data-bind="text:$component.resourceBundle.ques1"></span>
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad button-container">
+                <div class="oj-flex-item no-pad-cols">
+                    <oj-button class="action-button-primary" on-click="[[$component.deleteDashboard]]">
+                        <span data-bind="text:$component.resourceBundle.generic.common.confirm"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary" on-click="[[$component.closeDeleteDialog]]">
+                        <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+                    </oj-button>
+                </div>
+            </div>
+        </div>
+    </modal-window>
+</div>

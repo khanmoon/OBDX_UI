@@ -1,0 +1,188 @@
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <oj-validation-group id="tracker" valid="{{$component.groupValid}}">
+    <!-- ko if: $component.showActivityProfile() -->
+    <div class="oj-flex oj-flex-items-pad application-form-text cust-label">
+      <span class="oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-lg-10 text" data-bind="text:$component.resource.accfeatures"></span>
+    </div>
+    <div class="oj-flex oj-flex-items-pad application-form-text">
+      <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <h4 class="form-heading" data-bind="text:$component.resource.activityProfile"></h4>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="tooltip-section  oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-lg-10 text">
+        <span class="span-label" data-bind="html:$component.resource.identifyBanking">
+          </span>
+        <!-- ko if: $baseModel.large() -->
+        <div class="tooltip message-text" id="activityProfileRequirement_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component,message:$component.resource.activityProfileRequirement,toolTipId:'activityProfileRequirement_tooltip'}}">
+        </div>
+        <span class="icon-help" id="tool-tip-holder-account-holder" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'activityProfileRequirement_tooltip','tool-tip-holder-account-holder'), mouseout: $component.hideToolTip.bind($data,'activityProfileRequirement_tooltip') }"></span>
+        <!-- /ko -->
+        <!-- ko ifnot: $baseModel.large() -->
+        <a class="icon-help" href="javascript:void(0)" data-bind="click: function(){$('#activityProfileRequirement').trigger('openModal')},attr:{alt: $component.resource.applicationForm, title: $component.resource.applicationFormTitle}"></a>
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- ko if: $component.existingAccountConfigLoaded() -->
+    <div data-bind="with: applicantObject().accountHolder">
+      <!-- ko foreach: $data.questionsList -->
+
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+          <oj-label class="line-height-2" :for="[['question'+($baseModel.incrementIdCount())]]"><span data-bind="text:question"></span></oj-label>
+        </div>
+        <!-- ko if: answerDataType === 'TEXT' -->
+
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+          <oj-input-text autocomplete="off" spellcheck="false" required :id="[['question'+($baseModel.currentIdCount())]]" translations="[[{'required':{
+        messageDetail:$component.resource.messages.noOfCashDeposits}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.answerList()[$index()]}}"></oj-input-text>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: answerDataType === 'NUMBER' -->
+
+        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-2">
+          <oj-input-text autocomplete="off" spellcheck="false" required :id="[['question'+($baseModel.currentIdCount())]]" translations="[[{'required':{
+        messageDetail:$component.resource.messages.noOfCashDeposits}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$component.validateNumber]]" value="{{$component.answerList()[$index()]}}"></oj-input-text>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: answerDataType === 'DATE' -->
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+          <oj-input-date required :id="[['question'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.dob}}]]" converter="[[$baseModel.dateConverter]]" value="{{$component.answerList()[$index()]}}" datepicker="[[{yearRange:'c-100:c'}]]"></oj-input-date>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: answerDataType === 'BOOLEAN' -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+          <oj-buttonset-one id="applicationTypes" :aria-label="[[question]]" on-value-changed="[[$component.savemultipleATMs.bind($data,$index())]]" value="{{$component.multipleATMs}}">
+            <oj-option name="applicationTypes" class="applicationTypes" value="{{'OPTION_YES'}}" :id="[['multipleATMYes']]"><span data-bind="attr: {for: 'multipleATMYes'}, text: $component.resource.generic.common.yes"></span></oj-option>
+            <oj-option name="applicationTypes" class="applicationTypes" value="{{'OPTION_NO'}}" :id="[['multipleATMNo']]"><span data-bind="attr: {for: 'multipleATMNo'}, text: $component.resource.generic.common.no"></span></oj-option>
+          </oj-buttonset-one>
+        </div>
+        <!-- /ko -->
+      </div>
+
+
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: $component.showDebitCardConfig() -->
+    <!-- ko foreach: $component.applicantObject().accountHolder.savingsHolderConfiguration.accountHolderPreferenceDTO -->
+    <div class="oj-flex oj-flex-items-pad application-form-text">
+      <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <h4 class="form-heading" data-bind="text:$component.format($component.resource.debitCardPrefrences,{name: temp_ApplicantName})"></h4>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <span class="oj-flex-item oj-md-offset-1 oj-lg-offset-1 oj-lg-10 oj-md-10 text" data-bind="text:$component.resource.chooseDebitCard"></span>
+    </div>
+
+    <div class="">
+      <div>
+
+        <!-- ko if: $component.existingAccountConfigLoaded() -->
+        <!-- ko if: $component.cardTypeListLoaded() -->
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label">
+            <oj-label :for="[['cardType'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.cardType"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+            <oj-select-one required :id="[['cardType'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.cardType}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="" value="{{productIdent}}"
+              on-value-changed="[[$component.changeCardType.bind($data,$index())]]">
+              <!-- ko foreach: $component.cardTypeList -->
+              <oj-option value="{{debitCardFeatureId}}"><span data-bind="text:brandName"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+          <!-- ko if: $component.cardTypeLoaded() -->
+          <div class="oj-flex-item label oj-sm-12 oj-md-2 oj-lg-2 label">
+            <!-- ko if: temp_cardType() -->
+            <oj-label class="oj-label">
+              <span data-bind="text:$component.resource[temp_cardType()]"></span></oj-label>
+            <!-- /ko -->
+          </div>
+          <!-- /ko -->
+        </div>
+
+        <!-- /ko -->
+        <div class="oj-flex label oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label class="oj-label" :for="[['cardName'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.cardName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+            <oj-input-text autocomplete="off" spellcheck="false" required :id="[['cardName'+($baseModel.currentIdCount())]]" translations="[[{'required':{
+          messageDetail:$component.resource.messages.cardName}}]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('NAME')]]" value="{{embossName}}"></oj-input-text>
+          </div>
+        </div>
+        <!-- ko if: $component.cardTypeListLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label class="oj-label" :for="[['cardDesign'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.cardDesign"></span></oj-label>
+
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
+
+            <oj-select-one required="[[true]]" :id="[['cardDesign'+($baseModel.currentIdCount())]]" on-value-changed="[[$component.changeCardDesign.bind($data,$index())]]" :placeholder="" value="{{backGroundImg}}">
+              <!-- ko foreach: $component.cardDesignList() -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+
+          </div>
+          <!-- ko if: $component.cardDesignLoaded() -->
+          <!-- ko if: temp_cardImage() -->
+          <div class="card-design bg-image" data-bind="style:{backgroundImage:'url('+$component.constants.imageResourcePath+'/origination/cards/dc/'+temp_cardImage()+'.jpg)'}">
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+
+        <!-- /ko -->
+
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label class="oj-label" :for="[[$parentContext.$index()+'-'+$index()+'-document-upload']]"><span data-bind="text:$component.resource.cardImage"></span></oj-label>
+
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 document-na$parentContext.$index()+'-'+$index()+'-document-upload'me-upload no-pad-cols" data-bind="component:{name:'file-input',params:{rootModel: $component , id:$parentContext.$index()+'-'+$index()+'-document-upload', upload: function(){$component.uploadDocument($parentContext.$index(),$index(),temp_ApplicantId)}}}"></div>
+          <!-- ko if: temp_isDocumentName() -->
+          <!-- ko if: documentContentRefId.value !== ''-->
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-md-offset-5 oj-lg-2 label oj-lg-offset-5 document-name">
+            <a class="link" href="#" data-bind="click: $component.downloadImage.bind($data,$index(),documentContentRefId.value,temp_ApplicantId), text:  selectedValues.documentName ,attr:{alt: $component.resource.applicationCardImage, title: $component.resource.applicationCardImageTitle}"></a>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+
+        <!-- /ko -->
+
+      </div>
+    </div>
+
+    <!-- /ko -->
+
+    <div class="oj-flex oj-flex-items-pad application-form-text application-form-info">
+      <div class="oj-flex-item oj-lg-10 oj-md-10 oj-md-offset-1 oj-lg-offset-1">
+        <div class="text" data-bind="text:$component.resource.debitCardInformation"></div>
+      </div>
+    </div>
+
+
+    <!-- /ko -->
+  </oj-validation-group>
+</page-section>
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item oj-md-10 oj-lg-10">
+    <!-- ko ifnot: $component.showActivityProfile() || $component.showDebitCardConfig() -->
+    <oj-button raised="" id="submit-account" class="form-button-secondary" :aria-label="[[$component.resource.submitAccount]]" on-click="[[$component.completeAccountHolderSection]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if: $component.showActivityProfile() || $component.showDebitCardConfig() -->
+    <oj-button raised="" id="submit-account" class="form-button-secondary" :aria-label="[[$component.resource.submitAccount]]" on-click="[[$component.saveAccountHolderInfo]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+    <!-- /ko -->
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="financial-position-currency oj-panel">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-8">
+      <h3 class="financial-position-currency__heading" data-bind="text:$component.nls.financialPositionDetails.labels.financialPositionCurrency"></h3>
+    </div>
+    <!-- ko if: conventionalAccountsAvailable() && islamicAccountsAvailable() -->
+    <div class="oj-flex-item oj-sm-4">
+      <oj-select-one value="{{$component.selectedValue}}" required on-value-changed="[[selectedAccountTypeChangedHandler]]" data-bind="attr:{id:$component.nls.financialPositionDetails.labels.myAccountType + $baseModel.currentIdCount(),'aria-label':$component.nls.financialPositionDetails.labels.myAccountType}">
+        <!-- ko foreach: typeOfAccounts -->
+        <oj-option value="[[id]]"><span data-bind="text: label"></span></oj-option>
+        <!-- /ko -->
+      </oj-select-one>
+    </div>
+    <!-- /ko -->
+  </div>
+  <div class="oj-flex" params="rootModel:$data,onDashboard: $dashboard.isDashboard()">
+    <!-- ko if: showChart()-->
+    <div class="oj-flex-item oj-sm-12 financial-position-currency__chart financial-position-currency-chart">
+
+      <oj-chart class="financial-position-currency-chart__barChart position-currency-chart" id="financialPositionCurrencyChart" type="bar" orientation="horizontal" stack="on" stack-label="on" tooltip="[[tooltip]]" series="[[barSeriesValue]]" groups="[[barGroupsValue]]" animation-on-data-change="auto" hover-behavior="dim" y-axis="[[{tickLabel: {rendered: 'off'}, majorTick: {baselineWidth: 1, lineWidth:0}}]]" x-axis="[[{axisLine: {rendered: 'off'}}]]" hide-and-show-behavior="none" style-defaults="[[{barGapRatio: 0.7}]]" legend="[[{sections: legendSections, position: 'bottom'}]]">
+      </oj-chart>
+    </div>
+    <!-- /ko -->
+  </div>
+</div>

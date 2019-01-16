@@ -1,0 +1,49 @@
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 label">
+		<oj-label for="deliveryLocation">
+		<span data-bind="text:$component.locale.chequeDetails.chequeDetails"></span></oj-label>
+	</div>
+
+	<div class="oj-flex-item oj-sm-12">
+		<oj-radioset id="deliveryLocation" :aria-label="[[$component.locale.chequeDetails.chequeDetails]]" on-value-changed="[[$component.selectChequeDetails]]" value="{{$component.optionSelected}}" class="oj-choice-direction-row"><oj-option value="Number" id="Number" name="name"><span for="Number" data-bind="text: $component.locale.chequeDetails.number"></span></oj-option><oj-option value="Range" id="Range" name="name"><span for="Range" data-bind="text: $component.locale.chequeDetails.range"></span></oj-option></oj-radioset>
+	</div>
+
+</div>
+
+
+
+
+<!-- ko if:$component.showNumberSection() -->
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 label">
+		<oj-label for="chequeNumber"><span data-bind="text:$component.locale.chequeDetails.chequeNumber"></span></oj-label>
+	</div>
+
+	<div class="oj-flex-item oj-sm-12">
+		<oj-input-text data-id="chequeNo" id="chequeNumber" 
+		value="{{$component.chequeNo.startChequeNumber}}"></oj-input-text>
+
+	</div>
+</div>
+<!-- /ko -->
+<!-- ko if:!$component.showNumberSection() -->
+
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item oj-sm-12 label">
+		<oj-label for="from"><span data-bind="text:$component.locale.chequeDetails.from"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12">
+		<oj-input-text data-id="fromChequeNumber" id="from" value="{{$component.chequeNo.startChequeNumber}}"></oj-input-text>
+	</div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+	<div class="oj-flex-item oj-sm-12 label">
+		<oj-label for="to"><span data-bind="text:$component.locale.chequeDetails.to"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12">
+		<oj-input-text data-id="toChequeNumber" id="to" value="{{$component.chequeNo.endChequeNumber}}"></oj-input-text>
+	</div>
+
+</div>
+<!-- /ko -->

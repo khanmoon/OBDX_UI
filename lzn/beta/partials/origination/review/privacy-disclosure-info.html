@@ -1,0 +1,79 @@
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.resource.disclosures.addlnDisclosures"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <span class="text" data-bind="text:$component.resource.disclosures.addlnNote">
+      </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text-label cust-label">
+    <span class="link oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+
+            <!-- ko if:$component.productDetails().productClassName ===   'CASA' || $component.productDetails().productClassName === 'TERM_DEPOSITS' -->
+            <a href="#" class="link" data-bind="click: $component.downloadDisclosure.bind($data,$component.productDetails().disclosures.accountDocRefId), text: $component.resource.disclosures.depositAccntAgreement ,attr:{alt: $component.resource.disclosures.accountDocRefIdClick, title: $component.resource.disclosures.accountDocRefIdOnClick}"></a>
+            <!-- /ko -->
+            <!-- ko if:$component.productDetails().productClassName ===   'LOANS' -->
+            <a href="#" class="link" data-bind="click: $component.downloadDisclosure.bind($data,$component.productDetails().disclosures.accountDocRefId), text: $component.resource.disclosures.accntAgreement ,attr:{alt: $component.resource.disclosures.accountRefIdClick, title: $component.resource.disclosures.accountForRefIdClick}"></a>
+            <!-- /ko -->
+
+                  </span>
+    <span class="link oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+    <a href="#" class="link" data-bind="click: $component.downloadDisclosure.bind($data,$component.productDetails().disclosures.privacyDocRefId), text: $component.resource.disclosures.consumerNotice ,attr:{alt: $component.resource.disclosures.privacyDocRefIdClick, title: $component.resource.disclosures.privacyDocRefIdOnClick}"></a>
+      </span>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.resource.disclosures.primaryApplicant"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <oj-checkboxset id="checkboxSetAgreeId2" aria-labelledby="agreeId" translations="[[{'required':{messageDetail:$component.resource.disclosures.messages.privacyAlert}}]]" required="[[true]]" on-value-changed="[[$component.checkDisclosureType]]"><oj-option value="{{$component.productDetails().disclosures.privacyValue}}" :id="[['agree3']]"><span data-bind="text:$component.resource.disclosures.privacyConsent,  attr:{'for':'agree3'}">
+            </span><span data-bind="text:$component.resource.addlnDisclosures.privacyLoanConsent,  attr:{'for':'agree3'}">
+            </span></oj-option></oj-checkboxset>
+</div>
+<!-- ko if:$component.isCoApp()-->
+<div class="oj-flex oj-flex-items-pad card-text">
+    <div class="section-heading" data-bind="text:$component.resource.disclosures.jointApplicant"></div>
+</div>
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <oj-checkboxset id="checkboxSetAgreeId2coApp" aria-labelledby="agreeId" translations="[[{'required':{messageDetail:$component.resource.disclosures.messages.privacyAlert}}]]" required="[[true]]" on-value-changed="[[$component.checkDisclosureType]]"><oj-option value="{{$component.productDetails().disclosures.privacyValue +'coapp'}}" :id="[['agree4']]"><span data-bind="text:$component.resource.disclosures.privacyConsent,  attr:{'for':'agree4'}">
+            </span><span data-bind="text:$component.resource.addlnDisclosures.privacyLoanConsent,  attr:{'for':'agree4'}">
+            </span></oj-option></oj-checkboxset>
+</div>
+<!-- /ko -->
+<!-- ko if:$component.productDetails().productClassName ===   'CASA' || $component.productDetails().productClassName === 'TERM_DEPOSITS' -->
+<div class="oj-flex oj-flex-items-pad card-text cust-label">
+    <span class="text" data-bind="text:$component.resource.disclosures.agreeConsent">
+          </span>
+</div>
+  <!-- /ko -->
+<!-- ko if:$component.productDetails().productClassName ===   'LOANS' -->
+<div class="oj-flex oj-flex-items-pad conscent card-text cust-label">
+      <span class="text" data-bind="text:$component.resource.addlnDisclosures.agreeLoanConsent">
+            </span>
+            <ul class="text">
+                <li data-bind="text:$component.resource.addlnDisclosures.agreeLoanConsent1"></li>
+                <li data-bind="text:$component.resource.addlnDisclosures.agreeLoanConsent2"></li>
+                <li data-bind="text:$component.resource.addlnDisclosures.agreeLoanConsent3"></li>
+                <li data-bind="text:$component.resource.addlnDisclosures.agreeLoanConsent4"></li>
+                <li data-bind="text:$component.resource.addlnDisclosures.agreeLoanConsent5"></li>
+                <li data-bind="text:$component.resource.addlnDisclosures.agreeLoanConsent6"></li>
+                <li data-bind="text:$component.resource.addlnDisclosures.agreeLoanConsent7"></li>
+                <li data-bind="text:$component.resource.addlnDisclosures.agreeLoanConsent8"></li>
+            </ul>
+
+</div>
+<!-- /ko -->
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+    <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'depositAccntAgreement'">
+        <div class="message-text label" data-bind="text:$component.resource.disclosures.depositAccntAgreement"></div>
+        <div class="message-btn button-container">
+            <oj-button id="depositAccntAgreementButton" on-click="[[function(){$('#depositAccntAgreement').hide().trigger('closeModal')}]]"> <span data-bind="text:$component.resource.disclosures.generic.common.ok"></span></oj-button>
+        </div>
+    </modal-window>
+</div>
+<div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+    <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'consumerNotice'">
+        <div class="message-text label" data-bind="text:$component.resource.disclosures.consumerNotice"></div>
+        <div class="message-btn button-container">
+            <oj-button id="consumerNoticeButton" on-click="[[function(){$('#consumerNotice').hide().trigger('closeModal')}]]"> <span data-bind="text:$component.resource.disclosures.generic.common.ok"></span></oj-button>
+        </div>
+    </modal-window>
+</div>

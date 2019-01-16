@@ -1,0 +1,94 @@
+<div class="form-main-container orientation">
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <div class="oj-flex oj-flex-items-pad  ">
+    <div class="page-container">
+      <!-- ko if:$component.productDetails().offers -->
+      <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+
+          <h3 class="primary-heading" data-bind="text:$component.productDetails().offers.offerName"></h3>
+
+        </div>
+      </div>
+      <!-- /ko  -->
+      <!-- ko ifnot:$component.productDetails().offers -->
+      <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+
+          <h3 class="primary-heading" data-bind="text:$component.productDetails().productDescription"></h3>
+
+        </div>
+      </div>
+      <!-- /ko  -->
+      <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+          <span class="text" data-bind="text:$component.resource.infoPrivate"></span>
+          <span><a class="link text" href="#" data-bind="click: function(){$('#privacyAndSecurityPolicy').trigger('openModal')},text:$component.resource.privacyAndSecurityPolicy ,attr:{alt: $component.resource.privacyAndSecurityPolicyClick, title: $component.resource.privacyAndSecurityPolicyClickTitle}"></a></span>
+        </div>
+      </div>
+      <div data-bind="template:{name:'origination/orientation/' +$component.orientationPartial()}"></div>
+      <div class="oj-flex oj-flex-items-pad section">
+        <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-6">
+          <div class="oj-flex oj-flex-items-pad section">
+            <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+              <h4 class="secondary-heading" data-bind="text: $component.resource.newToModelBank"></h4>
+            </div>
+            <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+              <span class="text" data-bind="text: $component.resource.loginWithSocialMedia"></span>
+            </div>
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
+              <div class="oj-flex oj-flex-items-pad section">
+                <div class="oj-flex-item oj-lg-1 oj-md-2 oj-sm-2">
+                  <social-media params="baseModel : $baseModel, rootModel:$component,
+                    social_media_type:'linkedin',
+                    callback:loadNextStage">
+                  </social-media>
+                </div>
+                <div class="oj-flex-item oj-lg-1 oj-md-2 oj-sm-2">
+                  <social-media params="baseModel : $baseModel, rootModel:$component,
+                    social_media_type:'facebook',
+                    callback:loadNextStage">
+                  </social-media>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</page-section>
+  <div class="oj-flex oj-flex-items-pad button-container product-button-panel">
+    <!-- ko if: !$component.productDetails().isRegistered -->
+    <oj-button raised="" id="primary" class="help-button" on-click="[[loadNextStage]]">
+      <span data-bind="text:$component.resource.continueAsGuest"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko if: $component.productDetails().isRegistered -->
+    <oj-button raised="" id="primary" class="action-button-primary" on-click="[[loadNextStage]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button raised="" id="cancel" class="action-button-secondary" on-click="[[$component.exitApplication]]">
+      <span data-bind="text:$component.resource.generic.common.cancel"></span>
+    </oj-button>
+  </div>
+
+  <div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
+    <modal-window class="message" params="baseModel : $baseModel, rootModel : $component,id:'EXITAPPLICATION', header: $component.resource.generic.common.info">
+      <div class="message-text scroll" data-bind="text:$component.resource.generic.common.exit"></div>
+      <div class="message-btn button-container">
+        <oj-button id="hideButton" class="action-button-secondary" on-click="[[function(){$('#EXITAPPLICATION').trigger('closeModal')}]]">
+          <span data-bind="text:$component.resource.generic.common.no"></span>
+        </oj-button>
+        <oj-button id="saveButton" class="action-button-primary" on-click="[[function(){$baseModel.registerComponent('product-home','widgets/pre-login');$dashboard.switchModule('home',true);}]]">
+          <span data-bind="text:$component.resource.generic.common.yes"></span>
+        </oj-button>
+      </div>
+    </modal-window>
+  </div>
+
+
+</div>

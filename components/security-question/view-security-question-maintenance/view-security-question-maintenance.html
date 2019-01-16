@@ -1,0 +1,54 @@
+
+<!-- ko if:$component.securityQuestionLoaded() -->
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class=" oj-flex-item oj-sm-9">
+<div class="form-main-container authentication">
+
+   <page-section params="baseModel : $baseModel, rootModel : $data">
+
+     <!-- ko if:$component.showCreateScreen() -->
+     <div class="oj-flex oj-flex-items-pad boxed">
+       <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+         <span id="notMaintained" for="securityQuestion" data-bind="text:$component.nls.securityQuestion.labels.notMaintained"></span>
+       </div>
+       <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 rowCenter">
+         <oj-button class="action-button-primary pull-right" on-click="[[createMaintenance]]">
+      <span data-bind="text:$component.nls.securityQuestion.labels.setUpNow"></span>
+</oj-button>
+       </div>
+     </div>
+     <!-- /ko -->
+     <!-- ko if:!$component.showCreateScreen() -->
+     <div class="oj-flex oj-flex-items-pad">
+       <div class="oj-flex-item oj-sm-12">
+      <oj-table id="table" :aria-label="[[$component.nls.securityQuestion.labels.questions]]" columns="[[[{'headerText':$component.nls.securityQuestion.labels.questions,'field':'question'}]]]" columns-default="[[{sortable:'disabled'}]]" data="[[datasource]]">
+      
+    </oj-table>
+  </div>
+
+    </div>
+
+
+     <!-- /ko -->
+
+   </page-section>
+
+
+
+
+   <div class="oj-flex oj-flex-items-pad button-container">
+<oj-button class="action-button-primary" on-click="[[$component.loadEditComponent]]" disabled="[[$component.showCreateScreen]]">
+      <span data-bind="text:$component.nls.common.edit"></span>
+</oj-button>
+     <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span data-bind="text:$component.nls.common.cancel"></span>
+</oj-button>   
+   </div>
+</div>
+</div>
+
+  <div class="oj-flex-item oj-lg-3 oj-sm-only-hide oj-md-only-hide help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction:'view-security-question-maintenance'"></help>
+    </div>
+  </div>
+ <!-- /ko -->

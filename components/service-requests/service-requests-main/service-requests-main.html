@@ -1,0 +1,319 @@
+<div data-bind="template:$component.getTemplate()"></div>
+<script type="text/html" id="templateRetailMain">
+  <!-- ko if:$component.defaultListLoaded -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-8">
+      <page-section params="baseModel : $baseModel, rootModel : $data">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+            <!-- ko if:$component.requestTypeLoaded -->
+            <div class="row-group">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label">
+                  <oj-label id="workFlowNameLabel" for="workFlowNameRules"><span data-bind="text:$component.resource.serviceRequest.requesttype"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-select-one id="workFlowNameRules" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.resource.serviceRequest.messages.requesttypes]]" value="{{$component.requestType}}">
+                    <!-- ko foreach:$component.requestTypeArray -->
+                    <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                    <!-- /ko -->
+                  </oj-select-one>
+                </div>
+              </div>
+            </div>
+            <!-- /ko -->
+            <div class="row-group">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-label for="usernamesearch1" class="talign-left"><span data-bind="text:$component.resource.serviceRequest.refnumber"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-input-text id="usernamesearch1" maxlength="80" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.refNumber}}" :invalidcomponenttracker="[[$component.validationTracker]]"></oj-input-text>
+                </div>
+              </div>
+            </div>
+            <!-- ko if:$component.statusTypeLoaded -->
+            <div class="row-group">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 label">
+                  <oj-label id="workFlowNameLabel1" for="workFlowNameRules1"><span data-bind="text:$component.resource.serviceRequest.statustype"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-select-one id="workFlowNameRules1" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.statusType}}">
+                    <!-- ko foreach:$component.statusTypeArray -->
+                    <oj-option value="{{code}}"><span data-bind="text:$component.resource.serviceRequest.status[code]"></span></oj-option>
+                    <!-- /ko -->
+                  </oj-select-one>
+                </div>
+              </div>
+            </div>
+            <!-- /ko -->
+            <div class="row-group">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-label for="usernamesearch4" class="talign-left"><span data-bind="text:$component.resource.serviceRequest.fromDateFilter"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-input-date :id="[['startDate'+($baseModel.currentIdCount())]]" value="{{$component.startDate}}" converter="[[$baseModel.dateConverter]]" max="[[$component.maxEndDateCurrent]]"></oj-input-date>
+                </div>
+              </div>
+            </div>
+            <div class="row-group">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-label for="usernamesearch4" class="talign-left"><span data-bind="text:$component.resource.serviceRequest.toDateFilter"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-input-date :id="[['endDate'+($baseModel.currentIdCount())]]" :aria-label="[[$component.resource.serviceRequest.messages.toDate]]" value="{{$component.endDate}}" converter="[[$baseModel.dateConverter]]" max="[[$component.maxEndDateCurrent]]" min="[[$component.startDate]]"></oj-input-date>
+                </div>
+              </div>
+            </div>
+            <div class="row-group">
+              <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12">
+                  <oj-button class="action-button-primary icon icon-submit" on-click="[[$component.search]]" slot="startIcon">
+                    <span data-bind="text:$component.resource.serviceRequest.search"></span>
+                  </oj-button>
+                  <oj-button class="action-button-secondary icon icon-cancel" on-click="[[$component.reset]]" slot="startIcon">
+                    <span data-bind="text:$component.resource.serviceRequest.reset"></span>
+                  </oj-button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+            <div data-bind='component:{name: "service-requests-list", params:{rootModel: $component }}'></div>
+          </div>
+        </div>
+      </page-section>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'service-requests'"></help>
+    </div>
+  </div>
+  <!-- /ko -->
+</script>
+<script type="text/html" id="templateAdmin">
+  <!-- ko if:$component.defaultListLoaded -->
+  <page-section params="baseModel : $baseModel, rootModel : $data">
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <!-- ko if:$component.productsLoaded -->
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label id="productLabel" for="products"><span data-bind="text:$component.resource.serviceRequest.products"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+            <oj-select-one id="products" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.productName}}" on-value-changed="[[showCategoriesList]]" placeholder="{{$component.resource.serviceRequest.products}}">
+              <!-- ko foreach:$component.productsArray -->
+              <oj-option value="{{code}}"><span data-bind="text:code"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <!-- ko if:$component.requestCategoriesLoaded -->
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label id="categoryLabel" for="requestCategories"><span data-bind="text:$component.resource.serviceRequest.requestCategory"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+            <oj-select-one id="requestCategories" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.requestCategory}}" placeholder="{{$component.resource.serviceRequest.requestCategory}}">
+              <!-- ko foreach:$component.categoriesLoaded -->
+              <oj-option value="{{code}}"><span data-bind="text:code"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <!-- ko if:$component.severityLoaded -->
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label id="severityLabel" for="severity"><span data-bind="text:$component.resource.serviceRequest.severity"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+            <oj-select-one id="severity" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.severity}}" placeholder="{{$component.resource.serviceRequest.severity}}">
+              <!-- ko foreach:$component.severityData -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <!-- ko if:$component.statusTypeLoaded -->
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label id="workFlowNameLabel2" for="statusType"><span data-bind="text:$component.resource.serviceRequest.statustype"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+            <oj-select-one id="statusType" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$component.statusType}}" on-value-changed="[[statusChangeHandler]]">
+              <!-- ko foreach:$component.statusTypeArray -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label for="requestName" class="talign-left"><span data-bind="text:$component.resource.serviceRequest.requestName"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+            <oj-input-text id="requestName" maxlength="80" value="{{$component.requestName}}" :invalidcomponenttracker="[[$component.validationTracker]]" placeholder="{{$component.resource.serviceRequest.requestName}}"></oj-input-text>
+          </div>
+        </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <!-- ko if:$component.requestTypeLoaded -->
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label id="workFlowNameLabel3" for="requestType"><span data-bind="text:$component.resource.serviceRequest.requesttype"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+            <oj-select-one id="requestType" :invalidcomponenttracker="[[$component.validationTracker]]" :placeholder="[[$component.resource.serviceRequest.messages.requesttypes]]" value="{{$component.requestType}}">
+              <!-- ko foreach:$component.requestTypeArray -->
+              <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- ko if: $component.moreOptions -->
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label for="referenceNumber" class="talign-left"><span data-bind="text:$component.resource.serviceRequest.refnumber"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+            <oj-input-text id="referenceNumber" maxlength="80" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.refNumber}}" :invalidcomponenttracker="[[$component.validationTracker]]" placeholder="{{$component.resource.serviceRequest.refnumber}}"></oj-input-text>
+          </div>
+        </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label for="dateRange" class="talign-left"><span data-bind="text:$component.resource.serviceRequest.daterange"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6">
+                <oj-input-date required :id="[['startDate'+($baseModel.currentIdCount())]]" :aria-label="[[$component.resource.serviceRequest.messages.fromDate]]" translations="[[{'required':{messageDetail:$component.resource.serviceRequest.messages.fromDate}}]]" value="{{$component.startDate}}"
+                  converter="[[$baseModel.dateConverter]]" max="[[$component.maxEndDateCurrent]]"></oj-input-date>
+              </div>
+              <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6">
+                <oj-input-date required :id="[['endDate'+($baseModel.currentIdCount())]]" :aria-label="[[$component.resource.serviceRequest.messages.toDate]]" translations="[[{'required':{messageDetail:$component.resource.serviceRequest.messages.toDate}}]]" value="{{$component.endDate}}"
+                  converter="[[$baseModel.dateConverter]]" max="[[$component.maxEndDate]]" min="[[$component.startDate]]"></oj-input-date>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label for="usernamesearch" class="talign-left"><span data-bind="text:$component.resource.serviceRequest.userfirstname"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+            <oj-input-text id="usernamesearch" :aria-label="[[$component.resource.serviceRequest.userfirstname]]" maxlength="80" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.firstName}}" :invalidcomponenttracker="[[$component.validationTracker]]"
+              placeholder="{{$component.resource.serviceRequest.userfirstname}}"></oj-input-text>
+          </div>
+        </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label for="usernamesearch2" class="talign-left"><span data-bind="text:$component.resource.serviceRequest.userlastname"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+            <oj-input-text id="usernamesearch2" maxlength="80" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.lastname}}" :invalidcomponenttracker="[[$component.validationTracker]]" placeholder="{{$component.resource.serviceRequest.userlastname}}"></oj-input-text>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label for="userId" class="talign-left"><span data-bind="text:$component.resource.serviceRequest.userid"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+            <oj-input-text id="userId" maxlength="80" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.userName}}" :invalidcomponenttracker="[[$component.validationTracker]]" placeholder="{{$component.resource.serviceRequest.userid}}"></oj-input-text>
+          </div>
+        </div>
+      </div>
+
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
+        <div class="oj-flex">
+          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 label">
+            <oj-label for="usernamesearch3" class="talign-left"><span data-bind="text:$component.resource.serviceRequest.partyname"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-8">
+            <oj-input-text id="usernamesearch3" :aria-label="[[$component.resource.serviceRequest.partyname]]" maxlength="80" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.partyId}}" :invalidcomponenttracker="[[$component.validationTracker]]"
+              placeholder="{{$component.resource.serviceRequest.partyname}}"></oj-input-text>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /ko -->
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-2 oj-md-2 oj-lg-2">
+        <!-- ko if: $component.moreOptions -->
+        <a href="javascript:void(0)" data-bind="click :$component.showOptions">
+                  <span data-bind="text:$component.resource.serviceRequest.lessOptions"></span>
+                  <span class="icon icon-arrow-up">
+                  </a>
+        <!-- /ko -->
+        <!-- ko ifnot:$component.moreOptions -->
+        <a href="javascript:void(0)" data-bind="click :$component.showOptions">
+                  <span data-bind="text:$component.resource.serviceRequest.moreOptions"></span>
+                  <span class="icon icon-arrow-down">
+                  </a>
+        <!-- /ko -->
+      </div>
+    </div>
+    <div class="oj-flex button-container">
+      <oj-button class="action-button-primary" on-click="[[$component.search]]">
+        <span data-bind="text:$component.resource.serviceRequest.search"></span>
+      </oj-button>
+      <oj-button class="action-button-secondary" on-click="[[$component.reset]]">
+        <span data-bind="text:$component.resource.serviceRequest.reset"></span>
+      </oj-button>
+    </div>
+    <div class="row-group">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-9 oj-md-9 oj-lg-9">
+        </div>
+        <div class="oj-flex-item oj-sm-3 oj-md-3 oj-lg-3">
+        </div>
+      </div>
+    </div>
+    <div data-bind='component:{name: "service-requests-list", params:{rootModel: $component }}'></div>
+  </page-section>
+  <!-- /ko -->
+</script>

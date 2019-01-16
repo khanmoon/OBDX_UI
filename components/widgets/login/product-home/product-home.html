@@ -1,0 +1,27 @@
+<div class="parallax">
+	<page-banner params="baseModel : $baseModel, rootModel : $data"></page-banner>
+	<login-form params="baseModel : $baseModel, rootModel : $data,data:context,landingModule:landingModule,landingComponent:landingComponent"></login-form>
+	<!-- ko if:$baseModel.large() -->
+	<!-- ko if:!$baseModel.cordovaDevice() -->
+	<bank-products params="baseModel : $baseModel, rootModel : $data"></bank-products>
+	<goals params="baseModel : $baseModel, rootModel : $data, dashboard : $dashboard"></goals>
+	<loan-showcase params="baseModel : $baseModel, rootModel : $data"></loan-showcase>
+	<tools-and-calculators params="baseModel : $baseModel, dashboard: $dashboard, rootModel : $data"></tools-and-calculators>
+	<company-links params="baseModel : $baseModel, rootModel : $data"></company-links>
+	<!-- /ko -->
+	<!-- ko if:$baseModel.cordovaDevice() -->
+	<!-- ko if:!$component.hideMobileLanding() -->
+	<mobile-landing params="baseModel : $baseModel, rootModel : $data,dashboard:$dashboard"></mobile-landing>
+	<!-- /ko -->
+	<!-- /ko -->
+	<!-- /ko -->
+	<!-- ko if:!$baseModel.large() -->
+	<!-- ko if:!$component.hideMobileLanding() -->
+	<mobile-landing params="baseModel : $baseModel, rootModel : $data,dashboard:$dashboard"></mobile-landing>
+	<!-- /ko -->
+	<!-- ko if:!$baseModel.cordovaDevice() -->
+	<goals params="baseModel : $baseModel, rootModel : $data, dashboard: $dashboard"></goals>
+	<loan-showcase params="baseModel : $baseModel, rootModel : $data"></loan-showcase>
+	<!-- /ko -->
+	<!-- /ko -->
+</div>

@@ -1,0 +1,32 @@
+<!-- ko if:membershipDetailsLoaded() -->
+
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 label oj-lg-offset-2 oj-md-offset-1">
+		<oj-label :for="[['membershipName']]"><span data-bind="text:$component.resource.memberName"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+
+		<oj-input-text :id="[['membershipName']]" value="{{$component.offerDetails.offerDetails[0].offerAdditionalDetails.cardOfferDetails.affinityProgramName}}" disabled="[[true]]"></oj-input-text>
+	</div>
+
+</div>
+<div class="oj-flex oj-flex-items-pad">
+
+	<div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 label oj-lg-offset-2 oj-md-offset-1">
+		<oj-label :for="[['membershipNumber']]"><span data-bind="text:$component.resource.memberNumber"></span></oj-label>
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+		<oj-input-text :id="[['membershipNumber']]" value="{{$component.primaryCardHolder().membership.membershipDetails.membershipNumber}}" disabled="[[!($component.offerDetails.offerDetails[0].offerAdditionalDetails.cardOfferDetails.affinityCard)]]"></oj-input-text>
+	</div>
+
+</div>
+<div class="oj-flex oj-flex-items-pad button-container">
+		<div class="oj-flex-item right oj-lg-10 oj-md-10">
+			<oj-button class="form-button-secondary" on-click="[[updateMembershipDetails]]">
+      <span data-bind="text:$component.resource.continue"></span>
+</oj-button>
+		</div>
+</div>
+
+<!-- /ko -->

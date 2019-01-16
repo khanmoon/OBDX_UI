@@ -1,0 +1,83 @@
+<!-- ko if: isSummaryLoaded() -->
+<div data-bind="with:applicationInfo()">
+  <div class="oj-flex oj-flex-items-pad application-status-text">
+    <div class="oj-flex-item">
+      <!-- ko if:$component.applicationInfo().currentOfferDesc() -->
+      <h3 data-bind="text : $component.applicationInfo().currentOfferDesc()">
+        </h3>
+      <!-- /ko -->
+
+      <!-- ko ifnot:$component.applicationInfo().currentOfferDesc() -->
+      <h3 data-bind="text : $component.resource.productClass[$data.productType()]">
+        </h3>
+      <!-- /ko -->
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad application-summary-card default-pointer oj-panel label-container">
+    <div class="oj-flex-item">
+      <div class="oj-flex oj-flex-items-pad  application-card-row">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 padding-left">
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <oj-label><span class="label-text" data-bind="text:$component.resource.applicationId"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:currentApplicationIdDisplayValue"></span>
+            </div>
+          </div>
+
+          <div class=" oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <oj-label><span class="label-text" data-bind="text:$component.resource.applicantName"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:remarks"></span>
+            </div>
+
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-5">
+              <oj-label><span class="label-text" data-bind="text:$component.resource.submittedOn"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <span class="value-text" data-bind="text:$baseModel.formatDate($component.applicationInfo().submissionDate())"></span>
+            </div>
+          </div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5">
+
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+              <oj-label><span class="label-text" data-bind="text:$component.resource.status"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+              <span class="value-text" data-bind="text:$data.currentApplicationStatusDesc"></span>
+            </div>
+          </div>
+          <!-- ko if: totalRequestedAmount && totalRequestedAmount.amount -->
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+              <oj-label><span class="label-text" data-bind="text:$component.resource.requestedAmount"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+              <span class="value-text" data-bind="text:$baseModel.formatCurrency(totalRequestedAmount.amount, totalRequestedAmount.currency)"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if: $component.applicationInfo().requestedTenure -->
+          <div class="oj-flex oj-flex-items-pad application-summary-content">
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+              <oj-label><span class="label-text" data-bind="text: $component.resource.requestedTenure"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-9">
+              <span class="value-text" data-bind="text: $baseModel.format($component.resource.tenure, {years: requestedTenure.years, months: requestedTenure.months})"></span>
+            </div>
+          </div>
+          <!-- /ko -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /ko -->

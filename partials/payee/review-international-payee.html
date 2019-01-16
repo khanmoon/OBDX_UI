@@ -1,0 +1,59 @@
+<div data-bind="with:$component.payeeDetails()">
+    <div class="">
+      <!-- ko if:!('adhocPaymentFlag' in $component) -->
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.recipientname , value :name"></row>
+         <!-- /ko -->
+    </div>
+    <div class="">
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.accounttype , value :$component.payments.payee.international.accinternational"></row>
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.accountnumber , value :accountNumber,dataClass :'highlight-text'"></row>
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.accountname , value :accountName,dataClass :'highlight-text'"></row>
+
+         <!-- ko if:$component.network() === 'SWI' -->
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.payvia ,
+          value :$component.payments.payee.international.SWIFTCODE ,dataClass :'highlight-text'"></row>
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.SWIFTCODE, value: [
+            bankDetails.code,
+            bankDetails.name,
+            bankDetails.address,
+            bankDetails.city,
+            bankDetails.country
+         ]"></row>
+          <!-- /ko -->
+
+         <!-- ko if:$component.network() === 'NAC' -->
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.payvia ,
+          value :$component.payments.payee.international.ncc,dataClass :'highlight-text'"></row>
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.ncc, value: [
+            bankDetails.code,
+            bankDetails.name,
+            bankDetails.address,
+            bankDetails.city,
+            bankDetails.country
+         ]"></row>
+         <!-- /ko -->
+         <!-- ko if:$component.network() === 'SPE' -->
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.payvia ,
+          value :$component.payments.payee.international.SPECIFICBANKDETAILS ,dataClass :'highlight-text'"></row>
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.SPECIFICBANKDETAILS, value: [
+            bankDetails.code,
+            bankDetails.name,
+            bankDetails.address,
+            bankDetails.city,
+            bankDetails.country
+         ]"></row>
+         <!-- /ko -->
+    </div>
+    <div class="">
+      <!-- ko if:!('adhocPaymentFlag' in $component) -->
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.international.accountnickname , value :nickName"></row>
+         <!-- /ko -->
+    </div>
+
+    <!-- ko if:$component.userSegment === "CORP" && !('adhocPaymentFlag' in $component) -->
+    <div class="">
+         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.payeeaccesstype , value :$component.payments.payee[payeeAccessType]"></row>
+    </div>
+    <!-- /ko -->
+
+</div>

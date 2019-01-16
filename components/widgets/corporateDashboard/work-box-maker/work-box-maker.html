@@ -1,0 +1,94 @@
+
+<div data-bind="template: { afterRender: $component.getRootContext.bind(null, $root)}"></div>
+<div class="oj-panel work-box-maker">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-lg-11 work-box-maker__header work-box-maker-header">
+        <h3 class="work-box-maker-header__title" data-bind="text: $component.nls.activityHeader"></h3>
+        <!-- ko if:dataLoaded() -->
+        <div class="work-box-maker-header__selectBox pull-right">
+          <oj-label for="txnType" class="hide"><span data-bind="text:$component.nls.dropDown"></span></oj-label>
+          <oj-select-one id="txnType" value="{{$component.txnType}}" data-bind="attr:{'aria-label':$component.nls.dropDown}">
+            <!-- ko foreach: txnListData -->
+             <oj-option value="[[$data]]"><span data-bind="text: $component.nls[$data]"></span></oj-option>
+             <!-- /ko -->
+           </oj-select-one>
+        </div>
+        <!-- /ko -->
+      </div>
+
+      <!-- ko if : $baseModel.large() -->
+      <div class="oj-flex-item oj-lg-1 work-box-maker__search work-box-maker-search">
+            <a href="#" data-bind="attr:{'alt':$component.nls.filter,'title':$component.nls.filterText, 'aria-label':$component.nls.filterText},click:$component.ctrl2">
+                <span id="ctrl2" class="icon icon-search work-box-maker-search__icon"></span>
+            </a>
+      </div>
+      <!-- /ko -->
+      </div>
+      <!-- ko if:$component.filterDateRange() -->
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-5">
+                <oj-label><span data-bind="text:$component.nls.dateFrom"></span></oj-label>
+                <div class="">
+                          <oj-input-date id="from" value="{{fromDate}}" converter="[[$baseModel.dateConverter]]" max="[[toDate]]" datepicker="[[{
+                                         numberOfMonths:1}]]"></oj-input-date>
+                </div>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-5">
+                  <oj-label><span data-bind="text:$component.nls.dateTo"></span></oj-label>
+                      <div class="">
+                          <oj-input-date id="from" value="{{toDate}}" min="[[fromDate]]" converter="[[$baseModel.dateConverter]]" datepicker="[[{
+                                         numberOfMonths:1}]]"></oj-input-date>
+                      </div>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-2 work-box-maker__searchButton">
+                  <oj-button class="action-button-primary" on-click="[[$component.dateFilter]]">
+      <span data-bind="text:$component.nls.search"></span>
+</oj-button>
+              </div>
+          </div>
+      <!-- /ko -->
+      <div>
+        <!-- ko if: $baseModel.large() -->
+        <ul class="oj-flex oj-flex-items-pad work-box-maker__flex-container work-box-maker-flex-container oj-sm-flex-wrap-nowrap">
+
+          <!-- ko foreach: $component.workBoxData -->
+
+          <li class="oj-flex-item work-box-maker-flex-container__flex-item work-box-maker-list no-pad-cols" data-bind="component:{name:'work-box-corporate',params:{rootModel:$parent,header:header,workCount:$data.status}}"></li>
+
+          <!-- /ko -->
+        </ul>
+          <!-- ko if: loadModule() -->
+          <div class="oj-flex colorLoader" data-bind="css:$component.selectedClass()"></div>
+          <!-- /ko -->
+          <!-- ko if: loadModule() -->
+          <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12" data-bind="component:{name: loadModule, params:{rootModel: $data , data : ko.observable()}}">
+          </div>
+        </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko ifnot: $baseModel.large() -->
+          <div class="oj-flex oj-flex-items-pad work-box-maker-list__listView work-box-maker-list-listView">
+              <div class="oj-flex-item no-pad-cols work-box-maker-list-listView">
+                  <!-- left side section giving user input -->
+                  <ul data-bind="foreach:workBoxData">
+                      <li class="work-box-maker-list-listView__items work-box-maker-list-listView-items">
+                          <a class="work-box-maker-list-listView-items__activity work-box-maker-list-listView-items-activity" href="#" data-bind="attr:{'alt': $data.header,'title':$component.nls.activityHeaderTitle}, click:$component.loadComponentData.bind($data,$data)">
+                              <span data-bind="text:header"></span>
+                              <div class="work-box-maker-list-listView-items-activity__listItem work-box-maker-list-listView-items-activity-listItem">
+                                  <span class="work-box-maker-list-listView-items-activity-listItem__count" data-bind="text: countForHeader"></span>
+                                  <div class="icons icon-arrow-right work-box-maker-list-listView-items-activity-listItem__icon"></div>
+                              </div>
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+          <!-- /ko -->
+
+
+      </div>
+
+
+
+</div>

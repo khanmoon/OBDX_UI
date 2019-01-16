@@ -1,0 +1,36 @@
+<!-- ko foreach:$component.configuration.configurationItemDTOs -->
+
+<div class="oj-flex oj-flex-items-pad">
+
+    <!-- ko foreach:$data.inputDTOs -->
+
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+        <oj-label for="input"><span data-bind="text:$data.uiDefinition.title"></span></oj-label>
+    </div>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+
+        <!-- ko if :$data.type === 'TXT' -->
+        <oj-input-text id="input" :id="[['field_txt_'+ $index()]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator,$data.uiDefinition.message,$data.uiDefinition.extension)]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues}}"></oj-input-text>
+        <!-- /ko -->
+
+
+        <!-- ko if :$data.type === 'LISTBOX' -->
+        <oj-select-one id="input" :id="[['field_select_'+ $index()]]" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{$data.inputValues}}" :placeholder="[[$component.nls.fieldname.select]]">
+                <!-- ko foreach: $data.tempObj.options -->
+                <oj-option value="{{key}}"><span data-bind="text:description"></span></oj-option>
+                <!-- /ko -->
+                </oj-select-one>
+
+        <!-- /ko -->
+        <!-- ko if :$data.type === 'CHB' -->
+
+        <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" class="oj-choice-direction-row" validators="[[$baseModel.getValidator($data.uiDefinition.validator)]]" required="[[$data.uiDefinition.required]]" value="{{$data.inputValues}}"><!-- ko foreach: $data.tempObj.options --><oj-option id="option" value="{{key}}" :id="[['AcctType'+ $index()]]"><span for="option" data-bind="text: description, attr : {'for' :'AcctType' + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+        <!-- /ko -->
+
+
+    </div>
+
+    <!-- /ko -->
+</div>
+<!-- /ko -->

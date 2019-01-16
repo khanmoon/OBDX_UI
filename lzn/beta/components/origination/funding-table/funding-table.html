@@ -1,0 +1,185 @@
+<!-- ko if: $component.fundingTableInfoLoaded() -->
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <oj-validation-group id="fundingTableTracker">
+    <div class="employments-financial-info" data-bind="with:$component.productDetails().fundingTableInfo.fundingTableDetailDTO">
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-11 oj-lg-11">
+          <!-- ko if: $component.contributionOk() === "OPTION_YES" -->
+          <a href="javascript:void(0)" class="pull-right icon-edit" data-bind="click : $component.editPrice ,attr:{alt: $component.resource.editPrice, title: $component.resource.editPriceTitle}"></a>
+          <!-- /ko -->
+          <!-- ko if: $component.contributionOk() === "OPTION_NO" -->
+          <a href="javascript:void(0)" class="pull-right icon-save" data-bind="click : $component.submitFundingRequirement ,attr:{alt: $component.resource.savePrice, title: $component.resource.savePriceTitle}"></a>
+          <!-- /ko -->
+        </div>
+      </div>
+      <!-- ko if: $component.contributionOk() === "OPTION_YES" -->
+      <!-- ko if: $component.productDetails().productType === "LOANS" -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+          <oj-label><span data-bind="text:$component.resource.propertyPurchacePrice"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+          <span data-bind="text : $baseModel.formatCurrency(fundingItemDetailDTOs[$component.getIndex($data.fundingItemDetailDTOs,'PROPERTY_PURCHASE_COST')].totalAmount.amount(), fundingItemDetailDTOs[$component.getIndex($data.fundingItemDetailDTOs,'PROPERTY_PURCHASE_COST')].totalAmount.currency)"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.productDetails().productType === "AUTOMOBILE" -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+          <oj-label><span data-bind="text:$component.resource.estValue"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+          <span data-bind="text : $baseModel.formatCurrency(fundingItemDetailDTOs[$component.getIndex($data.fundingItemDetailDTOs,'VEHICLE_COST')].totalAmount.amount(), fundingItemDetailDTOs[$component.getIndex($data.fundingItemDetailDTOs,'VEHICLE_COST')].totalAmount.currency)"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+          <oj-label><span data-bind="text:$component.resource.requestedLoanAmount"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+          <span data-bind="text : $baseModel.formatCurrency(fundingItemDetailDTOs[$component.getIndex($data.fundingItemDetailDTOs,'FACILITY')].totalAmount.amount(),fundingItemDetailDTOs[$component.getIndex($data.fundingItemDetailDTOs,'FACILITY')].totalAmount.currency)"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.contributionOk() === "OPTION_NO" -->
+      <!-- ko if: $component.productDetails().productType === "LOANS" -->
+      <div data-bind="component: {
+                  name: 'amount-input', params: {
+                  amount: $component.productDetails().requirements.propertyDetails.purchasePrice.amount,
+                  label: $component.resource.propertyPurchacePrice,
+                  currency: $component.productDetails().requirements.propertyDetails.purchasePrice.currency,
+                  labelClasses : 'oj-lg-3 oj-md-3 oj-lg-offset-2 oj-md-offset-1',
+                  valueClasses : 'oj-lg-6 oj-md-7',
+                  currencyListRequired : false,
+                  converter: $baseModel.formatCurrency,
+                  validator: $component.validationTracker,
+                  isMandatory: true,
+                  maxlength: 15,
+                  rootId:'property-purchase-amount',
+                  inline:true,
+                  rootClass:'form-input'
+              }
+            }">
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.productDetails().productType === "AUTOMOBILE" -->
+      <div data-bind="component: {
+                  name: 'amount-input', params: {
+                  amount: $component.productDetails().requirements.vehicleDetails.purchasePrice.amount,
+                  label: $component.resource.estValue,
+                  currency: $component.productDetails().requirements.vehicleDetails.purchasePrice.currencyCode,
+                  labelClasses : 'oj-lg-3 oj-md-4 oj-lg-offset-2',
+                  valueClasses : 'oj-lg-3 oj-md-8',
+                  currencyListRequired : false,
+                  converter: $baseModel.formatCurrency,
+                  validator: $component.validationTracker,
+                  isMandatory: true,
+                  maxlength: 15,
+                  rootId:'property-purchase-amount',
+                  rootClass:'form-input',
+                  inline:true
+              }
+            }">
+      </div>
+      <!-- /ko -->
+      <div data-bind="component: {
+                  name: 'amount-input', params: {
+                  amount: $component.productDetails().requirements.requestedAmount.amount,
+                  label: $component.resource.requestedLoanAmount,
+                  currency: $component.productDetails().requirements.requestedAmount.currency,
+                  labelClasses : 'oj-lg-3 oj-md-3 oj-lg-offset-2 oj-md-offset-1',
+                  valueClasses : 'oj-lg-6 oj-md-7',
+                  currencyListRequired : false,
+                  converter: $baseModel.formatCurrency,
+                  validator: $component.validationTracker,
+                  isMandatory: true,
+                  maxlength: 15,
+                  rootId:'requested-loan-amount',
+                  rootClass:'form-input',
+                  inline:true
+              }
+            }">
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $component.feesConfigured -->
+      <!-- ko if: $component.showFeeTooltip -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+          <oj-label><span data-bind="text:$component.resource.totalFees"></span></oj-label>
+        </div>
+        <div class="tooltip-section oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+          <span data-bind="text : $baseModel.formatCurrency(fundingItemDetailDTOs[$component.getIndex($data.fundingItemDetailDTOs,'BANK_FEE')].totalAmount.amount(),fundingItemDetailDTOs[$component.getIndex($data.fundingItemDetailDTOs,'BANK_FEE')].totalAmount.currency)"></span>
+          <!-- ko if: $baseModel.large() -->
+          <div class="tooltip message-text" id="totalFees_tooltip" data-bind="component:{name: 'tooltip',params :{rootModel : $component, message: $component.productDetails().message}}">
+          </div>
+          <span class="icon-help" id="tool-tip-holder-fees" aria-hidden="true" data-bind="event: { mouseover: $component.showToolTip.bind($data,'totalFees_tooltip','tool-tip-holder-fees'), mouseout: $component.hideToolTip.bind($data,'totalFees_tooltip') }"></span>
+          <!-- /ko -->
+          <!-- ko ifnot: $baseModel.large() -->
+          <a class="icon-help" href="javascript:void(0)" aria-hidden="true" data-bind="click: function(){$('#totalFeesPopup').trigger('openModal')} , attr:{alt: $component.resource.totalFeeDetailClick, title: $component.resource.totalFeeDetailTitle}"></a>
+          <!-- /ko -->
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if: $component.productDetails().productType === "LOANS" -->
+      <!-- ko if: lvrValue() !== 0 -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+          <oj-label><span data-bind="text:$component.resource.lendersMortgageInsurance"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+          <span data-bind="text :  $baseModel.formatCurrency(lvrValue(), totalOutlay.currency)"></span>
+        </div>
+      </div>
+      <!-- /ko -->
+      <!-- /ko -->
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+          <oj-label><span data-bind="text:$component.resource.totalCosts"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+          <span data-bind="text : $baseModel.formatCurrency(totalOutlay.amount(),totalOutlay.currency)"></span>
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+          <oj-label><span data-bind="text:$component.resource.yourContribution"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-3 padding-top-5 label">
+          <span data-bind="text : $baseModel.formatCurrency(fundingItemDetailDTOs[$component.getIndex($data.fundingItemDetailDTOs,'CUSTOMER')].customerFundingItemDTOs[0].totalFeeValue.amount(),fundingItemDetailDTOs[$component.getIndex($data.fundingItemDetailDTOs,'CUSTOMER')].customerFundingItemDTOs[0].totalFeeValue.currency)"></span>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label right padding-top-5">
+          <oj-buttonset-one id="contributionOk" required on-value-changed="[[$component.contributionOkSelected]]" value="{{$component.contributionOk}}">
+            <oj-option name="contributionOkStatus" class="contributionOkStatus" value="{{'OPTION_YES'}}" :id="[['contributionOkYes']]"><span data-bind="attr: {for: 'contributionOkYes'}, text: $component.resource.generic.common.yes"></span></oj-option>
+            <oj-option name="contributionOkStatus" class="contributionOkStatus" value="{{'OPTION_NO'}}" :id="[['contributionOkNo']]"><span data-bind="attr: {for: 'contributionOkNo'}, text: $component.resource.generic.common.no"></span></oj-option>
+          </oj-buttonset-one>
+        </div>
+      </div>
+    </div>
+</page-section>
+</oj-validation-group>
+<div class="oj-flex oj-flex-items-pad">
+  <modal-window class="origination-popup message" params="baseModel : $baseModel, rootModel : $component, id:'totalFeesPopup', header: $component.resource.generic.common.info">
+    <div class="message-text scroll" data-bind="html:$component.productDetails().message"></div>
+  </modal-window>
+</div>
+<!-- /ko -->
+<!-- ko if: $component.contributionOk() === "OPTION_YES" -->
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item oj-lg-10 oj-md-10">
+    <oj-button id="submitFundingTable" class="form-button-secondary" :aria-label="[[$component.resource.submitFundingTable]]" on-click="[[$component.submitFundingInfo]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if: $component.contributionOk() === "OPTION_NO" -->
+<div class="oj-flex oj-flex-items-pad button-container">
+  <div class="oj-flex-item oj-lg-10 oj-md-10">
+    <oj-button id="submitFundingTable" disabled class="form-button-secondary" :aria-label="[[$component.resource.submitFundingTable]]" on-click="[[$component.submitFundingInfo]]">
+      <span data-bind="text:$component.resource.generic.common.continue"></span>
+    </oj-button>
+  </div>
+</div>
+<!-- /ko -->

@@ -1,0 +1,223 @@
+<div class="oj-flex oj-sm-flex-items-initial">
+<div class="form-main-container oj-flex-item payee-restriction-landing-container" data-bind="css :$component.isReview() ? 'oj-sm-12' : 'oj-sm-9'">
+    <!-- ko if: $component.searchResultLoaded() -->
+    <!-- ko if: !$component.isReview() -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <!-- ko foreach: $component.searchResult -->
+        <!-- ko if: payeeType === "ALL" -->
+        <!-- ko if: accountPayee.length >0 -->
+        <!-- ko foreach: accountPayee -->
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-label class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 label"><span data-bind="text:$component.resource.payeeCount.totalpyeecount"></span></oj-label>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+            <oj-buttonset-one :id="[[$data.payeeType]]" disabled="[[!$component.isEdit()]]" value="{{$data.payeeCountLimitStatus}}"><!-- ko foreach: $component.payeeLimitStatus --><oj-option value="[[id]]" :id="[[id + $parent.payeeType+$baseModel.currentIdCount()]]" :name="[[$parent.payeeType]]"><span data-bind="attr: {for: id + $parent.payeeType+$baseModel.incrementIdCount()},text: label"></span></oj-option><!-- /ko --></oj-buttonset-one>
+            </div>
+            <!-- ko if:payeeCountLimitStatus() === "Y" -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 label">
+                <oj-label :for="[['payeecount'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.payeeCount.totalpayeepermittedperday"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-2">
+               <!-- ko if: !$component.isEdit() -->
+                <span class="payee-count__perday" data-bind="text:payeesPerDay"></span>
+                <!-- /ko -->
+                <!-- ko if: $component.isEdit() -->
+                <oj-input-number :id="[['payeecount'+ $baseModel.currentIdCount()]]" maxlength="5"  validators="[[$baseModel.getValidator('NUMBERS',
+                                  $component.resource.payeeCount.messageDetail,
+                                  {
+                                    })]]" value="{{payeesPerDay}}"
+                                    min="0" step= "1" required></oj-input-number>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+
+        </div>
+
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: payeeType !== "ALL" -->
+        <action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.resource.payeeCount[payeeType]"></action-header>
+        <!-- ko if: accountPayee.length >0 -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item" data-bind="text:$component.resource.payeeCount.accountpayee"></div>
+        </div>
+        <!-- /ko -->
+
+
+        <!-- ko if: payeeType === "DOMESTIC" -->
+        <!-- ko foreach: accountPayee -->
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-label class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 label">
+              <span data-bind="text:$component.resource.payeeCount.payeeRestriction"></span>
+            </oj-label>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+              <oj-buttonset-one :aria-label="[[$component.resource.payeeCount.oneType]]" disabled="[[!$component.isEdit()]]" value="{{$data.payeeCountLimitStatus}}">
+              <!-- ko foreach: $component.payeeLimitStatus -->
+              <oj-option value="[[id]]" :id="[[id + $parent.payeeType+$baseModel.currentIdCount()]]" :name="[[$parent.payeeType]]">
+              <span data-bind="attr: {for: id + $parent.payeeType+$baseModel.incrementIdCount()},text: label"></span>
+              </oj-option>
+              <!-- /ko -->
+              </oj-buttonset-one>
+           </div>
+
+            <!-- ko if: $data.payeeCountLimitStatus() === "Y" -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 label">
+                <oj-label :for="[['payeecount'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.payeeCount.payeepermittedperday"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-2">
+               <!-- ko if: !$component.isEdit() -->
+                <span class="payee-count__perday" data-bind="text:payeesPerDay"></span>
+                <!-- /ko -->
+                <!-- ko if: $component.isEdit() -->
+               <oj-input-number :id="[['payeecount'+ $baseModel.currentIdCount()]]" maxlength="5" validators="[[$baseModel.getValidator('NUMBERS',
+                                  $component.resource.payeeCount.messageDetail,
+                                  {
+                                    })]]" value="{{payeesPerDay}}"
+                                    min="0" step= "1" required></oj-input-number>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+
+        </div>
+
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: payeeType !== "DOMESTIC" -->
+        <!-- ko foreach: accountPayee -->
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-label class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 label">
+              <span data-bind="text:$component.resource.payeeCount.payeeRestriction"></span>
+            </oj-label>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+            <oj-buttonset-one :aria-label="[[$component.resource.payeeCount.oneType]]" disabled="[[!$component.isEdit()]]" value="{{$data.payeeCountLimitStatus}}"><!-- ko foreach: $component.payeeLimitStatus --><oj-option value="{{id}}" :id="[[id + $parent.payeeType+$baseModel.currentIdCount()]]" :name="[[$parent.payeeType]]"><span data-bind="attr: {for: id + $parent.payeeType+$baseModel.incrementIdCount()}, text: label "></span></oj-option><!-- /ko --></oj-buttonset-one>
+            </div>
+            <!-- ko if:payeeCountLimitStatus() === "Y" -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 label">
+                <oj-label :for="[['payeecount'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.payeeCount.payeepermittedperday"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-2">
+               <!-- ko if: !$component.isEdit() -->
+                <span id="payeecount" class="payee-count__perday" data-bind="text:payeesPerDay"></span>
+                <!-- /ko -->
+                <!-- ko if: $component.isEdit() -->
+                <oj-input-number :id="[['payeecount'+ $baseModel.currentIdCount()]]" maxlength="5" validators="[[$baseModel.getValidator('NUMBERS',
+                                  $component.resource.payeeCount.messageDetail,
+                                  {
+                                    })]]" value="{{payeesPerDay}}"
+                                    min="0" step= "1" required></oj-input-number>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: draftpayee.length > 0 -->
+        <div class="oj-flex oj-flex-items-pad">
+       <div class="oj-flex-item" data-bind="text:$component.resource.payeeCount.draftpayee"></div></div>
+        <!-- /ko -->
+         <!-- ko foreach: draftpayee -->
+        <div class="oj-flex oj-flex-items-pad">
+            <oj-label :id="[['draftPayeeRestriction_'+ $data.payeeType]]" class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 label">
+              <span data-bind="text:$component.resource.payeeCount.payeeRestriction"></span>
+            </oj-label>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+            <oj-buttonset-one :aria-label="[[$component.resource.payeeCount.oneType]]" disabled="[[!$component.isEdit()]]" value="{{$data.payeeCountLimitStatus}}"><!-- ko foreach: $component.payeeLimitStatus --><oj-option value="{{id}}" :id="[[id + $parent.payeeType+$baseModel.currentIdCount()]]" :name="[[$parent.payeeType]]"><span data-bind="attr: {for: id + $parent.payeeType+$baseModel.incrementIdCount()},text: label"></span></oj-option><!-- /ko --></oj-buttonset-one>
+            </div>
+
+            <!-- ko if:payeeCountLimitStatus() === "Y" -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3 label">
+                <oj-label :for="[['payeecount'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.resource.payeeCount.payeepermittedperday"></span></oj-label>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-2">
+               <!-- ko if: !$component.isEdit() -->
+                <span class="payee-count__perday" data-bind="text:payeesPerDay"></span>
+                <!-- /ko -->
+                <!-- ko if: $component.isEdit() -->
+               <oj-input-number :id="[['payeecount'+ $baseModel.currentIdCount()]]" maxlength="5" validators="[[$baseModel.getValidator('NUMBERS',
+                                  $component.resource.payeeCount.messageDetail,
+                                  {
+                                    })]]" value="{{payeesPerDay}}"
+                                    min="0" step= "1" required></oj-input-number>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+    </page-section>
+    <!-- /ko -->
+
+    <!-- ko if: $component.isReview() -->
+     <page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading :''">
+      <div data-bind="template: { name: 'payee-restrictions/review-payee-restrictions' }"></div>
+      </page-section>
+    <!-- /ko -->
+
+    <div class="oj-flex oj-flex-items-pad button-container right">
+      <!-- ko if: $component.isReview() -->
+      <oj-button class="action-button-primary" id="button-confirm" on-click="[[$component.confirmEdit]]">
+        <span data-bind="text:resource.common.confirm"></span>
+      </oj-button>
+      <!-- /ko -->
+
+      <!-- ko if: !$component.isEdit() && !$component.isReview() -->
+      <oj-button class="action-button-primary" id="edit" on-click="[[$component.switchEditMode]]">
+        <span data-bind="text:resource.common.edit"></span>
+      </oj-button>
+      <!-- /ko -->
+
+      <!-- ko if: $component.isEdit() && !$component.isReview() -->
+      <oj-button class="action-button-primary" id="save"  on-click="[[$component.showWarning]]">
+        <span data-bind="text:resource.common.save"></span>
+      </oj-button>
+      <!-- /ko -->
+
+      <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$dashboard.openDashBoard.bind()]]">
+        <span data-bind="text:resource.common.cancel"></span>
+      </oj-button>
+
+      <!-- ko if: ($component.isEdit() || !$component.isReview()) && !$component.isInitite() -->
+      <oj-button class="action-button-tertiary" id="button-back" on-click="[[$component.switchEditModenRetainValues]]">
+        <span data-bind="text:resource.common.back"></span>
+      </oj-button>
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <modal-window class="favorite-container" params="baseModel : $baseModel, rootModel : $component,id:'effectivedate', header: $component.resource.common.info">
+          <div class=" oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12" data-bind="text:$component.resource.payeeCount.effectiveDateWarning">
+            </div>
+          </div>
+          <div class="button-container">
+            <oj-button class="action-button-primary" id="button-ok" on-click="[[$parent.goToReviewScreen]]">
+              <span data-bind="text:resource.common.ok"></span>
+            </oj-button>
+
+            <oj-button class="action-button-secondary" id="button-cancel" on-click="[[$parent.hideWarning]]">
+              <span data-bind="text:resource.common.cancel"></span>
+            </oj-button>
+
+          </div>
+    </modal-window>
+</div>
+    <!-- ko if: $baseModel.large() && !$component.isReview()-->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'payee-maintenance'"></help>
+    </div>
+    <!-- /ko -->
+</div>

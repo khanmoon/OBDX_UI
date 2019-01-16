@@ -1,0 +1,170 @@
+	<div class="corporate-favorites">
+		<!-- ko if : !$baseModel.large() -->
+		<div class="oj-flex oj-flex-items-pad cust-details">
+			<div class="oj-flex-item oj-sm-12 label">
+				<label class="oj-label" for="payment-type" data-bind="text:$component.nls.payments.favoritesDetails.labels.paymenttyp"></label>
+			</div>
+			<div class="oj-flex-item oj-sm-12">
+				<oj-radioset id="radioFavorite" :aria-label="[[$component.nls.payments.navBarDescription]]" on-value-changed="[[$component.paymentTypeChanged]]" value="{{type}}">
+					<!-- ko foreach: paymentTypeArray -->
+					<oj-option name="radiovalue" value="{{id}}" :id="[[id]]" :data-id="[[id]]"><span class="label" data-bind="text: label"></span></oj-option><!-- /ko --></oj-radioset>
+			</div>
+		</div>
+		<!-- /ko -->
+
+		<!-- ko if:dataFetched() && favoritesDataSource -->
+		<div class="form-main-container">
+
+			<!-- ko if : $baseModel.large() -->
+			<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+				<div class="oj-flex-item oj-sm-10 no-pad-cols" data-bind='component:{name: "nav-bar",
+					params:{rootModel: $data,menuOptions : paymentTypeArray, uiOptions:uiOptions,navBarDescription:$component.nls.payments.navBarDescription}}'>
+				</div>
+
+				<div data-bind="component: {
+				   name: 'search-box',
+				   params: { rootModel:$component ,data:favoritesDataSource(),searchFields : ['accountName'],
+					 searchBy:isBillPayment()?nls.payments.tableHeaders.billerName:nls.payments.tableHeaders.payeeName}
+			   }">
+				</div>
+				<div>
+					<oj-table id="table" :aria-label="[[$component.nls.payments.favoritesDetails.labels.tableheader]]" columns="[[$component.isBillPayment()?[{headerText:nls.payments.tableHeaders.billerCategory,headerClassName:'left',field:'category'},{headerText:nls.payments.tableHeaders.billerName,headerClassName:'left',template:'accountName_link'},{headerText:nls.payments.tableHeaders.relationshipnum,headerClassName:'left',field:'nickName'},{headerText:nls.payments.tableHeaders.amount,headerClassName:'left',field:'formattedAmount'}]:($component.isDraft()?[{headerText:nls.payments.tableHeaders.payeeName,headerClassName:'left',template:'accountName_link'},{headerText:nls.payments.tableHeaders.draftType,headerClassName:'left',field:'paymentType'},{headerText:nls.payments.tableHeaders.draftFavouring,headerClassName:'left',field:'nickName'},{headerText:nls.payments.tableHeaders.amount,headerClassName:'left',field:'formattedAmount'}]:[{headerText:nls.payments.tableHeaders.payeeName,headerClassName:'left',template:'accountName_link'},{headerText:nls.payments.tableHeaders.transactionType,headerClassName:'left',field:'paymentType'},{headerText:nls.payments.tableHeaders.paymentDetails,headerClassName:'left',field:'displayValue'},{headerText:nls.payments.tableHeaders.nickName,headerClassName:'left',field:'nickName'},{headerText:nls.payments.tableHeaders.amount,headerClassName:'left',field:'formattedAmount'}])]]" columns-default="[[{sortable:'enabled'}]]" data="[[favoritesDataSource]]">
+
+					<template slot="accountName_link">
+							<a href="#" data-bind="attr:{title: $component.nls.payments.tableHeaders.title, alt : $component.nls.payments.tableHeaders.alt},text:$current.row.accountName,click:$component.accFavoriteDetails.bind($data,$current.row)"></a>
+					</template>
+					</oj-table>
+					<oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[$component.favoritesDataSource]]"></oj-paging-control>
+				</div>
+			</page-section>
+			<!-- /ko  -->
+
+			<!-- ko if: !$baseModel.large() -->
+			<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+				<div class="oj-flex oj-flex-items-pad oj-sm-12">
+					<div class="oj-flex-item oj-sm-12" data-bind="component: {
+					  name: 'search-box',
+					  params: { rootModel:$component ,data:favoritesDataSource(),searchFields : ['accountName'],
+					  searchBy:isBillPayment()?nls.payments.tableHeaders.billerName:nls.payments.tableHeaders.payeeName}
+						}">
+					</div>
+				</div>
+				<oj-list-view class="payments" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('favouriteAccount-Corporate',true)}]]" data="[[favoritesDataSource]]">
+				</oj-list-view>
+				<script type="text/html" id="favouriteAccount-Corporate">
+					<!-- ko if: !$component.isDraft() && !$component.isBillPayment() -->
+					<li class="payments-list__listItem" data-bind="attr: {id: $data['paymentId', 'accountName', 'nickName']}">
+						<div class="oj-flex oj-flex-items-pad">
+							<div class="oj-flex-item oj-sm-12">
+								<label data-bind="text:$component.nls.payments.tableHeaders.payeeName"></label>
+								<div>
+									<a href="#" data-bind="text:accountName ,click:$component.accFavoriteDetails"></a>
+								</div>
+							</div>
+						</div>
+
+						<div class="oj-flex oj-flex-items-pad">
+							<div class="oj-flex-item oj-sm-12 oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.transactionType"></label>
+								<div data-bind="text: paymentType"></div>
+							</div>
+							<div class="oj-flex-item oj-sm-12 oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.paymentDetails"></label>
+								<div class="acc-no" data-bind="text: displayValue"></div>
+							</div>
+						</div>
+
+						<div class="oj-flex oj-flex-items-pad">
+							<div class="oj-flex-item oj-sm-12 oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.nickName"></label>
+								<div class="party-name" data-bind="text: nickName"></div>
+							</div>
+							<div class="oj-flex-item oj-sm-12 oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.amount"></label>
+								<div data-bind="text: formattedAmount"></div>
+							</div>
+						</div>
+					</li>
+					<!-- /ko -->
+					<!-- ko if :$component.isBillPayment() -->
+					<li class="payments-list__listItem" data-bind="attr: {id: $data['paymentId', 'accountName', 'nickName']}">
+						<div class="oj-flex oj-flex-items-pad">
+							<div class="oj-flex-item oj-sm-12 oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.billerCategory"></label>
+								<div data-bind="text:$data.category">
+								</div>
+							</div>
+							<div class="oj-flex-item oj-sm-12 oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.billerName"></label>
+								<div>
+									<a href="#" data-bind="text:accountName ,click:$component.accFavoriteDetails"></a>
+								</div>
+							</div>
+						</div>
+
+						<div class="oj-flex oj-flex-items-pad">
+							<div class="oj-flex-item oj-sm-12 oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.relationshipnum"></label>
+								<div class="party-name" data-bind="text: nickName"></div>
+							</div>
+							<div class="oj-flex-item oj-sm-12 oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.amount"></label>
+								<div data-bind="text: formattedAmount"></div>
+							</div>
+						</div>
+					</li>
+					<!-- /ko -->
+
+					<!-- ko if: $component.isDraft() -->
+					<li class="payments-list__listItem" data-bind="attr: {id: $data['paymentId', 'accountName', 'nickName']}">
+						<div class="oj-flex oj-flex-items-pad">
+							<div class="oj-flex-item oj-sm-12 oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.payeeName"></label>
+								<div>
+									<a href="#" data-bind="text:accountName ,click:$component.accFavoriteDetails"></a>
+								</div>
+							</div>
+							<div class="oj-flex-item oj-sm-12 oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.draftType"></label>
+								<div data-bind="text: paymentType"></div>
+							</div>
+						</div>
+
+						<div class="oj-flex oj-flex-items-pad">
+							<div class="oj-flex-item oj-sm-12 oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.draftFavouring"></label>
+								<div class="party-name" data-bind="text:nickName"></div>
+							</div>
+							<div class="oj-flex-item oj-md-6">
+								<label data-bind="text:$component.nls.payments.tableHeaders.amount"></label>
+								<div class="amount" data-bind="text: formattedAmount"></div>
+							</div>
+						</div>
+					</li>
+					<!-- /ko -->
+				</script>
+
+				<oj-paging-control class="oj-flex-item center" id="paging" slot="bottom" page-options="[[{layout:['nav']}]]" :page-size="[[5]]" data="[[$component.favoritesDataSource]]">
+				</oj-paging-control>
+			</page-section>
+			<!-- /ko -->
+
+			<div class="oj-flex oj-flex-items-pad button-container">
+				<oj-button class="action-button-secondary" id="button" on-click="[[$dashboard.openDashBoard]]">
+					<span class="icons icon-cancel" slot="startIcon"></span><span data-bind="text:nls.payments.tableHeaders.cancel">
+						</span>
+				</oj-button>
+			</div>
+		</div>
+		<!-- /ko -->
+
+		<!-- ko if:dataFetched() && favoritesDataSource===null -->
+		<div class="form-main-container">
+			<page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+				<div class="oj-flex oj-flex-items-pad">
+					<span class="oj-flex-item" data-bind="text:nls.payments.favoritesDetails.labels.nofavorites"></span>
+				</div>
+			</page-section>
+		</div>
+		<!-- /ko -->
+	</div>

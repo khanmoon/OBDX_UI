@@ -1,0 +1,72 @@
+<div class="form-main-container page-section-content__data">
+   <div data-bind="template: { name: 'review-screen/review-banner-template', data: {header: $component.Nls.review,reviewHeader: $component.Nls.reviewMessage}}">
+        </div>
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+      <oj-label for="reportName"> <span data-bind="text:$component.Nls.reportName"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+      <span data-bind="text : $component.params.reportName"></span>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+      <oj-label for="reportId"> <span data-bind="text:$component.Nls.reportId"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+      <span data-bind="text : $component.scheduledEdit.reportRequestIdentifier"></span>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+      <oj-label for="reportFormat"> <span data-bind="text:$component.Nls.reportFormat"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+      <span data-bind="text : $component.scheduledEdit.formatType"></span>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+      <oj-label for="reportFrequency"> <span data-bind="text:$component.Nls.reportFrequency"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+      <span data-bind="text : $component.scheduledEdit.reportSchFreq"></span>
+    </div>
+  </div>
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+      <oj-label for="startDate"> <span data-bind="text:$component.Nls.startDate"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+      <span data-bind="text :$baseModel.formatDate($component.scheduledEdit.startTime,'dateTimeStampFormat')"></span>
+    </div>
+  </div>
+
+  <div class="oj-flex oj-flex-items-pad">
+    <!-- ko  if:$component.scheduledEdit.reportSchFreq()+'' !=='ONCE' -->
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+      <oj-label for="stopDate"> <span data-bind="text:$component.Nls.endDate"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+      <span data-bind="text : $baseModel.formatDate($component.scheduledEdit.endTime,'dateTimeStampFormat')"></span>
+    </div>
+    <!-- /ko -->
+  </div>
+  <div class="oj-flex oj-flex-items-pad ">
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 ">
+      <oj-label for="scheduledBy"> <span data-bind="text:$component.Nls.scheduledBy"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4 ">
+      <span data-bind="text : $component.params.scheduledBy"></span>
+    </div>
+  </div>
+  <div class="button-container">
+    <oj-button class="action-button-primary" id="button1" on-click="[[confirm]]">
+      <span data-bind="text:$component.Nls.confirm"></span>
+</oj-button>
+    <oj-button class="action-button-secondary" id="button3" on-click="[[cancel]]">
+      <span data-bind="text:$component.Nls.cancel"></span>
+</oj-button>
+  </div>
+
+</div>

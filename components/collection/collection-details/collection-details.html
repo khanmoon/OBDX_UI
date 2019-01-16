@@ -1,0 +1,498 @@
+<div class="collection-details">
+<div class="page-section-content">
+<oj-validation-group id="collectionValidationTracker" valid="{{collectionGroupValid}}">
+    <!-- first row -->
+    <div class="oj-flex oj-flex-items-pad">
+        <!-- first row first col -->
+        <!-- ko if: $component.partyIdoptions().length > 1 -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+          <div class="oj-flex oj-flex-items-pad">
+             <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label data-bind="attr:{for: 'custID'}"><span data-bind="text:$component.resourceBundle.lcDetails.labels.partyID"></span></oj-label>
+             </div>
+             <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                <oj-select-one :id="[['custID']]" disabled="[[$component.filterValues.lcLinked() ==='true'? true:false]]" required="[[true]]" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" on-value-changed="[[onPartyIdSelected]]" options="[[partyIdoptions]]" value="{{$component.partyId}}">
+                </oj-select-one>
+             </div>
+          </div>
+        </div>
+          <!-- /ko -->
+          <!-- ko if: $component.partyIdoptions().length === 1 -->
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+            <div class="oj-flex oj-flex-items-pad">
+               <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="custID"><span data-bind="text:$component.resourceBundle.lcDetails.labels.partyID"></span></oj-label>
+               </div>
+               <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                  <!-- ko if: $component.partyIdoptions().length === 1 -->
+                    <div id="custID" type="text" data-bind="text: $component.collectionDetails.partyId.displayValue()"></div>
+                  <!-- /ko -->
+               </div>
+            </div>
+          </div>
+        <!-- /ko -->
+        <!-- end of first row first col -->
+        <!-- first row second col -->
+        <!-- ko if: $component.dropdownListLoaded.branches() -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-label for="branchID"><span data-bind="text:$component.resourceBundle.lcDetails.labels.branchID"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                    <oj-select-one id="branchID" required="[[true]]" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidBranch,{
+                      type:'length',options:{
+                          min:1,max:35}})]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[$component.branchIdOptions]]" value="{{branchId}}">
+                    </oj-select-one>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- end of first row second col -->
+    </div>
+    <!-- end of first row-->
+
+    <!-- ko if: $component.applicantName() -->
+    <!-- fourth row -->
+    <div class="oj-flex oj-flex-items-pad">
+
+      <!-- fourth row first col -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+            <h5 class="sub-heading" data-bind="text:$component.resourceBundle.labels.drawerDetails"></h5>
+
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-label for="drawerName"><span data-bind="text:$component.resourceBundle.labels.drawerName"></span></oj-label>
+                </div>
+
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                  <div id="drawerName" type="text" data-bind="text: $component.applicantName"></div>
+                </div>
+
+
+            </div>
+            <div class="oj-flex oj-flex-items-pad address">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="applicantAddress1"><span data-bind="text:$component.resourceBundle.lcDetails.labels.address"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <div id="applicantAddress1" data-bind="text: $component.applicantAddress.line1, validators: $baseModel.getValidator('ADDRESS')"></div>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+                <div id="applicantAddress2" data-bind="text: $component.applicantAddress.line2, validators: $baseModel.getValidator('ADDRESS')"></div>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-12">
+                <div id="applicantAddress3" data-bind="text: $component.applicantAddress.line3, validators: $baseModel.getValidator('ADDRESS')"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="applicantCountry"><span data-bind="text:$component.resourceBundle.lcDetails.labels.country"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <div id="applicantCountry" data-bind="text: $component.applicantAddress.country"></div>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-label for="dateOfApplication"><span data-bind="text:$component.resourceBundle.labels.applicationDate"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7 content">
+                    <span id="dateOfApplication" data-bind="text:$baseModel.formatDate($component.collectionDetails.applicationDate)"></span>
+                </div>
+            </div>
+
+        </div>
+          <!-- end of fourth row first col -->
+          <!-- fourth row second second -->
+          <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+            <h5 class="sub-heading" data-bind="text:$component.resourceBundle.labels.draweeDetails"></h5>
+            <!-- ko if: $component.filterValues.lcLinked() === 'true' -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="beneName"><span data-bind="text:$component.resourceBundle.labels.draweeName"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <span id="beneName" data-bind="text: $component.collectionDetails.counterPartyName"></span>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad address">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="addressline1"><span data-bind="text:$component.resourceBundle.lcDetails.labels.address"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <span id="addressLine1" data-bind="text: $component.collectionDetails.counterPartyAddress.line1"></span>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+                <span data-bind="text: $component.collectionDetails.counterPartyAddress.line2"></span>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-12">
+                <span data-bind="text: $component.collectionDetails.counterPartyAddress.line3"></span>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="beneCountry"><span data-bind="text:$component.resourceBundle.lcDetails.labels.country"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <span id="beneCountry" data-bind="text: $component.dropdownLabels.country"></span>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $component.filterValues.lcLinked() === 'false' -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+                <oj-label for="draweeDetails" class="hide-label"><span data-bind="text:$component.resourceBundle.labels.draweeDetails"></span></oj-label>
+                <oj-radioset id="draweeDetails" :aria-label="[[$component.resourceBundle.labels.draweeDetails]]" required="[[true]]" value="{{$component.existingBene}}" class="oj-choice-direction-row">
+                  <oj-option value="true" id="existingBene" name="draweeDetails">
+                    <span for="existingBene" data-bind="text:$component.resourceBundle.common.labels.existing"></span>
+                  </oj-option>
+                  <oj-option value="false" id="newBene" name="draweeDetails">
+                    <span for="newBene" data-bind="text:$component.resourceBundle.common.labels.new"></span>
+                  </oj-option>
+                </oj-radioset>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="draweeName"><span data-bind="text:$component.resourceBundle.labels.draweeName"></span></oj-label>
+              </div>
+              <!-- ko if:  $component.existingBene() === 'true' && $component.counterPartyNameOptions() -->
+              <oj-select-one class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7" id="draweeName" required="[[true]]" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" options="[[$component.counterPartyNameOptions]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" value="{{$component.collectionDetails.counterpartyId}}">
+              </oj-select-one>
+              <!-- /ko -->
+              <!-- ko ifnot: $component.existingBene() === 'true'-->
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                <oj-input-text id="draweeName" type="text" maxlength="35" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidBeneficiaryName,{
+                   type:'length',options:{
+                       min:1,max:35}})]]" value="{{$component.collectionDetails.counterPartyName}}"></oj-input-text>
+              </div>
+              <!-- /ko -->
+            </div>
+
+            <!-- ko if: $component.existingBene() === 'true' && $component.collectionDetails.counterPartyAddress.line1() !== null -->
+            <div class="oj-flex oj-flex-items-pad address">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="addressline1"><span data-bind="text:$component.resourceBundle.lcDetails.labels.address"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                <span id="addressLine1" data-bind="text: $component.collectionDetails.counterPartyAddress.line1"></span>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-12">
+                <span data-bind="text: $component.collectionDetails.counterPartyAddress.line2"></span>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-12">
+                <span data-bind="text: $component.collectionDetails.counterPartyAddress.line3"></span>
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="beneCountry"><span data-bind="text:$component.resourceBundle.lcDetails.labels.country"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                <span id="beneCountry" data-bind="text: $component.dropdownLabels.country"></span>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: $component.existingBene() === 'true'-->
+            <div class="oj-flex oj-flex-items-pad address">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="addressline1"><span data-bind="text:$component.resourceBundle.lcDetails.labels.address"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                <oj-input-text id="addressline1" type="text" maxlength="35" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.addressError,{
+                  type:'length',options:{
+                      min:1,max:35}})]]" value="{{$component.collectionDetails.counterPartyAddress.line1}}"></oj-input-text>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                <oj-label class="hide-label" for="addressline2"><span data-bind="text:$component.resourceBundle.common.labels.addressLineTwo"></span></oj-label>
+                <oj-input-text id="addressline2" type="text" maxlength="35" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.addressError,{
+                                       type:'length',options:{
+                                           min:0,max:35}})]]" value="{{$component.collectionDetails.counterPartyAddress.line2}}"></oj-input-text>
+              </div>
+
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                <oj-label class="hide-label" for="addressline3"><span data-bind="text:$component.resourceBundle.common.labels.addressLineThree"></span></oj-label>
+                <oj-input-text id="addressline3" type="text" maxlength="35" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_SPECIAL',$component.resourceBundle.tradeFinanceErrors.lcDetails.addressError,{
+                                      type:'length',options:{
+                                          min:0,max:35}})]]" value="{{$component.collectionDetails.counterPartyAddress.line3}}"></oj-input-text>
+
+              </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="countryInput"><span data-bind="text:$component.resourceBundle.lcDetails.labels.country"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7 search-bar">
+
+                <oj-select-one id="countryInput" required="[[true]]" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[draweeCountryoptions]]" value="{{draweeCountry}}"></oj-select-one>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+          </div>
+          <!-- end of fourth row second column-->
+    </div>
+    <!-- end of fourth row -->
+
+    <!-- second row -->
+    <div class="oj-flex oj-flex-items-pad">
+        <!-- second row first col -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-label for="custRef"><span data-bind="text:$component.resourceBundle.labels.custRefNo"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                    <oj-input-text id="custRef" type="text" maxlength="16" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resourceBundle.tradeFinanceErrors.bills.invalidCustRefNumber,{
+       type:'length',options:{
+           min:1,max:16}})]]" value="{{$component.collectionDetails.customerRefNo}}"></oj-input-text>
+                </div>
+            </div>
+        </div>
+        <!-- end of second row first col -->
+
+        <!-- second row second col -->
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                    <oj-label for="bankRefNo"><span data-bind="text:$component.resourceBundle.labels.bankRefNo"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+                    <oj-input-text id="bankRefNo" type="text" maxlength="16" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resourceBundle.tradeFinanceErrors.bills.invalidBankRefNumber,{
+       type:'length',options:{
+           min:1,max:16}})]]" value="{{$component.collectionDetails.bankRefNo}}"></oj-input-text>
+                </div>
+            </div>
+        </div>
+        <!-- end of second row second col -->
+    </div>
+    <!-- end of second row-->
+
+    <div class="oj-flex oj-flex-items-pad">
+      <!-- third row first col -->
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+          <h5 class="sub-heading" data-bind="text:$component.resourceBundle.lcDetails.labels.productDetails"></h5>
+          <div class="oj-flex oj-flex-items-pad">
+           <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+              <oj-label for="revolving-radioset"><span data-bind="text:$component.resourceBundle.labels.selectPaymentType"></span></oj-label>
+           </div>
+           <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+              <oj-radioset id="revolving-radioset" :aria-label="[[$component.resourceBundle.labels.selectPaymentType]]" class="oj-choice-direction-row" id="revolving-radioset" required="[[true]]" value="{{$component.filterValues.paymentType}}">
+                <oj-option value="SIGHT" id="sightPaymentType" name="paymentType">
+                <span for="sightPaymentType" data-bind="text:$component.resourceBundle.documents.labels.sight"></span>
+              </oj-option>
+              <oj-option value="USANCE" id="usancePaymentType" name="paymentType">
+                <span for="usancePaymentType" data-bind="text:$component.resourceBundle.documents.labels.usance"></span>
+              </oj-option>
+            </oj-radioset>
+           </div>
+         </div>
+         <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+             <oj-label for="docAttached-radioset"><span data-bind="text:$component.resourceBundle.documents.labels.documentAttached"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
+             <oj-radioset class="oj-choice-direction-row" id="docAttached-radioset" :aria-label="[[$component.resourceBundle.documents.labels.documentAttached]]" required="[[true]]" value="{{$component.filterValues.docAttached}}">
+               <oj-option value="true" id="exportDocs" name="documentsAttached">
+                 <span for="exportDocs" data-bind="text:$component.resourceBundle.documents.labels.docYes"></span>
+               </oj-option>
+               <oj-option value="false" id="directDocs" name="documentsAttached">
+                 <span for="directDocs" data-bind="text:$component.resourceBundle.documents.labels.docNo"></span>
+               </oj-option>
+             </oj-radioset>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="productID"><span data-bind="text:$component.resourceBundle.lcDetails.labels.product"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-7">
+              <!-- ko if: $component.dropdownListLoaded.productList() -->
+                <oj-select-one id="productID" required="[[true]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[productListForCollections]]" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" value="{{$component.productId}}">
+                  </oj-select-one>
+                  <!-- /ko -->
+            </div>
+        </div>
+        <!-- ko if: $component.collectionDetails.billOperation() !== null -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-label for="productOperation"><span data-bind="text:$component.resourceBundle.lcDetails.labels.productOperation"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7 content">
+                <span id="productOperation" data-bind="text: $component.collectionDetails.billOperation()"></span>
+            </div>
+        </div>
+        <!-- /ko -->
+      </div>
+      <!-- third row second col -->
+      <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+          <h5 class="sub-heading" data-bind="text:$component.resourceBundle.lcDetails.labels.billAmountDetails"></h5>
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <!-- ko if: $component.collectionDetails.billType() === 'EXPORT'-->
+                <!-- ko if: $component.filterValues.lcLinked() === 'true' -->
+                <oj-label class="align-right" for="swiftCode"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.issueBank"></span></oj-label>
+                <!-- /ko -->
+                <!-- ko if: $component.filterValues.lcLinked() === 'false' -->
+                <oj-label class="align-right" for="swiftCode"><span data-bind="text:$component.resourceBundle.instructionsDetails.labels.collectingBank"></span></oj-label>
+                <!-- /ko -->
+                <!-- /ko -->
+              </div>
+
+              <!-- ko ifnot: $component.additionalBankDetails-->
+
+              <div class="oj-flex-item oj-sm-8 oj-md-7 oj-lg-3">
+                  <oj-input-text  :id="[['swiftCode']]" maxlength="11" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" validators="[[[validateInterCode]]]" value="{{$component.collectionDetails.swiftId}}"></oj-input-text>
+
+              </div>
+
+              <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-7">
+                  <oj-button class="form-button-secondary verify-button" on-click="[[verifyCode]]">
+      <span data-bind="text:$component.resourceBundle.common.labels.verify"></span>
+</oj-button>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3 look-up-link">
+                  <a href="#" class="form-button-link" data-bind="attr:{'alt':$component.resourceBundle.common.labels.lookupswiftcodeTitle,'title':$component.resourceBundle.common.labels.lookupswiftcodeAlt},
+        text:$component.resourceBundle.common.labels.lookupswiftcode,click:$component.openLookup">
+                  </a>
+              </div>
+              <!--/ko -->
+              <!-- ko if: $component.additionalBankDetails-->
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="with:$component.additionalBankDetails">
+                  <div data-bind="text:('code' in $data)?code:''"></div>
+                  <div data-bind="text:('name' in $data)?name:''"></div>
+                  <div data-bind="text:('line1' in branchAddress)?branchAddress.line1:''"></div>
+                  <div data-bind="text:('city' in branchAddress)?branchAddress.city:''"></div>
+                  <div data-bind="text:('country' in branchAddress)?branchAddress.country:''"></div>
+                  <div class="">
+                      <oj-button class="action-button-tertiary" on-click="[[$component.resetCode]]">
+                        <span slot="startIcon" class="icons icon-refresh"></span>
+      <span data-bind="text:$component.resourceBundle.common.labels.reset"></span>
+</oj-button>
+                  </div>
+              </div>
+              <!--/ko -->
+
+          </div>
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="billAmount"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.billAmount"></span></oj-label>
+              </div>
+              <!-- ko if: $component.currencyListOptions().length > 0 -->
+              <oj-label for="currency" class="hide-label"><span data-bind="text:$component.resourceBundle.lcDetails.labels.currency"></span></oj-label>
+
+              <div class="oj-flex-item oj-sm-4 oj-md-3 oj-lg-3">
+                  <oj-select-one id="currency" required="[[true]]" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" options="[[$component.currencyListOptions]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" value="{{$component.currency}}">
+                          </oj-select-one>
+              </div>
+              <!-- /ko -->
+              <div class="oj-flex-item oj-sm-8 oj-md-7 oj-lg-4">
+                  <oj-input-text id="billAmount" maxlength="15" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" validators="[[[validateAmount]]]" converter="[[{type:'number',options:{
+                                    style:'currency',currency:typeof ko.utils.unwrapObservable($component.collectionDetails.amount.currency) ==='string'? ko.utils.unwrapObservable($component.collectionDetails.amount.currency):'',currencyDisplay:'symbol'}}]]" value="{{$component.collectionDetails.amount.amount}}"></oj-input-text>
+              </div>
+          </div>
+          <!-- ko if:$component.filterValues.docAttached() === 'false' && $component.filterValues.lcLinked()==='false'  -->
+          <!-- ko if:$component.collectionDetails.billOperation()==='PURCHASE' || $component.collectionDetails.billOperation()==='DISCOUNT'  -->
+          <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                  <oj-label for="purchaseAmount"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.purchaseAmount"></span></oj-label>
+              </div>
+              <!-- ko if: $component.currencyListOptions().length > 0 -->
+              <oj-label for="currencyForPurchase" class="hide-label"><span data-bind="text:$component.resourceBundle.lcDetails.labels.currency"></span></oj-label>
+
+              <div class="oj-flex-item oj-sm-4 oj-md-3 oj-lg-3">
+                  <oj-select-one id="currencyForPurchase" required="[[true]]" disabled="[[true]]" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" options="[[$component.currencyListOptions]]" value="{{$component.currency}}">
+                          </oj-select-one>
+              </div>
+              <!-- /ko -->
+              <div class="oj-flex-item oj-sm-8 oj-md-7 oj-lg-4">
+                  <oj-input-text id="purchaseAmount" maxlength="65" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" validators="[[[validateAmount,validatePurchaseAmount]]]" converter="[[{type:'number',options:{
+                                    style:'currency',currency:typeof ko.utils.unwrapObservable($component.collectionDetails.amount.currency) ==='string'? ko.utils.unwrapObservable($component.collectionDetails.amount.currency):'',currencyDisplay:'symbol'}}]]" value="{{$component.collectionDetails.purchaseAmount.amount}}"></oj-input-text>
+              </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-1" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="tenor"><span data-bind="text:$component.resourceBundle.lcDetails.labels.tenor"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-10 oj-lg-1 tenor-input">
+            <oj-input-text id="tenor" maxlength="65" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" disabled="[[$component.tenorDisabled]]" validators="[[$baseModel.getValidator('NUMBERS',$component.resourceBundle.tradeFinanceErrors.lcDetails.invalidTenure,{
+                              type:'numberRange',options:{
+                                  min:$component.filterValues.paymentType() ==='USANCE'?$component.minTenor():0,max:$component.filterValues.paymentType() ==='USANCE'?$component.maxTenor():365}})]]" value="{{$component.collectionDetails.tenor}}"></oj-input-text>
+
+          </div>
+        </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-3" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="baseDateDesc"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.baseDateDescription"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <!-- ko if: $component.dropdownListLoaded.baseDateDescriptionList() -->
+              <oj-select-one id="baseDateDesc" :invalidcomponenttracker="[[$component.collectionDetailsValidationTracker]]" :placeholder="[[$component.resourceBundle.common.labels.pleaseSelect]]" options="[[$component.baseDtDescriptionOptions]]" value="{{$component.baseDateCode}}">
+          </oj-select-one>
+          <!-- /ko -->
+        </div>
+      </div>
+      </div>
+      <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2" data-bind="css: { 'no-pad-cols': $baseModel.small() }">
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+          <oj-label for="baseDate"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.baseDate"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-6 oj-md-12 oj-lg-12">
+          <oj-input-date id="baseDate" converter="[[$baseModel.dateConverter]]" :placeholder="[[$component.resourceBundle.common.labels.selectDate]]" value="{{$component.collectionDetails.daysFrom}}" max="[[minEffectiveDate]]"></oj-input-date>
+        </div>
+      </div>
+      </div>
+    </div>
+    <!-- ko if: $component.collectionDetails.maturityDate() -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-6" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <oj-label for="maturityDate"><span data-bind="text:$component.resourceBundle.shipmentDetails.labels.maturityDate"></span></oj-label>
+        </div>
+        <div class="oj-flex-item oj-sm-6 oj-md-10 oj-lg-7 content">
+          <span id="maturityDate" data-bind="text: $baseModel.formatDate($component.collectionDetails.maturityDate)"></span>
+        </div>
+      </div>
+  </div>
+  </div>
+    <!-- /ko -->
+
+    <!-- /ko -->
+
+
+    <!-- ko if : $component.mode() === 'CREATE' -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="css: { 'no-pad-cols': $baseModel.small() || $baseModel.medium() }">
+        <oj-button id="continueCollectionDetails" class="action-button-secondary" on-click="[[continueFunc]]">
+          <span slot="startIcon" class="icons icon-submit"></span>
+      <span data-bind="text:$component.resourceBundle.common.labels.continue"></span>
+</oj-button>
+      </div>
+    </div>
+    <!-- /ko -->
+</oj-validation-group>
+</div>
+</div>

@@ -1,0 +1,327 @@
+<!-- ko if:$baseModel.large() -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item no-pad-cols right  mailbox-navlistcontainer__buttons">
+    <!-- ko if: isCorpSegment -->
+    <!-- ko if: loadedComponent() !== 'deleted-mails'  -->
+    <oj-button class="action-button-primary" on-click="[[$component.reply]]">
+      <span class="icons icon-reply" slot="startIcon"></span>
+      <span data-bind="text:$component.nls.mailbox.labels.reply"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-secondary" on-click="[[confirmDelete.bind($data)]]">
+      <span class="icons icon-delete" slot="startIcon"></span>
+      <span data-bind="text:$component.nls.mailbox.labels.delete"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+      <span class="icons icon-back-arrow" slot="startIcon"></span>
+      <span data-bind="text:$component.nls.mailbox.labels.back"></span>
+    </oj-button>
+    <!-- /ko -->
+    <!-- ko ifnot: isCorpSegment -->
+    <!-- ko if: loadedComponent() !== 'deleted-mails'  -->
+    <oj-button class="action-button-primary" on-click="[[$component.reply]]">
+      <span class="icons icon-reply" slot="startIcon"></span>
+      <span data-bind="text:$component.nls.mailbox.labels.reply"></span>
+    </oj-button>
+    <!-- /ko -->
+    <oj-button class="action-button-secondary" on-click="[[confirmDelete.bind($data)]]">
+      <span class="icons icon-delete" slot="startIcon"></span>
+      <span data-bind="text:$component.nls.mailbox.labels.delete"></span>
+    </oj-button>
+    <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+      <span class="icons icon-back-arrow" slot="startIcon"></span>
+      <span data-bind="text:$component.nls.mailbox.labels.back"></span>
+    </oj-button>
+    <!-- /ko -->
+  </div>
+</div>
+
+<!-- ko if: replyMessage -->
+<div class="oj-flex oj-flex-items-pad">
+  <oj-text-area id="text-area" type="text" rows="15" :maxlength="[[maxlength]]" translations="[[{'required':{messageDetail:nls.mailbox.messages.emptyMail}}]]" required="[[true]]" value="{{textvalueVar}}"></oj-text-area>
+  <oj-label for="text-area" class="info-text-small">
+    <span data-bind="text:$baseModel.format($component.nls.mailbox.labels.charactersLeft,{number:(maxlength-(textvalueVar().length))})"></span>
+  </oj-label>
+</div>
+<!-- ko if : $component.uploadedFiles().length>0 ||$component.preAttached().length>0 -->
+<div class="oj-flex oj-flex-items-pad">
+  <!-- ko foreach: $component.preAttached() -->
+  <div class="mailbox-navlistcontainer-reply-attachments">
+    <!-- ko ifnot : $data.title -->
+    <span data-bind="text:contentId.displayValue"></span>
+    <!--  /ko -->
+    <!-- ko if : $data.title -->
+    <span data-bind="text:title"></span>
+    <!--  /ko -->
+    <a href="javascript:void(0)" data-bind="click:$component.removePreAttachedFile.bind($data,$data) "><span class="oj-panel-remove-icon"></span></a>
+  </div>
+  <!-- /ko -->
+  <!-- ko foreach: $component.uploadedFiles() -->
+  <div class="mailbox-navlistcontainer-reply-attachments">
+    <span data-bind="text:name"></span>
+    <a href="javascript:void(0)" data-bind="click:$component.removeFile.bind($data,$data) "><span class="oj-panel-remove-icon"></span></a>
+  </div>
+  <!-- /ko -->
+
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+  <oj-button class="action-button-primary" on-click="[[$component.replyMail]]">
+    <span class="icons icon-mailbox" slot="startIcon"></span>
+    <span data-bind="text:$component.nls.mailbox.labels.send"></span>
+  </oj-button>
+  <oj-file-picker class="oj-filepicker-custom" selection-mode="multiple" selecton="click" on-oj-select="[[fileSelectListener]]" data-bind="attr: {'id': 'document-upload'}">
+    <oj-button slot="trigger" class="action-button-tertiary">
+      <span class="icons icon-attachment" slot="startIcon"></span>
+      <span data-bind="text:$component.nls.mailbox.labels.attachFile"></span>
+    </oj-button>
+  </oj-file-picker>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+  <div>
+    <span class="info-text-small" data-bind="text:$component.nls.mailbox.messages.fileSize"></span>
+  </div>
+  <div>
+    <span class="info-text-small" data-bind="text:$component.nls.mailbox.messages.fileType"></span>
+  </div>
+</div>
+
+<!-- /ko -->
+<div class="oj-flex mailbox-navlistcontainer__content">
+  <div class="oj-flex-item oj-sm-2 label">
+    <oj-label>
+      <span data-bind="text:$component.nls.mailbox.labels.from"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-10">
+    <span data-bind="text:$data.senderName ? $data.senderName : ' '"></span>
+  </div>
+
+  <div class="oj-flex-item oj-sm-2 label">
+    <oj-label>
+      <span data-bind="text:$component.nls.mailbox.labels.sentTime"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-10">
+    <span data-bind="text:$baseModel.formatDate(sentTime,'dateTimeStampFormat')"></span>
+  </div>
+
+  <div class="oj-flex-item oj-sm-2 label">
+    <oj-label>
+      <span data-bind="text:$component.nls.mailbox.labels.subject"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-10">
+    <span data-bind="text:subject"></span>
+  </div>
+
+
+  <!-- ko if : $component.attachments().length>0 &&  !$component.replyMessage()-->
+
+  <div class="oj-flex-item oj-sm-4 oj-md-2 label">
+    <oj-label>
+      <span data-bind="text:$component.nls.mailbox.labels.attachments"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-8 oj-md-10">
+    <!-- ko foreach:attachments() -->
+    <!-- ko ifnot : $data.title -->
+    <a href="javascript:void(0)"  data-bind="click:$component.downloadDocument.bind($data,$data)">
+      <span class="icons icon-attachment"> </span>
+      <span data-bind="text:contentId.displayValue"></span>
+    </a>
+    <!--  /ko -->
+    <!-- ko if : $data.title -->
+
+    <a href="javascript:void(0)"  data-bind="click:$component.downloadDocument.bind($data,$data)">
+      <span class="icons icon-attachment"></span>
+      <span data-bind="text:title"></span>
+    </a>
+    <!--  /ko -->
+    <span data-bind="text:$component.nls.mailbox.labels.multipleAttachments"></span>
+    <!--  /ko -->
+  </div>
+  <!--  /ko -->
+</div>
+<div class="break-word  mailbox-navlistcontainer__contentMessage" data-bind="text:messageBody"></div>
+<!--  /ko -->
+
+<!-- ko ifnot:$baseModel.large() -->
+<div class="oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item no-pad-cols left">
+    <!-- ko if: loadedComponent() !== 'deleted-mails'  -->
+    <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.reply ,'title': $component.nls.mailbox.labels.replyTitle,'aria-label': $component.nls.mailbox.labels.reply}, click:$component.reply">
+      <span class="icons icon-reply"></span>
+    </a>
+    <span class="mailbox-navlistcontainer__divider"></span>
+    <!-- /ko -->
+    <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.delete ,'title': $component.nls.mailbox.labels.deleteTitle,'aria-label': $component.nls.mailbox.labels.delete}, click:confirmDelete.bind($data)">
+      <span class="icons icon-delete"></span>
+    </a>
+  </div>
+</div>
+<!-- ko if: replyMessage -->
+<div class="oj-flex oj-flex-items-pad">
+  <oj-text-area id="text-area" type="text" rows="15" :maxlength="[[maxlength]]" value="{{textvalueVar}}"></oj-text-area>
+  <oj-label for="text-area" class="info-text-small">
+    <span data-bind="text:$baseModel.format($component.nls.mailbox.labels.charactersLeft,{number:(maxlength-(textvalueVar().length))})"></span>
+  </oj-label>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+  <oj-button class="action-button-primary" on-click="[[$component.replyMail]]">
+    <span class="icons icon-mailbox" slot="startIcon"></span>
+    <span data-bind="text:$component.nls.mailbox.labels.send"></span>
+  </oj-button>
+  <oj-file-picker class="oj-filepicker-custom" selection-mode="multiple" selecton="click" on-oj-select="[[fileSelectListener]]" data-bind="attr: {'id': 'document-upload'}">
+    <oj-button slot="trigger" class="action-button-tertiary">
+      <span class="icons icon-attachment" slot="startIcon"></span>
+      <span data-bind="text:$component.nls.mailbox.labels.attachFile"></span>
+    </oj-button>
+  </oj-file-picker>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+  <div>
+    <span class="info-text-small" data-bind="text:$component.nls.mailbox.messages.fileSize"></span>
+  </div>
+  <div>
+    <span class="info-text-small" data-bind="text:$component.nls.mailbox.messages.fileType"></span>
+  </div>
+</div>
+
+<!-- /ko -->
+
+<div class="oj-flex mailbox-navlistcontainer__content">
+  <div class="oj-flex-item oj-sm-2 label">
+    <oj-label>
+      <span data-bind="text:$component.nls.mailbox.labels.from"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-10">
+    <span data-bind="text:$data.senderName ? $data.senderName : ' '"></span>
+  </div>
+
+  <div class="oj-flex-item oj-sm-2 label">
+    <oj-label>
+      <span data-bind="text:$component.nls.mailbox.labels.sentTime"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-10">
+    <span data-bind="text:$baseModel.formatDate(sentTime,'dateTimeStampFormat')"></span>
+  </div>
+
+  <div class="oj-flex-item oj-sm-2 label">
+    <oj-label>
+      <span data-bind="text:$component.nls.mailbox.labels.subject"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-10">
+    <span data-bind="text:subject"></span>
+  </div>
+
+  <!-- ko if : $component.attachments().length>0 &&  !$component.replyMessage()-->
+
+  <div class="oj-flex-item oj-sm-4 oj-md-2 label">
+    <oj-label>
+      <span data-bind="text:$component.nls.mailbox.labels.attachments"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-8 oj-md-2">
+    <!-- ko foreach:attachments() -->
+    <!-- ko ifnot : $data.title -->
+    <a href="javascript:void(0)" data-bind="click:$component.downloadDocument.bind($data,$data)">
+      <span class="icons icon-attachment"></span>
+      <span data-bind="text:contentId.displayValue"></span>
+    </a>
+    <!--  /ko -->
+    <!-- ko if : $data.title -->
+    <a href="javascript:void(0)" data-bind="click:$component.downloadDocument.bind($data,$data)">
+      <span class="icons icon-attachment"></span>
+      <span data-bind="text:title"></span>
+    </a>
+    <!--  /ko -->
+    <span data-bind="text:$component.nls.mailbox.labels.multipleAttachments"></span>
+    <!--  /ko -->
+  </div>
+  <!--  /ko -->
+</div>
+<div class="break-word mailbox-navlistcontainer__contentMessage" data-bind="text:messageBody"></div>
+<!--  /ko -->
+
+<!-- ko if: conversationFormat -->
+<!-- ko foreach:previousMails() -->
+<div class="oj-flex mailbox-navlistcontainer__content">
+  <div class="oj-flex-item oj-sm-2 label">
+    <oj-label>
+      <span data-bind="text:$component.nls.mailbox.labels.from"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-10">
+    <span data-bind="text:$data.senderName ? $data.senderName : ' '"></span>
+  </div>
+
+  <div class="oj-flex-item oj-sm-2 label">
+    <oj-label>
+      <span data-bind="text:$component.nls.mailbox.labels.sentTime"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-10">
+    <span data-bind="text:$baseModel.formatDate($data.creationDate,'dateTimeStampFormat')"></span>
+  </div>
+
+  <div class="oj-flex-item oj-sm-2 label">
+    <oj-label>
+      <span data-bind="text:$component.nls.mailbox.labels.subject"></span>
+    </oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-10">
+    <span data-bind="text:subject"></span>
+  </div>
+</div>
+<div class="break-word  mailbox-navlistcontainer__contentMessage" data-bind="text:messageBody"></div>
+<!-- /ko -->
+<!-- /ko -->
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'deleteMail' , header : $component.nls.mailbox.headers.deleteMailsConfirmation">
+  <div class="message-box">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <div class="dialog-text">
+          <span data-bind="text: $baseModel.format(nls.mailbox.messages.selectMessage)"></span>
+        </div>
+      </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button id="confirm_message-detail" class="action-button-primary" on-click="[[submit]]">
+        <span data-bind="text:$component.nls.mailbox.buttons.confirm"></span>
+      </oj-button>
+      <oj-button id="cancel_message-detail" class="action-button-secondary" on-click="[[closeModal]]">
+        <span data-bind="text:nls.mailbox.buttons.cancel"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'replyMailSuccess',header:$component.nls.mailbox.headers.successHeader,closeHandler:closeHandler">
+  <div class="message-box">
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item">
+        <!-- ko if:interactionId -->
+        <div class="dialog-text">
+          <span data-bind="text: $baseModel.format(nls.mailbox.labels.sentSuccessMessage, {interactionId: $component.interactionId()})"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot:interactionId -->
+        <div class="dialog-text">
+          <span data-bind="text: $component.nls.mailbox.labels.sentSuccessMessageLocal"></span>
+        </div>
+        <!-- /ko -->
+      </div>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary" id="ok" on-click="[[ok]]">
+          <span data-bind="text:$component.nls.mailbox.buttons.ok"></span>
+        </oj-button>
+      </div>
+    </div>
+</modal-window>

@@ -1,0 +1,53 @@
+<div class="oj-panel bulk-file-container">
+    <!-- ko if : $component.stage1() -->
+        <!-- ko if:isBTIDListLoaded() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item">
+            <h3 class="bulk-file-container__title" data-bind="text: $component.Nls.title"></h3>
+          </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad bulk-file-container__select bulk-file-container-select">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+                <oj-label class="bulk-file-container-select__label" for="btid"> <span data-bind="text:$component.Nls.fieldIdentifier"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                <oj-select-one required id="btid" :placeholder="[[$component.Nls.select]]" translations="[[{'required':{messageDetail:$component.Nls.selectFI}}]]" on-value-changed="[[valueChangeHandler]]" value="{{$component.btid}}">
+                    <!-- ko foreach:$component.btIdList -->
+                    <oj-option value="{{fileIdentifier}}"><span data-bind="text:$baseModel.format($component.Nls.fileIdDesc,{fileId:fileIdentifier,description:description})"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$component.selected() -->
+        <div data-bind="with: $component.selectedBtId">
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.transactionType , value : $component.transactionTypesMap[fileTemplateDTO.transaction]"></row>
+            <!-- ko ifnot:fileTemplateDTO.formatType === 'CSV' -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.fileType , value : $component.closedEnumsMap[fileTemplateDTO.formatType]"></row>
+            <!-- /ko -->
+            <!-- ko if:fileTemplateDTO.formatType === 'CSV' && fileTemplateDTO.templateType === 'D' -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.fileType , value :$component.Nls.allFileFormat"></row>
+            <!-- /ko -->
+            <!-- ko if:fileTemplateDTO.formatType === 'CSV' && fileTemplateDTO.templateType === 'F' -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.fileType , value :$component.Nls.textFileFormat"></row>
+            <!-- /ko -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.approvalType , value : $baseModel.format($component.Nls.approvalTypeDesc,{approvalType:$component.closedEnumsMap[approvalType]})"></row>
+            <!-- ko if:fileTemplateDTO.financial === true -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label : $component.Nls.accountingType , value : $component.closedEnumsMap[fileTemplateDTO.accountingType]"></row>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex oj-flex-items-pad bulk-file-container__select bulk-file-container-select">
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4">
+                <oj-label class="bulk-file-container-select__label" id="filenamelabel"> <span data-bind="text:$component.Nls.upload"></span></oj-label>
+            </div>
+            <div id="filename" class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8" data-bind="component:{name:'file-input',params:{rootModel: $component , id:'input'}}">
+            </div>
+        </div>
+    <div class="oj-flex oj-flex-items-pad button-container bulk-file-container__button-container">
+        <oj-button class="action-button-primary" id="button1" on-click="[[$component.uploadDocument]]">
+      <span data-bind="text:$component.Nls.submit"></span>
+</oj-button>
+    </div>
+    <!-- /ko -->
+</div>

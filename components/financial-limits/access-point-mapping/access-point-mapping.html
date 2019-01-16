@@ -1,0 +1,78 @@
+<div class="access-point">
+  <oj-accordion id="accordianLimitPackages" class="accordion">
+    <oj-collapsible class="oj-accordion-collapsible">
+      <span class="acc-header" slot="header">
+        <div class="accordionHeader" data-bind="text: $component.header">
+        </div>
+   </span>
+      <div class="oj-flex oj-flex-items-pad">
+        <!-- ko if:$component.messages -->
+        <div class="oj-flex-item">
+        <span slot="startIcon" class="icons icon-size icon-information"></span>
+          <span data-bind="text:$component.messages"></span>
+        </div>
+        <!-- /ko -->
+        <div class="oj-sm-12 oj-md-6 oj-lg-8">
+        <oj-table id="table" data='[[datasource]]' columns='{{columnArray}}'>
+        </oj-table>
+        <script type="text/html" id="accessPoint">
+          <td>
+            <div class="oj-flex access-point-row">
+            <div class="access-point-row" data-bind="text:$context.row.description"></div>
+            <!-- ko if:$context.row.isGroup -->
+            <div class="access-point-row access-point-row-icon">
+            <div class="oj-sm-12 oj-md-4 oj-lg-3">
+
+              <a href="javascript:void(0)" data-bind="attr:{title:$component.nls.access_point_limit_package_mapping.showInformation},click:$component.showGroupInformation.bind($data,$context)">
+                <div class="icon icon-2x icon-information" aria-hidden="true"></div>
+              </a>
+            </div>
+          </div>
+            <!-- /ko -->
+            </div>
+          </td>
+        </script>
+        <script type="text/html" id="select">
+          <td>
+
+              <div class="oj-flex">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-8">
+            <oj-select-one id="limitPackage" value="{{$context.row.selectedLimitPackage}}" placeholder="{{$component.nls.access_point_limit_package_mapping.selectLimitPackage}}">
+              <!-- ko foreach:$context.row.LimitPackageArray -->
+              <oj-option value="[[$data]]"><span data-bind="text: $data"></span></oj-option>
+              <!-- /ko -->
+            </oj-select-one>
+          </div>
+        </div>
+          </td>
+        </script>
+        <script type="text/html" id="buttons">
+          <td>
+            <div class="oj-flex access-point-row">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-5">
+                <a href="javascript:void(0)" data-bind="attr:{title:$component.nls.access_point_limit_package_mapping.refresh},click:$component.refresh.bind($data,$context)">
+                <div class="icon icon-2x icon-refresh" aria-hidden="true"></div>
+              </a>
+              </div>
+            </div>
+          </td>
+        </script>
+    </div>
+    </div>
+    </oj-collapsible>
+  </oj-accordion>
+
+
+</div>
+
+  <modal-window params="baseModel : $baseModel, rootModel : $component,header:$component.nls.access_point_limit_package_mapping.view_details,id:$component.idForModalWindow,closeHandler: $component.done">
+    <!-- ko if:$component.showIconInformationForGroup() -->
+    <div data-bind="component:{name:'access-point-group-view', params:{rootModel: $component,data:$component.data(),packageId:$component.packageId,description:$component.description,selectedExternalAccessPoints:$component.externalAccessPoints,selectedInternalAccessPoints:$component.internalAccessPoints,groupType:$component.intOrExt}}">
+    </div>
+    <!-- /ko -->
+    <div class="button-container">
+      <oj-button class="action-button-primary " on-click="[[done]]"><span slot="startIcon" class="icons icon-ok"></span>
+        <span data-bind="text:$component.nls.btns.ok"></span>
+      </oj-button>
+    </div>
+  </modal-window>

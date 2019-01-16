@@ -1,0 +1,96 @@
+<div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8">
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+            <oj-validation-group id="contributeGoalTracker">
+                <!-- ko if:$baseModel.small() -->
+                <div class="oj-flex oj-flex-items-pad goal__tab-header">
+                    <div class="oj-flex-item">
+                        <div class="goal__tab-header--small" id="page-header" data-bind="text:$component.resource.labels.contribute"></div>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if:topupSuccess() -->
+                <div class="oj-flex oj-flex-items-pad success-bar" role="alert">
+                    <div class="success-icon icons" data-bind="css: 'icon-success'"></div>
+                    <div class="success-msg oj-flex-item oj-sm-11" id="confirm" data-bind="text:$baseModel.format($component.resource.manageGoal.topupConfirmation,
+                  {topupAmount:$baseModel.formatCurrency($component.topupAmount(),$component.baseCurrency()),goalName:$component.goalData.name(),goalBalance:$baseModel.formatCurrency($component.updatedBalance(),$component.baseCurrency())})"></div>
+                </div>
+                <!-- /ko -->
+                <div class="oj-flex oj-flex-items-pad goal__disclaimer goal-disclaimer">
+                    <!-- <div class="oj-flex-item oj-sm-12 ij-md-12 oj-lg-12"> -->
+                    <div class="icons icon-information goal-disclaimer__icon-info"></div>
+                    <div class="oj-flex-item oj-sm-11 goal-disclaimer__text" id="goaldisclaimer" data-bind="text:$component.resource.manageGoal.contributedisclaimer"></div>
+                    <!-- </div> -->
+                </div>
+                <div class="oj-flex oj-flex-items-pad oj-lg-6">
+                <div data-bind="component: {
+                 name: 'amount-input', params: {
+                 amount :goalAccountTopupModel.payinDetails.contributionAmount.amount,
+                 label : $component.resource.manageGoal.monthlycontri,
+                 currency: $component.baseCurrency(),
+                 converter:$baseModel.formatCurrency,
+                 minimumAmount:$component.goalData.productMin,
+                 maximumAmount:$component.goalData.productMax,
+                 currencyListRequired : false,
+                 validator:$component.validationTracker,
+                 isMandatory:true,
+                 rootId:'goal-monthly-amount',
+                 currencyURL : '',
+                 currencyParser :'',
+                 rootClass:'form-input'
+                 }
+                 }">
+                    <div class="oj-flex-item">
+                        <span class="info-text-small" id="contri-info" data-bind="text:$baseModel.format($data.resource.manageGoal.minmaxamount,
+                   {
+                     minAmount:$baseModel.formatCurrency(ko.utils.unwrapObservable($data.goalData.productMin),$data.baseCurrency()),
+                     maxAmount:$baseModel.formatCurrency(ko.utils.unwrapObservable($data.goalData.productMax),$data.baseCurrency()),
+                     incrementStep:ko.utils.unwrapObservable($data.goalData.incrementStep)
+                   })">
+                 </span>
+                    </div>
+                </div>
+                </div>
+                <!-- ko if:$component.refreshAccountDropDown() -->
+                <account-input params="baseModel : $baseModel, rootModel: $component ,label : $component.resource.manageGoal.fundingAccountNumber,
+ placeholder:$component.resource.manageGoal.selectPlaceHolder,
+ taskCode : $component.currentTask(),
+         type : 'balance' , additionalDetails:$component.additionalDetails,account : goalAccountTopupModel.payinDetails.debitAccount.value, validator:$component.validationTracker">
+                </account-input>
+                <!-- /ko -->
+            </oj-validation-group>
+        </page-section>
+        <div class="oj-flex oj-flex-items-pad button-container right">
+            <oj-button class="action-button-primary " on-click="[[$component.contributeGoal]]"><span slot="startIcon" class="icons icon-payments"></span>
+                <span data-bind="text:$component.resource.manageGoal.contribute"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary " on-click="[[$component.cancel]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resource.Generic.common.cancel"></span>
+            </oj-button>
+        </div>
+        <modal-window class="model-window" params="baseModel : $baseModel, rootModel : $component,id:'viewTopUpMessage',header:$component.resource.manageGoal.confirmation">
+            <div class="model-window__section">
+                <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                    <div class="oj-flex oj-flex-items-pad">
+                        <div class="oj-flex-item model-window__section--small" data-bind="text:$baseModel.format($component.resource.manageGoal.topupMessage,
+    {topupAmount:$baseModel.formatCurrency($component.topupAmount(),$component.baseCurrency()),goalBalance:$baseModel.formatCurrency($component.updatedBalance(),$component.baseCurrency())})">
+                        </div>
+                    </div>
+                </page-section>
+                <div class="button-container ">
+                    <oj-button class="action-button-primary " on-click="[[$component.confirmContribute]]"><span slot="startIcon" class="icons icon-forward-arrow"></span>
+                        <span data-bind="text:$component.resource.manageGoal.proceed"></span>
+                    </oj-button>
+                    <oj-button class="action-button-secondary " on-click="[[$component.hidePopup]]"><span slot="startIcon" class="icons icon-cancel"></span>
+                        <span data-bind="text:$component.resource.manageGoal.donotproceed"></span>
+                    </oj-button>
+                </div>
+            </div>
+        </modal-window>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'contribute'"></help>
+    </div>
+    <!-- /ko -->
+</div>

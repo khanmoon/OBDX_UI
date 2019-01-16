@@ -1,0 +1,106 @@
+<div class="oj-flex oj-flex-items-pad application-form-text cust-label margin-top-20">
+    <div class="oj-flex-item oj-lg-offset-1 oj-md-offset-1 oj-lg-10">
+        <h4 class="section-heading" data-bind="text:resource.vehicleInfo"></h4>
+    </div>
+</div>
+
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.ownershipType"></span></oj-label>
+    </div>
+
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <!-- ko if: data.vehicleDetails.ownership.length === 1 -->
+        <span data-bind="text : resource.single"></span>
+        <!-- /ko -->
+        <!-- ko if: data.vehicleDetails.ownership.length > 1 -->
+        <span data-bind="text : resource.joint "></span>
+        <!-- /ko -->
+    </div>
+
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.ownersOfTheProperty"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+      <!-- ko foreach: data.vehicleDetails.ownership -->
+          <div class="oj-flex oj-flex-items-pad " data-bind="text :$data.partyName()"></div>
+      <!-- /ko -->
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.vehicleAge"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <!-- ko if: data.vehicleDetails.isVehicleNew -->
+        <span data-bind="text : resource.new"></span>
+        <!-- /ko -->
+        <!-- ko ifnot: data.vehicleDetails.isVehicleNew -->
+        <span data-bind="text : resource.used"></span>
+        <!-- /ko -->
+    </div>
+
+
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.vehicleType"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text :data.selectedValues.vehicleSubType"></span>
+    </div>
+</div>
+<!-- ko if: data.vehicleDetails.vehicleIdentificationNum -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.vehicleIdNumber"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text :data.vehicleDetails.vehicleIdentificationNum"></span>
+    </div>
+</div>
+<!-- /ko -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.year"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text :data.vehicleDetails.vehicleYear"></span>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.vehiclemake"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text :data.selectedValues.vehicleMakeType"></span>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.vehicleModel"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text :data.vehicleDetails.vehicleModel"></span>
+    </div>
+</div>
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.estValue"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text : $baseModel.formatCurrency(data.vehicleDetails.purchasePrice.amount(), data.vehicleDetails.purchasePrice.currency)"></span>
+    </div>
+</div>
+<!-- ko ifnot: data.vehicleDetails.isVehicleNew -->
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item label oj-sm-12 oj-md-4 oj-lg-3 oj-md-offset-1 oj-lg-offset-2">
+        <oj-label><span data-bind="text:resource.mileage"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 padding-top-5 label">
+        <span data-bind="text :data.vehicleDetails.distanceTravelled"></span>
+    </div>
+</div>
+<!-- /ko -->

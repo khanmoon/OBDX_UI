@@ -1,0 +1,41 @@
+<div class="oj-flex-item oj-sm-12">
+    <div class="form-main-container">
+        <page-section params="baseModel : $baseModel, rootModel : $component">
+            <div class="oj-sm-12">
+                <div class="oj-flex oj-flex-items-pad review-banner">
+                    <div class="oj-flex-item oj-sm-12">
+                        <span class="review-banner__image"><img data-bind="loadImage:'dashboard/info.svg'"></span>
+                        <span class="review-banner__content review-banner-content">
+                        <span class="review-banner-content__header" data-bind="text: $component.Nls.review"></span>
+                        <div class="review-banner-content__message" data-bind="text: $component.Nls.reviewSummary"></div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div data-bind="with:$component.partyDetails" class="label">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.corporateid , value :party.displayValue"></row>
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.corporatename , value :partyName"></row>
+            </div>
+            <div data-bind="with:$component.selectedUser" class="label">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.username , value :$baseModel.format($component.Nls.user,{firstName:firstName,lastName:lastName})"></row>
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.Nls.userId , value :username"></row>
+            </div>
+        </page-section>
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.Nls.mappingDetails">
+            <div data-bind="template: { name: 'file-upload/user-map-details'}"></div>
+        </page-section>
+        <!-- ko if:$component.params.mode ==='review'-->
+        <div class="button-container">
+            <oj-button class="action-button-primary" on-click="[[$component.confirm.bind($data,$component.FIMapModel)]]">
+                <span data-bind="text:$component.Nls.confirm"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.Nls.cancelTransaction)]]">
+                <span data-bind="text:$component.Nls.cancel"></span>
+            </oj-button>
+            <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+                <span data-bind="text:$component.Nls.back"></span>
+            </oj-button>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

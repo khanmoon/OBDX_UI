@@ -1,0 +1,39 @@
+<!-- ko foreach:$component.configuration.configurationItemDTOs -->
+
+<div class="oj-flex oj-flex-items-pad">
+
+  <!-- ko foreach:$data.inputDTOs -->
+
+  <!-- ko if :$data.type === 'TXT' || $data.type === 'LISTBOX' || $data.type === 'RO' || $data.type === 'DATE' -->
+
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$data.uiDefinition.title"></span></oj-label>
+  </div>
+
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+    <span data-bind="text:$data.inputValues"></span>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if :$data.type === 'CHB' -->
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label><span data-bind="text:$data.uiDefinition.title"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+
+    <oj-checkboxset id="checkboxSetId" aria-labelledby="mainlabelid" class="oj-choice-direction-row" disabled="[[true]]" value="{{$data.inputValues}}"><!-- ko foreach: $data.tempObj.options --><oj-option value="{{key}}" :id="[[$parent.fieldName + $index()]]"><span data-bind="text: description, attr : {'for' :$parent.fieldName + $index()}"></span></oj-option><!-- /ko --></oj-checkboxset>
+
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if :$data.type === 'PWD' -->
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+    <oj-label for="password"><span data-bind="text:$data.uiDefinition.title"></span></oj-label>
+  </div>
+  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-9">
+    <oj-input-password id="password" type="password" autocomplete="off" maxlength="16" readonly="{{true}}" value="{{$data.inputValues}}"></oj-input-password>
+  </div>
+  <!-- /ko -->
+  <!-- /ko -->
+</div>
+<!-- /ko -->

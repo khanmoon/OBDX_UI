@@ -1,0 +1,26 @@
+<!-- ko if: $component.fatcaCheckRequired -->
+<div class="oj-flex oj-flex-items-pad warning-container">
+  <div class="oj-flex-item oj-sm-10 warning-text">
+    <span class="warning-msg" data-bind="text : $component.locale.fatcaWarningMessage"></span>
+    <a href="#" data-bind="attr:{alt:$component.locale.fatcaFormTitle,title:$component.locale.fatcaForm},click: $component.showFatcaForm">
+      <span data-bind="text:$component.locale.fatcaForm"></span>
+    </a>
+  </div>
+</div>
+<!-- /ko -->
+<!-- ko if:$component.userData.userProfile && $component.userData.userProfile.pwdExpiryWarningDays > 0 -->
+<div id="warning-container" class="oj-flex oj-flex-items-pad warning-container">
+  <div class="oj-flex-item oj-sm-10 warning-text">
+    <span class="warning-msg" data-bind="text : $baseModel.format($component.locale.passwordWarningMessage, {pwdExpiryWarningDays:$dashboard.userData.userProfile.pwdExpiryWarningDays})"></span>
+    <a href="#" data-bind="attr:{alt:$component.locale.changePasswordTitle,title:$component.locale.changePassword},click:$dashboard.loadComponent.bind($data,'change-password',{},$data)">
+      <span data-bind="text:$component.locale.changePassword"></span>
+    </a>
+  </div>
+  <div class="oj-flex-item oj-sm-2 warning-text">
+    <a href="#" data-bind="attr:{'alt':$component.locale.generic.common.cancel ,'title':$component.locale.generic.common.closeDialog }, click: function(){$('#warning-container').fadeOut('slow');}">
+      <span class="icons icon-cancel warning-icon"></span>
+    </a>
+  </div>
+</div>
+
+<!-- /ko -->

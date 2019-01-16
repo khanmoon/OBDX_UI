@@ -1,0 +1,59 @@
+<div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-9">
+        <div class="form-main-container">
+            <!-- ko if:stageOne() -->
+            <page-section params="baseModel : $baseModel, rootModel:$data ,heading:''">
+                <div class="oj-flex oj-flex-items-pad">
+                    <oj-label for="goalCode" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+                        <span data-bind="text:$component.goal.category.goalCode"></span>  </oj-label>
+                    <oj-input-text id="goalCode" class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-3" :aria-label="[[$component.goal.category.goalCode]]" validators="[[$baseModel.getValidator('APPLICATION_CODE')]]" value="{{goalCode}}">
+                    </oj-input-text>
+                </div>
+                <div class="oj-flex oj-flex-items-pad">
+                    <oj-label for="goalCategory" class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2 label">
+                        <span data-bind="text:$component.goal.category.goalCategory"></span>
+                    </oj-label>
+                    <oj-input-text id="goalCategory" class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-5" validators="[[$baseModel.getValidator('APPLICATION_NAME')]]" :aria-label="[[$component.goal.category.goalCategory]]" value="{{goalCategory}}"></oj-input-text>
+                </div>
+            </page-section>
+            <!-- /ko -->
+            <div class="button-container">
+                <oj-button id="search" class="action-button-primary" on-click="[[searchGoals]]">
+                    <span data-bind="text:$component.common.search"></span>
+                </oj-button>
+                <!-- ko ifnot:stageTwo() -->
+                <oj-button id="back" class="action-button-secondary" on-click="[[back]]">
+                    <span data-bind="text:$component.common.cancel"></span>
+                </oj-button>
+                <!-- /ko -->
+                <oj-button id="reset" class="action-button-secondary" on-click="[[reset]]">
+                    <span data-bind="text:$component.common.clear"></span>
+                </oj-button>
+            </div>
+            <!-- ko if:stageTwo() -->
+            <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+                <oj-table :aria-label="[[$component.goal.category.list]]" columns="[[[{headerText:$component.goal.category.goalCode,field:'goalCode',style:'width: 20%'},{headerText:$component.goal.category.goalCategory,template:'catg_name_link',field:'goalCategory',style:'width: 20%'},{headerText:$component.goal.category.productType,field:'productType',style:'width: 20%'},{headerText:$component.goal.category.product,field:'productName',style:'width: 20%'},{headerText:$component.goal.category.status,field:'status',style:'width: 20%'}]]]" selection-mode="[[{row:'multiple',column:'multiple'}]]" columns-default="[[{sortable:'enabled'}]]" data="[[$component.dataSource]]">
+                    <template slot="catg_name_link">
+                        <td>
+                            <a href="javascript:void(0)" data-bind="text:$current.row.goalCategory ,click:$dashboard.loadComponent.bind
+                        ($data,'goal-category-view',$current.row,$component)"></a>
+                        </td>
+                    </template>
+                </oj-table>
+                <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[dataSource]]">
+                </oj-paging-control>
+            </page-section>
+            <div class="button-container">
+                <oj-button id="cancel" class="action-button-secondary" on-click="[[back]]">
+                    <span data-bind="text:$component.common.cancel"></span>
+                </oj-button>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <div class="oj-flex-item oj-sm-3 help-panel">
+        <help params="baseModel : $baseModel, rootModel : $component, transaction: 'goal-category-list'"></help>
+    </div>
+    <!-- /ko -->
+</div>

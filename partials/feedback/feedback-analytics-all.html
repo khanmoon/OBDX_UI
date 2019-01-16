@@ -1,0 +1,45 @@
+<div class="oj-flex oj-flex-items-pad feedback-analytics">
+  <div class="oj-flex-item oj-md-6 oj-sm-12">
+    <div class="oj-panel">
+      <div class="dashboard-admin-action-card-container oj-flex oj-flex-items-pad">
+        <h3 class="oj-flex-item admin-card-header__title" data-bind="text:$component.resource.ratingForALLTxn"></h3>
+        <div class="oj-flex-item admin-card__description" data-bind="html:$component.resource.pieChartLableDescription">
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-8">
+        <oj-chart id="pieChart" class="feedback-analytics__chart"  type="pie" series="[[$component.pieChartData]]" animation-on-display="auto" animation-on-data-change="auto" hover-behavior="dim">
+        </oj-chart>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-4 feedback-analytics__content feedback-analytics-content">
+          <div class="feedback-analytics-content__avgRating feedback-analytics-content-avgRating">
+          <oj-label><span data-bind="text:$component.resource.totalAverageRating"></span></oj-label>
+          <div class="feedback-analytics-content-avgRating__value" data-bind="text:$component.totalAverageRating"></div>
+          <oj-rating-gauge id="gaugeForTotalRating" step="1" readonly value="{{$component.totalAverageRating}}"></oj-rating-gauge>
+          </div>
+          <div class="feedback-analytics-content__totalRating feedback-analytics-content-totalRating">
+          <oj-label><span data-bind="text:$component.resource.totalRating"></span></oj-label>
+          <div class="feedback-analytics-content-totalRating__value" data-bind="text:$component.totalRating"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="oj-flex-item oj-md-6 oj-sm-12">
+    <div class="oj-panel">
+      <div class="dashboard-admin-action-card-container oj-flex oj-flex-items-pad">
+        <h3 class="oj-flex-item admin-card-header__title" data-bind="text:$component.resource.lineChartLable"></h3>
+        <div class="oj-flex-item admin-card__description" data-bind="html:$component.resource.lineChartLableDescription">
+        </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-8">
+        <oj-chart id="lineChart" type="line" series="[[$component.lineChartData]]" y-axis.title="Values in %" groups="[[$component.lineChartGroup]]" style-defaults.marker-displayed="on" animation-on-display="auto" animation-on-data-change="auto" orientation="[[orientationValue]]" hover-behavior="dim">
+        </oj-chart>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>

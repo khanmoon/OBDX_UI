@@ -1,0 +1,129 @@
+<div class="form-main-container">
+  <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-8 list-goal pfm">
+      <!-- ko if: $component.loadGoals() -->
+      <!-- ko if: $component.isActive() -->
+      <oj-list-view class="pfm-container__listView pfm-listView" id="listview_dashboard" translations="[[{msgNoData:$component.resource.pfm.noGoals}]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.goalsDatasource]]">
+        <!--template loaded here-->
+      </oj-list-view>
+      <script type="text/html" id="content_template">
+        <li class="pfm-listView__items listView-items" data-bind="attr: {id:id}">
+          <!-- ko if: !$baseModel.small() -->
+          <div class="oj-flex oj-flex-items-pad listItem__listContent listContent">
+
+
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 listContent__pfmName pfmName">
+
+              <div class="pfmName__image pfmName-image">
+                <img class="pfmName-image__goalImages" data-bind="attr:{'src':'data:image/gif;base64,'+content,alt:$component.resource.pfm.goalcategoryImgAlt+''+categoryName}">
+              </div>
+              <div class="pfmName__goalName" data-bind="text:name "></div>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 listContent__amount amount">
+              <span class="amount__pfmAmount" data-bind="text :$baseModel.format($component.resource.pfm.goalAmount, {goalAmountt : $baseModel.formatCurrency(targetAmount,$component.baseCurrency())})"></span>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 listContent__svg svg">
+              <div class="" data-bind="component:{
+                              name:'percentage-graph',
+                              params:{
+                                rootModel: $component,
+                                data : {
+                                      label: $baseModel.format($component.resource.pfm.achieved, {percent : percentAchieved}),
+                                      showLabel:true,
+                                      uniqueId:'label_'+id,
+                                      max:data.targetAmount.amount,
+                                      thresholdValues:thresholdValues,
+                                      value:data.availableBalance.amount,
+                                      toolTipCallBack:$component.goalTooltipCallback
+
+                                  }
+                              }
+
+                        }">
+              </div>
+
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2 listContent__view-details view-details">
+              <a class="view-details__link view-details-link" href="#" data-bind="attr:{alt:$component.resource.pfm.modify ,title:$component.resource.pfm.modifyText},click: $dashboard.loadComponent.bind($data,'manage-goal',$data,$component)">
+                <!-- ko ifnot: $baseModel.large() -->
+                <span class="icons icon-eye goalData-icon__link"></span>
+                <!-- /ko -->
+                <!-- ko if: $baseModel.large() -->
+                <div class="view-details-link__linkText" data-bind="text: $component.resource.pfm.modify"></div>
+                <!-- /ko -->
+              </a>
+            </div>
+
+          </div>
+          <!-- /ko -->
+
+          <!-- ko if: $baseModel.small() -->
+          <div data-bind="component:{name:'goal-data-card',params:{rootModel: $component, data : $data}}"></div>
+          <!-- /ko -->
+
+        </li>
+      </script>
+      <!-- /ko -->
+      <!-- ko ifnot: $component.isActive() -->
+
+      <oj-list-view id="listview_dashboard" :aria-label="[[$component.resource.goals.closedHeader]]" selection-mode="[['single']]" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('content_template',true)}]]" data="[[$component.goalsDatasource]]">
+        <!--template loaded here-->
+      </oj-list-view>
+
+      <script type="text/html" id="content_template">
+        <li data-bind="attr: {id:id}">
+          <!-- ko if: !$baseModel.small() -->
+          <div class="oj-flex oj-flex-items-pad listItem__listContent listContent">
+
+            <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3 listContent__pfmName pfmName">
+              <div class="pfmName__image pfmName-image">
+                <img class="pfmName-image__goalImages" data-bind="attr:{'src':'data:image/gif;base64,'+content,alt:$component.resource.pfm.goalcategoryImgAlt +''+categoryName}">
+              </div>
+              <div class="pfmName__goalName" data-bind="text:name "></div>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 listContent__amount amount">
+              <span class="amount__pfmAmount" data-bind="text :$baseModel.format($component.resource.pfm.TargetAmount, {finalAmountRedeemed :$baseModel.formatCurrency(closingAmount,$component.baseCurrency()) })"></span>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 listContent__closeDate closeDate">
+              <div class="" data-bind="text :$baseModel.format($component.resource.pfm.closingDate, {date : $baseModel.formatDate(closingDate)}) "></div>
+            </div>
+
+            <div class="oj-flex-item oj-sm-12 oj-md-1 oj-lg-2 listContent__view-details view-details">
+              <a class="view-details__link view-details-link" href="#" data-bind="attr:{alt:$component.resource.pfm.modify ,title:$component.resource.pfm.modifyText},click: $dashboard.loadComponent.bind($data,'manage-goal',$data,$component)">
+                <!-- ko if: $baseModel.large() -->
+                <div class="view-details-link__linkText" data-bind="text: $component.resource.pfm.modify"></div>
+                <!-- /ko -->
+              </a>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if: $baseModel.small() -->
+          <div data-bind="component:{name:'goal-data-card',params:{rootModel: $component, data : $data}}"></div>
+          <!-- /ko -->
+
+        </li>
+      </script>
+      <!-- /ko -->
+      <!-- /ko -->
+    </div>
+    <!-- ko if: $baseModel.large() -->
+    <!-- ko if: $component.isActive() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'list-goal'"></help>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: $component.isActive() -->
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4 oj-sm-only-hide oj-md-only-hide">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'closed-goal'"></help>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+  </div>
+</div>
+<!-- ko if: $baseModel.large() -->
+<a class="back-link" href="#" data-bind="text: $component.resource.pfm.backToDashboard, click: $dashboard.switchModule.bind($data)"></a>
+<!-- /ko -->

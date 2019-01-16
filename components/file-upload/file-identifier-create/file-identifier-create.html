@@ -1,0 +1,216 @@
+<div class="oj-flex">
+  <div class="oj-flex design-dashboard">
+    <div class="oj-flex-item oj-sm-9">
+      <div class="form-main-container">
+        <!-- ko ifnot: $component.admin() -->
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+          <div data-bind="template: { name: 'file-upload/party-detail', data:$component.partyDetail}" class="label"></div>
+        </page-section>
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.Nls.details">
+          <div class="row-group label">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="fileIdentifier"> <span data-bind="text:$component.Nls.fileIdentifier"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text autofocus required id="fileIdentifier" maxlength="20" value="{{fiRegistrationPayload.fileIdentifier}}" validators="[[$baseModel.getValidator('APPLICATION_CODE')]]" translations="[[{'required':{messageDetail:$component.Nls.provideValue}}]]"></oj-input-text>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad ">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="description"> <span data-bind="text:$component.Nls.description"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+                <oj-input-text required id="description" maxlength="80" value="{{fiRegistrationPayload.description}}" validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" translations="[[{'required':{messageDetail:$component.Nls.provideValue}}]]"></oj-input-text>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad ">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="fileformat"> <span data-bind="text:$component.Nls.fileformat"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+                <!-- ko if:$component.isTemplatesLoaded() -->
+                <oj-select-one required id="fileformat" maxlength="100" :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$component.onTemplateChanged]]" value="{{fiRegistrationPayload.templateId}}" translations="[[{'required':{messageDetail:$component.Nls.selectTemplate}}]]"
+                  :placeholder="[[$component.Nls.select]]">
+                  <!-- ko foreach:$component.templates -->
+                  <oj-option value="{{templateId}}"><span data-bind="text:description"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+              </div>
+            </div>
+            <!-- ko if:isTemplateChanged() -->
+            <div class="oj-flex oj-flex-items-pad ">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="maxNoOfRecords"> <span data-bind="text:$component.Nls.maxNoOfRecords"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="maxNoOfRecords" maxlength="9" value="{{fiRegistrationPayload.maxNoOfRecords}}" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('OTP',$component.Nls.enterNumber)]]"></oj-input-text>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:isAccountTypeValid() -->
+            <div class="oj-flex oj-flex-items-pad ">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="ppTolerance" :title="[[$component.Nls.ppDescription]]" :alt="[[$component.Nls.ppDescription]]"> <span data-bind="text:$component.Nls.ppTolerance"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="ppTolerance" maxlength="3" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{fiRegistrationPayload.partialProcessingTolerance}}" validators="[[$baseModel.getValidator('CVV',$component.Nls.enterNumber)]]"></oj-input-text>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:isTemplateValid() -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="debitAccountNumber"> <span data-bind="text:$component.Nls.debitAccountNumber"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <!-- ko if:$component.isDebitAccountsLoaded() -->
+                <oj-select-one required id="debitAccountNumber" maxlength="100" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{fiRegistrationPayload.debitAccountNumber}}" :placeholder="[[$component.Nls.select]]">
+                  <!-- ko foreach:$component.debitAccountNumbers -->
+                  <oj-option value="{{code}}"><span data-bind="text:displayValue"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:isTemplateChanged() -->
+            <div data-bind="template: { name: 'file-upload/template-details',data:$component.selectedTemplate}"></div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="approvalType"><span data-bind="text:$component.Nls.approvaltype"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+                <!-- ko if:isApprovalTypesLoaded() -->
+                <oj-buttonset-one id="approvalType" value="{{$component.fiRegistrationPayload.approvalType}}">
+                  <!-- ko foreach:$component.approvalTypes -->
+                  <oj-option name="rbb" value="{{value}}" :id="[[value]]" disabled="{{$component.isDisabled}}"><span data-bind="attr: {for: value}, text: $baseModel.format($component.Nls.approvallevel,{approvalType:text})"></span></oj-option>
+                  <!-- /ko -->
+                </oj-buttonset-one>
+                <!-- /ko -->
+              </div>
+            </div>
+            <!-- /ko -->
+          </div>
+        </page-section>
+        <div class="button-container">
+          <oj-button class="action-button-primary" on-click="[[$component.initiate]]">
+            <span data-bind="text:$component.Nls.save"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.Nls.cancelTransaction)]]">
+            <span data-bind="text:$component.Nls.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+            <span data-bind="text:$component.Nls.back"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+        <!--  ko if: $component.admin() -->
+        <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.Nls.details">
+          <div class="row-group label">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="fileIdentifier"> <span data-bind="text:$component.Nls.fileIdentifier"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text autofocus required id="fileIdentifier" maxlength="20" value="{{fiRegistrationPayload.fileIdentifier}}" validators="[[$baseModel.getValidator('APPLICATION_CODE')]]" translations="[[{'required':{messageDetail:$component.Nls.provideValue}}]]"></oj-input-text>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad ">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="description"> <span data-bind="text:$component.Nls.description"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+                <oj-input-text required id="description" maxlength="80" value="{{fiRegistrationPayload.description}}" validators="[[$baseModel.getValidator('APPLICATION_DEscriptION')]]" translations="[[{'required':{messageDetail:$component.Nls.provideValue}}]]"></oj-input-text>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad ">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="fileformat"> <span data-bind="text:$component.Nls.fileformat"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+                <!-- ko if:$component.isTemplatesLoaded() -->
+                <oj-select-one required id="fileformat" maxlength="100" :invalidcomponenttracker="[[$component.validationTracker]]" on-value-changed="[[$component.onTemplateChanged]]" value="{{fiRegistrationPayload.templateId}}" translations="[[{'required':{messageDetail:$component.Nls.selectTemplate}}]]"
+                  :placeholder="[[$component.Nls.select]]">
+                  <!-- ko foreach:$component.templates -->
+                  <oj-option value="{{templateId}}"><span data-bind="text:description"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+              </div>
+            </div>
+            <!-- ko if:isTemplateChanged() -->
+            <div class="oj-flex oj-flex-items-pad ">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="maxNoOfRecords"> <span data-bind="text:$component.Nls.maxNoOfRecords"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="maxNoOfRecords" maxlength="9" value="{{fiRegistrationPayload.maxNoOfRecords}}" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('OTP',$component.Nls.enterNumber)]]"></oj-input-text>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:isAccountTypeValid() -->
+            <div class="oj-flex oj-flex-items-pad ">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="ppTolerance" :title="[[$component.Nls.ppDescription]]" :alt="[[$component.Nls.ppDescription]]"> <span data-bind="text:$component.Nls.ppTolerance"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <oj-input-text id="ppTolerance" maxlength="3" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{fiRegistrationPayload.partialProcessingTolerance}}" validators="[[$baseModel.getValidator('CVV',$component.Nls.enterNumber)]]"></oj-input-text>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:isTemplateValid() -->
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="debitAccountNumber"> <span data-bind="text:$component.Nls.debitAccountNumber"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-4">
+                <!-- ko if:$component.isDebitAccountsLoaded() -->
+                <oj-select-one required id="debitAccountNumber" maxlength="100" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{fiRegistrationPayload.debitAccountNumber}}" :placeholder="[[$component.Nls.select]]">
+                  <!-- ko foreach:$component.debitAccountNumbers -->
+                  <oj-option value="{{code}}"><span data-bind="text:displayValue"></span></oj-option>
+                  <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if:isTemplateChanged() -->
+            <div data-bind="template: { name: 'file-upload/template-details',data:$component.selectedTemplate}"></div>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+                <oj-label for="approvalType"><span data-bind="text:$component.Nls.approvaltype"></span></oj-label>
+              </div>
+              <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-9">
+                <!-- ko if:isApprovalTypesLoaded() -->
+                <oj-buttonset-one id="approvalType" value="{{$component.fiRegistrationPayload.approvalType}}">
+                  <!-- ko foreach:$component.approvalTypes -->
+                  <oj-option name="rbb" value="{{value}}" :id="[[value]]" disabled="{{$component.isDisabled}}"><span data-bind="attr: {for: value}, text: $baseModel.format($component.Nls.approvallevel,{approvalType:text})"></span></oj-option>
+                  <!-- /ko -->
+                </oj-buttonset-one>
+                <!-- /ko -->
+              </div>
+            </div>
+            <!-- /ko -->
+          </div>
+        </page-section>
+        <div class="button-container">
+          <oj-button class="action-button-primary" on-click="[[$component.initiate]]">
+            <span data-bind="text:$component.Nls.save"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,$component.Nls.cancelTransaction)]]">
+            <span data-bind="text:$component.Nls.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" on-click="[[$component.back]]">
+            <span data-bind="text:$component.Nls.back"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+    <div class="oj-flex-item oj-sm-3 help-panel">
+      <help params="baseModel : $baseModel, rootModel : $component, transaction: 'file-identifier-create'"></help>
+    </div>
+  </div>
+</div>

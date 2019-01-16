@@ -1,0 +1,114 @@
+<div class="form-main-container mailbox">
+  <!-- ko if : moreThanOnePartyExist -->
+  <div class="oj-flex">
+    <div class="oj-flex-item oj-sm-6 oj-md-1 oj-lg-1">
+      <oj-label for="party"><span data-bind="text:nls.mailbox.labels.party"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+      <oj-select-one id="party" translations="[[{'required':{messageDetail:nls.mailbox.messages.emptyParty}}]]" required="[[true]]" value="{{partyOptionValue}}" options="[[partyOptionList]]" :placeholder="[[nls.mailbox.labels.select]]">
+      </oj-select-one>
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
+      <!-- ko ifnot: $baseModel.small() -->
+      <div id="mailnavlistcontainer" class="mailbox-navlistcontainer">
+        <!-- ko ifnot: isAdminMailBox -->
+        <oj-button class="action-button-primary mailbox-navlistcontainer__navlistButton" on-click="[[$component.loadMailComponent.bind($data,'composeMail')]]">
+          <span data-bind="text:$component.nls.mailbox.labels.composeMail"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-navigation-list :aria-label="[[$component.nls.mailbox.headers.mailboxHeader]]" drill-mode="none" selection="inbox" navigationLevel="navigationLevel">
+          <ul class="mailbox-navlistcontainer__list mailbox-navlistcontainer-list">
+            <li class="mailbox-navlistcontainer-list__listItem mailbox-navlistcontainer-list-listItem" id="inbox">
+              <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.inboxwithoutCount ,'title':$component.nls.mailbox.labels.inboxwithoutCountTitle},click:$component.loadMailComponent.bind($data,'inbox')">
+                  <span class="icons icon-mailbox mailbox-navlistcontainer-list-listItem__icon"></span>
+                    <!-- ko if: showInboxCount -->
+                      <span class="mailbox-navlistcontainer-list-listItem__text" data-bind="text : (($component.unreadCount() === 0) ? ($component.nls.mailbox.labels.inboxwithoutCount) : ($baseModel.format($component.nls.mailbox.labels.inbox,{count:unreadCount()})))"></span>
+                    <!-- /ko -->
+              </a>
+            </li>
+            <li class="mailbox-navlistcontainer-list__listItem mailbox-navlistcontainer-list-listItem" id="sentMail">
+              <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.sentMail ,'title': $component.nls.mailbox.labels.sentMailTitle}, click :$component.loadMailComponent.bind($data,'sentMail')">
+                  <span class="icons icon-sent-mail mailbox-navlistcontainer-list-listItem__icon"></span>
+                  <span class="mailbox-navlistcontainer-list-listItem__text" data-bind="text : $component.nls.mailbox.labels.sentMail"></span>
+              </a>
+            </li>
+            <li class="mailbox-navlistcontainer-list__listItem mailbox-navlistcontainer-list-listItem" id="deletedMail">
+              <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.deletedMail ,'title': $component.nls.mailbox.labels.deletedMailTitle}, click:$component.loadMailComponent.bind($data,'deletedMail')">
+                <span class="icons icon-delete mailbox-navlistcontainer-list-listItem__icon"></span>
+                <span class="mailbox-navlistcontainer-list-listItem__text" data-bind="text : $component.nls.mailbox.labels.deletedMail"></span>
+              </a>
+            </li>
+          </ul>
+        </oj-navigation-list>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
+      <!-- ko if:$component.reloadComponent() -->
+      <div data-bind="component:{name: loadedComponent, params:{rootModel:$component,data:$data}}">
+      </div>
+      <!-- /ko -->
+    </div>
+
+  </div>
+
+  <!-- ko ifnot: isRetailUser -->
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+      <span class="icons icon-cancel" slot="startIcon"></span>
+      <span data-bind="text:$component.nls.mailbox.buttons.cancel"></span>
+    </oj-button>
+  </div>
+  <!-- /ko -->
+
+  <!-- ko if: !$baseModel.large() -->
+  <a href="#" data-bind="click: $component.showFloatingPanel">
+    <div class="floating-button"><span class="icons icon-more-vertical"></span></div>
+  </a>
+  <floating-panel params="baseModel : $baseModel, panelId: 'panelViewStatement', rootModel: $component">
+    <ul>
+      <!-- ko ifnot : $component.loadedComponent()=== 'compose-mail' || isAdminMailBox-->
+      <li>
+        <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.composeMail ,'title': $component.nls.mailbox.labels.composeMailLoaded}, click:$component.loadMailComponent.bind($data,'composeMail')">
+          <span class="icons icon-remarks"></span>
+          <span data-bind="text :  $component.nls.mailbox.labels.composeMail"></span>
+        </a>
+      </li>
+      <!-- /ko -->
+      <!-- ko ifnot : $component.loadedComponent() === 'inbox' -->
+      <li>
+        <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.inboxwithoutCount ,'title': $component.nls.mailbox.labels.inboxwithoutCountTitle}, click:$component.loadMailComponent.bind($data,'inbox')">
+          <span class="icons icon-mailbox"></span>
+          <span data-bind="text : (($component.unreadCount() === 0) ? ($component.nls.mailbox.labels.inboxwithoutCount) : ($baseModel.format($component.nls.mailbox.labels.inbox,{count:unreadCount()})))"></span>
+        </a>
+      </li>
+      <!-- /ko -->
+      <!-- ko ifnot : $component.loadedComponent() === 'sent-mails' -->
+      <li>
+        <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.sentMail ,'title': $component.nls.mailbox.labels.sentMailTitle}, click :$component.loadMailComponent.bind($data,'sentMail')">
+          <span class="icons icon-sent-mail"></span>
+          <span data-bind="text : $component.nls.mailbox.labels.sentMail"></span>
+        </a>
+      </li>
+      <!-- /ko -->
+
+      <!-- ko ifnot : $component.loadedComponent() ==='deleted-mails' -->
+      <li>
+        <a href="#" data-bind="attr:{'alt': $component.nls.mailbox.labels.deletedMail ,'title': $component.nls.mailbox.labels.deletedMailTitle}, click:$component.loadMailComponent.bind($data,'deletedMail')">
+          <span class="icons icon-delete"></span>
+          <span data-bind="text : $component.nls.mailbox.labels.deletedMail"></span>
+        </a>
+      </li>
+      <!-- /ko -->
+    </ul>
+  </floating-panel>
+  <!-- /ko -->
+</div>
+
+<!-- ko if: $baseModel.large() && isRetailUser -->
+<a class="back-link" href="#" data-bind="text: $component.nls.mailbox.labels.backToDashboard,
+click:$dashboard.openDashBoard.bind(void 0,void 0)"></a>
+<!-- /ko -->

@@ -1,0 +1,121 @@
+<div class="my-bills oj-panel">
+  <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 my-bills__heading my-bills-heading">
+            <h3 class="my-bills-heading__title" data-bind="text:$component.nls.header"></h3>
+            <!-- ko if:$component.billerData().length -->
+            <span class="my-bills__sub-header" data-bind="text:$baseModel.format($component.nls.billsToPay,{count:$component.billerData().length})"></span>
+            <!-- /ko -->
+        </div>
+      </div>
+    <div class="oj-flex oj-flex-iems-pad biller-details">
+      <!-- ko if:$component.billerData().length -->
+      <div class="oj-flex-item oj-sm-12">
+        <oj-list-view class="billersList" id="listview222" :aria-label="[[$component.nls.listAria]]" data="[[$component.dataProvider]]"
+            selection-mode="single" item="[[{renderer:$oj.KnockoutTemplateUtils.getRenderer('itemTemplate',true)}]]">
+        </oj-list-view>
+
+
+        <script type="text/html" id="itemTemplate">
+            <li>
+                <div class="oj-flex">
+                    <span class="oj-flex-item oj-sm-2">
+                        <oj-avatar role="img" size="xxs" initials="[[$data.initials]]" data-bind="attr:{'aria-label': billerNickName}" src="[[$data.categoryLogo()]]"
+                            class="oj-avatar-image">
+                        </oj-avatar>
+                    </span>
+                    <span class="oj-flex-item oj-sm-7">
+                        <div data-bind="text:billerName"></div>
+                        <div>
+                            <oj-label>
+                                <span data-bind="text:billerNickName"></span>
+                            </oj-label>
+                        </div>
+                        <div>
+                            <span data-bind="text:$baseModel.formatCurrency(ebill.totalAmount.amount, ebill.totalAmount.currency)"></span>
+                            <oj-label>
+                                <span data-bind="text:$baseModel.format($component.nls.dueOn,{date:$baseModel.formatDate(ebill.dueDate)})"></span>
+                            </oj-label>
+                        </div>
+                    </span>
+                    <span class="oj-flex-item oj-sm-3">
+                        <oj-button class="action-button-primary payBtn" on-click="[[$component.showPayBill.bind($data,id)]]">
+                            <span data-bind="text:$component.nls.pay"></span>
+                        </oj-button>
+                        <!-- ko if:(statusToDisplay==="OVERDUE" || statusToDisplay==="AUTOPAY")-->
+                        <div class="center status" data-bind="text:$component.nls.status[statusToDisplay],css:{danger:statusToDisplay==='OVERDUE'}"></div>
+                        <!-- /ko -->
+                        <!-- ko if:(statusToDisplay!=="OVERDUE" && statusToDisplay!=="AUTOPAY")-->
+                        <div class="center status success" data-bind="text:$baseModel.format($component.nls.daysLeft,{days:statusToDisplay})"></div>
+                        <!-- /ko -->
+                    </span>
+                </div>
+            </li>
+        </script>
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot:$component.billerData().length -->
+      <div class="oj-flex-item oj-sm-12 my-bills__noData my-bills-noData">
+       <img class="my-bills-noData__image" data-bind="attr:{'alt': $component.nls.imageText},loadImage:'dashboard/bill-payments.svg'">
+      </div>
+      <div class="oj-flex-item oj-sm-12 center" data-bind="text: $component.nls.imageText"></div>
+      <!-- /ko -->
+    </div>
+    <div class="oj-flex oj-flex-iems-pad">
+      <div class="oj-flex-item oj-sm-4 my-bills__view-all">
+        <a href="javascript:void(0)" data-bind="attr:{alt:$baseModel.format($component.nls.generic.common.clickHere,{action:$component.nls.btns.quickRecharge}),title:$component.nls.btns.quickRecharge},click:$component.quickRecharge">
+            <span data-bind="text:$component.nls.btns.quickRecharge"></span>
+        </a>
+      </div>
+        <div class="oj-flex-item oj-sm-4 my-bills__view-all">
+        <a href="javascript:void(0)" data-bind="attr:{alt:$baseModel.format($component.nls.generic.common.clickHere,{action:$component.nls.btns.quickBillPay}),title:$component.nls.btns.quickBillPay},click:$component.quickBillPay">
+            <span data-bind="text:$component.nls.btns.quickBillPay"></span>
+        </a>
+      </div>
+        <div class="oj-flex-item oj-sm-4 my-bills__view-all">
+        <a href="javascript:void(0)" data-bind="attr:{alt:$baseModel.format($component.nls.generic.common.clickHere,{action:$component.nls.btns.viewAllBillers}),title:$component.nls.btns.viewAllBillers},click:$component.viewAllBillers">
+            <span data-bind="text:$component.nls.btns.viewAllBillers"></span>
+        </a>
+      </div>
+    </div>
+    <modal-window params="baseModel : $baseModel, rootModel : $data, id:'autoPayBill', header:$component.nls.heading.billPayment">
+        <div class="oj-flex oj-flex-items-pad grid-row-group">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.nls.messages.autoPayBiller"></div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[autoPayBill]]">
+                <span slot="startIcon" class="icons icon-confirm"></span>
+                <span data-bind="text:$component.nls.labels.continue"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary btn proceed-main-btn" on-click="[[function(){$('#autoPayBill').hide();}]]">
+                <span class="icons icon-cancel" slot="startIcon"></span>
+                <span data-bind="text:$component.nls.generic.common.cancel"></span>
+            </oj-button>
+        </div>
+    </modal-window>
+    <modal-window params="baseModel : $baseModel, rootModel : $data, id:'scheduledPay', header:$component.nls.heading.billPayment">
+        <div class="oj-flex oj-flex-items-pad grid-row-group">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.nls.messages.scheduledPay"></div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-primary btn proceed-main-btn" on-click="[[autoPayBill]]">
+                <span slot="startIcon" class="icons icon-confirm"></span>
+                <span data-bind="text:$component.nls.labels.continue"></span>
+            </oj-button>
+            <oj-button class="action-button-secondary btn proceed-main-btn" on-click="[[function(){$('#scheduledPay').hide();}]]">
+                <span class="icons icon-cancel" slot="startIcon"></span>
+                <span data-bind="text:$component.nls.generic.common.cancel"></span>
+            </oj-button>
+        </div>
+    </modal-window>
+    <modal-window params="baseModel : $baseModel, rootModel : $data, id:'hidePayBill', header:$component.nls.heading.billPayment">
+        <div class="oj-flex oj-flex-items-pad grid-row-group">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="text: $component.nls.messages.paymentNotAllowed"></div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad button-container">
+            <oj-button class="action-button-secondary btn proceed-main-btn" on-click="[[function(){$('#hidePayBill').hide();}]]">
+                <span slot="startIcon" class="icons icon-confirm"></span>
+                <span data-bind="text:$component.nls.generic.common.ok"></span>
+            </oj-button>
+        </div>
+    </modal-window>
+</div>

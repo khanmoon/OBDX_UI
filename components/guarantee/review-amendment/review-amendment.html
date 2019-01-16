@@ -1,0 +1,76 @@
+<!-- ko if:$component.reviewDataLoaded() -->
+<div class="form-main-container review-guarantee">
+
+    <!-- ko if:$component.mode() === 'REVIEW' || $component.mode() === 'VIEW' -->
+    <div class="oj-flex oj-flex-items-pad">
+      <div class="oj-flex-item oj-sm-12 review-text-heading">
+        <!-- ko if:$component.mode() === 'REVIEW' -->
+          <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
+        <!-- /ko -->
+        <!-- ko if: $baseModel.small() -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-12">
+            <oj-label for="amendments"><span data-bind="text:$component.resourceBundle.labels.guaranteeNumber"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-12">
+            <span for="amendments" data-bind="text:$component.guaranteeDetails.bgId"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : $baseModel.small() === false ? $component.sectionHeading : ''">
+        <oj-accordion id="tradeFinanceAccordion">
+          <!-- ko foreach:amendStages -->
+          <oj-collapsible expanded="[['true']]" disabled="[['true']]">
+            <h3 slot="header">
+                <span>
+                    <span data-bind="text: stageName"></span>
+                </span>
+            </h3>
+            <div class="stage-content" data-bind="template:{name : templateName}"></div>
+            </oj-collapsible>
+          <!-- /ko -->
+        </oj-accordion>
+
+        <!-- ko ifnot: $component.mode() ==='approval' -->
+        <div class="button-container">
+          <!-- ko if: $component.mode() ==='REVIEW' -->
+            <oj-button id="confirmButton" class="action-button-primary" on-click="[[confirmAmendment]]">
+                <span slot="startIcon" class="icons icon-confirm"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.confirm"></span>
+            </oj-button>
+            <!-- ko ifnot: $baseModel.small() -->
+            <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,$component.resourceBundle.tradeFinanceErrors.messages.cancelOperation)]]">
+                <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+            </oj-button>
+            <!-- /ko -->
+            <oj-button id="backButton" class="action-button-tertiary" on-click="[[editAll]]">
+                <span slot="startIcon" class="icons icon-back-arrow"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+            </oj-button>  
+          <!-- /ko -->
+
+          <!-- ko ifnot: $component.mode() ==='REVIEW' -->
+            <!-- ko ifnot: $baseModel.small() -->
+            <oj-button id="cancelButton" class="action-button-secondary" on-click="[[$dashboard.openDashBoard.bind($data,void(0))]]">
+                <span slot="startIcon" class="icons icon-cancel"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.cancel"></span>
+            </oj-button>
+          <!-- /ko -->
+            <oj-button id="backButton" class="action-button-tertiary" on-click="[[goBack]]">
+                <span slot="startIcon" class="icons icon-back-arrow"></span>
+                <span data-bind="text:$component.resourceBundle.generic.common.back"></span>
+            </oj-button>
+          <!-- /ko -->
+
+        </div>
+
+    </page-section>
+
+
+</div>
+<!-- /ko -->

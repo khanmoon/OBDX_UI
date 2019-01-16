@@ -1,0 +1,51 @@
+<!-- ko if: dataLoaded() -->
+<div class="application-fees-container">
+    <!-- ko if: feesConfigured() -->
+    <!-- ko foreach: $component.applicationFees() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12">
+            <div class="pull-left label-text">
+                <span data-bind="text : feeType"></span>
+            </div>
+        </div>
+        <!-- ko if: $baseModel.large()||$baseModel.medium() -->
+        <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12">
+            <div class="pull-right value-text" data-bind="text: amount"></div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: $baseModel.small() -->
+        <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12">
+            <div class="value-text" data-bind="text: amount"></div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <div class="fees-summary">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-lg-6 oj-md-6 oj-sm-12">
+                <div class="pull-left label-text">
+                    <oj-label class="left"><span data-bind="text:$component.resource.atotal"></span></oj-label>
+                </div>
+            </div>
+            <!-- ko if: $baseModel.large()||$baseModel.medium() -->
+            <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12">
+                <div class="pull-right value-text" data-bind="text: $component.sumAmount()"></div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $baseModel.small() -->
+            <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12">
+                <div class="value-text" data-bind="text: $component.sumAmount()"></div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: feesConfigured() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item label oj-lg-offset-1 oj-md-offset-1 label-text">
+            <oj-label><span data-bind="text:$component.resource.noApplicationFees"></span></oj-label>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->

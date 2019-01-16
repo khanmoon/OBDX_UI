@@ -1,0 +1,35 @@
+
+<div class="oj-flex oj-flex-items-pad">
+
+
+</div>
+    <div class="oj-flex oj-flex-items-pad">
+
+    <div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-1 ">
+        <oj-label :for="[['editEntityId'+ index]]"><span data-bind="text:resource.entityId"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2">
+        <oj-input-text required maxlength="35" name="firstName" :id="[['editEntityId'+index]]" :name="[['editEntityId'+index]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL')]]" value="{{data.businessUnitCode}}"></oj-input-text>
+    </div>
+
+
+    <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-2 ">
+        <oj-label :for="[['editEntityName'+ index]]"><span data-bind="text:resource.entityName"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2">
+        <oj-input-text required maxlength="35" :id="[['editEntityName'+ index]]" :name="[['editEntityName'+index]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHABETS_WITH_SOME_SPECIAL')]]" value="{{data.businessUnitName}}"></oj-input-text>
+    </div>
+
+
+<div class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-1 ">
+
+        <oj-label :for="[['timeZone'+ index]]"><span data-bind="text:resource.timeZone"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-2">
+      <oj-select-one required :id="[['timeZone'+ index]]" :name="[['timeZone'+index]]" value="{{data.temp_timeZone}}" on-value-changed="[[$component.timeZoneOptionChangedHandler.bind($data,index)]]">
+          <!-- ko foreach: $component.genderOptions -->
+          <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+          <!-- /ko -->
+      </oj-select-one>
+    </div>
+</div>

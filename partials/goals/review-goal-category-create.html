@@ -1,0 +1,59 @@
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.goal.category.goalCode , value :$component.categoryDetails().categoryCode, dataClass :'highlight-text'"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.goal.category.goalCategory , value :$component.categoryDetails().categoryName, dataClass :'highlight-text'"></row>
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.goal.category.expiryDate , value :$baseModel.formatDate($component.categoryDetails().categoryExpiryDate), dataClass :'highlight-text'"></row>
+    <!-- ko if: $component.isImageExist() -->
+    <div class="oj-flex oj-flex-items-pad goal-category-view-container">
+        <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <label data-bind="text:$component.goal.category.image"></label>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-4 uploadImage-fileUpload__maxwidth">
+            <img id="target" alt="" src="">
+        </div>
+    </div>
+    <!-- /ko -->
+</page-section>
+<page-section params="baseModel : $baseModel, rootModel : $data, heading : $component.goal.category.productMapping">
+    <row params="baseModel : $baseModel, rootModel : $component, label : $component.goal.category.product, value :$component.productId, dataClass :'highlight-text'"></row>
+    <!-- ko if: $component.productDetails() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item" data-bind="text:$component.goal.category.productDetails">
+        </div>
+    </div>
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12" data-bind="with:productDetails">
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                    <label data-bind="text:$component.goal.category.initialFunding"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3" data-bind="text: product.initialFunding">
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                    <label data-bind="text:$component.goal.category.tenure"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3" data-bind="text: product.tenure">
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                    <label data-bind="text:$component.goal.category.currency"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3" data-bind="text: product.currency">
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                    <label data-bind="text:$component.goal.category.partialWithdrawalAllowed"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3" data-bind="text: product.partialAllowed">
+                </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad">
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3">
+                    <label data-bind="text:$component.goal.category.topUpAllowed"></label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-3" data-bind="text: product.topUpAllowed">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+</page-section>

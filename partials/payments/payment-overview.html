@@ -1,0 +1,34 @@
+<div class="oj-flex oj-flex-items-pad payment-overview">
+    <div class="oj-flex-item" data-bind="css:$component.reviewMode?'oj-sm-12':'oj-lg-10 oj-sm-8'">
+        <div class="oj-flex">
+            <div class="oj-flex-item details" data-bind="css:$component.reviewMode?'oj-sm-6 oj-lg-4':'oj-sm-12 oj-lg-5'">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.recipient, value :nickName"></row>
+            </div>
+            <div class="oj-flex-item details" data-bind="css:$component.reviewMode?'oj-lg-3 oj-sm-6':'oj-lg-4 oj-sm-12'">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.transferfrom, value :dbtAccount"></row>
+            </div>
+            <div class="oj-flex-item details" data-bind="css:$component.reviewMode?'oj-lg-3 oj-sm-6':'oj-lg-3 oj-sm-12'">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.moneytransfer.amount, value :amount"></row>
+            </div>
+            <!-- ko if: $component.reviewMode -->
+            <div class="oj-flex-item details oj-lg-2 oj-sm-6">
+                <row params="baseModel : $baseModel, rootModel : $component, label : $component.resource.label.valueDate, value :valueDate"></row>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- ko ifnot: $component.reviewMode -->
+    <div class="oj-flex-item" data-bind="css:$component.masterBatchArray().length > 1?'oj-lg-1 oj-sm-2 left':'oj-lg-2 oj-sm-4 right'">
+        <a class="action-icon" href="#" data-bind="attr:{'aria-label':$baseModel.format($component.payments.common.title,{reference:$component.payments.common.edit}), 'alt':$component.payments.generic.common.edit,'title':$baseModel.format($component.payments.common.title,{reference:$component.payments.common.edit})}, click:$component.editSavedPayment">
+            <div class="icons icon-remarks"></div>
+        </a>
+    </div>
+    <!-- ko if: $component.masterBatchArray().length > 1 -->
+    <div class="oj-flex-item oj-lg-1 oj-sm-2 right payment-overview__delete">
+        <a class="action-icon" href="#" data-bind="attr:{'aria-label':$baseModel.format($component.payments.common.title,{reference:$component.payments.common.delete}), 'alt':$component.payments.generic.common.delete, 'title':$baseModel.format($component.payments.common.title,{reference:$component.payments.common.delete})}, click:$component.removePayment.bind($data, $component.referenceHandel.id)">
+            <div class="icons icon-delete"></div>
+        </a>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>

@@ -1,0 +1,98 @@
+<!-- ko if:dataLoaded() -->
+  <!-- ko if:isReadOnly -->
+      <div class="oj-flex oj-flex-items-pad">
+          <div class="  oj-lg-3 oj-flex-item ">
+              <oj-label for="fromdate"><span data-bind="text:$component.wallet.report.fromDate"></span></oj-label>
+          </div>
+          <div class=" oj-lg-6 oj-flex-item">
+          <oj-input-date required id="walletopen" readonly="{{true}}" max="[[$oj.IntlConverterUtils.dateToLocalIso($component.currentDate)]]" value="{{$component.searchItems().fromDate}}" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+          </div>
+      </div>
+  <!-- /ko -->
+  <!-- ko ifnot:isReadOnly -->
+  <div>
+      <div class="oj-flex oj-flex-items-pad ">
+          <div class=" oj-lg-6 oj-flex-item customizedinput ">
+              <div class="oj-lg-3 oj-flex-item ">
+                  <oj-label for="userid"><span data-bind="text:$component.wallet.report.emailid"></span></oj-label>
+              </div>
+              <div class="oj-lg-9 oj-flex-item">
+                  <oj-input-text id="userid" type="text" maxlength="50" value="{{$component.searchItems().emailId}}" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[[validateEmail]]]"></oj-input-text>
+              </div>
+          </div>
+          <div class=" oj-lg-6 oj-flex-item ">
+              <div class="oj-lg-3 oj-flex-item ">
+                  <oj-label for="mobile"><span data-bind="text:$component.wallet.report.mobilenumber"></span></oj-label>
+              </div>
+              <div class="oj-lg-9 oj-flex-item">
+                  <oj-input-text id="mobile" type="text" maxlength="10" value="{{$component.searchItems().mobileNumber}}" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[[validateMobile]]]"></oj-input-text>
+              </div>
+          </div>
+      </div>
+      <div class="oj-flex oj-flex-items-pad">
+          <div class=" oj-lg-6 oj-flex-item ">
+              <div class="  oj-lg-3 oj-flex-item ">
+                  <oj-label for="fromdate"><span data-bind="text:$component.wallet.report.fromDate"></span></oj-label>
+              </div>
+              <div class=" oj-lg-9 oj-flex-item">
+                  <oj-input-date id="fromdate" max="[[$oj.IntlConverterUtils.dateToLocalIso($component.currentDate)]]" value="{{$component.searchItems().fromDate}}" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+              </div>
+          </div>
+          <div class=" oj-lg-6 oj-flex-item ">
+              <div class=" oj-lg-3 oj-flex-item ">
+                  <oj-label for="todate"><span data-bind="text:$component.wallet.report.toDate"></span></oj-label>
+              </div>
+              <div class="oj-lg-9 oj-flex-item">
+                  <oj-input-date id="todate" value="{{$component.searchItems().toDate}}" max="[[$oj.IntlConverterUtils.dateToLocalIso($component.currentDate)]]" converter="[[$baseModel.dateConverter]]"></oj-input-date>
+              </div>
+          </div>
+      </div>
+      <!-- ko if:report==='kyc' -->
+      <div class="oj-flex oj-flex-items-pad">
+          <div class=" oj-lg-6 oj-flex-item ">
+              <div class=" oj-lg-3 oj-flex-item ">
+                  <oj-label for="status"><span data-bind="text:$component.wallet.report.kycstatus"></span></oj-label>
+              </div>
+              <div class="oj-lg-9 oj-flex-item">
+                <!-- ko if:statusSearchArray().length>0 -->
+                  <oj-select-one id="status" required value="{{$component.searchItems().status}}">
+                          <!-- ko foreach:statusSearchArray() -->
+                          <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                          <!-- /ko -->
+                  </oj-select-one>
+                <!-- /ko -->
+
+              </div>
+          </div>
+      </div>
+      <!-- /ko -->
+      <!-- ko if:report==='transactionActivity' -->
+      <div class="oj-flex oj-flex-items-pad">
+          <div class=" oj-lg-6 oj-flex-item ">
+              <div class=" oj-lg-3 oj-flex-item ">
+                  <oj-label for="status"><span data-bind="text:$component.wallet.report.type"></span></oj-label>
+              </div>
+              <div class="oj-lg-9 oj-flex-item">
+                <!-- ko if:transactionTypeArray().length>0 -->
+                  <oj-select-one id="status" required value="{{$component.searchItems().transactionType}}">
+                          <!-- ko foreach:transactionTypeArray() -->
+                          <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                          <!-- /ko -->
+                  </oj-select-one>
+                <!-- /ko -->
+
+              </div>
+          </div>
+      </div>
+      <!-- /ko -->
+      <div class="button-container">
+            <oj-button class="action-button-secondary" id="button" on-click="[[reset]]">
+      <span data-bind="text:$component.common.reset"></span>
+</oj-button>
+            <oj-button class="action-button-primary" id="button" on-click="[[search]]">
+      <span data-bind="text:$component.common.view"></span>
+</oj-button>
+      </div>
+  </div>
+  <!-- /ko -->
+<!-- /ko -->

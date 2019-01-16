@@ -1,0 +1,77 @@
+<div class="form-main-container">
+  <div class="search-section">
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading: $component.Nls.scheduledReports">
+
+      <!-- ko if:!$component.searchEnabled()-->
+      <action-header params="baseModel : $baseModel, rootModel :$component, heading: $component.Nls.reportId">
+        <a href="" class="icon icon-search" data-bind="click: $component.searchEnable, attr:{alt : $component.Nls.searchEnable,title:$component.Nls.searchAllowed}"></a>
+      </action-header>
+      <!-- /ko -->
+      <!-- ko if:$component.searchEnabled() -->
+      <action-header params="baseModel : $baseModel, rootModel :$component, heading:$component.Nls.search">
+        <a href="" class="icon icon-search" data-bind="click: $component.searchEnable,
+            attr:{ alt: $component.Nls.searchEnable, title: $component.Nls.searchAllowed" }=""></a>
+      </action-header>
+      <!-- /ko -->
+    </page-section>
+
+    <div id="search" class="search-container">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading:''">
+
+        <div class="oj-flex oj-flex-items-pad">
+          <!-- ko if:isReportTypeListLoaded() -->
+          <div class="oj-flex-item oj-sm-12 oj-md-5 oj-lg-2">
+            <label for="reportName" data-bind="text:$component.Nls.reportName"> </label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-6 ">
+            <oj-select-one required id="reportName" :placeholder="[[$component.Nls.selectReportType]]" value="{{$component.selectedreportType}}">
+                    <!-- ko foreach:$component.scheduledReportTypesList -->
+                    <oj-option value="{{reportId}}"><span data-bind="text:description"></span></oj-option>
+                      <!-- /ko -->
+                        </oj-select-one>
+          </div>
+          <!-- /ko -->
+        </div>
+      </page-section>
+      <div class="button-container">
+        <oj-button class="action-button-secondary" id="button" on-click="[[searchReport]]">
+      <span data-bind="text:$component.Nls.search"></span>
+</oj-button>
+        <oj-button class="action-button-secondary" id="button1" on-click="[[cancelSearch]]">
+      <span data-bind="text:$component.Nls.cancel"></span>
+</oj-button>
+        <oj-button class="action-button-secondary" id="button2" on-click="[[clearSearch]]">
+      <span data-bind="text:$component.Nls.clear"></span>
+</oj-button>
+      </div>
+    </div>
+    <!-- ko if:allDataLoaded() -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading:''">
+      <div class="widget-table">
+        <oj-table id="table" class="record" :aria-label="[[$component.Nls.details]]" columns="[[[{headerText:$component.Nls.reportName,field:'reportName'},{headerText:$component.Nls.reportId,field:'reportRequestIdentifier',renderer:$oj.KnockoutTemplateUtils.getRenderer('show-details',true)},{headerText:$component.Nls.scheduleFrequency,field:'reportSchFreq'},{headerText:$component.Nls.startDate,field:'startTime'},{headerText:$component.Nls.endDate,field:'endTime'}]]]" selection-mode="[[{row:'single',column:'single'}]]" translations="[[{msgNoData:$component.Nls.noData}]]" data="[[$component.datasource]]">
+        </oj-table>
+        <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[datasource]]"></oj-paging-control>
+      </div>
+      <script type="text/html" id="show-details">
+        <td>
+          <a href="javascript:void(0)" data-bind="title: $component.Nls.reportId, alt : $component.Nls.reportId ,text:$context.row.reportRequestIdentifier,click:$component.viewReportDetails.bind($data,$context.row)"></a>
+        </td>
+      </script>
+    </page-section>
+    <!-- /ko -->
+    <!-- ko if:dataLoaded() -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading:''">
+      <div class="widget-table">
+        <oj-table id="table" class="record" :aria-label="[[$component.Nls.details]]" columns="[[[{headerText:$component.Nls.reportName,field:'reportName'},{headerText:$component.Nls.reportId,field:'reportRequestIdentifier',template:'show-details'},{headerText:$component.Nls.scheduleFrequency,field:'reportSchFreq'},{headerText:$component.Nls.startDate,field:'startTime'},{headerText:$component.Nls.endDate,field:'endTime'}]]]" selection-mode="[[{row:'single',column:'single'}]]" translations="[[{msgNoData:$component.Nls.noData}]]" data="[[$component.datasource]]">
+        </oj-table>
+        <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[datasource]]"></oj-paging-control>
+      </div>
+      <script type="text/html" id="show-details">
+        <td>
+          <a href="javascript:void(0)" data-bind="title: $component.Nls.reportId, alt : $component.Nls.reportId ,text:reportRequestIdentifier,click:$component.viewReportDetails.bind($data)"></a>
+        </td>
+      </script>
+    </page-section>
+    <!-- /ko -->
+  </div>
+</div>

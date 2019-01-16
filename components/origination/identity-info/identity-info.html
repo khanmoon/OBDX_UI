@@ -1,0 +1,51 @@
+<!-- ko if: $component.existingIdentitiesLoaded() -->
+<page-section params="baseModel : $baseModel, rootModel : $data">
+  <div class="margin-top-20" data-bind="with:applicantObject().identityInfo">
+    <div data-bind="with:identityInfo">
+      <oj-validation-group id="identityTracker" valid="{{$component.identityValid}}">
+        <div class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label :for="[['idNum'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.passportNumber"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label">
+            <oj-input-text required class="idnumclass" maxlength="20" id="idNum" :id="[['idNum'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.number}}]]" :invalidcomponenttracker="[[$component.validationTracker]]"
+              validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resource.messages.number,{
+                                type:'length',options:{
+                                  min:1,max:20}})]]" disabled="[[$component.applicantObject().identityInfo.disableInputs]]" value="{{$component.applicantObject().identityInfo.selectedValues().maskedId}}" on-focusout="[[$component.setPrimaryIdFocusOut]]"
+              on-focusin="[[$component.setPrimaryIdFocusIn]]"></oj-input-text>
+          </div>
+        </div>
+
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label :for="[['dateOfIssue'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.dateOfIssue"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-input-date required :id="[['dateOfIssue'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.dateOfIssue}}]]" validators="[[$component.validIssueDate]]" converter="[[$baseModel.dateConverter]]"
+              value="{{$data[0].issueDate}}" disabled="[[$component.applicantObject().identityInfo.disableInputs]]" datepicker="[[{yearRange:'c-100:c'}]]"></oj-input-date>
+          </div>
+
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
+            <oj-label :for="[['expiryDate'+($baseModel.incrementIdCount())]]"><span data-bind="text:$component.resource.expiryDate"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
+            <oj-input-date required :id="[['expiryDate'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.validExpiryDate}}]]" validators="[[$component.validExpiryDate]]" converter="[[$baseModel.dateConverter]]"
+              disabled="[[$component.applicantObject().identityInfo.disableInputs]]" value="{{$data[0].expiryDate}}" datepicker="[[{yearRange:'c:c+100'}]]"></oj-input-date>
+          </div>
+        </div>
+      </oj-validation-group>
+    </div>
+
+  </div>
+</page-section>
+<!-- /ko -->
+<div class="button-container oj-flex oj-flex-items-pad">
+  <div class="oj-flex-item oj-sm-12 left">
+    <oj-button raised="" id="submit-identity" class="form-button-secondary" :aria-label="[[$component.resource.submitIdentity]]" on-click="[[$component.submitIdentityInfo.bind($data)]]">
+      <span data-bind="text:$component.resource.origination.common.continue"></span>
+    </oj-button>
+  </div>
+</div>

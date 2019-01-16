@@ -1,0 +1,275 @@
+<!-- ko if:stageOne() -->
+<div class="payee-sub-list">
+    <div class="oj-flex oj-flex-items-pad" data-bind="with:subPayerDetails">
+        <div class="oj-flex-item center payee-details">
+          <div class="payee-account-icon"><img data-bind="loadImage:'payments/profile.svg'"></div>
+            <div class="payee-account-name" data-bind="text:name"></div>
+        </div>
+    </div>
+</div>
+
+<!-- /ko -->
+
+<div class="form-main-container">
+
+
+<!-- ko if:stageOne() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading :''">
+
+        <!-- Icon -->
+
+<div data-bind="with:subPayerDetails">
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex oj-flex-items-pad  center">
+               <!-- <span class="icon icon-bank "></span>-->
+                <div class="payee-account-icon"><img data-bind="loadImage:'payments/recipients-accounts.svg'"></div>
+            </div>
+        </div>
+
+
+
+        <div class="oj-flex oj-flex-items-pad  margin-bottom-20">
+            <div class="form-title-heading">
+                <span class="title-size" data-bind="text:$component.debtors.bankAccount"></span>
+            </div>
+        </div>
+
+        <div class="row-group">
+            <row class="margin-bottom-20" params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.nickname , value :nickName"></row>
+            <row class="margin-bottom-20" params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.debtorName , value :name"></row>
+             <row class="margin-bottom-20" params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.debtorIban , value :accountNumber"></row>
+             <row params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.bicCode , value :[bicCode,bankName, address]"></row>
+        </div>
+
+        <!-- Delete Edit request Money buttons buttons -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+
+            <oj-button class="action-button-primary " on-click="[[$dashboard.loadComponent.bind($data,'debtor-money-request',$data,$component)]]"><span slot="startIcon" class="icons icon-request-money"></span>
+      <span data-bind="text:$component.debtors.requestMoney"></span>
+</oj-button>
+
+               <oj-button class="action-button-secondary " on-click="[[$component.deleteDebtor]]"><span slot="startIcon" class="icons icon-delete"></span>
+      <span data-bind="text:$component.common.delete"></span>
+</oj-button>
+
+
+
+
+        </div>
+        </div>
+     </page-section>
+
+<!-- /ko -->
+
+<!-- ko if:showDeleteStage() -->
+
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading :''">
+
+            <div class="oj-flex oj-flex-items-pad  margin-bottom-20">
+                <div class="oj-flex oj-flex-items-pad center">
+                    <span class="highlight-text" data-bind="text:$component.debtors.debtorDeleteMessage1 + debtorDetails.name + $component.debtors.debtorDeleteMessage2"></span>
+                </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad button-container">
+
+                <oj-button id="ConfirmDelete" class="action-button-primary " on-click="[[confirmDelete]]"><span slot="startIcon" class="icons icon-delete"></span>
+      <span data-bind="text:$component.common.delete"></span>
+</oj-button>
+
+                    <oj-button class="action-button-secondary " id="cancelDeleteDebtor" on-click="[[cancelDeleteDebtor]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.common.cancel"></span>
+</oj-button>
+
+
+
+            </div>
+
+    </page-section>
+<!-- /ko -->
+
+ <!-- ko if:editStageOne() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+            <!-- Icon -->
+             <div class="payee-details oj-flex oj-flex-items-pad center">
+                 <div class="oj-flex oj-flex-items-pad margin-bottom-20">
+                     <span class="bank-icon"></span>
+                 </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad  margin-bottom-20">
+                <div class="oj-flex oj-flex-items-pad center">
+                    <span class="highlight-text" data-bind="text:$component.debtors.bankAccount"></span>
+                </div>
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad margin-bottom-20">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label ">
+                    <oj-label for="debtorName"> <span data-bind="text:$component.debtors.debtorName"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                   <oj-input-text required id="debtorName" validators="[[$baseModel.getValidator('NAME')]]" value="{{debtorName()}}"></oj-input-text>
+
+                </div>
+            </div>
+
+
+            <div class="oj-flex oj-flex-items-pad margin-bottom-20">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label ">
+                    <oj-label for="debtorIban"> <span data-bind="text:$component.debtors.debtorIban"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                   <oj-input-text required id="debtorIban" validators="[[$baseModel.getValidator('DEBTOR_IBAN')]]" value="{{debtor.sepaDomesticPayer.iban}}"></oj-input-text>
+
+                </div>
+                </div>
+
+
+            <div class="oj-flex oj-flex-items-pad margin-bottom-20">
+                <div class="oj-flex oj-flex-items-pad">
+
+                    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label ">
+                    <oj-label for="bankBICCode"> <span data-bind="text:$component.debtors.bankBICCode"></span></oj-label>
+                    </div>
+                    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                       <oj-input-text required id="bankBICCode" validators="[[$baseModel.getValidator('IFSC_CODE')]]" value="{{debtor.sepaDomesticPayer.bankCode}}"></oj-input-text>
+
+                    </div>
+                </div>
+
+                <div class="oj-flex oj-flex-items-pad center">
+
+                    <div class="oj-flex oj-flex-items-pad button-container ">
+
+                            <oj-button class="form-button-secondary "><span slot="startIcon" class="icons icon-verify"></span>
+      <span data-bind="text:$component.debtors.verify"></span>
+</oj-button>
+
+                    </div>
+
+                </div>
+
+                <div class="oj-flex oj-flex-items-pad">
+                    <div class="oj-flex oj-flex-items-pad center">
+                        <span data-bind="text:$component.debtors.or"></span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="oj-flex oj-flex-items-pad center margin-bottom-20">
+                <span>
+                    <a href="#" data-bind="attr:{'alt':$component.debtors.lookUpBIC,'title':$component.debtors.lookUpBICTitle}"><span data-bind="text: $component.debtors.lookUpBIC"></span></a>
+                </span>
+            </div>
+
+
+            <div class="oj-flex oj-flex-items-pad margin-bottom-20">
+                <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 label ">
+                    <oj-label for="nickname"> <span data-bind="text:$component.debtors.nickname"></span></oj-label>
+                </div>
+                <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                   <oj-input-text required id="nickname" maxlength="20" validators="[[$baseModel.getValidator('NICKNAME')]]" value="{{debtor.nickName}}"></oj-input-text>
+
+                </div>
+            </div>
+
+
+
+
+        <div class="oj-flex oj-flex-items-pad button-container margin-bottom-20">
+
+            <oj-button class="action-button-primary " on-click="[[editDebtor]]"><span slot="startIcon" class="icons icon-save"></span>
+      <span data-bind="text:$component.common.save"></span>
+</oj-button>
+
+
+                        <oj-button class="action-button-secondary " id="cancelEditDebtor" on-click="[[cancelEditDebtor]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.common.cancel"></span>
+</oj-button>
+
+
+
+        </div>
+
+
+
+    </page-section>
+
+<!-- /ko -->
+
+<!-- ko if:editStageTwo() -->
+    <page-section class="review" params="baseModel : $baseModel, rootModel : $component, heading :''">
+
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex oj-flex-items-pad center">
+                <span class="highlight-text" data-bind="text:$component.debtors.review"></span>
+            </div>
+        </div>
+
+        <div class="row-group">
+            <row class="margin-bottom-20" params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.nickname , value :debtor.nickName()"></row>
+            <row class="margin-bottom-20" params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.debtorName , value :debtorName()"></row>
+             <row class="margin-bottom-20" params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.debtorIban , value :debtor.sepaDomesticPayer.iban()"></row>
+             <row class="margin-bottom-20" params="baseModel : $baseModel, rootModel : $component, label : $component.debtors.bicCode , value :debtor.sepaDomesticPayer.bankCode()"></row>
+        </div>
+
+
+        <!-- cancel confirm buttons -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+
+            <oj-button class="action-button-primary " on-click="[[confirmEditDebtor]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.common.confirm"></span>
+</oj-button>
+
+                <oj-button class="action-button-secondary " id="cancelStageTwo" on-click="[[cancelStageTwo]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.common.cancel"></span>
+</oj-button>
+
+
+
+        </div>
+     </page-section>
+
+<!-- /ko -->
+
+     <!-- ko if:editStageThree() -->
+    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+
+       <otp-verification params="baseModel : $baseModel, rootModel : $component,
+                                 verificationCode : authKey,
+                                 invalidVerificationCode :invalidOtpEntered"></otp-verification>
+
+
+        <!-- OTP Input -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex oj-flex-items-pad center margin-bottom-20">
+                    <oj-button class="form-button-secondary" on-click="[[resendOTP]]">
+      <span data-bind="text:$component.debtors.resendotp"></span>
+</oj-button>
+            </div>
+            <div class="oj-flex oj-flex-items-pad  center margin-bottom-20">
+                     <a href="#" data-bind="attr:{'alt':$component.debtors.otpMessage,'title':$component.debtors.otpMessageText}"><span data-bind="text: $component.debtors.otpMessage"></span></a>
+            </div>
+        </div>
+
+         <!-- Pay Done buttons -->
+        <div class="oj-flex oj-flex-items-pad button-container">
+
+            <oj-button class="action-button-primary " on-click="[[confirmEditDebtorWithAuth]]"><span slot="startIcon" class="icons icon-submit"></span>
+      <span data-bind="text:$component.common.submit"></span>
+</oj-button>
+
+                 <oj-button class="action-button-secondary " id="cancelStageThree" on-click="[[cancelStageThree]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.common.cancel"></span>
+</oj-button>
+
+
+
+        </div>
+    </page-section>
+         <!-- /ko -->
+     </div>

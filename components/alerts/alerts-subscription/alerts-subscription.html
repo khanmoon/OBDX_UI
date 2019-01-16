@@ -1,0 +1,239 @@
+<div class="form-main-container">
+  <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial oj-sm-justify-content-space-between">
+    <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-10">
+      <div class="form-main-container" id="container">
+        <div id="alerts-top-div" class="oj-flex oj-flex-items-pad">
+
+          <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-4 alerts-select ">
+            <!-- ko if:showAccountType -->
+
+            <oj-combobox-one id="account_combobox" value="{{account_type}}" on-value-changed="[[valueChangeHandler]]" rootAttributes= "[[{class:'alerts-select,center,alerts-padding,alerts-width'}]]" options="[[accountTypes]]">
+
+          </oj-combobox-one>
+
+            <!-- /ko -->
+          </div>
+          <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+            <!-- ko if:showAccountList -->
+            <!-- ko ifnot:transactionSuccess -->
+            <div>
+              <oj-label for="accountlist_combobox" class="oj-flex-item alerts-customer-name alerts-accounts-color"><span data-bind="text:customerName"></span></oj-label>
+            </div>
+
+            <div class="alerts-accounts-margin alerts-accounts-color">
+              <oj-select-one id="accountlist_combobox" required on-value-changed="[[accountChangeHandler]]" :placeholder="[[$component.resource.subscription.common.select]]" value="{{selected_account}}">
+                                         <!-- ko foreach : $rawData.accountlist -->
+                                         <oj-option value="{{label}}"><span data-bind="text:label"></span></oj-option>
+                                         <!-- /ko -->
+                                       </oj-select-one>
+            </div>
+
+
+            <!-- /ko -->
+            <!-- /ko -->
+          </div>
+        </div>
+
+
+        <div id="alerts-panel" class="alerts-list-panel">
+
+
+
+          <!-- ko ifnot:transactionSuccess -->
+          <div class="alerts-list-frame">
+
+            <!-- ko if:alertsAvailable -->
+            <!-- ko ifnot: $baseModel.small() -->
+            <div class="oj-flex oj-flex-items-pad alerts-header-row">
+              <a href="javascript:void(0)" class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8 disabled">
+                <div class="header-title" data-bind="attr:{'aria-label':$component.resource.subscription.alertslist.alertType},text:$component.resource.subscription.alertslist.alertType">
+                </div>
+              </a>
+              <a href="javascript:void(0)" class="oj-flex-item oj-sm-4 oj-md-4 oj-lg-4 disabled">
+                <div class="pull-left header-title">
+                  <div class="header-title" data-bind="attr:{'aria-label':$component.resource.subscription.alertslist.sendAlertVia},text:$component.resource.subscription.alertslist.sendAlertVia">
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <!-- /ko -->
+            <!-- ko foreach: koAlertModel -->
+            <div class="oj-flex oj-flex-items-pad alerts-list-row" data-bind="css:$data.activeEmail()||$data.activeSecure()||$data.activeSMS()||$data.activePush()?'selected':''">
+              <a href="javascript:void(0)" class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 vertical-center">
+                <div class="alert-name">
+                  <div data-bind="text:alertName,css:$baseModel.small()?'center':''"></div>
+                </div>
+              </a>
+              <div class="oj-flex-item oj-sm-10 oj-md-4 oj-lg-4 margin-auto alert-icons alert-name">
+                <div class="oj-col oj-sm-3 oj-md-3 oj-lg-3 pull-left">
+                  <!-- ko if:$component.mode() ==="CREATE" -->
+                    <!-- ko ifnot:destinationEmail -->
+                    <a href="javascript:void(0)" class="disabled">
+                        <span class="icons icon-mailbox disabled"></span>
+                    </a>
+                    <!-- /ko -->
+                    <!-- ko if:destinationEmail -->
+                    <a href="javascript:void(0)" data-bind="attr:{id:'email_'+index,title:$component.resource.emailAlert},click: $component.toggleEmailSelect">
+                      <span class="icons icon-mailbox">
+                        <!-- ko if:$data.activeEmail()-->
+                        <span class="badge"><span class="icons icon-check"></span></span>
+                        <!-- /ko -->
+                      </span>
+                    </a>
+                    <!-- /ko -->
+                  <!-- /ko -->
+                  <!-- ko if:$component.mode() ==="REVIEW" -->
+                  <span class="icons icon-mailbox" data-bind="css:$data.activeEmail()?'review-selected':'review-unselected'">
+                    <!-- ko if:$data.activeEmail()-->
+                    <span class="badge"><span class="icons icon-check"></span></span>
+                    <!-- /ko -->
+                  </span>
+                  <!-- /ko -->
+                </div>
+                <div class="oj-col oj-sm-3 oj-md-3 oj-lg-3 pull-left">
+                    <!-- ko if:$component.mode() ==="CREATE" -->
+                      <!-- ko ifnot:destinationSMS -->
+                        <a href="javascript:void(0)" data-bind="" class="disabled">
+                          <span class="icons icon-sms"></span>
+                        </a>
+                      <!-- /ko -->
+                      <!-- ko if:destinationSMS -->
+                      <a href="javascript:void(0)" data-bind="attr:{id:'sms_'+index,title:$component.resource.smsAlert},click: $component.toggleSMSSelect">
+                        <span class="icons icon-sms">
+                          <!-- ko if:$data.activeSMS()-->
+                          <span class="badge">
+                            <span class="icons icon-check"></span>
+                          </span>
+                          <!-- /ko -->
+                        </span>
+                      </a>
+                      <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if:$component.mode() ==="REVIEW" -->
+                    <span class="icons icon-sms" data-bind="css:$data.activeSMS()?'review-selected':'review-unselected'">
+                      <!-- ko if:$data.activeSMS()-->
+                      <span class="badge"><span class="icons icon-check"></span></span>
+                      <!-- /ko -->
+                    </span>
+                    <!-- /ko -->
+                </div>
+                <div class="oj-col oj-sm-3 oj-md-3 oj-lg-3 pull-left">
+                  <!-- ko if:$component.mode() ==="CREATE" -->
+                    <!-- ko ifnot:destinationSecure -->
+                    <a href="javascript:void(0)" data-bind="" class="disabled">
+                     <span class="icons icon-on-screen-alerts"></span>
+                     </a>
+                    <!-- /ko -->
+                    <!-- ko if:destinationSecure -->
+                    <a href="javascript:void(0)" data-bind="attr:{id:'secure_'+index,title:$component.resource.onScreenAlert},click: $component.toggleSecureSelect">
+                     <span class="icons icon-on-screen-alerts">
+                       <!-- ko if:$data.activeSecure() -->
+                         <span class="badge">
+                         <span class="icons icon-check"></span>
+                         </span>
+                       <!-- /ko -->
+                     </span>
+                   </a>
+                    <!-- /ko -->
+                  <!-- /ko -->
+
+                  <!-- ko if:$component.mode() ==="REVIEW" -->
+                  <span class="icons icon-on-screen-alerts" data-bind="css:$data.activeSecure()?'review-selected':'review-unselected'">
+                    <!-- ko if:$data.activeSecure()-->
+                    <span class="badge"><span class="icons icon-check"></span></span>
+                    <!-- /ko -->
+                  </span>
+                  <!-- /ko -->
+                </div>
+                <div class="oj-col oj-sm-3 oj-md-3 oj-lg-3 pull-left">
+                  <!-- ko if:$component.mode() ==="CREATE" -->
+                    <!-- ko ifnot:destinationPush -->
+                    <a href="javascript:void(0)" data-bind="" class="disabled">
+                     <span class="icons icon-push-notifications"></span>
+                     </a>
+                    <!-- /ko -->
+                    <!-- ko if:destinationPush -->
+                    <a href="javascript:void(0)" data-bind="attr:{id:'push_'+index,title:$component.resource.pushAlert},click: $component.togglePushSelect">
+                     <span class="icons icon-push-notifications">
+                       <!-- ko if:$data.activePush() -->
+                         <span class="badge">
+                         <span class="icons icon-check"></span>
+                         </span>
+                       <!-- /ko -->
+                     </span>
+                   </a>
+                    <!-- /ko -->
+                  <!-- /ko -->
+
+                  <!-- ko if:$component.mode() ==="REVIEW" -->
+                  <span class="icons icon-push-notifications" data-bind="css:$data.activePush()?'review-selected':'review-unselected'">
+                    <!-- ko if:$data.activePush()-->
+                    <span class="badge"><span class="icons icon-check"></span></span>
+                    <!-- /ko -->
+                  </span>
+                  <!-- /ko -->
+                </div>
+              </div>
+            </div>
+
+            <!-- /ko -->
+
+            <div class="oj-flex-item oj-sm-12 oj-md-12oj-lg-12 center alerts-select alerts-bottom-div button-container">
+              <!-- ko if:showButton && $component.mode()==="CREATE" -->
+              <oj-button class="action-button-primary " id="subscribeAlert" on-click="[[$component.save]]" disabled="[[$component.saveChangesDisabled]]"><span slot="startIcon" class="icons icon-save"></span>
+      <span data-bind="text:$component.resource.subscription.alertslist.saveChanges"></span>
+</oj-button>
+               <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.subscription.genericAlert.cancel"></span>
+</oj-button>
+              <!-- /ko -->
+              <!-- ko if: $component.mode()==="REVIEW" -->
+              <oj-button class="action-button-primary " on-click="[[subscribe]]"><span slot="startIcon" class="icons icon-confirm"></span>
+      <span data-bind="text:$component.resource.subscription.common.confirm"></span>
+</oj-button>
+              <oj-button class="action-button-secondary " on-click="[[$component.goToCreate]]"><span slot="startIcon" class="icons icon-cancel"></span>
+      <span data-bind="text:$component.resource.subscription.genericAlert.cancel"></span>
+</oj-button>
+              <!-- /ko -->
+            </div>
+            <!-- /ko -->
+          </div>
+          <!-- /ko -->
+          <!-- ko ifnot:alertsAvailable -->
+          <!-- ko if:showErrorMessage -->
+          <div class="center">
+            <oj-label class="alerts-list-frame-label"><span data-bind="text:alertMessage"></span></oj-label>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<modal-window params="baseModel : $baseModel, rootModel : $parent,id:'ContactUnavailable'">
+  <div class="grid-main-container ">
+
+    <div class="oj-dialog-body">
+      <!-- ko if: $parent.showEmailNotAvailable() -->
+      <oj-label>
+                            <span data-bind="text:$parent.resource.subscription.emailNotAvailable"></span></oj-label>
+      <!-- /ko -->
+      <!-- ko if: $parent.showSMSNotAvailable() -->
+      <oj-label>
+                            <span data-bind="text:$parent.resource.subscription.smsNotAvailable"></span></oj-label>
+      <!-- /ko -->
+    </div>
+    <div class="button-container ">
+      <oj-button class="action-button-primary " on-click="[[closeDialog]]"><span slot="startIcon" class="icons icon-ok"></span>
+      <span data-bind="text:$parent.resource.subscription.common.ok"></span>
+</oj-button>
+    </div>
+  </div>
+</modal-window>

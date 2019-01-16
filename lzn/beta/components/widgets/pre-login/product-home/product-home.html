@@ -1,0 +1,48 @@
+<!-- ko if:$component.dataLoaded() -->
+<div class="parallax">
+<page-banner params="baseModel : $baseModel, rootModel : $data"></page-banner>
+<!-- ko if:!$baseModel.small() -->
+<bank-products params="baseModel : $baseModel, rootModel : $data"></bank-products>
+<goals params="baseModel : $baseModel, rootModel : $data"></goals>
+<loan-showcase params="baseModel : $baseModel, rootModel : $data"></loan-showcase>
+<tools-and-calculators params="baseModel : $baseModel, rootModel : $data"></tools-and-calculators>
+<company-links params="baseModel : $baseModel, rootModel : $data, dashboard: $dashboard"></company-links>
+<!-- /ko -->
+<!-- ko if:$baseModel.small() -->
+	<mobile-landing params="baseModel : $baseModel, dashboard: $dashboard, rootModel : $data"></mobile-landing>
+<!-- /ko -->
+</div>
+
+<!-- ko if:$component.isStatesLoaded() && $component.stateReload() && $component.actionCardData() -->
+    <modal-window class="message" params="baseModel : $baseModel, closeHandler:$component.stateModalCancel,rootModel : $component,id:'stateSelection',header:$component.resource.selectResidence">
+        <div class="message-text scroll">
+					<!-- ko if: $component.refreshState() -->
+            <!-- ko if: $component.actionCardData().productType !== "PAYDAY" -->
+            <div class="oj-flex oj-flex-items-pad ">
+                <div class="left oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 no-pad-cols" data-bind="text:$component.resource.stateDisclaimer">
+                </div>
+            </div>
+            <!-- /ko -->
+            <div class="oj-flex oj-flex-items-pad">
+                <div id="states" class="oj-flex-item label oj-sm-12 oj-md-10 oj-lg-10 no-pad-cols">
+									<oj-label for="stateOptions" class="hide-label"><span data-bind="text:$component.resource.selectState"></span></oj-label>
+                    <oj-select-one id="stateOptions" required translations="[[{'required':{messageDetail:$component.resource.messages.state}}]]" value="{{selectedState}}" on-value-changed="[[$component.stateChangeHandler]]" :placeholder="[[$component.resource.selectState]]">
+                        <!-- ko foreach: $component.stateOptions -->
+                        <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                        <!-- /ko -->
+                        </oj-select-one>
+                </div>
+            </div>
+						<!-- /ko -->
+        </div>
+        <div class="message-btn button-container">
+					<oj-button id="stateSelectionButton" class="action-button-primary" on-click="[[hideStateSelectionPopUp]]" disabled="[[$component.stateNotSelected()]]"> <span data-bind="text:$component.resource.generic.common.select"></span></oj-button>
+            <oj-button id="cancel" class="action-button-secondary" on-click="[[stateModalCancel]]"> <span data-bind="text:$component.resource.generic.common.cancel"></span></oj-button>
+            </div>
+				<!-- ko ifnot: $component.userLoggedIn() -->
+        <div data-bind="template:{afterRender:function(){$('#stateSelection').show().trigger('openModal');}}">
+        </div>
+				<!-- /ko -->
+    </modal-window>
+<!-- /ko -->
+<!-- /ko -->

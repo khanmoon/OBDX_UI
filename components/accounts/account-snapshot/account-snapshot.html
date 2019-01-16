@@ -1,0 +1,49 @@
+<div class="form-main-container account-snapshot">
+  <!-- ko if:dataLoaded() -->
+  <oj-accordion class="account-snapshot-accordian-container" id="accordionPage" class="dashboard-accordian-container">
+    <!-- ko foreach: {data :accounts } -->
+    <div data-bind="css : $data.type">
+      <span>
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item oj-sm-12 account-name" data-bind="text:$data.partyName || $data.ownerName"></div>
+
+              <div class="oj-flex-item oj-sm-12" data-bind="text:$baseModel.formatCurrency(availableBalance.amount,availableBalance.currency)"></div>
+                <div class="oj-flex-item oj-sm-12 account-no">
+                    <div class="account-snapshot-accordian-container-sub-heading" data-bind="text:$data.id.displayValue"></div>
+                </div>
+                <div class="oj-flex-item oj-sm-12 info-text-small" data-bind="text:$baseModel.format($component.resource.ddSubText,{product : productDTO.description , accountType:$component.resource.accountType[module]})"></div>
+
+            </div>
+          </span>
+
+
+      <div class="oj-p account-snapshot-accordian-list">
+        <!-- <budgets-dashboard-card params="rootModel : $component"></budgets-dashboard-card> -->
+        <account-snapshot-details params="baseModel : $baseModel, rootModel : $component,accountDetails:$data"></account-snapshot-details>
+      </div>
+    </div>
+    <!-- /ko -->
+  </oj-accordion>
+  <div class="oj-flex oj-flex-items-pad button-container">
+    <oj-button class="action-button-primary" on-click="[[$component.disableQuickSnapshot]]">
+      <span data-bind="text:$component.resource.disableQuickSnapshot"></span>
+    </oj-button>
+  </div>
+
+  <!-- /ko -->
+
+
+
+</div>
+
+<modal-window params="baseModel : $baseModel, rootModel : $data, id:'goToDashBoardModal', header:$component.resource.snapshotDisabled">
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12"><span data-bind="text:$parent.resource.successfullyDisabled"></span>
+    </div>
+    <div class="oj-flex oj-flex-items-pad button-container">
+      <oj-button class="action-button-primary" on-click="[[$parent.ok.bind($parent,$dashboard)]]">
+        <span data-bind="text:$parent.resource.generic.common.ok"></span>
+      </oj-button>
+    </div>
+  </div>
+</modal-window>

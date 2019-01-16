@@ -1,0 +1,53 @@
+<div class="my-limit">
+<div class="oj-flex oj-flex-items-pad target-linkages">
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 target-linkages__cumulative-limit target-linkages-cumulative-limit">
+		<!-- ko if:$component.isDaily -->
+		<div class="target-linkages-cumulative-limit__daily" data-bind="template: { name: 'limits/my-cumulative-limits',data:$component.getNewDailyCountModel()}"></div>
+		<!-- /ko -->
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 target-linkages__cumulative-limit target-linkages-cumulative-limit">
+		<!-- ko if:$component.isDaily -->
+		<div class="target-linkages-cumulative-limit__daily" data-bind="template: { name: 'limits/my-cumulative-limits',data:$component.getNewDailyAmountModel()}"></div>
+		<!-- /ko -->
+	</div>
+</div>
+<div class="oj-flex oj-flex-items-pad target-linkages">
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 target-linkages__cumulative-limit target-linkages-cumulative-limit">
+
+		<!-- ko if:$component.isMonthly -->
+		<div class="target-linkages-cumulative-limit__daily" data-bind="template: { name: 'limits/my-cumulative-limits',data:$component.getNewMonthlyCountModel()}"></div>
+		<!-- /ko -->
+	</div>
+	<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6 target-linkages__cumulative-limit target-linkages-cumulative-limit">
+
+		<!-- ko if:$component.isMonthly -->
+		<div class="target-linkages-cumulative-limit__daily" data-bind="template: { name: 'limits/my-cumulative-limits',data:$component.getNewMonthlyAmountModel()}"></div>
+		<!-- /ko -->
+	</div>
+	<!-- ko if: $component.effectiveSameDayFlag() === 'N' -->
+	<div class="oj-flex oj-flex-items-pad date">
+		<div class="oj-flex-item">
+		<span slot="startIcon" class="icons icon-information"></span>
+			<span data-bind="text:$baseModel.format($component.nls.limitsInquiry.messages.confirmMessage,{date: $baseModel.formatDate($component.tomorrowDate())})"></span>
+	</div>
+	</div>
+	<!-- /ko -->
+</div>
+	<!-- ko if:$component.isRetailUser -->
+	<div class="oj-flex-item target-linkages__buttons target-linkages-buttons">
+		<div class="oj-flex button-container">
+			<div class="target-linkages-buttons__buttonSet">
+				<oj-button class="oj-flex-item action-button-primary " on-click="[[save]]" >
+      <span data-bind="text:$component.nls.generic.common.save"></span>
+</oj-button>
+				<oj-button class="oj-flex-item action-button-tertiary " on-click="[[resetLimits]]" >
+      <span data-bind="text:$component.nls.limitsInquiry.buttons.resetLimit"></span>
+</oj-button>
+				<oj-button class="oj-flex-item action-button-secondary " on-click="[[cancel]]" >
+      <span data-bind="text:$component.nls.generic.common.cancel"></span>
+</oj-button>
+			</div>
+		</div>
+	</div>
+	<!-- /ko -->
+	</div>

@@ -1,0 +1,42 @@
+<div class="form-main-container">
+  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionMessage}"></div>
+  <div class="oj-flex oj-flex-items-pad">
+    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-12">
+      <page-section params="baseModel : $baseModel, rootModel : $data ">
+        <!-- ko foreach:$component.quesAnsPayload.userSecurityQuestionList -->
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for="question"> <span data-bind="text:$component.nls.userSecurityQuestion.labels.securityQuestion"></span></oj-label>
+          </div>
+          <!-- ko if:$component.isQuestionListLoaded() -->
+          <div class="oj-flex-item oj-sm-12">
+            <span data-bind="text:$component.questionListMap[questionId]"></span>
+          </div>
+          <!-- /ko -->
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+          <div class="oj-flex-item oj-sm-12">
+            <oj-label for="answer"> <span data-bind="text:$component.nls.userSecurityQuestion.labels.answer"></span></oj-label>
+          </div>
+          <div class="oj-flex-item oj-sm-12">
+            <span data-bind="text:answer"></span>
+          </div>
+        </div>
+        <!-- /ko -->
+      </page-section>
+      <div class="oj-flex oj-flex-items-pad button-container">
+        <oj-button class="action-button-primary " on-click="[[confirm]]"><span slot="startIcon" class="icons icon-confirm"></span>
+          <span data-bind="text:$component.nls.common.confirm"></span>
+        </oj-button>
+        <!-- ko ifnot: $baseModel.small -->
+        <oj-button class="action-button-secondary " on-click="[[$dashboard.openDashBoard]]"><span slot="startIcon" class="icons icon-cancel"></span>
+          <span data-bind="text:$component.nls.common.cancel"></span>
+        </oj-button>
+        <!-- /ko -->
+        <oj-button class="action-button-tertiary " on-click="[[back]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+          <span data-bind="text:$component.nls.common.back"></span>
+        </oj-button>
+      </div>
+    </div>
+  </div>
+</div>
