@@ -14,13 +14,14 @@ define([
     self.resource = ResourceBundle;
     self.dataLoaded = ko.observable(false);
     self.renderFlipAccount = ko.observable(false);
-    var accountType = [
+	var accountType = [
       "CSA",
       "TRD",
-	  "RD",
-      "LON",
+	  //"RD",                   //For hiding RD Account from Account Widget (Mansoor)
+	  //"LON",					//For hiding LON Account from Account Widget (Mansoor)
       "CCA"
     ];
+
     self.filteredAccount = {};
     self.items = ko.observableArray();
     self.type = ko.observable();
@@ -89,13 +90,15 @@ define([
       for (var i = 0; i < accounts.length; i++) {
         if (accounts[i].type === "CSA") {
           checkAndSave("CSA", accounts[i]);
-        } else if (accounts[i].type === "TRD" && accounts[i].module === "RD") {
-          accounts[i].type = "RD";
-          checkAndSave("RD", accounts[i]);
+        } 
+		else if (accounts[i].type === "TRD" && accounts[i].module === "RD") {
+          //accounts[i].type = "RD";				//For hiding RD Account from Account Widget (Mansoor)
+          //checkAndSave("RD", accounts[i]);		//For hiding RD Account from Account Widget (Mansoor)
         } else if (accounts[i].type === "TRD") {
           checkAndSave("TRD", accounts[i]);
-        } else if (accounts[i].type === "LON") {
-          checkAndSave("LON", accounts[i]);
+        } 
+		else if (accounts[i].type === "LON") {
+          //checkAndSave("LON", accounts[i]);		//For hiding LON Account from Account Widget (Mansoor)
         }
       }
       self.renderFlipAccount(true);
@@ -109,15 +112,17 @@ define([
           if (summarydata[i].accountType === "TRD") {
             self.items()[1].value += summarydata[i].totalActiveAvailableBalance.amount + summarydata[i].totalISLActiveAvailableBalance.amount;
             self.items()[1].ccy = summarydata[i].totalActiveAvailableBalance.currency;
-            self.items()[2].value += summarydata[i].totalRDActiveAvailableBalance.amount;
-            self.items()[2].ccy = summarydata[i].totalRDActiveAvailableBalance.currency;
+ /*            self.items()[2].value += summarydata[i].totalRDActiveAvailableBalance.amount;		//For hiding RD Account from Account Widget (Mansoor)
+            self.items()[2].ccy = summarydata[i].totalRDActiveAvailableBalance.currency; */			//For hiding RD Account from Account Widget (Mansoor)
             self.items()[1].loaded(true);
-            self.items()[2].loaded(true);
-          } else if (summarydata[i].accountType === "LON") {
+            // self.items()[2].loaded(true);
+          } 
+/* 		  else if (summarydata[i].accountType === "LON") {    For hiding LON Account from Account Widget (Mansoor)
             self.items()[3].value += summarydata[i].totalActiveOutstandingBalance.amount + summarydata[i].totalISLActiveOutstandingBalance.amount;
             self.items()[3].ccy = summarydata[i].totalActiveOutstandingBalance.currency;
             self.items()[3].loaded(true);
-          } else if (summarydata[i].accountType === "CSA") {
+          }  */
+		  else if (summarydata[i].accountType === "CSA") {
             self.items()[0].value += summarydata[i].totalActiveAvailableBalance.amount + summarydata[i].totalISLActiveAvailableBalance.amount;
             self.items()[0].ccy = summarydata[i].totalActiveAvailableBalance.currency;
             self.items()[0].loaded(true);
@@ -141,9 +146,9 @@ define([
         data.creditcards[i].associatedParty = data.associatedParty;
         checkAndSave("CCA", data.creditcards[i]);
       }
-      self.items()[4].value = data.sumOfEquivalentDue.amount || 0;
-      self.items()[4].ccy = data.domesticCurrency;
-      self.items()[4].loaded(!!data.creditcards.length);
+      self.items()[2].value = data.sumOfEquivalentDue.amount || 0;
+      self.items()[2].ccy = data.domesticCurrency;
+      self.items()[2].loaded(!!data.creditcards.length);
       self.items.valueHasMutated();
       self.dataSource.reset();
     }
