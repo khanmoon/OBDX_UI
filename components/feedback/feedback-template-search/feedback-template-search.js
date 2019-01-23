@@ -51,12 +51,16 @@ define([
         "field": "enterpriseRoles"
       }
     ]);
+
     FeedbackModel.getFeedbackUserRole().done(function(data) {
-      if (data.enterpriseRoleDTOs) {
-        self.feedbackUserRole(data.enterpriseRoleDTOs);
-        self.feedbackUserRoleLoaded(true);
+      for (var j = 0; j < data.enterpriseRoleDTOs.length; j++) {
+        if (data.enterpriseRoleDTOs[j].enterpriseRoleId !== "administrators" && data.enterpriseRoleDTOs[j].enterpriseRoleId !== "administrator") {
+          self.feedbackUserRole().push(data.enterpriseRoleDTOs[j]);
+        }
       }
+      self.feedbackUserRoleLoaded(true);
     });
+
     self.onSelectedInTable = function(data) {
       if (data.templateId) {
         self.feedbackReviewHeader(false);
@@ -91,7 +95,11 @@ define([
           var newObj = {};
           newObj.templateIdentifier = v.templateIdentifier;
           newObj.templateName = v.templateName;
-          newObj.enterpriseRoles = v.enterpriseRoles[0];
+          if(v.enterpriseRoles[0] === "retailuser" && v.enterpriseRoles[1] === "corporateuser"){
+            v.enterpriseRoles[0] = self.resource.retailUser;
+            v.enterpriseRoles[1] = self.resource.corpUser;
+          }
+          newObj.enterpriseRoles = v.enterpriseRoles.join();
           newObj.templateId = v.templateId;
           return newObj;
         });

@@ -40,7 +40,7 @@ define([
         self.searchedMailerList = rootParams.rootModel.searchedMailerList ? rootParams.rootModel.searchedMailerList : ko.observable();
         rootParams.dashboard.headerName(self.nls.headers.heading);
         self.openCreateComponent = function () {
-            rootParams.dashboard.loadComponent("mailer-create", {}, self);
+            rootParams.dashboard.loadComponent("mailer-create", {});
         };
         self.clear = function () {
             self.description("");

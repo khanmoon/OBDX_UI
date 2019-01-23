@@ -11,6 +11,7 @@ define(["ojL10n!resources/nls/generic"], function(Generic) {
           success_message: "Alert Subscription changes are saved.",
           recipient: "Customer",
           recipientCategory: "Party",
+          user: "User",
           createSubscription: "Create Subscription",
           modifySubscription: "Modify Subscription",
           onScreen: "On screen",

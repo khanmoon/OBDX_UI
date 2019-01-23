@@ -1,215 +1,231 @@
 <div class="header">
-    <div class="header-container fixed-header">
-        <!-- ko if: $parent.constants.helpDeskSessionKey && $root.isUserDataSet() -->
-        <div class="oj-flex oj-flex-items-pad helpdesk-header-container">
-            <div class="oj-flex-item oj-md-10 helpdesk-header-container__title helpdesk-header-container-title">
-                <span class="icons icon-user"></span>
-                <h2 class="helpdesk-header-container-title__text" data-bind="text:$baseModel.format($component.resourceBundle.topProfile.labels.helpDeskheading,{firstName:$dashboard.userData.userProfile.firstName,lastName:$dashboard.userData.userProfile.lastName})"></h2>
-                <span data-bind="text:$baseModel.format($component.resourceBundle.topProfile.labels.helpDeskUserName,{userName:$dashboard.userData.userProfile.userName})"></span>
-            </div>
-            <div class="oj-flex-item oj-md-2 helpdesk-header-container__icon right ">
-                <a href="#" data-bind="click: $component.logOutHelpDeskSession.bind($data, $dashboard),attr:{'alt':$component.resourceBundle.topProfile.labels.logout ,'aria-label':$component.resourceBundle.topProfile.labels.logout }">
-                    <span class="icons icon-cancel"></span>
-                </a>
-            </div>
+  <div class="header-container fixed-header">
+    <!-- ko if: $parent.constants.helpDeskSessionKey && $root.isUserDataSet() -->
+    <div class="oj-flex oj-flex-items-pad helpdesk-header-container">
+      <div class="oj-flex-item oj-md-10 helpdesk-header-container__title helpdesk-header-container-title">
+        <span class="icons icon-user"></span>
+        <h2 class="helpdesk-header-container-title__text" data-bind="text:$baseModel.format($component.resourceBundle.topProfile.labels.helpDeskheading,{firstName:$dashboard.userData.userProfile.firstName,lastName:$dashboard.userData.userProfile.lastName})"></h2>
+        <span data-bind="text:$baseModel.format($component.resourceBundle.topProfile.labels.helpDeskUserName,{userName:$dashboard.userData.userProfile.userName})"></span>
+      </div>
+      <div class="oj-flex-item oj-md-2 helpdesk-header-container__icon right ">
+        <a href="#" data-bind="click: $component.logOutHelpDeskSession.bind($data, $dashboard),attr:{'alt':$component.resourceBundle.topProfile.labels.logout ,'aria-label':$component.resourceBundle.topProfile.labels.logout }">
+          <span class="icons icon-cancel"></span>
+        </a>
+      </div>
+    </div>
+    <!-- /ko -->
+
+    <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial fixed-header-container">
+      <!-- ko if: !$baseModel.large() -->
+      <div class="oj-flex-item oj-sm-1 vertical-align-middle">
+        <!-- ko if: $dashboard.backAllowed() && !$dashboard.isDashboard()-->
+        <a href="#" data-bind="attr:{'title':$component.resourceBundle.topProfile.labels.back_title, 'aria-label':$component.resourceBundle.topProfile.labels.back_title},click:$dashboard.hideDetails">
+          <span class="icon icon-back-arrow" data-bind="loadImage:'common/back-arrow-white.svg',attr:{alt:$component.resourceBundle.topProfile.labels.back_alt, title:$component.resourceBundle.topProfile.labels.back_title} "></span>
+        </a>
+        <!-- /ko -->
+        <!-- ko if: $dashboard.isDashboard() && $root.menuNavigationAvailable-->
+        <div class="icon menu-bar-container">
+          <a href="#" data-bind="attr:{'aria-label':$component.resourceBundle.topProfile.labels.openMenu ,'alt':$component.resourceBundle.topProfile.labels.toggleInner ,'title':$component.resourceBundle.topProfile.labels.toggleInner },click:$component.changeMenuState.bind(null, 'toggle')">
+            <span class="hamburger-icon">
+              <svg viewBox="275 200 300 300" preserveAspectRatio="xMinYMin">
+                <path d="M300,220 C300,220 520,220 540,220 C740,220 640,540 520,420 C440,340 300,200 300,200" class="top"></path>
+                <path d="M300,320 L540,320" class="middle"></path>
+                <path d="M300,210 C300,210 520,210 540,210 C740,210 640,530 520,410 C440,330 300,190 300,190" class="bottom" transform="translate(480, 320) scale(1, -1) translate(-480, -318) "></path>
+              </svg>
+            </span>
+          </a>
         </div>
         <!-- /ko -->
-
-        <div class="oj-flex oj-flex-items-pad oj-sm-flex-items-initial fixed-header-container">
-            <!-- ko if: !$baseModel.large() -->
-            <div class="oj-flex-item oj-sm-1 vertical-align-middle">
-                <!-- ko if: $dashboard.backAllowed() && !$dashboard.isDashboard()-->
-                <a href="#" data-bind="attr:{'title':$component.resourceBundle.topProfile.labels.back_title, 'aria-label':$component.resourceBundle.topProfile.labels.back_title},click:$dashboard.hideDetails">
-                    <span class="icon icon-back-arrow" data-bind="loadImage:'common/back-arrow-white.svg',attr:{alt:$component.resourceBundle.topProfile.labels.back_alt, title:$component.resourceBundle.topProfile.labels.back_title} "></span>
-                </a>
-                <!-- /ko -->
-                <!-- ko if: $dashboard.isDashboard()-->
-                <div class="icon menu-bar-container">
-                    <a href="#" data-bind="attr:{'aria-label':$component.resourceBundle.topProfile.labels.openMenu ,'alt':$component.resourceBundle.topProfile.labels.toggleInner ,'title':$component.resourceBundle.topProfile.labels.toggleInner },click:$component.changeMenuState.bind(null, 'toggle')">
-                        <span class="hamburger-icon">
-              <svg viewBox="275 200 300 300" preserveAspectRatio="xMinYMin">
-                <path d="M300,220 C300,220 520,220 540,220 C740,220 640,540 520,420 C440,340 300,200 300,200" class="top"></path>
-                <path d="M300,320 L540,320" class="middle"></path>
-                <path d="M300,210 C300,210 520,210 540,210 C740,210 640,530 520,410 C440,330 300,190 300,190" class="bottom" transform="translate(480, 320) scale(1, -1) translate(-480, -318) "></path>
-              </svg>
-            </span>
-                    </a>
-                </div>
-                <!-- /ko -->
-            </div>
-            <div class="oj-flex-item oj-sm-9 oj-md-5 vertical-align-middle">
-                <!-- ko if: $dashboard.isDashboard()-->
-                <div class="logo-container">
-                    <img class="icon-logo" data-bind="loadImage:'common/logo.svg',click:$dashboard.openDashBoard.bind(void 0, void 0) ,  attr:{alt:$component.resourceBundle.topProfile.labels.logo_alt, title:$component.resourceBundle.topProfile.labels.logo_title} ">
-                </div>
-                <!-- /ko -->
-                <!-- ko if: !$dashboard.isDashboard()-->
-                <div class="comp-title">
-                    <h2 data-bind="text:$dashboard.headerName"></h2>
-                </div>
-                <!-- /ko -->
-            </div>
-            <div class="oj-flex-item oj-sm-2 oj-md-6 right nav-menu vertical-align-middle">
-                <ul>
-                    <!-- ko ifnot: $baseModel.small() -->
-                    <!-- ko if:$component.isSearchVisible() -->
-                    <oj-label class="hide-label" :for="[[$baseModel.incrementIdCount()]]">
-                        <span data-bind="text:$component.resourceBundle.topProfile.labels.search"></span>
-                    </oj-label>
-                    <oj-combobox-one class="alternate-primary" :id="[[$baseModel.currentIdCount()]]" options="[[$component.searchTags]]" value="{{$component.searchKeyword}}" filter-on-open="rawValue" :placeholder="[[$component.resourceBundle.topProfile.labels.search]]">
-                        <span slot="end" class="icons icon-search"></span>
-                    </oj-combobox-one>
-                    <!-- /ko -->
-                    <!-- ko ifnot: $component.isSearchVisible() -->
-                    <li>
-                        <a href="#" data-bind="click:$component.showSearchBar, attr:{'alt':$component.resourceBundle.topProfile.labels.search, 'aria-label':$component.resourceBundle.topProfile.labels.search }">
-                            <span class="icons icon-search"></span>
-                        </a>
-                    </li>
-                    <!-- /ko -->
-                    <!-- /ko -->
-                    <!-- ko if: !$dashboard.isDashboard() && $dashboard.isHelpAvailable() -->
-                    <li>
-                        <a href="#" data-bind="click: $component.showInformation, attr:{'alt':$component.resourceBundle.topProfile.labels.info, 'aria-label':$component.resourceBundle.topProfile.labels.info }">
-                            <span class="icons icon-information"></span>
-                        </a>
-                    </li>
-                    <!-- /ko -->
-                    <!-- ko if: $root.isUserDataSet() -->
-                    <li>
-                        <a href="#" data-bind="click: $component.logout,attr:{'alt':$component.resourceBundle.topProfile.labels.logout ,'aria-label':$component.resourceBundle.topProfile.labels.logout }">
-                            <span class="icons icon-logout"></span>
-                        </a>
-                    </li>
-                    <!-- /ko -->
-                    <!-- ko if: !$root.isUserDataSet() && !$baseModel.cordovaDevice() -->
-                    <li>
-                        <a href="#" data-bind="click: $component.login,attr:{'alt':$component.resourceBundle.topProfile.labels.login ,'aria-label':$component.resourceBundle.topProfile.labels.login }">
-                            <span class="icons icon-login"></span>
-                        </a>
-                    </li>
-                    <!-- /ko -->
-                </ul>
-            </div>
-            <!-- /ko -->
-            <!-- ko if: $baseModel.large() -->
-            <div class="oj-flex-item oj-sm-3 logo-container vertical-align-middle">
-                <div class="icon-menu">
-                    <a href="#" data-bind="attr:{'aria-label':$component.resourceBundle.topProfile.labels.openMenu ,'alt':$component.resourceBundle.topProfile.labels.toggleInner ,'title':$component.resourceBundle.topProfile.labels.toggleInner },click:$component.changeMenuState.bind(null, 'toggle')">
-                        <span class="hamburger-icon">
-              <svg viewBox="275 200 300 300" preserveAspectRatio="xMinYMin">
-                <path d="M300,220 C300,220 520,220 540,220 C740,220 640,540 520,420 C440,340 300,200 300,200" class="top"></path>
-                <path d="M300,320 L540,320" class="middle"></path>
-                <path d="M300,210 C300,210 520,210 540,210 C740,210 640,530 520,410 C440,330 300,190 300,190" class="bottom" transform="translate(480, 320) scale(1, -1) translate(-480, -318) "></path>
-              </svg>
-            </span>
-                    </a>
-                </div>
-                <div class="icon-logo">
-                    <img data-bind="loadImage:'common/logo.svg',click:$dashboard.openDashBoard.bind(void 0, void 0),  attr:{alt:$component.resourceBundle.topProfile.labels.logo_alt, title:$component.resourceBundle.topProfile.labels.logo_title} ">
-                </div>
-            </div>
-            <div class="oj-flex-item oj-sm-9 right nav-menu">
-                <ul>
-                    <li>
-                        <!-- ko if: $root.isUserDataSet() -->
-                        <!-- ko if:$component.isSearchVisible() -->
-                        <oj-label class="hide-label" :for="[[$baseModel.incrementIdCount()]]">
-                            <span data-bind="text:$component.resourceBundle.topProfile.labels.search"></span>
-                        </oj-label>
-                        <oj-combobox-one class="alternate-primary" :id="[[$baseModel.currentIdCount()]]" value="{{$component.searchKeyword}}" options="[[$component.searchTags]]" filter-on-open="rawValue" :placeholder="[[$component.resourceBundle.topProfile.labels.search]]">
-                            <span slot="end" class="icons icon-search"></span>
-                        </oj-combobox-one>
-                        <!-- /ko -->
-                        <!-- ko ifnot: $component.isSearchVisible() -->
-                        <a href="#" data-bind="click:$component.showSearchBar, attr:{'alt':$component.resourceBundle.topProfile.labels.search, 'aria-label':$component.resourceBundle.topProfile.labels.search }">
-                            <span class="icons icon-search"></span>
-                        </a>
-                        <!-- /ko -->
-                        <!-- /ko -->
-                    </li>
-                    <!-- ko if: $root.isUserDataSet() && $component.showHeaderMenu() -->
-                    <li>
-                        <a href="#" id="mailbox-holder" data-bind="attr:{'alt':$baseModel.format($component.resourceBundle.topProfile.labels.notificationAlt,{notificationUnreadCount:$component.totalUnreadNotification()}) ,'title':$component.resourceBundle.topProfile.labels.notifications,'aria-label':$baseModel.format($component.resourceBundle.topProfile.labels.notificationAlt,{notificationUnreadCount:$component.totalUnreadNotification()}) },click:openMailBox">
-                            <!-- ko if: $component.mailbox.totalMailboxCount() !== 0  -->
-                            <span class="icons icon-mailbox"> </span>
-                            <span class="badge" data-bind="text : $component.mailbox.totalMailboxCount()"> </span>
-                            <!-- /ko -->
-                            <!-- ko if: $component.mailbox.totalMailboxCount() === 0  -->
-                            <span class="icons icon-mailbox"> </span>
-                            <!-- /ko -->
-                        </a>
-                    </li>
-                    <!-- /ko -->
-                    <!-- ko if: $root.isUserDataSet() && !$component.helpDeskSession -->
-                    <li>
-                        <a href="#" data-bind="click: $component.launchProfileMenu, attr:{'alt':$component.resourceBundle.openProfileLauncherTitle, 'aria-label':$component.resourceBundle.openProfileLauncher}">
-                            <span class="icons icon-user"></span>
-                            <div>
-                                <div data-bind="text : $baseModel.format($component.resourceBundle.welcome,{firstName : $dashboard.userData.userProfile.firstName, lastName : $dashboard.userData.userProfile.lastName})"></div>
-                                <div class="lastLogin" data-bind="text : $baseModel.format($component.resourceBundle.lastLogin,{lastLoginDate : $baseModel.formatDate($dashboard.userData.userProfile.lastLoginTime, 'dateTimeFormat')})"></div>
-                            </div>
-                            <span id="profileLauncher" slot="endIcon" class="icons icon-arrow-down vertical-align-middle"></span>
-                        </a>
-                    </li>
-                    <!-- /ko -->
-                    <!-- ko if: !$root.isUserDataSet() && !$baseModel.cordovaDevice() -->
-                    <li>
-                        <a href="#" data-bind="click: $component.login, attr:{'alt':$component.resourceBundle.topProfile.labels.login ,'aria-label':$component.resourceBundle.topProfile.labels.login }">
-                            <span class="icons icon-login"></span>
-                            <span data-bind="text : $component.resourceBundle.topProfile.labels.login"></span>
-                        </a>
-                        <a href="#" data-bind="click: $component.launchProfileMenu, attr:{'alt':$component.resourceBundle.openProfileLauncherTitle, 'aria-label':$component.resourceBundle.openProfileLauncher}" id="profileLauncher">
-                            <span slot="endIcon" class="icons icon-arrow-down vertical-align-middle"></span>
-                        </a>
-                    </li>
-                    <!-- /ko -->
-                </ul>
-
-                <!-- ko if: $root.isUserDataSet() -->
-                <oj-popup class="hide header-mailbox-launcher" id="popup1">
-                    <!-- ko if:$component.loadMiniMailBox() -->
-                    <div class="mini-mailbox" data-bind="component: {name:'mini-mailbox', params:{ rootModel:$component, mailbox: $component.mailbox}}">
-                    </div>
-                    <!-- /ko -->
-                </oj-popup>
-                <!-- /ko -->
-                <oj-popup class="hide header-profile-launcher" id="profileLauncherPopup" modality="modal">
-                    <div data-bind="component: {name:'entity-switch', params:{rootModel : $root}}"></div>
-                    <ul>
-                        <!-- ko if: $root.isUserDataSet() -->
-                        <li>
-                            <a href="#" data-bind="click: $component.profilePopupAction.bind(null, 'profile'), attr:{'alt':$component.resourceBundle.topProfile.labels.profile ,'aria-label':$component.resourceBundle.topProfile.labels.profile }">
-                                <span class="icons icon-user"></span>
-                                <span data-bind="text : $component.resourceBundle.topProfile.labels.profile"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" data-bind="click: $component.profilePopupAction.bind(null, 'logout'), attr:{'alt':$component.resourceBundle.topProfile.labels.logout ,'aria-label':$component.resourceBundle.topProfile.labels.logout }">
-                                <span class="icons icon-logout"></span>
-                                <span data-bind="text : $component.resourceBundle.topProfile.labels.logout"></span>
-                            </a>
-                        </li>
-                        <!-- /ko -->
-                    </ul>
-                </oj-popup>
-            </div>
-            <!-- /ko -->
+      </div>
+      <div class="oj-flex-item oj-sm-9 oj-md-5 vertical-align-middle">
+        <!-- ko if: $dashboard.isDashboard()-->
+        <div class="logo-container">
+          <img class="icon-logo" data-bind="loadImage:'common/logo.svg',click:$dashboard.openDashBoard.bind(void 0, void 0) ,  attr:{alt:$component.resourceBundle.topProfile.labels.logo_alt, title:$component.resourceBundle.topProfile.labels.logo_title} ">
         </div>
-        <div class="notification-clear-all">
-            <!-- ko if: $baseModel.messages().length > 1 -->
-            <a href="#" data-bind="click: $component.closeAllNotificationMessages, attr:{'alt':$component.resourceBundle.clearAllNotificationsTitle, 'aria-label':$component.resourceBundle.clearAllNotifications}">
-                <span class="icons icon-minus-circle"></span>
-                <span class="oj-sm-only-hide" data-bind="text: $component.resourceBundle.clearAllNotifications"></span>
+        <!-- /ko -->
+        <!-- ko if: !$dashboard.isDashboard()-->
+        <div class="comp-title">
+          <h2 data-bind="text:$dashboard.headerName"></h2>
+        </div>
+        <!-- /ko -->
+      </div>
+      <div class="oj-flex-item oj-sm-2 oj-md-6 right nav-menu vertical-align-middle">
+        <ul>
+          <!-- ko if : $root.menuNavigationAvailable -->
+          <!-- ko ifnot: $baseModel.small() -->
+          <!-- ko if:$component.isSearchVisible() -->
+          <oj-label class="hide-label" :for="[[$baseModel.incrementIdCount()]]">
+            <span data-bind="text:$component.resourceBundle.topProfile.labels.search"></span>
+          </oj-label>
+          <oj-combobox-one class="alternate-primary" :id="[[$baseModel.currentIdCount()]]" options="[[$component.searchTags]]" value="{{$component.searchKeyword}}" filter-on-open="rawValue" :placeholder="[[$component.resourceBundle.topProfile.labels.search]]">
+            <span slot="end" class="icons icon-search"></span>
+          </oj-combobox-one>
+          <!-- /ko -->
+          <!-- ko ifnot: $component.isSearchVisible() -->
+          <li>
+            <a href="#" data-bind="click:$component.showSearchBar, attr:{'alt':$component.resourceBundle.topProfile.labels.search, 'aria-label':$component.resourceBundle.topProfile.labels.search }">
+              <span class="icons icon-search"></span>
+            </a>
+          </li>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if: !$dashboard.isDashboard() && $dashboard.isHelpAvailable() -->
+          <li>
+            <a href="#" data-bind="click: $component.showInformation, attr:{'alt':$component.resourceBundle.topProfile.labels.info, 'aria-label':$component.resourceBundle.topProfile.labels.info }">
+              <span class="icons icon-information"></span>
+            </a>
+          </li>
+          <!-- /ko -->
+          <!-- ko if: $root.isUserDataSet() -->
+          <li>
+            <a href="#" data-bind="click: $component.logout,attr:{'alt':$component.resourceBundle.topProfile.labels.logout ,'aria-label':$component.resourceBundle.topProfile.labels.logout }">
+              <span class="icons icon-logout"></span>
+            </a>
+          </li>
+          <!-- /ko -->
+          <!-- ko if: !$root.isUserDataSet() && !$baseModel.cordovaDevice() -->
+          <li>
+            <a href="#" data-bind="click: $component.login,attr:{'alt':$component.resourceBundle.topProfile.labels.login ,'aria-label':$component.resourceBundle.topProfile.labels.login }">
+              <span class="icons icon-login"></span>
+            </a>
+          </li>
+          <!-- /ko -->
+          <!-- /ko -->
+        </ul>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: $baseModel.large() -->
+      <div class="oj-flex-item oj-sm-3 logo-container vertical-align-middle">
+        <!-- ko if : $root.menuNavigationAvailable -->
+        <div class="icon-menu">
+          <a href="#" data-bind="attr:{'aria-label':$component.resourceBundle.topProfile.labels.openMenu ,'alt':$component.resourceBundle.topProfile.labels.toggleInner ,'title':$component.resourceBundle.topProfile.labels.toggleInner },click:$component.changeMenuState.bind(null, 'toggle')">
+            <span class="hamburger-icon">
+              <svg viewBox="275 200 300 300" preserveAspectRatio="xMinYMin">
+                <path d="M300,220 C300,220 520,220 540,220 C740,220 640,540 520,420 C440,340 300,200 300,200" class="top"></path>
+                <path d="M300,320 L540,320" class="middle"></path>
+                <path d="M300,210 C300,210 520,210 540,210 C740,210 640,530 520,410 C440,330 300,190 300,190" class="bottom" transform="translate(480, 320) scale(1, -1) translate(-480, -318) "></path>
+              </svg>
+            </span>
+          </a>
+        </div>
+        <!-- /ko -->
+        <div class="icon-logo">
+          <img data-bind="loadImage:'common/logo.svg',click:$dashboard.openDashBoard.bind(void 0, void 0),  attr:{alt:$component.resourceBundle.topProfile.labels.logo_alt, title:$component.resourceBundle.topProfile.labels.logo_title} ">
+        </div>
+      </div>
+      <div class="oj-flex-item oj-sm-9 right nav-menu">
+        <ul>
+          <li>
+            <!-- ko if: $root.isUserDataSet() && $root.menuNavigationAvailable -->
+            <!-- ko if:$component.isSearchVisible() -->
+            <oj-label class="hide-label" :for="[[$baseModel.incrementIdCount()]]">
+              <span data-bind="text:$component.resourceBundle.topProfile.labels.search"></span>
+            </oj-label>
+            <oj-combobox-one class="alternate-primary" :id="[[$baseModel.currentIdCount()]]" value="{{$component.searchKeyword}}" options="[[$component.searchTags]]" filter-on-open="rawValue" :placeholder="[[$component.resourceBundle.topProfile.labels.search]]">
+              <span slot="end" class="icons icon-search"></span>
+            </oj-combobox-one>
+            <!-- /ko -->
+            <!-- ko ifnot: $component.isSearchVisible() -->
+            <a href="#" data-bind="click:$component.showSearchBar, attr:{'alt':$component.resourceBundle.topProfile.labels.search, 'aria-label':$component.resourceBundle.topProfile.labels.search }">
+              <span class="icons icon-search"></span>
             </a>
             <!-- /ko -->
-        </div>
-        <oj-messages id="message-box" messages="{{$baseModel.messages}}" on-oj-close="[[closeMessageHandler]]" display="notification" position="[[messagePosition]]"></oj-messages>
+            <!-- /ko -->
+          </li>
+          <!-- ko if: $root.isUserDataSet() && $component.showHeaderMenu() && $root.menuNavigationAvailable -->
+          <li>
+            <a href="#" id="mailbox-holder" data-bind="attr:{'alt':$baseModel.format($component.resourceBundle.topProfile.labels.notificationAlt,{notificationUnreadCount:$component.totalUnreadNotification()}) ,'title':$component.resourceBundle.topProfile.labels.notifications,'aria-label':$baseModel.format($component.resourceBundle.topProfile.labels.notificationAlt,{notificationUnreadCount:$component.totalUnreadNotification()}) },click:openMailBox">
+              <!-- ko if: $component.mailbox.totalMailboxCount() !== 0  -->
+              <span class="icons icon-mailbox"> </span>
+              <span class="badge" data-bind="text : $component.mailbox.totalMailboxCount()"> </span>
+              <!-- /ko -->
+              <!-- ko if: $component.mailbox.totalMailboxCount() === 0  -->
+              <span class="icons icon-mailbox"> </span>
+              <!-- /ko -->
+            </a>
+          </li>
+          <!-- /ko -->
+          <!-- ko if: $root.isUserDataSet() && !$component.helpDeskSession -->
+          <li>
+            <a href="#">
+              <span class="icons icon-user"></span>
+              <div>
+                <div data-bind="text : $baseModel.format($component.resourceBundle.welcome,{firstName : $dashboard.userData.userProfile.firstName, lastName : $dashboard.userData.userProfile.lastName})"></div>
+                <div class="lastLogin" data-bind="text : $baseModel.format($component.resourceBundle.lastLogin,{lastLoginDate : $baseModel.formatDate($dashboard.userData.userProfile.preLastLoggedInDateTime, 'dateTimeFormat')})"></div>
+              </div>
+            </a>
+            <!-- ko if:  $root.menuNavigationAvailable -->
+
+            <a href="#" data-bind="click: $component.launchProfileMenu, attr:{'alt':$component.resourceBundle.openProfileLauncherTitle, 'aria-label':$component.resourceBundle.openProfileLauncher}">
+           <span id="profileLauncher" slot="endIcon" class="icons icon-arrow-down vertical-align-middle"></span>
+         </a>
+            <!-- /ko -->
+            <!-- ko if: !$root.menuNavigationAvailable -->
+            <a href="#" class="no-navigation-logout" data-bind="click: $component.profilePopupAction.bind(null, 'logout'), attr:{'alt':$component.resourceBundle.topProfile.labels.logout ,'aria-label':$component.resourceBundle.topProfile.labels.logout }">
+           <span class="icons icon-logout"></span>
+         </a>
+            <!-- /ko -->
+          </li>
+          <!-- /ko -->
+          <!-- ko if: !$root.isUserDataSet() && !$baseModel.cordovaDevice() -->
+          <li>
+            <a href="#" data-bind="click: $component.login, attr:{'alt':$component.resourceBundle.topProfile.labels.login ,'aria-label':$component.resourceBundle.topProfile.labels.login }">
+              <span class="icons icon-login"></span>
+              <span data-bind="text : $component.resourceBundle.topProfile.labels.login"></span>
+            </a>
+            <a href="#" data-bind="click: $component.launchProfileMenu, attr:{'alt':$component.resourceBundle.openProfileLauncherTitle, 'aria-label':$component.resourceBundle.openProfileLauncher}" id="profileLauncher">
+              <span slot="endIcon" class="icons icon-arrow-down vertical-align-middle"></span>
+            </a>
+          </li>
+          <!-- /ko -->
+        </ul>
+
+        <!-- ko if: $root.isUserDataSet() -->
+        <oj-popup class="hide header-mailbox-launcher" id="popup1">
+          <!-- ko if:$component.loadMiniMailBox() -->
+          <div class="mini-mailbox" data-bind="component: {name:'mini-mailbox', params:{ rootModel:$component, mailbox: $component.mailbox}}">
+          </div>
+          <!-- /ko -->
+        </oj-popup>
+        <!-- /ko -->
+        <oj-popup class="hide header-profile-launcher" id="profileLauncherPopup" modality="modal">
+          <div data-bind="component: {name:'entity-switch', params:{rootModel : $root}}"></div>
+          <ul>
+            <!-- ko if: $root.isUserDataSet() -->
+            <li>
+              <a href="#" data-bind="click: $component.profilePopupAction.bind(null, 'profile'), attr:{'alt':$component.resourceBundle.topProfile.labels.profile ,'aria-label':$component.resourceBundle.topProfile.labels.profile }">
+                <span class="icons icon-user"></span>
+                <span data-bind="text : $component.resourceBundle.topProfile.labels.profile"></span>
+              </a>
+            </li>
+            <li>
+              <a href="#" data-bind="click: $component.profilePopupAction.bind(null, 'logout'), attr:{'alt':$component.resourceBundle.topProfile.labels.logout ,'aria-label':$component.resourceBundle.topProfile.labels.logout }">
+                <span class="icons icon-logout"></span>
+                <span data-bind="text : $component.resourceBundle.topProfile.labels.logout"></span>
+              </a>
+            </li>
+            <!-- /ko -->
+          </ul>
+        </oj-popup>
+      </div>
+      <!-- /ko -->
     </div>
+    <div class="notification-clear-all">
+      <!-- ko if: $baseModel.messages().length > 1 -->
+      <a href="#" data-bind="click: $component.closeAllNotificationMessages, attr:{'alt':$component.resourceBundle.clearAllNotificationsTitle, 'aria-label':$component.resourceBundle.clearAllNotifications}">
+        <span class="icons icon-minus-circle"></span>
+        <span class="oj-sm-only-hide" data-bind="text: $component.resourceBundle.clearAllNotifications"></span>
+      </a>
+      <!-- /ko -->
+    </div>
+    <oj-messages id="message-box" messages="{{$baseModel.messages}}" on-oj-close="[[closeMessageHandler]]" display="notification" position="[[messagePosition]]"></oj-messages>
+  </div>
 </div>
 
-<!-- ko ifnot: $baseModel.large() -->
+<!-- ko ifnot: $baseModel.large() || $dashboard.isDashboard()  -->
+<!-- ko if: $dashboard.helpComponent.componentName() -->
 <floating-panel params="baseModel : $baseModel, panelId: 'informationPopupHeader', rootModel: $component">
-    <help params="baseModel : $baseModel, dashboard: $dashboard, transaction: $dashboard.helpComponent.componentName"></help>
+  <help params="baseModel : $baseModel, dashboard: $dashboard, transaction: $dashboard.helpComponent.componentName"></help>
 </floating-panel>
+<!-- /ko -->
 <!-- /ko -->

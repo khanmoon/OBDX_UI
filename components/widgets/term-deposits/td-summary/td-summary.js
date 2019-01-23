@@ -27,6 +27,8 @@ define([
     rootParams.baseModel.registerElement("action-header");
     rootParams.baseModel.registerElement("action-widget");
     rootParams.baseModel.registerComponent("td-corporate-details", "term-deposits");
+    self.datasource = new oj.PagingTableDataSource(new oj.ArrayTableDataSource(self.filteredAccounts,{idAttribute: "id"}));
+
     self.typeOfAccounts = [{
       id: "CON",
       label: self.nls.accountSummary.conventionalAccount
@@ -44,59 +46,57 @@ define([
       }
     };
 
-    self.datasource = new oj.PagingTableDataSource(new oj.ArrayTableDataSource(self.realData));
-
-    function setData(data) {
-      if (data.accounts) {
-        self.realData = data.accounts.map(function(val) {
-          val.accountId = val.id.value;
-          return val;
-        });
+    self.hideClass = function(){
+      if (self.selectedValue() === "ISL") {
+        return "hide";
       }
-      self.datasource = new oj.PagingTableDataSource(new oj.ArrayTableDataSource(self.realData));
-
-      self.tdSummaryLoaded(true);
-    }
+        return "";
+    };
 
     self.selectedAccountTypeChangedHandler = function(event) {
-      self.tdSummaryLoaded(false);
       self.filteredAccounts.removeAll();
-      self.datasource = null;
-      ko.utils.arrayPushAll(self.filteredAccounts, self.realData.filter(function(element) {
+      self.filteredAccounts(self.realData.filter(function(element) {
         return element.module.indexOf(event.detail.value) > -1;
       }));
-      self.datasource = new oj.PagingTableDataSource(new oj.ArrayTableDataSource(self.filteredAccounts()));
-      ko.tasks.runEarly();
       self.tdSummaryLoaded(true);
     };
 
     if (!(rootParams.data && rootParams.data.accountList)) {
 
       AccountSummaryModel.getAccountDetails().done(function(data) {
-        self.realData = data.accounts;
-        data.accounts.forEach(function(element) {
-          if (element.module === "CON") {
-            self.conventionalAccountsAvailable(true);
-          } else if (element.module === "ISL") {
-            self.islamicAccountsAvailable(true);
+        if(data.accounts && data.accounts.length > 0){
+          self.realData = data.accounts;
+          for(var i=0;i< data.accounts.length ; i++){
+            if (data.accounts[i].module === "CON") {
+              self.conventionalAccountsAvailable(true);
+            } else if (data.accounts[i] === "ISL") {
+              self.islamicAccountsAvailable(true);
+            }else if(self.conventionalAccountsAvailable() && self.islamicAccountsAvailable()){
+              break;
+            }
           }
-        });
+        }
+
         if (!(self.conventionalAccountsAvailable() && self.islamicAccountsAvailable())) {
-          setData(data);
+          self.filteredAccounts(self.realData);
+          self.tdSummaryLoaded(true);
         }
       });
 
     } else {
       self.realData = rootParams.data.accountList;
-      rootParams.data.accountList.forEach(function(element) {
-        if (element.module === "CON") {
+      for(var i=0;i< rootParams.data.accountList.length ; i++){
+        if (rootParams.data.accountList[i].module === "CON") {
           self.conventionalAccountsAvailable(true);
-        } else if (element.module === "ISL") {
+        } else if (rootParams.data.accountList[i] === "ISL") {
           self.islamicAccountsAvailable(true);
+        }else if(self.conventionalAccountsAvailable() && self.islamicAccountsAvailable()){
+          break;
         }
-      });
+      }
       if (!(self.conventionalAccountsAvailable() && self.islamicAccountsAvailable())) {
-        setData(rootParams.data);
+        self.filteredAccounts(self.realData);
+        self.tdSummaryLoaded(true);
       }
     }
     self.showAccountDetails = function(data) {

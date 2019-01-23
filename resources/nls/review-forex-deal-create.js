@@ -43,10 +43,8 @@ define([
                     customDays: "{noOfDays} Days",
                     rateExpired: "Transaction has timed out, please initiate again.",
                     confirmDeal: "Confirm exchange rate before the cut off.",
-                    confirmationHeader : "Confirmation cut off",
+                    confirmationHeader : "Confirmation cut off"
 
-                    alt: "Click here to {reference}",
-                    title: "Click here to {reference}"
                 },
 
                 generic: Generic,

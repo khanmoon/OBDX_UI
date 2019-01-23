@@ -1,37 +1,42 @@
 <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='DDAO' -->
 <div class="oj-flex oj-flex-pad">
-    <oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item pull-left"><span data-bind="text:resource.initialAmount"></span></oj-label>
+    <oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item pull-left"><span
+            data-bind="text:resource.initialAmount"></span></oj-label>
     <!-- ko ifnot: $component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.txnAmount.amount -->
-    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: resource.notSpecified"></span>
+    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left label" data-bind="text: resource.notSpecified"></span>
     <!-- /ko -->
     <!-- ko if: $component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.txnAmount.amount -->
-    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: $baseModel.formatCurrency($component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.txnAmount.amount, $component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.txnAmount.currency)"></span>
+    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left label" data-bind="text: $baseModel.formatCurrency($component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.txnAmount.amount, $component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.txnAmount.currency)"></span>
     <!-- /ko -->
 </div>
 <!-- /ko -->
 
-<div class="oj-flex oj-flex-pad">
-    <oj-label class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item pull-left"><span data-bind="text:resource.fundthrough"></span></oj-label>
-    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='CARD' -->
-    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.cardDetails.cardType==='DEBIT' -->
-    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: $baseModel.format(resource.fundThrough, {networkProvider : $component.applicantDetails()[0].accountFunding.selectedValues.cardType, cardType: resource.debit, card: resource.card, aanNumber: $component.applicantDetails()[0].accountFunding.selectedValues.aanNumber})">
+<div class="oj-flex oj-flex-items-pad">
+    <div class="oj-sm-12 oj-md-offset-1 oj-md-4 oj-lg-offset-2 oj-lg-2 label oj-flex-item pull-left">
+        <oj-label class=""><span data-bind="text:resource.fundthrough"></span></oj-label>
+    </div>
+    <div class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left label">
+        <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='CARD' -->
+        <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.cardDetails.cardType==='DEBIT' -->
+        <span class="" data-bind="text: $baseModel.format(resource.fundThrough, {networkProvider : $component.applicantDetails()[0].accountFunding.selectedValues.cardType, cardType: resource.debit, card: resource.card, aanNumber: $component.applicantDetails()[0].accountFunding.selectedValues.aanNumber})">
         </span>
-    <!-- /ko -->
-    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.cardDetails.cardType==='CREDIT' -->
-    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: $baseModel.format(resource.fundThrough, {networkProvider : $component.applicantDetails()[0].accountFunding.selectedValues.cardType, cardType: resource.credit, card: resource.card, aanNumber: $component.applicantDetails()[0].accountFunding.selectedValues.aanNumber})">
+        <!-- /ko -->
+        <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.cardDetails.cardType==='CREDIT' -->
+        <span class="" data-bind="text: $baseModel.format(resource.fundThrough, {networkProvider : $component.applicantDetails()[0].accountFunding.selectedValues.cardType, cardType: resource.credit, card: resource.card, aanNumber: $component.applicantDetails()[0].accountFunding.selectedValues.aanNumber})">
         </span>
-    <!-- /ko -->
-    <!-- /ko -->
-    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='COLL' -->
-    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: $baseModel.format(resource.fundThroughAcct, {accountNoText: resource.accountNo, accountNo: data.savingsAccountConfiguration.settlementMode.collectionDetails.counterPartyAccountNo.displayValue})">
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='COLL' -->
+        <span class="" data-bind="text: $baseModel.format(resource.fundThroughAcct, {accountNoText: resource.accountNo, accountNo: data.savingsAccountConfiguration.settlementMode.collectionDetails.counterPartyAccountNo.displayValue})">
         </span>
-    <!-- /ko -->
-    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='DDAO' -->
-    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: $baseModel.format(resource.fundThroughAcct, {accountNoText: resource.accountNo, accountNo: data.savingsAccountConfiguration.settlementMode.internalAccountSettlementDetailDTO.accountNo.displayValue})">
+        <!-- /ko -->
+        <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='DDAO' -->
+        <span class="" data-bind="text: $baseModel.format(resource.fundThroughAcct, {accountNoText: resource.accountNo, accountNo: data.savingsAccountConfiguration.settlementMode.internalAccountSettlementDetailDTO.accountNo.displayValue})">
         </span>
-    <!-- /ko -->
-    <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='LATER' -->
-    <span class="oj-sm-12 oj-md-6 oj-lg-4 oj-flex-item pull-left " data-bind="text: resource.fundingOption.LATER">
+        <!-- /ko -->
+        <!-- ko if:$component.applicantDetails()[0].accountFunding.savingsAccountConfiguration.settlementMode.settlementType==='LATER' -->
+        <span class="" data-bind="text: resource.fundingOption.LATER">
         </span>
-    <!-- /ko -->
+        <!-- /ko -->
+    </div>
 </div>

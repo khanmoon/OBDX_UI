@@ -2,8 +2,9 @@ define([
     "ojs/ojcore",
     "knockout",
     "jquery",
-    "framework/js/constants/constants"
-], function (oj, ko, $, Constants) {
+    "framework/js/constants/constants",
+    "baseService"
+], function (oj, ko, $, Constants, BaseService) {
     "use strict";
     return function (rootParams) {
         var self = this;
@@ -19,7 +20,6 @@ define([
         self.constants = Constants;
         self.productDetails = ko.observable({
             applicantList: ko.observableArray([]),
-            baseCurrency: rootParams.baseModel.getLocaleValue("localCurrency"),
             applicantDetailsFetched: ko.observable(false),
             sectionBeingEdited: ko.observable(),
             collabData: ko.observable({}),
@@ -32,6 +32,17 @@ define([
             self.applicationArguments = root.applicationArguments;
         };
         rootParams.baseModel.registerComponent("product", "origination");
-        self.dataLoaded(true);
+
+        BaseService.getInstance().fetch({
+            url: "bankConfiguration",
+            showMessage: false
+        }).then(function (data) {
+            self.localCurrency = data.bankConfigurationDTO.localCurrency;
+            self.dataLoaded(true);
+        }).catch(function () {
+            self.localCurrency = rootParams.baseModel.getLocaleValue("localCurrency");
+            self.dataLoaded(true);
+        });
+
     };
 });

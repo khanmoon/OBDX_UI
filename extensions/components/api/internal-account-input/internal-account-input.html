@@ -1,9 +1,9 @@
 <!-- ko ifnot: readOnly -->
 <div class="oj-flex oj-flex-items-pad">
-  <div class="oj-flex-item oj-sm-12 oj-md-4 label">
+     <div data-bind="css: {'oj-sm-12 oj-md-2' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
     <oj-label :for="[['branch' + $component.id]]"><span data-bind="text:$component.resourceBundle.branch"></span></oj-label>
   </div>
-  <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3 ">
+  <div data-bind="css: {'oj-lg-4 oj-md-5 oj-sm-12' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
     <!-- ko if:branchLoaded() -->
     <oj-select-one :id="[['branch' + $component.id]]" value="{{branchId}}" required="[[required]]">
       <!-- ko foreach: branchList -->
@@ -13,39 +13,46 @@
     <!-- /ko -->
   </div>
 </div>
-<div class="oj-flex oj-flex-items-pad">
+
   <!-- ko ifnot: $component.confirmStyleAccount -->
-  <div class="oj-flex-item oj-sm-12 label">
+  <div class="oj-flex oj-flex-items-pad">
+    <div data-bind="css: {'oj-sm-12 oj-md-2' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
     <oj-label :for="[[$component.id]]"><span data-bind="text:$component.label"></span></oj-label>
   </div>
-  <div class="oj-flex-item oj-sm-12">
+  <div data-bind="css: {'oj-lg-4 oj-md-5 oj-sm-12' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
     <oj-input-text :id="[[$component.id]]" value="{{accountNo}}" required="[[required]]" validators="[[$baseModel.getValidator('ACCOUNT')]]"></oj-input-text>
   </div>
+</div>
   <!-- /ko -->
   <!-- ko if: $component.confirmStyleAccount -->
-  <div class="oj-flex-item oj-sm-12 label">
+  <div data-bind="css: {'oj-sm-12 oj-md-2' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
     <oj-label :for="[[$component.id + '_hidden_account_number']]">
       <span data-bind="text:$component.label"></span>
     </oj-label>
   </div>
-  <div class="oj-flex-item oj-sm-12">
+  <div data-bind="css: {'oj-lg-4 oj-md-5 oj-sm-12' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
     <oj-input-text converter=[[$component.maskedAccountNumberConverter]] :id="[[$component.id + '_hidden_account_number']]" value="{{$component.hiddenAccountNumber}}"
       validators="[[$component.accountNumberValidator]]" required="[[required]]"></oj-input-text>
   </div>
-  <div class="oj-flex-item oj-sm-12 label">
+  <div data-bind="css: {'oj-sm-12 oj-md-2' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
     <oj-label :for="[[$component.id + '_confirm_account_number']]">
       <span data-bind="text:$baseModel.format($component.resourceBundle.confirm, {label : $component.label})"></span>
     </oj-label>
   </div>
-  <div class="oj-flex-item oj-sm-12">
+  <div data-bind="css: {'oj-lg-4 oj-md-5 oj-sm-12' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
     <oj-input-text :id="[[$component.id + '_confirm_account_number']]"
       value="{{$component.accountNo}}" validators="[[$component.confirmAccountNumberValidator]]" required="[[required]]"></oj-input-text>
   </div>
   <div data-bind="template: {afterRender: $component.fieldsRendered}"></div>
   <!-- /ko -->
-</div>
+
 <!-- /ko -->
 <!-- ko if: readOnly -->
+<!-- ko ifnot: mode === "acc" -->
 <row params="label : $component.resourceBundle.branch , value : branchName"></row>
 <row params="label : label , value : accountNo"></row>
+<!-- /ko -->
+<!-- ko if: mode === "acc" -->
+<div data-bind="text : accountNo"></div>
+<!-- /ko -->
 <!-- /ko -->

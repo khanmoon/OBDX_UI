@@ -2,11 +2,13 @@
     <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
         <div class="oj-label">
             <oj-label :for="[['phoneType'+id]]">
-            <span data-bind="text:$component.resource.phoneType"></span></oj-label>
+                <span data-bind="text:$component.resource.phoneType"></span></oj-label>
         </div>
     </div>
     <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
-        <oj-select-one :id="[['phoneType'+id]]" translations="[[{'required':{messageDetail:$component.resource.messages.phoneType}}]]" on-value-changed="[[$component.phoneTypeChangeHandler]]" :placeholder="" value="{{contacts.contactType}}" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[$component.applicantObject().contactInfo.disableInputs()]]">
+        <oj-select-one :id="[['phoneType'+id]]" translations="[[{'required':{messageDetail:$component.resource.messages.phoneType}}]]"
+            on-value-changed="[[$component.phoneTypeChangeHandler]]" :placeholder="" value="{{contacts.contactType}}"
+            required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[$component.applicantObject().contactInfo.disableInputs()]]">
             <!-- ko foreach: phoneTypeList -->
             <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
             <!-- /ko -->
@@ -17,21 +19,27 @@
     <div class="oj-flex-item oj-sm-12 oj-md-4 oj-md-offset-1 oj-lg-2 label oj-lg-offset-2 ">
         <!-- ko if: id === 1 -->
         <oj-label :for="[['mobile'+id]]">
-        <span data-bind="text:$component.resource.contactNumber"></span></oj-label>
+            <span data-bind="text:$component.resource.contactNumber"></span></oj-label>
         <!-- /ko -->
         <!-- ko if: id === 2 -->
         <oj-label :for="[['mobile'+id]]">
-        <span data-bind="text:$component.resource.contactNumber"></span></oj-label>
+            <span data-bind="text:$component.resource.contactNumber"></span></oj-label>
         <!-- /ko -->
     </div>
-    <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
-        <oj-select-one :id="[['isdCode']]" translations="[[{'required':{messageDetail:$component.resource.messages.phoneType}}]]" :placeholder="" value="{{contacts.phone.areaCode}}" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]" disabled="[[$component.applicantObject().contactInfo.disableInputs()]]">
+    <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-1">
+        <oj-select-one :id="[['isdCode']]" translations="[[{'required':{messageDetail:$component.resource.messages.phoneType}}]]"
+            :placeholder="" value="{{contacts.phone.areaCode}}" required="[[true]]" :invalidcomponenttracker="[[$component.validationTracker]]"
+            disabled="[[$component.applicantObject().contactInfo.disableInputs()]]">
             <!-- ko foreach: $component.ISDCodeList -->
             <oj-option value="{{code}}"><span data-bind="text:code"></span></oj-option>
             <!-- /ko -->
         </oj-select-one>
     </div>
-    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-3">
-        <oj-input-text maxlength="10" autocomplete="off" spellcheck="false" :id="[['mobile'+id]]" translations="[[{'required':{messageDetail:$component.resource.messages.mobileNumber}}]]" validators="[[$baseModel.getValidator('MOBILE_NO')]]" required="[[true]]" value="{{contacts.phone.number}}" disabled="[[$component.applicantObject().contactInfo.disableInputs()]]"></oj-input-text>
+    <div class="oj-flex-item oj-sm-12 oj-md-4 oj-lg-2">
+        <oj-input-text maxlength="10" autocomplete="off" spellcheck="false" :id="[['mobile'+id]]" translations="[[{'required':{messageDetail:$component.resource.messages.mobileNumber}}]]"
+            validators="[[$baseModel.getValidator('NUMBERS',$component.resource.messages.mobileNumber,{
+              type:'length',options:{
+              min:9,max:10}})]]"
+            required="[[true]]" value="{{contacts.phone.number}}" disabled="[[$component.applicantObject().contactInfo.disableInputs()]]"></oj-input-text>
     </div>
 </div>

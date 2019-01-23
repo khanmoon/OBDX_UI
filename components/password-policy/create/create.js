@@ -164,8 +164,10 @@ define([
          *
          * @return {void}
          */
-        self.passwordExpiryPeriodChangeHandler = function() {
-            self.passwordExpiryWarningPeriod("");
+        self.passwordExpiryPeriodChangeHandler = function(event) {
+          if(event.detail.value < self.passwordExpiryWarningPeriod()){
+              params.baseModel.showMessages(null, [self.nls.error.pwdExpiryPeriodCheck], "ERROR");
+          }
         };
         self.upperCaseAllowedChangeHandler = function(event) {
             if (event.detail.value[0]) {
@@ -278,6 +280,10 @@ define([
             }
             if (self.isSpecialCharAllowed() && (self.specialCharList() === undefined || self.specialCharList().length===0)) {
                 params.baseModel.showMessages(null, [self.nls.error.specialCharListError], "ERROR");
+                return;
+            }
+            if (self.passwordExpiryPeriod()<self.passwordExpiryWarningPeriod()) {
+               params.baseModel.showMessages(null, [self.nls.error.pwdExpiryPeriodCheck], "ERROR");
                 return;
             }
             self.createPayload.pwdPolicyName(self.policyName());

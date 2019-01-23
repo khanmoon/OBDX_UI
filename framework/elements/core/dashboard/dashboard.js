@@ -7,7 +7,8 @@ define([
     "ojL10n!resources/nls/dashboard",
     "framework/js/base-models/ko/formatters",
     "platform",
-    "ojs/ojoffcanvas"
+    "ojs/ojoffcanvas",
+    "ojs/ojbutton"
 ], function(ko, $, oj, DashboardModel, Constants, locale, Formatters, Platform) {
     "use strict";
     return function(rootParams) {
@@ -44,7 +45,6 @@ define([
         self.headerName = ko.observable();
         self.headerCaption = ko.observable();
         self.application = ko.observable();
-        self.menuNavigationAvailable = true;
         self.fatcaCheckRequired = ko.observable(false);
         self.pageTitle = ko.pureComputed(function() {
             return rootParams.baseModel.format("{txn_name} - {bankName}", {
@@ -132,8 +132,7 @@ define([
             self.headerName(void 0);
             self.headerCaption(void 0);
             startLoader();
-            $("#generic-authentication").remove();
-            $("div.primarycontent").show();
+            rootParams.baseModel.onTFAScreen(false);
             window.scrollTo(0, 0);
         }
 
@@ -239,7 +238,8 @@ define([
                     if (window.location.pathname === Constants.pages.securePage) {
                         rootParams.baseModel.switchPage({
                             module: "login",
-                            redirect_url: encodeURIComponent(redirectURL)
+                            redirect_url: encodeURIComponent(redirectURL),
+                            menuNavigationAvailable:  genericViewModel.queryMap ? genericViewModel.queryMap.menuNavigationAvailable : genericViewModel.menuNavigationAvailable
                         }, false);
                     }
                 }
@@ -294,6 +294,9 @@ define([
 
         };
         self.switchModule = function(module) {
+            if (typeof module !== "string") {
+                module = null;
+            }
             dbAuthenticator();
             self.breadcrumbs.remove(function(item) {
                 return item.type !== "home";
@@ -325,7 +328,7 @@ define([
             history.back();
         };
         self.openDashBoard = function(confirmMsg) {
-            if (!self.menuNavigationAvailable) return;
+            if (!genericViewModel.menuNavigationAvailable) return;
             if (confirmMsg) {
                 var currentTime = Date.now();
                 $(".confirm-dialog").remove();
@@ -398,9 +401,10 @@ define([
             if (self.isConfirmScreenVisited()) {
                 return self.switchModule(currentModule.moduleName);
             }
+            $("#generic-authentication").remove();
+            $("div.primarycontent").show();
             self.headerName(void 0);
             self.headerCaption(void 0);
-            rootParams.baseModel.onTFAScreen(false);
             var currModule = rootParams.baseModel.QueryParams.get("module");
             if (prvsModule === currModule) {
                 var currPage = rootParams.baseModel.QueryParams.get("page");
@@ -435,7 +439,7 @@ define([
                 prvsModule = currModule;
             }
         };
-        window.onpopstate = parseUrl;
+        $(window).bind("popstate", parseUrl);
         var resizeHandler = ko.computed(function() {
             if (initialViewPort !== rootParams.baseModel.getDeviceSize()) {
                 initialViewPort = rootParams.baseModel.getDeviceSize();
@@ -447,7 +451,7 @@ define([
             return rootParams.baseModel.large() ^ rootParams.baseModel.medium() ^ rootParams.baseModel.small() ^ rootParams.baseModel.xl();
         }, self);
         self.changeMenuState = function(state) {
-            if (!self.menuNavigationAvailable) return;
+            if (!genericViewModel.menuNavigationAvailable) return;
             if (["close", "open", "toggle"].indexOf(state) === -1) return;
             if (!rootParams.baseModel.xl()) {
                 var headerHeight = $(".fixed-header").height();
@@ -494,7 +498,10 @@ define([
         var partyData;
         genericViewModel.userInfoPromise.then(function(data) {
             currentModule = data.currentModule;
-            genericViewModel.currentRole(currentModule.moduleName);
+            if (!currentModule) {
+                rootParams.baseModel.showMessages(null, [locale.noDashboardFound], "ERROR");
+                return false;
+            }
             self.application(currentModule.moduleName);
             $.extend(self.userData, data.userData);
             dbAuthenticator(window.location.search);
@@ -502,7 +509,6 @@ define([
             rootParams.baseModel.setwebhelpID(currentModule.moduleName + "-dashboard");
             if (self.userData.userProfile) {
                 genericViewModel.isUserDataSet(true);
-                self.menuNavigationAvailable = data.userData.firstLoginFlowDone && data.userData.menuSupported;
                 Platform.getInstance().then(function(platform) {
                     platform("postLogin");
                 });
@@ -531,6 +537,10 @@ define([
 
         self.dispose = function() {
             resizeHandler.dispose();
+        };
+
+        self.sessionExpiredHandler = function() {
+            window.location.search = "";
         };
     };
 });

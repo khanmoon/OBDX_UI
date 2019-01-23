@@ -46,13 +46,11 @@ define(["ojL10n!resources/nls/generic"], function(Generic) {
                         increaseInterest: "Click here to increase Inflation Rate"
 
                     },
-                    emptyInterest: "Please enter vaild Inflation Rate",
+                    emptyInterest: "Please enter valid Inflation Rate",
                     rateOfInflation: "Inflation Rate"
                 },
                 validate: {
                     targetAmount:"Installment amount for the selected Recurring Deposit Product should be between {minAmount} to {maxAmount}. Please modify your details and try again.",
-                    tenure: "Recurring deposit tenure should be between {min} to {max}.",
-                    amount: "Recurring deposit amount should be between {minAmount} and {maxAmount}.",
                     product: "Please Select Product"
                 },
                 pleaseSelect: "Please Select",

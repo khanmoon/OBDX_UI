@@ -86,6 +86,8 @@ define([
         params.baseModel.registerComponent("transfer-view-limits", "financial-limits");
         params.baseModel.registerComponent("register-biller", "bill-payments");
         params.baseModel.registerComponent("payment-history", "bill-payments");
+        params.baseModel.registerComponent("my-limits", "limits-enquiry");
+
         self.monthEnumList = ko.observableArray([]);
         self.month = ko.observable("01");
         self.monthEnumList = ko.observableArray([

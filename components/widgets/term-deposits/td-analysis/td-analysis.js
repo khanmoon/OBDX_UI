@@ -4,9 +4,9 @@ define([
     "./model",
     "ojL10n!resources/nls/td-analysis",
     "ojs/ojbutton"
-], function (ko, $, AnalysisModel, ResourceBundle) {
+], function(ko, $, AnalysisModel, ResourceBundle) {
     "use strict";
-    return function (rootParams) {
+    return function(rootParams) {
         var self = this;
         ko.utils.extend(self, rootParams.rootModel);
         self.resource = ResourceBundle;
@@ -37,14 +37,14 @@ define([
         ];
 
         var summary;
-        var animate = function (max, context) {
+        var animate = function(max, context) {
             var obj = context;
             var existing = 5;
-            var draw = function () {
+            var draw = function() {
                 if (obj)
                     obj.setAttribute("width", existing);
             };
-            var step = function () {
+            var step = function() {
                 draw();
                 existing = existing + 5;
                 if (max >= existing) {
@@ -53,8 +53,8 @@ define([
             };
             step();
         };
-        self.draw = function () {
-            var componentWidth=$(".td-analysis-container>div").width();
+        self.draw = function() {
+            var componentWidth = $(".td-analysis-container>div").width();
             var ratio1 = componentWidth * (self.totalInvestment() / self.totalMaturityAmount());
             var ratio2 = componentWidth * (self.totalCurrentBal() / self.totalMaturityAmount());
             if (self.options[1].count > 0 || self.options[0].count > 0) {
@@ -79,7 +79,7 @@ define([
                     animate(componentWidth, $("#rect3")[0]);
             }
         };
-        var resetData = function (value) {
+        var resetData = function(value) {
             if (value === "conventional") {
                 self.conventionalAnalysis(true);
                 self.totalCurrentBal(summary.totalActiveAvailableBalance.amount);
@@ -95,36 +95,39 @@ define([
             }
             self.draw();
         };
-        self.drawGraph=function(){
+        self.drawGraph = function() {
             self.draw();
         };
+
         function setData(accountInfoData, bankConfigData) {
-            summary = accountInfoData.summary.items[0];
-            for (var i = 0; i < accountInfoData.accounts.length; i++) {
-                if (accountInfoData.accounts[i].module === "CON" && accountInfoData.accounts[i].status === "ACTIVE") {
-                    self.options[0].count += 1;
-                } else if (accountInfoData.accounts[i].module === "ISL" && accountInfoData.accounts[i].status === "ACTIVE") {
-                    self.options[1].count += 1;
+            if (accountInfoData.accounts && accountInfoData.accounts.length) {
+                summary = accountInfoData.summary.items[0];
+                for (var i = 0; i < accountInfoData.accounts.length; i++) {
+                    if (accountInfoData.accounts[i].module === "CON" && accountInfoData.accounts[i].status === "ACTIVE") {
+                        self.options[0].count += 1;
+                    } else if (accountInfoData.accounts[i].module === "ISL" && accountInfoData.accounts[i].status === "ACTIVE") {
+                        self.options[1].count += 1;
+                    }
+                    self.noAccounts(false);
                 }
-                self.noAccounts(false);
+                resetData(self.conventionalAnalysis() ? "conventional" : "islamic");
+                if (self.options[1].count > 0 && self.options[0].count === 0) {
+                    self.conventionalAnalysis(false);
+                }
+                if (bankConfigData.bankConfigurationDTO.moduleList.length > 1 && self.options[0].count > 0 && self.options[1].count) {
+                    self.multipleModules(true);
+                }
+                self.dataFetched(true);
+                ko.tasks.runEarly();
+                resetData(self.conventionalAnalysis() ? "conventional" : "islamic");
             }
-            resetData(self.conventionalAnalysis() ? "conventional" : "islamic");
-            if (self.options[1].count > 0 && self.options[0].count === 0) {
-                self.conventionalAnalysis(false);
-            }
-            if (bankConfigData.bankConfigurationDTO.moduleList.length > 1 && self.options[0].count > 0 && self.options[1].count) {
-                self.multipleModules(true);
-            }
-            self.dataFetched(true);
-            ko.tasks.runEarly();
-            resetData(self.conventionalAnalysis() ? "conventional" : "islamic");
         }
 
-        $.when(AnalysisModel.fetchAccountInfo(), AnalysisModel.fetchBankConfig()).done(function (accountInfoData, bankConfigData) {
+        $.when(AnalysisModel.fetchAccountInfo(), AnalysisModel.fetchBankConfig()).done(function(accountInfoData, bankConfigData) {
             setData(accountInfoData, bankConfigData);
         });
 
-        self.handleButtonChange = function (ui, value) {
+        self.handleButtonChange = function(ui, value) {
             resetData(value.value);
         };
     };

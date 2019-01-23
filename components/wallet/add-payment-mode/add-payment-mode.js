@@ -101,7 +101,7 @@ define([
         self.serviceCharges = ko.observable("0");
         self.checksumValue = ko.observable(0);
         self.initiateOAT = function () {
-            var form = $("<form method='POST' action='http://obdxappbah:7777/digx/v1/payments/transfers/merchantTransferData' enctype='application/x-www-form-urlencoded'></form>");
+            var form = $("<form method='POST' action='@@OBDX_BASE_PATH/payments/transfers/merchantTransferData' enctype='application/x-www-form-urlencoded'></form>");
             form.append("<input type=\"hidden\" name=\"merchantCode\" value=\"" + self.merchantCode() + "\">");
             form.append("<input type=\"hidden\" name=\"failureStaticFlag\" value=\"" + self.failureStaticFlag() + "\">");
             form.append("<input type=\"hidden\" name=\"userAccountNumber\" value=\"" + self.merchantAccountNumber() + "\">");

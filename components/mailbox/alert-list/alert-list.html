@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div id="pagingControlDemo">
-                <oj-table class="mailbox-controls__table-content mailbox-controls-table-content" id="AlertTable" :aria-label="[[$component.nls.mailbox.headers.alertList]]" columns="[[[{headerRenderer:renderHeadCheckBox,renderer:renderCheckBox,sortable:'none'},{headerText:$component.nls.mailbox.headers.subject,field:'subject',style:'width: 70%','renderer': $oj.KnockoutTemplateUtils.getRenderer('subject_template', true)},{headerText:$component.nls.mailbox.headers.received,field:'creationDate',style:'width: 25%',template:'date-time'}]]]" data="[[paginationDataSource]]">
+                <oj-table class="mailbox-controls__table-content mailbox-controls-table-content" id="AlertTable" :aria-label="[[$component.nls.mailbox.headers.alertList]]" columns="[[[{headerRenderer:renderHeadCheckBox,renderer:renderCheckBox,sortable:'none'},{headerText:$component.nls.mailbox.headers.subject,field:'subject',style:'width: 70%','renderer': $oj.KnockoutTemplateUtils.getRenderer('subject_template', true)},{headerText:$component.nls.mailbox.headers.received,field:'creationDate',style:'width: 25%','renderer': $oj.KnockoutTemplateUtils.getRenderer('date-time', true)}]]]" data="[[paginationDataSource]]">
                     <caption class="hide-label" data-bind="text:$component.nls.mailbox.headers.alertList"></caption>
                     </oj-table>
                     <oj-paging-control class="oj-flex-item" id="paging" slot="bottom" :page-size="[[10]]" data="[[paginationDataSource]]"></oj-paging-control>
@@ -35,6 +35,20 @@
                             </div>
                             <!-- /ko -->
 
+                        </td>
+                    </script>
+                    <script type="text/html" id="date-time">
+                        <td>
+                          <!-- ko ifnot:$context.row.readStatus -->
+                            <div class="mailbox-controls-table-content__read">
+                                <span data-bind="text:$baseModel.formatDate($data,'dateTimeStampFormat')"></span>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if:$context.row.readStatus -->
+                            <div class="mailbox-controls-table-content__unread">
+                                <span data-bind="text:$baseModel.formatDate($data,'dateTimeStampFormat')"></span>
+                            </div>
+                            <!-- /ko -->
                         </td>
                     </script>
 
@@ -78,17 +92,3 @@
         </div>
     </page-section>
 </div>
-<script type="text/html" id="date-time">
-    <td>
-        <!-- ko ifnot:readStatus -->
-        <div class="mailbox-controls-table-content__read">
-            <span data-bind="text:$baseModel.formatDate($data.creationDate,'dateTimeStampFormat')"></span>
-        </div>
-        <!-- /ko -->
-        <!-- ko if:readStatus -->
-        <div class="mailbox-controls-table-content__unread">
-            <span data-bind="text:$baseModel.formatDate($data.creationDate,'dateTimeStampFormat')"></span>
-        </div>
-        <!-- /ko -->
-    </td>
-</script>

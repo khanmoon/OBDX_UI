@@ -202,6 +202,11 @@ define([
                 }
             }
         };
+        self.passwordExpiryPeriodChangeHandler = function(event) {
+          if(event.detail.value < self.pwdExpiryWarningPeriod()){
+              params.baseModel.showMessages(null, [self.nls.message.pwdExpiryPeriodCheck], "ERROR");
+          }
+        };
         self.numberMandatoryChangeHandler = function(event) {
             if (event.detail.value) {
                 if (event.detail.value.length !== 0) {
@@ -245,6 +250,11 @@ define([
                 params.baseModel.showMessages(null, [self.nls.message.specialCharListError], "ERROR");
                 return;
             }
+            if (self.pwdExpiryPeriod()<self.pwdExpiryWarningPeriod()) {
+               params.baseModel.showMessages(null, [self.nls.message.pwdExpiryPeriodCheck], "ERROR");
+                return;
+            }
+
             self.payload.policyId(self.id());
             self.payload.pwdPolicyName(self.pwdPolicyName());
             self.payload.pwdPolicyDesc(self.pwdPolicyDesc());

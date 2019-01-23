@@ -22,8 +22,6 @@ define(
                         },
                         initialFunding: "Min - {minAmount}   Max - {maxAmount}",
                         tenure: "Min - {minTenure} yrs   Max - {maxTenure} Yrs",
-                        fileId: "input",
-                        imageId: "target",
                         category: {
                             createCategoryConfirm: "Transaction",
                             goalCode: "Category Code",
@@ -55,7 +53,7 @@ define(
                             list: "Goal Category List Details",
                             interestlink: "View Interest Rates"
                         },
-                        reviewHeaderMsg: "You Initaited a request for adding goal category. Please review details before you confirm!"
+                        reviewHeaderMsg: "You initiated a request for adding goal category. Please review details before you confirm!"
                     },
                     common: {
                         save: "Save",

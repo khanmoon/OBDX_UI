@@ -72,9 +72,11 @@ define(["jquery", "baseService"], function($, BaseService) {
        * @param  {type} deferred description
        * @return {type}          description
        */
-      uploadDocument = function(form, deferred) {
-        var options = {
-          url: "contents",
+      uploadDocument = function (form, deferred, fileName) {
+        var params = {
+          fileName: fileName
+        }, options = {
+          url: "contents?fileName={fileName}",
           selfLoader: true,
           formData: form,
           success: function(data) {
@@ -84,7 +86,7 @@ define(["jquery", "baseService"], function($, BaseService) {
             deferred.reject();
           }
         };
-        baseService.uploadFile(options);
+        baseService.uploadFile(options, params);
       },
       deleteDocumentDeferred,
       /**
@@ -347,9 +349,9 @@ define(["jquery", "baseService"], function($, BaseService) {
        * @param  {type} form description
        * @return {type}      description
        */
-      uploadDocument: function(form) {
+      uploadDocument: function (form, fileName) {
         uploadDocumentDeferred = $.Deferred();
-        uploadDocument(form, uploadDocumentDeferred);
+        uploadDocument(form, uploadDocumentDeferred, fileName);
         return uploadDocumentDeferred;
       },
       /**

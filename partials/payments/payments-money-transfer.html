@@ -26,35 +26,19 @@
         </a>
     </div>
   </div>
+  <div class = "myLimits">
   <modal-window params="baseModel : $baseModel, rootModel : $component,header:$component.payments.common.mylimits,id:$component.viewLimitsModalId">
+      <div class = "myLimits">
+
     <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
       <!-- ko if:(customLimitType() ||  customLimitType()!=="") -->
-      <!-- ko if: $component.loadAccessPointList() -->
 
-      <div class="oj-flex oj-flex-items-pad">
-        <div class="oj-flex-item oj-sm-12">
-    <span data-bind="text:$component.payments.channel"></span>
-  <a class="oj-label-inline" id="channel-disclaimer" href="javascript:void(0)" data-bind="attr:{title:$component.payments.showInformation},click:$component.channelPopup.bind($data,true)">
-          <span class="icons icon-2x icon-information iconStyling"></span></a>
-        </div>
-</div>
-
-
-      <div class="oj-flex oj-flex-items-pad">
-        <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4">
-          <oj-select-one :id="[['channel']]" value="{{selectedChannelIndex}}" on-value-changed="[[channelTypeChangeHandler]]" :placeholder="[[$component.payments.pleaseSelect]]">
-            <!-- ko foreach:$component.channelList -->
-            <oj-option value="[[$index]]"><span data-bind="text:description"></span></oj-option>
-            <!-- /ko -->
-          </oj-select-one>
-        </div>
-      </div>
-      <!-- /ko -->
-      <!-- ko if: viewlimits() && $component.selectedChannel() -->
-      <div data-bind="component:{name:'transfer-view-limits', params:{rootModel: $component,type:$component.customLimitType,id:$component.customPayeeId,accessPointValue:$component.selectedChannelType}}">
+      <!-- ko if: viewlimits() && $component.loadAccessPointList()-->
+      <div data-bind="component:{name:'my-limits', params:{rootModel: $component, isTransactionListNotRequired: true,type:$component.customLimitType}}">
       </div>
       <!-- /ko -->
       <!-- /ko -->
+
       <!-- ko if:!customLimitType() ||  customLimitType()===""-->
       <div class="oj-flex oj-flex-items-pad">
         <div class="oj-flex-item oj-sm-12" data-bind="text:$component.payments.moneytransfer.selectpayee">
@@ -67,7 +51,10 @@
         <span data-bind="text:$component.payments.common.ok"></span>
       </oj-button>
     </div>
+  </div>
+
   </modal-window>
+</div>
   <!-- ko if:userSegment ==='CORP' && $component.additionalDetailsFrom() && $component.transferCurrency() !== $component.additionalDetailsFrom().account.currencyCode && !$component.isMultiplePayment && !$component.isStandingInstruction() && ($component.transferMode() === "SELF" || $component.selectedPayee) -->
   <div class="oj-flex oj-flex-items-pad oj-sm-12">
     <div class="oj-flex oj-flex-items-pad oj-lg-10 oj-md-12 oj-sm-12 payments-money-transfer">

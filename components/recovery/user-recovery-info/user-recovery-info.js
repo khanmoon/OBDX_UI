@@ -26,29 +26,48 @@ define([
     self.todayDate = ko.observable(oj.IntlConverterUtils.dateToLocalIso(rootParams.baseModel.getDate()));
 
     self.verify = function() {
-      if (!rootParams.baseModel.showComponentValidationErrors(document.getElementById("tracker"))) {
-        return;
-      }
-      var payload = ko.toJSON({
-        emailId: self.emailId(),
-        dateOfBirth: self.dateOfBirth
-      });
-      UserIdRecoveryInfoModel.userIdRecoveryRequest(payload).done(function() {
-        self.userInformation(false);
-        self.verification(true);
-      });
+      Promise.all([UserIdRecoveryInfoModel.sessionRequest()])
+        .then(function() {
+          UserIdRecoveryInfoModel.nonceRequest().done(function() {
+            if (!rootParams.baseModel.showComponentValidationErrors(document.getElementById("tracker"))) {
+              return;
+            }
+            var payload = ko.toJSON({
+              emailId: self.emailId(),
+              dateOfBirth: self.dateOfBirth
+            });
+            UserIdRecoveryInfoModel.userIdRecoveryRequest(payload).done(function() {
+              self.userInformation(false);
+              self.verification(true);
+            });
+          });
+        });
     };
     self.loginRedirect = function() {
-      if (Constants.authenticator === "OBDXAuthenticator") {
-        rootParams.baseModel.switchPage({
-          module: "login"
-        }, false);
+      if (!rootParams.baseModel.cordovaDevice()) {
+        if (Constants.authenticator === "OBDXAuthenticator") {
+          rootParams.baseModel.switchPage({
+            module: "login"
+          }, false);
+        } else {
+          rootParams.baseModel.switchPage({}, true);
+        }
       } else {
-        rootParams.baseModel.switchPage({}, true);
+        rootParams.baseModel.switchPage({
+          module: "login",
+          internal: true
+        }, false);
       }
     };
     self.cancelClicked = function() {
-      rootParams.baseModel.switchPage(null, false);
+      if (!rootParams.baseModel.cordovaDevice()) {
+        rootParams.baseModel.switchPage(null, false);
+      } else {
+        rootParams.baseModel.switchPage({
+          module: "login",
+          internal: true
+        }, false);
+      }
     };
   };
 });

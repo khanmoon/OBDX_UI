@@ -104,6 +104,8 @@ define([
         rootParams.baseModel.registerComponent("payment-uk", "payments");
         rootParams.baseModel.registerComponent("payment-sepa", "payments");
         rootParams.baseModel.registerComponent("transfer-view-limits", "financial-limits");
+        rootParams.baseModel.registerComponent("my-limits", "limits-enquiry");
+
         rootParams.baseModel.registerComponent("payment-peer-to-peer-existing", "payments");
         rootParams.baseModel.registerComponent("payment-peer-to-peer", "payments");
         rootParams.baseModel.registerComponent("standing-instructions-landing", "payments");
@@ -121,7 +123,8 @@ define([
             "row",
             "comment-box",
             "amount-input",
-            "account-input"
+            "account-input",
+            "internal-account-input"
         ]);
 
         function isTransferMode(mode) {
@@ -150,7 +153,7 @@ define([
         self.purposeDescription = ko.observable();
         self.chargesDescription = ko.observable();
         self.shareMessage = ko.observable(self.payments.shareMessage);
-        self.paymentDetails = ko.observable(self.params.transferDetails);
+        self.paymentDetails = ko.observable(self.params && self.params.transferDetails ? self.params.transferDetails :"");
         self.additionalDetailsFrom = ko.observable();
         self.isDataLoaded = ko.observable(true);
         self.frequencyDescription = ko.observable();
@@ -219,7 +222,7 @@ define([
         self.domesticPayeeSubType = ko.observable();
         self.selectedTabData = rootParams.metaData;
         self.ispeerToPeer = ko.observable(false);
-        self.paymentId = ko.observable(self.params.paymentId);
+        self.paymentId = ko.observable(self.params ? (self.params.paymentId||""):"");
         self.payeeListExpandAll = ko.observableArray();
         self.payeeSubListExpandAll = ko.observableArray();
         self.payeeSubList = ko.observableArray();
@@ -695,17 +698,22 @@ define([
                 self.transferOn(self.transferOnArray[0].id);
             }
         };
-        if (self.params === "ownAccountTransfer" || (self.params.transferObject ? (self.params.transferObject().payeeType === "SELF") : false)) {
-            self.transferTo("self");
-            self.transferToChange(null, { option: "checked" });
-            if (self.params.transferObject) {
-                self.transferAmount(self.params.transferObject().amount);
-                self.transferCurrency(self.params.transferObject().currency);
-                self.note(self.params.transferObject().note);
-            }
-        } else {
-            self.transferTo();
+        function checkSelfTransfer(){
+          if(self.params){
+              if (self.params === "ownAccountTransfer" || (self.params.transferObject && self.params.transferObject().payeeType === "SELF")) {
+                  self.transferTo("self");
+                  self.transferToChange(null, { option: "checked" });
+                  if (self.params.transferObject) {
+                      self.transferAmount(self.params.transferObject().amount);
+                      self.transferCurrency(self.params.transferObject().currency);
+                      self.note(self.params.transferObject().note);
+                  }
+              } else {
+                  self.transferTo();
+              }
+          }
         }
+        checkSelfTransfer();
         self.transferTo(self.transferTo() ? self.transferTo() : self.transferToArray[0].id);
         self.getPayLoad = function(paymentMode) {
             var model;

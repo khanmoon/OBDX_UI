@@ -17,7 +17,7 @@ define([], function() {
         proofOfIdentity: "Proof of Identity {applicant}",
         contactInformation: "Contact Information {applicant}",
         employmentInformation: "Employment Information {applicant}",
-        featuresAndSpecifications: "Features and Specifications",
+        featuresAndSpecifications: "Features",
         fundYourAccount: "Fund Your Account",
         fundYourDeposit: "Fund Your Deposit",
         setupYourDeposit: "Setup Your Deposit",

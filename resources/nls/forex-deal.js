@@ -40,10 +40,7 @@ define([
                     selectDateRange: "Select Date Range",
                     fromDate: "From",
                     toDate: "To",
-                    customDays: "{noOfDays} Day(s)",
-
-                    alt: "Click here to {reference}",
-                    title: "Click here to {reference}"
+                    customDays: "{noOfDays} Day(s)"
                 },
 
                 generic: Generic,

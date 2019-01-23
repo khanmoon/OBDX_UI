@@ -35,8 +35,10 @@ define([
           success: function(data) {
             deferred.resolve(data);
           },
-          error: function(data) {
-            deferred.reject(data);
+          error: function(jqXHR) {
+            if (jqXHR.status !== 417) {
+              deferred.reject(jqXHR);
+            }
           }
         };
         baseService.update(options);

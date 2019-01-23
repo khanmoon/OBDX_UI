@@ -7,7 +7,7 @@ define([
             root: {
                 tdNominee: {
                   header: "Nominations",
-                    accountListTable: "Td Nominee Account List Table",
+                    accountListTable: "List of Nominees for Term-deposit Accounts",
                     accountNumber: "Account Number",
                     primaryHolderName: "Primary Holder Name",
                     holdingPattern: "Holding Pattern",

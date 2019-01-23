@@ -21,9 +21,9 @@ define([
         KoModel.type = ko.observable(KoModel.type);
         KoModel.frequency = ko.observable(KoModel.frequency);
         KoModel.grossAmount.amount = ko.observable(KoModel.grossAmount.amount);
-        KoModel.grossAmount.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+        KoModel.grossAmount.currency = self.localCurrency;
         KoModel.netAmount.amount = ko.observable(KoModel.netAmount.amount);
-        KoModel.netAmount.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+        KoModel.netAmount.currency = self.localCurrency;
         KoModel.temp_isActive = ko.observable(KoModel.temp_isActive);
         KoModel.temp_selectedValues = ko.observable(KoModel.temp_selectedValues);
         if (model && model.id) {

@@ -58,9 +58,10 @@ define([
             void((self.mode() === "BRN" && self.getBranchAddress(data)) || self.getMyAddress(data));
         });
         self.getConfirmScreenMsg = function (jqXHR) {
-            if (jqXHR.responseJSON.transactionAction && jqXHR.responseJSON.transactionAction.transactionDTO.processingDetails.status === "F" && jqXHR.responseJSON.transactionAction.transactionDTO.processingDetails.currentStep === "exec")
-                return self.payments.common.confirmScreen.approvalMessages.FAILED.successmsg;
-            else if (jqXHR.responseJSON.transactionAction)
+            if (jqXHR.responseJSON.transactionAction && jqXHR.responseJSON.transactionAction.transactionDTO.processingDetails.status === "F" && jqXHR.responseJSON.transactionAction.transactionDTO.processingDetails.currentStep === "exec"){
+                var errors = jqXHR.responseJSON.transactionAction.transactionDTO.errors;
+                return errors && errors[0] && errors[0].errorMessage?errors[0].errorMessage:self.payments.common.confirmScreen.approvalMessages.FAILED.successmsg;
+            }else if (jqXHR.responseJSON.transactionAction)
                 return self.payments.common.confirmScreen.approvalMessages[jqXHR.responseJSON.transactionAction.transactionDTO.approvalDetails.status].successmsg;
         };
         self.getConfirmScreenStatus = function (jqXHR) {

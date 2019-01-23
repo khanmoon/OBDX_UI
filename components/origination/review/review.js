@@ -262,11 +262,13 @@ define([
         self.submitApplicationSuccessHandler = function (data) {
             self.disableFinalSubmitButton(false);
             self.productDetails().sectionBeingEdited("");
-            if (data.applicationDetailsDTO[0].applicationId && data.applicationDetailsDTO[0].applicationId.value) {
-                self.productDetails().applicationId.value = data.applicationDetailsDTO[0].applicationId.value;
-                self.productDetails().applicationId.displayValue = data.applicationDetailsDTO[0].applicationId.displayValue;
-                self.appRefNo(data.applicationDetailsDTO[0].applicationId.displayValue);
+
+            if (data.submissionOutputDTO.applications[0].applicationId && data.submissionOutputDTO.applications[0].applicationId.value) {
+                self.productDetails().applicationId.value = data.submissionOutputDTO.applications[0].applicationId.value;
+                self.productDetails().applicationId.displayValue = data.submissionOutputDTO.applications[0].applicationId.displayValue;
+                self.appRefNo(data.submissionOutputDTO.applications[0].applicationId.displayValue);
             }
+
             self.getNextStage();
         };
         self.submitApplicationErrorHandler = function () {

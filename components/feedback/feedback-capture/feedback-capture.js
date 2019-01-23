@@ -6,6 +6,7 @@ define([
   "ojL10n!resources/nls/feedback-capture",
   "ojs/ojinputtext",
   "ojs/ojgauge",
+  "ojs/ojradioset",
   "ojs/ojcheckboxset",
   "ojs/ojknockout-validation",
   "ojs/ojvalidationgroup"
@@ -38,6 +39,26 @@ define([
     self.nonDefaultFeedback = ko.observable(false);
     self.feedbackLoaded = ko.observable(false);
     params.baseModel.registerElement("modal-window");
+    self.ratingValue = ko.observable([{
+      id: 1
+    },
+    {
+      id: 2
+
+    },
+    {
+      id: 3
+
+    },
+    {
+      id: 4
+
+    },
+    {
+      id: 5
+    }
+  ]);
+
     self.ratingFocus = function () {
      $("#ratingGuage").focus();
     };

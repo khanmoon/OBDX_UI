@@ -45,7 +45,11 @@ define([
                     self.loginConfigId(self.componentsList()[loadedComponentOrder].id);
                     params.dashboard.loadComponent(self.uiComponentName(), {}, self);
                 } else if (loadedComponentOrder === self.componentsList().length) {
-                    params.baseModel.switchPage({internal: true}, false, false);
+                    if (params.baseModel.cordovaDevice()) {
+                        params.baseModel.switchPage({ internal: true }, false, false);
+                    } else {
+                        params.baseModel.switchPage({ internal: false }, false, false);
+                    }
                 }
             });
         };

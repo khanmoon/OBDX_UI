@@ -22,6 +22,7 @@ define([
 
     self.resource = resourceBundle;
     ko.utils.extend(self, params.rootModel);
+    params.dashboard.headerName(self.resource.analysisHeader);
     self.transactionList = ko.observableArray([]);
     self.feedbackUserRole = ko.observable([]);
     self.selectedTransaction = ko.observable();
@@ -66,12 +67,25 @@ define([
     self.currentComments = ko.observable([]);
     self.defaultRatingComments = ko.observable([]);
     self.showComments = ko.observable(false);
-    params.dashboard.headerName(self.resource.analysisHeader);
+    self.showGenericSectionFlag = ko.observable(false);
     self.convertToInt = function(data) {
       return parseInt(data);
     };
 
+    self.showGenericSection = function() {
+      self.transactionsLoaded(false);
+      self.showNoData(false);
+      self.chartLoaded(false);
+      self.clearFields();
+      self.showGenericSectionFlag(true);
+    };
+
     self.showIndividualTxn = function() {
+      self.transactionsLoaded(true);
+      self.showNoData(false);
+      self.chartLoaded(false);
+      self.showGenericSectionFlag(false);
+      self.clearFields();
       self.showIndividualTxnScreenLoaded(true);
     };
 
@@ -81,6 +95,9 @@ define([
         self.chartLoaded(false);
         self.showNoData(false);
         ko.tasks.runEarly();
+        if (self.showGenericSectionFlag()) {
+          self.selectedTransaction("GENERIC");
+        }
         FeedbackModel.getLineChartData(self.selectedTransaction(), self.selectedAccessPoint(), self.selectedDataSet().toLowerCase(), self.selectedTimeFrame()).done(function(data) {
           self.lineChartGroup().length = 0;
           self.lineChartData().length = 0;
@@ -101,6 +118,9 @@ define([
                 self.lineChartData()[i].items.push(parseInt(data.ratingPeriodDTOs[j].ratingDTOs[i].ratingPercentage));
               }
             }
+            if (self.showGenericSectionFlag()) {
+              self.selectedTransaction("GENERIC");
+            }
             FeedbackModel.getPieChartData(self.selectedTransaction(), self.selectedAccessPoint(), self.selectedDataSet().toLowerCase(), self.fromDate(), self.toDate()).done(function(data) {
               self.pieChartData().length = 0;
               if (data.definitionReportDTO) {
@@ -118,21 +138,21 @@ define([
                 }
                 self.defaultRatingComments([]);
                 if (data.definitionReportDTO[0].ratingDTO[0].ratingComments) {
-                   for (var m = 0; m < data.definitionReportDTO[0].ratingDTO[0].ratingComments.length; m++) {
-                     if (data.definitionReportDTO[0].ratingDTO[0].ratingComments[m].comments) {
-                       self.defaultRatingComments().push(data.definitionReportDTO[0].ratingDTO[0].ratingComments[m]);
-                     } else {
-                       self.defaultRatingComments().push(self.resource.noCommentFound);
-                     }
-                   }
-                   self.totalAverageRating(data.definitionReportDTO[0].totalAverageRating);
-                   self.totalRating(data.definitionReportDTO[0].totalRating);
-                   self.ratingDTO(data.definitionReportDTO[0].ratingDTO);
-                   self.selectedItem(self.allPieChartDataRating()[0].rating);
-                   self.showComments(true);
-                   self.defaultShowComments(true);
-                 }
-               }
+                  for (var m = 0; m < data.definitionReportDTO[0].ratingDTO[0].ratingComments.length; m++) {
+                    if (data.definitionReportDTO[0].ratingDTO[0].ratingComments[m].comments) {
+                      self.defaultRatingComments().push(data.definitionReportDTO[0].ratingDTO[0].ratingComments[m]);
+                    } else {
+                      self.defaultRatingComments().push(self.resource.noCommentFound);
+                    }
+                  }
+                  self.ratingDTO(data.definitionReportDTO[0].ratingDTO);
+                  self.selectedItem(self.allPieChartDataRating()[0].rating);
+                  self.showComments(true);
+                  self.defaultShowComments(true);
+                }
+                self.totalAverageRating(data.definitionReportDTO[0].totalAverageRating);
+                self.totalRating(data.definitionReportDTO[0].totalRating);
+              }
               self.showIndividualTxnScreenLoaded(true);
               self.chartLoaded(true);
               self.showTopThreeBottomThreeTxn(false);
@@ -150,12 +170,13 @@ define([
     };
     self.tabChangeHandler = function(event) {
       self.defaultShowComments(false);
+      self.showComments(false);
       if (event.detail.value) {
+        self.currentComments().length = 0;
         for (var i = 0; i < self.allPieChartDataRating().length; i++) {
           if (parseInt(self.allPieChartDataRating()[i].rating) === parseInt(event.detail.value)) {
             if (self.allPieChartDataRating()[i].ratingComments) {
-              self.showComments(false);
-              self.currentComments(self.allPieChartDataRating()[i].ratingComments);
+              self.currentComments(JSON.parse(JSON.stringify(self.allPieChartDataRating()[i].ratingComments)));
               ko.tasks.runEarly();
               self.showComments(true);
             }
@@ -244,6 +265,7 @@ define([
           }
           self.showTopThreeBottomThreeTxn(true);
           self.showIndividualTxnScreenLoaded(false);
+          self.showGenericSectionFlag(false);
           self.chartLoaded(false);
           self.showAllTransactionsAnalytics(false);
         }
@@ -292,7 +314,7 @@ define([
           }
           self.showAllTransactionsAnalytics(true);
           self.showIndividualTxnScreenLoaded(false);
-
+          self.showGenericSectionFlag(false);
           self.chartLoaded(false);
           self.showTopThreeBottomThreeTxn(false);
         });
@@ -304,12 +326,16 @@ define([
         self.accessPointLoaded(true);
       }
     });
+
     FeedbackModel.getFeedbackUserRole().done(function(data) {
-      if (data.enterpriseRoleDTOs) {
-        self.feedbackUserRole(data.enterpriseRoleDTOs);
-        self.feedbackUserRoleLoaded(true);
+      for (var j = 0; j < data.enterpriseRoleDTOs.length; j++) {
+        if (data.enterpriseRoleDTOs[j].enterpriseRoleId !== "administrators" && data.enterpriseRoleDTOs[j].enterpriseRoleId !== "administrator") {
+          self.feedbackUserRole().push(data.enterpriseRoleDTOs[j]);
+        }
       }
+      self.feedbackUserRoleLoaded(true);
     });
+
     FeedbackModel.getTimeFrameData().done(function(data) {
       if (data.enumRepresentations) {
         self.timeFrameData(data.enumRepresentations[0].data);

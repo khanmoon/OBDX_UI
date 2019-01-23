@@ -48,9 +48,10 @@ define([
         self.payeeDetails = self.params.data ? self.params.data.payeeDetails ? self.params.data.payeeDetails() : self.params.payeeDetails ? self.params.payeeDetails() : ko.observable() : ko.observable();
         self.paymentTransferData = self.params.data ? self.params.data.paymentTransferData ? self.params.data.paymentTransferData() : self.params.paymentTransferData ? self.params.paymentTransferData() : ko.observable() : ko.observable();
         self.getConfirmScreenMsg = function(jqXHR) {
-            if (jqXHR.responseJSON.transactionAction && jqXHR.responseJSON.transactionAction.transactionDTO.processingDetails.status === "F" && jqXHR.responseJSON.transactionAction.transactionDTO.processingDetails.currentStep === "exec")
-                return self.payments.common.confirmScreen.approvalMessages.FAILED.successmsg;
-            else if (jqXHR.responseJSON.transactionAction)
+            if (jqXHR.responseJSON.transactionAction && jqXHR.responseJSON.transactionAction.transactionDTO.processingDetails.status === "F" && jqXHR.responseJSON.transactionAction.transactionDTO.processingDetails.currentStep === "exec"){
+                var errors = jqXHR.responseJSON.transactionAction.transactionDTO.errors;
+                return errors && errors[0] && errors[0].errorMessage?errors[0].errorMessage:self.payments.common.confirmScreen.approvalMessages.FAILED.successmsg;
+            }else if (jqXHR.responseJSON.transactionAction)
                 return self.payments.common.confirmScreen.approvalMessages[jqXHR.responseJSON.transactionAction.transactionDTO.approvalDetails.status].successmsg;
         };
         self.getConfirmScreenStatus = function(jqXHR) {
@@ -91,7 +92,8 @@ define([
                 ],
                 [{
                         label: self.payments ? self.payments.payee.accountnumber : self.payments.moneytransfer.accountNumber,
-                        value: self.payeeDetails().accountNumber
+                        value: self.payeeDetails().accountNumber,
+                        isInternalAccNo : true
                     },
                     {
                         label: self.payments ? self.payments.payee.accounttype : self.payments.moneytransfer.accounttype,

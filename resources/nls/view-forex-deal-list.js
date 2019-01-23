@@ -70,12 +70,19 @@ define([
                         C: "Canceled",
                         H: "Hold"
                     },
+                    staticAlt: {
+                        lookUpAllDeals: "Show All Deals",
+                        initiateDeal: "Initiate Deal"
+                    },
+                    staticTitle: {
+                        lookUpAllDeals: "Show All Deals",
+                        initiateDeal: "Initiate Deal"
+                    },
                     alt: "Click here to {reference}",
                     title: "Click here to {reference}",
                     closePopup: "Close Pop-Up",
                     search: "Search",
                     select: "Please Select",
-                    ariaSelect: "Please Select {label}",
                     typeDealNum: "Type Deal Number",
                     searchDealNo: "Search Deal Number"
                 },

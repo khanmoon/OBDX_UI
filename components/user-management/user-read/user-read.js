@@ -48,11 +48,6 @@ define([
     rootParams.baseModel.registerComponent("users-update", "user-management");
     rootParams.baseModel.registerElement("modal-window");
     rootParams.baseModel.registerElement("confirm-screen");
-    self.getEnterpriseRoles = function() {
-      UserReadModel.getEnterpriseRoles().done(function(data) {
-        self.userTypeList = data.enterpriseRoleDTOs;
-      });
-    };
     self.usernamesearched = ko.observable(rootParams.rootModel.usernamesearched());
     self.firstNamesearched = ko.observable(rootParams.rootModel.firstNamesearched());
     self.lastNamesearched = ko.observable(rootParams.rootModel.lastNamesearched());
@@ -60,7 +55,6 @@ define([
     self.mobileNumbersearched = ko.observable(rootParams.rootModel.mobileNumbersearched());
     self.userList = ko.observable(rootParams.rootModel.user().searchedUserList());
     rootParams.dashboard.headerName(self.nls.headers.usermanagement);
-    self.getEnterpriseRoles();
     self.entityLimitPackages = ko.observableArray();
     self.accessPointGroup = ko.observableArray();
     self.accessPointExt = ko.observableArray();
@@ -86,12 +80,12 @@ define([
         var tempArray = [];
         var data;
         for (var b = 0; b < self.accessPoint().length; b++) {
-           data = self.limitPackageSearch(self.userFullData().limitPackages[f], self.accessPoint()[b]);
+          data = self.limitPackageSearch(self.userFullData().limitPackages[f], self.accessPoint()[b]);
           if (data)
             tempArray.push(data);
         }
         for (b = 0; b < self.accessPointGroup().length; b++) {
-           data = self.limitPackageSearch(self.userFullData().limitPackages[f], self.accessPointGroup()[b]);
+          data = self.limitPackageSearch(self.userFullData().limitPackages[f], self.accessPointGroup()[b]);
           if (data)
             tempArray.push(data);
         }
@@ -115,29 +109,91 @@ define([
       }
     };
 
-
     var searchParameters = {
       "accessType": "INT"
     };
-    Promise.all([UserReadModel.fetchAccess(searchParameters), UserReadModel.listAccessPointGroup()])
+    Promise.all([UserReadModel.fetchAccess(searchParameters), UserReadModel.listAccessPointGroup(), UserReadModel.getEnterpriseRoles(),UserReadModel.readUser(self.username())])
       .then(function(response) {
         var data = response[0];
         var data1 = response[1];
+        var data2 = response[2];
+        var data3 = response[3];
+        self.userTypeList = data2.enterpriseRoleDTOs;
+          self.userFullData(data3.userDTO);
+          for (var c = 0; c < self.countries().length; c++) {
+            if (self.userFullData().address.country === self.countries()[c].value) {
+              self.countryName = self.countries()[c].text;
+            }
+          }
+          var i;
+          ko.utils.arrayForEach(self.userTypeList, function(item) {
+            for (i = 0; i < self.userFullData().userGroups.length; i++) {
+              if (item.enterpriseRoleId.toLowerCase() === self.userFullData().userGroups[i].toLowerCase()) {
+                self.userFullData().userType = item;
+                var index = self.userFullData().userGroups.indexOf(self.userFullData().userGroups[i]);
+                self.userFullData().userGroups.splice(index, 1);
+              }
+            }
+          });
+          for (i = 0; i < data3.userDTO.userAccessPointRelationshipList.length; i++) {
+            for (var j = 0; j < self.accessPointExt().length; j++) {
+              if (data3.userDTO.userAccessPointRelationshipList[i].accessPointId === self.accessPointExt()[j].value)
+                self.selectedExtAccessPoint.push(data3.userDTO.userAccessPointRelationshipList[i]);
+            }
+          }
 
-        for (var i = 0; i < data1.accessPointGroupListDTO.length; i++) {
+          for (i = 0; i < data3.userDTO.userAccessPointRelationshipList.length; i++) {
+            if (self.userFullData().homeEntity === data3.userDTO.userAccessPointRelationshipList[i].determinantValue) {
+              if (data3.userDTO.userAccessPointRelationshipList[i].status === true) {
+                self.selectedAccessPoint.push(data3.userDTO.userAccessPointRelationshipList[i].accessPointId);
+              }
+            }
+          }
+          if (data3.userDTO.accessibleEntity.length > 1) {
+            for (var k = 0; k < data3.userDTO.accessibleEntity.length; k++) {
+              data3.userDTO.accessibleEntities[k].selectedAccessPoints = [];
+              for (var m = 0; m < self.userFullData().userAccessPointRelationshipList.length; m++) {
+                if (data3.userDTO.accessibleEntity[k] !== self.userFullData().homeEntity && data3.userDTO.accessibleEntity[k] === self.userFullData().userAccessPointRelationshipList[m].determinantValue && data3.userDTO.userAccessPointRelationshipList[m].status === true) {
+                  for (var n = 0; n < self.accessPoint().length; n++) {
+                    if (self.userFullData().userAccessPointRelationshipList[m].accessPointId === self.accessPoint()[n].value) {
+                      self.selectedAccessPointEntity.push(self.userFullData().userAccessPointRelationshipList[m].accessPointId);
+                      data3.userDTO.accessibleEntities[k].selectedAccessPoints.push(self.userFullData().userAccessPointRelationshipList[m].accessPointId);
+                    }
+                  }
+                }
+              }
+            }
+          }
+          for (i = 0; i < self.userFullData().limitPackages.length; i++) {
+            if (self.userFullData().limitPackages[i].targetUnit === self.userFullData().homeEntity && self.userFullData().limitPackages[i].entityLimitPackageMappingDTO.length) {
+              self.homeEntityLimitPackage(true);
+            }
+          }
+          UserReadModel.fetchChildRole(self.userFullData().userType.enterpriseRoleId).done(function(data) {
+            self.childRoleEnums(data.applicationRoleDTOs);
+            self.childRoleEnumsLoaded(true);
+            self.selectedChildRole(self.userFullData().applicationRoles);
+          });
+          if (self.userFullData().userType.enterpriseRoleName === "Retail User")
+            self.userFullData().phoneNumber = self.userFullData().homePhone;
+          self.setHomeEntityParty();
+          self.setEntityLimitPackages();
+          self.dataLoaded(true);
+
+        for (i = 0; i < data1.accessPointGroupListDTO.length; i++) {
           self.accessPointGroup.push({
             text: data1.accessPointGroupListDTO[i].description,
             value: data1.accessPointGroupListDTO[i].accessPointGroupId
           });
         }
 
-        self.accessPointGroup().sort(function(a,b) {
-      if ( a.value < b.value )
-          return -1;
-      if ( a.value > b.value )
-          return 1;
-      return 0;
-  } );
+        self.accessPointGroup().sort(function(a, b) {
+          if (a.value < b.value)
+            return -1;
+          if (a.value > b.value)
+            return 1;
+          return 0;
+        });
 
         for (i = 0; i < data.accessPointListDTO.length; i++) {
           if (data.accessPointListDTO[i].type === "INT") {
@@ -146,13 +202,13 @@ define([
               value: data.accessPointListDTO[i].id
             });
 
-            self.accessPoint().sort(function(a,b) {
-          if ( a.value < b.value )
-              return -1;
-          if ( a.value > b.value )
-              return 1;
-          return 0;
-      } );
+            self.accessPoint().sort(function(a, b) {
+              if (a.value < b.value)
+                return -1;
+              if (a.value > b.value)
+                return 1;
+              return 0;
+            });
           } else {
             self.accessPointExt().push({
               text: data.accessPointListDTO[i].description,
@@ -165,69 +221,6 @@ define([
 
       });
 
-    UserReadModel.readUser(self.username()).done(function(data) {
-      self.userFullData(data.userDTO);
-      for (var c = 0; c < self.countries().length; c++) {
-        if (self.userFullData().address.country === self.countries()[c].value) {
-          self.countryName = self.countries()[c].text;
-        }
-      }
-      var i;
-      ko.utils.arrayForEach(self.userTypeList, function(item) {
-        for (i = 0; i < self.userFullData().userGroups.length; i++) {
-          if (item.enterpriseRoleId.toLowerCase() === self.userFullData().userGroups[i].toLowerCase()) {
-            self.userFullData().userType = item;
-            var index = self.userFullData().userGroups.indexOf(self.userFullData().userGroups[i]);
-            self.userFullData().userGroups.splice(index, 1);
-          }
-        }
-      });
-      for (i = 0; i < data.userDTO.userAccessPointRelationshipList.length; i++) {
-        for (var j = 0; j < self.accessPointExt().length; j++) {
-          if (data.userDTO.userAccessPointRelationshipList[i].accessPointId === self.accessPointExt()[j].value)
-            self.selectedExtAccessPoint.push(data.userDTO.userAccessPointRelationshipList[i]);
-        }
-      }
-
-      for (i = 0; i < data.userDTO.userAccessPointRelationshipList.length; i++) {
-        if (self.userFullData().homeEntity === data.userDTO.userAccessPointRelationshipList[i].determinantValue) {
-          if (data.userDTO.userAccessPointRelationshipList[i].status === true) {
-            self.selectedAccessPoint.push(data.userDTO.userAccessPointRelationshipList[i].accessPointId);
-          }
-        }
-      }
-      if (data.userDTO.accessibleEntity.length > 1) {
-        for (var k = 0; k < data.userDTO.accessibleEntity.length; k++) {
-          data.userDTO.accessibleEntities[k].selectedAccessPoints = [];
-          for (var m = 0; m < self.userFullData().userAccessPointRelationshipList.length; m++) {
-            if (data.userDTO.accessibleEntity[k] !== self.userFullData().homeEntity && data.userDTO.accessibleEntity[k] === self.userFullData().userAccessPointRelationshipList[m].determinantValue && data.userDTO.userAccessPointRelationshipList[m].status === true) {
-              for (var n = 0; n < self.accessPoint().length; n++) {
-                if (self.userFullData().userAccessPointRelationshipList[m].accessPointId === self.accessPoint()[n].value) {
-                  self.selectedAccessPointEntity.push(self.userFullData().userAccessPointRelationshipList[m].accessPointId);
-                  data.userDTO.accessibleEntities[k].selectedAccessPoints.push(self.userFullData().userAccessPointRelationshipList[m].accessPointId);
-                }
-              }
-            }
-          }
-        }
-      }
-      for (i = 0; i < self.userFullData().limitPackages.length; i++) {
-        if (self.userFullData().limitPackages[i].targetUnit === self.userFullData().homeEntity && self.userFullData().limitPackages[i].entityLimitPackageMappingDTO.length) {
-          self.homeEntityLimitPackage(true);
-        }
-      }
-      UserReadModel.fetchChildRole(self.userFullData().userType.enterpriseRoleId).done(function(data) {
-        self.childRoleEnums(data.applicationRoleDTOs);
-        self.childRoleEnumsLoaded(true);
-        self.selectedChildRole(self.userFullData().applicationRoles);
-      });
-      if (self.userFullData().userType.enterpriseRoleName === "Retail User")
-        self.userFullData().phoneNumber = self.userFullData().homePhone;
-      self.setHomeEntityParty();
-      self.setEntityLimitPackages();
-      self.dataLoaded(true);
-
-    });
     UserReadModel.fetchDeviceCountForPushNotification(self.username()).done(function(data) {
       ko.utils.arrayForEach(data.listDTO, function(item) {
         if (item.os === "ANDROID" && item.count > 0) {

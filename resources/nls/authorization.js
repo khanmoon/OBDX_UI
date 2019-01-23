@@ -57,10 +57,6 @@ define([
                 approle: {
                     createSuccess: "Application Role created successfully.",
                     updateSuccess: "Application Role updated successfully.",
-                    validName: "Enter Valid Application Role Name",
-                    validDisplayName: "Enter Valid Application Role Display Name",
-                    validDesc: "Enter Valid Application Role Description",
-                    validEnterpriseName: "Enter Valid Enterprise Role Name",
                     addApplicationRole: "Add New Application Role",
                     appRoles: "Application Roles",
                     appRoleAdded: "Application Role Added"

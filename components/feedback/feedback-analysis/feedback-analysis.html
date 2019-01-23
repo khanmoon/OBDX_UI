@@ -19,6 +19,11 @@
                <span data-bind="text:$component.resource.showAllTransactionsLabel"></span>
              </a>
             </li>
+            <li id="generic">
+              <a href="#" aria-controls="all-tab-panel" id="all-tab" :aria-label="[[$component.resource.genericFeedback]]" on-click="[[$component.showGenericSection]]">
+               <span data-bind="text:$component.resource.genericFeedback"></span>
+             </a>
+            </li>
           </ul>
         </oj-navigation-list>
       </div>
@@ -27,6 +32,7 @@
 
   <!-- ko if:showTopThreeBottomThreeTxn-->
   <!-- ko ifnot: showIndividualTxnScreenLoaded-->
+  <!-- ko ifnot: showGenericSectionFlag -->
   <!-- ko ifnot:$component.showAllTransactionsAnalytics() -->
   <!-- ko ifnot:$component.chartLoaded() -->
   <div data-bind="template: { name: 'feedback/feedback-analytics-results' }"></div>
@@ -34,74 +40,90 @@
   <!-- /ko -->
   <!-- /ko -->
   <!-- /ko -->
+  <!-- /ko -->
+
 
   <!-- ko if:showAllTransactionsAnalytics-->
   <!-- ko ifnot:$component.showTopThreeBottomThreeTxn() -->
   <!-- ko ifnot:$component.chartLoaded() -->
   <!-- ko ifnot: showIndividualTxnScreenLoaded-->
+  <!-- ko ifnot: showGenericSectionFlag -->
+
 
   <div data-bind="template: { name: 'feedback/feedback-analytics-all' }"></div>
   <!-- /ko -->
   <!-- /ko -->
   <!-- /ko -->
   <!-- /ko -->
+  <!-- /ko -->
 
-  <!-- ko if: showIndividualTxnScreenLoaded-->
+
+  <!-- ko if: $component.showGenericSectionFlag() || showIndividualTxnScreenLoaded -->
   <!-- ko if: accessPointLoaded-->
   <oj-validation-group id="tracker" valid="{{$component.groupValid}}">
     <div class="oj-flex description-align">
       <div class="oj-flex-item feedback-analytics-content dashboard-admin-action-card-container">
+        <!-- ko ifnot: $component.showGenericSectionFlag() -->
         <div class="oj-flex-item  admin-card__description" data-bind="html:$component.resource.infoheader">
         </div>
-      </div>
-    </div>
-    <div class="oj-flex search-align">
-      <!-- ko if: feedbackUserRoleLoaded -->
-      <div class="oj-flex-item oj-lg-2 oj-md-2 oj-sm-2">
-        <oj-label><span data-bind="text:$component.resource.dataSetLabel"></span></oj-label>
-        <oj-select-one id="userRole" :aria-label="[[$component.resource.selectDataSet]]" value="{{selectedDataSet}}" :placeholder="{{$component.resource.selectDataSet}}" required>
-          <!-- ko foreach: $component.feedbackUserRole -->
-          <oj-option value="[[enterpriseRoleId]]"><span data-bind="text: enterpriseRoleName"></span></oj-option>
           <!-- /ko -->
-        </oj-select-one>
+          <!-- ko if: $component.showGenericSectionFlag() -->
+          <div class="oj-flex-item  admin-card__description" data-bind="html:$component.resource.infoheaderGeneric">
+          </div>
+            <!-- /ko -->
+        </div>
       </div>
-      <!-- /ko -->
-      <div class="oj-flex-item oj-lg-1 oj-md-2 oj-sm-2">
-      </div>
-      <div class="oj-flex-item oj-lg-2 oj-md-2 oj-sm-2">
-        <oj-label><span data-bind="text:$component.resource.accessPointLabel"></span></oj-label>
-        <oj-select-one id="accessPoint" :aria-label="[[$component.resource.selectAccessPoint]]" value="{{selectedAccessPoint}}" :placeholder="{{$component.resource.selectAccessPoint}}" required>
-          <!-- ko foreach: $component.accessPoint -->
-          <oj-option value="[[id]]"><span data-bind="text: description"></span></oj-option>
-          <!-- /ko -->
-        </oj-select-one>
-      </div>
-      <div class="oj-flex-item oj-lg-1 oj-md-2 oj-sm-2">
-      </div>
-      <!-- ko if: transactionsLoaded -->
-      <div class="oj-flex-item oj-lg-2 oj-md-2 oj-sm-2">
-        <oj-label><span data-bind="text:$component.resource.selectTransactions"></span></oj-label>
-        <oj-select-one id="transactions" :aria-label="[[$component.resource.selectTransactions]]" value="{{selectedTransaction}}" :placeholder="{{$component.resource.selectTransactions}}" required>
-          <!-- ko foreach: $component.transactionList -->
-          <oj-option value="[[id]]"><span data-bind="text: name"></span></oj-option>
-          <!-- /ko -->
-        </oj-select-one>
-      </div>
-      <!-- /ko -->
-      <div class="oj-flex-item oj-lg-1 oj-md-1 oj-sm-1">
-      </div>
-      <!-- ko if: timeFrameDataLoaded -->
-      <div class="oj-flex-item oj-lg-2 oj-md-2 oj-sm-2">
-        <oj-label><span data-bind="text:$component.resource.timeFrameLabel"></span></oj-label>
-        <oj-select-one id="timeFrameId" :aria-label="[[$component.resource.selectTimeFrame]]" value="{{selectedTimeFrame}}" on-value-changed="{{$component.selectPeriodHandler}}" :placeholder="{{$component.resource.selectTimeFrame}}" required>
-          <!-- ko foreach: $component.timeFrameData -->
-          <oj-option value="[[code]]"><span data-bind="text: description"></span></oj-option>
-          <!-- /ko -->
-        </oj-select-one>
-      </div>
+      <div class="oj-flex search-align">
+        <!-- ko if: feedbackUserRoleLoaded -->
+        <div class="oj-flex-item oj-lg-2 oj-md-2 oj-sm-2">
+          <oj-label><span data-bind="text:$component.resource.dataSetLabel"></span></oj-label>
+          <oj-select-one id="userRole" :aria-label="[[$component.resource.selectDataSet]]" value="{{selectedDataSet}}" :placeholder="{{$component.resource.selectDataSet}}" required>
+            <!-- ko foreach: $component.feedbackUserRole -->
+            <oj-option value="[[enterpriseRoleId]]"><span data-bind="text: enterpriseRoleName"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex-item oj-lg-1 oj-md-2 oj-sm-2">
+        </div>
+        <div class="oj-flex-item oj-lg-2 oj-md-2 oj-sm-2">
+          <oj-label><span data-bind="text:$component.resource.accessPointLabel"></span></oj-label>
+          <oj-select-one id="accessPoint" :aria-label="[[$component.resource.selectAccessPoint]]" value="{{selectedAccessPoint}}" :placeholder="{{$component.resource.selectAccessPoint}}" required>
+            <!-- ko foreach: $component.accessPoint -->
+            <oj-option value="[[id]]"><span data-bind="text: description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+        <div class="oj-flex-item oj-lg-1 oj-md-1 oj-sm-1">
+        </div>
+        <!-- ko if: transactionsLoaded -->
+        <div class="oj-flex-item oj-lg-2 oj-md-2 oj-sm-2">
+          <oj-label><span data-bind="text:$component.resource.selectTransactions"></span></oj-label>
+          <oj-select-one id="transactions" :aria-label="[[$component.resource.selectTransactions]]" value="{{selectedTransaction}}" :placeholder="{{$component.resource.selectTransactions}}" required>
+            <!-- ko foreach: $component.transactionList -->
+            <oj-option value="[[id]]"><span data-bind="text: name"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+        <!-- /ko -->
+        <div class="oj-flex-item oj-lg-1 oj-md-1 oj-sm-1">
+        </div>
+        <!-- ko ifnot: $component.showGenericSectionFlag() -->
+        <div class="oj-flex-item oj-lg-1 oj-md-2 oj-sm-2">
+        </div>
+        <!-- /ko -->
 
-      <!-- /ko -->
-    </div>
+        <!-- ko if: timeFrameDataLoaded -->
+        <div class="oj-flex-item oj-lg-2 oj-md-2 oj-sm-2">
+          <oj-label><span data-bind="text:$component.resource.timeFrameLabel"></span></oj-label>
+          <oj-select-one id="timeFrameId" :aria-label="[[$component.resource.selectTimeFrame]]" value="{{selectedTimeFrame}}" on-value-changed="{{$component.selectPeriodHandler}}" :placeholder="{{$component.resource.selectTimeFrame}}" required>
+            <!-- ko foreach: $component.timeFrameData -->
+            <oj-option value="[[code]]"><span data-bind="text: description"></span></oj-option>
+            <!-- /ko -->
+          </oj-select-one>
+        </div>
+        <!-- /ko -->
+      </div>
   </oj-validation-group>
   <!-- ko if: temp_datePickerLoaded -->
   <div class="oj-flex">
@@ -130,7 +152,7 @@
   </div>
   <!-- /ko -->
   <!-- ko ifnot:$component.showNoData() -->
-  <!-- ko if:chartLoaded-->
+  <!-- ko if:$component.chartLoaded()-->
   <!-- ko ifnot:$component.showTopThreeBottomThreeTxn() -->
   <!-- ko ifnot:$component.showAllTransactionsAnalytics() -->
   <div class="oj-flex">
@@ -197,44 +219,48 @@
               </ul>
             </oj-tab-bar>
           </div>
-          <!-- ko if: $component.showComments -->
-           <!-- ko if: $component.defaultShowComments -->
-           <!-- ko foreach: $component.defaultRatingComments -->
-           <!-- ko if: typeof $data !== "string"-->
-           <div class="comments-container">
-             <ul>
-               <li>
-                 <span id="results" data-bind='text: $baseModel.format($component.resource.commentsBy, {userId: userId})'></span>
-                 <span id="results" data-bind='text: $baseModel.formatDate($data.commentDate, "dateFormat")'></span>
-                 <span id="results" data-bind='text: comments'></span>
-               </li>
-             </ul>
-           </div>
-           <!-- /ko -->
-           <!-- ko if: typeof $data === "string"-->
-           <span id="results" data-bind='text: $data'></span>
-           <!-- /ko -->
-           <!-- /ko -->
-           <!-- /ko -->
-           <!-- ko ifnot: $component.defaultShowComments -->
-           <!-- ko foreach: $component.currentComments -->
-           <!-- ko if: typeof $data !== "string"-->
-           <div class="comments-container">
-             <ul>
-               <li>
-                 <span id="results" data-bind='text: $baseModel.format($component.resource.commentsBy, {userId: userId})'></span>
-                 <span id="results" data-bind='text: $baseModel.formatDate($data.commentDate, "dateFormat")'></span>
-                 <span id="results" data-bind='text: comments'></span>
-               </li>
-             </ul>
-           </div>
-           <!-- /ko -->
-           <!-- ko if: typeof $data === "string"-->
-           <span id="results" data-bind='text: $data'></span>
-           <!-- /ko -->
-           <!-- /ko -->
-           <!-- /ko -->
-           <!-- /ko -->
+          <!-- ko if: $component.showComments() -->
+          <!-- ko if: $component.defaultShowComments() -->
+          <!-- ko foreach: $component.defaultRatingComments -->
+          <!-- ko if: typeof $data !== "string"-->
+          <!-- ko if: $data.comments -->
+          <div class="comments-container">
+            <ul>
+              <li>
+                <span id="results" data-bind='text: $baseModel.format($component.resource.commentsBy, {userId: userId})'></span>
+                <span id="results" data-bind='text: $baseModel.formatDate($data.commentDate, "dateFormat")'></span>
+                <span id="results" data-bind='text: comments'></span>
+              </li>
+            </ul>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if: typeof $data === "string"-->
+          <span id="results" data-bind='text: $data'></span>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko ifnot: $component.defaultShowComments() -->
+          <!-- ko foreach: $component.currentComments -->
+          <!-- ko if: typeof $data !== "string"-->
+          <!-- ko if: $data.comments -->
+          <div class="comments-container">
+            <ul>
+              <li>
+                <span id="results" data-bind='text: $baseModel.format($component.resource.commentsBy, {userId: userId})'></span>
+                <span id="results" data-bind='text: $baseModel.formatDate($data.commentDate, "dateFormat")'></span>
+                <span id="results" data-bind='text: comments'></span>
+              </li>
+            </ul>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if: typeof $data === "string"-->
+          <span id="results" data-bind='text: $data'></span>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- /ko -->
         </div>
       </div>
     </div>
@@ -246,10 +272,11 @@
       </div>
       <div class="oj-flex-item admin-card__description" data-bind="html:$component.resource.optionRatingSectionHeading">
       </div>
-      <div class="oj-flex oj-flex-items-pad rating-response-section">
+      <div class="oj-flex oj-flex-items-pad rating-response-section margin-left">
         <!-- ko foreach: $component.allPieChartDataRating -->
-        <div class="oj-flex-item individual-section">
+        <div class="oj-flex-item oj-lg-2 individual-section">
           <oj-rating-gauge :id="[['gaugeForCustomerResponse'+$index()]]" readonly value="{{$component.convertToInt(rating)}}"></oj-rating-gauge>
+          <div class = "margin-top" >
           <!-- ko foreach: questions -->
           <oj-label for="questionId"><span data-bind="text:questionDescription"></span></oj-label>
           <!-- ko foreach: options -->
@@ -260,6 +287,7 @@
           </div>
           <!-- /ko -->
           <!-- /ko -->
+          </div>
         </div>
         <!-- /ko -->
       </div>
@@ -273,4 +301,4 @@
   <span data-bind="text:$component.resource.noData"></span>
   <!-- /ko -->
   <!-- /ko -->
-</div>
+  </div>

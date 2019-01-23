@@ -50,6 +50,8 @@
       </oj-button>
 
     </div>
+
+    <!-- ko if: menuNavigationAvailable -->
     <div class="oj-flex oj-flex-items-pad">
       <div class="oj-flex-item oj-sm-12">
         <a href="#" id="forgotUserId" class="forgotPassword" data-bind="text:nls.loginForm.labels.forgotUsername,
@@ -59,13 +61,14 @@
         <a href="#" id="forgotPassword" class="forgotPassword" data-bind="text:nls.loginForm.labels.forgotPassword,click:forgotPass.bind($data,$root) ,attr:{alt: $component.nls.forgotPasswordClick, title: $component.nls.forgotPasswordTitle}"></a>
       </div>
     </div>
+    <!-- /ko -->
   </div>
 </div>
 
 <!-- /ko -->
 <!-- ko if:!$component.showPopup || $baseModel.medium() -->
 <div class="login-enclosure form-main-container">
-    <div data-bind="template : {afterRender: $component.afterRender.bind($data,$root)}"></div>
+  <div data-bind="template : {afterRender: $component.afterRender.bind($data,$root)}"></div>
   <div class="oj-flex oj-flex-items-pad">
     <div class="oj-flex-item oj-sm-12">
       <div class="mt20 danger">
@@ -111,12 +114,14 @@
   <div class="oj-flex oj-flex-items-pad">
     <div class="oj-flex-item oj-sm-12 extra-links">
       <div class="extra-links">
+        <!-- ko if: menuNavigationAvailable -->
         <div class="forgot-username-password">
           <a href="#" class="left-right-margin10" data-bind="text:nls.loginForm.labels.forgotUserId,
         click:forgotUserId.bind($data,$root) ,attr:{alt: $component.nls.forgotUserIdClick,title: $component.nls.forgotUserIdTitle}"></a>
           <span data-bind="text:nls.loginForm.labels.verticalSeperation"></span>
-      <a href="#" class="left-right-margin10" data-bind="text:nls.loginForm.labels.forgotPassword,click:forgotPass.bind($data,$root) ,attr:{alt: $component.nls.forgotPasswordClick, title: $component.nls.forgotPasswordTitle}"></a>
+          <a href="#" class="left-right-margin10" data-bind="text:nls.loginForm.labels.forgotPassword,click:forgotPass.bind($data,$root) ,attr:{alt: $component.nls.forgotPasswordClick, title: $component.nls.forgotPasswordTitle}"></a>
         </div>
+        <!-- /ko -->
       </div>
     </div>
   </div>

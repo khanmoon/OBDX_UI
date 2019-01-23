@@ -2,70 +2,68 @@
   <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-space-between">
     <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-4">
       <oj-validation-group id="requestChequeBook" valid="{{$component.validrequest}}">
-      <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
-        <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.chequeBookRequestLocale.chequeBookRequest.selectAccount,
+        <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+          <account-input params="baseModel : $baseModel, dashboard: $dashboard, rootModel: $data ,label : $component.chequeBookRequestLocale.chequeBookRequest.selectAccount,
 			account : $component.accountNumber,
       type: 'balance',
     	additionalDetails : $component.accountAdditionalDetails,
       readOnly: !!$component.params.id,
       accountsParser:$component.accountsParser,
       taskCode:'CH_N_CBR'">
-        </account-input>
-        <!-- ko if: chequBookTypeLoaded -->
-        <div class="oj-flex oj-flex-items-pad">
-          <div class="oj-flex-item oj-sm-12 label">
-            <oj-label for="chequeBookType"><span data-bind="text:$component.chequeBookRequestLocale.chequeBookRequest.chequeBookType"></span></oj-label>
-          </div>
-          <div class="oj-flex-item oj-sm-12">
+          </account-input>
+          <!-- ko if: chequBookTypeLoaded -->
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 label">
+              <oj-label for="chequeBookType"><span data-bind="text:$component.chequeBookRequestLocale.chequeBookRequest.chequeBookType"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
 
-            <oj-select-one id="chequeBookType" required :placeholder="[[$component.chequeBookRequestLocale.chequeBookRequest.select]]" on-value-changed="[[$component.chequeBookTypeChangeHandler]]" value="{{chequeBookType}}">
-                            <!-- ko foreach: chequeBookTypeArray -->
-                            <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
-                            <!-- /ko -->
-                        </oj-select-one>
+              <oj-select-one id="chequeBookType" required :placeholder="[[$component.chequeBookRequestLocale.chequeBookRequest.select]]"
+                on-value-changed="[[$component.chequeBookTypeChangeHandler]]" value="{{chequeBookType}}">
+                <!-- ko foreach: chequeBookTypeArray -->
+                <oj-option value="{{value}}"><span data-bind="text:label"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
 
-          </div>
-        </div>
-        <!-- /ko -->
-        <div class="oj-flex oj-flex-items-pad">
-          <div class="oj-flex-item oj-sm-12 label">
-            <oj-label for="numberOfCheques"><span data-bind="text:$component.chequeBookRequestLocale.chequeBookRequest.NumberOfCheques"></span></oj-label>
-          </div>
-          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-3">
-            <oj-input-text id="numberOfCheques" required type="text" validators="[[$baseModel.getValidator('NUMBERS',$component.chequeBookRequestLocale.chequeBookRequest.invalidInput,{type:'numberRange',options:{
-                                                                                                        min:1,max:10}})]]" value="{{$component.modelInstance.chequeBookDetails.noOfChequeBooks}}"></oj-input-text>
-          </div>
-        </div>
-        <div class="oj-flex oj-flex-items-pad">
-          <div class="oj-flex-item oj-sm-12 label ">
-            <oj-label for="numberOfLeaves"><span data-bind="text:$component.chequeBookRequestLocale.chequeBookRequest.NumberOfLeaves"></span></oj-label>
-          </div>
-          <div class="oj-flex-item oj-sm-12">
-            <oj-select-one id="numberOfLeaves" required on-value-changed="[[$component.applicantSelectedHandler]]" :placeholder="[[$component.chequeBookRequestLocale.chequeBookRequest.select]]" value="{{$component.modelInstance.chequeBookDetails.noOfChequeLeaves}}">
-                            <!-- ko foreach: numberOfLeavesOptions -->
-                            <oj-option value="{{number}}"><span data-bind="text:$baseModel.format($component.chequeBookRequestLocale.chequeBookRequest.chequeBookLeaveOption,{'leavesCount':number})"></span></oj-option>
-                            <!-- /ko -->
-                        </oj-select-one>
-          </div>
-        </div>
-
-        <div class="oj-flex oj-flex-items-pad">
-          <div class="required oj-flex-item oj-sm-12 label">
-            <oj-label for="DeliveryLocation"><span data-bind="text:$component.chequeBookRequestLocale.chequeBookRequest.DeliveryLocation"></span></oj-label>
-          </div>
-          <div class="oj-flex-item oj-sm-12">
-            <div id="DeliveryLocation" data-bind="component: {name: 'address', params:{rootModel: $component, data:$data,validator:$component.validationTracker,address:$component.addressDetails}}">
             </div>
           </div>
-        </div>
-      </page-section>
-    </oj-validation-group>
+          <!-- /ko -->
+
+          <div data-bind="component:{name: 'cheque', params:{rootModel: {params : {modelInstance: $component.modelInstance}}}}"></div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 label ">
+              <oj-label for="numberOfLeaves"><span data-bind="text:$component.chequeBookRequestLocale.chequeBookRequest.NumberOfLeaves"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+              <oj-select-one id="numberOfLeaves" required on-value-changed="[[$component.applicantSelectedHandler]]"
+                :placeholder="[[$component.chequeBookRequestLocale.chequeBookRequest.select]]" value="{{$component.modelInstance.chequeBookDetails.noOfChequeLeaves}}">
+                <!-- ko foreach: numberOfLeavesOptions -->
+                <oj-option value="{{number}}"><span data-bind="text:$baseModel.format($component.chequeBookRequestLocale.chequeBookRequest.chequeBookLeaveOption,{'leavesCount':number})"></span></oj-option>
+                <!-- /ko -->
+              </oj-select-one>
+            </div>
+          </div>
+
+          <div class="oj-flex oj-flex-items-pad">
+            <div class="required oj-flex-item oj-sm-12 label">
+              <oj-label for="DeliveryLocation"><span data-bind="text:$component.chequeBookRequestLocale.chequeBookRequest.DeliveryLocation"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12">
+              <div id="DeliveryLocation" data-bind="component: {name: 'address', params:{rootModel: $component, data:$data,validator:$component.validationTracker,address:$component.addressDetails}}">
+              </div>
+            </div>
+          </div>
+        </page-section>
+      </oj-validation-group>
       <div class="oj-flex oj-flex-items-pad button-container">
-        <oj-button data-id="submitButton" class="action-button-primary " on-click="[[$component.review]]"><span slot="startIcon" class="icons icon-submit"></span>
-      <span data-bind="text:$component.chequeBookRequestLocale.generic.common.submit"></span>
-</oj-button><oj-button class="action-button-secondary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
-      <span data-bind="text:$component.chequeBookRequestLocale.generic.common.back"></span>
-</oj-button>
+        <oj-button data-id="submitButton" class="action-button-primary " on-click="[[$component.review]]"><span slot="startIcon"
+            class="icons icon-submit"></span>
+          <span data-bind="text:$component.chequeBookRequestLocale.generic.common.submit"></span>
+        </oj-button>
+        <oj-button class="action-button-secondary " on-click="[[$dashboard.hideDetails]]"><span slot="startIcon" class="icons icon-back-arrow"></span>
+          <span data-bind="text:$component.chequeBookRequestLocale.generic.common.back"></span>
+        </oj-button>
       </div>
     </div>
     <!-- ko if: $baseModel.large() -->

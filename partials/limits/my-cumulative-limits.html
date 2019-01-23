@@ -12,16 +12,16 @@
 </div>
 <div class="oj-flex oj-flex-items-pad">
   <div class="oj-flex-item oj-sm-8 oj-md-8 oj-lg-8">
-    <!-- ko if: effectiveTomorrowFlag ==="Y" && (total() !== bankAllocatedCount || !$component.resetLimitsFlag())-->
+    <!-- ko if: effectiveTomorrowFlag ==="Y" && (total().toString() !== bankAllocatedCount.toString() || !$component.resetLimitsFlag())-->
     <oj-input-text type="number" :id="[['label'+$component.index]]" validators="[[$baseModel.getValidator('NUMBERS',$component.nls.limitsInquiry.messages.countValidationMessage,{type:'length',options:{min:1,max:100}})]]"
       value="{{inputLimit}}" :placeholder="[[effectiveTomorrowCount]]"></oj-input-text>
     <!-- /ko -->
-    <!-- ko if: effectiveTomorrowFlag !=="Y" || (effectiveTomorrowFlag ==="Y" && (total() === bankAllocatedCount || $component.resetLimitsFlag()))-->
+    <!-- ko if: effectiveTomorrowFlag !=="Y" || (effectiveTomorrowFlag ==="Y" && (total().toString() === bankAllocatedCount.toString() || $component.resetLimitsFlag()))-->
 
     <oj-input-text type="number" :id="[['label'+$component.index]]" validators="[[$baseModel.getValidator('NUMBERS',$component.nls.limitsInquiry.messages.countValidationMessage,{type:'length',options:{min:1,max:100}})]]"
       value="{{inputLimit}}" placeholder="{{$component.nls.limitsInquiry.messages.enterCount}}"></oj-input-text>
     <!-- /ko -->
-    <!-- ko ifnot: $component.resetLimitsFlag() || total() === bankAllocatedCount -->
+    <!-- ko ifnot: $component.resetLimitsFlag() || total().toString() === bankAllocatedCount.toString() -->
 
     <div class="oj-flex oj-flex-items-pad">
       <div class="oj-flex-item target-linkages-cumulative-limit__daily__info-text-small">

@@ -141,18 +141,21 @@ define([
         };
         self.segmentRoles = ko.observableArray();
         var modules = [];
+        var ignoreDashboards=["home","payday","payments","origination","application-tracking","link-account-dashboard"];
         self.personaModules = ko.observableArray();
         self.selectSegment.subscribe(function (newValue) {
             self.personaModules.removeAll();
             self.segmentRoles.removeAll();
             Promise.all([Model.fetchDashboards(dashboardType[newValue]), Model.getSegmentRoles(dashboardType[self.selectSegment()])]).then(function (data) {
                 data[0].defaultDashboards.modules.forEach(function (module) {
-                    self.personaModules.push({
-                        "name": self.personaMap[newValue][module.moduleName].name,
-                        "image": self.personaMap[newValue][module.moduleName].image,
-                        "module": module.moduleName
-                    });
-                    modules.push(module.moduleName);
+                    if(ignoreDashboards.indexOf(module.moduleName)===-1){
+                        self.personaModules.push({
+                            "name": self.personaMap[newValue][module.moduleName].name,
+                            "image": self.personaMap[newValue][module.moduleName].image,
+                            "module": module.moduleName
+                        });
+                        modules.push(module.moduleName);
+                    }
                 });
                 data[1].applicationRoleDTOs.forEach(function (role) {
                     if (!(modules.indexOf(role.applicationRoleName.toLowerCase()) >= 0)) {

@@ -5,15 +5,14 @@ define([
   "./model",
 
   "ojL10n!resources/nls/origination/user-creation",
-  "framework/js/constants/constants",
   "ojs/ojinputtext",
   "ojs/ojcheckboxset",
   "ojs/ojvalidationgroup",
   "ojs/ojknockout-validation"
-], function(oj, ko, $, UserCreationModel, resourceBundle, Constants) {
+], function (oj, ko, $, UserCreationModel, resourceBundle) {
   "use strict";
 
-  return function(rootParams) {
+  return function (rootParams) {
     var self = this,
       payload;
     ko.utils.extend(self, rootParams.rootModel);
@@ -56,7 +55,7 @@ define([
      * @memberOf UserCreationViewModel
      * @returns KoModel ~ KnockOut specific model
      */
-    var getNewKoModel = function() {
+    var getNewKoModel = function () {
       var KoModel = UserCreationModel.getNewModel();
       return KoModel;
     };
@@ -65,7 +64,7 @@ define([
     self.quesAnsPayload = getNewKoModel().QuesAnsPayload;
     self.quesAnsPayload.userSecurityQuestionList = ko.observableArray([]);
 
-    UserCreationModel.fetchPasswordPolicy().done(function(data) {
+    UserCreationModel.fetchPasswordPolicy().done(function (data) {
       if (data) {
         var pwdProps = data.passwordPolicyDTO;
 
@@ -84,21 +83,21 @@ define([
         self.passwordPolicyLoaded(true);
       }
     });
-    UserCreationModel.fetchUserNameType().done(function(data) {
+    UserCreationModel.fetchUserNameType().done(function (data) {
       self.userNameType(data.userNameType);
       if (self.userNameType() === "EMAIL") {
         self.isEmailVerification(data.isEmailVerificationRequired);
       }
     });
 
-    self.questionNumber = function(index) {
+    self.questionNumber = function (index) {
       return index + 1;
     };
-    self.password.subscribe(function(value) {
+    self.password.subscribe(function (value) {
       self.userCreationPayload().password = value;
     });
     var questionListCopy;
-    UserCreationModel.fetchSecurityQuestionNumber().done(function(data) {
+    UserCreationModel.fetchSecurityQuestionNumber().done(function (data) {
       self.noOfQuesToConfigure(data.noOfQuestions);
       for (var i = 0; i < self.noOfQuesToConfigure(); i++) {
         self.quesAnsPayload.userSecurityQuestionList.push({
@@ -106,7 +105,7 @@ define([
           answer: null
         });
       }
-      UserCreationModel.fetchSecurityQuestionList().done(function(data) {
+      UserCreationModel.fetchSecurityQuestionList().done(function (data) {
         questionListCopy = JSON.parse(JSON.stringify(data.secQueList[0].secQueMapping));
         self.questionList(data.secQueList[0].secQueMapping);
         for (var i = 0; i < self.questionList().length; i++) {
@@ -116,7 +115,7 @@ define([
       });
     });
 
-    self.valueChangeHandler = function(event) {
+    self.valueChangeHandler = function (event) {
       if (event.detail.value) {
         for (var i = 0; i < self.quesAnsPayload.userSecurityQuestionList().length; i++) {
           if (self.quesAnsPayload.userSecurityQuestionList()[i].questionId !== null && event.detail.value === self.quesAnsPayload.userSecurityQuestionList()[i].questionId[0]) {
@@ -157,12 +156,12 @@ define([
       }
       self.userCreationPayload().coApp = getNewKoModel().coApp;
     } else if (self.queryMap && self.queryMap.regRefNo) {
-      UserCreationModel.notificationSuccess(self.queryMap.regRefNo).fail(function() {
+      UserCreationModel.notificationSuccess(self.queryMap.regRefNo).fail(function () {
         self.dataLoaded(false);
       });
     }
 
-    self.skipSecurityQuestionsChange = function(event, data) {
+    self.skipSecurityQuestionsChange = function (event, data) {
       if (data.value === "OPTION_NO" && self.quesAnsPayload.userSecurityQuestionList().length === 0) {
         for (var i = 0; i < self.noOfQuesToConfigure(); i++) {
           self.quesAnsPayload.userSecurityQuestionList.push({
@@ -177,16 +176,16 @@ define([
       }
     };
 
-    self.viewTermAndConditions = function() {
+    self.viewTermAndConditions = function () {
       $("#termsAndConditionsPopup").trigger("openModal");
       self.readTermAndConditions(true);
     };
 
-    self.closeTermAndConditions = function() {
+    self.closeTermAndConditions = function () {
       $("#termsAndConditionsPopup").trigger("closeModal");
     };
 
-    self.registerUser = function() {
+    self.registerUser = function () {
       self.validationEmailTracker(document.getElementById("emailTracker"));
       self.validationPwdTracker(document.getElementById("pwdTracker"));
       self.validationTracker(document.getElementById("valTracker"));
@@ -207,28 +206,23 @@ define([
           password: self.userCreationPayload().password,
           notificationId: self.queryMap.regRefNo
         };
-        UserCreationModel.registerThroughLink(JSON.stringify(payload), payload.notificationId).done(function() {
+        UserCreationModel.registerThroughLink(JSON.stringify(payload), payload.notificationId).done(function () {
           self.isRegistered(true);
           self.isConfirmRegister(true);
         });
       } else {
-        self.userCreationPayload().partyId = self.applicantDetails()[0].applicantId();
         self.userCreationPayload().submissionId = self.productDetails().submissionId.value;
-        if (Constants.host === "fcubs") {
-          UserCreationModel.fetchApplicantList(self.productDetails().submissionId.value).done(function(data) {
-            self.userCreationPayload().partyId = data.applicants[0].applicantId.value;
-            self.register();
-          });
-        } else {
+        UserCreationModel.fetchApplicantList(self.productDetails().submissionId.value).done(function (data) {
+          self.userCreationPayload().partyId = data.applicants[0].applicantId.value;
           self.register();
-        }
+        });
       }
     };
 
     var refNoHeader;
-    self.register = function() {
+    self.register = function () {
       if (!self.disableRegistration() && !refNoHeader) {
-        UserCreationModel.register(JSON.stringify(self.userCreationPayload())).done(function(data, status, jqXhr) {
+        UserCreationModel.register(JSON.stringify(self.userCreationPayload())).done(function (data, status, jqXhr) {
           self.disableRegistration(true);
           if (self.skipSecurityQuestions() === "OPTION_NO") {
             for (var i = 0; i < self.quesAnsPayload.userSecurityQuestionList().length; i++) {
@@ -244,7 +238,7 @@ define([
           }
           refNoHeader = jqXhr.getResponseHeader("X_OR_REFERENCE_NO");
           if (self.skipSecurityQuestions() === "OPTION_NO") {
-            UserCreationModel.postSecurityQuestions(ko.toJSON(self.quesAnsPayload), refNoHeader).done(function() {
+            UserCreationModel.postSecurityQuestions(ko.toJSON(self.quesAnsPayload), refNoHeader).done(function () {
               self.loginFlowPost(refNoHeader);
             });
           } else {
@@ -252,7 +246,7 @@ define([
           }
         });
       } else if (self.skipSecurityQuestions() === "OPTION_NO") {
-        UserCreationModel.postSecurityQuestions(ko.toJSON(self.quesAnsPayload), refNoHeader).done(function() {
+        UserCreationModel.postSecurityQuestions(ko.toJSON(self.quesAnsPayload), refNoHeader).done(function () {
           self.loginFlowPost(refNoHeader);
         });
       } else {
@@ -260,18 +254,18 @@ define([
       }
     };
 
-    self.loginFlowPost = function(refNoHeader) {
+    self.loginFlowPost = function (refNoHeader) {
       var loginConfigPayload = {
         loginConfigId: "SETUP_SECURITY_QUESTIONS"
       };
-      UserCreationModel.createLoginConfig(JSON.stringify(loginConfigPayload), refNoHeader).done(function() {
+      UserCreationModel.createLoginConfig(JSON.stringify(loginConfigPayload), refNoHeader).done(function () {
         self.disableSecurityQuestions(true);
         loginConfigPayload.loginConfigId = "ACCEPT_TERMS_CONDS";
-        UserCreationModel.createLoginConfig(JSON.stringify(loginConfigPayload), refNoHeader).done(function() {
+        UserCreationModel.createLoginConfig(JSON.stringify(loginConfigPayload), refNoHeader).done(function () {
           var isCoappPresent = self.registrationCompulsory() && self.productDetails().requirements && self.productDetails().requirements.noOfCoApplicants < 1;
           var isReqNotPresent = self.registrationCompulsory() && !self.productDetails().requirements;
           if (isCoappPresent || isReqNotPresent || self.productDetails().productClassName === "CREDIT_CARD") {
-            UserCreationModel.submitApplication(self.productDetails().submissionId.value).done(function(data) {
+            UserCreationModel.submitApplication(self.productDetails().submissionId.value).done(function (data) {
               self.productDetails().sectionBeingEdited("");
               if (data.submissionOutputDTO && data.submissionOutputDTO.applications && data.submissionOutputDTO.applications.length > 0 && data.submissionOutputDTO.applications[0].applicationId) {
                 self.productDetails().applicationId.value = data.submissionOutputDTO.applications[0].applicationId.value;
@@ -284,17 +278,13 @@ define([
               if (self.disableFinalSubmitButton && ko.isObservable(self.disableFinalSubmitButton)) {
                 self.disableFinalSubmitButton(false);
               }
-              if (Constants.host !== "fcubs") {
-                self.getApplications();
-              } else {
-                self.getNextStage();
-              }
+              self.getNextStage();
               self.isConfirmRegister(true);
               self.userCreationPayload().coApp = getNewKoModel().coApp;
               self.productflowComponent(true);
               self.isRegistered(true);
               self.productDetails().isRegistered = true;
-            }).fail(function() {
+            }).fail(function () {
               self.productflowComponent(true);
               self.isRegistered(true);
               self.productDetails().isRegistered = true;
@@ -312,8 +302,8 @@ define([
       });
     };
 
-    self.getApplications = function() {
-      UserCreationModel.getApplications(self.productDetails().submissionId.value).done(function(data) {
+    self.getApplications = function () {
+      UserCreationModel.getApplications(self.productDetails().submissionId.value).done(function (data) {
         if (data.applications[0].applicationId) {
           self.appRefNo(data.applications[0].applicationId.displayValue);
           if (data.applications[0].applicationStatus) {
@@ -326,7 +316,7 @@ define([
         }
       });
     };
-    self.registerCoAppUser = function() {
+    self.registerCoAppUser = function () {
       self.validationEmailTracker(document.getElementById("emailTracker"));
       self.validationPwdTracker(document.getElementById("pwdTracker"));
       self.validationTracker(document.getElementById("valTracker"));
@@ -348,9 +338,9 @@ define([
       if (self.productDetails().applicationId && self.productDetails().applicationId.value) {
         self.userCreationPayload().coApp.applicationId.value = self.productDetails().applicationId.value;
       }
-      UserCreationModel.registerCoApp(JSON.stringify(self.userCreationPayload().coApp)).done(function() {
+      UserCreationModel.registerCoApp(JSON.stringify(self.userCreationPayload().coApp)).done(function () {
         if (self.registrationCompulsory()) {
-          UserCreationModel.submitApplication(self.productDetails().submissionId.value).done(function(data) {
+          UserCreationModel.submitApplication(self.productDetails().submissionId.value).done(function (data) {
             self.productDetails().sectionBeingEdited("");
             if (data.submissionOutputDTO && data.submissionOutputDTO.applications && data.submissionOutputDTO.applications.length > 0 && data.submissionOutputDTO.applications[0].applicationId) {
               self.productDetails().applicationId.value = data.submissionOutputDTO.applications[0].applicationId.value;
@@ -374,7 +364,7 @@ define([
             self.coAppRegSuccessful(true);
             self.userCreationPayload().coApp = getNewKoModel().coApp;
             self.productflowComponent(true);
-          }).fail(function() {
+          }).fail(function () {
             self.productflowComponent(true);
           });
         } else {
@@ -384,7 +374,7 @@ define([
     };
 
     self.equalToPassword = {
-      validate: function(value) {
+      validate: function (value) {
         var compareTo = self.userCreationPayload().password;
         if (!value && !compareTo) {
           return true;
@@ -396,7 +386,7 @@ define([
       }
     };
     self.equalToEmail = {
-      validate: function(value) {
+      validate: function (value) {
         var compareTo = self.userCreationPayload().username;
         if (!value && !compareTo) {
           return true;
@@ -407,7 +397,7 @@ define([
       }
     };
 
-    self.updateEmail = ko.computed(function() {
+    self.updateEmail = ko.computed(function () {
       if (self.applicantDetails()[0].contactInfo) {
         self.userCreationPayload().username = self.applicantDetails()[0].contactInfo.email();
         $("#username1").val(self.userCreationPayload().username);
@@ -416,7 +406,7 @@ define([
 
     self.otpDevice = ko.observable("");
     rootParams.baseModel.registerComponent("otp-verification", "base-components");
-    self.verifyEmail = function() {
+    self.verifyEmail = function () {
       self.validationEmailTracker(document.getElementById("emailTracker"));
       if (!rootParams.baseModel.showComponentValidationErrors(self.validationEmailTracker())) {
         return;
@@ -440,7 +430,7 @@ define([
         };
       }
       if ($("#emailVerification").css("display") === "none") {
-        UserCreationModel.verifyEmail(ko.toJSON(payload)).done(function() {
+        UserCreationModel.verifyEmail(ko.toJSON(payload)).done(function () {
           self.otpDevice("otpDevice4");
           $("#emailVerification").trigger("openModal");
         });
@@ -450,17 +440,17 @@ define([
       }
     };
 
-    var showPassword = function() {
+    var showPassword = function () {
       $("#pwd").prop({
         type: "text"
       });
     };
-    var hidePassword = function() {
+    var hidePassword = function () {
       $("#pwd").prop({
         type: "password"
       });
     };
-    self.showHide = function() {
+    self.showHide = function () {
       if (!self.pwshown()) {
         self.pwshown(true);
         showPassword();
@@ -469,7 +459,7 @@ define([
         hidePassword();
       }
     };
-    self.createMarketingConsentData = function(applicantId) {
+    self.createMarketingConsentData = function (applicantId) {
       var marketingConsentData = {
         partyId: applicantId,
         emailContactAllowed: self.applicantDetails().primaryInfo.adConsent,
@@ -491,7 +481,7 @@ define([
      * @memberOf UserCreationViewModel
      * @returns {void}
      */
-    self.trackApplication = function() {
+    self.trackApplication = function () {
       if (rootParams.dashboard.userData && rootParams.dashboard.userData.userProfile) {
         rootParams.baseModel.switchPage({
           homeComponent: {
@@ -503,7 +493,7 @@ define([
           }
         }, true, true);
       } else {
-        UserCreationModel.deleteSession().done(function() {
+        UserCreationModel.deleteSession().done(function () {
           rootParams.baseModel.switchPage({
             homeComponent: {
               component: "application-tracking-base",
@@ -517,7 +507,7 @@ define([
       }
     };
 
-    self.dispose = function() {
+    self.dispose = function () {
       self.updateEmail.dispose();
     };
 

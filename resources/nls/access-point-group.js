@@ -27,7 +27,7 @@ define([
           selectAllExternal: "Select all external Touch Points",
           invalidCode: "Please enter valid Touch Point group code",
           invalidDescription: "Please enter valid Touch Point group description",
-          groupType: "Accesspoint Group Type",
+          groupType: "Touch Point Group Type",
           review: "Review",
           reviewwarning : "Warning!",
           cancelMessage : "Are you sure do you want to cancel the operation ?"

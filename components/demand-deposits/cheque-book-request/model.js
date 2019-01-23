@@ -47,7 +47,7 @@ define([
               displayValue: null
             },
             "noOfChequeLeaves": "",
-            "noOfChequeBooks": "",
+            "noOfChequeBooks": "1",
             "personalizedTitle": "",
             "currency": "",
             "chequeBookTypeList": [{

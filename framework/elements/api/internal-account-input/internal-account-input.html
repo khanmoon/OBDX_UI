@@ -1,29 +1,34 @@
-<!-- ko if: !$component.confirmStyleAccount || readOnly -->
-<div class="oj-flex-item oj-sm-12 label">
-    <oj-label :for="[[$component.id]]"><span data-bind="text:$component.label"></span></oj-label>
+<div class="oj-flex oj-flex-items-pad">
+    <!-- ko if: !$component.confirmStyleAccount || readOnly -->
+    <!-- ko ifnot: mode === "acc" -->
+    <div data-bind="css: {'oj-sm-12 oj-md-2' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
+        <oj-label :for="[[$component.id]]"><span data-bind="text:$component.label"></span></oj-label>
+    </div>
+    <div data-bind="css: {'oj-lg-4 oj-md-5 oj-sm-12' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
+        <oj-input-text :id="[[$component.id]]" value="{{account}}" required="[[required]]" readonly="{{readOnly}}" validators="[[$baseModel.getValidator('ACCOUNT')]]"></oj-input-text>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: mode === "acc" -->
+        <div data-bind="text : account"></div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: $component.confirmStyleAccount && !readOnly -->
+    <div data-bind="css: {'oj-sm-12 oj-md-2' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
+        <oj-label :for="[[$component.id + '_hidden_account_number']]">
+            <span data-bind="text:$component.label"></span>
+        </oj-label>
+    </div>
+    <div data-bind="css: {'oj-lg-4 oj-md-5 oj-sm-12' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
+        <oj-input-text converter=[[$component.maskedAccountNumberConverter]] :id="[[$component.id + '_hidden_account_number']]" value="{{$component.hiddenAccountNumber}}" validators="[[$component.accountNumberValidator]]" required="[[required]]"></oj-input-text>
+    </div>
+    <div data-bind="css: {'oj-sm-12 oj-md-2' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
+        <oj-label :for="[[$component.id + '_confirm_account_number']]">
+            <span data-bind="text:$baseModel.format($component.resourceBundle.confirm, {label : $component.label})"></span>
+        </oj-label>
+    </div>
+    <div data-bind="css: {'oj-lg-4 oj-md-5 oj-sm-12' : $component.showInline, 'oj-sm-12': !$component.showInline, 'oj-flex-item label': 1}">
+        <oj-input-text :id="[[$component.id + '_confirm_account_number']]" value="{{$component.account}}" validators="[[$component.confirmAccountNumberValidator]]" required="[[required]]"></oj-input-text>
+    </div>
+    <div data-bind="template: {afterRender: $component.fieldsRendered}"></div>
+    <!-- /ko -->
 </div>
-<div class="oj-flex-item oj-sm-12">
-    <oj-input-text :id="[[$component.id]]" value="{{account}}" required="[[required]]" readonly="{{readOnly}}" validators="[[$baseModel.getValidator('ACCOUNT')]]"></oj-input-text>
-</div>
-<!-- /ko -->
-<!-- ko if: $component.confirmStyleAccount && !readOnly -->
-<div class="oj-flex-item oj-sm-12 label">
-    <oj-label :for="[[$component.id + '_hidden_account_number']]">
-        <span data-bind="text:$component.label"></span>
-    </oj-label>
-</div>
-<div class="oj-flex-item oj-sm-12">
-    <oj-input-text converter=[[$component.maskedAccountNumberConverter]] :id="[[$component.id + '_hidden_account_number']]" value="{{$component.hiddenAccountNumber}}"
-        validators="[[$component.accountNumberValidator]]" required="[[required]]"></oj-input-text converter=[[$component.maskedAccountNumberConverter]]>
-</div>
-<div class="oj-flex-item oj-sm-12 label">
-    <oj-label :for="[[$component.id + '_confirm_account_number']]">
-        <span data-bind="text:$baseModel.format($component.resourceBundle.confirm, {label : $component.label})"></span>
-    </oj-label>
-</div>
-<div class="oj-flex-item oj-sm-12">
-    <oj-input-text :id="[[$component.id + '_confirm_account_number']]"
-        value="{{$component.account}}" validators="[[$component.confirmAccountNumberValidator]]" required="[[required]]"></oj-input-text>
-</div>
-<div data-bind="template: {afterRender: $component.fieldsRendered}"></div>
-<!-- /ko -->

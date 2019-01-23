@@ -35,9 +35,7 @@ define([
         });
         self.callShowDetails = function (component, data, action) {
             if (self.additionalDetails && self.additionalDetails() && data.taskCode) {
-                QuickLinksModel.validateAccess(self.additionalDetails().account.id.value, data.taskCode).done(function () {
-                    rootParams.dashboard.loadComponent(data.id, self.additionalDetails() ? self.additionalDetails().account : action);
-                });
+                     rootParams.dashboard.loadComponent(data.id, self.additionalDetails() ? self.additionalDetails().account : action);
             } else {
                 var parameters;
                 if (self.additionalDetails && self.additionalDetails()) {

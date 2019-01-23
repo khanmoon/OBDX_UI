@@ -31,21 +31,13 @@
         <oj-label><span data-bind="text:$component.nls.fieldname.sendTo"></span></oj-label>
       </div>
       <div class="oj-flex-item oj-sm-12 oj-md-9 oj-lg-9">
-        <oj-checkboxset disabled="[[true]]">
-          <!-- ko ifnot: $component.mailersPayload.recipients.admin === null || $component.mailersPayload.recipients.admin === ''  -->
-          <oj-option :id="[['admincheckbox'+ $baseModel.currentIdCount()]]"><span data-bind="attr:{
-                    for: 'admincheckbox' + $baseModel.incrementIdCount()},text:$component.mailersPayload.recipients.admin"></span></oj-option>
+        <!-- ko if: recipientsListLoaded -->
+          <oj-checkboxset id="recipientsCheckboxSetId" value="{{$component.selectedRecipients}}" disabled="[[true]]">
+            <!-- ko foreach: recipientsList -->
+            <oj-option value="{{enterpriseRoleId}}" :id="{{enterpriseRoleId}}"><span data-bind="text: enterpriseRoleName"></span></oj-option>
+            <!-- /ko -->
+          </oj-checkboxset>
           <!-- /ko -->
-          <!-- ko ifnot:$component.mailersPayload.recipients.retail === null || $component.mailersPayload.recipients.retail === '' -->
-          <oj-option :id="[['retailcheckbox'+ $baseModel.currentIdCount()]]"><span data-bind="attr:{
-                    for: 'retailcheckbox' + $baseModel.incrementIdCount()},text: $component.mailersPayload.recipients.retail"></span></oj-option>
-          <!-- /ko -->
-          <!-- ko ifnot: $component.mailersPayload.recipients.corp === null || $component.mailersPayload.recipients.corp === "" -->
-          <oj-option :id="[['corpcheckbox'+ $baseModel.currentIdCount()]]"><span data-bind="attr:{
-                    for: 'corpcheckbox' + $baseModel.incrementIdCount()},text:$component.mailersPayload.recipients.corp"></span></oj-option>
-          <!-- /ko -->
-        </oj-checkboxset>
-
       </div>
     </div>
 

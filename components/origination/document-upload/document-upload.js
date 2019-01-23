@@ -9,11 +9,11 @@ define([
   "ojs/ojfilepicker",
   "ojs/ojtable",
   "ojs/ojarraytabledatasource"
-], function(oj, ko, $, DocumentUploadModel, BaseLogger, resourceBundle) {
+], function (oj, ko, $, DocumentUploadModel, BaseLogger, resourceBundle) {
   "use strict";
-  return function(rootParams) {
+  return function (rootParams) {
     var self = this;
-    var categoryIndex, documentIndex, submissionDocumentIndex;
+    var categoryIndex, documentIndex, submissionDocumentIndex, fileCount = 0;
     ko.utils.extend(self, rootParams.rootModel);
     self.resource = resourceBundle;
     self.dataLoaded = ko.observable(false);
@@ -26,11 +26,11 @@ define([
     self.uploadDocumentDeferredObjs = [];
     self.uploadedDocumentDetails = [];
     var uploadedDocumentCount = 0;
-    self.acceptArr = ko.pureComputed(function() {
+    self.acceptArr = ko.pureComputed(function () {
       var accept = self.acceptStr();
       return accept ? accept.split(",") : [];
     }, self);
-    self.fileSelectListener = function(documentIndex, documentCategoryIndex, event) {
+    self.fileSelectListener = function (documentIndex, documentCategoryIndex, event) {
       var files = event.detail.files;
       for (var i = 0; i < files.length; i++) {
         var index = self.documentCategories()[documentCategoryIndex].type[documentIndex].attachedDocumentsArray.push({
@@ -42,14 +42,14 @@ define([
       }
       self.documentCategories()[documentCategoryIndex].type[documentIndex].anyDocumentUploaded(true);
     };
-    var searchCategoryOrDocumentIndex = function(documentCategoryKey, arrayObj, property) {
+    var searchCategoryOrDocumentIndex = function (documentCategoryKey, arrayObj, property) {
       for (var i = 0; i < arrayObj.length; i++) {
         if (documentCategoryKey === arrayObj[i][property]) {
           return i;
         }
       }
     };
-    var searchCategoryDocumentIndex = function(contentId, documentCategory, documentType, arrayObj) {
+    var searchCategoryDocumentIndex = function (contentId, documentCategory, documentType, arrayObj) {
       for (var i = 0; i < arrayObj.length; i++) {
         if (documentCategory === arrayObj[i].categoryId && documentType === arrayObj[i].documentType && contentId === arrayObj[i].contentId.value) {
           return i;
@@ -73,7 +73,7 @@ define([
 
     var order = 0,
       documentTypeOrder = 0;
-    DocumentUploadModel.fetchDocumentChecklist(self.productDetails().submissionId.value, self.applicantDetails()[0].applicantId().value, self.productDetails().productType).done(function(data) {
+    DocumentUploadModel.fetchDocumentChecklist(self.productDetails().submissionId.value, self.applicantDetails()[0].applicantId().value, self.productDetails().productType).done(function (data) {
       self.documentCategories(data.documentCategoryDTOList);
       if (self.documentCategories()) {
         for (var i = self.documentCategories().length - 1; i >= 0; i--) {
@@ -97,7 +97,7 @@ define([
               documentTypeOrder++;
             }
           }
-          self.documentCategories()[i].type.sort(function(left, right) {
+          self.documentCategories()[i].type.sort(function (left, right) {
             if (left.order < right.order)
               return -1;
             if (left.order > right.order)
@@ -105,7 +105,7 @@ define([
             return 0;
           });
         }
-        self.documentCategories().sort(function(left, right) {
+        self.documentCategories().sort(function (left, right) {
           if (left.order < right.order)
             return -1;
           if (left.order > right.order)
@@ -114,7 +114,7 @@ define([
         });
         self.dataLoaded(true);
       }
-      DocumentUploadModel.fetchUploadedDocuments(self.productDetails().submissionId.value).done(function(data) {
+      DocumentUploadModel.fetchUploadedDocuments(self.productDetails().submissionId.value).done(function (data) {
         if (data.submissionDocument && data.submissionDocument.length > 0) {
           for (var i = 0; i < data.submissionDocument.length; i++) {
             categoryIndex = searchCategoryOrDocumentIndex(data.submissionDocument[i].categoryId, self.documentCategories(), "category");
@@ -132,7 +132,7 @@ define([
         }
       });
     });
-    self.applicantSelectedHandler = function(event) {
+    self.applicantSelectedHandler = function (event) {
       if (event.detail.value) {
         for (var applicantIndex = 0; applicantIndex < self.documentCategories().length; applicantIndex++) {
           self.documentCategories()[applicantIndex].showDocuments(false);
@@ -140,14 +140,14 @@ define([
         self.documentCategories()[event.detail.value].showDocuments(true);
       }
     };
-    self.downloadDocument = function(contentId) {
+    self.downloadDocument = function (contentId) {
       DocumentUploadModel.downloadDocument(contentId.value, self.applicantDetails()[0].applicantId().value);
     };
-    self.deleteDocument = function(documentCategoryIndex, documentIndex, rowIndex) {
+    self.deleteDocument = function (documentCategoryIndex, documentIndex, rowIndex) {
       if (self.documentCategories()[documentCategoryIndex].type[documentIndex].attachedDocumentsArray()[rowIndex].uploaded && JSON.parse(self.documentCategories()[documentCategoryIndex].type[documentIndex].attachedDocumentsArray()[rowIndex].uploaded)) {
         var contentId = self.documentCategories()[documentCategoryIndex].type[documentIndex].attachedDocumentsArray()[rowIndex].contentId;
-        DocumentUploadModel.deleteDocument(contentId.value).done(function() {
-          DocumentUploadModel.deleteLocalDocument(self.productDetails().submissionId.value, contentId.value).done(function() {
+        DocumentUploadModel.deleteDocument(contentId.value).done(function () {
+          DocumentUploadModel.deleteLocalDocument(self.productDetails().submissionId.value, contentId.value).done(function () {
             self.documentCategories()[documentCategoryIndex].type[documentIndex].attachedDocumentsArray.splice(rowIndex, 1);
             if (self.documentCategories()[documentCategoryIndex].type[documentIndex].attachedDocumentsArray().length === 0) {
               self.documentCategories()[documentCategoryIndex].type[documentIndex].anyDocumentUploaded(false);
@@ -161,7 +161,7 @@ define([
         }
       }
     };
-    self.documentUploadContinue = function() {
+    self.documentUploadContinue = function () {
       var i, j, k, l;
       var upload = false;
       for (i = 0; i < self.documentCategories().length; i++) {
@@ -175,8 +175,8 @@ define([
       if (!upload) {
         $("#NOFILE").trigger("openModal");
       }
-      Promise.all(self.uploadDocumentDeferredObjs).then(function() {
-        DocumentUploadModel.fetchUploadedDocuments(self.productDetails().submissionId.value).done(function(data) {
+      Promise.all(self.uploadDocumentDeferredObjs).then(function () {
+        DocumentUploadModel.fetchUploadedDocuments(self.productDetails().submissionId.value).done(function (data) {
           if (data.submissionDocument && data.submissionDocument.length > 0) {
             for (l = 0; l < self.uploadedDocumentDetails.length; l++) {
               self.documentCategories()[self.uploadedDocumentDetails[l].documentCategoryIndex].type[self.uploadedDocumentDetails[l].documentIndex].attachedDocumentsArray.splice(self.uploadedDocumentDetails[l].tableRowIndex, 1);
@@ -201,11 +201,11 @@ define([
         });
       });
     };
-    self.cancelApplicationFromDocument = function() {
+    self.cancelApplicationFromDocument = function () {
       self.previousPluginComponent("document-upload");
       self.showPluginComponent("cancel-application");
     };
-    self.uploadDocument = function(documentCategoryIndex, documentIndex, tableRowIndex) {
+    self.uploadDocument = function (documentCategoryIndex, documentIndex, tableRowIndex) {
       var file = self.documentCategories()[documentCategoryIndex].type[documentIndex].attachedDocumentsArray()[tableRowIndex].file;
       if (!file) {
         return;
@@ -227,7 +227,8 @@ define([
       formData.append("moduleIdentifier", "ORIGINATION");
       var uploadDocumentDeferred = $.Deferred();
       self.uploadDocumentDeferredObjs.push(uploadDocumentDeferred);
-      DocumentUploadModel.uploadDocument(formData).done(function(data) {
+      var fileName = file.name + (fileCount++);
+      DocumentUploadModel.uploadDocument(formData, fileName).done(function (data) {
         var contentId = data.contentDTOList[0].contentId;
         var payload = {
           contentId: contentId.value,
@@ -238,7 +239,7 @@ define([
         if (self.documentCategories()[documentCategoryIndex].type[documentIndex].attachedDocumentsArray()[tableRowIndex].remarks && ko.isObservable(self.documentCategories()[documentCategoryIndex].type[documentIndex].attachedDocumentsArray()[tableRowIndex].remarks)) {
           payload.remark = self.documentCategories()[documentCategoryIndex].type[documentIndex].attachedDocumentsArray()[tableRowIndex].remarks();
         }
-        DocumentUploadModel.saveDocument(self.productDetails().submissionId.value, contentId.value, ko.toJSON(payload)).done(function() {
+        DocumentUploadModel.saveDocument(self.productDetails().submissionId.value, contentId.value, ko.toJSON(payload)).done(function () {
           self.documentCategories()[documentCategoryIndex].type[documentIndex].showProcessing(false);
           self.uploadedDocumentDetails[uploadedDocumentCount++] = {
             documentCategoryIndex: documentCategoryIndex,
@@ -248,7 +249,7 @@ define([
           };
           uploadDocumentDeferred.resolve();
         });
-      }).fail(function() {
+      }).fail(function () {
         self.documentCategories()[documentCategoryIndex].type[documentIndex].showProcessing(false);
       });
     };

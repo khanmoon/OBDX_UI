@@ -68,6 +68,7 @@ define([
             "confirm-screen"
         ]);
         rootParams.baseModel.registerComponent("transfer-view-limits", "financial-limits");
+        rootParams.baseModel.registerComponent("my-limits", "limits-enquiry");
         self.validationTracker = ko.observable();
         self.model = ko.observable();
         self.isDataLoaded = ko.observable(true);

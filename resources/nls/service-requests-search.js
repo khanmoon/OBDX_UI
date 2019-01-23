@@ -35,7 +35,7 @@ define([], function() {
         back: "Back",
         invalidEntry: "Please enter valid characters.",
         enterRequestName: "Please enter the request name",
-        createdOn: "Created On  ",
+        createdOn: "Created On {createdOn}",
         confirmCopy: "Confirm",
         copyMessage: "A copy of your Service Request will be created",
         activationStatus: "Activation Status",
@@ -45,10 +45,10 @@ define([], function() {
         statusLabel: "Status",
         remarksLabel: "Remarks",
         statusChangeMsg: "Please change the status",
-		statusErrorMessage: "Please enter valid characters in Remarks",
+        statusErrorMessage: "Please enter valid characters in Remarks",
         hoverText: "Copy and Create new",
-        alt:"Click here to Edit",
-        title:"Click here to Edit"
+        alt: "Click here to Edit",
+        title: "Click here to Edit"
       },
       ar: true,
       fr: true,

@@ -1,6 +1,6 @@
-define([], function() {
+define([], function () {
   "use strict";
-  var PaymentsLanding = function() {
+  var PaymentsLanding = function () {
     return {
       root: {
         header: "Payments",
@@ -34,6 +34,7 @@ define([], function() {
           "si-list": "View Standing Instructions",
           "request-money": "Request Money",
           "manage-debtors": "Manage Debtors",
+          "fund-request": "Request Funds",
           scanToPay: "Click here to Scan To Pay",
           payToContacts: "Click here to Pay to Contacts",
           "adhoc-payment": "Click here to make adhoc Payment"

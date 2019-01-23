@@ -229,9 +229,9 @@ define([
        * @memberOf AssetsInfoModel
        * @private
        */
-      getAlertList = function(deferred, moduleType, subscriptionLevel, subscriptionKey, partyId) {
+      getAlertList = function(deferred, moduleType, subscriptionLevel, subscriptionKey, partyId, userId, isCorp) {
         var options = {
-            url: "actionSubscriptions?subscriptionLevelType={subscriptionLevel}",
+            url: isCorp? "actionSubscriptions?userId={userId}": "actionSubscriptions?subscriptionLevelType={subscriptionLevel}",
             success: function(data) {
               deferred.resolve(data);
             },
@@ -243,7 +243,8 @@ define([
             "moduleType": moduleType,
             "subscriptionLevel": subscriptionLevel,
             "subscriptionKey": subscriptionKey,
-            "partyId": partyId
+            "partyId": partyId,
+            "userId": userId
           };
         baseService.fetch(options, params);
       },
@@ -421,10 +422,10 @@ define([
       getNewAccountModel: function() {
         return new AccountModel();
       },
-      getAlertList: function(moduleType, subscriptionLevel, subscriptionKey, partyId) {
+      getAlertList: function(moduleType, subscriptionLevel, subscriptionKey, partyId, userId, isCorp) {
         if (modelStateChanged) {
           getAlertListDeferred = $.Deferred();
-          getAlertList(getAlertListDeferred, moduleType, subscriptionLevel, subscriptionKey, partyId);
+          getAlertList(getAlertListDeferred, moduleType, subscriptionLevel, subscriptionKey, partyId, userId, isCorp);
         }
         return getAlertListDeferred;
       },

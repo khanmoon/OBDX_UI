@@ -5,7 +5,7 @@ define(["ojL10n!resources/nls/generic"], function(Generic) {
       root: {
         header: {
           amend: "Edit Maturity Instruction",
-          reviewHeader: "You Initaited a request for Edit Maturity Instruction. Please review details before you confirm!"
+          reviewHeader: "You Initiated a request for Edit Maturity Instruction. Please review details before you confirm!"
         },
           accountNumber: "Account Number",
           rollOverType: {

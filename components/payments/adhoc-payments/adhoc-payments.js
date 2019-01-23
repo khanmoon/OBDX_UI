@@ -325,7 +325,7 @@ define([
             self.payload.genericPayout.amount.currency = self.transferCurrency();
             self.payload.genericPayout.amount.amount = self.transferAmount();
             self.payload.genericPayout.debitAccountId.value = self.srcAccount();
-            self.payload.genericPayout.startDate = self.valuedate();
+            self.payload.genericPayout.startDate = self.transferOn() === "now"?null:self.valuedate();
             self.payload.genericPayout.remarks = self.note();
             if (self.transferOn() === "later") {
                 self.payload.genericPayout.frequency = "10";
@@ -564,6 +564,9 @@ define([
                     throw new oj.ValidatorError("", oj.Translations.getTranslatedString(self.payments.payee.international.invalidError));
             }
         }];
+        $(document).on("keyup", "#domSwiftCode", function() {
+            $(this).val($(this).val().toUpperCase());
+        });
         self.verifyCode = function() {
             var tracker;
             if (self.currentAccountType() === "DOMESTIC") {

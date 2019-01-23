@@ -106,6 +106,7 @@ define([
           for (j = 0; j < data.rolePreferencesList.length; j++) {
             if (self.preferencesList()[i].preferenceId === data.rolePreferencesList[j].preferenceId) {
               data.rolePreferencesList[j].text = self.preferencesList()[i].text;
+              data.rolePreferencesList[j].isSystemDefined = self.preferencesList()[i].isSystemDefined;
               break;
             }
           }
@@ -130,7 +131,7 @@ define([
 
           } else if (data.rolePreferencesList[j].preferenceId === "ACCOUNT_RELATIONSHIP_CHECK") {
             self.preferencesList()[5] = data.rolePreferencesList[j];
-            if(self.mode() !== "EDIT"){
+            if (self.mode() !== "EDIT") {
               self.preferencesList()[5].text = accountRelCheckLabel;
             }
           } else if (data.rolePreferencesList[j].preferenceId === "LIMITS_CHECK") {
@@ -139,8 +140,8 @@ define([
                 self.entityLimitPackageMapArray()[k].selectedLimitPackages.removeAll();
                 for (var z = 0; z < data.assignedLimitPackageDTOs.length; z++) {
                   if (self.entityLimitPackageMapArray()[k].entityId === data.assignedLimitPackageDTOs[z].targetUnit) {
-                    for(var y = 0; y < data.assignedLimitPackageDTOs[z].entityLimitPackageMappingDTO.length; y++)
-                    self.entityLimitPackageMapArray()[k].selectedLimitPackages.push(data.assignedLimitPackageDTOs[z].entityLimitPackageMappingDTO[y].limitPackage);
+                    for (var y = 0; y < data.assignedLimitPackageDTOs[z].entityLimitPackageMappingDTO.length; y++)
+                      self.entityLimitPackageMapArray()[k].selectedLimitPackages.push(data.assignedLimitPackageDTOs[z].entityLimitPackageMappingDTO[y].limitPackage);
                   }
                 }
               }
@@ -163,7 +164,7 @@ define([
                 },
                 headers: {
                   "Content-Type": "application/json",
-                  "Content-Id": index+1,
+                  "Content-Id": index + 1,
                   "X-Target-Unit": Params.dashboard.userData.userProfile.accessibleEntities[index]
                 }
               });
@@ -202,53 +203,60 @@ define([
     };
     self.getPreferences = function() {
       RolePreferenceModel.getPreferences().done(function(data) {
-          for (var i = 0; i < data.rolePreferencesList.length; i++) {
+        for (var i = 0; i < data.rolePreferencesList.length; i++) {
           if (data.rolePreferencesList[i].rolePreferenceId === "PARTY_MAPPING") {
             self.preferencesList()[0] = {
               text: data.rolePreferencesList[i].description,
               preferenceId: data.rolePreferencesList[i].rolePreferenceId,
-              value: false
+              value: false,
+              isSystemDefined: data.rolePreferencesList[i].isSystemDefined
             };
 
           } else if (data.rolePreferencesList[i].rolePreferenceId === "CUSTOMER_PREFERENCES") {
             self.preferencesList()[1] = {
               text: data.rolePreferencesList[i].description,
               preferenceId: data.rolePreferencesList[i].rolePreferenceId,
-              value: false
+              value: false,
+              isSystemDefined: data.rolePreferencesList[i].isSystemDefined
             };
 
           } else if (data.rolePreferencesList[i].rolePreferenceId === "ACCOUNT_ACCESS") {
             self.preferencesList()[2] = {
               text: data.rolePreferencesList[i].description,
               preferenceId: data.rolePreferencesList[i].rolePreferenceId,
-              value: false
+              value: false,
+              isSystemDefined: data.rolePreferencesList[i].isSystemDefined
             };
 
           } else if (data.rolePreferencesList[i].rolePreferenceId === "APPROVAL") {
             self.preferencesList()[3] = {
               text: data.rolePreferencesList[i].description,
               preferenceId: data.rolePreferencesList[i].rolePreferenceId,
-              value: false
+              value: false,
+              isSystemDefined: data.rolePreferencesList[i].isSystemDefined
             };
           } else if (data.rolePreferencesList[i].rolePreferenceId === "LOGIN_FLOW_REQUIRED") {
             self.preferencesList()[4] = {
               text: data.rolePreferencesList[i].description,
               preferenceId: data.rolePreferencesList[i].rolePreferenceId,
-              value: false
+              value: false,
+              isSystemDefined: data.rolePreferencesList[i].isSystemDefined
             };
 
           } else if (data.rolePreferencesList[i].rolePreferenceId === "ACCOUNT_RELATIONSHIP_CHECK") {
             self.preferencesList()[5] = {
               text: data.rolePreferencesList[i].description,
               preferenceId: data.rolePreferencesList[i].rolePreferenceId,
-              value: false
+              value: false,
+              isSystemDefined: data.rolePreferencesList[i].isSystemDefined
             };
             accountRelCheckLabel = data.rolePreferencesList[i].description;
           } else if (data.rolePreferencesList[i].rolePreferenceId === "LIMITS_CHECK") {
             self.preferencesList()[6] = {
               text: data.rolePreferencesList[i].description,
               preferenceId: data.rolePreferencesList[i].rolePreferenceId,
-              value: false
+              value: false,
+              isSystemDefined: data.rolePreferencesList[i].isSystemDefined
             };
           }
         }
@@ -256,7 +264,7 @@ define([
       });
     };
     self.getEnterpriseRoles();
-    if(self.mode() === "CREATE"){
+    if (self.mode() === "CREATE") {
       self.getPreferences();
     }
 
@@ -293,7 +301,7 @@ define([
           for (var x1 = 0; x1 < self.entityLimitPackageMapArray().length; x1++) {
             var entityLimitPackageDTO = {
               "targetUnit": "",
-              "entityLimitPackageMappingDTO":[]
+              "entityLimitPackageMappingDTO": []
             };
             entityLimitPackageDTO.targetUnit = self.entityLimitPackageMapArray()[x1].entityId;
             for (var x2 = 0; x2 < self.entityLimitPackageMapArray()[x1].limitPackageDetails().length; x2++) {
@@ -326,33 +334,33 @@ define([
                 entityLimitPackageDTO.entityLimitPackageMappingDTO.push(entityLimitPackageMappingDTO);
               }
             }
-            if(entityLimitPackageDTO.entityLimitPackageMappingDTO.length>0)
-            self.limitPackagePayload.entityLimitPackageDTOs.push(entityLimitPackageDTO);
+            if (entityLimitPackageDTO.entityLimitPackageMappingDTO.length > 0)
+              self.limitPackagePayload.entityLimitPackageDTOs.push(entityLimitPackageDTO);
           }
         }
       }
     };
 
-    self.showLimitPackage = function(data,event) {
-        if (event.preferenceId === "LIMITS_CHECK" && event.value === true) {
-          self.showLimitPackageSearchSection(true);
-        } else {
-          self.showLimitPackageSearchSection(false);
-        }
+    self.showLimitPackage = function(data, event) {
+      if (event.preferenceId === "LIMITS_CHECK" && event.value === true) {
+        self.showLimitPackageSearchSection(true);
+      } else {
+        self.showLimitPackageSearchSection(false);
+      }
     };
 
-    if(self.mode()==="EDIT") {
-        self.payload = ko.mapping.fromJS(self.params.payload);
-        self.payload.preferenceMappingDTOs(self.preferencesList());
-        self.selectedRole(self.payload.roleId());
-        self.showEdit(true);
+    if (self.mode() === "EDIT") {
+      self.payload = ko.mapping.fromJS(self.params.payload);
+      self.payload.preferenceMappingDTOs(self.preferencesList());
+      self.selectedRole(self.payload.roleId());
+      self.showEdit(true);
     }
 
     self.submit = function() {
       self.createRolePreference();
       var parameters = {
-          mode: "REVIEW",
-          payload: ko.mapping.toJS(self.payload)
+        mode: "REVIEW",
+        payload: ko.mapping.toJS(self.payload)
       };
       Params.dashboard.loadComponent("review-system-rules-map", parameters, self);
     };

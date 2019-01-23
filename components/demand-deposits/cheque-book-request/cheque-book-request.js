@@ -10,9 +10,9 @@ define([
     "ojs/ojinputtext",
     "ojs/ojselectcombobox",
     "ojs/ojvalidationgroup"
-], function (ko, $, demandDepositChequeRequestModel, Constants, locale) {
+], function(ko, $, demandDepositChequeRequestModel, Constants, locale) {
     "use strict";
-    return function (rootParams) {
+    return function(rootParams) {
         var self = this;
         self.chequeBookRequestLocale = locale;
         self.common = locale.common;
@@ -21,7 +21,7 @@ define([
         self.accountAdditionalDetails = ko.observable();
         self.validRequest = ko.observable();
         var confirmScreenExtensions = {};
-        var getNewKoModel = function () {
+        var getNewKoModel = function() {
             var KoModel = demandDepositChequeRequestModel.getNewModel();
             return ko.mapping.fromJS(KoModel);
         };
@@ -64,15 +64,16 @@ define([
         rootParams.baseModel.registerComponent("responsive-select", "inputs");
         rootParams.baseModel.registerElement("account-input");
         rootParams.baseModel.registerElement("modal-window");
+        rootParams.baseModel.registerComponent("cheque", "demand-deposits");
         rootParams.dashboard.headerName(self.chequeBookRequestLocale.compName.compName);
-        self.chequeBookType.subscribe(function (data) {
+        self.chequeBookType.subscribe(function(data) {
             var cheqbookTypeValue = data.split("-");
             self.modelInstance.chequeBookDetails.chequeBookTypeList()[0].stockCode(cheqbookTypeValue[0]);
             self.modelInstance.chequeBookDetails.chequeBookTypeList()[0].stockCurrency(cheqbookTypeValue[1]);
             self.modelInstance.chequeBookDetails.chequeBookTypeList()[0].stockDescription(cheqbookTypeValue[2]);
         });
-        self.callChequeBookType = function () {
-            demandDepositChequeRequestModel.fetchChequeBookType(self.accountNumber()).done(function (data) {
+        self.callChequeBookType = function() {
+            demandDepositChequeRequestModel.fetchChequeBookType(self.accountNumber()).done(function(data) {
                 self.chequBookTypeLoaded(false);
                 self.chequeBookTypeArray.removeAll();
                 for (var i = 0; i < data.enumRepresentations[0].data.length; i++) {
@@ -89,10 +90,10 @@ define([
         if (self.constants.userSegment !== "CORP" || self.accountNumber()) {
             self.callChequeBookType();
         }
-        self.accountNumber.subscribe(function () {
+        self.accountNumber.subscribe(function() {
             self.callChequeBookType();
         });
-        self.review = function () {
+        self.review = function() {
             if (!rootParams.baseModel.showComponentValidationErrors(document.getElementById("requestChequeBook"))) {
                 return;
             }
@@ -104,7 +105,7 @@ define([
                 confirmScreenExtensions: confirmScreenExtensions
             }, self);
         };
-        self.chequeBookRequest = function () {
+        self.chequeBookRequest = function() {
             self.modelInstance.chequeBookDetails.currency(self.accountAdditionalDetails().account.currencyCode);
             self.modelInstance.chequeBookDetails.chequeDeliveryDetailsDTO.addressType(self.addressDetails.addressType());
             self.modelInstance.chequeBookDetails.chequeDeliveryDetailsDTO.branchCode(self.addressDetails.postalAddress.branch);
@@ -120,7 +121,7 @@ define([
             self.modelInstance.chequeBookDetails.chequeDeliveryDetailsDTO.address.zipCode(self.addressDetails.postalAddress.zipCode);
             demandDepositChequeRequestModel.requestChequeBook(self.accountNumber(), ko.mapping.toJSON(self.modelInstance.chequeBookDetails, {
                 ignore: ["accountId"]
-            })).done(function (data, status, jqXhr) {
+            })).done(function(data, status, jqXhr) {
                 rootParams.dashboard.loadComponent("confirm-screen", {
                     jqXHR: jqXhr,
                     transactionName: self.chequeBookRequestLocale.compName.compName,
@@ -131,11 +132,11 @@ define([
                 }, self);
             });
         };
-        self.accountsParser = function (data) {
+        self.accountsParser = function(data) {
             var tempData = data;
             if (tempData.accounts) {
-                var filteredAccounts = tempData.accounts.filter(function (account) {
-                    return account.productDTO.demandDepositProductFacilitiesDTO.hasChequeBookFacility;
+                var filteredAccounts = tempData.accounts.filter(function(account) {
+                    return account.accountFacilities.hasChequeBookFacility;
                 });
                 tempData.accounts = filteredAccounts;
             }

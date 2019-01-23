@@ -41,7 +41,10 @@ define([], function() {
         customerResponse: "Customer Response",
         noData : "No data to display",
         optionRatingSectionHeading: "Following are the responses chosen by users for the question associated with each rating.",
-		noCommentFound:"No Reviews!"
+		noCommentFound:"No Reviews!",
+    genericFeedback: "General Feedback",
+    infoheaderGeneric: "Please select the following parameters to generate analytics on the feedback data captured for General Feedback"
+
       },
       ar: true,
       fr: true,

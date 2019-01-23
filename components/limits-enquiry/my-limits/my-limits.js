@@ -28,6 +28,7 @@ define([
     self.customPackageFlagforSingle = ko.observable(false);
     self.showConfirm = ko.observable(false);
     self.isDataLoaded = ko.observable(false);
+    self.isTransactionListNotRequired = ko.observable((rootParams.isTransactionListNotRequired));
     self.existingLimitPackage = ko.observable();
     self.showSubmit = ko.observable(false);
     self.showNavigation = ko.observable(false);
@@ -84,6 +85,7 @@ define([
         self.accessPointGroupMapping.removeAll();
         self.targetLinkages.removeAll();
         self.arrayOfLimitsLinkages.removeAll();
+        self.selectedTransactionType("");
 
 
         self.showGroupInfo(false);
@@ -903,7 +905,7 @@ define([
           if (!self.taskCodeList().length > 0) {
             self.getTaskList();
           } else {
-            self.selectedTransactionType(self.taskCodeList()[0].id);
+        self.selectedTransactionType((self.isTransactionListNotRequired()) ? ko.utils.unwrapObservable(rootParams.type) : self.taskCodeList()[0].id);
             self.dataLoaded(true);
           }
           self.arrayOfLimitsLinkagesForGraph(JSON.parse(JSON.stringify(self.arrayOfLimitsLinkages())));
@@ -1014,7 +1016,7 @@ define([
         self.taskCodeList(data.taskList);
         self.dataLoaded(true);
         ko.tasks.runEarly();
-        self.selectedTransactionType(self.taskCodeList()[0].id);
+        self.selectedTransactionType((self.isTransactionListNotRequired()) ? ko.utils.unwrapObservable(rootParams.type) : self.taskCodeList()[0].id);
       });
     };
     MyLimitModel.fetchEffectiveTodayDetails().done(function (data) {

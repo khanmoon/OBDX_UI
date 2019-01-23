@@ -3,9 +3,10 @@ define(["ojs/ojcore", "jquery", "knockout", "ojL10n!resources/nls/internal-accou
 
   return function (rootParams) {
     var self = this;
-
+    self.mode = rootParams.mode;
     self.account = rootParams.account;
     self.confirmStyleAccount = !!rootParams.confirmStyleAccount;
+    self.showInline = rootParams.showInline;
     self.hiddenAccountNumber = ko.observable();
     self.label = rootParams.label;
     self.required = rootParams.required;

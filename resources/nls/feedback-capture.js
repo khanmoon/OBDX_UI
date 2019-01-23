@@ -8,7 +8,8 @@ define([], function() {
         submit:"Submit",
         thankYouQuote:"Thank you for your feedback!",
         skip : "Skip",
-        neverAskMeAgain: "Never ask me again"
+        neverAskMeAgain: "Never ask me again",
+        ratingSet : "Rating"
 
       },
       ar: true,

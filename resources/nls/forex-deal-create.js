@@ -56,8 +56,8 @@ define([
                     viewlimits : "View Limits",
                     channel : "Channel",
                     showInformation: "Select channel to view its limits",
-                    alt: "Click here to {reference}",
-                    title: "Click here to {reference}"
+                    altViewLimits: "Click here to view limits",
+                    titleViewLimits: "Click here to view limits"
                 },
 
                 generic: Generic,

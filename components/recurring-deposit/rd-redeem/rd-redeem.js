@@ -15,7 +15,8 @@ define([
   "ojL10n!resources/nls/rd-redeem",
   "ojs/ojknockout-validation",
   "ojs/ojvalidationgroup",
-  "ojs/ojbutton"
+  "ojs/ojbutton",
+  "ojs/ojinputtext"
 ], function(oj, ko, $, redeemModel, ResourceBundle) {
   "use strict";
   /** Reccuring Deposit Redemption.

@@ -94,6 +94,8 @@ define([
         baseModel.registerComponent("review-bill-payments", "payments");
         baseModel.registerComponent("transfer-view-limits", "financial-limits");
         baseModel.registerComponent("multiple-bill-payments", "payments");
+        baseModel.registerComponent("my-limits", "limits-enquiry");
+
         self.viewLimitsFlag = ko.observable(false);
         self.selectedChannelTypeName = ko.observable();
         self.selectedChannelType = ko.observable();

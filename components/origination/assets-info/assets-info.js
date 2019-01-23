@@ -18,7 +18,7 @@ define([
         var KoModel = AssetsInfoModel.getNewModel();
         KoModel.type = ko.observable(KoModel.type);
         KoModel.value.amount = ko.observable(KoModel.value.amount);
-        KoModel.value.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+        KoModel.value.currency = self.localCurrency;
         KoModel.temp_isActive = ko.observable(KoModel.temp_isActive);
         KoModel.temp_selectedValues = ko.observable(KoModel.temp_selectedValues);
         return KoModel;
@@ -26,16 +26,24 @@ define([
       transformFetchedData = function (data) {
         var tempAssetsList;
         tempAssetsList = ko.utils.arrayFilter(data.assetDetails, function (assets) {
-          if (rootParams.baseModel.getDescriptionFromCode(self.assetTypeData(), assets.type) !== "") {
-            return assets;
+          for (var i = 0; i < self.assetTypeData().length; i++) {
+            if (self.assetTypeData()[i].financialParameterDTO.code === assets.type) {
+              return assets;
+            }
           }
         });
         for (i = 0; i < tempAssetsList.length; i++) {
+          var finDesc;
           tempAssetsList[i].type = ko.observable(tempAssetsList[i].type);
           tempAssetsList[i].value.amount = ko.observable(tempAssetsList[i].value.amount);
           tempAssetsList[i].temp_isActive = ko.observable(false);
+          for (var j = 0; j < self.assetTypeData().length; j++) {
+            if (self.assetTypeData()[j].financialParameterDTO.code === tempAssetsList[i].type()) {
+              finDesc = self.assetTypeData()[j].financialParameterDTO.description;
+            }
+          }
           tempAssetsList[i].temp_selectedValues = ko.observable({
-            type: rootParams.baseModel.getDescriptionFromCode(self.assetTypeData(), tempAssetsList[i].type())
+            type: finDesc
           });
         }
         return tempAssetsList;
@@ -164,20 +172,20 @@ define([
       if (assetsInfoTracker.valid === "valid") {
         data.type(ko.utils.unwrapObservable(data.type));
         for (var j = 0; j < self.assetTypeData().length; j++) {
-          if (data.type === self.assetTypeData()[j].financialParameterDTO.code) {
+          if (ko.utils.unwrapObservable(data.type) === self.assetTypeData()[j].financialParameterDTO.code) {
             data.finacialParameterDescription = self.assetTypeData()[j].financialParameterDTO.description;
           }
         }
         AssetsInfoModel.saveModel(rootParams.baseModel.removeTempAttributes({
           profileId: self.applicantObject().profileId,
           assetDetails: data
-        })).done(function (data) {
+        })).done(function (dataSaved) {
           for (var i = 0; i < self.applicantObject().assetsInfo.assetsList().length; i++) {
             if (self.applicantObject().assetsInfo.assetsList()[i].temp_isActive()) {
-              if (data.assetDetails) {
-                self.applicantObject().assetsInfo.assetsList()[i].id = data.assetDetails.id;
+              if (dataSaved.assetDetails) {
+                self.applicantObject().assetsInfo.assetsList()[i].id = dataSaved.assetDetails.id;
               }
-              self.applicantObject().assetsInfo.assetsList()[i].temp_selectedValues().type = rootParams.baseModel.getDescriptionFromCode(self.assetTypeData(), self.applicantObject().assetsInfo.assetsList()[i].type());
+              self.applicantObject().assetsInfo.assetsList()[i].temp_selectedValues().type = data.finacialParameterDescription;
               self.applicantObject().assetsInfo.assetsList()[i].temp_isActive(false);
             }
           }

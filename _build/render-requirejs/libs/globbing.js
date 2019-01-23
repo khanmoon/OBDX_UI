@@ -1,16 +1,16 @@
 var glob = require("multi-glob").glob;
 
-module.exports = function () {
-    return new Promise(function (resolve, reject) {
+module.exports = function() {
+    return new Promise(function(resolve, reject) {
         glob([
-                '../lzn/*/components/*/*/!(model|loader).js',
-                '../lzn/*/components/widgets/*/*/!(model|loader).js',
-                '../components/*/*/!(model|loader).js',
-                '../extensions/components/*/*/!(model|loader).js',
-                '../components/widgets/*/*/!(model|loader).js',
-                '../framework/elements/*/*/!(model|loader).js'
+                '../lzn/*/components/*/*/!(model|loader|hooks).js',
+                '../lzn/*/components/widgets/*/*/!(model|loader|hooks).js',
+                '../components/*/*/!(model|loader|hooks).js',
+                '../extensions/components/*/*/!(model|loader|hooks).js',
+                '../components/widgets/*/*/!(model|loader|hooks).js',
+                '../framework/elements/*/*/!(model|loader|hooks).js'
             ],
-            function (err, files) {
+            function(err, files) {
                 if (err) throw err;
                 var moduleDep = [];
                 for (var l = files.length, fileIndex = l; fileIndex--;) {

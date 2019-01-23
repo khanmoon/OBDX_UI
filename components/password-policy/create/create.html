@@ -274,7 +274,9 @@
       </div>
 
       <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-1">
-        <oj-input-text id="pwdExpiryPeriod" maxlength="3" type="text" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ONLY_NUMERIC')]]" value="{{passwordExpiryPeriod}}" on-value-changed="[[$component.passwordExpiryPeriodChangeHandler]]" :aria-label="[[$component.nls.fieldname.pwdExpiryPeriod]]"></oj-input-text>
+        <oj-input-text id="pwdExpiryPeriod" maxlength="3" type="text" :invalidcomponenttracker="[[$component.validationTracker]]"  validators="[[$baseModel.getValidator('NUMBERS',$component.nls.error.onlyNumeric,{
+              type:'numberRange',options:{
+                  min:1}})]]" value="{{passwordExpiryPeriod}}" on-value-changed="[[$component.passwordExpiryPeriodChangeHandler]]" :aria-label="[[$component.nls.fieldname.pwdExpiryPeriod]]" required="[[true]]"></oj-input-text>
       </div>
     </div>
     <!-- ko if: passwordExpiryPeriod -->
@@ -296,7 +298,9 @@
       </div>
 
       <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-1">
-        <oj-input-text id="firstPwdExpiry" maxlength="3" type="text" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ONLY_NUMERIC')]]" value="{{firstPasswordExpiryPeriod}}" :aria-label="[[$component.nls.fieldname.firstPwdExpiry]]"></oj-input-text>
+        <oj-input-text id="firstPwdExpiry" maxlength="3" type="text" :invalidcomponenttracker="[[$component.validationTracker]]"  validators="[[$baseModel.getValidator('NUMBERS',$component.nls.error.onlyNumeric,{
+              type:'numberRange',options:{
+                  min:1}})]]" value="{{firstPasswordExpiryPeriod}}" :aria-label="[[$component.nls.fieldname.firstPwdExpiry]]" required="[[true]]"></oj-input-text>
       </div>
 
     </div>

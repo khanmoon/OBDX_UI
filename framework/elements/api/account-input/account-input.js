@@ -23,6 +23,7 @@ define([
     self.type = rootParams.type;
     self.account = rootParams.account;
     self.id = rootParams.baseModel.incrementIdCount();
+    self.modalId = rootParams.baseModel.incrementIdCount();
     self.readOnly = rootParams.readOnly ? rootParams.readOnly : false;
     self.label = self.readOnly ? locale.accountSelected : rootParams.label || locale.selectAccount;
     self.additionalDetails = rootParams.additionalDetails;
@@ -102,9 +103,7 @@ define([
             return element.id.value === self.account();
           })[0];
           if (!accountInFilteredResults) {
-            rootParams.baseModel.showMessages(null, [self.locale.txnNotAvailable], "ERROR", function() {
-              history.back();
-            });
+            $("#" + self.modalId).trigger("openModal");
           }
         }
         ko.utils.arrayPushAll(self.accountList, data.accounts);
@@ -137,6 +136,13 @@ define([
         rootParams.baseModel.showMessages(null, [rootParams.no_data_message || self.locale.noActiveAccounts], "ERROR");
       });
     };
+
+  self.closeModal = function(){
+    rootParams.dashboard.hideDetails();
+  };
+  self.closeModalWindow = function(){
+    $("#" + self.modalId).trigger("closeModal");
+  };
     self.fetchList();
     if (self.taskCode && ko.isObservable(self.taskCode)) {
       taskCodeSubcription = self.taskCode.subscribe(function() {

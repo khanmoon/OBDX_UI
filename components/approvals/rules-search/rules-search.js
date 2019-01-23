@@ -173,7 +173,9 @@ define([
               if (rule.workflowDto)
                 rule.workflowCode = rule.workflowDto.name;
             }
-            rule.usergroupCode = rule.initiatorUserGroup.name;
+            if (rule.initiatorUserGroup) {
+              rule.usergroupCode = rule.initiatorUserGroup.name;
+            }
             rule.approvalRequired = rule.approvalRequired ? self.nls.common.yes : self.nls.common.no;
             return rule;
           });

@@ -23,7 +23,21 @@ define([
         baseService.remove(options);
       },
 
-      readMailerDeffered, readMailer = function(Parameters, deferred) {
+       listEnterpriseRolesDeferred, listEnterpriseRoles = function(deferred) {
+            var options = {
+              url: "enterpriseRoles?isLocal=true",
+              success: function(data) {
+                deferred.resolve(data);
+              },
+              error: function(data) {
+                deferred.reject(data);
+              }
+            };
+
+            baseService.fetch(options);
+          },
+
+       readMailerDeffered, readMailer = function(Parameters, deferred) {
 
         var params = {
             "mailerId": Parameters
@@ -49,7 +63,11 @@ define([
         deleteMailer(mailerId, deleteMailerDeffered);
         return deleteMailerDeffered;
       },
-
+      listEnterpriseRoles: function() {
+        listEnterpriseRolesDeferred = $.Deferred();
+        listEnterpriseRoles(listEnterpriseRolesDeferred);
+        return listEnterpriseRolesDeferred;
+      },
       readMailer: function(Parameters) {
         readMailerDeffered = $.Deferred();
         readMailer(Parameters, readMailerDeffered);

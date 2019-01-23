@@ -388,7 +388,7 @@ define([
                     ApprovalRulesModel.getTransactionName(self.params.associatedRuleCriterias[i].constraintValue1).done(function (data) {
                         if (data.task) {
                             self.selectedTransactionName(data.task.name);
-                            self.selectedTransaction([data.task.id + "~" + data.task.name]);
+                            self.selectedTransaction(data.task.id + "~" + data.task.name);
                             self.transactionRule(self.params.associatedRuleCriterias[temp].ruleCriteriaDTO);
                         }
                     });

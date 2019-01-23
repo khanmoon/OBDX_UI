@@ -7,7 +7,7 @@ define([
             root: {
                 casaNominee: {
                   header: "Nominations",
-                    accountListTable: "Casa Nominee Accounts List Table",
+                    accountListTable: "List of Nominees for Current and Savings Accounts",
                     accountNumber: "Account Number",
                     primaryHolderName: "Primary Holder Name",
                     holdingPattern: "Holding Pattern",

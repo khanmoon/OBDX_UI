@@ -17,7 +17,8 @@
       <script type="text/html" id="checkbox_tmpl">
         <td>
           <!-- ko if: $context.cellContext.leaf -->
-          <oj-checkboxset value='{{$context.row.actionTypeMap[$context.columnIndex-1].selected}}' on-click='[[$component.manipulateCurrentChild.bind($context)]]' class='oj-checkboxset-no-chrome' :aria-label="[[$context.cellContext.parentKey + $context.cellContext.status.rowIndex + $context.row.actionTypeMap[$context.columnIndex-1].action]]"
+<oj-checkboxset value='{{$context.row.actionTypeMap[$context.columnIndex-1].selected}}' on-value-changed='[[$component.manipulateCurrentChild]]'
+  class='oj-checkboxset-no-chrome' :aria-label="[[$context.cellContext.parentKey + $context.cellContext.status.rowIndex + $context.row.actionTypeMap[$context.columnIndex-1].action]]"
             disabled="[[$component.readMode]]">
             <oj-option data-bind="attr:{
                                                  id: $context.cellContext.parentKey + $context.cellContext.status.rowIndex + $context.row.actionTypeMap[$context.columnIndex-1].action, disabled:$context.row.actionTypeMap[$context.columnIndex-1].disable}"
@@ -31,7 +32,7 @@
 
           <oj-row-expander :aria-label="[[$component.nls.info.transactionTable]]" context="[[$context.cellContext]]"></oj-row-expander>
 
-          <oj-checkboxset value="{{$context.row.selected}}" class="oj-checkboxset-no-chrome transaction-mapping-rowExpander" on-click='[[$component.manipulateCurrentChild.bind($context)]]' disabled="[[$component.readMode]]">
+<oj-checkboxset value="{{$context.row.selected}}" class="oj-checkboxset-no-chrome transaction-mapping-rowExpander" on-value-changed='[[$component.manipulateCurrentChild]]' disabled="[[$component.readMode]]">
             <oj-option value=true data-bind="attr :  { id: $context.cellContext.parentKey+$context.cellContext.status.rowIndex}">
               <span data-bind="text:$context.row.displayName, attr : {'for' :$context.cellContext.parentKey+$context.cellContext.status.rowIndex}"></span>
             </oj-option>

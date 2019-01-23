@@ -12,6 +12,6 @@ define([
         self.payments = ResourceBundle.payments;
         self.backButtonHandler = rootParams.backButtonHandler;
         rootParams.dashboard.headerName(self.payments.payee.view);
-        rootParams.baseModel.registerElement("modal-window");
+        rootParams.baseModel.registerElement(["modal-window","internal-account-input"]);
     };
 });

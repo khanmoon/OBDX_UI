@@ -27,7 +27,9 @@ define([
         self.transactionDetails = ko.observable();
         self.data = ko.observable();
         self.transactionSnapshot = ko.observable();
-self.transactionId=null;
+        self.menuOptionsAttached = ko.observable(false);
+
+        self.transactionId = null;
         self.approverReview = ko.observable(false);
         self.actionHeaderheading = ko.observable();
         self.resourceBundle = resourceBundle;
@@ -86,32 +88,31 @@ self.transactionId=null;
             });
         };
         self.getEnterpriseRoles();
-        self.menuOptions = ko.observableArray([
-          {
-            id: "CASA",
-            label: self.resourceBundle.subscription.accounts
-          },
-          {
-            id: "TD",
-            label: self.resourceBundle.subscription.td
-          },
-          {
-            id: "LOANS",
-            label: self.resourceBundle.subscription.loans
-          },
-          {
-            id: "PROFILE",
-            label: self.resourceBundle.subscription.profile
-          },
+        self.menuOptions = ko.observableArray([{
+                id: "CASA",
+                label: self.resourceBundle.subscription.accounts
+            },
             {
-              id: "PAYMENTS",
-              label: self.resourceBundle.subscription.payments
+                id: "TD",
+                label: self.resourceBundle.subscription.td
+            },
+            {
+                id: "LOANS",
+                label: self.resourceBundle.subscription.loans
+            },
+            {
+                id: "PROFILE",
+                label: self.resourceBundle.subscription.profile
+            },
+            {
+                id: "PAYMENTS",
+                label: self.resourceBundle.subscription.payments
             }
         ]);
         self.componentId = ko.observable();
         self.menuSelection = ko.observable("CASA");
         self.activityEventActionModelList = ko.observableArray();
-self.profileLevelActions=null;
+        self.profileLevelActions = null;
         self.showComponent = ko.observable(false);
         self.moduleCount = ko.observable(0);
         var dateValue = ko.observable(Params.baseModel.getDate().toISOString().slice(0, 10));
@@ -134,7 +135,7 @@ self.profileLevelActions=null;
             var koMessageTemplateModel = AlertsSubscriptionModel.getNewMessageTemplateModel();
             return koMessageTemplateModel;
         };
-self.isCorpAdmin=null;
+        self.isCorpAdmin = null;
         var partyId = {};
         partyId.value = Params.dashboard.userData.userProfile.partyId.value;
         partyId.displayValue = Params.dashboard.userData.userProfile.partyId.displayValue;
@@ -424,18 +425,18 @@ self.isCorpAdmin=null;
                     }, self);
                 });
             } else if (self.actionSubscription().subscribedActions && self.actionSubscription().subscribedActions.length > 0) {
-                    self.save1Initiated(true);
-                    AlertsSubscriptionModel.deleteSubscription(self.actionSubscription().subscriptionId).done(function (data, status, jqXhr) {
-                        self.transaction1Success(true);
-                        self.actionHeaderheading(self.resourceBundle.headers[self.mode()]);
-                        self.confirmationMsg(self.resourceBundle.subscription.successMessage);
-                        Params.dashboard.loadComponent("confirm-screen", {
-                            jqXHR: jqXhr,
-                            hostReferenceNumber: data.referenceNumber,
-                            transactionName: self.transactionName()
-                        }, self);
-                    });
-                }
+                self.save1Initiated(true);
+                AlertsSubscriptionModel.deleteSubscription(self.actionSubscription().subscriptionId).done(function (data, status, jqXhr) {
+                    self.transaction1Success(true);
+                    self.actionHeaderheading(self.resourceBundle.headers[self.mode()]);
+                    self.confirmationMsg(self.resourceBundle.subscription.successMessage);
+                    Params.dashboard.loadComponent("confirm-screen", {
+                        jqXHR: jqXhr,
+                        hostReferenceNumber: data.referenceNumber,
+                        transactionName: self.transactionName()
+                    }, self);
+                });
+            }
         };
         self.updateProfileSubscription = function () {
             self.mode("EDIT");
@@ -486,20 +487,20 @@ self.isCorpAdmin=null;
                     }, self);
                 });
             } else if (self.profileSubscription().subscribedActions && self.profileSubscription().subscribedActions.length > 0) {
-                    self.save2Initiated(true);
-                    AlertsSubscriptionModel.deleteSubscription(self.profileSubscription().subscriptionId).done(function (data, status, jqXhr) {
-                        self.transaction2Success(true);
-                        self.httpStatus(jqXhr.status);
-                        self.mode("SUCCESS");
-                        self.actionHeaderheading(self.resourceBundle.headers[self.mode()]);
-                        self.confirmationMsg(self.resourceBundle.subscription.successMessage);
-                        Params.dashboard.loadComponent("confirm-screen", {
-                            jqXHR: jqXhr,
-                            hostReferenceNumber: data.referenceNumber,
-                            transactionName: self.transactionName()
-                        }, self);
-                    });
-                }
+                self.save2Initiated(true);
+                AlertsSubscriptionModel.deleteSubscription(self.profileSubscription().subscriptionId).done(function (data, status, jqXhr) {
+                    self.transaction2Success(true);
+                    self.httpStatus(jqXhr.status);
+                    self.mode("SUCCESS");
+                    self.actionHeaderheading(self.resourceBundle.headers[self.mode()]);
+                    self.confirmationMsg(self.resourceBundle.subscription.successMessage);
+                    Params.dashboard.loadComponent("confirm-screen", {
+                        jqXHR: jqXhr,
+                        hostReferenceNumber: data.referenceNumber,
+                        transactionName: self.transactionName()
+                    }, self);
+                });
+            }
         };
         self.createSubscription = function () {
             self.mode("CREATE");
@@ -724,7 +725,44 @@ self.isCorpAdmin=null;
             if (componentId === "alerts-subscription-profile") {
                 return self.profileSubscription;
             }
-                return self.actionSubscription;
+            return self.actionSubscription;
+
+        };
+        self.checkAccountList = function () {
+            var notFound = false;
+            ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
+                if (listItem.accountsLoaded() === false) {
+                    notFound = true;
+                }
+            });
+            if (!notFound) {
+                self.menuOptionsAttached(true);
+                ko.utils.arrayForEach(self.AccountListForAccountType(), function (object) {
+                    if (object.list().length === 0) {
+                        if (object.module === "CH") {
+                            self.menuOptions = ko.observableArray(self.menuOptions.remove(function (remove) {
+                                return remove.id !== "CASA";
+                            }));
+                        }
+                        if (object.module === "PC") {
+                            self.menuOptions = ko.observableArray(self.menuOptions.remove(function (remove) {
+                                return remove.id !== "PAYMENTS";
+                            }));
+                        }
+                        if (object.module === "LN") {
+                            self.menuOptions = ko.observableArray(self.menuOptions.remove(function (remove) {
+                                return remove.id !== "LOANS";
+                            }));
+                        }
+                        if (object.module === "TD") {
+                            self.menuOptions = ko.observableArray(self.menuOptions.remove(function (remove) {
+                                return remove.id !== "TD";
+                            }));
+                        }
+                    }
+                });
+            }
+            notFound = false;
 
         };
         self.fetchCASAAccounts = function (activityEventActionModuleList, moduleType) {
@@ -759,12 +797,14 @@ self.isCorpAdmin=null;
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     }).fail(function () {
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     });
@@ -789,12 +829,14 @@ self.isCorpAdmin=null;
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     }).fail(function () {
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     });
@@ -838,12 +880,14 @@ self.isCorpAdmin=null;
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     }).fail(function () {
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     });
@@ -870,12 +914,14 @@ self.isCorpAdmin=null;
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     }).fail(function () {
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     });
@@ -919,12 +965,14 @@ self.isCorpAdmin=null;
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     }).fail(function () {
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     });
@@ -951,12 +999,14 @@ self.isCorpAdmin=null;
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     }).fail(function () {
                         ko.utils.arrayForEach(self.accountsLoadedList(), function (listItem) {
                             if (listItem.module === moduleType) {
                                 listItem.accountsLoaded(true);
+                                self.checkAccountList();
                             }
                         });
                     });
@@ -976,17 +1026,18 @@ self.isCorpAdmin=null;
                 var emailExists, smsExists, mailboxExists, pushNotificationExists = false;
                 ko.utils.arrayForEach(activityEventAction.alertDTO.recipientMessageTemplates, function (recipientMessageTemplate) {
                     ko.utils.arrayForEach(recipientMessageTemplate.messageTemplateDTO, function (messageTemplateDTO) {
-                      if(messageTemplateDTO){
-                        if (messageTemplateDTO.destinationType === "EMAIL") {
-                            emailExists = true;
-                        } else if (messageTemplateDTO.destinationType === "SMS") {
-                            smsExists = true;
-                        } else if (messageTemplateDTO.destinationType === "SECURE_MAIL_BOX") {
-                            mailboxExists = true;
-                        } else if (messageTemplateDTO.destinationType === "PUSH_NOTIFICATION") {
-                            pushNotificationExists = true;
+                        if (messageTemplateDTO) {
+                            if (messageTemplateDTO.destinationType === "EMAIL") {
+                                emailExists = true;
+                            } else if (messageTemplateDTO.destinationType === "SMS") {
+                                smsExists = true;
+                            } else if (messageTemplateDTO.destinationType === "SECURE_MAIL_BOX") {
+                                mailboxExists = true;
+                            } else if (messageTemplateDTO.destinationType === "PUSH_NOTIFICATION") {
+                                pushNotificationExists = true;
+                            }
                         }
-                    }});
+                    });
                 });
                 activityEventActionModel.emailExists = ko.observable(emailExists);
                 activityEventActionModel.smsExists = ko.observable(smsExists);
@@ -1044,17 +1095,18 @@ self.isCorpAdmin=null;
                 ko.utils.arrayForEach(activityEventAction.alertDTO.recipientMessageTemplates, function (recipientMessageTemplate) {
                     if (recipientMessageTemplate.keyDTO.recipient === self.validRecipient() && recipientMessageTemplate.keyDTO.recipientCategory === self.validRecipientCategory()) {
                         ko.utils.arrayForEach(recipientMessageTemplate.messageTemplateDTO, function (messageTemplateDTO) {
-                          if(messageTemplateDTO){
-                            if (messageTemplateDTO.destinationType === "EMAIL") {
-                                emailExists = true;
-                            } else if (messageTemplateDTO.destinationType === "SMS") {
-                                smsExists = true;
-                            } else if (messageTemplateDTO.destinationType === "SECURE_MAIL_BOX") {
-                                mailboxExists = true;
-                            } else if (messageTemplateDTO.destinationType === "PUSH_NOTIFICATION") {
-                                pushNotificationExists = true;
+                            if (messageTemplateDTO) {
+                                if (messageTemplateDTO.destinationType === "EMAIL") {
+                                    emailExists = true;
+                                } else if (messageTemplateDTO.destinationType === "SMS") {
+                                    smsExists = true;
+                                } else if (messageTemplateDTO.destinationType === "SECURE_MAIL_BOX") {
+                                    mailboxExists = true;
+                                } else if (messageTemplateDTO.destinationType === "PUSH_NOTIFICATION") {
+                                    pushNotificationExists = true;
+                                }
                             }
-                        }});
+                        });
                     }
                 });
                 activityEventActionModel.emailExists = ko.observable(emailExists);
@@ -1146,6 +1198,46 @@ self.isCorpAdmin=null;
                     }
                 });
                 self.moduleCount(self.moduleCount() + 1);
+                if (self.moduleCount() === 5) {
+                    ko.utils.arrayForEach(self.ActivityEventActionsForModule(), function (activityEventActionsForModule) {
+                        if (activityEventActionsForModule.module === "CH") {
+                            if (activityEventActionsForModule.list().length === 0) {
+                                self.menuOptions = ko.observableArray(self.menuOptions.remove(function (remove) {
+                                    return remove.id !== "CASA";
+                                }));
+                            }
+                        }
+                        if (activityEventActionsForModule.module === "PC") {
+                            if (activityEventActionsForModule.list().length === 0) {
+                                self.menuOptions = ko.observableArray(self.menuOptions.remove(function (remove) {
+                                    return remove.id !== "PAYMENTS";
+                                }));
+                            }
+                        }
+                        if (activityEventActionsForModule.module === "PI") {
+                            if (activityEventActionsForModule.list().length === 0) {
+                                self.menuOptions = ko.observableArray(self.menuOptions.remove(function (remove) {
+                                    return remove.id !== "PROFILE";
+                                }));
+                            }
+                        }
+                        if (activityEventActionsForModule.module === "LN") {
+                            if (activityEventActionsForModule.list().length === 0) {
+                                self.menuOptions = ko.observableArray(self.menuOptions.remove(function (remove) {
+                                    return remove.id !== "LOANS";
+                                }));
+                            }
+                        }
+                        if (activityEventActionsForModule.module === "TD") {
+                            if (activityEventActionsForModule.list().length === 0) {
+                                self.menuOptions = ko.observableArray(self.menuOptions.remove(function (remove) {
+                                    return remove.id !== "TD";
+                                }));
+                            }
+                        }
+                    });
+
+                }
             }).fail(function () {
                 self.moduleCount(self.moduleCount() + 1);
             });
@@ -1157,11 +1249,11 @@ self.isCorpAdmin=null;
         self.ok = function () {
             window.location.reload();
         };
-        self.cancelConfirmation = function(){
-          $("#cancelDialog").trigger("openModal");
+        self.cancelConfirmation = function () {
+            $("#cancelDialog").trigger("openModal");
         };
-        self.closeDialogBox = function() {
-          $("#cancelDialog").hide();
+        self.closeDialogBox = function () {
+            $("#cancelDialog").hide();
         };
         self.back = function () {
             history.back();

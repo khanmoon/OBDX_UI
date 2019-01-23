@@ -1,27 +1,18 @@
 define([
-    "ojs/ojcore",
     "knockout",
-    "jquery",
-
-    "./model",
     "ojL10n!resources/nls/admin-activity",
+    "json!local!./links",
     "ojs/ojinputtext",
     "ojs/ojpopup"
-], function (oj, ko, $, AdminActivitiesModel, resourceBundle) {
+], function (ko, resourceBundle,links) {
     "use strict";
     return function (rootParams) {
         var self = this;
         ko.utils.extend(self, rootParams.rootModel);
         self.nls = resourceBundle;
-        self.flag = ko.observable(false);
-        rootParams.baseModel.registerElement("action-widget");
-        self.details = ko.observableArray();
-        self.imgPath = ko.observable();
-        self.showPopup = ko.observable(false);
-        AdminActivitiesModel.fetchLines().done(function (data) {
-            self.details(data.module);
-            self.flag(true);
-        });
+        self.nls = resourceBundle;
+        self.links=links;
+        self.type=rootParams.data ? rootParams.data.data.type :rootParams.rootModel.params.type;
         self.loadPage = function (data) {
             if (data.component) {
                 rootParams.baseModel.registerComponent(data.component, data.module);

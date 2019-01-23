@@ -21,8 +21,6 @@ define(
               andabove: "{value} & Above"
             },
             initialFunding: "Min - {minAmount}   Max - {maxAmount}",
-            fileId: "input",
-            imageId: "target",
             tenure: "Min - {minTenure} yrs   Max - {maxTenure} Yrs",
             category: {
               updateCategoryConfirm: "Transaction",
@@ -54,7 +52,7 @@ define(
               partialWithdrawalPenalty: "Partial Withdrawal Penalty",
               interestlink: "View Interest Rates"
             },
-            reviewHeaderMsg: "You Initaited a request for updating existing goal category. Please review details before you confirm!"
+            reviewHeaderMsg: "You initiated a request for updating existing goal category. Please review details before you confirm!"
           },
           common: {
             save: "Save",

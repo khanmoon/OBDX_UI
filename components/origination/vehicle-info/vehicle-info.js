@@ -49,7 +49,7 @@ define([
     rootParams.baseModel.registerElement("address-input");
     rootParams.baseModel.registerElement("amount-input");
     var getNewKoModel = function() {
-      var KoModel = VehicleInfoModel.getNewModel(rootParams.baseModel.getLocaleValue("localCurrency"));
+      var KoModel = VehicleInfoModel.getNewModel(self.localCurrency);
       KoModel.loanApplicationRequirementDTO.vehicleDetails.vehicleIdentificationNum = ko.observable(KoModel.loanApplicationRequirementDTO.vehicleDetails.vehicleIdentificationNum);
       return KoModel;
     };
@@ -79,12 +79,12 @@ define([
           if (!self.productDetails().requirements.purchasePrice && self.productDetails().productType === "AUTOMOBILE") {
             self.productDetails().requirements.purchasePrice = {};
             self.productDetails().requirements.purchasePrice.amount = ko.observable();
-            self.productDetails().requirements.purchasePrice.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+            self.productDetails().requirements.purchasePrice.currency = self.localCurrency;
           }
           if (!self.productDetails().requirements.downpaymentAmount && self.productDetails().productType === "AUTOMOBILE") {
             self.productDetails().requirements.downpaymentAmount = {};
             self.productDetails().requirements.downpaymentAmount.amount = ko.observable();
-            self.productDetails().requirements.downpaymentAmount.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+            self.productDetails().requirements.downpaymentAmount.currency = self.localCurrency;
           }
         }
         self.productDetails().requirements.vehicleDetails = getNewKoModel().loanApplicationRequirementDTO.vehicleDetails;

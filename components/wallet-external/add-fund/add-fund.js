@@ -34,7 +34,7 @@ define([
         self.isLoaded = ko.observable(false);
         WalletAddFundModel.init();
         self.submitMerchantData = function () {
-            var form = $("<form method='POST' action='http://obdxappbah:7777/digx/v1/payments/transfers/merchantTransferData' enctype='application/x-www-form-urlencoded'></form>");
+            var form = $("<form method='POST' action='@@OBDX_BASE_PATH/payments/transfers/merchantTransferData' enctype='application/x-www-form-urlencoded'></form>");
             form.append("<input type=\"hidden\" name=\"merchantCode\" value=\"" + self.merchantCode() + "\">");
             form.append("<input type=\"hidden\" name=\"failureStaticFlag\" value=\"" + self.failureStaticFlag() + "\">");
             form.append("<input type=\"hidden\" name=\"userAccountNumber\" value=\"" + self.merchantAccountNumber() + "\">");

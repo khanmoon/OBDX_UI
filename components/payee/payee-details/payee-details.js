@@ -50,7 +50,8 @@ define([
         Params.baseModel.registerComponent("issue-demand-draft", "payments");
         Params.baseModel.registerElement([
             "confirm-screen",
-            "amount-input"
+            "amount-input",
+            "internal-account-input"
         ]);
         Params.dashboard.headerName(self.payments.payee.payees);
         self.transferObject = ko.observable({
@@ -191,7 +192,8 @@ define([
                         },
                         {
                             label: self.payments.payee.accountnumber,
-                            value: self.payeeData.accountNumber
+                            value: self.payeeData.accountNumber,
+                            isInternalAccNo : true
                         }
                     ],
                     [{

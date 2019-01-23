@@ -97,10 +97,10 @@ define([
             sortAscending = ui.direction === "ascending";
             if (ui.header === "nextExecutionDate") {
                 self.SIList.sort(sortTxnByDate);
-                self.SIListDataSource(new oj.PagingTableDataSource(new oj.ArrayTableDataSource(self.SIList(), { idAttribute: ["payeeNickName"] })));
+                self.SIListDataSource(new oj.PagingTableDataSource(new oj.ArrayTableDataSource(self.SIList(), { idAttribute: ["payeeNickName"] } || [])));
             } else if (ui.header === "amount") {
                 self.SIList.sort(sortTxnByAmount);
-                self.SIListDataSource(new oj.PagingTableDataSource(new oj.ArrayTableDataSource(self.SIList(), { idAttribute: ["payeeNickName"] })));
+                self.SIListDataSource(new oj.PagingTableDataSource(new oj.ArrayTableDataSource(self.SIList(), { idAttribute: ["payeeNickName"] } || [])));
             }
         };
         SIModel.init();

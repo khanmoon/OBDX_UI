@@ -91,7 +91,7 @@ define([
         if (self.mode() === "CREATE") {
             var taskType = null;
             if (self.params.selectedSegmentId === "administrator") {
-                taskType = "ADMINISTRATION";
+                taskType = ["ADMINISTRATION","COMMON"];
             }
             createAuthenticationMaintenanceModel.fetchTransactionsForMaintenance(taskType).done(function (data) {
                 if (self.selectedSegmentId() !== "administrator")

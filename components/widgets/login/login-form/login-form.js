@@ -16,7 +16,7 @@ define([
         self.message = ko.observable();
         self.nls = ResourceBundle;
         self.showPopup = true;
-        if (!rootParams.baseModel.large()) {
+        if (!rootParams.baseModel.large() || rootParams.baseModel.cordovaDevice()) {
             self.showPopup = false;
         }
         if (rootParams.data && rootParams.data.data && rootParams.data.data.landingModule) {

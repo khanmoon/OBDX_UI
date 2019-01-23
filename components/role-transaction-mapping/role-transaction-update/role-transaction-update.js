@@ -186,11 +186,11 @@ define([
         for (var i = 0; i < entitlementData.length; i++) {
           var name = entitlementData[i].entitlementName;
           var action = entitlementData[i].entitlementId.split("_")[entitlementData[i].entitlementId.split("_").length - 1];
-
+          var id = entitlementData[i].entitlementId.split("_")[0];
           self.entitlementFound = ko.observable(false);
           if (self.entitlements().length !== 0) {
             for (var l = 0; l < self.entitlements().length; l++) {
-              if (self.entitlements()[l].attr.id === name) {
+              if (self.entitlements()[l].attr.id === id) {
                 ko.utils.arrayForEach(self.entitlements()[l].actionTypeMap, function(item2) {
                   if (item2.action === action) {
                     countActions[actionIndex.indexOf(action)] += 1;
@@ -232,7 +232,7 @@ define([
               }
             });
             entitlementData[i].attr = {
-              id: name,
+              id: id,
               displayName: name,
               actionTypeMap: entitlementData[i].actionTypeMap,
               selected: ko.observableArray()

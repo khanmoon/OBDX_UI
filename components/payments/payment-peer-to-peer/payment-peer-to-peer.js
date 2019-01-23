@@ -62,6 +62,8 @@ define([
         self.confirmScreenDetails = ko.observable();
         rootParams.baseModel.registerComponent("peer-to-peer-payee", "payee");
         rootParams.baseModel.registerComponent("transfer-view-limits", "financial-limits");
+        rootParams.baseModel.registerComponent("my-limits", "limits-enquiry");
+
         rootParams.baseModel.registerComponent("review-payment-peer-to-peer", "payments");
         rootParams.baseModel.registerComponent("social-media", "social-media");
         rootParams.baseModel.registerElement([

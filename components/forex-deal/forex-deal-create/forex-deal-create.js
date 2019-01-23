@@ -59,6 +59,8 @@ define([
         rootParams.baseModel.registerComponent("review-forex-deal-create", "forex-deal");
         rootParams.baseModel.registerComponent("view-forex-deal-limits", "forex-deal");
         rootParams.baseModel.registerComponent("transfer-view-limits", "financial-limits");
+        rootParams.baseModel.registerComponent("my-limits", "limits-enquiry");
+
         rootParams.baseModel.registerElement([
             "modal-window",
             "amount-input"

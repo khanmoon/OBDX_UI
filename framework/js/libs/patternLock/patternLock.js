@@ -173,7 +173,7 @@
                 pattern = iObj.patternAry.join(option.delimiter);
 
             //remove hidden pattern class and remove event
-            iObj.holder.off('.pattern-move').removeClass('patt-hidden');
+            iObj.holder.off('.pattern-move');
 
             if (!pattern) return;
 

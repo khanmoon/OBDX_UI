@@ -5,8 +5,8 @@
     <!-- ko if:templateLoaded-->
     <div class=" oj-flex flex-height">
       <div class="oj-flex-item oj-lg-5 oj-md-5 oj-sm-12 video-container">
-        <video data-bind="loadImage:'feedback/feedback.mp4'" autoplay loop>
-          </video>
+        <img data-bind="loadImage:'feedback/feedback.gif'" autoplay loop>
+          </img>
       </div>
       <div class="oj-flex-item oj-lg-7 oj-md-7 oj-sm-12 rating-align">
         <div class="oj-flex-items right">
@@ -36,14 +36,23 @@
           <!-- /ko -->
         </div>
         <div>
-          <!-- ko if:$component.showGauge -->
+          <!-- ko ifnot:!$component.showGauge && $baseModel.cordovaDevice() -->
           <div class="oj-flex oj-flex-items-pad rating-align__ratingGauge">
             <oj-rating-gauge class="scale-rating" id="ratingGuage" :aria-label="[[$component.resource.feedbackText]]" value="{{ratingW5}}" on-value-changed="[[$component.ratingChangeHandler]]" selected-state.shape="[[$component.customShape]]" selected-state.color="yellow"
               hover-state.color="[[$component.ratingColor]]" hover-state.shape="[[$component.customShape]]" unselected-state.shape="[[$component.customShape]]" changed-state.shape="[[$component.customShape]]" changed-state.color="[[$component.ratingColor]]"
               selected-state.color="red" unselected-state.color="[[$component.ratingBgColor]]">
             </oj-rating-gauge>
-            <div data-bind="template : {afterRender : $component.ratingFocus}"></div>
           </div>
+          <!-- /ko -->
+
+          <!-- ko if:$baseModel.cordovaDevice() === "IOS" -->
+          <oj-radioset class="oj-choice-direction-row" :id="scale" value="{{ratingW5}}" :aria-label="[[$component.resource.ratingSet]]" on-value-changed="{{$component.ratingChangeHandler}}">
+            <!-- ko foreach: $component.ratingValue -->
+            <oj-option class="scale-rating" :id="[['option'+$index()]]" value="[[id]]">
+              <label class="scale-label" data-bind="text: id"></label>
+            </oj-option>
+            <!-- /ko -->
+          </oj-radioset>
           <!-- /ko -->
           <!-- ko if: $component.feedbackLoaded -->
           <!-- ko ifnot: $component.nonDefaultFeedback -->
@@ -111,8 +120,8 @@
           <a class="icons icon-cancel icon-property" href="javascript:void(0)" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]"></a>
         </div>
         <div class="oj-flex-item">
-          <video class="video-property" data-bind="loadImage:'feedback/feedback_mobile.mp4'" autoplay loop>
-            </video>
+          <img class="video-property" data-bind="loadImage:'feedback/feedback_mobile.gif'" autoplay loop>
+            </img>
         </div>
       </div>
       <div class="oj-flex-item oj-md-8 oj-sm-12 rating-align">
@@ -140,7 +149,7 @@
           <!-- /ko -->
         </div>
         <div>
-          <!-- ko if:$component.showGauge -->
+          <!-- ko ifnot:!$component.showGauge && $baseModel.cordovaDevice() -->
           <div class="oj-flex oj-flex-items-pad rating-align__ratingGauge">
             <oj-rating-gauge class="scale-rating" id="ratingGuage" :aria-label="[[$component.resource.feedbackText]]" value="{{ratingW5}}" on-value-changed="[[$component.ratingChangeHandler]]" selected-state.shape="[[$component.customShape]]" selected-state.color="yellow"
               hover-state.color="[[$component.ratingColor]]" hover-state.shape="[[$component.customShape]]" unselected-state.shape="[[$component.customShape]]" changed-state.shape="[[$component.customShape]]" changed-state.color="[[$component.ratingColor]]"
@@ -148,6 +157,17 @@
             </oj-rating-gauge>
           </div>
           <!-- /ko -->
+
+          <!-- ko if:$baseModel.cordovaDevice() -->
+          <oj-radioset :id="scale" class="oj-choice-direction-row" value="{{ratingW5}}" :aria-label="[[$component.resource.ratingSet]]" on-value-changed="{{$component.ratingChangeHandler}}">
+            <!-- ko foreach: $component.ratingValue -->
+            <oj-option class="scale-rating" :id="[['option'+$index()]]" value="[[id]]">
+              <label class="scale-label" data-bind="text: id"></label>
+            </oj-option>
+            <!-- /ko -->
+          </oj-radioset>
+          <!-- /ko -->
+
           <!-- ko if: $component.feedbackLoaded -->
           <!-- ko ifnot: $component.nonDefaultFeedback -->
           <div class="oj-flex">

@@ -4,9 +4,9 @@ define([
     "jquery",
 
     "ojL10n!resources/nls/user-map"
-], function (oj, ko, $, resourceBundle) {
+], function(oj, ko, $, resourceBundle) {
     "use strict";
-    return function (rootParams) {
+    return function(rootParams) {
         var self = this;
         self.Nls = resourceBundle.userMap;
         ko.utils.extend(self, rootParams.rootModel);
@@ -18,7 +18,6 @@ define([
             if (data.fileTemplateDTO) {
                 data.transactionDesc = self.transactionTypesMap[data.fileTemplateDTO.transaction];
             }
-            data.description = data.fileIdentifier + " - " + data.description;
             for (var j = 0; j < mappedUsers.length; j++)
                 if (mappedUsers[j].fileIdentifier === data.fileIdentifier) {
                     data.isMapped = ko.observable(true);
@@ -30,10 +29,10 @@ define([
             self.fileIdentifierList[i] = data;
         }
         self.datasource(new oj.ArrayTableDataSource(self.fileIdentifierList, { idAttribute: "fileIdentifier" }));
-        self.back = function () {
+        self.back = function() {
             history.go(-1);
         };
-        self.renderCheckBox = function (context) {
+        self.renderCheckBox = function(context) {
             var checkBoxRv = $(document.createElement("input"));
             var labelRv = $(document.createElement("label"));
             checkBoxRv.attr("type", "checkbox");
@@ -50,7 +49,7 @@ define([
             $(context.cellContext.parentElement).append(checkBoxRv);
             $(context.cellContext.parentElement).append(labelRv);
         };
-        self.renderHeaderCheckBox = function (context) {
+        self.renderHeaderCheckBox = function(context) {
             var checkBoxRv = $(document.createElement("input"));
             var labelRv = $(document.createElement("label"));
             checkBoxRv.attr("type", "checkbox");
@@ -64,7 +63,7 @@ define([
             $(context.headerContext.parentElement.firstElementChild.firstChild).append(checkBoxRv);
             $(context.headerContext.parentElement.firstElementChild.firstChild).append(labelRv);
         };
-        self.renderSensitiveDataCheckBox = function (context) {
+        self.renderSensitiveDataCheckBox = function(context) {
             var senstiveDataCheckBoxRv = $(document.createElement("input"));
             var labelRv = $(document.createElement("label"));
             senstiveDataCheckBoxRv.attr("type", "checkbox");
@@ -79,7 +78,7 @@ define([
             $(context.cellContext.parentElement).append(senstiveDataCheckBoxRv);
             $(context.cellContext.parentElement).append(labelRv);
         };
-        $(document).on("ojready", function () {
+        $(document).on("ojready", function() {
             $("input[name=selectionParentRv]").prop("checked", $("input[name=selectionRv]:checked").length === $("input[name=selectionRv]").length);
         });
     };

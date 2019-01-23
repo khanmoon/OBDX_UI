@@ -28,6 +28,7 @@ define([
         self.depositTenureCheck = ko.observable();
         self.maturityDetails = ko.observable();
         self.maturityDetailsLoaded = ko.observable(false);
+        self.hostSupportsNominee = ko.observable(false);
         self.depositTypeList = ko.observableArray([]);
         self.depositTypeLoaded = ko.observable();
         self.openTDReview = ko.observable(false);
@@ -79,6 +80,7 @@ define([
         rootParams.dashboard.headerName(self.locale.openTermDeposit.newDeposit);
         rootParams.baseModel.registerComponent("view-interest-rate", "term-deposits");
         rootParams.baseModel.registerComponent("td-payout", "term-deposits");
+        rootParams.baseModel.registerComponent("nominee", "term-deposits");
         rootParams.baseModel.registerElement("amount-input");
         rootParams.baseModel.registerElement("page-section");
         rootParams.baseModel.registerElement("row");
@@ -264,9 +266,15 @@ define([
                             minAmount: self.minAmount(),
                             maxAmount: self.maxAmount()
                         }));
+                        self.maturityInstructionLoaded(false);
+                        self.maturityInstructionList.removeAll();
+                        ko.utils.arrayPushAll(self.maturityInstructionList, self.rootModelInstance.createTDData.module() === "ISL" ? islamicMaturityInstructions : maturityListData);
+                        ko.tasks.runEarly();
+                        self.maturityInstructionLoaded(true);
                     }
                 }
                 self.rootModelInstance.createTDData.principalAmount.amount("");
+                self.rootModelInstance.createTDData.principalAmount.currency("");
             }
             self.depositAmountCheck(true);
             self.isProductSelected(true);
@@ -349,20 +357,20 @@ define([
          * @function resetNomineeModel
          *  @returns {void}
          */
-        function resetNomineeModel() {
-            self.addNomineeModel.dateOfBirth(null);
-            self.addNomineeModel.relation("");
-            self.addNomineeModel.minor(false);
-            self.isMinor(false);
-            self.addNomineeModel.name(null);
-            self.addNomineeModel.address.country("");
-            self.addNomineeModel.address.state(null);
-            self.addNomineeModel.address.city(null);
-            self.addNomineeModel.address.zipCode(null);
-            self.addNomineeModel.address.line1(null);
-            self.addNomineeModel.address.line2(null);
-            self.addNomineeModel.guardian = null;
-        }
+        self.resetNomineeModel = function (addNomineeModel, isMinor) {
+            addNomineeModel.dateOfBirth(null);
+            addNomineeModel.relation("");
+            addNomineeModel.minor(false);
+            isMinor(false);
+            addNomineeModel.name(null);
+            addNomineeModel.address.country("");
+            addNomineeModel.address.state(null);
+            addNomineeModel.address.city(null);
+            addNomineeModel.address.zipCode(null);
+            addNomineeModel.address.line1(null);
+            addNomineeModel.address.line2(null);
+            addNomineeModel.guardian = null;
+        };
 
         self.createTDConfirm = function(simulation) {
             var rdValidationFailed = !rootParams.baseModel.showComponentValidationErrors(document.getElementById("tdTracker")),
@@ -428,8 +436,8 @@ define([
                 });
             }
             }
-            if (self.rootModelInstance.createTDData.holdingPattern() === "JOINT") {
-                resetNomineeModel();
+            if (self.rootModelInstance.createTDData.holdingPattern() === "JOINT" && self.hostSupportsNominee()) {
+                self.resetNomineeModel(self.addNomineeModel, self.isMinor);
                 self.rootModelInstance.createTDData.nomineeDTO(null);
                 self.isNomineeRequired(false);
             }
@@ -477,15 +485,16 @@ define([
                         loadedFromReview :self.loadedFromReview,
                         parties: self.parties,
                         isNomineeRequired: self.isNomineeRequired,
-                        accountModule: self.accountModule
+                        accountModule: self.accountModule,
+                        hostSupportsNominee: self.hostSupportsNominee
                     }, self);
                 } else {
                     self.rootModelInstance.createTDData.maturityDate(self.maturityDate());
                     self.httpStatus = jqXhr.status;
                     var createSuccessMessage;
-                    if (self.httpStatus && self.httpStatus === 200 && self.isNomineeRequired()) {
+                    if (self.httpStatus && self.httpStatus === 200 && self.isNomineeRequired() && self.hostSupportsNominee()) {
                         createSuccessMessage = self.locale.openTermDeposit.nomineeSuccessMessage;
-                    } else if (self.httpStatus && self.httpStatus === 200 && !self.isNomineeRequired()) {
+                    } else if (self.httpStatus && self.httpStatus === 200 && !self.isNomineeRequired() && self.hostSupportsNominee()) {
                         createSuccessMessage = self.locale.openTermDeposit.nomineeFailureMessage;
                     }
                     for (var j = 0; j < self.maturityInstructionList().length; j++) {
@@ -654,33 +663,6 @@ define([
         self.dispose = function() {
             subscription.dispose();
             subscriptionAdditionalDetailsAccount.dispose();
-        };
-
-        rootParams.baseModel.registerComponent("add-edit-nominee", "nominee");
-        self.nomineeDetails = [{
-            id: "no",
-            label: self.locale.generic.common.no
-        }, {
-            id: "yes",
-            label: self.locale.generic.common.yes
-        }];
-        self.manageNominee(self.manageNominee() ? self.manageNominee() : self.nomineeDetails[0].id);
-        if (self.manageNominee() === self.nomineeDetails[1].id) {
-            self.component("add-edit-nominee");
-            self.isNomineeRequired(true);
-        }
-        self.nomineeDetailsChanged = function(event) {
-            if (event.detail.value === self.manageNominee() && event.detail.value !== event.detail.previousValue) {
-                if (self.manageNominee() === self.nomineeDetails[1].id) {
-                    self.component("add-edit-nominee");
-                    self.isNomineeRequired(true);
-                    self.rootModelInstance.createTDData.nomineeDTO(self.addNomineeModel);
-                    resetNomineeModel();
-                } else if (self.manageNominee() === self.nomineeDetails[0].id) {
-                    self.isNomineeRequired(false);
-                    self.rootModelInstance.createTDData.nomineeDTO(null);
-                }
-            }
         };
     };
 });

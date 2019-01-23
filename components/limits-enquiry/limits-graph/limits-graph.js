@@ -5,9 +5,9 @@
     "ojs/ojchart",
     "ojL10n!resources/nls/user-limit",
     "ojs/ojknockout-validation"
-  ], function(oj, ko, $, MyLimitModel, resourceBundle) {
+  ], function (oj, ko, $, MyLimitModel, resourceBundle) {
     "use strict";
-    return function(rootParams) {
+    return function (rootParams) {
       var self = this;
       self.nls = resourceBundle;
       self.data = ko.observable(rootParams.data);
@@ -15,7 +15,7 @@
       self.flagCorp = rootParams.flag ? ko.observable(rootParams.flag) : ko.observable(false);
       self.innerRadius = ko.observable(0.95);
       self.previousLabel = ko.observable();
-      self.changeCenterLabel = function(number, index, data) {
+      self.changeCenterLabel = function (number, index, data) {
         if (index === 0) {
           if (number === "1") {
             self.previousLabel(self.centerLabel1());
@@ -57,36 +57,40 @@
         } else if (index === 1) {
           if (number === "1") {
             self.previousLabel(self.centerLabel1());
+            var dailyAmountavailableData = (self.data().periodicLimitDaily.maxAmount - self.data().periodicLimitDaily.utilizedDailyAmount) < 0 ? 0 : (self.data().periodicLimitDaily.maxAmount - self.data().periodicLimitDaily.utilizedDailyAmount);
             self.centerLabel1({
               text: rootParams.baseModel.format(self.nls.limitsInquiry.messages.availablePieChart, {
-                available: rootParams.baseModel.formatCurrency((self.data().periodicLimitDaily.maxAmount - self.data().periodicLimitDaily.utilizedDailyAmount).toString(), data.currency),
+                available: rootParams.baseModel.formatCurrency(dailyAmountavailableData.toString(), data.currency),
                 total: rootParams.baseModel.formatCurrency(self.data().periodicLimitDaily.maxAmount, data.currency)
               }),
               style: self.labelStyleOnHover()
             });
           } else if (number === "2") {
             self.previousLabel(self.centerLabel2());
+            var dailyCountavailableData = (self.data().periodicLimitDaily.maxCount - self.data().periodicLimitDaily.utilizedDailyCount) < 0 ? 0 : (self.data().periodicLimitDaily.maxCount - self.data().periodicLimitDaily.utilizedDailyCount);
             self.centerLabel2({
               text: rootParams.baseModel.format(self.nls.limitsInquiry.messages.availablePieChart, {
-                available: (self.data().periodicLimitDaily.maxCount - self.data().periodicLimitDaily.utilizedDailyCount).toString(),
+                available: (dailyCountavailableData).toString(),
                 total: self.data().periodicLimitDaily.maxCount
               }),
               style: self.labelStyleOnHover()
             });
           } else if (number === "3") {
             self.previousLabel(self.centerLabel3());
+            var monthlyAmountavailableData = (self.data().periodicLimitMonthly.maxAmount - self.data().periodicLimitMonthly.utilizedMonthlyAmount) < 0 ? 0 : (self.data().periodicLimitMonthly.maxAmount - self.data().periodicLimitMonthly.utilizedMonthlyAmount);
             self.centerLabel3({
               text: rootParams.baseModel.format(self.nls.limitsInquiry.messages.availablePieChart, {
-                available: rootParams.baseModel.formatCurrency((self.data().periodicLimitMonthly.maxAmount - self.data().periodicLimitMonthly.utilizedMonthlyAmount).toString(), data.currency),
+                available: rootParams.baseModel.formatCurrency(monthlyAmountavailableData.toString(), data.currency),
                 total: rootParams.baseModel.formatCurrency(self.data().periodicLimitMonthly.maxAmount, data.currency)
               }),
               style: self.labelStyleOnHover()
             });
           } else if (number === "4") {
             self.previousLabel(self.centerLabel4());
+            var monthlyCountavailableData = (self.data().periodicLimitMonthly.maxCount - self.data().periodicLimitMonthly.utilizedMonthlyCount) < 0 ? 0 : (self.data().periodicLimitMonthly.maxCount - self.data().periodicLimitMonthly.utilizedMonthlyCount);
             self.centerLabel4({
               text: rootParams.baseModel.format(self.nls.limitsInquiry.messages.availablePieChart, {
-                available: (self.data().periodicLimitMonthly.maxCount - self.data().periodicLimitMonthly.utilizedMonthlyCount).toString(),
+                available: (monthlyCountavailableData).toString(),
                 total: self.data().periodicLimitMonthly.maxCount
               }),
               style: self.labelStyleOnHover()
@@ -95,7 +99,7 @@
         }
         ko.tasks.runEarly();
       };
-      self.changeCenterLabelOut = function(number) {
+      self.changeCenterLabelOut = function (number) {
         if (number === "1") {
           self.centerLabel1(self.previousLabel());
         } else if (number === "2") {
@@ -113,15 +117,19 @@
       self.labelStyle = ko.observable({
         color: "#2c3251"
       });
+
       if (self.data() && self.data().periodicLimitDaily) {
+        var dailyCountPercent = (self.data().periodicLimitDaily.utilizedDailyCount / self.data().periodicLimitDaily.maxCount * 100) > 100 ? 100 : (self.data().periodicLimitDaily.utilizedDailyCount / self.data().periodicLimitDaily.maxCount * 100);
+        var dailyAmountPercent = (self.data().periodicLimitDaily.utilizedDailyAmount / self.data().periodicLimitDaily.maxAmount * 100) > 100 ? 100 : (self.data().periodicLimitDaily.utilizedDailyAmount / self.data().periodicLimitDaily.maxAmount * 100);
         self.centerLabel1 = ko.observable({
-          text: ((self.data().periodicLimitDaily.utilizedDailyAmount / self.data().periodicLimitDaily.maxAmount * 100).toFixed(0)).toString() + (self.data().periodicLimitDaily.utilizedDailyAmount ? self.nls.limitsInquiry.messages.labelGraph : "%"),
+          text: (dailyAmountPercent.toFixed(0)).toString() + (self.data().periodicLimitDaily.utilizedDailyAmount ? self.nls.limitsInquiry.messages.labelGraph : "%"),
           style: self.labelStyle()
         });
         self.centerLabel2 = ko.observable({
-          text: ((self.data().periodicLimitDaily.utilizedDailyCount / self.data().periodicLimitDaily.maxCount * 100).toFixed(0)).toString() + (self.data().periodicLimitDaily.utilizedDailyCount ? self.nls.limitsInquiry.messages.labelGraph : "%"),
+          text: (dailyCountPercent.toFixed(0)).toString() + (self.data().periodicLimitDaily.utilizedDailyCount ? self.nls.limitsInquiry.messages.labelGraph : "%"),
           style: self.labelStyle()
         });
+        var pieDailyAmountAvailable = self.data().periodicLimitDaily.maxAmount - self.data().periodicLimitDaily.utilizedDailyAmount < 0 ? 0 : self.data().periodicLimitDaily.maxAmount - self.data().periodicLimitDaily.utilizedDailyAmount;
         var pieSeriesDailyAmount = [{
             name: self.nls.limitsInquiry.messages.utilized,
             items: [self.data().periodicLimitDaily.utilizedDailyAmount],
@@ -130,11 +138,12 @@
           },
           {
             name: self.nls.limitsInquiry.messages.available,
-            items: [self.data().periodicLimitDaily.maxAmount - self.data().periodicLimitDaily.utilizedDailyAmount],
+            items: [pieDailyAmountAvailable],
             color: "#29c3c3",
             currency: self.data().periodicLimitDaily.bankAllocatedCurrency
           }
         ];
+        var pieDailyCountAvailable = self.data().periodicLimitDaily.maxCount - self.data().periodicLimitDaily.utilizedDailyCount < 0 ? 0 : self.data().periodicLimitDaily.maxCount - self.data().periodicLimitDaily.utilizedDailyCount;
         var pieSeriesDailyCount = [{
             name: self.nls.limitsInquiry.messages.utilized,
             items: [self.data().periodicLimitDaily.utilizedDailyCount],
@@ -143,21 +152,24 @@
           },
           {
             name: self.nls.limitsInquiry.messages.available,
-            items: [self.data().periodicLimitDaily.maxCount - self.data().periodicLimitDaily.utilizedDailyCount],
+            items: [pieDailyCountAvailable],
             color: "#29c3c3",
             currency: self.data().periodicLimitDaily.bankAllocatedCurrency
           }
         ];
       }
       if (self.data() && self.data().periodicLimitMonthly) {
+        var monthlyAmountPercent = (self.data().periodicLimitMonthly.utilizedMonthlyAmount / self.data().periodicLimitMonthly.maxAmount * 100) > 100 ? 100 : (self.data().periodicLimitMonthly.utilizedMonthlyAmount / self.data().periodicLimitMonthly.maxAmount * 100);
         self.centerLabel3 = ko.observable({
-          text: ((self.data().periodicLimitMonthly.utilizedMonthlyAmount / self.data().periodicLimitMonthly.maxAmount * 100).toFixed(0)).toString() + (self.data().periodicLimitMonthly.utilizedMonthlyAmount ? self.nls.limitsInquiry.messages.labelGraph : "%"),
+          text: ((monthlyAmountPercent).toFixed(0)).toString() + (self.data().periodicLimitMonthly.utilizedMonthlyAmount ? self.nls.limitsInquiry.messages.labelGraph : "%"),
           style: self.labelStyle()
         });
+        var monthlyCountPercent = (self.data().periodicLimitMonthly.utilizedMonthlyCount / self.data().periodicLimitMonthly.maxCount * 100) > 100 ? 100 : (self.data().periodicLimitMonthly.utilizedMonthlyCount / self.data().periodicLimitMonthly.maxCount * 100);
         self.centerLabel4 = ko.observable({
-          text: ((self.data().periodicLimitMonthly.utilizedMonthlyCount / self.data().periodicLimitMonthly.maxCount * 100).toFixed(0)).toString() + (self.data().periodicLimitMonthly.utilizedMonthlyCount ? self.nls.limitsInquiry.messages.labelGraph : "%"),
+          text: (monthlyCountPercent.toFixed(0)).toString() + (self.data().periodicLimitMonthly.utilizedMonthlyCount ? self.nls.limitsInquiry.messages.labelGraph : "%"),
           style: self.labelStyle()
         });
+        var pieMonthlyAmountAvailable = self.data().periodicLimitMonthly.maxAmount - self.data().periodicLimitMonthly.utilizedMonthlyAmount < 0 ? 0 : self.data().periodicLimitMonthly.maxAmount - self.data().periodicLimitMonthly.utilizedMonthlyAmount;
         var pieSeriesMonthlyAmount = [{
             name: self.nls.limitsInquiry.messages.utilized,
             items: [self.data().periodicLimitMonthly.utilizedMonthlyAmount],
@@ -166,11 +178,12 @@
           },
           {
             name: self.nls.limitsInquiry.messages.available,
-            items: [self.data().periodicLimitMonthly.maxAmount - self.data().periodicLimitMonthly.utilizedMonthlyAmount],
+            items: [pieMonthlyAmountAvailable],
             color: "#29c3c3",
             currency: self.data().periodicLimitMonthly.bankAllocatedCurrency
           }
         ];
+        var pieMonthlyCountAvailable = self.data().periodicLimitMonthly.maxCount - self.data().periodicLimitMonthly.utilizedMonthlyCount < 0 ? 0 : self.data().periodicLimitMonthly.maxCount - self.data().periodicLimitMonthly.utilizedMonthlyCount;
         var pieSeriesMonthlyCount = [{
             name: self.nls.limitsInquiry.messages.utilized,
             items: [self.data().periodicLimitMonthly.utilizedMonthlyCount],
@@ -179,7 +192,7 @@
           },
           {
             name: self.nls.limitsInquiry.messages.available,
-            items: [self.data().periodicLimitMonthly.maxCount - self.data().periodicLimitMonthly.utilizedMonthlyCount],
+            items: [pieMonthlyCountAvailable],
             color: "#29c3c3",
             currency: self.data().periodicLimitMonthly.bankAllocatedCurrency
           }

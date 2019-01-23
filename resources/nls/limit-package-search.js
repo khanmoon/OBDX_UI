@@ -25,7 +25,7 @@ define([], function() {
           fromDate: "From Date",
           toDate: "To Date",
           lastUpdatedOn:"Updated On",
-          updationDate:"Updation Date"
+          updationDate: "Updated On"
         },
         btns: {
           reset: "Reset",

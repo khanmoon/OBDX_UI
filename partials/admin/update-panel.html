@@ -30,9 +30,7 @@
 				<oj-label class="" for="employeeNumber"><span data-bind="text:$component.nls.fieldname.empno"></span></oj-label>
 			</div>
 			<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-6">
-				<oj-input-text :aria-label="[[$component.nls.fieldname.empno]]" id="employeeNumber" required maxlength="50" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('NUMBERS',$component.nls.common.empNoValidation,{
-										 type:'length',options:{
-											 min:6,max:6}})]]" value="{{userFullData().employeeNumber}}"></oj-input-text>
+				<oj-input-text :aria-label="[[$component.nls.fieldname.empno]]" id="employeeNumber" required maxlength="50" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.nls.common.empNoValidation,{})]]" value="{{userFullData().employeeNumber}}"></oj-input-text>
 			</div>
 		</div>
 		<action-header params="baseModel : $baseModel, rootModel : $data, heading : $component.nls.headers.profileinfo">
@@ -82,7 +80,13 @@
 				<oj-label class="" for="lastName"><span data-bind="text:$component.nls.fieldname.lastname"></span></oj-label>
 			</div>
 			<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
-				<oj-input-text :aria-label="[[$component.nls.fieldname.lastname]]" id="lastName" maxlength="50" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{userFullData().lastName}}"></oj-input-text>
+				<oj-input-text :aria-label="[[$component.nls.fieldname.lastname]]" id="lastName" maxlength="50" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL',$component.nls.locale.messages.NAME,{
+						type: 'length',
+						options: {
+						max: 80
+						}
+					})]]"
+				:invalidcomponenttracker="[[$component.validationTracker]]" value="{{userFullData().lastName}}"></oj-input-text>
 			</div>
 		</div>
 		<div class="oj-flex oj-flex-items-pad">
@@ -358,7 +362,12 @@
 				<oj-label class="" for="lastName"><span data-bind="text:$component.nls.fieldname.lastname"></span></oj-label>
 			</div>
 			<div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-4">
-				<oj-input-text :aria-label="[[$component.nls.fieldname.lastname]]" id="lastName" required maxlength="50" validators="[[$baseModel.getValidator('NAME')]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{userFullData().lastName}}"></oj-input-text>
+				<oj-input-text :aria-label="[[$component.nls.fieldname.lastname]]" id="lastName" maxlength="50" validators="[[$baseModel.getValidator('ALPHANUMERIC_WITH_ALL_SPECIAL',$component.nls.locale.messages.NAME,{
+						type: 'length',
+						options: {
+						max: 80
+						}
+					})]]" :invalidcomponenttracker="[[$component.validationTracker]]" value="{{userFullData().lastName}}"></oj-input-text>
 			</div>
 		</div>
 		<div class="oj-flex oj-flex-items-pad">

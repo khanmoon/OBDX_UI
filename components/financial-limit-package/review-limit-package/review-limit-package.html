@@ -1,41 +1,41 @@
-
 <!-- ko if:showPackageDetails() -->
-    <div class="oj-flex">
-        <div data-bind="css: $component.flag() === true ? 'oj-flex-item oj-sm-12' :'oj-flex-item oj-sm-9'">
-<div class="form-main-container financialLimitPackage">
-  <!-- ko if : flag -->
-  <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
-  <!-- /ko -->
-  <page-section params="baseModel : $baseModel, rootModel : $data, heading : """>
-    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.limit_package_code , value : $component.limitPackageData.key.id"></row>
-    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.limit_package_desc , value : $component.limitPackageData.description"></row>
-    <!-- ko if:$component.limitPackageData.accessPointGroupType()==="SINGLE" && $component.accessPointDescription() -->
-    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.access_point, value : $component.accessPointDescription"></row>
-    <!-- /ko -->
-    <!-- ko if:$component.limitPackageData.accessPointGroupType()==="GROUP" && $component.accessPointDescription()  -->
-    <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.access_point_group, value : $component.accessPointDescription"></row>
-    <!-- /ko -->
-      <!-- ko ifnot:isCorpAdmin -->
-        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.role, value : $component.roleListArrayValue"></row>
+<div class="oj-flex">
+  <div data-bind="css: $component.flag() === true ? 'oj-flex-item oj-sm-12' :'oj-flex-item oj-sm-9'">
+    <div class="form-main-container financialLimitPackage">
+      <!-- ko if : flag -->
+      <div data-bind="template: { name: 'review-screen/review-banner-template', data: $component.reviewTransactionName}"></div>
       <!-- /ko -->
-      <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.currency, value : $component.limitPackageData.currency"></row>
-      <div class="oj-flex oj-flex-items-pad">
-        <action-header params="baseModel : $baseModel, rootModel : $data, heading :$component.nls.btns.TransNLimits" class="oj-sm-12">
-          <!-- <a href="javascript:void(0)" data-bind="click:">
+      <page-section params="baseModel : $baseModel, rootModel : $data, heading : """>
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.limit_package_code , value : $component.limitPackageData.key.id"></row>
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.limit_package_desc , value : $component.limitPackageData.description"></row>
+        <!-- ko if:$component.limitPackageData.accessPointGroupType()==="SINGLE" && $component.accessPointDescription() -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.access_point, value : $component.accessPointDescription"></row>
+        <!-- /ko -->
+        <!-- ko if:$component.limitPackageData.accessPointGroupType()==="GROUP" && $component.accessPointDescription()  -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.access_point_group, value : $component.accessPointDescription"></row>
+        <!-- /ko -->
+        <!-- ko ifnot:isCorpAdmin -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.role, value : $component.roleListArrayValue"></row>
+        <!-- /ko -->
+        <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.currency, value : $component.limitPackageData.currency"></row>
+        <div class="oj-flex oj-flex-items-pad">
+          <action-header params="baseModel : $baseModel, rootModel : $data, heading :$component.nls.btns.TransNLimits"
+            class="oj-sm-12">
+            <!-- <a href="javascript:void(0)" data-bind="click:">
                     <span class="icon icon-close pull-right"></span>
                 </a> -->
-        </action-header>
-        <!-- ko foreach:$component.limitPackageData.targetLimitLinkages -->
-        <div class="oj-sm-12 limitBox">
-          <!-- ko if:(!$data.editable && $data.expiry) -->
-          <div class="oj-flex oj-sm-12"><span class="floatRight" data-bind="text:$component.nls.review_limit_package.deleted"></span></div>
-          <!-- /ko -->
-          <!-- ko if:$data.editable -->
-          <div class="oj-flex oj-sm-12"><span class="floatRight" data-bind="text:$component.nls.review_limit_package.added"></span></div>
-          <!-- /ko -->
-          <!-- ko if:(!$data.editable && !$data.expiry)-->
-          <!-- <div class="oj-flex oj-sm-12"><span class="floatRight" data-bind='text:$component.nls.review_limit_package.unchanged'></span></div> -->
-          <!-- /ko -->
+          </action-header>
+          <!-- ko foreach:$component.limitPackageData.targetLimitLinkages -->
+          <div class="oj-sm-12 limitBox">
+            <!-- ko if:(!$data.editable && $data.expiry) -->
+            <div class="oj-flex oj-sm-12"><span class="floatRight" data-bind="text:$component.nls.review_limit_package.deleted"></span></div>
+            <!-- /ko -->
+            <!-- ko if:$data.editable -->
+            <div class="oj-flex oj-sm-12"><span class="floatRight" data-bind="text:$component.nls.review_limit_package.added"></span></div>
+            <!-- /ko -->
+            <!-- ko if:(!$data.editable && !$data.expiry)-->
+            <!-- <div class="oj-flex oj-sm-12"><span class="floatRight" data-bind='text:$component.nls.review_limit_package.unchanged'></span></div> -->
+            <!-- /ko -->
 
             <!-- ko if:$component.limitPackageData.targetLimitLinkages()[$index()].target.type.id()==='TASK' -->
             <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.transaction_name, value : target.name"></row>
@@ -46,118 +46,129 @@
             <div class="oj-flex-item  oj-sm-1" data-bind="css:{'hide':!(new Date($data.expiryDate) < $baseModel.getDate())},text:$component.nls.review_limit_package.expired"></div>
             <row params="baseModel : $baseModel, rootModel : $parent, label : $component.nls.review_limit_package.effective_date, value : $baseModel.formatDate(effectiveDate())"></row>
 
-          <!-- ko if:$data.expiryDate -->
-          <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.review_limit_package.expiry_date, value : $baseModel.formatDate(expiryDate())"></row>
+            <!-- ko if:$data.expiryDate -->
+            <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.review_limit_package.expiry_date, value : $baseModel.formatDate(expiryDate())"></row>
 
-          <!-- /ko -->
-          <!-- ko foreach:limits -->
-          <div class="oj-sm-12" data-bind="css:{'hide':!limitName()}">
-            <!-- ko if:limitType()==='PER' && periodicity()==="DAILY" -->
-            <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.review_limit_package.cummulative_limit_daily, value : $baseModel.format($component.nls.review_limit_package.view_limit,{id:limitName(),name:limitDescription()})"></row>
             <!-- /ko -->
-            <!-- ko if:limitType()==='PER' && periodicity()==="MONTHLY" -->
-            <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.review_limit_package.cummulative_limit_monthly, value : $baseModel.format($component.nls.review_limit_package.view_limit,{id:limitName(),name:limitDescription()})"></row>
-            <!-- /ko -->
-            <!-- ko if:limitType()==='TXN' -->
+            <!-- ko foreach:limits -->
+            <div class="oj-sm-12" data-bind="css:{'hide':!limitName()}">
+              <!-- ko if:limitType()==='PER' && periodicity()==="DAILY" -->
+              <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.review_limit_package.cummulative_limit_daily, value : $baseModel.format($component.nls.review_limit_package.view_limit,{id:limitName(),name:limitDescription()})"></row>
+              <!-- /ko -->
+              <!-- ko if:limitType()==='PER' && periodicity()==="MONTHLY" -->
+              <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.review_limit_package.cummulative_limit_monthly, value : $baseModel.format($component.nls.review_limit_package.view_limit,{id:limitName(),name:limitDescription()})"></row>
+              <!-- /ko -->
+              <!-- ko if:limitType()==='TXN' -->
               <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.review_limit_package.transaction_limit, value : $baseModel.format($component.nls.review_limit_package.view_limit,{id:limitName(),name:limitDescription()})"></row>
-            <!-- /ko -->
-            <!-- ko if:limitType()==='DUR' -->
-            <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.review_limit_package.cooling_limit, value : $baseModel.format($component.nls.review_limit_package.view_limit,{id:limitName(),name:limitDescription()})"></row>
+              <!-- /ko -->
+              <!-- ko if:limitType()==='DUR' -->
+              <row params="baseModel : $baseModel, rootModel : $parent, label :$component.nls.review_limit_package.cooling_limit, value : $baseModel.format($component.nls.review_limit_package.view_limit,{id:limitName(),name:limitDescription()})"></row>
 
+              <!-- /ko -->
+            </div>
             <!-- /ko -->
           </div>
           <!-- /ko -->
+        </div>
+
+
+        <!-- ko if : $component.params.mode !== 'approval' -->
+        <!-- ko if: $component.params.action === 'VIEW' -->
+        <div class="oj-flex oj-flex-items-pad  button-container clone">
+          <oj-button class="help-button" on-click="[[clone]]">
+            <span data-bind="text:$component.nls.btns.clone"></span>
+          </oj-button>
+        </div>
+        <!-- ko ifnot: ($component.limitPackageData.owner.key.type() === 'PARTY' && isCorpAdmin) || ($component.limitPackageData.owner.key.type() !== 'PARTY' && !isCorpAdmin) -->
+        <div id="disclaimer-container" class="disclaimer-container">
+          <div class="oj-flex-item">
+            <span id="disclaimer-message" class="disclaimer-text" data-bind="text: $component.nls.review_limit_package.editMessage"></span>
+            <a href="javascript:void(0)" data-bind="attr:{'aria-label':$component.nls.review_limit_package.editMessage,'alt': nls.common.cancel,'title':nls.common.close }, click: $component.closeSPopup.bind()">
+              <span id="icon" class="icons icon-cancel"></span>
+            </a>
+          </div>
         </div>
         <!-- /ko -->
-      </div>
 
+        <div class="oj-flex oj-flex-items-pad  button-container">
+          <!-- ko if: (($component.limitPackageData.owner.key.type() === 'PARTY' && isCorpAdmin) || ($component.limitPackageData.owner.key.type() !== 'PARTY' && !isCorpAdmin)) -->
+          <oj-button class="action-button-primary" on-click="[[editLimitPackage]]">
+            <span data-bind="text:$component.nls.btns.edit"></span>
+          </oj-button>
+          <!-- /ko -->
+          <oj-button class="action-button-secondary" on-click="[[confirmDelete]]">
+            <span data-bind="text:$component.nls.btns.delete"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+            <span data-bind="text:$component.nls.btns.cancel"></span>
+          </oj-button>
 
-    <!-- ko if : $component.params.mode !== 'approval' -->
-    <!-- ko if: $component.params.action === 'VIEW' -->
-    <div class="oj-flex oj-flex-items-pad  button-container clone">
-    <oj-button class="help-button" on-click="[[clone]]">
-      <span data-bind="text:$component.nls.btns.clone"></span>
-    </oj-button>
-
-  </div>
-    <div class="oj-flex oj-flex-items-pad  button-container">
-
-    <oj-button class="action-button-primary" on-click="[[editLimitPackage]]">
-      <span data-bind="text:$component.nls.btns.edit"></span>
-    </oj-button>
-      <oj-button class="action-button-secondary" on-click="[[confirmDelete]]">
-        <span data-bind="text:$component.nls.btns.delete"></span>
-      </oj-button>
-      <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
-        <span data-bind="text:$component.nls.btns.cancel"></span>
-      </oj-button>
-
-      <oj-button class="action-button-tertiary" on-click="[[showSearchScreen]]">
-        <span data-bind="text:$component.nls.btns.back"></span>
-      </oj-button>
-    </div>
-    <modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'deleteDialog',header:$component.nls.review_limit_package.deletePackage ">
-      <div class="form-main-container message-text">
-        <div class="oj-flex oj-flex-items-pad">
-          <div class="oj-flex-item">
-            <span data-bind="text:$component.nls.review_limit_package.ques1"></span>
-          </div>
+          <oj-button class="action-button-tertiary" on-click="[[showSearchScreen]]">
+            <span data-bind="text:$component.nls.btns.back"></span>
+          </oj-button>
         </div>
+        <modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'deleteDialog',header:$component.nls.review_limit_package.deletePackage ">
+          <div class="form-main-container message-text">
+            <div class="oj-flex oj-flex-items-pad">
+              <div class="oj-flex-item">
+                <span data-bind="text:$component.nls.review_limit_package.ques1"></span>
+              </div>
+            </div>
+            <div class="oj-flex oj-flex-items-pad button-container">
+              <div class="oj-flex-item">
+                <oj-button class="action-button-primary" on-click="[[$component.deleteLimitPackage]]">
+                  <span data-bind="text:$component.nls.btns.confirm"></span>
+                </oj-button>
+                <oj-button class="action-button-secondary" on-click="[[$component.closeDeleteDialog]]">
+                  <span data-bind="text:$component.nls.btns.cancel"></span>
+                </oj-button>
+              </div>
+            </div>
+
+          </div>
+
+        </modal-window>
+
+        <!-- /ko -->
+        <!-- ko ifnot: $component.params.action === 'VIEW' -->
         <div class="oj-flex oj-flex-items-pad button-container">
-          <div class="oj-flex-item">
-            <oj-button class="action-button-primary" on-click="[[$component.deleteLimitPackage]]">
-              <span data-bind="text:$component.nls.btns.confirm"></span>
+          <oj-button class="action-button-primary" on-click="[[$component.confirmPackage]]">
+            <span data-bind="text:$component.nls.btns.confirm"></span>
+          </oj-button>
+          <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
+            <span data-bind="text:$component.nls.btns.cancel"></span>
+          </oj-button>
+          <oj-button class="action-button-tertiary" on-click="[[backToEdit]]">
+            <span data-bind="text:$component.nls.btns.back"></span>
+          </oj-button>
+        </div>
+        <!-- /ko -->
+
+        <!-- /ko -->
+
+      </page-section>
+      <modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'cancelDialogBox',header:$component.nls.review_limit_package.cancelWarning">
+        <div class="message-box">
+          <div class="dialog-text" data-bind="text:$component.nls.review_limit_package.cancelMessage">
+          </div>
+          <div class="button-container">
+            <oj-button class="action-button-primary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+              <span data-bind="text:$component.nls.common.yes"></span>
             </oj-button>
-            <oj-button class="action-button-secondary" on-click="[[$component.closeDeleteDialog]]">
-              <span data-bind="text:$component.nls.btns.cancel"></span>
+            <oj-button class="action-button-secondary" on-click="[[$component.closeDialogBox]]">
+              <span data-bind="text:$component.nls.common.no"></span>
             </oj-button>
           </div>
         </div>
-
-      </div>
-
-    </modal-window>
-
-    <!-- /ko -->
-    <!-- ko ifnot: $component.params.action === 'VIEW' -->
-    <div class="oj-flex oj-flex-items-pad button-container">
-      <oj-button class="action-button-primary" on-click="[[$component.confirmPackage]]">
-        <span data-bind="text:$component.nls.btns.confirm"></span>
-      </oj-button>
-      <oj-button class="action-button-secondary" on-click="[[$component.cancel]]">
-        <span data-bind="text:$component.nls.btns.cancel"></span>
-      </oj-button>
-      <oj-button class="action-button-tertiary" on-click="[[backToEdit]]">
-        <span data-bind="text:$component.nls.btns.back"></span>
-      </oj-button>
+      </modal-window>
     </div>
-    <!-- /ko -->
+  </div>
+  <!-- ko ifnot: $component.flag() -->
 
-    <!-- /ko -->
-
-  </page-section>
-  <modal-window class="" params="baseModel : $baseModel, rootModel : $component,id:'cancelDialogBox',header:$component.nls.review_limit_package.cancelWarning">
-    <div class="message-box">
-      <div class="dialog-text" data-bind="text:$component.nls.review_limit_package.cancelMessage">
-      </div>
-      <div class="button-container">
-        <oj-button class="action-button-primary" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
-          <span data-bind="text:$component.nls.common.yes"></span>
-        </oj-button>
-        <oj-button class="action-button-secondary" on-click="[[$component.closeDialogBox]]">
-          <span data-bind="text:$component.nls.common.no"></span>
-        </oj-button>
-      </div>
-    </div>
-  </modal-window>
-</div>
-</div>
-<!-- ko ifnot: $component.flag() -->
-
-<div class="oj-flex-item oj-sm-3 help-panel">
-  <help params="baseModel : $baseModel, rootModel : $component, transaction: 'financial-limit-package-view'"></help>
-</div>
-<!-- /ko -->
+  <div class="oj-flex-item oj-sm-3 help-panel">
+    <help params="baseModel : $baseModel, rootModel : $component, transaction: 'financial-limit-package-view'"></help>
+  </div>
+  <!-- /ko -->
 
 </div>
 

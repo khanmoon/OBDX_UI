@@ -23,6 +23,7 @@ define([
             showGroupInformation: "Show Group Information"
           },
           messages: {
+            disclaimer: "*Limit Utilization is applicable only to approvers, and to initiators in case no approvers have been set.",
             navBarDescription: "Navigation Bar to select action",
             header_title: "User Limit",
             remaining: "Remaining",
@@ -46,8 +47,10 @@ define([
             limits: "Limit",
             dailyCount: "Daily Count",
             dailyAmount: "Daily Amount",
+            dailyLimit : "Daily Limit",
             monthlyCount: "Monthly Count",
             monthlyAmount: "Monthly Amount",
+            monthlyLimit : "Monthly Limit",
             initiationlimit: "Initiation Limit",
             perTxnLimit: "Per Transaction Limit",
             cumuDailyLimit: "Cumulative Daily Limit",

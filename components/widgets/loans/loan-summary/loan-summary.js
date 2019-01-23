@@ -23,6 +23,9 @@ define([
     rootParams.baseModel.registerElement("action-header");
     rootParams.baseModel.registerElement("action-widget");
     rootParams.baseModel.registerComponent("loan-corporate-details", "loans");
+    self.datasource = new oj.PagingTableDataSource(new oj.ArrayTableDataSource(self.filteredAccounts, {
+      idAttribute: "id"
+    }));
 
     self.typeOfAccounts = [{
       id: "CON",
@@ -42,62 +45,41 @@ define([
        };
 
     self.selectedAccountTypeChangedHandler = function(event) {
-      self.datasource = null;
-      ko.utils.arrayPushAll(self.filteredAccounts, accountsData.filter(function(element) {
+      self.filteredAccounts.removeAll();
+      self.filteredAccounts(accountsData.filter(function(element) {
         return element.module.indexOf(event.detail.value) > -1;
       }));
-
-      self.datasource = new oj.PagingTableDataSource(new oj.ArrayTableDataSource(self.filteredAccounts, {
-        idAttribute: "accountNo"
-      }));
-
-      self.datasource.sort({
-        key: "rawMaturityDate",
-        direction: "ascending"
-      });
       self.loanAccountDetaislLoaded(true);
     };
 
-    function setData(accounts) {
-
-      accounts.forEach(function(element) {
-        if (element.module === "CON") {
-          self.conventionalAccountsAvailable(true);
-        } else if (element.module === "ISL") {
-          self.islamicAccountsAvailable(true);
-        }
-      });
-
-      accounts = $.map(ko.utils.unwrapObservable(accountsData), function(val) {
-        val.accountNo = val.id.value;
-        return val;
-      });
-
-      if (!(self.conventionalAccountsAvailable() && self.islamicAccountsAvailable())) {
-        self.datasource = new oj.PagingTableDataSource(new oj.ArrayTableDataSource(accounts, {
-          idAttribute: "accountNo"
-        }));
-
-        self.datasource.sort({
-          key: "rawMaturityDate",
-          direction: "ascending"
-        });
-        self.loanAccountDetaislLoaded(true);
-      }
-    }
 
     if (!(rootParams.data && rootParams.data.accountList)) {
 
       LoanSummaryModel.getAccountDetails().done(function(data) {
         if (data.accounts && data.accounts.length > 0) {
+          for(var i=0;i<data.accounts.length;i++){
+            if (data.accounts[i].module === "CON") {
+              self.conventionalAccountsAvailable(true);
+            } else if (data.accounts[i].module === "ISL") {
+              self.islamicAccountsAvailable(true);
+            }else if(self.conventionalAccountsAvailable() && self.islamicAccountsAvailable()){
+              break;
+            }
+          }
           accountsData = data.accounts;
         }
-        setData(data.accounts);
       });
     } else {
       accountsData = rootParams.data.accountList;
-
-      setData(rootParams.data.accountList);
+      for(var i=0;i<accountsData.length;i++){
+        if (accountsData[i].module === "CON") {
+          self.conventionalAccountsAvailable(true);
+        } else if (accountsData[i].module === "ISL") {
+          self.islamicAccountsAvailable(true);
+        }else if(self.conventionalAccountsAvailable() && self.islamicAccountsAvailable()){
+          break;
+        }
+      }
     }
 
     self.showAccountDetails = function(data) {

@@ -23,8 +23,8 @@ define([
                     guardianAddress: "Guardian Address",
                     editSuccessMessage: "Edit Nominee Successful.",
                     addSuccessMessage: "Add nominee Successful.",
-                    addReviewHeaderMsg: "You Initaited a request for adding nominee details. Please review details before you confirm!",
-                    editReviewHeaderMsg: "You Initaited a request for editing nominee details. Please review details before you confirm!"
+                    addReviewHeaderMsg: "You initiated a request for adding nominee details. Please review details before you confirm!",
+                    editReviewHeaderMsg: "You initiated a request for editing nominee details. Please review details before you confirm!"
                 },
                 generic: Generic
             },

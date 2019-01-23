@@ -9,7 +9,17 @@
         <!-- ko if:$component.payeeData.accountName && $component.payeeData.accountName!==null && $component.payeeData.accountName!=='' -->
         <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.accountname, value :$component.payeeData.accountName"></row>
         <!-- /ko -->
-        <!-- ko if:$component.payeeData.accountNumber && $component.payeeData.accountNumber!==null && $component.payeeData.accountNumber!=='' -->
+        <!-- ko if:$component.payeeData.accountNumber && $component.payeeData.payeeType === "INTERNAL" -->
+        <internal-account-input class="oj-flex oj-flex-items-pad oj-sm-12" params="{
+           baseModel:$baseModel,
+           account : ko.observable($component.payeeData.accountNumber),
+           label:payments.payee.accountnumber,
+           required:true,
+           readOnly: true
+          }">
+        </internal-account-input>
+        <!-- /ko -->
+        <!-- ko if:$component.payeeData.accountNumber && $component.payeeData.payeeType !== "INTERNAL" -->
         <row params="baseModel : $baseModel, rootModel : $component, label : payments.payee.accountnumber , value :$component.payeeData.accountNumber"></row>
         <!-- /ko -->
         <!-- ko if:$component.payeeData.network!==null -->

@@ -44,14 +44,14 @@
 				</div>
 				<!-- /ko -->
 			</div>
-				<!-- ko if:$baseModel.onTFAScreen() -->
-					<div data-bind="component: {name : 'generic-authentication', params:{rootModel: $baseModel.authViewModel}}"></div>
-				<!-- /ko -->
+			<!-- ko if:$baseModel.onTFAScreen() -->
+			<div data-bind="component: {name : 'generic-authentication', params:{rootModel: $baseModel.authViewModel}}"></div>
+			<!-- /ko -->
 		</main>
 		<div data-bind="component: {name : 'offline-notification', params:{rootModel: $data}}"></div>
 		<footer>
 			<!-- ko if:!$baseModel.large() && $root.isUserDataSet() && (constants.userSegment ==="RETAIL" || constants.userSegment ==="CORP") -->
-			<!-- ko if: $component.menuNavigationAvailable -->
+			<!-- ko if: $root.menuNavigationAvailable -->
 			<div data-bind="component: {name:'docked-menu' , params:{rootModel:$data}}"></div>
 			<!-- /ko -->
 			<!-- /ko -->
@@ -69,4 +69,12 @@
 	<!-- ko if: $component.modalComponent() -->
 	<div data-bind="component: {name:modalComponent , params:{rootModel:$component}}"></div>
 	<!-- /ko -->
+<modal-window class="oj-flex oj-flex-items-pad message " params="baseModel : $baseModel, rootModel : $component, id:'sessionExpired', header:$component.locale.sessionExpiredHeader">
+		<div class="oj-flex-item message-text label scroll" data-bind="text:$component.locale.sessionExpired"></div>
+		<div class="message-btn button-container">
+			<oj-button id="sessionExpiredButton" class="action-button-primary" on-click="[[$component.sessionExpiredHandler]]">
+				<span data-bind="text:$component.locale.generic.common.ok"></span>
+			</oj-button>
+		</div>
+	</modal-window>
 </div>

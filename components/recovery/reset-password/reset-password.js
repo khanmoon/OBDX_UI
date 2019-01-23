@@ -14,9 +14,9 @@ define([
   "ojs/ojvalidation",
   "ojs/ojvalidationgroup",
   "ojs/ojknockout-validation"
-], function(oj, ko, $, ResetPasswordModel, Constants, resourceBundle, passwordPolicyResourceBundle) {
+], function (oj, ko, $, ResetPasswordModel, Constants, resourceBundle, passwordPolicyResourceBundle) {
   "use strict";
-  return function(rootParams) {
+  return function (rootParams) {
     var self = this;
     ko.utils.extend(self, rootParams.rootModel);
     if (Constants.module === "WALLET") {
@@ -49,7 +49,7 @@ define([
     rootParams.baseModel.registerComponent("password-validation", "password-policy-validation");
     rootParams.baseModel.registerElement("modal-window");
     rootParams.dashboard.headerName(self.nls.forgotPassword.details.resetPassword);
-    $(document).on("focusout", function() {
+    $(document).on("focusout", function () {
       rootParams.baseModel.showComponentValidationErrors(self.pwdnullcheck());
     });
     var data = self.response().passwordPolicyDTO;
@@ -76,19 +76,19 @@ define([
     }));
 
 
-    self.passwordpolicy = function() {
+    self.passwordpolicy = function () {
       self.displaypasswordpolicy(true);
       $("#PasswordPolicy").show();
     };
-    self.okClicked = function() {
+    self.okClicked = function () {
       $("#PasswordPolicy").hide();
     };
-    var getNewKoModel = function() {
+    var getNewKoModel = function () {
       var KoModel = ResetPasswordModel.getNewModel();
       return KoModel;
     };
     self.payload = ko.observable(getNewKoModel());
-    self.reset = function() {
+    self.reset = function () {
       var validationTracker = document.getElementById("validationTracker");
       if (!rootParams.baseModel.showComponentValidationErrors(validationTracker)) {
         return;
@@ -102,23 +102,23 @@ define([
       self.payload().userId = self.response().userId;
       self.payload().newPassword = self.newPassword();
       self.payload().registrationId = self.response().registrationId;
-      ResetPasswordModel.changePassword(ko.toJSON(self.payload())).done(function(data) {
+      ResetPasswordModel.changePassword(ko.toJSON(self.payload())).done(function (data) {
         self.response(data);
         self.showConfirmation(true);
         self.enteredNewPassword(false);
       });
     };
-    var showPassword = function() {
+    var showPassword = function () {
       $("#pwd").prop({
         type: "text"
       });
     };
-    var hidePassword = function() {
+    var hidePassword = function () {
       $("#pwd").prop({
         type: "password"
       });
     };
-    self.showHide = function() {
+    self.showHide = function () {
       if (!self.pwshown()) {
         self.pwshown(true);
         showPassword();
@@ -127,20 +127,34 @@ define([
         hidePassword();
       }
     };
-    self.logIn = function() {
-      if (Constants.authenticator === "OBDXAuthenticator") {
-        rootParams.baseModel.switchPage({
-          module: "login"
-        }, false);
+    self.logIn = function () {
+      if (!rootParams.baseModel.cordovaDevice()) {
+        if (Constants.authenticator === "OBDXAuthenticator") {
+          rootParams.baseModel.switchPage({
+            module: "login"
+          }, false);
+        } else {
+          rootParams.baseModel.switchPage({}, true);
+        }
       } else {
-        rootParams.baseModel.switchPage({}, true);
+        rootParams.baseModel.switchPage({
+          module: "login",
+          internal: true
+        }, false);
       }
     };
-    self.cancel = function() {
-      location.replace("index.html");
+    self.cancel = function () {
+      if (!rootParams.baseModel.cordovaDevice()) {
+        location.replace("index.html");
+      } else {
+        rootParams.baseModel.switchPage({
+          module: "login",
+          internal: true
+        }, false);
+      }
     };
     self.equalToPassword = {
-      validate: function(value) {
+      validate: function (value) {
         var compareTo = self.newPassword.peek();
         if (!value && !compareTo) {
           return true;
@@ -151,10 +165,10 @@ define([
         return true;
       }
     };
-    self.getTemplate = function() {
+    self.getTemplate = function () {
       return Constants.module === "WALLET" ? "walletTemplate" : "templateDefault";
     };
-    self.showPasswordPolicy = function() {
+    self.showPasswordPolicy = function () {
       $("#PasswordPolicy").show();
     };
   };

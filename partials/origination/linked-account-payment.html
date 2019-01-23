@@ -3,19 +3,24 @@
 <!-- ko if:$component.fundingOtionsListLoaded() -->
 <!-- ko if:$component.minimumAmountLoaded() -->
 <div class="oj-flex oj-flex-items-pad margin-top-20 radio-pad">
-    <div class="oj-flex-item term-deposit">
+    <div class="oj-sm-12">
         <div class="min-width" data-bind="component: {
          name: 'amount-input', params: {
          amount: $component.initialAmount.amount,
          label: $component.resource.initialAmount,
-         currency: $baseModel.getLocaleValue('localCurrency'),
+         currency: $component.localCurrency,
          converter:$baseModel.formatCurrency,
          validator:$component.validationTracker,
          isMandatory:$component.mandatoryFlag,
          labelClasses : 'oj-lg-5 oj-md-6 no-pad-cols',
          valueClasses : 'oj-lg-6 oj-md-7',
          maxlength:15,
-         minimumAmount: $component.productDetails().offers ? $component.productDetails().offers.offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].minimumInitialDepositAmount.amount : $component.minimumAmount,
+         minimumAmount: ($component.productDetails().offers &&
+         $component.productDetails().offers.currencySpecificParameterDTOList &&
+         $component.productDetails().offers.currencySpecificParameterDTOList.length > 0 &&
+         $component.productDetails().offers.currencySpecificParameterDTOList[0].minimumInitialDepositAmount) ?
+         $component.productDetails().offers.currencySpecificParameterDTOList[0].minimumInitialDepositAmount.amount :
+         $component.minimumAmount,
          rootId:'depositAmount',
          rootClass:'form-input',
          inline:'origination',
@@ -23,35 +28,41 @@
          translations: {'required': {messageDetail: $component.resource.depositAmountMessage}}
          }
          }">
-       </div>
+        </div>
     </div>
-  <!-- ko if:$component.productDetails().offers -->
-  <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 oj-lg-offset-5 cust-label">
-    <div data-bind="html:$component.format($component.resource.minAmount, {amount: $component.formatCurrency($component.productDetails().offers.offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].minimumInitialDepositAmount.amount, $component.getLocaleValue('localCurrency'))})"></div>
-  </div>
-  <!-- /ko  -->
+    <!-- ko if:$component.productDetails().offers -->
+    <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8 oj-lg-offset-5 info-text-small">
+        <div data-bind="html:$component.format($component.resource.minAmount, {amount: $component.formatCurrency($component.productDetails().offers.currencySpecificParameterDTOList[0].minimumInitialDepositAmount.amount, $component.localCurrency)})"></div>
+    </div>
+    <!-- /ko  -->
 </div>
 <!-- /ko  -->
 <!-- /ko  -->
 <!-- /ko  -->
 <div class="oj-flex oj-flex-items-pad radio-pad">
-    <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-5 radio-option-top-padding ">
-        <oj-label :for="[['accountNo'+($index())]]">
-        <span data-bind="text:$component.resource.accountNo"></span></oj-label>
-    </div>
-    <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-6 radio-option-top-padding">
-        <oj-select-one required="[[true]]" id="accountNo" :id="[['accountNo'+($index())]]" translations="[[{'required':{messageDetail:$component.resource.messages.accountSelect}}]]" on-value-changed="[[$component.linkedAccountChanged]]" value="{{$component.applicantDetails()[0].accountFunding.selectedLinkedAccount.id.value}}" :placeholder="''">
-            <!-- ko if: fundingOption==='COLL' -->
-            <!-- ko foreach: $component.linkedAccountList() -->
-            <oj-option value="{{id.value}}"><span data-bind="text:id.displayValue"></span></oj-option>
-            <!-- /ko -->
-            <!-- /ko -->
-            <!-- ko if: fundingOption==='DDAO' -->
-            <!-- ko foreach: $component.casaOwnAccountList() -->
-            <oj-option value="{{id.value}}"><span data-bind="text:id.displayValue"></span></oj-option>
-            <!-- /ko -->
-            <!-- /ko -->
-        </oj-select-one>
+    <div class="oj-flex-item">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item label oj-sm-12 oj-md-6 oj-lg-2 radio-option-top-padding ">
+                <oj-label :for="[['accountNo'+($index())]]">
+                    <span data-bind="text:$component.resource.accountNo"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-6 radio-option-top-padding">
+                <oj-select-one required="[[true]]" id="accountNo" :id="[['accountNo'+($index())]]" translations="[[{'required':{messageDetail:$component.resource.messages.accountSelect}}]]"
+                    on-value-changed="[[$component.linkedAccountChanged]]" value="{{$component.applicantDetails()[0].accountFunding.selectedLinkedAccount.id.value}}"
+                    :placeholder="">
+                    <!-- ko if: fundingOption==='COLL' -->
+                    <!-- ko foreach: $component.linkedAccountList() -->
+                    <oj-option value="{{id.value}}"><span data-bind="text:id.displayValue"></span></oj-option>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: fundingOption==='DDAO' -->
+                    <!-- ko foreach: $component.casaOwnAccountList() -->
+                    <oj-option value="{{id.value}}"><span data-bind="text:id.displayValue"></span></oj-option>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+        </div>
     </div>
 </div>
 <!-- ko if: fundingOption==='COLL' -->

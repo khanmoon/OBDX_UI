@@ -51,6 +51,8 @@ define([
         self.presentmentPayment=ko.observable(false);
         params.baseModel.registerComponent("modify-biller", "bill-payments");
         params.baseModel.registerComponent("transfer-view-limits", "financial-limits");
+        params.baseModel.registerComponent("my-limits", "limits-enquiry");
+
         var payBillJSON = JSON.parse(PayBillJSON);
         ko.utils.extend(self, params.rootModel);
         self.resourceBundle = locale;

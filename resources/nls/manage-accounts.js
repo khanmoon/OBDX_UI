@@ -112,11 +112,7 @@ define(["ojL10n!resources/nls/generic"], function(Generic) {
             "interest-certificate-casa":"Current and Savings",
             "interest-certificate-td":"Deposits",
             "interest-certificate-loans":"Loans"
-          },
-          "sweep-in-instruction":{
-            "sweep-in-instruction":"Sweep-in"
           }
-
         },
         generic: Generic
       },

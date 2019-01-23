@@ -33,7 +33,7 @@ define([
         self.type = ko.observable();
         rootParams.dashboard.headerName(self.payments.beneficiaryDetails.labels.title);
         self.accountListDetailsDataSource = ko.observable();
-        rootParams.baseModel.registerElement(["action-header", "search-box", "nav-bar", "modal-window"]);
+        rootParams.baseModel.registerElement(["action-header", "search-box", "nav-bar", "modal-window", "internal-account-input"]);
         self.dataSourceCreated = ko.observable(false);
         self.menuLoaded = ko.observable(false);
         self.highlightedTab = ko.observable("accounts");

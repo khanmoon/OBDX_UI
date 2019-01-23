@@ -9,9 +9,9 @@ define([
   "ojs/ojbutton",
   "ojs/ojinputtext",
   "ojs/ojswitch"
-], function(ko, $, LoginModel, Constants, oChat, BaseLogger, Platform) {
+], function (ko, $, LoginModel, Constants, oChat, BaseLogger, Platform) {
   "use strict";
-  return function(rootParams) {
+  return function (rootParams) {
     var self = this;
     ko.utils.extend(self, rootParams.rootModel);
     self.alternateLogin = ko.observable(false);
@@ -21,7 +21,7 @@ define([
     rootParams.dashboard.headerName(self.nls.loginForm.labels.login);
     self.oam_url = self.server_url = null;
     var loginFns = null;
-    Platform.getInstance().then(function(platform) {
+    Platform.getInstance().then(function (platform) {
       self.server_url = platform("getServerURL");
       self.oam_url = platform("getOAMURL");
       self.oauth_Provider_URL = platform("getOAUTHProviderURL");
@@ -48,7 +48,7 @@ define([
       }
 
     }
-    var dummyFunction = function() {
+    var dummyFunction = function () {
       BaseLogger.info("this is a dummy function");
     };
     if (self.queryMap) {
@@ -61,8 +61,13 @@ define([
       }
     }
 
-    self.afterRender = function(genericViewModel) {
+    self.afterRender = function (genericViewModel) {
+      self.menuNavigationAvailable = true;
+      if (self.landingModule) {
+        rootParams.dashboard.backAllowed(true);
+      }
       if (genericViewModel.queryMap) {
+        self.menuNavigationAvailable = genericViewModel.queryMap.menuNavigationAvailable ? genericViewModel.queryMap.menuNavigationAvailable : true;
         if (genericViewModel.queryMap.p_error_code !== null && genericViewModel.queryMap.p_error_code === "OAM-10") {
           self.message(self.nls.loginForm.validationMsgs.errrorOAM10);
         } else if (genericViewModel.queryMap.p_error_code !== null && genericViewModel.queryMap.p_error_code === "OAM-5") {
@@ -74,17 +79,17 @@ define([
         }
       }
     };
-    self.onSnapshotClick = function() {
-      var accountSnapshotSuccess = function(value) {
+    self.onSnapshotClick = function () {
+      var accountSnapshotSuccess = function (value) {
         if (value === "REGISTERED") {
           window.plugins.auth.snapshot.fetch({
             pin: "SNAPSHOT"
-          }, function(snapshotToken) {
+          }, function (snapshotToken) {
             self.landingComponent = "account-snapshot";
-            LoginModel.sessionCreate().then(function() {
-              Platform.getInstance().then(function(platform) {
+            LoginModel.sessionCreate().then(function () {
+              Platform.getInstance().then(function (platform) {
                 var serverType = self[platform("getServerType")];
-                serverType.getAccessTokenForSnapshot(snapshotToken).then(function(tokens) {
+                serverType.getAccessTokenForSnapshot(snapshotToken).then(function (tokens) {
                   self.accessService({
                     accessToken: tokens.accessToken,
                     domain: "OBDXSnapshotDomain"
@@ -98,31 +103,31 @@ define([
           rootParams.dashboard.loadComponent("account-snapshot-registration", {}, self);
         }
       };
-      window.plugins.appPreferences.fetch(accountSnapshotSuccess, function() {
+      window.plugins.appPreferences.fetch(accountSnapshotSuccess, function () {
         BaseLogger.info("account snapshot failed");
       }, "account_snapshot_status");
     };
     if (document.getElementById("login_username")) {
-      document.getElementById("login_username").onkeypress = function(e) {
+      document.getElementById("login_username").onkeypress = function (e) {
         if (e.which === 13) {
           $("#login_password").focus();
         }
       };
     }
     if (document.getElementById("login_password")) {
-      document.getElementById("login_password").onkeypress = function(e) {
+      document.getElementById("login_password").onkeypress = function (e) {
         if (e.which === 13) {
           $("#login-button").focus();
         }
       };
     }
-    self.onLogin = function() {
+    self.onLogin = function () {
       loginFns.getUserToken.call(self);
     };
-    var error = function() {
+    var error = function () {
       self.showAlternativeSwitch(true);
     };
-    var get_login_preference = function(value) {
+    var get_login_preference = function (value) {
       if (value && (value.indexOf("pin") === 0 || value.indexOf("pattern") === 0 || value === "touchid" || value === "faceid")) {
         self.alternateLogin(value);
         self.showAlternativeSwitch(false);
@@ -131,13 +136,13 @@ define([
       }
     };
     window.plugins.appPreferences.fetch(get_login_preference, error, "alternate_preference");
-    self.openAlternateLogin = function() {
+    self.openAlternateLogin = function () {
       self.showAlternateLogin(false);
       ko.tasks.runEarly();
       self.showAlternateLogin(true);
     };
-    var getTheToken = function() {
-      window.FCMPlugin.getToken(function(token) {
+    var getTheToken = function () {
+      window.FCMPlugin.getToken(function (token) {
         if (token) {
           window.plugins.appPreferences.store(dummyFunction, dummyFunction, "registration_token", token);
         } else {
@@ -147,36 +152,36 @@ define([
     };
     if (rootParams.baseModel.cordovaDevice() === "ANDROID") {
       var pushOptSelected = false;
-      var push_status_success = function(value) {
+      var push_status_success = function (value) {
         if (value === null || value === "") {
           $("#customPopupforPushNotification").trigger("openModal");
         }
       };
-      self.enablePush = function() {
+      self.enablePush = function () {
         pushOptSelected = true;
         window.plugins.appPreferences.store(dummyFunction, dummyFunction, "push_status", "ALLOWED");
         setTimeout(getTheToken, 1000);
         $("#customPopupforPushNotification").trigger("closeModal");
       };
-      self.disablePush = function() {
+      self.disablePush = function () {
         pushOptSelected = true;
         window.plugins.appPreferences.store(dummyFunction, dummyFunction, "push_status", "DISALLOWED");
         $("#customPopupforPushNotification").trigger("closeModal");
       };
-      self.showDialog = function() {
+      self.showDialog = function () {
         window.plugins.appPreferences.fetch(push_status_success, dummyFunction, "push_status");
       };
-      self.closeHandler = function() {
+      self.closeHandler = function () {
         if (!pushOptSelected) {
           navigator.app.exitApp();
         }
       };
     }
-    self.accessService = function(accessToken, isAlternateLogin) {
-      Platform.getInstance().then(function(platform) {
+    self.accessService = function (accessToken, isAlternateLogin) {
+      Platform.getInstance().then(function (platform) {
         loginFns = platform("login", rootParams.baseModel.showMessages);
         var headers = loginFns.accessServicePreHook(accessToken);
-        LoginModel.me(headers).done(function(data) {
+        LoginModel.me(headers).done(function (data) {
           Constants.currentEntity = data.userProfile.homeEntity;
           $.extend(rootParams.dashboard.userData, data);
           if ($.inArray("RetailUser", data.userProfile.roles) > -1) {
@@ -200,21 +205,21 @@ define([
           } else if (self.optForAlternateLogin()) {
             self.showLoginOptions(true);
           } else if (self.landingComponent === "account-snapshot") {
-            window.plugins.appPreferences.fetch(function(data) {
+            window.plugins.appPreferences.fetch(function (data) {
               if (data === "PENDING") {
-                self.enableAccountSnapshotAccesspoint().then(function() {
-                  Platform.getInstance().then(function(platform) {
+                self.enableAccountSnapshotAccesspoint().then(function () {
+                  Platform.getInstance().then(function (platform) {
                     var serverType = self[platform("getServerType")];
-                    serverType.getSnapshotJWTToken().then(function(tokens) {
+                    serverType.getSnapshotJWTToken().then(function (tokens) {
                       var refToken = (tokens.refreshToken) ? tokens.refreshToken : tokens.accessToken;
                       window.plugins.auth.snapshot.save({
                         pin: "SNAPSHOT",
                         password: refToken
-                      }, function() {
-                        window.plugins.appPreferences.store(function() {
+                      }, function () {
+                        window.plugins.appPreferences.store(function () {
                           if (rootParams.rootModel.allowSnapshot()) {
                             window.Wearable.onConnect(
-                              function(resultData) {
+                              function (resultData) {
                                 var payload = {};
                                 payload.secureDeviceId = resultData.wear_id;
                                 payload.osVersion = resultData.wear_sdk;
@@ -222,25 +227,25 @@ define([
                                 payload.manufacturer = resultData.wear_manufacturer;
                                 payload.model = resultData.wear_model;
                                 payload = ko.mapping.toJSON(payload);
-								serverType.getSnapshotJWTToken().then(function(tokens){
-                                LoginModel.registerDevice(payload).done(function() {
-                                  var wearablePayload = {};
-                                  wearablePayload.snapshotJwt = (tokens.refreshToken) ? tokens.refreshToken : tokens.accessToken;
-                                  LoginModel.updateSession().then(function() {
-                                    window.Wearable.sendSnapshotToken(function() {
-                                      self.accessService({
-                                        accessToken: tokens.accessToken,
-                                        domain: "OBDXSnapshotDomain"
-                                      });
-                                    }, function(error) {
-                                      rootParams.baseModel.showMessages(null, [self.nls.errors[error]], "ERROR");
-                                      self.updateSessionforSnapshot(tokens.accessToken);
-                                    }, wearablePayload);
+                                serverType.getSnapshotJWTToken().then(function (tokens) {
+                                  LoginModel.registerDevice(payload).done(function () {
+                                    var wearablePayload = {};
+                                    wearablePayload.snapshotJwt = (tokens.refreshToken) ? tokens.refreshToken : tokens.accessToken;
+                                    LoginModel.updateSession().then(function () {
+                                      window.Wearable.sendSnapshotToken(function () {
+                                        self.accessService({
+                                          accessToken: tokens.accessToken,
+                                          domain: "OBDXSnapshotDomain"
+                                        });
+                                      }, function (error) {
+                                        rootParams.baseModel.showMessages(null, [self.nls.errors[error]], "ERROR");
+                                        self.updateSessionforSnapshot(tokens.accessToken);
+                                      }, wearablePayload);
+                                    });
                                   });
                                 });
-								});
                               },
-                              function(error) {
+                              function (error) {
                                 rootParams.baseModel.showMessages(null, [self.nls.errors[error]], "ERROR");
                                 self.updateSessionforSnapshot(tokens.accessToken);
                               });
@@ -276,9 +281,9 @@ define([
               internal: true
             }, false, false);
           }
-        }).fail(function(data) {
+        }).fail(function (data) {
           if (data.status === 401) {
-            $(".message-box-message__item").ready(function() {
+            $(".message-box-message__item").ready(function () {
               if (isAlternateLogin) {
                 $(".message-box-message__item")[0].innerHTML = self.nls.loginForm.labels.fp_token_invalid;
                 self.alternateLogin(false);
@@ -294,9 +299,9 @@ define([
 
 
     self.OAM = {
-      getSnapshotJWTToken: function() {
-        return new Promise(function(resolve, reject) {
-          Platform.getInstance().then(function(platform) {
+      getSnapshotJWTToken: function () {
+        return new Promise(function (resolve, reject) {
+          Platform.getInstance().then(function (platform) {
             var url = platform("getOAMURL") + "/oic_rest/rest/jwtoamauthentication/authenticate";
             window.cordovaFetch(url, {
               method: "POST",
@@ -311,7 +316,7 @@ define([
                 "X-Idaas-Rest-Subject-Password": self.password(),
                 "X-Idaas-Rest-New-Token-Type-To-Create": "USERTOKEN::JWTUT"
               })
-            }).then(function(response) {
+            }).then(function (response) {
               if (response.status === 200) {
                 resolve({
                   accessToken: JSON.parse(response.statusText)["X-Idaas-Rest-Token-Value"]
@@ -326,7 +331,7 @@ define([
                 }
                 reject();
               }
-            }).catch(function(ex) {
+            }).catch(function (ex) {
               BaseLogger.error(ex.message);
               rootParams.baseModel.showMessages(null, [ex], "ERROR");
               reject();
@@ -336,17 +341,17 @@ define([
       }
     };
     self.NONOAM = {
-      getSnapshotJWTToken: function() {
-        return new Promise(function(resolve, reject) {
+      getSnapshotJWTToken: function () {
+        return new Promise(function (resolve, reject) {
           var payload = {};
           payload.accessPointId = "APSNAPSHOT";
           payload.password = self.password();
           payload = ko.toJSON(payload);
-          LoginModel.getJwtToken(payload).done(function(data) {
+          LoginModel.getJwtToken(payload).done(function (data) {
             resolve({
               accessToken: data.jwtoken
             });
-          }).fail(function() {
+          }).fail(function () {
             $(".se-pre-con").fadeOut();
             rootParams.baseModel.showMessages(null, [self.resource.login_error], "ERROR");
             self.password("");
@@ -354,8 +359,8 @@ define([
           });
         });
       },
-      getAccessTokenForSnapshot: function(token) {
-        return new Promise(function(resolve) {
+      getAccessTokenForSnapshot: function (token) {
+        return new Promise(function (resolve) {
           resolve({
             accessToken: token
           });
@@ -364,11 +369,11 @@ define([
     };
 
     self.OAUTH = {
-      getSnapshotJWTToken: function(refreshToken) {
-        return new Promise(function(resolve, reject) {
-          Platform.getInstance().then(function(platform) {
+      getSnapshotJWTToken: function (refreshToken) {
+        return new Promise(function (resolve, reject) {
+          Platform.getInstance().then(function (platform) {
             var body = refreshToken ? "grant_type=refresh_token&refresh_token=" + encodeURIComponent(refreshToken) : "grant_type=password&username=" + self.username() + "&password=" + self.password() + "&scope=" + self.offline_scope;
-            window.plugins.appPreferences.fetch("SNAPSHOT_CLIENT_ID").then(function(clientID) {
+            window.plugins.appPreferences.fetch("SNAPSHOT_CLIENT_ID").then(function (clientID) {
               var url = platform("getOAUTHProviderURL");
               window.cordovaFetch(url, {
                 method: "POST",
@@ -379,7 +384,7 @@ define([
                   "X-OAUTH-IDENTITY-DOMAIN-NAME": "OBDXSnapshotDomain"
                 },
                 body: body
-              }).then(function(response) {
+              }).then(function (response) {
                 var responseText = JSON.parse(response.statusText);
                 if (refreshToken) {
                   if (responseText.refresh_token) {
@@ -397,7 +402,7 @@ define([
                     refreshToken: responseText.refresh_token
                   });
                 }
-              }).catch(function(ex) {
+              }).catch(function (ex) {
                 $(".se-pre-con").fadeOut();
                 BaseLogger.error(ex.message);
                 reject({
@@ -405,7 +410,7 @@ define([
                 });
               });
             });
-          }).catch(function(ex) {
+          }).catch(function (ex) {
             $(".se-pre-con").fadeOut();
             BaseLogger.error(ex.message);
             rootParams.baseModel.showMessages(null, [ex], "ERROR");
@@ -413,63 +418,73 @@ define([
           });
         });
       },
-      getAccessTokenForSnapshot: function(refreshToken) {
+      getAccessTokenForSnapshot: function (refreshToken) {
         return self.OAUTH.getSnapshotJWTToken(refreshToken);
       }
     };
 
-    self.enableAccountSnapshotAccesspoint = function() {
-      return new Promise(function(resolve, reject) {
-        LoginModel.getMePreference().then(function(data) {
+    self.enableAccountSnapshotAccesspoint = function () {
+      return new Promise(function (resolve, reject) {
+        LoginModel.getMePreference().then(function (data) {
           var mePreference = data;
           delete mePreference.status;
-          ko.utils.arrayForEach(mePreference.userAccessPointRelationship, function(item) {
+          ko.utils.arrayForEach(mePreference.userAccessPointRelationship, function (item) {
             if (Constants.currentEntity === item.determinantValue && item.accessPointId === "APSNAPSHOT") {
               item.status = true;
             }
           });
-          LoginModel.updateMePreference(ko.mapping.toJSON(mePreference)).then(function() {
-            Platform.getInstance().then(function(platform) {
-              platform("registerDevice").then(function() {
+          LoginModel.updateMePreference(ko.mapping.toJSON(mePreference)).then(function () {
+            Platform.getInstance().then(function (platform) {
+              platform("registerDevice").then(function () {
                 resolve();
-              }).catch(function() {
+              }).catch(function () {
                 BaseLogger.error("REGISTER DEVICE FAILED");
               });
             });
-          }).catch(function() {
+          }).catch(function () {
             reject();
           });
-        }).catch(function() {
+        }).catch(function () {
           reject();
         });
       });
     };
-    self.updateSessionforSnapshot = function(headerPayload) {
-      LoginModel.updateSession().then(function() {
+    self.updateSessionforSnapshot = function (headerPayload) {
+      LoginModel.updateSession().then(function () {
         self.accessService({
           accessToken: headerPayload,
           domain: "OBDXSnapshotDomain"
         });
       });
     };
-    self.goToLogin = function() {
+    self.goToLogin = function () {
       rootParams.dashboard.switchModule("login");
       $("#firstTimeLoginNotCompleted").trigger("closeModal");
     };
 
     if (window.facebookConnectPlugin)
       window.facebookConnectPlugin.logout();
-    self.forgotPass = function() {
-      Platform.getInstance().then(function(platform) {
-        window.open(platform("getServerURL", true) + "/index.html?homeComponent=user-information&homeModule=recovery&context=index", "_system");
-      });
+
+    self.forgotPass = function () {
+      rootParams.baseModel.switchPage({
+        homeComponent: {
+          component: "user-information",
+          module: "recovery"
+        },
+        internal: true
+      }, false);
     };
-    self.forgotUserId = function() {
-      Platform.getInstance().then(function(platform) {
-        window.open(platform("getServerURL", true) + "/index.html?homeComponent=user-recovery-info&homeModule=recovery&context=index", "_system");
-      });
+
+    self.forgotUserId = function () {
+      rootParams.baseModel.switchPage({
+        homeComponent: {
+          component: "user-recovery-info",
+          module: "recovery"
+        },
+        internal: true
+      }, false);
     };
-    $(document).on("blur", "#login-button", function() {
+    $(document).on("blur", "#login-button", function () {
       $("input[name='username']").focus();
     });
     $(".footer").addClass("white-background");

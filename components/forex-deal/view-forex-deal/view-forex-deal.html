@@ -126,7 +126,7 @@
                     </div>
                     <!-- ko if:$component.params.dealsAvailable() && $component.dealsdataSource() && !$component.dealsdataSource().totalSize() -->
                     <div class="oj-flex-item oj-lg-2 right">
-                        <a href="javascript:void(0)" data-bind="attr:{'alt':$baseModel.format($component.resource.viewForexDeal.alt, {action : $component.resource.viewForexDeal.lookUpAllDeals}),'title':$baseModel.format($component.resource.viewForexDeal.title, {action : $component.resource.viewForexDeal.lookUpAllDeals})},text:$component.resource.viewForexDeal.lookUpAllDeals,click:$component.lookUpAllDeals.bind($data,$component.dealsdataSource()? $component.dealsdataSource().totalSize():true)">
+                        <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.viewForexDeal.staticAlt.lookUpAllDeals,'title':$component.resource.viewForexDeal.staticTitle.lookUpAllDeals},text:$component.resource.viewForexDeal.lookUpAllDeals,click:$component.lookUpAllDeals.bind($data,$component.dealsdataSource()? $component.dealsdataSource().totalSize():true)">
                         </a>
                     </div>
                     <!-- /ko -->
@@ -180,7 +180,7 @@
                     <template slot="rowtemplate">
                         <td>
                             <!-- ko ifnot:$component.params.transferCurrency -->
-                            <a href="javascript:void(0)" data-bind="text:$current.row.dealNumber, click:$component.onDealSelected.bind($data,$current.row), attr:{'alt':$baseModel.format($component.resource.viewForexDeal.alt, {action : $current.row.dealNumber}),'title':$baseModel.format($component.resource.viewForexDeal.title, {action : $current.row.dealNumber})}"></a>
+                            <a href="javascript:void(0)" data-bind="text:$current.row.dealNumber, click:$component.onDealSelected.bind($data,$current.row), attr:{'alt':$baseModel.format($component.resource.viewForexDeal.alt, {reference : $current.row.dealNumber}),'title':$baseModel.format($component.resource.viewForexDeal.title, {reference : $current.row.dealNumber})}"></a>
                             <!-- /ko -->
                             <!-- ko if:$component.params.transferCurrency -->
                             <div data-bind="text : $current.row.dealNumber"></div>
@@ -234,7 +234,7 @@
             </div>
             <!-- ko if:$component.dealsdataSource() && !$component.dealsdataSource().totalSize() -->
             <div class="oj-lg-2">
-                <a href="javascript:void(0)" data-bind="attr:{'alt':$baseModel.format($component.resource.viewForexDeal.alt, {action : $component.resource.viewForexDeal.lookUpAllDeals}),'title':$baseModel.format($component.resource.viewForexDeal.title, {action : $component.resource.viewForexDeal.lookUpAllDeals})},text:$component.resource.viewForexDeal.lookUpAllDeals,click:$component.lookUpAllDeals.bind($data,$component.dealsdataSource()? $component.dealsdataSource().totalSize():true)">
+                <a href="javascript:void(0)" data-bind="attr:{'alt':$component.resource.viewForexDeal.staticAlt.lookUpAllDeals,'title':$component.resource.viewForexDeal.staticTitle.lookUpAllDeals},text:$component.resource.viewForexDeal.lookUpAllDeals,click:$component.lookUpAllDeals.bind($data,$component.dealsdataSource()? $component.dealsdataSource().totalSize():true)">
             </a>
             </div>
             <!-- /ko -->
@@ -338,7 +338,7 @@
     </div>
     <!-- /ko -->
     <!-- ko if:!$baseModel.large() && !$component.params.transferCurrency -->
-    <a href="javascript:void(0)" id="fabNewDeal" data-bind="click: $dashboard.loadComponent.bind($data,'forex-deal-create'), attr:{'alt':$baseModel.format($component.resource.viewForexDeal.alt, {action : $component.resource.viewForexDeal.initiateDeal}),'title':$baseModel.format($component.resource.viewForexDeal.title, {action : $component.resource.viewForexDeal.initiateDeal})}">
+    <a href="javascript:void(0)" id="fabNewDeal" data-bind="click: $dashboard.loadComponent.bind($data,'forex-deal-create'), attr:{'alt':$component.resource.viewForexDeal.staticAlt.initiateDeal,'title':$component.resource.viewForexDeal.staticTitle.initiateDeal}">
         <div class="floating-button"><span slot="startIcon" class="icons icon-plus"></span></div>
     </a>
     <!-- /ko -->

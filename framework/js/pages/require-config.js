@@ -1,5 +1,5 @@
 require.config({
-  baseUrl: "/",
+  baseUrl: "@@RESOURCE_BASE_PATH",
   waitSeconds: 0,
   paths: {
     "ojs": "framework/js/libs/oraclejet/js/libs/oj/v5.0.0/min",

@@ -1085,8 +1085,15 @@ define([
       self.checkAvailability(self.nls.common.checkAvailability);
       self.checkIfUserExistsFlag(false);
     });
+	var count = 1;
     $(document).on("blur", "#userName", function(e) {
-      self.currentUsername = e.currentTarget.value;
+	if(count>0){
+      self.currentUsername = e.target.value;
+      count--;
+    }
+    else{
+      count=1;
+    }
       self.checkAvailability(self.nls.common.checkAvailability);
       self.checkIfUserExistsFlag(false);
     });

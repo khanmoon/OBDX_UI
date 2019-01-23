@@ -5,10 +5,10 @@
     </div>
     <div class="oj-flex-item oj-sm-12">
         <oj-select-one id="accTransferOption" required="[[true]]" value="{{$component.payoutInstructions.type}}" :placeholder="[[$component.locale.placeholder.pleaseSelect]]">
-      <!-- ko foreach: $component.transferOptionsList -->
-      <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
-      <!-- /ko -->
-    </oj-select-one>
+            <!-- ko foreach: $component.transferOptionsList -->
+            <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+            <!-- /ko -->
+        </oj-select-one>
     </div>
 </div>
 <!-- /ko -->
@@ -23,7 +23,7 @@
         <oj-label class="" :for="[['accountNumber'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.locale.payoutInstructions.accNumber"></span></oj-label>
     </div>
     <div class="oj-flex-item oj-sm-12">
-        <oj-input-text maxlength="20" :id="[['accountNumber'+ $baseModel.currentIdCount()]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ACCOUNT')]]" value="{{$component.payoutInstructions.account}}"></oj-input-text>
+        <oj-input-text maxlength="20" required="true" :id="[['accountNumber'+ $baseModel.currentIdCount()]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ACCOUNT')]]" value="{{$component.payoutInstructions.account}}"></oj-input-text>
 
     </div>
 </div>
@@ -32,7 +32,7 @@
         <oj-label for="beneficiaryName" class=""><span data-bind="text:$component.locale.payoutInstructions.accName"></span></oj-label>
     </div>
     <div class="oj-flex-item oj-sm-12">
-        <oj-input-text id="beneficiaryName" maxlength="35" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.payoutInstructions.beneficiaryName}}"></oj-input-text>
+        <oj-input-text id="beneficiaryName" required="true" maxlength="35" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('NAME')]]" value="{{$component.payoutInstructions.beneficiaryName}}"></oj-input-text>
     </div>
 </div>
 
@@ -41,11 +41,11 @@
         <oj-label for="bankCode" class=""><span data-bind="text:$component.locale.payoutInstructions.bankCode"></span></oj-label>
     </div>
     <div class="oj-flex-item oj-sm-12">
-        <oj-input-text id="bankCode" maxlength="20" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('BANK_CODE')]]" value="{{$component.payoutInstructions.clearingCode}}"></oj-input-text>
+        <oj-input-text id="bankCode" maxlength="20" required="true" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('BANK_CODE')]]" value="{{$component.payoutInstructions.clearingCode}}"></oj-input-text>
 
         <oj-button id="bankCodeOpener" class="form-button-secondary" on-click="[[bankDetails]]">
-      <span data-bind="text:$component.locale.generic.common.submit"></span>
-</oj-button>
+            <span data-bind="text:$component.locale.generic.common.submit"></span>
+        </oj-button>
         <span data-bind="text:$component.locale.payoutInstructions.or"></span>
         <a href="#" class="form-button-link" data-bind="text:$component.locale.payoutInstructions.lookUpBankCode,click:bankLookupHandler"></a>
 
@@ -67,19 +67,19 @@
         <oj-label class="" :for="[['internalAccountNumber'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.locale.payoutInstructions.accNumber"></span></oj-label>
     </div>
     <div class="oj-flex-item oj-sm-12">
-        <oj-input-text maxlength="20" :id="[['internalAccountNumber'+ $baseModel.currentIdCount()]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ACCOUNT')]]" value="{{$component.payoutInstructions.account}}"></oj-input-text>
+        <oj-input-text maxlength="20" required="true" :id="[['internalAccountNumber'+ $baseModel.currentIdCount()]]" :invalidcomponenttracker="[[$component.validationTracker]]" validators="[[$baseModel.getValidator('ACCOUNT')]]" value="{{$component.payoutInstructions.account}}"></oj-input-text>
     </div>
 </div>
 <!-- /ko -->
 
 <!-- ko if:$component.payoutInstructions.type()==='S' -->
 <div class="oj-flex oj-flex-items-pad">
-<div class="oj-flex-item oj-sm-12 label ">
-    <oj-label class="" :for="[['sourceAccount'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.locale.payoutInstructions.accNumber"></span></oj-label>
-</div>
-<div class="oj-flex-item oj-sm-12">
-<oj-input-text id="sourceAccount" class="oj-flex-item" value="[[$data.additionalDetails().account.id.displayValue]]" readonly>
-</oj-input-text>
-</div>
+    <div class="oj-flex-item oj-sm-12 label ">
+        <oj-label class="" :for="[['sourceAccount'+ $baseModel.incrementIdCount()]]"><span data-bind="text:$component.locale.payoutInstructions.accNumber"></span></oj-label>
+    </div>
+    <div class="oj-flex-item oj-sm-12">
+        <oj-input-text id="sourceAccount" class="oj-flex-item" value="[[$data.additionalDetails().account.id.displayValue]]" readonly>
+        </oj-input-text>
+    </div>
 </div>
 <!-- /ko -->

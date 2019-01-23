@@ -19,9 +19,9 @@ define([
         var KoModel = LiabilitiesInfoModel.getNewModel(model);
         KoModel.type = ko.observable(KoModel.type);
         KoModel.original.amount = ko.observable(KoModel.original.amount);
-        KoModel.original.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+        KoModel.original.currency = self.localCurrency;
         KoModel.outstanding.amount = ko.observable(KoModel.outstanding.amount);
-        KoModel.outstanding.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+        KoModel.outstanding.currency = self.localCurrency;
         KoModel.temp_isActive = ko.observable(KoModel.temp_isActive);
         KoModel.temp_selectedValues = ko.observable(KoModel.temp_selectedValues);
         return KoModel;

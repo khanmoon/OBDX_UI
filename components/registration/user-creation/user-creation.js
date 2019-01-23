@@ -7,6 +7,8 @@ define([
   "ojL10n!resources/nls/registration-user-create",
   "ojL10n!resources/nls/change-password",
   "ojs/ojinputtext",
+  "ojs/ojvalidationgroup",
+  "ojs/ojknockout-validation",
   "ojs/ojcheckboxset"
 ], function(oj, ko, $, UserCreationModel, Constants, resourceBundle, passwordPolicyResourceBundle) {
   "use strict";
@@ -77,6 +79,9 @@ define([
       }
     });
     self.signUp = function() {
+      if (!rootParams.baseModel.showComponentValidationErrors(document.getElementById("tracker"))) {
+        return;
+      }
       if (!rootParams.baseModel.showComponentValidationErrors(self.usernameValidation() && self.validationTracker())) {
         return;
       }
@@ -136,9 +141,8 @@ define([
         if (!value && !compareTo) {
           return true;
         } else if (value !== compareTo) {
-          self.confirmPassword("");
-          throw new Error(self.nls.registration.logIn.passwordMatch);
-        }
+          throw new Error(self.passwordPolicynls.changePassword.messages.passwordMatch);
+                 }
         return true;
       }
     };

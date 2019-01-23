@@ -28,14 +28,17 @@ define([
 userName : null
         };
       },
-      fetchUserListDeferred, fetchUserList = function(deferred) {
+      fetchUserListDeferred, fetchUserList = function(username, deferred) {
         var options = {
-          url: "users?userGroup=Administrator",
+          url: "users?username={username}&userGroup=Administrator",
           success: function(data) {
             deferred.resolve(data);
           }
+        },
+        params = {
+          "username": username
         };
-        baseService.fetch(options);
+        baseService.fetch(options,params);
       },
       saveModelDeferred, saveModel = function(model, userGroupId, deferred) {
         var options = {
@@ -136,9 +139,9 @@ userName : null
       getNewModel: function(modelData) {
         return new Model(modelData);
       },
-      fetchUserList: function() {
+      fetchUserList: function(username) {
         fetchUserListDeferred = $.Deferred();
-        fetchUserList(fetchUserListDeferred);
+        fetchUserList(username,fetchUserListDeferred);
         return fetchUserListDeferred;
       },
       validateUser: function(userId) {

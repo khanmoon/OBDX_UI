@@ -18,19 +18,20 @@ define([
         togglePasswordAlt: "Toggle Password",
         otpPageSection: "One Time Verification",
         resentMsg: "OTP sent successfully",
+        otpResentMsg : "One Time Verification code (OTP) has been resent successfully!",
         referenceNo: "Reference Number",
         numberMsg: "Enter Only Numbers",
         correctOTPMsg: "Enter Correct OTP",
         allowedAttempts: "Attempts Left",
         generic: Generic
       },
-      ar: false,
-      fr: true,
-      cs: false,
-      sv: false,
-      en: false,
-      "en-us": false,
-      el: false
+      ar:false,
+      fr:true,
+      cs:false,
+      sv:false,
+      en:false,
+      "en-us":false,
+      el:false
     };
   };
   return new OTPScreenLocale();

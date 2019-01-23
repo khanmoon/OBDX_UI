@@ -11,6 +11,7 @@ define([
     "ojs/ojselectcombobox",
     "ojs/ojdatetimepicker",
     "ojs/ojvalidation",
+    "ojs/ojvalidationgroup",
     "ojs/ojknockout-validation",
     "ojs/ojdialog"
 ], function (oj, ko, $, UserCredentialModel, resourceBundle) {
@@ -24,10 +25,10 @@ define([
         var today = rootParams.baseModel.getDate();
         var currentYear = today.getFullYear();
         self.accountEnumList = ko.observableArray();
+        self.validationTracker = ko.observable();
         rootParams.dashboard.headerName(self.nls.registration.headerName);
 
-        self.monthEnumList = ko.observableArray([
-            {
+        self.monthEnumList = ko.observableArray([{
                 "code": "01",
                 "description": "01"
             },
@@ -76,8 +77,7 @@ define([
                 "description": "12"
             }
         ]);
-        self.yearEnumList = ko.observableArray([
-            {
+        self.yearEnumList = ko.observableArray([{
                 "code": currentYear,
                 "description": currentYear
             },
@@ -139,6 +139,7 @@ define([
                 self.clickedTermDeposit(false);
                 self.clickedCreditCard(false);
                 self.clickedDemandDeposit(false);
+                self.accountNumber("");
             }
             if (event.detail.value === "CCA") {
                 self.resetPayload();
@@ -153,6 +154,7 @@ define([
                 self.clickedTermDeposit(false);
                 self.clickedCreditCard(false);
                 self.clickedDemandDeposit(true);
+                self.accountNumber("");
             }
             if (event.detail.value === "TRD") {
                 self.resetPayload();
@@ -160,10 +162,11 @@ define([
                 self.clickedTermDeposit(true);
                 self.clickedCreditCard(false);
                 self.clickedDemandDeposit(false);
+                self.accountNumber("");
             }
         };
         self.validation = function () {
-            if (!rootParams.baseModel.showComponentValidationErrors(self.invalidTracker())) {
+            if (!rootParams.baseModel.showComponentValidationErrors(document.getElementById("tracker"))) {
                 return;
             }
             if (typeof self.accountType() === "object") {
@@ -175,12 +178,7 @@ define([
             if (self.clickedDemandDeposit()) {
                 if (self.payload().debitCardNumber) {
                     self.payload().debitCardNumber = self.payload().debitCardNumber.replace(/\s/g, "");
-                  } else {
-                    rootParams.baseModel.showMessages(null, [self.nls.registration.messages.mandatoryDebitCardNumber], "ERROR");
-                  }
-                  if (!self.payload().debitCardPin) {
-                    rootParams.baseModel.showMessages(null, [self.nls.registration.messages.mandatoryDebitPin], "ERROR");
-                  }
+                }
             }
             if (self.clickedCreditCard()) {
                 if (self.expiryYear()) {
@@ -203,10 +201,10 @@ define([
                             self.verification(true);
                         }
                     } else if (self.response().registrationDTO && self.response().registrationDTO.registrationId) {
-                            self.baseURL = "registration/" + self.response().registrationDTO.registrationId;
-                            self.userCredentials(false);
-                            self.verification(true);
-                        }
+                        self.baseURL = "registration/" + self.response().registrationDTO.registrationId;
+                        self.userCredentials(false);
+                        self.verification(true);
+                    }
                 }
             });
         };
@@ -216,7 +214,14 @@ define([
             }
         };
         self.cancel = function () {
-            location.replace("index.html");
+            if (!rootParams.baseModel.cordovaDevice()) {
+                location.replace("index.html");
+            } else {
+                rootParams.baseModel.switchPage({
+                    module: "login",
+                    internal: true
+                }, false);
+            }
         };
         self.resetPayload = function () {
             self.payload().accountType = self.accountType();

@@ -64,8 +64,8 @@ define([
         self.selectedAmountRange = ko.observable();
         self.interestSlabsDataSource = ko.observable(null);
         self.categoryDetails().categoryId = ko.toJS(self.params.categoryId);
-        self.fileId = ko.observable(self.goal.fileId);
-        self.imageId = ko.observable(self.goal.imageId);
+        self.fileId = ko.observable("input");
+        self.imageId = ko.observable("target");
         Params.baseModel.registerElement([
             "page-section",
             "confirm-screen",

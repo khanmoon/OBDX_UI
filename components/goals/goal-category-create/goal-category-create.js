@@ -55,8 +55,8 @@ define([
         self.subCategoriesList = ko.observableArray([getNewKoModel().goalCategoryModel]);
         self.interestSlabsDataSource = ko.observable(null);
         self.selectedAmountRange = ko.observable();
-        self.fileId = ko.observable(self.goal.fileId);
-        self.imageId = ko.observable(self.goal.imageId);
+        self.fileId = ko.observable("input");
+        self.imageId = ko.observable("target");
         self.amountRangeList = ko.observableArray();
         rootParams.baseModel.registerElement([
             "page-section",

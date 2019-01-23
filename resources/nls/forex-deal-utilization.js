@@ -25,10 +25,7 @@ define([
                     searchDealNumber: "Search Deal Number",
                     spot: "Spot",
                     forward: "Forward",
-                    invalidDealNo: "Invalid Deal Number",
-
-                    alt: "Click here to {reference}",
-                    title: "Click here to {reference}"
+                    invalidDealNo: "Invalid Deal Number"
                 },
 
                 generic: Generic,

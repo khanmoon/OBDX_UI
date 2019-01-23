@@ -59,10 +59,12 @@ define([], function() {
         confirmation : "Confirmation",
         feedbackType : "Feedback Type",
         feedbackTypeGeneral : "General",
+        retailUser : "Retail User",
+        corpUser : "Corporate User",
         feedbackTypeTransactions : "Transactions",
         optionDescription:"Option Description",
         reviewTemplate: "Review template",
-        transactionSelectMessage: "Please define atleast one option for the selected question",
+        transactionSelectMessage: "Please define at least one option for the selected question",
         noQuestionMapped : "No question mapped"
       },
       ar: true,

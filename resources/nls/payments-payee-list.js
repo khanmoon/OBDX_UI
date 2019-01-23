@@ -59,6 +59,7 @@ define([
             },
 
             labels: {
+              draftFavouring:"Draft Favouring",
               deliveryLocation: "Delivery Location",
               pay: "Pay",
               removeLimits: "Remove Limits",

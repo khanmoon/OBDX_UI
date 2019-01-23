@@ -326,6 +326,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', ['checkBuildParameters', 'concurrent:eslint', 'concurrent:generateWorkspace', 'concurrent:cssCleanup', 'inlinecss', 'string-replace:genericReplacements', 'concurrent:require', 'fileMove', 'concurrent:finalize']);
 
+  grunt.registerTask('stringReplace', ['string-replace:genericReplacements']);
+  
   grunt.registerTask('inlinecss', 'Inline the loader css', function () {
     var loader = grunt.file.read('../destInt/framework/css/loader.css'),
       index = grunt.file.read('../destInt/index.html'),

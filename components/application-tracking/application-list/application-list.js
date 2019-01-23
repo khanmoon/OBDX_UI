@@ -65,7 +65,7 @@ define([
       for (i = 0; i < self.applicationsList().length; i++) {
         self.applicationsList()[i].applications.applicationStatusDesc = rootParams.baseModel.getDescriptionFromCode(self.applicationStatusStringMap(), self.applicationsList()[i].applications.applicationStatus);
         if (self.applicationsList()[i].applications && self.applicationsList()[i].applications.totalRequestedAmount) {
-          self.applicationsList()[i].applications.totalRequestedAmount.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+          self.applicationsList()[i].applications.totalRequestedAmount.currency = self.localCurrency;
         }
       }
       self.sessionStorageData.isCustomer = self.isCustomer();
@@ -159,7 +159,8 @@ define([
       var className = "non-collateral-LOANS-tracker";
       if ($.inArray(data.applications.productType, [
           "UPL1",
-          "AUTOLOANS"
+          "AUTOLOANS",
+          "AUTO"
         ]) > -1) {
         self.productClassName("LOANS");
       } else {

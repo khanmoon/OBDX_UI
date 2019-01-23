@@ -7,28 +7,28 @@ define([
   "framework/js/constants/constants",
   "baseLogger",
   "ojL10n!resources/nls/application-tracking-base",
+  "baseService",
   "ojs/ojknockout-validation"
-], function(oj, ko, $, ApplicationTrackingBaseModel, Constants, BaseLogger, resourceBundle) {
+], function (oj, ko, $, ApplicationTrackingBaseModel, Constants, BaseLogger, resourceBundle, BaseService) {
   "use strict";
-  return function(rootParams) {
+  return function (rootParams) {
     var self = this;
     ko.utils.extend(self, rootParams.rootModel);
-    require(["framework/js/constants/product-extension"], function(ProductExtension) {
+    require(["framework/js/constants/product-extension"], function (ProductExtension) {
       ko.utils.extend(self, new ProductExtension(rootParams.dashboard.userData, rootParams));
       self.dataLoaded(true);
     });
-    self.dataLoaded = ko.observable(false);
+    self.dataLoaded = ko.observable(false);
+
     self.resource = resourceBundle;
     self.accordionNames = resourceBundle;
-    self.initQueryMap = function(root) {
+    self.initQueryMap = function (root) {
       self.applicationArguments = root.applicationArguments;
     };
     var sessionStorageData;
-    if(self.applicationArguments)
-    {
+    if (self.applicationArguments) {
       sessionStorageData = self.applicationArguments;
-    }
-    else{
+    } else {
       sessionStorageData = self.sessionStorageData;
     }
     if (sessionStorageData) {
@@ -90,8 +90,8 @@ define([
     self.userProfile = ko.observable();
     rootParams.baseModel.registerElement("action-header");
     rootParams.baseModel.registerElement("modal-window");
-    self.toCleanJson = function(input) {
-      return ko.toJSON(input, function(key, value) {
+    self.toCleanJson = function (input) {
+      return ko.toJSON(input, function (key, value) {
         if (value === null || value === undefined) {
           return false;
         } else if (key) {
@@ -106,7 +106,7 @@ define([
       });
     };
 
-    self.findApplicationValue = function(code) {
+    self.findApplicationValue = function (code) {
       var index;
       for (index = 0; index < self.applicationStatusStringMap().length; index++) {
         if (self.applicationStatusStringMap()[index].code === code) {
@@ -115,7 +115,7 @@ define([
       }
       return self.resource.processing;
     };
-    self.findSubmissionValue = function(code) {
+    self.findSubmissionValue = function (code) {
       var index;
       for (index = 0; index < self.submissionStatusStringMap().length; index++) {
         if (self.submissionStatusStringMap()[index].code === code) {
@@ -125,15 +125,15 @@ define([
       return self.resource.processing;
     };
 
-    self.successHandlerApplicationStatus = function(data) {
+    self.successHandlerApplicationStatus = function (data) {
       self.applicationStatusStringMap(data.enumRepresentations[0].data);
       ApplicationTrackingBaseModel.fetchSubmissionIdList(self.successHandlerSubmissionList);
     };
 
-    self.successHandlerAppStages = function(data) {
+    self.successHandlerAppStages = function (data) {
       self.applicationSummary().progress = data.overAllProgress;
     };
-    self.clickBackButton = function() {
+    self.clickBackButton = function () {
       switch (self.trackApplicationComponentName()) {
         case "product-tracking-base":
           ApplicationTrackingBaseModel.fetchApplicationStages(self.applicationInfo().currentSubmissionId(), self.applicationInfo().currentApplicationId(), self.successHandlerAppStages);
@@ -149,7 +149,7 @@ define([
           break;
       }
     };
-    self.changePage = function(params) {
+    self.changePage = function (params) {
       if (params) {
         var index = 0,
           pgs = self.appComponents();
@@ -161,7 +161,7 @@ define([
         }
       }
     };
-    self.getPageChanged = function(params) {
+    self.getPageChanged = function (params) {
       if (params) {
         var index = 0,
           pgs = self.appComponents();
@@ -173,7 +173,7 @@ define([
         }
       }
     };
-    self.setCurrentStage = function(id) {
+    self.setCurrentStage = function (id) {
       for (var i = 0; i < self.applicationData().trackerStages.length; i++) {
         if (self.applicationData().trackerStages[i].id === id && !self.applicationData().trackerStages[i].isLastStage) {
           self.applicationData().currentStage = self.applicationData().trackerStages[i + 1].id;
@@ -181,7 +181,7 @@ define([
         }
       }
     };
-    self.getNextStage = function() {
+    self.getNextStage = function () {
       rootParams.baseModel.registerComponent(self.applicationData().currentStage, "application-tracking");
       rootParams.baseModel.registerElement("page-section");
       rootParams.baseModel.registerElement("row");
@@ -189,7 +189,7 @@ define([
       self.appComponents().push(self.trackApplicationComponentName());
       self.setCurrentStage(self.applicationData().currentStage);
     };
-    self.applyPattern = function(input, pattern, position) {
+    self.applyPattern = function (input, pattern, position) {
       var x = input;
       var output = "";
       if (x.length > pattern[position] && position < pattern.length) {
@@ -202,35 +202,47 @@ define([
       return output;
 
     };
-    self.maskValue = function(val, len) {
+    self.maskValue = function (val, len) {
       var a = val.substring(0, len);
       return a.replace(/\d/g, "x") + val.substring(len);
     };
 
-    document.body.style.backgroundImage = "url("+ self.constants.imageResourcePath +"/origination/BG/"+ (rootParams.baseModel.medium() ? "medium/" : "/") + self.productHeaderImage()+".jpg)";
-
-    if (rootParams.dashboard.userData && rootParams.dashboard.userData.userProfile) {
-      self.userProfile(rootParams.dashboard.userData.userProfile);
-      self.userLoggedIn(true);
-      self.userProfileLoaded(true);
-      ApplicationTrackingBaseModel.fetchApplicationStatusStringMap().then(function(data) {
-        self.applicationStatusStringMap(data.enumRepresentations[0].data);
-        ApplicationTrackingBaseModel.fetchSubmissionIdList().then(function(data) {
-          if (data.submissions) {
-            for (var i = 0; i < data.submissions.length; i++) {
-              if (data.submissions[i].submissionStatus !== "SUBMISSION_CANCELLED" && data.submissions[i].submissionStatus !== "SUBMISSION_WITHDRAWN") {
-                self.submissionIdList().push(data.submissions[i]);
+    document.body.style.backgroundImage = "url(" + self.constants.imageResourcePath + "/origination/BG/" + (rootParams.baseModel.medium() ? "medium/" : "/") + self.productHeaderImage() + ".jpg)";
+    var fetchSubmissions = function () {
+      if (rootParams.dashboard.userData && rootParams.dashboard.userData.userProfile) {
+        self.userProfile(rootParams.dashboard.userData.userProfile);
+        self.userLoggedIn(true);
+        self.userProfileLoaded(true);
+        ApplicationTrackingBaseModel.fetchApplicationStatusStringMap().then(function (data) {
+          self.applicationStatusStringMap(data.enumRepresentations[0].data);
+          ApplicationTrackingBaseModel.fetchSubmissionIdList().then(function (data) {
+            if (data.submissions) {
+              for (var i = 0; i < data.submissions.length; i++) {
+                if (data.submissions[i].submissionStatus !== "SUBMISSION_CANCELLED" && data.submissions[i].submissionStatus !== "SUBMISSION_WITHDRAWN") {
+                  self.submissionIdList().push(data.submissions[i]);
+                }
               }
             }
-          }
-          rootParams.baseModel.registerComponent("application-list", "application-tracking");
-          self.trackApplicationComponentName("application-list");
-          self.submissionsLoaded(true);
+            rootParams.baseModel.registerComponent("application-list", "application-tracking");
+            self.trackApplicationComponentName("application-list");
+            self.submissionsLoaded(true);
+          });
         });
-      });
-      ApplicationTrackingBaseModel.fetchSubmissionStatusStringMap().then(function(data) {
-        self.submissionStatusStringMap(data.enumRepresentations[0].data);
-      });
-    }
+        ApplicationTrackingBaseModel.fetchSubmissionStatusStringMap().then(function (data) {
+          self.submissionStatusStringMap(data.enumRepresentations[0].data);
+        });
+      }
+    };
+
+    BaseService.getInstance().fetch({
+      url: "bankConfiguration",
+      showMessage: false
+    }).then(function (data) {
+      self.localCurrency = data.bankConfigurationDTO.localCurrency;
+      fetchSubmissions();
+    }).catch(function () {
+      self.localCurrency = rootParams.baseModel.getLocaleValue("localCurrency");
+      fetchSubmissions();
+    });
   };
 });

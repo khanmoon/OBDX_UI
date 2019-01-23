@@ -83,3 +83,145 @@
   }
 
 }
+
+.work-box-maker {
+  &-header {
+    &__title {
+      display: inline-block;
+    }
+    &__selectBox{
+      padding:0.4rem;
+    }
+  }
+
+  &__search {
+    @include single-border(left, 0.05rem solid var(--base-border-default));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-search {
+    &__icon {
+      font-size: 1.3rem;
+    }
+  }
+  &__searchButton{
+    padding:1rem;
+  }
+
+  &__flex-container {
+
+    display: -moz-box;
+    display: -ms-flexbox;
+
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+    width: 100%;
+
+    flex-flow: row wrap;
+    -webkit-align-items: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  &-flex-container {
+    &__flex-item {
+      flex-grow: 1;
+      flex-shrink: 0;
+      flex-basis: 2em;
+
+      margin: 0 0 0.6rem;
+      @include single-border(right,0.05rem solid var(--base-border-default));
+      @include padding(0, 0.6rem, 0, 0);
+
+      &:last-child {
+        @include single-border(right, 0);
+      }
+      @include mq(small) {
+        min-width: calc(100% / 2);
+
+        &:nth-child(2) {
+          @include single-border(right, 0);
+        }
+      }
+    }
+  }
+
+  .colorLoader {
+    position: relative;
+    height: 0.6rem;
+    margin: 0 0.6rem;
+    &.animate{
+
+      animation: easeInTop 1.5s 1;
+    }
+  }
+
+  &-list {
+    &__listView {
+    }
+
+    &-listView {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      &__items {
+        padding: 1rem 0.6rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        border-bottom: 0.05rem solid rgba(44,50,81,0.1);
+      }
+
+      &-items {
+        &__activity {
+          color: var(--base-text-primary) !important;
+        }
+
+        &-activity {
+          &__listItem {
+            @include float(right);
+            display: inline-block;
+          }
+
+          &-listItem {
+            &__count {
+              @include single-padding(right,0.6rem);
+              color: var(--link-base);
+              @include mq(small) {
+                color: var(--color-white);
+                background-color: var(--link-base);
+                border-radius: var(--base-font-size-default);
+                padding: 0.3rem 0.6rem;
+                font-size: var(--base-font-size-default);
+                vertical-align: middle;
+              }
+              @include mq(medium) {
+                color: var(--color-white);
+                background-color: var(--link-base);
+                border-radius: var(--base-font-size-default);
+                padding: 0.3rem 0.6rem;
+                font-size: var(--base-font-size-default);
+                vertical-align: middle;
+              }
+            }
+
+            &__icon {
+              display: inline-block;
+              color: var(--link-base);
+              @include padding(0, 0, 0, 0.3rem);
+            }
+          }
+        }
+      }
+    }
+  }
+
+}

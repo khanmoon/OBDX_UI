@@ -1,7 +1,7 @@
 define([
   "ojL10n!resources/nls/data-types",
   "ojL10n!resources/nls/obdx-locale"
-], function (DataTypes, locale) {
+], function(DataTypes, locale) {
   "use strict";
   var Locale = {
     DataTypes: DataTypes,
@@ -71,6 +71,19 @@ define([
         options: {
           min: 0,
           max: 3650
+        }
+      }],
+      SEARCH_USER_NAME: [{
+        type: "regExp",
+        options: {
+          pattern: DataTypes.ALPHANUMERIC_WITH_ALL_SPECIAL,
+          messageDetail: locale.messages.NAME
+        }
+      }, {
+        type: "length",
+        options: {
+          min: 4,
+          max: 256
         }
       }],
       AMOUNT: [{
@@ -255,18 +268,18 @@ define([
         }
       }, {
         type: "length",
-      options: {
-        min: 1,
-        max: 6
-      }
-    }],
-    EMAIL: [{
-      type: "regExp",
-      options: {
-        pattern: "^(([^<>()[\\]\\.,;:\\s@\\\"]+(\\.[^<>()[\\]\\.,;:\\s@\\\"]+)*)|(\".+\"))@(([^<>()[\\]\\.,;:\\s@\"]+\\.)+[^<>()[\\]\\.,;:\\s@\"]{2,})$",
-        messageDetail: locale.messages.EMAIL
-      }
-    }],
+        options: {
+          min: 1,
+          max: 6
+        }
+      }],
+      EMAIL: [{
+        type: "regExp",
+        options: {
+          pattern: "^(([^<>()[\\]\\.,;:\\s@\\\"]+(\\.[^<>()[\\]\\.,;:\\s@\\\"]+)*)|(\".+\"))@(([^<>()[\\]\\.,;:\\s@\"]+\\.)+[^<>()[\\]\\.,;:\\s@\"]{2,})$",
+          messageDetail: locale.messages.EMAIL
+        }
+      }],
       MOBILE_NO: [{
         type: "regExp",
         options: {
@@ -386,8 +399,15 @@ define([
       USER_ID: [{
         type: "regExp",
         options: {
-          pattern: "[a-zA-Z0-9.@_]{0,35}",
+          pattern: "[a-zA-Z0-9.@_]*",
           messageDetail: locale.messages.USER_ID
+        }
+      }, {
+        type: "length",
+        options: {
+          min: 6,
+          max: 80
+
         }
       }],
 
@@ -395,8 +415,15 @@ define([
       BILLER_NAME: [{
         type: "regExp",
         options: {
-          pattern: "[a-zA-Z0-9_\. ]{2,35}",
+          pattern: "[a-zA-Z0-9_\. ]*",
           messageDetail: locale.messages.BILLER_NAME
+        }
+      }, {
+        type: "length",
+        options: {
+          min: 2,
+          max: 35
+
         }
       }],
 
@@ -404,8 +431,15 @@ define([
       SSN: [{
         type: "regExp",
         options: {
-          pattern: "[0-9-]{11}",
+          pattern: "[0-9-]*",
           messageDetail: locale.messages.SSN
+        }
+      }, {
+        type: "length",
+        options: {
+          min: 11,
+          max: 11
+
         }
       }],
       PERCENTAGE: {
@@ -429,23 +463,23 @@ define([
           max: 15
         }
       }],
-    IP_ADDRESS: [{
-      type: "regExp",
-      options: {
-        pattern: "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
-        messageDetail: locale.messages.IP_ADDRESS
-      }
-    }],
-    URL: [{
-      type: "regExp",
-      options: {
-        pattern: "((https|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)",
-        messageDetail: locale.messages.URL
-      }
-    }],
-    PORT: [{
-      type: "regExp",
-      options: {
+      IP_ADDRESS: [{
+        type: "regExp",
+        options: {
+          pattern: "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$",
+          messageDetail: locale.messages.IP_ADDRESS
+        }
+      }],
+      URL: [{
+        type: "regExp",
+        options: {
+          pattern: "((https|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)",
+          messageDetail: locale.messages.URL
+        }
+      }],
+      PORT: [{
+        type: "regExp",
+        options: {
           pattern: "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$",
           messageDetail: locale.messages.PORT
         }
@@ -467,16 +501,28 @@ define([
       VEHICLE_MODEL: [{
         type: "regExp",
         options: {
-          pattern: "[a-zA-Z0-9 ]{1,35}",
+          pattern: DataTypes.ALPHANUMERIC_WITH_SPACE,
           messageDetail: locale.messages.VEHICLE_MODEL
+        }
+      }, {
+        type: "length",
+        options: {
+          min: 1,
+          max: 35
         }
       }],
       //TODO
       REGISTRATION_NO: [{
         type: "regExp",
         options: {
-          pattern: "[a-zA-Z0-9 ]{1,35}",
+          pattern: DataTypes.ALPHANUMERIC_WITH_SPACE,
           messageDetail: locale.messages.REGISTRATION_NO
+        }
+      }, {
+        type: "length",
+        options: {
+          min: 1,
+          max: 35
         }
       }],
       YEAR: [{
@@ -496,8 +542,15 @@ define([
       OIN_NUMBER: [{
         type: "regExp",
         options: {
-          pattern: "[a-zA-Z0-9]{1,35}",
+          pattern: DataTypes.ALPHANUMERIC,
           messageDetail: locale.messages.OIN_NUMBER
+        }
+      }, {
+        type: "length",
+        options: {
+          min: 1,
+          max: 35
+
         }
       }],
       PAYMENT_DETAILS: [{
@@ -521,13 +574,7 @@ define([
           messageDetail: locale.messages.ATTRIBUTE_MASK
         }
       }],
-      LATITUDE: [{
-          type: "regExp",
-          options: {
-            pattern: DataTypes.DECIMALS,
-            messageDetail: locale.messages.LATITUDE
-          }
-        },
+      LATITUDE: [
         {
           type: "numberRange",
           options: {
@@ -536,13 +583,7 @@ define([
           }
         }
       ],
-      LONGITUDE: [{
-          type: "regExp",
-          options: {
-            pattern: DataTypes.DECIMALS,
-            messageDetail: locale.messages.LONGITUDE
-          }
-        },
+      LONGITUDE: [
         {
           type: "numberRange",
           options: {
@@ -552,7 +593,7 @@ define([
         }
       ]
     },
-    formats : {
+    formats: {
       dateFormat: "dd MMM yyyy",
       serverDate: "yyyy-MM-dd",
       dateMonthFormat: "dd MMM",
@@ -562,7 +603,7 @@ define([
       monthYearFormat: "MMM yyyy",
       dateTimeFormat: "dd MMM hh:mm a",
       timeStampFormat: "hh:mm:ss",
-      localCurrency: "PKR"
+      localCurrency: "@@localCurrency"
     }
   };
   return Locale;

@@ -36,6 +36,7 @@ define([
             nameLabel: "Username",
             passwordLabel: "Password",
             forgotUserName: "Don't remember your username ?",
+            forgotPassword: "Forgot Password",
             codeNotReceived: "Didn't get the code",
             dobLabel: "Date of Birth",
             newPasswordLabel: "New Password",

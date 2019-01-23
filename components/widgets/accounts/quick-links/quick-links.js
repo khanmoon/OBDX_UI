@@ -40,9 +40,7 @@ define([
         });
         self.callShowDetails = function (component, data, action) {
             if (self.accountNumber() && data.taskCode) {
-                QuickLinksModel.validateAccess(self.accountNumber(), data.taskCode).done(function () {
-                    rootParams.dashboard.loadComponent(data.id, action);
-                });
+                rootParams.dashboard.loadComponent(data.id, action);
             } else {
                 rootParams.dashboard.loadComponent(data.id, action);
             }

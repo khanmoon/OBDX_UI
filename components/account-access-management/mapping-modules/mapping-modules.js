@@ -607,7 +607,10 @@ define([
             rootParams.dashboard.loadComponent("validation", {}, self);
         };
         self.casaDefaultPolicyChangeHandler = function (event) {
-                if (event.detail.value[0] === "casaAuto") {
+            if (Array.isArray(event.detail.value)) {
+                event.detail.value = event.detail.value[0];
+            }
+                if (event.detail.value === "casaAuto") {
                     self.isCasaAllowed(true);
                 } else {
                     self.isCasaAllowed(false);
@@ -616,7 +619,11 @@ define([
 
         };
         self.tdDefaultPolicyChangeHandler = function (event) {
-          if (event.detail.value[0] === "tdAuto") {
+
+            if (Array.isArray(event.detail.value)) {
+                event.detail.value = event.detail.value[0];
+            }
+          if (event.detail.value === "tdAuto") {
               self.isTDAllowed(true);
           } else {
               self.isTDAllowed(false);
@@ -624,7 +631,11 @@ define([
           self.tdAllowedButtonsPressed(true);
         };
         self.loanDefaultPolicyChangeHandler = function (event) {
-          if (event.detail.value[0] === "loanAuto") {
+
+            if (Array.isArray(event.detail.value)) {
+                event.detail.value = event.detail.value[0];
+            }
+          if (event.detail.value === "loanAuto") {
               self.isLoanAllowed(true);
           } else {
               self.isLoanAllowed(false);

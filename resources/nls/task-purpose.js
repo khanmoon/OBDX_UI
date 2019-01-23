@@ -15,7 +15,7 @@ define([], function() {
         },
         taskPurpose: {
           review: "Mapping - {reviewTask}",
-          reviewHeaderMsg: "You Initaited a request for payment purpose mapping. Please review details before you confirm!",
+          reviewHeaderMsg: "You initiated a request for payment purpose mapping. Please review details before you confirm!",
           createMapping: "Map Purposes",
           paymentType: "Payment Type",
           purposeCode: "Purpose Description",

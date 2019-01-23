@@ -7,7 +7,7 @@ define([
             root: {
                 rdNominee: {
                   header: "Nominations",
-                    accountListTable: "rd Nominee Accounts List Table",
+                    accountListTable: "List of Nominees for Recurring Deposit Accounts",
                     accountNumber: "Account Number",
                     primaryHolderName: "Primary Holder Name",
                     holdingPattern: "Holding Pattern",

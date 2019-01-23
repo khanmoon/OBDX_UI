@@ -61,7 +61,7 @@ define([
       currentStep: "ORIENTATION",
       cancellationReasonsDTOs: [{
         code: "OTHERS",
-        description: self.resource.others
+        description: "OTHERS"
       }]
     };
     self.cancelApplication = function() {

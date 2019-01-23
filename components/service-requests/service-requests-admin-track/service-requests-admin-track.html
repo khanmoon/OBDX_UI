@@ -33,7 +33,7 @@
             </oj-label>
           </div>
           <div class="oj-flex-item oj-lg-6">
-            <span id="requestDate" data-bind="text:$component.creationDate"></span>
+            <span id="requestDate" data-bind="text:$formatter.formatDate($component.creationDate)"></span>
 
           </div>
         </div>
@@ -155,16 +155,10 @@
           <div class="oj-flex oj-flex-items-pad comments oj-lg-11 oj-md-11 oj-sm-12">
             <div class="oj-flex-item oj-sm-12 oj-md-7 oj-lg-7">
               <!-- ko if: status==="CO" -->
-              <b>
-                <span data-bind="text:$component.resource.closure"></span>
-              </b>
-              <span data-bind="text:date"></span>
+              <span data-bind="html:$baseModel.format($component.resource.closure,{closureOn:$formatter.formatDate(date)})"></span>
               <!-- /ko -->
               <!-- ko ifnot: status==="CO" -->
-              <b>
-                <span data-bind="text:$component.resource.remarksAdmin"></span>
-              </b>
-              <span data-bind="text:date"></span>
+              <span data-bind="html:$baseModel.format($component.resource.remarksAdmin,{remarksOn:$formatter.formatDate(date)})"></span>
               <!-- /ko -->
             </div>
             <!-- ko if: status==="CO" && visible -->
@@ -174,20 +168,13 @@
             <!-- /ko -->
             <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
               <span data-bind="text:comment">
-                <!-- /ko -->
             </div>
             <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
               <!-- ko if: status==="CO" -->
-              <span data-bind="text:$component.resource.closedBy"></span>
-              <b>
-                <span data-bind="text:user"></span>
-              </b>
+              <span data-bind="$html:$baseModel.format($component.resource.closedBy,{closedBy:user})"></span>
               <!-- /ko -->
               <!-- ko ifnot: status==="CO" -->
-              <span data-bind="text:$component.resource.updatedBy"></span>
-              <b>
-                <span data-bind="text:user"></span>
-              </b>
+              <span data-bind="$html:$baseModel.format($component.resource.updatedBy,{updatedBy:user})"></span>
               <!-- /ko -->
             </div>
           </div>
@@ -211,7 +198,7 @@
         </oj-button>
         <!-- /ko -->
         <!-- /ko -->
-        <oj-button class="action-button-secondary" id="cancel-button" type="submit" on-click="[[$dashboard.openDashBoard.bind(void 0,void 0)]]">
+        <oj-button class="action-button-secondary" id="cancel-button" type="submit" on-click="[[$dashboard.openDashboard.bind(void 0,void 0)]]">
           <span data-bind="text:$component.resource.cancel"></span>
         </oj-button>
         <oj-button class="action-button-tertiary" id="back-button" type="submit" on-click="[[$component.loadFormBuilder]]">

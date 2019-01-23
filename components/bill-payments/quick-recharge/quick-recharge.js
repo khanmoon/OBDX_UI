@@ -67,6 +67,8 @@ define([
       params.baseModel.registerComponent("register-biller", "bill-payments");
       params.baseModel.registerComponent("transfer-view-limits", "financial-limits");
       params.baseModel.registerComponent("payment-history", "bill-payments");
+      params.baseModel.registerComponent("my-limits", "limits-enquiry");
+
 
       if(params.baseModel.small()){
         self.showCategoryAvatars = ko.observable(true);

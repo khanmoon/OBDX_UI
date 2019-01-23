@@ -130,5 +130,12 @@ define([
               }
           });
         };
+        self.amendTD = function() {
+          rootParams.dashboard.loadComponent("td-amend", {
+                        rolloverType: self.tdViewDetails().rollOverType,
+                        payoutInstructions: self.payoutInstructions(),
+                        id: self.params.id
+                    }, self);
+        };
     };
 });

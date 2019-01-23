@@ -13,6 +13,10 @@ define([
     rootParams.baseModel.registerComponent("loan-eligibility-calculator", "widgets/calculators");
     rootParams.baseModel.registerComponent("forex-calculator", "widgets/calculators");
 
+    if (rootParams.dashboard.isDashboard() === false && rootParams.baseModel.small()) {
+        rootParams.dashboard.headerName(self.nls.toolCalc.labels.toolHeading);
+    }
+
     self.openCal = function(data) {
       rootParams.dashboard.loadComponent(data.id, {}, self);
 

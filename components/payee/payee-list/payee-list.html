@@ -57,7 +57,18 @@
 
         <script type="text/html" id="account_details">
           <td>
+            <!-- ko if:$context.row.payeeType === 'INTERNAL' -->
+            <internal-account-input params="{
+               baseModel:$baseModel,
+               account : ko.observable($context.row.accountNumber),
+               readOnly: true,
+               mode:'acc'
+              }">
+            </internal-account-input>
+            <!-- /ko -->
+            <!-- ko ifnot:$context.row.payeeType === 'INTERNAL' -->
             <div data-bind="text:$context.row.accountNumber"></div>
+            <!-- /ko -->
             <div data-bind="text:$context.row.bankName"></div>
           </td>
         </script>
@@ -135,7 +146,18 @@
 
             <div class="oj-flex-item oj-sm-12 oj-md-6">
               <label data-bind="text:$component.payments.payee.accountDetails"></label>
-              <div class=" acc-no" data-bind="text:accountNumber"></div>
+              <!-- ko if:payeeType === 'INTERNAL' -->
+              <internal-account-input params="{
+                 baseModel:$baseModel,
+                 account : ko.observable(accountNumber),
+                 readOnly: true,
+                 mode:'acc'
+                }">
+              </internal-account-input>
+              <!-- /ko -->
+              <!-- ko ifnot:payeeType === 'INTERNAL' -->
+              <div class="acc-no" data-bind="text:accountNumber"></div>
+              <!-- /ko -->
               <div data-bind="text:bankName"></div>
             </div>
           </div>

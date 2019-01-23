@@ -9,9 +9,9 @@ define([
     "ojs/ojbutton",
     "ojs/ojchart",
     "ojs/ojvalidation"
-], function (ko, componentModel, $, resourceBundle) {
+], function(ko, componentModel, $, resourceBundle) {
     "use strict";
-    return function (rootParams) {
+    return function(rootParams) {
         var self = this;
         ko.utils.extend(self, rootParams.rootModel);
         self.orientationValue = ko.observable("vertical");
@@ -19,7 +19,7 @@ define([
         self.nls = resourceBundle;
         self.pageData = ko.observable();
         self.nicknameDetails = ko.observable();
-        self.nicknameAvailable = ko.observable(false);
+        self.dataLoaded = ko.observable(false);
         rootParams.dashboard.headerName(self.nls.accountDetails.labels.accountDetails);
         rootParams.baseModel.registerElement("account-input");
         rootParams.baseModel.registerElement("row");
@@ -39,23 +39,23 @@ define([
         self.limitsHeading = ko.observable("limits");
         self.facilitiesHeading = ko.observable("facilities");
         self.accountNumber = ko.observable();
-        self.fetchDetails = function () {
-            componentModel.fetchAccountDetails(ko.utils.unwrapObservable(self.params.id.value)).done(function (data) {
-                self.nicknameAvailable(false);
+        self.fetchDetails = function() {
+            self.dataLoaded(false);
+            componentModel.fetchAccountDetails(ko.utils.unwrapObservable(self.params.id.value)).done(function(data) {
                 self.pageData(data.demandDepositAccountDTO);
                 self.accountTransactionCurrency(data.demandDepositAccountDTO.currencyCode);
                 self.nicknameDetails(data.demandDepositAccountDTO);
-                self.nicknameAvailable(true);
+                self.dataLoaded(true);
             });
         };
         self.fetchDetails();
-        self.selectedSettlementAccount.subscribe(function (newValue) {
+        self.selectedSettlementAccount.subscribe(function(newValue) {
             self.accountNumber(newValue);
-            componentModel.fetchAccountDetails(newValue).done(function (data) {
-                self.nicknameAvailable(false);
+            self.dataLoaded(false);
+            componentModel.fetchAccountDetails(newValue).done(function(data) {
                 self.pageData(data.demandDepositAccountDTO);
                 self.nicknameDetails(data.demandDepositAccountDTO);
-                self.nicknameAvailable(true);
+                self.dataLoaded(true);
             });
         });
     };

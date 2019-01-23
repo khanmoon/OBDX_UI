@@ -56,7 +56,6 @@ define([
         buildForm: "Build your Form",
         buildFormData: "You can build Service Request screen which needs to be shown to the business user by defining the headers and the form fields.",
         preview: "Preview",
-        textAreaText: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         previewData: "Once you finish the first two sections you can preview the service request form which will show how the Service Request page will look like on the business user’s page.",
         reviewHeader: "You initiated a Service request. Please review details before you confirm!",
         confirmationMessage: "Confirmation Message",

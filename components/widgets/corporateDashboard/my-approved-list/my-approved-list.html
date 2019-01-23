@@ -1,7 +1,7 @@
 <!-- ko if:$component.refreshTransactionLog()-->
 <div class="oj-panel my-approved-list">
   <div class="oj-flex oj-flex-items-pad">
-    <div class="oj-flex-item oj-sm-6 oj-lg-9 my-approved-list__header my-approved-list-header">
+    <div class="oj-flex-item oj-sm-6 oj-lg-8 my-approved-list__header my-approved-list-header">
       <h3 class="my-approved-list-header__title" data-bind="text: $component.Nls.approvedHeader"></h3>
     </div>
     <div class="oj-flex-item oj-sm-6 oj-lg-3 my-approved-list__selection">
@@ -12,8 +12,38 @@
          <!-- /ko -->
        </oj-select-one>
     </div>
-
+    <!-- ko if : $baseModel.large() -->
+    <div class="oj-flex-item oj-lg-1 work-box-maker__search work-box-maker-search">
+          <a href="#" data-bind="attr:{'alt':$component.Nls.filter,'title':$component.Nls.filterText, 'aria-label':$component.Nls.filterText},click:$component.ctrl2">
+              <span id="ctrl2" class="icon icon-search work-box-maker-search__icon"></span>
+          </a>
     </div>
+    <!-- /ko -->
+    </div>
+
+    <!-- ko if:$component.filterDateRange() -->
+    <div class="oj-flex oj-flex-items-pad">
+        <div class="oj-flex-item oj-sm-12 oj-md-5">
+          <oj-label><span data-bind="text:$component.Nls.dateFrom"></span></oj-label>
+          <div class="">
+                    <oj-input-date id="from" value="{{fromDate}}" converter="[[$baseModel.dateConverter]]" max="[[toDate]]" datepicker="[[{
+                                   numberOfMonths:1}]]"></oj-input-date>
+          </div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-5">
+            <oj-label><span data-bind="text:$component.Nls.dateTo"></span></oj-label>
+                <div class="">
+                    <oj-input-date id="from" value="{{toDate}}" min="[[fromDate]]" converter="[[$baseModel.dateConverter]]" datepicker="[[{
+                                   numberOfMonths:1}]]"></oj-input-date>
+                </div>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-2 work-box-maker__searchButton">
+            <oj-button class="action-button-primary" on-click="[[$component.dateFilter]]">
+<span data-bind="text:$component.Nls.search"></span>
+</oj-button>
+        </div>
+    </div>
+<!-- /ko -->
     <!-- ko if: $baseModel.large() && $component.dataUpdated() -->
 
     <div data-bind='component:{name: "nav-bar", params:{rootModel: $data,menuOptions: menuCountOptions, uiOptions:uiOptions,navBarDescription:$component.Nls.navBarDescription}}'></div>

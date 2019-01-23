@@ -177,35 +177,19 @@
                         <div class="oj-lg-7" data-bind="template: { name: 'accounts/td-maturity-instructions' }"></div>
                     </div>
                 </page-section>
-                <!-- ko if:$component.constants.userSegment === "RETAIL" && $component.accountModule() !== 'ISL' -->
-                <!-- ko if:!$component.jointAccount() || ($component.jointAccount() && holdingPattern()[0] === "SINGLE" ) -->
-                <page-section params="baseModel : $baseModel, rootModel : $component, heading : $component.locale.openTermDeposit.nominationDetails.nominationDetails">
-                    <div class="oj-flex oj-flex-items-pad oj-lg-8">
-                        <oj-label for="nominationDetails" class="oj-flex-item oj-lg-12">
-                            <span data-bind="text:$component.locale.openTermDeposit.nominationDetails.addNominee"></span>
-                        </oj-label>
-                        <div class="oj-flex-item oj-sm-12">
-                            <oj-radioset id="nominationDetails" class="oj-choice-direction-row" :aria-label="[[$component.locale.openTermDeposit.nominationDetails.addNominee]]" value="{{manageNominee}}" on-value-changed="[[$component.nomineeDetailsChanged]]">
-                                <!-- ko foreach: nomineeDetails -->
-                                <oj-option value="[[id]]">
-                                    <span data-bind="text:label"></span>
-                                </oj-option>
-                                <!-- /ko -->
-                            </oj-radioset>
-                        </div>
-                    </div>
-                </page-section>
-                <!-- ko if:isNomineeRequired() -->
-                <div data-bind="component:{name:component(),params:{rootModel:{
-                        params:{
-                        addNomineeModel : $component.addNomineeModel,
-                        isNomineeRequired : $component.isNomineeRequired,
-                        minor : $component.isMinor,
-                        selectedAccountType: 'TRD'}}}
-                }"></div>
-                <!-- /ko -->
-                <!-- /ko -->
-                <!-- /ko -->
+                <div data-bind="component:{name: 'nominee', params:{rootModel: {params : {
+                        isNomineeRequired: $component.isNomineeRequired,
+                        addNomineeModel: $component.addNomineeModel,
+                        nomineeDetails: $component.nomineeDetails,
+                        rootModelInstance: $component.rootModelInstance,
+                        resetNomineeModel: $component.resetNomineeModel,
+                        isMinor: $component.isMinor,
+                        manageNominee: $component.manageNominee,
+                        hostSupportsNominee: $component.hostSupportsNominee,
+                        accountModule: $component.accountModule,
+                        jointAccount: $component.jointAccount,
+                        holdingPattern: $component.holdingPattern
+                        }}}}"></div>
                 <!-- /ko -->
             </oj-validation-group>
             <div class="button-container">

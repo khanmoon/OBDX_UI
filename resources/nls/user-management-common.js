@@ -41,7 +41,7 @@ define([], function() {
         confirmation: "Confirmation",
         OrganizationName: "Enter Valid Organization Name",
         managerNameValidation: "Enter Valid Manager Name",
-        empNoValidation: "Enter a valid 6-digit Employee number",
+        empNoValidation: "Invalid characters entered. Allowed characters include A-z and 0-9.",
         userNameValidation: "Enter Valid User Name",
         emailValidation: "Enter Valid Email Id",
         titleValidation: "Select an appropriate Title",

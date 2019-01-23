@@ -14,7 +14,7 @@ define([], function () {
         UPPER_ALPHABETS: "[A-Z]*",
         LOWER_ALPHABETS_WITH_SPACE: "[a-z ]*",
         UPPER_ALPHABETS_WITH_SPACE: "[A-Z ]*",
-        ALPHANUMERIC_WITH_SPECIAL: "[a-zA-Z0-9 \%\&\:\,\)\(\.\_'\-\//;]*",
+        ALPHANUMERIC_WITH_SPECIAL: "[a-zA-Z0-9 \#\%\&\:\,\)\(\.\_'\-\//;]*",
         ALPHANUMERIC_WITH_SOME_SPECIAL: "[a-zA-Z0-9 \&\:\$\,\.\_\?]*",
         SWIFT: "[a-zA-Z0-9\- \+\:,\)\(\.'\?\/]*",
         ALPHANUMERIC_WITH_ALL_SPECIAL: "[a-zA-Z0-9\- \=\&\#\*\+\:,\)\(\.\!\$_\|'\`\?\[\\\]\/]*",

@@ -38,12 +38,12 @@ define([
                 if (!$.isEmptyObject(data.loanApplicationRequirementDTO)) {
                     requirementPayload = JSON.parse(JSON.stringify(data.loanApplicationRequirementDTO));
                     OffersModel.fetchSubmissionSummary().done(function (data) {
-                        if (data.offerCode) {
+                        if (data.offerId) {
                             for (i = 0; i < self.offers().length; i++) {
-                                if (self.offers()[i].offerCode === data.offerCode) {
+                                if (self.offers()[i].offerCode === data.offerId) {
                                     $("#offer" + i).addClass("selected");
                                     self.offerSelected(true);
-                                    self.productDetails().offers.offerId = data.offerCode;
+                                    self.productDetails().offers.offerId = data.offerId;
                                 }
                             }
                         }

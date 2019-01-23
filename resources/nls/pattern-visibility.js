@@ -1,11 +1,11 @@
-define([], function() {
+define([], function () {
   "use strict";
-  var pushUnbinding = function() {
+  var pushUnbinding = function () {
     return {
       root: {
         patternVisiblity: "Pattern Visibility",
         iOsDevice: "iOS Devices",
-        Note: "Note: Disabling or Enabling this would hide or show the pattern while loging in via pattern login",
+        Note: "Note: Disabling or Enabling this would hide or show the pattern when the user will login in via pattern login",
         header: "Pattern Visibility",
         patternNotSetUp: "Pattern login is not setup."
       },

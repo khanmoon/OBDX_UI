@@ -41,9 +41,8 @@ define([
           editPackage: "Update Limit Package",
           deletePackage: "Limit Package Deletion",
           currency: "Currency",
-          confirmScreenheader: "You initiated a request for Limit Package. Please review details before you confirm!"
-
-
+          confirmScreenheader: "You initiated a request for Limit Package. Please review details before you confirm!",
+          editMessage: "No modifications are allowed in this limit package, as this package is created by a corporate administrator."
         },
         btns: {
           reset: "Reset",

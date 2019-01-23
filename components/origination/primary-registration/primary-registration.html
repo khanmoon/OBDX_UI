@@ -114,9 +114,9 @@
           </div>
           <div class="oj-flex-item oj-sm-12 oj-md-2 oj-lg-2">
             <oj-input-text id="noOfDependants" required maxlength="10" name="noOfDependants" :id="[['noOfDependants'+($baseModel.currentIdCount())]]" translations="[[{'required':{messageDetail:$component.resource.messages.dependants}}]]" :invalidcomponenttracker="[[$component.validationTracker]]"
-              validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resource.messages.dependants,{})]]" value="{{noOfDependants}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"></oj-input-text>
-
-
+              validators="[[$baseModel.getValidator('ALPHANUMERIC',$component.resource.messages.dependants,{
+              type:'length',options:{
+              min:1,max:10}})]]" value="{{noOfDependants}}" disabled="[[$component.applicantObject().primaryInfo.disableInputs()]]"></oj-input-text>
           </div>
         </div>
 
@@ -176,9 +176,9 @@
 
 <!-- /ko -->
 <div class="oj-flex oj-flex-items-pad">
-  <div class="oj-flex-item oj-lg-6-oj-md-6 oj-sm-12 oj-xl-6">
-    <modal-window class="origination-popup message form-main-container" params="baseModel : $baseModel, rootModel : $component,id:'countryOfCitizenship', , header:$component.resource.generic.common.info">
-      <div class="message-text label scroll" data-bind="text:$component.resource.citizenshipRequirement"></div>
+  <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-12 oj-xl-6">
+    <modal-window class="oj-flex oj-flex-items-pad origination-popup message" params="baseModel : $baseModel, rootModel : $component,id:'countryOfCitizenship', , header:$component.resource.generic.common.info">
+      <div class="oj-flex-item message-text label scroll" data-bind="text:$component.resource.citizenshipRequirement"></div>
     </modal-window>
   </div>
 </div>

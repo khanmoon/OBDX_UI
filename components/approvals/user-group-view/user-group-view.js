@@ -125,8 +125,8 @@ define([
         self.version = null;
         self.transactionName = ko.observable();
         self.editReview = function () {
-            self.mode("EDIT");
-            history.back();
+            self.mode("CREATE");
+
         };
         self.back = function () {
             if (self.mode() === "VIEW" || self.mode() === "CREATE") {

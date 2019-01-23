@@ -12,8 +12,10 @@ define([
     var self = this;
     self.account = rootParams.account;
     var staticAccount = rootParams.account();
+    self.mode = rootParams.mode;
     self.confirmStyleAccount = !!rootParams.confirmStyleAccount;
     self.hiddenAccountNumber = ko.observable();
+    self.showInline = rootParams.showInline;
     self.branchList = ko.observableArray();
     self.branchId = ko.observable();
     self.accountNo = ko.observable();
@@ -41,7 +43,9 @@ define([
       }
     });
     self.dummyAccount = ko.computed(function() {
-      return self.branchId() + self.accountNo();
+      if(self.branchId() && self.accountNo()){
+        return self.branchId() + self.accountNo();
+      }
     }, self);
     self.dummyAccount.subscribe(function(value) {
       self.account(value);

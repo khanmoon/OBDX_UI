@@ -121,6 +121,7 @@
                         <div class="oj-flex oj-flex-items-pad">
                             <div class="oj-flex-item oj-lg-8 oj-sm-12">
                                 <div class="oj-flex oj-flex-items-pad">
+                                    <!-- ko if: accountType !== "INTERNAL" -->
                                     <div class="oj-flex-item oj-sm-6">
                                         <div class="oj-flex-items-pad">
                                             <div class="oj-flex-item oj-sm-12">
@@ -129,6 +130,16 @@
                                             <div id="accountNumber" class="oj-flex-item oj-sm-12" data-bind="text:accountNumber"></div>
                                         </div>
                                     </div>
+                                    <!-- /ko -->
+                                    <!-- ko if: accountType === "INTERNAL" -->
+                                     <internal-account-input class="oj-flex-item" params="{
+                                       baseModel:$baseModel,
+                                       account : ko.observable(accountNumber),
+                                       label:$component.payments.payee.accountNumber,
+                                       readOnly: true
+                                      }">
+                                      </internal-account-input>
+                                    <!-- /ko -->
                                     <div class="oj-flex-item oj-sm-6">
                                         <div class="oj-flex-items-pad">
                                             <div class="oj-flex-item oj-sm-12">

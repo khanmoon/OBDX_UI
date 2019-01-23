@@ -6,9 +6,9 @@ define([
   "ojL10n!resources/nls/batch-process-approvals",
   "ojs/ojbutton",
   "ojs/ojinputtext"
-], function(ko, $, BatchProcessApprovalModel, resourceBundle) {
+], function (ko, $, BatchProcessApprovalModel, resourceBundle) {
   "use strict";
-  var vm = function(rootParams) {
+  var vm = function (rootParams) {
     var self = this;
     ko.utils.extend(self, rootParams.rootModel);
     self.nls = resourceBundle;
@@ -29,10 +29,10 @@ define([
     self.graceFlag = ko.observable(false);
     self.graceWindow = ko.observable(false);
     self.referenceIDs = ko.observableArray();
-    self.showModalWindow = function(nature) {
+    self.showModalWindow = function (nature) {
       self.natureOfTask(nature);
       self.remarks("");
-      self.transactions($("input[name=selection]:checked").map(function() {
+      self.transactions($("input[name=selection]:checked").map(function () {
         return this.value;
       }).get());
       self.typeOfTransaction(self.nls.batchProcessApprovals[self.loadModule().toUpperCase().replace(/\-/g, "_")]);
@@ -64,11 +64,11 @@ define([
       }
 
     };
-    self.closeGraceModel = function(){
+    self.closeGraceModel = function () {
       self.graceFlag(false);
       $("#graceTransactionsApproval").hide().trigger("closeModal");
     };
-    self.ok = function() {
+    self.ok = function () {
       self.graceFlag(false);
       self.graceWindow(false);
       $("#graceTransactionsApproval").hide().trigger("closeModal");
@@ -76,17 +76,22 @@ define([
       self.referenceIDs([]);
     };
 
-    self.submit = function() {
+    self.submit = function () {
+      var resolvedDeferred = $.Deferred();
+      resolvedDeferred.resolve();
       $("#otherTransactionsApproval").hide().trigger("closeModal");
       if (self.forceShow && self.forceShow()) {
         self.fireTransactions(self.transactionId, false);
       } else {
-        for (var i = 0; i < self.transactions().length; i++) {
-          self.fireTransactions(self.transactions()[i], true);
-        }
+        self.transactions().reduce(function (lastTxn, currentTxn) {
+          return lastTxn.then(function () {
+            return self.fireTransactions(currentTxn, true);
+          });
+        }, resolvedDeferred);
       }
     };
-    self.close = function() {
+
+    self.close = function () {
       self.toShow(false);
       self.referenceIDs([]);
       self.graceWindow(false);
@@ -96,7 +101,7 @@ define([
     self.loadModuleSubscription = null;
 
     if (self.loadModule) {
-      self.loadModuleSubscription = self.loadModule.subscribe(function() {
+      self.loadModuleSubscription = self.loadModule.subscribe(function () {
         self.toShow(false);
         self.transactionSuccess(false);
       });
@@ -105,7 +110,7 @@ define([
     /*
      *This function sets host reference number in case it is set any path otehr than processingDetails
      */
-    self.setCustomHostRefNo = function(response, customHostReferenceNumberPath) {
+    self.setCustomHostRefNo = function (response, customHostReferenceNumberPath) {
       var xpath = customHostReferenceNumberPath.split(".");
       var hostReferenceNumber = response;
       for (var i = 0; i < xpath.length; i++) {
@@ -113,13 +118,13 @@ define([
       }
       return hostReferenceNumber;
     };
-    self.fireTransactions = function(id, ignore2FA) {
-      BatchProcessApprovalModel.respondApprovalRequest(id, self.remarks(), self.natureOfTask(), ignore2FA).done(function(data, status, jqXhr) {
+    self.fireTransactions = function (id, ignore2FA) {
+      return BatchProcessApprovalModel.respondApprovalRequest(id, self.remarks(), self.natureOfTask(), ignore2FA).done(function (data, status, jqXhr) {
         self.responseData(data.transactionAction);
         self.transactionTaskCode(data.transactionAction.transactionDTO.taskDTO.id);
         if (self.responseData().transactionDTO.processingDetails.status === "F" && self.responseData().transactionDTO.processingDetails.currentStep === "exec") {
           self.erroneousTransaction(self.erroneousTransaction() + 1);
-        } else if(self.responseData().transactionDTO.processingDetails.currentStep === "exec"){
+        } else if (self.responseData().transactionDTO.processingDetails.currentStep === "exec") {
           if (self.taskForApproval && self.taskForApproval.initComponent.hostReferenceNumber) {
             self.hostReferenceNumber(self.setCustomHostRefNo(data, self.taskForApproval.initComponent.hostReferenceNumber));
           } else if (data.transactionAction.transactionDTO.processingDetails && data.transactionAction.transactionDTO.processingDetails.referenceNumber) {
@@ -134,13 +139,13 @@ define([
         }
         self.toShow(false);
         self.transactionCompleted(jqXhr);
-      }).fail(function(jqXhr) {
+      }).fail(function (jqXhr) {
         self.erroneousTransaction(self.erroneousTransaction() + 1);
         self.transactionCompleted(jqXhr);
       });
     };
 
-    self.transactionCompleted = function(jqXhr) {
+    self.transactionCompleted = function (jqXhr) {
       self.transactionSuccess(true);
       if (self.forceShow && self.forceShow()) {
         rootParams.dashboard.loadComponent("confirm-screen", {
@@ -157,27 +162,27 @@ define([
         self.refreshTable(self.loadModule().toUpperCase().replace(/\-/g, "_") + "_PENDING");
       }
     };
-    $(document).ready(function() {
-      $(document).on("change", "input[name=selection]", function() {
+    $(document).ready(function () {
+      $(document).on("change", "input[name=selection]", function () {
         self.toShow(!!$("input[name=selection]:checked").length);
         self.successfulTransactions(0);
         self.erroneousTransaction(0);
         $("input[name=selectionParent]").prop("checked", $("input[name=selection]:checked").length === $("input[name=selection]").length);
         self.transactionSuccess(false);
       });
-      $(document).on("change", "input[name=selectionParent]", function() {
+      $(document).on("change", "input[name=selectionParent]", function () {
         $("input[name=selection]").prop("checked", $("input[name=selectionParent]").prop("checked"));
         self.successfulTransactions(0);
         self.erroneousTransaction(0);
         self.toShow(!!$("input[name=selection]").length && !!$("input[name=selectionParent]").prop("checked"));
         self.transactionSuccess(false);
       });
-      $(document).on("ojready", "table#table", function() {
+      $(document).on("ojready", "table#table", function () {
         $("input[name^=\"selection\"]").prop("checked", false);
       });
     });
   };
-  vm.prototype.dispose = function() {
+  vm.prototype.dispose = function () {
     if (this.loadModuleSubscription) this.loadModuleSubscription.dispose();
   };
   return vm;

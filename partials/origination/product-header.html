@@ -106,6 +106,9 @@
         <!-- ko if : $component.productDetails().productType === 'PAYDAY' -->
         <h2 class="" data-bind="html: $baseModel.format($component.resource.productAmount, {productGroup: $component.productDetails().productDescription, class1: 'amount-tenure', class2: 'amount-tenure-bold', amount: $baseModel.formatCurrency($component.productDetails().requirements.requestedAmount.amount(),$component.productDetails().requirements.requestedAmount.currency)})"></h2>
         <!-- /ko -->
+        <!-- ko if : $component.productDetails().productType !== 'PAYDAY' && $component.productDetails().productClassName === 'CASA' -->
+        <h2 class="" data-bind="html :$baseModel.format($component.resource.offerHeadProductDescription, {productDescription: $component.productDetails().productDescription})"></h2>
+        <!-- /ko -->
         <!-- ko if : $component.productDetails().productType !== 'PAYDAY' && $component.productDetails().productClassName === 'LOANS' -->
         <h2 class="" data-bind="html :$baseModel.format($component.resource.submisionOfferHeadAmountTenure,{productGroup: $component.productDetails().productDescription, class1: 'amount-tenure', class2: 'amount-tenure-bold', amount: $baseModel.formatCurrency($component.productDetails().requirements.requestedAmount.amount(),$component.productDetails().requirements.requestedAmount.currency), years: $component.productDetails().requirements.requestedTenure.years(), months: $component.productDetails().requirements.requestedTenure.months()})"></h2>
         <!-- /ko -->

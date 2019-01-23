@@ -1,12 +1,15 @@
 define([
     "ojs/ojcore",
     "knockout",
+    "baseLogger",
     "jquery"
-], function(oj, ko) {
+],
+function (oj, ko, BaseLogger) {
     "use strict";
     return function(rootParams) {
         var self = this;
         ko.utils.extend(self, rootParams.rootModel);
+        self.fbSdkNotLoaded = ko.observable(false);
 
         require(["@@FB_SDK_URL"], function() {
             self.apiMap = {
@@ -59,7 +62,10 @@ define([
             };
             if (self.autoLogin)
                 self.checkLoginState();
+        },
+        function () {
+            BaseLogger.info("Facebook SDK not found");
+            self.fbSdkNotLoaded(true);
         });
-
     };
 });

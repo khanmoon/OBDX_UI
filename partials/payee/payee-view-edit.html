@@ -44,7 +44,7 @@
         <!-- /ko -->
         <div class="oj-flex-item oj-lg-4">
             <oj-label>
-            <span data-bind="text:$component.payments.payee.labels.nickname"></span></oj-label>
+            <span data-bind="text:$data.demandDraftPayeeType ? $component.payments.payee.labels.draftFavouring : $component.payments.payee.labels.nickname"></span></oj-label>
             <div data-bind="text:nickName">
             </div>
         </div>
@@ -96,7 +96,7 @@
             <div data-bind="text:$data.branch">
             </div>
             <!-- /ko -->
-            <div data-bind="text:address">
+            <div data-bind="text:($data.address || '')">
             </div>
             <div data-bind="text:($data.city || '')">
             </div>
@@ -104,7 +104,17 @@
             </div>
         </div>
         <!-- /ko -->
-        <!-- ko if : $data.accountNumber -->
+        <!-- ko if : $data.accountNumber && $data.payeeType === "INTERNAL" -->
+        <internal-account-input class="oj-flex oj-flex-items-pad oj-sm-12" params="{
+           baseModel:$baseModel,
+           account : ko.observable(accountNumber),
+           label:$component.payments.payee.labels.accountNumber,
+           required:true,
+           readOnly: true
+          }">
+          </internal-account-input>
+          <!-- /ko -->
+          <!-- ko if : $data.accountNumber && $data.payeeType !== "INTERNAL" -->
         <div class="oj-flex-item oj-lg-4">
             <oj-label>
             <span data-bind="text:$component.payments.payee.labels.accountNumber"></span></oj-label>
@@ -291,9 +301,20 @@
         <!-- ko if : $data.accountName -->
         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.accountName, value :accountName"></row>
         <!-- /ko -->
-        <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.nickname, value :nickName"></row>
+        <row params="baseModel : $baseModel, rootModel : $component, label : $data.demandDraftPayeeType ? $component.payments.payee.labels.draftFavouring : $component.payments.payee.labels.nickname, value :nickName"></row>
         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.acctype, value :$component.payments.payee.type[payeeType]"></row>
-        <!-- ko if : $data.accountNumber -->
+
+        <!-- ko if : $data.accountNumber && $data.payeeType === "INTERNAL" -->
+        <internal-account-input class="oj-flex oj-flex-items-pad oj-sm-6" params="{
+           baseModel:$baseModel,
+           account : ko.observable(accountNumber),
+           label:$component.payments.payee.labels.accountNumber,
+           required:true,
+           readOnly: true
+          }">
+        </internal-account-input>
+        <!-- /ko -->
+        <!-- ko if : $data.accountNumber && $data.payeeType !== "INTERNAL" -->
         <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.accountNumber, value :accountNumber"></row>
         <!-- /ko -->
         <!-- For DD -->
@@ -311,7 +332,7 @@
         <!-- For Domestic -->
         <!-- ko if : $data.bankDetails -->
         <div data-bind="with : bankDetails">
-            <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.bnkdetails, value :[($data.code || ''),name,($data.branch || ''),address,($data.city || ''), ($component.countryCodeMap[$data.country] || $data.country || '')]"></row>
+            <row params="baseModel : $baseModel, rootModel : $component, label : $component.payments.payee.labels.bnkdetails, value :[($data.code || ''),name,($data.branch || ''),($data.address || ''),($data.city || ''), ($component.countryCodeMap[$data.country] || $data.country || '')]"></row>
         </div>
         <!-- /ko -->
         <!-- For P2P -->

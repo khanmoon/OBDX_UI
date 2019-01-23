@@ -41,24 +41,28 @@
         <div class="oj-flex oj-flex-items-pad">
           <div class="oj-flex-items-pad oj-flex-item">
             <a data-id="viewLimits" href="javascirpt:void(0)" class="form-button-link" id="view-limit-button" data-bind="attr:{for : 'view-limit-button' + $baseModel.incrementIdCount(),'alt':$component.resource.viewlimits,'title':$component.resource.viewlimitsTitle}, click: viewLimits, text:$component.resource.viewlimitsTitle">
-                </a>
+            </a>
 
           </div>
         </div>
       </div>
-      <modal-window params="baseModel : $baseModel, rootModel : $component,header:$component.resource.mylimits,id:'viewlimits-bill-payment'">
-        <!-- ko if : $component.viewLimitsFlag() -->
-        <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
-          <div data-bind="component:{name:'transfer-view-limits', params:{rootModel: $component,type:'PC_F_QRC'}}">
+      <div class="myLimits">
+        <modal-window params="baseModel : $baseModel, rootModel : $component,header:$component.resource.mylimits,id:'viewlimits-bill-payment'">
+          <div class="myLimits">
+            <!-- ko if : $component.viewLimitsFlag() -->
+            <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+              <div data-bind="component:{name:'my-limits', params:{rootModel: $component,type:'PC_F_QRC',isTransactionListNotRequired: true}}">
+              </div>
+            </page-section>
+            <div class="button-container">
+              <oj-button class="action-button-primary" on-click="[[$component.closeLimitsModal]]">
+                <span data-bind="text:$component.resource.generic.common.ok"></span>
+              </oj-button>
+            </div>
+            <!-- /ko -->
           </div>
-        </page-section>
-        <div class="button-container">
-          <oj-button class="action-button-primary" on-click="[[$component.closeLimitsModal]]">
-      <span data-bind="text:$component.resource.generic.common.ok"></span>
-</oj-button>
-        </div>
-        <!-- /ko -->
-      </modal-window>
+        </modal-window>
+      </div>
     </div>
     <div class="oj-flex oj-flex-items-pad">
       <div class="oj-flex-item oj-sm-12">
@@ -70,11 +74,11 @@
     </div>
     <div class="oj-flex-item button-container">
       <oj-button class="action-button-primary " on-click="[[confirm]]"><span slot="startIcon" class="icons icon-ok"></span>
-      <span data-bind="text:$component.resource.generic.common.confirm"></span>
-</oj-button>
+        <span data-bind="text:$component.resource.generic.common.confirm"></span>
+      </oj-button>
       <oj-button class="action-button-secondary " on-click="[[cancel]]"><span slot="startIcon" class="icons icon-no"></span>
-      <span data-bind="text:$component.resource.generic.common.cancel"></span>
-</oj-button>
+        <span data-bind="text:$component.resource.generic.common.cancel"></span>
+      </oj-button>
     </div>
 
   </div>
@@ -91,11 +95,11 @@
       </div>
       <div class="button-container">
         <oj-button class="action-button-primary " on-click="[[$parent.scan]]"><span slot="startIcon" class="icons icon-yes"></span>
-      <span data-bind="text:$parent.resource.generic.common.yes"></span>
-</oj-button>
+          <span data-bind="text:$parent.resource.generic.common.yes"></span>
+        </oj-button>
         <oj-button class="action-button-secondary " on-click="[[$parent.cancelAndGoBack]]"><span slot="startIcon" class="icons icon-no"></span>
-      <span data-bind="text:$parent.resource.generic.common.no"></span>
-</oj-button>
+          <span data-bind="text:$parent.resource.generic.common.no"></span>
+        </oj-button>
       </div>
     </div>
   </page-section>

@@ -83,8 +83,9 @@ define([], function() {
         invalidAmountMsg: "Minimum amount should be lesser than the maximum amount.",
         invalidCountMessage: "Enter a valid number",
         cancelWarning: "Cancel Warning",
-        addReviewHeaderMsg: "You Initaited a request for creating Limit. Please review details before you confirm!",
-        confirmationMessage: "Are you sure you want to cancel this transaction ?"
+        addReviewHeaderMsg: "You Initiated a request for creating Limit. Please review details before you confirm!",
+        confirmationMessage: "Are you sure you want to cancel this transaction ?",
+        close: "Close"
       },
       ar: true,
       fr: true,

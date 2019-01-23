@@ -49,7 +49,8 @@ define(["ojL10n!resources/nls/generic", "ojL10n!resources/nls/document-details",
             billTable: "Bill Table",
             initiateBill: "Initiate Bill",
             amendmentNumber: "Amendment Number {amendmentNumber}",
-            bgNumber: "Guarantee Number {lcNumber}"
+            bgNumber: "Guarantee Number {lcNumber}",
+            downloadMsg: "PDF document is password protected, please use first four characters of your username in capital letters and date & month of your date of birth (ddmm) as password e.g. if your username is Stellar and date of birth is 01-07-1980 then your password will be STEL0107."
           },
           drawingStatusArray: {
             Partial: "Partial",

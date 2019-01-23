@@ -124,19 +124,17 @@
         <!-- </div> -->
         <!-- <div class="row-group"> -->
 
-        <!-- ko if:!$baseModel.small() -->
         <row params="baseModel : $baseModel, rootModel : $root, label : $component.tdDetailsLocale.termDepositDetails.maturityInstructions.maturityInstruction , value :$baseModel.format($component.tdDetailsLocale.termDepositDetails.maturityInstructions[$component.tdViewDetails().rollOverType],{interestType:$component.tdViewDetails().module === 'ISL'?$component.tdDetailsLocale.termDepositDetails.profit:$component.tdDetailsLocale.termDepositDetails.amountType.I})"></row>
         <!-- ko if:!($component.tdViewDetails().status === 'CLOSED')-->
         <div class="oj-flex oj-flex-items-pad">
           <div class="oj-flex-item oj-sm-12 label"></div>
           <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
-            <oj-button class="action-button-secondary" on-click="[[$dashboard.loadComponent.bind($data,'td-amend',$component.params)]]">
+            <oj-button class="action-button-secondary" on-click="[[amendTD]]">
               <span slot="startIcon" class="icons icon-remarks"></span>
               <span data-bind="text:$component.tdDetailsLocale.generic.common.edit"></span>
             </oj-button>
           </div>
         </div>
-        <!-- /ko -->
         <!-- /ko -->
 
         <!-- ko if:!($component.tdViewDetails().status === 'CLOSED') -->

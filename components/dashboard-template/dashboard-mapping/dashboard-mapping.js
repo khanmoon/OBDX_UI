@@ -74,6 +74,7 @@ define([
             self.showPartySearch(false);
         } else {
             self.mappingData = ko.observable(getTargetLinkageModel());
+			getRoles();
         }
         self.saveMapping = function () {
             if (!params.baseModel.showComponentValidationErrors(document.getElementById("tracker"))) {

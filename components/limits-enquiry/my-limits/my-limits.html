@@ -1,5 +1,9 @@
 <div class="oj-flex oj-flex-items-pad">
   <!-- ko ifnot:$component.isRetailUser() -->
+      <div class="oj-flex oj-lg-flex-items-initial oj-lg-justify-content-flex-end">
+    <span class="my-limit-disclaimer__text" data-bind="text:$component.nls.limitsInquiry.messages.disclaimer">
+    </span>
+    </div>
   <div class="oj-flex-item oj-sm-12 oj-md-12" data-bind='component: {name: "nav-bar", params:{rootModel: $data,
       menuOptions: menuOptions,
       uiOptions:$baseModel.large()? uiOptions:uiMobileOptions,
@@ -36,7 +40,7 @@
         </div>
         <!-- /ko -->
 
-        <!-- ko if: $component.dataLoaded() -->
+        <!-- ko if: $component.dataLoaded() && !$component.isTransactionListNotRequired()-->
         <div class="oj-flex oj-flex-items-pad">
           <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 oj-label">
             <oj-label for="transactions" id="transactions">
@@ -51,8 +55,11 @@
               <!-- /ko -->
             </oj-select-one>
           </div>
+
         </div>
         <!-- /ko -->
+        <!-- /ko -->
+
 
       </page-section>
     </div>
@@ -72,18 +79,18 @@
                       </a>
 
               </oj-label>
-
-              <a class="oj-label-inline" href="#" data-bind="attr:{title:$component.hoverText()},css:($component.selectedTransactionData() && $component.showGroupInfo() && $component.isRetailUser())? 'edit-limit':'',click:$component.floatingMenuSelection">
+              <a class="oj-label-inline" href="#" data-bind="attr:{title:$component.hoverText()},css:($component.selectedTransactionData() && $component.showGroupInfo() && $component.isRetailUser() &&(!$component.isTransactionListNotRequired()))? 'edit-limit':'',click:$component.floatingMenuSelection">
                               <span class="icons icon-2x icon-arrow-down"></span>
                             </a>
 
-              <!-- ko if: $component.isRetailUser() && $component.selectedTransactionData()-->
+              <!-- ko if: $component.isRetailUser() && $component.selectedTransactionData() &&(!$component.isTransactionListNotRequired())-->
               <a href="#" data-bind="attr:{title:$component.nls.limitsInquiry.messages.editLimitMessage}, click:$component.editLimit">
                                 <span class="icons icon-2x icon-remarks">
                                 </span>
                                 <span data-bind="text:$component.nls.limitsInquiry.buttons.editLimits"></span>
                               </a>
               <!-- /ko -->
+
             </div>
 
             <!-- ko if: $component.showGroupInfo()-->
@@ -117,7 +124,7 @@
                 </div>
                 <!-- /ko -->
 
-                <!-- ko if: $component.isRetailUser() && $component.selectedTransactionData() && $baseModel.large()-->
+                <!-- ko if: $component.isRetailUser() && $component.selectedTransactionData() && $baseModel.large() && !$component.isTransactionListNotRequired() -->
                 <div class="oj-flex-item">
                   <a class="action-icon" href="#" data-bind="attr:{title:$component.nls.limitsInquiry.messages.editLimitMessage}, click:$component.editLimit">
                     <div><span class="icons icon-remarks"></span>

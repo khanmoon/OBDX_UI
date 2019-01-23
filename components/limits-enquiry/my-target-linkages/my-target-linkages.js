@@ -42,39 +42,43 @@ define([
       };
       return KoModel;
     };
+
     self.isDaily = false;
     self.isMonthly = false;
     if (self.targetData.periodicLimitDaily && self.targetData.periodicLimitDaily !== "" && self.targetData.periodicLimitDaily !== null) {
       self.isDaily = true;
       self.getNewDailyCountModel = ko.observable(self.getNewKoModel());
       self.getNewDailyAmountModel = ko.observable(self.getNewKoModel());
-      self.getNewDailyCountModel().label = rootParams.baseModel.format(self.nls.limitsInquiry.messages.periodicLabel, {
-        periodicity: self.targetData.periodicLimitDaily.periodicity.charAt(0).toUpperCase() + self.targetData.periodicLimitDaily.periodicity.substr(1).toLowerCase(),
-        label: self.nls.limitsInquiry.messages.count
-      });
+      self.getNewDailyCountModel().label = self.nls.limitsInquiry.messages.dailyCount;
       self.getNewDailyCountModel().initial = self.targetData.periodicLimitDaily.maxCount;
       self.getNewDailyCountModel().total(self.targetData.periodicLimitDaily.maxCount);
       self.getNewDailyCountModel().utilised = self.targetData.periodicLimitDaily.utilizedDailyCount;
       self.getNewDailyCountModel().remaining(self.targetData.periodicLimitDaily.maxCount - self.targetData.periodicLimitDaily.utilizedDailyCount);
+      if (self.getNewDailyCountModel().remaining() < 0) {
+        self.getNewDailyCountModel().remaining(0);
+      }
       self.getNewDailyCountModel().countOrAmount = "COUNT";
       self.getNewDailyCountModel().thresholdMap = [{
         max: 100,
         color: "#2E7D32"
       }];
-      if (self.targetData.periodicLimitDaily.bankAllocatedCount) { self.getNewDailyCountModel().bankAllocatedCount = self.targetData.periodicLimitDaily.bankAllocatedCount; }
-      else { self.getNewDailyCountModel().bankAllocatedCount = self.targetData.periodicLimitDaily.maxCount; }
+      if (self.targetData.periodicLimitDaily.bankAllocatedCount) {
+        self.getNewDailyCountModel().bankAllocatedCount = self.targetData.periodicLimitDaily.bankAllocatedCount;
+      } else {
+        self.getNewDailyCountModel().bankAllocatedCount = self.targetData.periodicLimitDaily.maxCount;
+      }
       if (self.targetData.periodicLimitDaily && self.targetData.periodicLimitDaily.effectiveTomorrowCount) {
         self.getNewDailyCountModel().effectiveTomorrowFlag = "Y";
         self.getNewDailyCountModel().effectiveTomorrowCount = self.targetData.periodicLimitDaily.effectiveTomorrowCount;
       }
-      self.getNewDailyAmountModel().label = rootParams.baseModel.format(self.nls.limitsInquiry.messages.periodicLabel, {
-        periodicity: self.targetData.periodicLimitDaily.periodicity.charAt(0).toUpperCase() + self.targetData.periodicLimitDaily.periodicity.substr(1).toLowerCase(),
-        label: self.nls.limitsInquiry.messages.limits
-      });
+      self.getNewDailyAmountModel().label = self.nls.limitsInquiry.messages.dailyLimit;
       self.getNewDailyAmountModel().initial = self.targetData.periodicLimitDaily.maxAmount;
       self.getNewDailyAmountModel().total(self.targetData.periodicLimitDaily.maxAmount);
       self.getNewDailyAmountModel().utilised = self.targetData.periodicLimitDaily.utilizedDailyAmount;
       self.getNewDailyAmountModel().remaining(self.targetData.periodicLimitDaily.maxAmount - self.targetData.periodicLimitDaily.utilizedDailyAmount);
+      if (self.getNewDailyAmountModel().remaining() < 0) {
+        self.getNewDailyAmountModel().remaining(0);
+      }
       self.getNewDailyAmountModel().amountCurrency = self.targetData.periodicLimitDaily.maxCurrency;
       self.getNewDailyAmountModel().utilisedCurrency = self.targetData.periodicLimitDaily.utilizedDailyCurrency;
       self.getNewDailyAmountModel().countOrAmount = "AMOUNT";
@@ -82,10 +86,16 @@ define([
         max: 100,
         color: "#0070BF"
       }];
-      if (self.targetData.periodicLimitDaily.bankAllocatedAmount) { self.getNewDailyAmountModel().bankAllocatedAmount = self.targetData.periodicLimitDaily.bankAllocatedAmount; }
-      else { self.getNewDailyAmountModel().bankAllocatedAmount = self.targetData.periodicLimitDaily.maxAmount; }
-      if (self.targetData.periodicLimitDaily.bankAllocatedCurrency) { self.getNewDailyAmountModel().bankAllocatedCurrency = self.targetData.periodicLimitDaily.bankAllocatedCurrency; }
-      else { self.getNewDailyAmountModel().bankAllocatedCurrency = self.targetData.periodicLimitDaily.maxCurrency; }
+      if (self.targetData.periodicLimitDaily.bankAllocatedAmount) {
+        self.getNewDailyAmountModel().bankAllocatedAmount = self.targetData.periodicLimitDaily.bankAllocatedAmount;
+      } else {
+        self.getNewDailyAmountModel().bankAllocatedAmount = self.targetData.periodicLimitDaily.maxAmount;
+      }
+      if (self.targetData.periodicLimitDaily.bankAllocatedCurrency) {
+        self.getNewDailyAmountModel().bankAllocatedCurrency = self.targetData.periodicLimitDaily.bankAllocatedCurrency;
+      } else {
+        self.getNewDailyAmountModel().bankAllocatedCurrency = self.targetData.periodicLimitDaily.maxCurrency;
+      }
       if (self.targetData.periodicLimitDaily && self.targetData.periodicLimitDaily.effectiveTomorrowAmount) {
         self.getNewDailyAmountModel().effectiveTomorrowFlag = "Y";
         self.getNewDailyAmountModel().effectiveTomorrowAmount = self.targetData.periodicLimitDaily.effectiveTomorrowAmount;
@@ -96,33 +106,36 @@ define([
       self.isMonthly = true;
       self.getNewMonthlyCountModel = ko.observable(self.getNewKoModel());
       self.getNewMonthlyAmountModel = ko.observable(self.getNewKoModel());
-      self.getNewMonthlyCountModel().label = rootParams.baseModel.format(self.nls.limitsInquiry.messages.periodicLabel, {
-        periodicity: self.targetData.periodicLimitMonthly.periodicity.charAt(0).toUpperCase() + self.targetData.periodicLimitMonthly.periodicity.substr(1).toLowerCase(),
-        label: self.nls.limitsInquiry.messages.count
-      });
+      self.getNewMonthlyCountModel().label = self.nls.limitsInquiry.messages.monthlyCount;
       self.getNewMonthlyCountModel().initial = self.targetData.periodicLimitMonthly.maxCount;
       self.getNewMonthlyCountModel().total(self.targetData.periodicLimitMonthly.maxCount);
       self.getNewMonthlyCountModel().utilised = self.targetData.periodicLimitMonthly.utilizedMonthlyCount;
       self.getNewMonthlyCountModel().remaining(self.targetData.periodicLimitMonthly.maxCount - self.targetData.periodicLimitMonthly.utilizedMonthlyCount);
+      if (self.getNewMonthlyCountModel().remaining() < 0) {
+        self.getNewMonthlyCountModel().remaining(0);
+      }
       self.getNewMonthlyCountModel().countOrAmount = "COUNT";
       self.getNewMonthlyCountModel().thresholdMap = [{
         max: 100,
         color: "#2E7D32"
       }];
-      if (self.targetData.periodicLimitMonthly.bankAllocatedCount) { self.getNewMonthlyCountModel().bankAllocatedCount = self.targetData.periodicLimitMonthly.bankAllocatedCount; }
-      else { self.getNewMonthlyCountModel().bankAllocatedCount = self.targetData.periodicLimitMonthly.maxCount; }
+      if (self.targetData.periodicLimitMonthly.bankAllocatedCount) {
+        self.getNewMonthlyCountModel().bankAllocatedCount = self.targetData.periodicLimitMonthly.bankAllocatedCount;
+      } else {
+        self.getNewMonthlyCountModel().bankAllocatedCount = self.targetData.periodicLimitMonthly.maxCount;
+      }
       if (self.targetData.periodicLimitMonthly && self.targetData.periodicLimitMonthly.effectiveTomorrowCount) {
         self.getNewMonthlyCountModel().effectiveTomorrowFlag = "Y";
         self.getNewMonthlyCountModel().effectiveTomorrowCount = self.targetData.periodicLimitMonthly.effectiveTomorrowCount;
       }
-      self.getNewMonthlyAmountModel().label = rootParams.baseModel.format(self.nls.limitsInquiry.messages.periodicLabel, {
-        periodicity: self.targetData.periodicLimitMonthly.periodicity.charAt(0).toUpperCase() + self.targetData.periodicLimitMonthly.periodicity.substr(1).toLowerCase(),
-        label: self.nls.limitsInquiry.messages.limits
-      });
+      self.getNewMonthlyAmountModel().label = self.nls.limitsInquiry.messages.monthlyLimit;
       self.getNewMonthlyAmountModel().initial = self.targetData.periodicLimitMonthly.maxAmount;
       self.getNewMonthlyAmountModel().total(self.targetData.periodicLimitMonthly.maxAmount);
       self.getNewMonthlyAmountModel().utilised = self.targetData.periodicLimitMonthly.utilizedMonthlyAmount;
       self.getNewMonthlyAmountModel().remaining(self.targetData.periodicLimitMonthly.maxAmount - self.targetData.periodicLimitMonthly.utilizedMonthlyAmount);
+      if (self.getNewMonthlyAmountModel().remaining() < 0) {
+        self.getNewMonthlyAmountModel().remaining(0);
+      }
       self.getNewMonthlyAmountModel().amountCurrency = self.targetData.periodicLimitMonthly.maxCurrency;
       self.getNewMonthlyAmountModel().utilisedCurrency = self.targetData.periodicLimitMonthly.utilizedMonthlyCurrency;
       self.getNewMonthlyAmountModel().countOrAmount = "AMOUNT";
@@ -130,10 +143,16 @@ define([
         max: 100,
         color: "#0070BF"
       }];
-      if (self.targetData.periodicLimitMonthly.bankAllocatedAmount) { self.getNewMonthlyAmountModel().bankAllocatedAmount = self.targetData.periodicLimitMonthly.bankAllocatedAmount; }
-      else { self.getNewMonthlyAmountModel().bankAllocatedAmount = self.targetData.periodicLimitMonthly.maxAmount; }
-      if (self.targetData.periodicLimitMonthly.bankAllocatedCurrency) { self.getNewMonthlyAmountModel().bankAllocatedCurrency = self.targetData.periodicLimitMonthly.bankAllocatedCurrency; }
-      else { self.getNewMonthlyAmountModel().bankAllocatedCurrency = self.targetData.periodicLimitMonthly.maxCurrency; }
+      if (self.targetData.periodicLimitMonthly.bankAllocatedAmount) {
+        self.getNewMonthlyAmountModel().bankAllocatedAmount = self.targetData.periodicLimitMonthly.bankAllocatedAmount;
+      } else {
+        self.getNewMonthlyAmountModel().bankAllocatedAmount = self.targetData.periodicLimitMonthly.maxAmount;
+      }
+      if (self.targetData.periodicLimitMonthly.bankAllocatedCurrency) {
+        self.getNewMonthlyAmountModel().bankAllocatedCurrency = self.targetData.periodicLimitMonthly.bankAllocatedCurrency;
+      } else {
+        self.getNewMonthlyAmountModel().bankAllocatedCurrency = self.targetData.periodicLimitMonthly.maxCurrency;
+      }
 
       if (self.targetData.periodicLimitMonthly && self.targetData.periodicLimitMonthly.effectiveTomorrowAmount) {
         self.getNewMonthlyAmountModel().effectiveTomorrowFlag = "Y";
@@ -170,47 +189,60 @@ define([
       self.targetData.isDataSaved = true;
       self.closeEdit();
     };
-    self.checkInputDaily = function() {
-      if(self.getNewDailyCountModel().inputLimit()!==self.getNewDailyCountModel().bankAllocatedCount && self.getNewDailyCountModel().inputLimit()!==null){
+    self.checkInputDaily = function () {
+      if (Number(self.getNewDailyCountModel().inputLimit()) !== self.getNewDailyCountModel().bankAllocatedCount && self.getNewDailyCountModel().inputLimit() !== null) {
         self.getNewDailyCountModel().totalInput(self.getNewDailyCountModel().inputLimit());
       }
-      if(self.getNewDailyAmountModel().inputLimit()!==self.getNewDailyAmountModel().bankAllocatedAmount && self.getNewDailyAmountModel().inputLimit()!==null){
+      if (self.getNewDailyAmountModel().inputLimit() !== self.getNewDailyAmountModel().bankAllocatedAmount && self.getNewDailyAmountModel().inputLimit() !== null) {
         self.getNewDailyAmountModel().totalInput(self.getNewDailyAmountModel().inputLimit());
       }
     };
-    self.checkInputMonthly = function() {
-      if(self.getNewMonthlyCountModel().inputLimit()!==self.getNewMonthlyCountModel().bankAllocatedCount && self.getNewMonthlyCountModel().inputLimit()!==null){
+    self.checkInputMonthly = function () {
+      if (Number(self.getNewMonthlyCountModel().inputLimit()) !== self.getNewMonthlyCountModel().bankAllocatedCount && self.getNewMonthlyCountModel().inputLimit() !== null) {
         self.getNewMonthlyCountModel().totalInput(self.getNewMonthlyCountModel().inputLimit());
-        if(self.getNewMonthlyAmountModel().inputLimit()!==self.getNewMonthlyAmountModel().bankAllocatedAmount && self.getNewMonthlyAmountModel().inputLimit()!==null){
-          self.getNewMonthlyAmountModel().totalInput(self.getNewMonthlyAmountModel().inputLimit());
-        }
       }
+      if (self.getNewMonthlyAmountModel().inputLimit() !== self.getNewMonthlyAmountModel().bankAllocatedAmount && self.getNewMonthlyAmountModel().inputLimit() !== null) {
+        self.getNewMonthlyAmountModel().totalInput(self.getNewMonthlyAmountModel().inputLimit());
+      }
+
     };
     self.save = function () {
 
       if (!rootParams.baseModel.showComponentValidationErrors(self.validationTracker())) {
         return;
       }
-      if (self.isDaily) {
+      var processDailyLimit = function () {
+
+        self.checkInputDaily();
+
         if (self.getNewDailyCountModel().totalInput() > self.getNewDailyCountModel().bankAllocatedCount) {
           rootParams.baseModel.showMessages(null, [self.nls.limitsInquiry.messages.validFormatCount], "ERROR");
-          return;
+          return false;
         }
         if (self.getNewDailyAmountModel().totalInput() > self.getNewDailyAmountModel().bankAllocatedAmount) {
           rootParams.baseModel.showMessages(null, [self.nls.limitsInquiry.messages.validFormatAmount], "ERROR");
-          return;
+          return false;
         }
-        self.checkInputDaily();
+
         if (self.getNewDailyCountModel().totalInput()) {
           self.getNewDailyCountModel().total(self.getNewDailyCountModel().totalInput());
           self.getNewDailyCountModel().remaining(self.getNewDailyCountModel().total() - self.getNewDailyCountModel().utilised);
+          if (self.getNewDailyCountModel().remaining() < 0) {
+            self.getNewDailyCountModel().remaining(0);
+          }
         }
         if (self.getNewDailyAmountModel().totalInput()) {
           self.getNewDailyAmountModel().total(self.getNewDailyAmountModel().totalInput());
           self.getNewDailyAmountModel().remaining(self.getNewDailyAmountModel().total() - self.getNewDailyAmountModel().utilised);
+          if (self.getNewDailyAmountModel().remaining() < 0) {
+            self.getNewDailyAmountModel().remaining(0);
+          }
         }
-        if (self.getNewDailyCountModel().totalInput() || self.getNewDailyAmountModel().totalInput() || self.getNewDailyAmountModel().effectiveTomorrowAmount || self.getNewDailyCountModel().effectiveTomorrowCount) { self.targetData.isDailyModified = true; }
-        else { self.targetData.isDailyModified = false; }
+        if (self.getNewDailyCountModel().totalInput() || self.getNewDailyAmountModel().totalInput() || self.getNewDailyAmountModel().effectiveTomorrowAmount || self.getNewDailyCountModel().effectiveTomorrowCount) {
+          self.targetData.isDailyModified = true;
+        } else {
+          self.targetData.isDailyModified = false;
+        }
 
 
         if (self.effectiveSameDayFlag() === "Y") {
@@ -221,27 +253,40 @@ define([
           self.targetData.periodicLimitDaily.effectiveTomorrowCount = self.getNewDailyCountModel().totalInput() ? self.getNewDailyCountModel().total() : self.getNewDailyCountModel().effectiveTomorrowCount;
           self.targetData.periodicLimitDaily.effectiveTomorrowAmount = self.getNewDailyAmountModel().totalInput() ? self.getNewDailyAmountModel().total() : self.getNewDailyAmountModel().effectiveTomorrowAmount;
         }
-      }
-      if (self.isMonthly) {
+        return true;
+      };
+
+      var processMonthlyLimit = function () {
+
+        self.checkInputMonthly();
+
         if (self.getNewMonthlyCountModel().totalInput() > self.getNewMonthlyCountModel().bankAllocatedCount) {
           rootParams.baseModel.showMessages(null, [self.nls.limitsInquiry.messages.validFormatCountMonthly], "ERROR");
-          return;
+          return false;
         }
         if (self.getNewMonthlyAmountModel().totalInput() > self.getNewMonthlyAmountModel().bankAllocatedAmount) {
           rootParams.baseModel.showMessages(null, [self.nls.limitsInquiry.messages.validFormatAmountMonthly], "ERROR");
-          return;
+          return false;
         }
-        self.checkInputMonthly();
         if (self.getNewMonthlyCountModel().totalInput()) {
           self.getNewMonthlyCountModel().total(self.getNewMonthlyCountModel().totalInput());
           self.getNewMonthlyCountModel().remaining(self.getNewMonthlyCountModel().total() - self.getNewMonthlyCountModel().utilised);
+          if (self.getNewMonthlyCountModel().remaining() < 0) {
+            self.getNewMonthlyCountModel().remaining(0);
+          }
         }
         if (self.getNewMonthlyAmountModel().totalInput()) {
           self.getNewMonthlyAmountModel().total(self.getNewMonthlyAmountModel().totalInput());
           self.getNewMonthlyAmountModel().remaining(self.getNewMonthlyAmountModel().total() - self.getNewMonthlyAmountModel().utilised);
+          if (self.getNewMonthlyAmountModel().remaining() < 0) {
+            self.getNewMonthlyAmountModel().remaining(0);
+          }
         }
-        if (self.getNewMonthlyCountModel().totalInput() || self.getNewMonthlyAmountModel().totalInput() || self.getNewMonthlyAmountModel().effectiveTomorrowAmount || self.getNewMonthlyCountModel().effectiveTomorrowCount) { self.targetData.isMonthlyModified = true; }
-        else { self.targetData.isMonthlyModified = false; }
+        if (self.getNewMonthlyCountModel().totalInput() || self.getNewMonthlyAmountModel().totalInput() || self.getNewMonthlyAmountModel().effectiveTomorrowAmount || self.getNewMonthlyCountModel().effectiveTomorrowCount) {
+          self.targetData.isMonthlyModified = true;
+        } else {
+          self.targetData.isMonthlyModified = false;
+        }
 
         if (self.effectiveSameDayFlag() === "Y") {
           self.targetData.periodicLimitMonthly.maxCount = self.getNewMonthlyCountModel().total();
@@ -252,13 +297,24 @@ define([
           self.targetData.periodicLimitMonthly.effectiveTomorrowCount = self.getNewMonthlyCountModel().totalInput() ? self.getNewMonthlyCountModel().total() : self.getNewMonthlyCountModel().effectiveTomorrowCount;
           self.targetData.periodicLimitMonthly.effectiveTomorrowAmount = self.getNewMonthlyAmountModel().totalInput() ? self.getNewMonthlyAmountModel().total() : self.getNewMonthlyAmountModel().effectiveTomorrowAmount;
         }
+        return true;
+      };
+      if (self.isDaily) {
+        if (!processDailyLimit())
+          return;
+      }
+      if (self.isMonthly) {
+        if (!processMonthlyLimit())
+          return;
       }
       self.targetData.isDataSaved = true;
       if (self.targetData.isDailyModified || self.targetData.isMonthlyModified) {
         self.saveLimit(true);
         self.saveMyLimits();
         self.closeEdit();
-      } else { rootParams.baseModel.showMessages(null, [self.nls.limitsInquiry.messages.noChangesMade], "ERROR"); }
+      } else {
+        rootParams.baseModel.showMessages(null, [self.nls.limitsInquiry.messages.noChangesMade], "ERROR");
+      }
     };
     self.resetLimits = function () {
       self.resetLimitsFlag(false);

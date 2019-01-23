@@ -102,8 +102,6 @@ define([
                 }
                 componentModel.fetchTransactionDetails(ko.utils.unwrapObservable(self.selectedAccount()), self.type, self.mediaTypeSelected(), self.mediaFormat(), module,search).done(function (data) {
                   if(data && data.items.length > 0){
-                    var items = data.items.reverse();
-                    data.items = items;
                     setPageData(data);
                   }else{
                     self.items.removeAll();

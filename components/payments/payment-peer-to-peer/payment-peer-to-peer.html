@@ -1,75 +1,80 @@
 <oj-validation-group id="peerToPeerTracker">
-<!-- ko if:stageTwo() -->
-<div class="review-text-heading oj-flex">
-    <span class="icons icon-information oj-sm-2 oj-flex-item"></span>
-    <span class="oj-sm-10 oj-flex-item" data-bind="text: $baseModel.format($component.common.reviewHeaderMsg, {txnName : $component.payments.peertopeer.p2ptransfer})"></span>
-</div>
-<!-- /ko -->
-<!-- ko if:stageOne() -->
-<page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
-    <div class="oj-flex oj-flex-items-pad">
-        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
-            <oj-label for="transferMode"><span data-bind="text:$component.payments.peertopeer.transferMode"></span></oj-label>
-        </div>
-        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
-            <!-- ko if:$component.transferModeArray().length>0 -->
-            <oj-select-one id="transferMode" required on-value-changed="[[$component.transferModeChange]]" :placeholder="[[$component.common.select]]" value="{{$component.transferMode}}">
-                <!-- ko foreach:$component.transferModeArray() -->
-                <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
-                <!-- /ko -->
-            </oj-select-one>
-            <!-- /ko -->
-        </div>
+    <!-- ko if:stageTwo() -->
+    <div class="review-text-heading oj-flex">
+        <span class="icons icon-information oj-sm-2 oj-flex-item"></span>
+        <span class="oj-sm-10 oj-flex-item" data-bind="text: $baseModel.format($component.common.reviewHeaderMsg, {txnName : $component.payments.peertopeer.p2ptransfer})"></span>
     </div>
-    <!-- ko if:$component.isPeerToPeer() -->
-    <!-- ko if:!$component.isFacebook() && !$component.isTwitter()  -->
-    <div class="oj-flex oj-flex-items-pad">
-        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
-            <oj-label for="transferValueEmail"><span data-bind="text:$component.payments.peertopeer.transferValue"></span></oj-label>
-        </div>
-        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
-            <oj-input-password ondrop="return false" id="transferValueEmail" validators="[[$component.transferValueValidator]]" value="{{peerToPeerModel.transferValue}}" required> </oj-input-password>
-        </div>
-    </div>
-    <div class="oj-flex oj-flex-items-pad">
-        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
-            <oj-label for="confirmTransferValueEmail"><span data-bind="text:$component.payments.peertopeer.confirmTransferValue"></span></oj-label>
-        </div>
-        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
-            <oj-input-text ondragstart="return false" ondrop="return false" id="confirmTransferValueEmail" validators="[[$component.confirmTransferValueValidator]]" value="{{$component.confirmTransferValue}}" required></oj-input-text>
-        </div>
-    </div>
-    <!-- ko template : { afterRender: $component.restrictedEvent } --> <!-- /ko -->
     <!-- /ko -->
-    <!-- ko if:$component.isFacebook() -->
-    <social-media class="hide" params="baseModel : $baseModel, rootModel: $data ,
+    <!-- ko if:stageOne() -->
+    <page-section params="baseModel : $baseModel, rootModel : $data, heading : ''">
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                <oj-label for="transferMode"><span data-bind="text:$component.payments.peertopeer.transferMode"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <!-- ko if:$component.transferModeArray().length>0 -->
+                <oj-select-one id="transferMode" required on-value-changed="[[$component.transferModeChange]]"
+                    :placeholder="[[$component.common.select]]" value="{{$component.transferMode}}">
+                    <!-- ko foreach:$component.transferModeArray() -->
+                    <oj-option value="{{code}}"><span data-bind="text:description"></span></oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+                <!-- /ko -->
+            </div>
+        </div>
+        <!-- ko if:$component.isPeerToPeer() -->
+        <!-- ko if:!$component.isFacebook() && !$component.isTwitter()  -->
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                <oj-label for="transferValueEmail"><span data-bind="text:$component.payments.peertopeer.transferValue"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-input-password ondrop="return false" id="transferValueEmail" validators="[[$component.transferValueValidator]]"
+                    value="{{peerToPeerModel.transferValue}}" required> </oj-input-password>
+            </div>
+        </div>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                <oj-label for="confirmTransferValueEmail"><span data-bind="text:$component.payments.peertopeer.confirmTransferValue"></span></oj-label>
+            </div>
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-input-text ondragstart="return false" ondrop="return false" id="confirmTransferValueEmail"
+                    validators="[[$component.confirmTransferValueValidator]]" value="{{$component.confirmTransferValue}}"
+                    required></oj-input-text>
+            </div>
+        </div>
+        <!-- ko template : { afterRender: $component.restrictedEvent } -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if:$component.isFacebook() -->
+        <social-media class="hide" params="baseModel : $baseModel, rootModel: $data ,
                                       social_media_type:'facebook',
                                       api:'USER_FRIENDS',
                                       callback:$component.loadFriendList,
                                       autoLogin: true,
                                       id:'social' "></social-media>
-    <div class="oj-flex oj-flex-items-pad">
-        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
-            <oj-label for="transferValueFacebook"><span data-bind="text:$component.payments.peertopeer.transferto"></span></oj-label>
-        </div>
-        <!-- ko if:$component.friendsListLoaded() -->
-        <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
-            <oj-select-one id="transferValueFacebook" value="{{$component.peerToPeerModel.transferValue}}">
-              <!-- ko foreach:$component.friendsList -->
-              <oj-option data-bind="attr: {id: id, value: id}">
-                  <oj-avatar class="oj-avatar-image" role="img" size="xs" data-bind="attr: {src: picture.data.url}">
-                  </oj-avatar>
-                  <span data-bind="text: name"></span>
-              </oj-option>
-              <!-- /ko -->
-            </oj-select-one>
+        <div class="oj-flex oj-flex-items-pad">
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12 label">
+                <oj-label for="transferValueFacebook"><span data-bind="text:$component.payments.peertopeer.transferto"></span></oj-label>
+            </div>
+            <!-- ko if:$component.friendsListLoaded() -->
+            <div class="oj-flex-item oj-sm-12 oj-md-12 oj-lg-12">
+                <oj-select-one id="transferValueFacebook" value="{{$component.peerToPeerModel.transferValue}}">
+                    <!-- ko foreach:$component.friendsList -->
+                    <oj-option data-bind="attr: {id: id, value: id}">
+                        <oj-avatar class="oj-avatar-image" role="img" size="xs" data-bind="attr: {src: picture.data.url}">
+                        </oj-avatar>
+                        <span data-bind="text: name"></span>
+                    </oj-option>
+                    <!-- /ko -->
+                </oj-select-one>
+            </div>
+            <!-- /ko -->
         </div>
         <!-- /ko -->
-    </div>
-    <!-- /ko -->
-    <div class="oj-flex oj-flex-items-pad">
-    </div>
-    <div data-bind="component: {
+        <div class="oj-flex oj-flex-items-pad">
+        </div>
+        <div data-bind="component: {
                   name: 'amount-input', params: {
                   amount :peerToPeerModel.amount.amount,
                   label : $component.payments.peertopeer.amount,
@@ -84,51 +89,34 @@
                   rootClass:'form-input'
               }
             }">
-        <div class="oj-flex-item">
-            <a data-id="viewLimits" href="javascirpt:void(0)" class="form-button-link" id="view-limit-button" data-bind="attr:{'alt':$data.payments.viewlimits,'title':$data.payments.viewlimitsTitle},click:$data.viewLimits, text:$data.payments.viewlimits">
-            </a>
+            <div class="oj-flex-item">
+                <a data-id="viewLimits" href="javascirpt:void(0)" class="form-button-link" id="view-limit-button"
+                    data-bind="attr:{'alt':$data.payments.viewlimits,'title':$data.payments.viewlimitsTitle},click:$data.viewLimits, text:$data.payments.viewlimits">
+                </a>
+            </div>
         </div>
-    </div>
-    <modal-window params="baseModel : $baseModel, rootModel : $component,header:$component.common.mylimits,id:'viewlimits-P2P'">
-      <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
-        <!-- ko if:(customLimitType() ||  customLimitType()!=="") -->
-        <!-- ko if: $component.loadAccessPointList() -->
+        <div class="myLimits">
+            <modal-window params="baseModel : $baseModel, rootModel : $component,header:$component.common.mylimits,id:'viewlimits-P2P'">
+                <div class="myLimits">
+                    <page-section params="baseModel : $baseModel, rootModel : $component, heading : ''">
+                        <!-- ko if:(customLimitType() ||  customLimitType()!=="") && viewlimits()-->
+                        <div data-bind="component:{name:'my-limits', params:{rootModel: $component,type:'PC_F_PRTOPR',id:$component.customPayeeId,isTransactionListNotRequired: true}}">
+                        </div>
+                        <!-- /ko -->
 
-        <div class="oj-flex oj-flex-items-pad">
-          <div class="oj-flex-item oj-sm-12">
-      <span data-bind="text:$component.payments.peertopeer.channel"></span>
-    <a class="oj-label-inline" id="channel-disclaimer" href="javascript:void(0)" data-bind="attr:{title:$component.payments.peertopeer.showInformation},click:$component.channelPopup.bind($data,true)">
-            <span class="icons icon-2x icon-information iconStyling"></span></a>
-          </div>
-  </div>
-
-
-        <div class="oj-flex oj-flex-items-pad">
-          <div class="oj-flex-item oj-sm-12 oj-md-3 oj-lg-4">
-            <oj-select-one :id="[['channel']]" value="{{selectedChannelIndex}}" on-value-changed="[[channelTypeChangeHandler]]" :placeholder="[[$component.payments.peertopeer.pleaseSelect]]">
-              <!-- ko foreach:$component.channelList -->
-              <oj-option value="[[$index]]"><span data-bind="text:description"></span></oj-option>
-              <!-- /ko -->
-            </oj-select-one>
-          </div>
+                    </page-section>
+                    <div class="button-container ">
+                        <oj-button class="action-button-primary " on-click="[[$component.closeLimitsModal]]"><span slot="startIcon"
+                                class="icons icon-ok"></span>
+                            <span data-bind="text:$component.common.ok"></span>
+                        </oj-button>
+                    </div>
+                </div>
+            </modal-window>
         </div>
-        <!-- /ko -->
-        <!-- ko if: viewlimits() && $component.selectedChannel() -->
-        <div data-bind="component:{name:'transfer-view-limits', params:{rootModel: $component,type:'PC_F_PRTOPR',id:$component.customPayeeId,accessPointValue:$component.selectedChannelType}}">
-        </div>
-        <!-- /ko -->
-        <!-- /ko -->
-
-      </page-section>
-      <div class="button-container ">
-        <oj-button class="action-button-primary " on-click="[[$component.closeLimitsModal]]"><span slot="startIcon" class="icons icon-ok"></span>
-          <span data-bind="text:$component.common.ok"></span>
-        </oj-button>
-      </div>
-    </modal-window>
-    <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.payments.peertopeer.transferfrom,
+        <account-input params="baseModel : $baseModel, rootModel: $data ,label : $component.payments.peertopeer.transferfrom,
                              type : 'balance' , account : peerToPeerModel.debitAccountId.value ,additionalDetails :$component.additionalDetails"></account-input>
-    <div data-bind="component:{name: 'comment-box',
+        <div data-bind="component:{name: 'comment-box',
                               params:{
                               rootModel: $root,
                               label:$component.common.note,
@@ -137,40 +125,41 @@
                               required:$component.isCommentRequired,
                               validator:$component.validationTracker,
                               comment:peerToPeerModel.remarks}}"></div>
-    <!-- /ko -->
-    <!-- ko if:!isPeerToPeer() -->
-    <div class="oj-flex oj-flex-items-pad oj-flex">
-        <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
-            <oj-label><span data-bind="text:$component.payments.addNewrecipientmsg"></span></oj-label>
+        <!-- /ko -->
+        <!-- ko if:!isPeerToPeer() -->
+        <div class="oj-flex oj-flex-items-pad oj-flex">
+            <div class="oj-flex-item oj-sm-12 oj-md-8 oj-lg-8">
+                <oj-label><span data-bind="text:$component.payments.addNewrecipientmsg"></span></oj-label>
+            </div>
         </div>
+        <!-- /ko -->
+    </page-section>
+    <!-- ko if:isPeerToPeer() -->
+    <div class="button-container">
+        <oj-button class="action-button-primary" id="buttoninitiatepeertopeerpayment" on-click="[[$component.initiatePayment]]">
+            <span slot="startIcon" class="icons icon-transfer"></span>
+            <span data-bind="text:$component.common.transfer"></span>
+        </oj-button>
+
+        <oj-button class="action-button-secondary" id="buttoncancelpeertopeerpayment" on-click="[[paymentDone]]">
+            <span slot="startIcon" class="icons icon-cancel"></span>
+            <span data-bind="text:$component.common.cancel"></span>
+        </oj-button>
+
     </div>
     <!-- /ko -->
-</page-section>
-<!-- ko if:isPeerToPeer() -->
-<div class="button-container">
-    <oj-button class="action-button-primary" id="buttoninitiatepeertopeerpayment" on-click="[[$component.initiatePayment]]">
-      <span slot="startIcon" class="icons icon-transfer"></span>
-      <span data-bind="text:$component.common.transfer"></span>
-    </oj-button>
-
-    <oj-button class="action-button-secondary" id="buttoncancelpeertopeerpayment" on-click="[[paymentDone]]">
-      <span slot="startIcon" class="icons icon-cancel"></span>
-      <span data-bind="text:$component.common.cancel"></span>
-    </oj-button>
-
-</div>
-<!-- /ko -->
-<!-- ko if:!isPeerToPeer() -->
-<div class="button-container">
-    <oj-button class="action-button-primary" id="button-add" on-click="[[$dashboard.loadComponent.bind($data,'bank-account-payee',{},$component)]]">
-      <span slot="startIcon" class="icons icon-add"></span>
-      <span data-bind="text:$component.payments.addbankaccount"></span>
-    </oj-button>
-</div>
-<!-- /ko -->
-<!-- /ko -->
-<!-- /ko -->
+    <!-- ko if:!isPeerToPeer() -->
+    <div class="button-container">
+        <oj-button class="action-button-primary" id="button-add" on-click="[[$dashboard.loadComponent.bind($data,'bank-account-payee',{},$component)]]">
+            <span slot="startIcon" class="icons icon-add"></span>
+            <span data-bind="text:$component.payments.addbankaccount"></span>
+        </oj-button>
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
 </oj-validation-group>
-<oj-popup id="channel-popup" modality="modeless" tail="simple" position.my.horizontal="start" position.my.vertical="top" position.at.horizontal="right" position.at.vertical="bottom">
-  <span data-bind="text:$component.payments.peertopeer.showInformation"></span>
+<oj-popup id="channel-popup" modality="modeless" tail="simple" position.my.horizontal="start" position.my.vertical="top"
+    position.at.horizontal="right" position.at.vertical="bottom">
+    <span data-bind="text:$component.payments.peertopeer.showInformation"></span>
 </oj-popup>

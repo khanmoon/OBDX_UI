@@ -21,6 +21,9 @@ define([
         self.deleteFlag = ko.observable(false);
         self.version = ko.observable();
         self.status = ko.observable();
+        self.recipientsListLoaded = ko.observable(false);
+        self.recipientsList = ko.observableArray();
+        self.selectedRecipients = ko.observableArray();
         rootParams.dashboard.headerName(self.nls.headers.heading);
         var dateobj = new Date(self.mailerDetails.activationDate);
         rootParams.baseModel.registerElement("confirm-screen");
@@ -55,8 +58,29 @@ define([
             });
         };
         self.readMailer = function () {
-            UsersModel.readMailer(self.mailerDetails.messageId.value).done(function (data) {
-                self.mailerDetails = data.mailer;
+          Promise.all([UsersModel.readMailer(self.mailerDetails.messageId.value),UsersModel.listEnterpriseRoles()]).then(function (response){
+                var data = response[0],
+                 data1 = response[1];
+                 for (var m = 0; m < data1.enterpriseRoleDTOs.length; m++) {
+                   if (data1.enterpriseRoleDTOs[m].enterpriseRoleId === "corporateuser") {
+                     self.recipientsList.push({
+                       enterpriseRoleName: self.nls.roles.corp,
+                       enterpriseRoleId: "corporateuser"
+                     });
+                   } else if (data1.enterpriseRoleDTOs[m].enterpriseRoleId === "retailuser") {
+                     self.recipientsList.push({
+                       enterpriseRoleName: self.nls.roles.retail,
+                       enterpriseRoleId: "retailuser"
+                     });
+                   } else if (data1.enterpriseRoleDTOs[m].enterpriseRoleId === "administrator") {
+                     self.recipientsList.push({
+                       enterpriseRoleName: self.nls.roles.admin,
+                       enterpriseRoleId: "administrator"
+                     });
+                   }
+                 }
+                 self.recipientsListLoaded(true);
+                 self.mailerDetails = data.mailer;
                 self.mailerName = data.mailer.description;
                 self.code = data.mailer.code;
                 self.activationDate = data.mailer.activationDate;
@@ -89,13 +113,16 @@ define([
                 };
                 self.userRecipientsList = ko.observableArray();
                 self.partyRecipientsList = ko.observableArray();
-                for (var m = 0; m < data.mailer.recipients.length; m++) {
+                for (m = 0; m < data.mailer.recipients.length; m++) {
                     if (data.mailer.recipients[m].value === "corporateuser") {
                         self.mailersPayload.recipients.corp = self.nls.roles.corp;
+                        self.selectedRecipients.push(data.mailer.recipients[m].value);
                     } else if (data.mailer.recipients[m].value === "retailuser") {
                         self.mailersPayload.recipients.retail = self.nls.roles.retail;
+                        self.selectedRecipients.push(data.mailer.recipients[m].value);
                     } else if (data.mailer.recipients[m].value === "administrator") {
                         self.mailersPayload.recipients.admin = self.nls.roles.admin;
+                        self.selectedRecipients.push(data.mailer.recipients[m].value);
                     } else if (data.mailer.recipients[m].type === "USER") {
                         self.userRecipientsList().push(data.mailer.recipients[m].value);
                     } else if (data.mailer.recipients[m].type === "PARTY") {
@@ -105,8 +132,9 @@ define([
                 self.mailersPayload.userRecipientsList = self.userRecipientsList();
                 self.mailersPayload.partyRecipientsList = self.partyRecipientsList();
                 self.viewFlag(true);
-            });
-        };
+              });
+     };
+
         self.backOnView = function () {
             rootParams.dashboard.loadComponent("mailers-base", {}, self);
             self.searchFlag(true);

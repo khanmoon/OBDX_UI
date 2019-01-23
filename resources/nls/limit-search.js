@@ -21,7 +21,7 @@ define([
           limitSearch: "Search Result of limit",
           fromDate: "From Date",
           toDate: "To Date",
-          updationDate:"Updation Date"
+          updationDate: "Updated On"
         },
         limitType: {
           transaction: "Transaction",

@@ -80,7 +80,8 @@ define([], function() {
           lowerMandatoryCount : "Lower Case character count should be greater than 0",
           specialCharMandatoryCount : "Special character count should be greater than 0",
           numberMandatoryCount : "Numbers count should be greater than 0",
-          specialCharListError : "Please enter at least one value for allowed special character."
+          specialCharListError : "Please enter at least one value for allowed special character.",
+          pwdExpiryPeriodCheck: "Password Expiry Period should be greater than Password Expiry Warning Period"
         },
         header: {
           details: "Password Policy Search Results",

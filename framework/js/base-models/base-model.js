@@ -4,7 +4,7 @@
  * @module base-model
  */
 define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants", "base-models/css"],
-  function ($, Platform, WebAnalytics, Constants,CSS) {
+  function($, Platform, WebAnalytics, Constants, CSS) {
     "use strict";
     /**
      * Base Model will be extended by all components. This class has utility methods and variables which are required at a framework level.<br>
@@ -29,7 +29,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @param  {String} value The return value.
        * @return {undefined|String}  If the argument contains <code>temp_</code>, return <code>undefined</code> else return the argument as is.
        */
-      self.trimPayload = function (key, value) {
+      self.trimPayload = function(key, value) {
         if (key.substring(0, 5) !== "temp_") {
           return value;
         }
@@ -49,7 +49,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @instance
        * @return {Number} The random number returned.
        */
-      self.incrementIdCount = function () {
+      self.incrementIdCount = function() {
         idCount = Math.floor((Math.random() * 10000) + 1);
         return idCount;
       };
@@ -61,7 +61,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @instance
        * @return {Number} The current value [idCount]{@linkcode BaseModel~idCount} holds.
        */
-      self.currentIdCount = function () {
+      self.currentIdCount = function() {
         return idCount;
       };
 
@@ -72,7 +72,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @instance
        * @return {String} The type of cordova device.
        */
-      self.cordovaDevice = function () {
+      self.cordovaDevice = function() {
         if (window.cordova && window.device) {
           return window.device.platform.toUpperCase();
         }
@@ -88,7 +88,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @memberof BaseModel
        * @return {String} Returns <code>large</code>, <code>medium</code> or <code>small</code>.
        */
-      self.getDeviceSize = function () {
+      self.getDeviceSize = function() {
         var windowWidth = (window.screen.width < window.innerWidth) ?
           window.screen.width : window.innerWidth;
         if (windowWidth > 1279) {
@@ -116,7 +116,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @instance
        * @returns {String} Description of selected value
        */
-      self.getDescriptionFromCode = function (enumArray, selectedCode, codeString, descString) {
+      self.getDescriptionFromCode = function(enumArray, selectedCode, codeString, descString) {
         var returnVal = "",
           codeStr = codeString || "code",
           descStr = descString || "description",
@@ -156,7 +156,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @example
        * switchPage({  module: 'login' }, true); // will switch to login page from pre-login screen
        */
-      self.switchPage = function (config, isSecure, historyRequired, urlArgs) {
+      self.switchPage = function(config, isSecure, historyRequired, urlArgs) {
         isSecure = isSecure || false;
         historyRequired = historyRequired || true;
         var securePage = "/pages/home.html",
@@ -169,13 +169,13 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
             homeModule: config.homeComponent.module
           };
           if (config.homeComponent.query) {
-            Object.keys(config.homeComponent.query).forEach(function (key) {
+            Object.keys(config.homeComponent.query).forEach(function(key) {
               parameters[key] = config.homeComponent.query[key];
             });
           }
         }
         window.onbeforeunload = null;
-        Platform.getInstance().then(function (platform) {
+        Platform.getInstance().then(function(platform) {
           if (config && config.internal) {
             baseLocation = "." + (isSecure ? securePage : publicPage);
           } else {
@@ -203,7 +203,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @param  {String} [className] The name of the component.
        * @returns {String} The transformed template string with css inside <code><style></style></code> is returned.
        */
-      self.transformTemplate = function (template, css, className) {
+      self.transformTemplate = function(template, css, className) {
         if (!className) {
           return;
         }
@@ -224,7 +224,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @param  {Object} module The AMD module object.
        * @returns {String} The name of the component is returned.
        */
-      self.getComponentName = function (module) {
+      self.getComponentName = function(module) {
         return module.id.split("/")[module.id.split("/").length - 2];
       };
 
@@ -246,7 +246,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * self.format('This string needs to be {token}', { token : 'formatted' });
        * // returns "This string needs to be formatted".
        */
-      self.format = function (message, parameters, isEncoded) {
+      self.format = function(message, parameters, isEncoded) {
         if (!message) {
           throw new ReferenceError("Please specify a valid message");
         }
@@ -260,6 +260,9 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
           }
         }
         return message;
+      };
+      self.isEmpty = function(value) {
+        return typeof value === "undefined" || value === null || value.length === 0;
       };
 
       /**
@@ -304,7 +307,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * // uses the unsorted array 'test' and returns sorted array based on the properties, with priority 'a.b', 'a.c.d', 'a.e.f.g',
        * // in descending, ascending and descending order respectively.
        */
-      self.sortLib = function (data, sortBy, order) {
+      self.sortLib = function(data, sortBy, order) {
         if (!(data && sortBy)) {
           throw new Error("Specify the data source and atleast one property to sort it by");
         }
@@ -357,7 +360,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
          */
         function performSort(order, sortBy) {
           // eslint-disable-next-line array-callback-return
-          return data.sort(function (a, b) {
+          return data.sort(function(a, b) {
             for (var i = 0; i < sortBy.length; i++) {
               var currentOrder = sortBy[i];
               var A = parse(a, currentOrder);
@@ -446,15 +449,15 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
          }]
        }]
        */
-      self.groupBy = function (array, keys, transform) {
+      self.groupBy = function(array, keys, transform) {
         var groups, transformation;
-        return Object.keys((groups = array.reduce(function (accumulator, currentValue) {
+        return Object.keys((groups = array.reduce(function(accumulator, currentValue) {
           var key = getObjectProperty(currentValue, keys[0]);
           // eslint-disable-next-line no-unused-expressions
           transform ? (transformation = transformation || [], transformation[key] = transform(currentValue)) : null;
           (accumulator[key] = accumulator[key] || []).push(currentValue);
           return accumulator;
-        }, {}), keys = JSON.parse(JSON.stringify(keys)), keys.shift(), groups)).map(function (item) {
+        }, {}), keys = JSON.parse(JSON.stringify(keys)), keys.shift(), groups)).map(function(item) {
           return {
             label: transform ? transformation[item][keys.length ? (keys.length - 1) : (transformation[item].length - 1)] : item,
             children: keys[0] ? self.groupBy(groups[item], keys, transform) : groups[item]
@@ -476,7 +479,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @memberof BaseModel
        * @returns {String} description of selected value
        */
-      self.getDescriptionFromValue = function (enumArray, selectedValue, valueString, descString) {
+      self.getDescriptionFromValue = function(enumArray, selectedValue, valueString, descString) {
         var returnVal = "",
           valueStr = valueString || "value",
           descStr = descString || "description",
@@ -504,7 +507,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @deprecated
        * @returns {object} - The selected value of OJSelect
        */
-      self.getDropDownValue = function (dropDownArray) {
+      self.getDropDownValue = function(dropDownArray) {
         // eslint-disable-next-line no-console
         console.warn("Warning: Deprecated method");
         if (Object.prototype.toString.call(dropDownArray) === "[object Array]") {
@@ -527,7 +530,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * self.getVisibleText('This is a very long string that needs to be truncated', 25);
        * // returns "This is a very long str.."
        */
-      self.getVisibleText = function (actualText, precision) {
+      self.getVisibleText = function(actualText, precision) {
         if (actualText) {
           if (actualText.length <= precision) {
             return actualText;
@@ -547,7 +550,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @param  {Object} response The response to be checked.
        * @return {Boolean}          <code>true</code> if all requests have succeeded, <code>false</code> otherwise.
        */
-      self.checkBatchResponse = function (response) {
+      self.checkBatchResponse = function(response) {
         var i, len = response.batchDetailResponseDTOList.length;
         for (i = 0; i < len; i++) {
           if (response.batchDetailResponseDTOList[i].status >= 400) {
@@ -557,6 +560,8 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
         return true;
       };
 
+      var element = $("<textarea/>");
+
       /**
        * Utility function to parse special characters from received response.
        * @inner
@@ -565,14 +570,15 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @param  {Object} obj The object received from response containing special characters.
        * @return {Object}     The parsed object is returned.
        */
-      self.characterEncoding = function (obj) {
+      self.characterEncoding = function(obj) {
         if (typeof obj === "object") {
-          for (var property in obj) {
+          var property;
+          for (property in obj) {
             if (obj[property]) {
               if (typeof obj[property] === "object") {
                 self.characterEncoding(obj[property]);
               } else if (typeof obj[property] === "string" && obj[property] !== "") {
-                obj[property] = $("<div/>").html(obj[property]).text();
+                obj[property] = element.html(obj[property]).text();
               }
             }
           }
@@ -588,7 +594,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @returns {void}
        */
       /* eslint-disable no-storage/no-browser-storage */
-      self.clearStorage = function () {
+      self.clearStorage = function() {
         var locale = sessionStorage.getItem("user-locale");
         localStorage.clear();
         sessionStorage.clear();
@@ -616,9 +622,9 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
          * @param  {String} value The query param under consideration.
          * @return {String}       Array of query values with same parameter converted to query parameter format.
          */
-        __resolveQuery: function (map, value) {
+        __resolveQuery: function(map, value) {
           if (!Array.isArray(map[value])) return map[value];
-          return map[value].reduce(function (accumulator, currentValue, currentIndex, array) {
+          return map[value].reduce(function(accumulator, currentValue, currentIndex, array) {
             return accumulator + (currentIndex === 0 ? "" : (value + "=")) + currentValue + (currentIndex === array.length - 1 ? "" : "&");
           }, "");
         },
@@ -631,12 +637,12 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
          * @param {Object} parameterObject The key value pair object which has keys are query parameter keys and values as query parameter values.
          * @return {String} The URL string with added query parameters.
          */
-        add: function (url, parameterObject) {
+        add: function(url, parameterObject) {
           var link = document.createElement("a");
           link.href = url;
           var queryMap = link.search ? self.QueryParams.get(void 0, link.search) : {};
           $.extend(queryMap, parameterObject);
-          var modifiedQuery = Object.keys(queryMap).reduce(function (accumulator, currentValue, currentIndex, array) {
+          var modifiedQuery = Object.keys(queryMap).reduce(function(accumulator, currentValue, currentIndex, array) {
             return accumulator + currentValue + "=" + self.QueryParams.__resolveQuery(queryMap, currentValue) + (currentIndex === array.length - 1 ? "" : "&");
           }, "");
           link.search = modifiedQuery;
@@ -652,7 +658,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
          * @param  {String} str   The URL search string. Do make sure to pass location.search and not location.href for a particular window. Defaults to current window's URL search string.
          * @return {Object|String} If query parameter (param) is specified, returns the query string value for the particular parameter requested or else returns the object map for whole query string.
          */
-        get: function (param, str) {
+        get: function(param, str) {
           str = str || window.location.search;
           var ret = Object.create(null);
           if (typeof str !== "string") {
@@ -662,7 +668,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
           if (!str) {
             return null;
           }
-          str.split("&").forEach(function (param) {
+          str.split("&").forEach(function(param) {
             var parts = param.replace(/\+/g, " ").split("=");
             var key = parts.shift();
             var val = parts.length > 0 ? parts.join("=") : undefined;
@@ -674,7 +680,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
             ret[decodeURIComponent(key)] = [].concat(ret[decodeURIComponent(key)], val);
           });
 
-          var result = Object.keys(ret).sort().reduce(function (result, key) {
+          var result = Object.keys(ret).sort().reduce(function(result, key) {
             var val = ret[key];
             result[key] = val;
             return result;
@@ -690,11 +696,11 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
          * @param  {Array} keysToDelete Array of keys to delete.
          * @return {String} The URL string with removed query parameters.
          */
-        remove: function (url, keysToDelete) {
+        remove: function(url, keysToDelete) {
           var link = document.createElement("a");
           link.href = url;
           var queryMap = self.QueryParams.get(void 0, link.search);
-          keysToDelete.forEach(function (deleteKey) {
+          keysToDelete.forEach(function(deleteKey) {
             delete queryMap[deleteKey];
           });
           return self.QueryParams.add(link.pathname, queryMap);
@@ -708,7 +714,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @param  {Object} event The event object returned by jQuery.
        * @returns {void}
        */
-      $(document).keydown(function (event) {
+      $(document).keydown(function(event) {
         if (event.keyCode === 66 && event.altKey) {
           event.preventDefault();
           $("div .button-container .action-button-primary").focus();
@@ -722,7 +728,7 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @param  {Object} event The event object returned by jQuery.
        * @returns {void}
        */
-      $(document).keyup(function (event) {
+      $(document).keyup(function(event) {
         if (event.keyCode === 88 && event.altKey && $(".action-button-secondary").length) {
           event.preventDefault();
           $(".action-button-secondary")[0].click();
@@ -737,14 +743,14 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
          * @event scroll
          * @returns {void}
          */
-        document.addEventListener("scroll", function () {
+        document.addEventListener("scroll", function() {
           var top = $(window).scrollTop();
           var fold = $(window).height() + top;
-          var images = Array.prototype.filter.call(document.querySelectorAll("img"), function (element) {
+          var images = Array.prototype.filter.call(document.querySelectorAll("img"), function(element) {
             var elementOffsetTop = $(element).offset().top;
             return element.getAttribute("isLazy") && (element.getAttribute("isLazy") !== "false") && (fold > elementOffsetTop) && (top < elementOffsetTop + $(element).height());
           });
-          images.forEach(function (element) {
+          images.forEach(function(element) {
             element.setAttribute("src", element.getAttribute("lazySrc"));
             element.removeAttribute("lazySrc");
             element.setAttribute("isLazy", "false");
@@ -757,15 +763,15 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
       if ("scrollRestoration" in history) {
         history.scrollRestoration = "manual";
       }
-      self.displayAccessibilityIssues = function (violations) {
+      self.displayAccessibilityIssues = function(violations) {
         // eslint-disable-next-line no-console
         console.groupCollapsed("Accessibility Report");
         var displayWarning = false;
-        violations.forEach(function (violation) {
+        violations.forEach(function(violation) {
           // eslint-disable-next-line no-console
           console.groupCollapsed(violation.description);
           // eslint-disable-next-line no-console
-          console.table(violation.nodes.map(function (element) {
+          console.table(violation.nodes.map(function(element) {
             if (element.impact === "critical" || element.impact === "serious") displayWarning = true;
             return {
               "Summary": element.failureSummary,
@@ -781,10 +787,10 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
         console.groupEnd();
         return displayWarning;
       };
-      if(Constants.enableAxe){
-        require(["https://cdnjs.cloudflare.com/ajax/libs/axe-core/2.6.1/axe.js"], function (axe) {
+      if (Constants.enableAxe) {
+        require(["@@AXE_URL"], function(axe) {
           axeInstance = axe;
-        }, function () {
+        }, function() {
           axeInstance = null;
         });
       }
@@ -795,8 +801,8 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @memberof BaseModel
        * @returns {void}
        */
-      self.runAxe = function () {
-        return new Promise(function (resolve, reject) {
+      self.runAxe = function() {
+        return new Promise(function(resolve, reject) {
           if (axeInstance && Constants.enableAxe) {
             resolve(axeInstance.run(document, {
               rules: {
@@ -831,8 +837,8 @@ define(["jquery", "platform", "webAnalytics", "framework/js/constants/constants"
        * @param  {object} parameter pass to the function.
        * @returns {void}
        */
-      self.webAnalytics = function (trackingId, parameters, callback) {
-        WebAnalytics.getInstance().then(function (webAnalytics) {
+      self.webAnalytics = function(trackingId, parameters, callback) {
+        WebAnalytics.getInstance().then(function(webAnalytics) {
           webAnalytics(trackingId, parameters);
           callback();
         });

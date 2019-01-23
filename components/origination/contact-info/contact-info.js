@@ -27,8 +27,8 @@ define([
         KoModel.disableInputs = ko.observable(KoModel.disableInputs);
         KoModel.email = ko.observable(KoModel.email);
         KoModel.monthlyMortgage.amount = ko.observable(KoModel.monthlyMortgage.amount);
-        KoModel.monthlyMortgage.currency = rootParams.baseModel.getLocaleValue("localCurrency");
-        KoModel.monthlyRent.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+        KoModel.monthlyMortgage.currency = self.localCurrency;
+        KoModel.monthlyRent.currency = self.localCurrency;
         KoModel.monthlyRent.amount = ko.observable(KoModel.monthlyRent.amount);
         return KoModel;
       };
@@ -322,7 +322,7 @@ define([
               selectedPhoneType[1] = self.phonetypeTwo()[i];
               self.phonetypeTwo().splice(i, 1);
               self.applicantObject().contactInfo.contactInfo.contacts[0].phone.number = "";
-              self.phoneTypeListLoaded(true);
+              self.applicantObject().contactInfo.contactInfo.contacts[0].contactType = event.detail.value;
               break;
             }
           }
@@ -335,11 +335,13 @@ define([
               selectedPhoneType[0] = self.phonetypeOne()[j];
               self.phonetypeOne().splice(j, 1);
               self.applicantObject().contactInfo.contactInfo.contacts[1].phone.number = "";
+              self.applicantObject().contactInfo.contactInfo.contacts[1].contactType = event.detail.value;
               break;
             }
           }
-          self.phoneTypeListLoaded(true);
         }
+        ko.tasks.runEarly();
+        self.phoneTypeListLoaded(true);
       }
     };
     if (self.applicantObject().applicantId() && self.applicantObject().applicantId().value.length > 0) {
@@ -389,7 +391,9 @@ define([
       return data1;
     };
     self.submitInformationGeneric = function(data, applicantId) {
-      var t;
+      var t;
+
+
       if (self.selectedCountry()) {
         self.applicantObject().contactInfo.selectedValues().country = self.selectedCountry();
       }
@@ -397,12 +401,14 @@ define([
         self.applicantObject().contactInfo.selectedValues().countryMailing = self.selectedCountryMailing();
       }
       data.address.status = "CURRENT";
-      if (!self.landlordDetailsRequired()) {
+      if (!self.landlordDetailsRequired()) {
+
         delete data.address.landlordAddress;
         delete data.address.landlordName;
         delete data.address.landlordPhoneNumber;
       }
-      delete data.address.postalAddress.state;
+      delete data.address.postalAddress.state;
+
       addressList = [];
       addressList.push(data);
       if (!self.applicantObject().addressCopies) {

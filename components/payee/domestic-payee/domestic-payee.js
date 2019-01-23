@@ -38,6 +38,9 @@ define([
                 }
             }
         }];
+        $(document).on("keyup", "#domSwiftCode", function() {
+            $(this).val($(this).val().toUpperCase());
+        });
         self.verifyCode = function () {
             var tracker = document.getElementById("verify-code-tracker");
             if (tracker.valid === "valid") {

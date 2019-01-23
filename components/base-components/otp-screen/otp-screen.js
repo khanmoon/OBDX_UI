@@ -17,7 +17,7 @@ define([
         self.referenceNumber = ko.observable(JSON.parse(self.serverResponse.getResponseHeader("X-CHALLENGE")).referenceNo);
         self.scopeType = ko.observable(JSON.parse(self.serverResponse.getResponseHeader("X-CHALLENGE")).scope);
         self.isNonce = !!self.currentContext.url.match("session/nonce");
-
+        self.otpSent = ko.observable();
         self.otp = ko.observable();
         self.messageSection = ko.observable();
         self.pageSectionHeader = ko.observable();
@@ -28,8 +28,8 @@ define([
         self.multipleInput = ko.observableArray();
         self.disableReferenceNumber = ko.observable(true);
         self.editReferenceNo = ko.observable(false);
+        self.validationTracker = ko.observable();
         self.validationTrackerID = "validationTrackerID" + rootParams.baseModel.incrementIdCount();
-
         self.editReferenceNo.subscribe(function(newValue) {
             if (newValue) {
                 self.disableReferenceNumber(false);
@@ -110,7 +110,9 @@ define([
         };
         self.disableResend = self.resendsLeft ? ko.observable(true) : ko.observable(false);
         self.reOTP = function() {
+            self.otpSent(false);
             OTPModel.resendOTP(self.referenceNumber()).done(function() {
+                self.otpSent(true);
                 self.resendsLeft = self.resendsLeft - 1;
                 if (!self.resendsLeft) {
                     self.disableResend(false);

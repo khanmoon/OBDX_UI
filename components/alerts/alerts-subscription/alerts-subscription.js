@@ -6,13 +6,14 @@ define([
     "baseLogger",
 
     "ojL10n!resources/nls/alerts-subscription",
+    "framework/js/constants/constants",
     "ojs/ojinputtext",
     "ojs/ojbutton",
     "ojs/ojmenu",
     "ojs/ojdialog",
     "ojs/ojselectcombobox",
     "ojs/ojknockout-validation"
-], function (oj, ko, $, CustomerSubscriptionModel, BaseLogger, resourceBundle) {
+], function (oj, ko, $, CustomerSubscriptionModel, BaseLogger, resourceBundle, Constants) {
     "use strict";
     return function (rootParams) {
         var self = this;
@@ -54,8 +55,8 @@ define([
         self.showSubscribed = ko.observable(true);
         self.selected_alerts = ko.observableArray();
         self.other_selected_alerts = ko.observableArray();
-        self.recipientString="CUSTOMER";
-        self.recipientCategoryString="PARTY";
+        self.recipientString = Constants.userSegment==="CORP"? "USER" : "CUSTOMER";
+        self.recipientCategoryString = Constants.userSegment==="CORP"? "CORPORATE" : "PARTY";
         self.selected_alert = ko.observable();
         self.dateValue = ko.observable(rootParams.baseModel.getDate().toISOString().slice(0, 10));
         self.enddateValue = ko.observable(new Date(2099, 1, 1).toISOString().slice(0, 10));
@@ -80,6 +81,7 @@ define([
         self.httpStatus = ko.observable();
         self.confirmationMsg = ko.observable();
         self.actionHeaderheading = ko.observable();
+        self.userId = rootParams.dashboard.userData.userProfile.userName;
         rootParams.dashboard.headerName(self.resource.subscription.title);
         CustomerSubscriptionModel.init();
         self.ActionSubscriptionModel = CustomerSubscriptionModel.getNewActionSubscriptionModel();
@@ -254,24 +256,24 @@ define([
         };
         self.accountChangeHandler = function (event) {
             var i = 0;
-                ko.utils.arrayForEach(self.accountlist(), function (account) {
-                    if (account.label === event.detail.value) {
-                        self.customerName(account.customerName);
-                        self.currencyCode(account.currencyCode);
-                        self.selectedAccount.displayValue = self.accountlist()[i].label;
-                        self.selectedAccount.value = self.accountlist()[i].value;
-                        self.subscriptionLevelKey(self.selectedAccount.value);
-                        self.populateAlerts();
-                    }
-                    i = i + 1;
-                });
+            ko.utils.arrayForEach(self.accountlist(), function (account) {
+                if (account.label === event.detail.value) {
+                    self.customerName(account.customerName);
+                    self.currencyCode(account.currencyCode);
+                    self.selectedAccount.displayValue = self.accountlist()[i].label;
+                    self.selectedAccount.value = self.accountlist()[i].value;
+                    self.subscriptionLevelKey(self.selectedAccount.value);
+                    self.populateAlerts();
+                }
+                i = i + 1;
+            });
         };
         self.populateAlerts = function () {
             self.koModel = CustomerSubscriptionModel.getNewModel();
             self.koSubscribedAlertModel.removeAll();
             self.koModel.isSubscriptionPresent = false;
             self.subscription_id = ko.observable();
-            CustomerSubscriptionModel.getAlertList(self.moduleType(), self.subscriptionLevel(), self.subscriptionLevelKey(), self.partyId()).then(function (data) {
+            CustomerSubscriptionModel.getAlertList(self.moduleType(), self.subscriptionLevel(), self.subscriptionLevelKey(), self.partyId(), self.userId, Constants.userSegment==="CORP").then(function (data) {
                 self.mode("CREATE");
                 self.koModel.subscribedAlerts = data.actionSubscriptionDTO;
                 self.other_selected_alerts.removeAll();
@@ -352,7 +354,7 @@ define([
                         ko.utils.arrayForEach(unsubscribedAlert.recipientMessageTemplates, function (recipientMessageTemplate) {
                             if (recipientMessageTemplate.keyDTO.recipient === self.recipientString && recipientMessageTemplate.keyDTO.recipientCategory === self.recipientCategoryString && recipientMessageTemplate.alertType === "S") {
                                 ko.utils.arrayForEach(recipientMessageTemplate.messageTemplateDTO, function (messageTemplate) {
-                                    var preferenceModel = self.populatePreferenceModel(unsubscribedAlert, recipientMessageTemplate,messageTemplate);
+                                    var preferenceModel = self.populatePreferenceModel(unsubscribedAlert, recipientMessageTemplate, messageTemplate);
                                     if (preferenceModel.destination === "EMAIL") {
                                         if (alertModel.subscribed) {
                                             ko.utils.arrayForEach(subscribedAlert.subscriptionPreferences, function (preference) {
@@ -633,7 +635,7 @@ define([
                     SubscriptionPreferenceModel.activityId = alert.activityId;
                     SubscriptionPreferenceModel.eventId = alert.eventId;
                     SubscriptionPreferenceModel.actionId = alert.actionId;
-                    SubscriptionPreferenceModel.subscriberValue = self.resource.subscription.recipient.toUpperCase();
+                    SubscriptionPreferenceModel.subscriberValue = Constants.userSegment === "CORP"? self.resource.subscription.user.toUpperCase() : self.resource.subscription.recipient.toUpperCase();
                     SubscriptionPreferenceModel.subscriptionId = self.subscription_id;
                 };
                 var SubscriptionPreferenceModel;
@@ -690,11 +692,20 @@ define([
                         koSubscribedActions.push(alert);
                     });
                 }
-                var subscriber = {
-                    "party": self.partyId(),
-                    "subscriberType": "PARTY"
-                };
-                self.ActionSubscriptionModel.subscriber = subscriber;
+                if (Constants.userSegment === "CORP") {
+                    var subscriberForCorp = {
+                        id: rootParams.dashboard.userData.userProfile.userName,
+                        subscriberType: "CORPORATE"
+                    };
+                    self.ActionSubscriptionModel.subscriber = subscriberForCorp;
+                }
+                else {
+                    var subscriber = {
+                        "party": self.partyId(),
+                        "subscriberType": "PARTY"
+                    };
+                    self.ActionSubscriptionModel.subscriber = subscriber;
+                }
                 var ActionSubscriptionModelJson;
                 if (self.ActionSubscriptionModel.subscriptionId) {
                     self.ActionSubscriptionModel.subscribedActions = koSubscribedActions();

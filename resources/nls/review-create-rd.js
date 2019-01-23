@@ -5,7 +5,7 @@ define(["ojL10n!resources/nls/generic"], function(Generic) {
       root: {
         header: {
           newRecurringDeposit: "New Recurring Deposit",
-          reviewHeader: "You Initaited a request for New Recurring Deposit. Please review details before you confirm!"
+          reviewHeader: "You Initiated a request for New Recurring Deposit. Please review details before you confirm!"
         },
         pageHeader: {
           depositDetails: "Deposit Details",
@@ -22,10 +22,6 @@ define(["ojL10n!resources/nls/generic"], function(Generic) {
         depositDetail: {
           sourceAccount: "Source Account",
           depositAmount: "Deposit Amount",
-          amount: {
-            months: "Months",
-            years: "Years"
-          },
           tenure: {
             singular: {
               month: "{n} Month",

@@ -24,7 +24,7 @@ define([
             "workflowId": ruleParams.workflowId()
           },
           options = {
-            url: "approvalRules?partyId={partyId}&description={description}&initiatorUserGroup={initiatorUserGroup}&ruleName={ruleName}&workflowId={workflowId}",
+            url: "approvalRules?partyId={partyId}&description={description}&initiatorUserGroup={initiatorUserGroup}&ruleName={ruleName}&workflowId={workflowId}&expand=all",
             success: function(data) {
               deferred.resolve(data);
             },

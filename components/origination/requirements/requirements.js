@@ -17,7 +17,7 @@ define([
   return function(rootParams) {
     var self = this,
       i, url, getNewKoModel = function() {
-        var KoModel = RequirementsModel.getNewModel(rootParams.baseModel.getLocaleValue("localCurrency"));
+        var KoModel = RequirementsModel.getNewModel(self.localCurrency);
         return KoModel;
       };
     ko.utils.extend(self, rootParams.rootModel);
@@ -91,17 +91,17 @@ define([
         if (!self.productDetails().requirements.purchasePrice && self.productDetails().productType === "AUTOMOBILE") {
           self.productDetails().requirements.purchasePrice = {};
           self.productDetails().requirements.purchasePrice.amount = ko.observable();
-          self.productDetails().requirements.purchasePrice.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+          self.productDetails().requirements.purchasePrice.currency = self.localCurrency;
         }
         if (!self.productDetails().requirements.downpaymentAmount && self.productDetails().productType === "AUTOMOBILE") {
           self.productDetails().requirements.downpaymentAmount = {};
           self.productDetails().requirements.downpaymentAmount.amount = ko.observable();
-          self.productDetails().requirements.downpaymentAmount.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+          self.productDetails().requirements.downpaymentAmount.currency = self.localCurrency;
         }
         if (!self.productDetails().requirements.requestedAmount) {
           self.productDetails().requirements.requestedAmount = {};
           self.productDetails().requirements.requestedAmount.amount = ko.observable();
-          self.productDetails().requirements.requestedAmount.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+          self.productDetails().requirements.requestedAmount.currency = self.localCurrency;
         }
         if (!self.productDetails().requirements.requestedTenure) {
           self.productDetails().requirements.requestedTenure = {};

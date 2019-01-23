@@ -23,6 +23,14 @@ define([
           usersAdded: "Users Added",
           userToAdd: "User to Add"
         },
+        userSearch: {
+          search: "Search",
+          header: "Select a user",
+          username: "User ID",
+          lookUp: "Look-Up",
+          userGroup: "User Group",
+          userName: "{firstName} {lastName} ({userName})"
+        },
         headers: {
           userGroup: "User Group",
           userGroupMaintenance: "Admin User Groups",
@@ -41,6 +49,7 @@ define([
           UserGroupId: "User Group Id",
           UserType: "User Type",
           UserGroupName: "User Group",
+          viewDetails: "View Details",
           userGroupName: "User Group Name",
           UserID: "User ID",
           UserName: "User Name",
@@ -48,6 +57,7 @@ define([
           editUserGroup: "Modify User Group",
           successful: "User Group Created successfully.",
           reviewUserGroup: "Create User Group",
+          searchText: "Please enter the username you are looking for.",
           noSearchResults: "No User Group Found. Please update search criteria",
           editSuccess: "User Group Updated Successfully.",
           linkUsers: "Add User",

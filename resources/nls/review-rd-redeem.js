@@ -5,7 +5,7 @@ define(["ojL10n!resources/nls/generic"], function(Generic) {
       root: {
         header: {
           redemption: "Redemption",
-          reviewHeader: "You Initaited a request for Deposit Redemption. Please review details before you confirm!"
+          reviewHeader: "You Initiated a request for Deposit Redemption. Please review details before you confirm!"
         },
         redemptionDetails: {
           accountNumber: "Account Number",

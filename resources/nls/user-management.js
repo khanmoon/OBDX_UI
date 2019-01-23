@@ -4,8 +4,9 @@ define([
   "ojL10n!resources/nls/user-management-common",
   "ojL10n!resources/nls/user-management-headers",
   "ojL10n!resources/nls/accessible-entity",
-  "ojL10n!resources/nls/internal-access-points"
-], function(Messages, Generic, UMCommon, UMHeaders, AccessibleEntity, InternalAccessPoints) {
+  "ojL10n!resources/nls/internal-access-points",
+  "ojL10n!resources/nls/obdx-locale"
+], function(Messages, Generic, UMCommon, UMHeaders, AccessibleEntity, InternalAccessPoints, OBDXLocale) {
   "use strict";
   var OriginationLocale = function() {
     return {
@@ -117,7 +118,8 @@ define([
         generic: Generic,
         common: UMCommon,
         headers: UMHeaders,
-        internalAccessPoints: InternalAccessPoints
+        internalAccessPoints: InternalAccessPoints,
+        locale : OBDXLocale
       },
       ar: true,
       fr: true,

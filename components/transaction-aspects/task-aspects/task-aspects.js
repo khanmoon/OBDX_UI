@@ -38,9 +38,12 @@ define([
         rootParams.baseModel.registerElement("confirm-screen");
         rootParams.dashboard.headerName(self.resource.header.transactionAspects);
         TransactionAspectsModel.getTransactions().done(function(data) {
-            self.transactionsList(data.taskList);
+            var tasks=ko.utils.arrayFilter(data.taskList, function(dataItem) {
+              return dataItem.aspects&&dataItem.aspects.length;
+            });
+            self.transactionsList(tasks);
             self.dataLoaded(true);
-        });
+          });
         self.searchTransactions = function() {
             if (!rootParams.baseModel.showComponentValidationErrors(document.getElementById("TaskValidater")))
                 return;

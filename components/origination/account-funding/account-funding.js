@@ -7,13 +7,13 @@ define([
   "baseLogger",
   "ojL10n!resources/nls/account-funding",
   "ojs/ojradioset"
-], function(oj, ko, $, AccountFundingModelObject, BaseLogger, resourceBundle) {
+], function (oj, ko, $, AccountFundingModelObject, BaseLogger, resourceBundle) {
   "use strict";
-  return function(rootParams) {
+  return function (rootParams) {
     var self = this,
       AccountFundingModel = new AccountFundingModelObject(),
       count = 0,
-      getNewKoModel = function() {
+      getNewKoModel = function () {
         var KoModel = AccountFundingModel.getNewModel();
         KoModel.selectedLinkedAccount = {
           id: {
@@ -59,7 +59,7 @@ define([
     self.minimumAmountLoaded = ko.observable(false);
     self.initialAmount = {
       amount: "",
-      currency: rootParams.baseModel.getLocaleValue("localCurrency")
+      currency: self.localCurrency
     };
     self.initialAmount.amount = ko.observable(self.initialAmount.amount);
     self.cardMaxLength = ko.observable("19");
@@ -67,10 +67,10 @@ define([
     self.selectedFrequency = ko.observable("");
     self.OffersAdditionalDetailsLoaded = ko.observable(false);
     self.validationTracker = ko.observable();
-    self.initializeModel = function() {
+    self.initializeModel = function () {
       AccountFundingModel.init(self.productDetails().submissionId.value, self.applicantObject().applicantId().value);
       self.applicantObject().accountFunding = getNewKoModel();
-      AccountFundingModel.getFundingOptionsList().done(function(data) {
+      AccountFundingModel.getFundingOptionsList().done(function (data) {
         if (data.fundingOptions && data.fundingOptions.length > 0) {
           self.fundingOptionsList(data.fundingOptions);
           var later = {
@@ -80,7 +80,7 @@ define([
           self.fundingOtionsListLoaded(true);
           self.fundingOptionsLoaded(true);
         }
-        AccountFundingModel.getExistingAccountConfig().done(function(data) {
+        AccountFundingModel.getExistingAccountConfig().done(function (data) {
           if (data.accountConfigDTO) {
             if (data.accountConfigDTO.maturityInformationDTO) {
               self.applicantObject().accountFunding.interestRate(data.accountConfigDTO.maturityInformationDTO.annualEquivalentRate);
@@ -110,7 +110,7 @@ define([
                   var account1 = self.applicantObject().accountFunding.savingsAccountConfiguration.settlementMode.internalAccountSettlementDetailDTO.accountNo;
                   if (count === 0) {
                     count = count + 1;
-                    AccountFundingModel.getCasaOwnAccountList().done(function(data) {
+                    AccountFundingModel.getCasaOwnAccountList().done(function (data) {
                       if (data.accounts) {
                         self.casaOwnAccountList(data.accounts);
                         for (var k = 0; k < self.casaOwnAccountList().length; k++) {
@@ -130,7 +130,7 @@ define([
                   var account = self.applicantObject().accountFunding.savingsAccountConfiguration.settlementMode.collectionDetails.counterPartyAccountNo;
                   if (count === 0) {
                     count = count + 1;
-                    AccountFundingModel.getLinkedAccountList().done(function(data) {
+                    AccountFundingModel.getLinkedAccountList().done(function (data) {
                       if (data.accounts) {
                         self.linkedAccountList(data.accounts);
                         for (var i = 0; i < self.linkedAccountList().length; i++) {
@@ -159,7 +159,7 @@ define([
           if (!self.fundingType()) {
             self.fundingType("LATER");
           }
-          if (self.productDetails().offers) {
+          if (self.productDetails().offers && self.productDetails().offers.offerAdditionalDetails && self.productDetails().offers.offerAdditionalDetails.demandDepositOfferDetails) {
             self.minimumAmount(self.productDetails().offers.offerAdditionalDetails.demandDepositOfferDetails.demandDepositOfferCurrencyParameterResponseDTOs[0].minimumInitialDepositAmount.amount);
           }
           if (self.minimumAmount() === "" || self.minimumAmount() === 0) {
@@ -196,7 +196,7 @@ define([
     if (!self.applicantObject().accountFunding) {
       self.applicantObject().accountFunding = getNewKoModel();
     }
-    self.showWhatIsThisText = function(data) {
+    self.showWhatIsThisText = function (data) {
       if (data === "CARD_CREDIT") {
         $("#whatisThisCredit").trigger("openModal");
       }
@@ -204,10 +204,10 @@ define([
         $("#whatisThisDebit").trigger("openModal");
       }
     };
-    self.completeAccountFundingSection = function() {
+    self.completeAccountFundingSection = function () {
       self.completeApplicationStageSection(rootParams.applicantStages, rootParams.applicantAccordion, rootParams.index + 1);
     };
-    self.linkedAccountChanged = function(event) {
+    self.linkedAccountChanged = function (event) {
       var account = {
         id: {
           value: "",
@@ -234,7 +234,7 @@ define([
         self.changeLinkedAccount(linkedAccount);
       }
     };
-    self.checkAccountFundingInfo = function(fundingOption) {
+    self.checkAccountFundingInfo = function (fundingOption) {
       self.applicantObject().accountFunding.savingsAccountConfiguration.settlementMode.txnAmount.amount = self.initialAmount.amount();
       self.applicantObject().accountFunding.savingsAccountConfiguration.settlementMode.txnAmount.currency = self.initialAmount.currency;
       if (!rootParams.baseModel.showComponentValidationErrors(self.validationTracker()) || self.mandatoryFlag()) {
@@ -246,7 +246,7 @@ define([
       }
     };
     var payLoad;
-    self.saveAccountFundingInfo = function(data) {
+    self.saveAccountFundingInfo = function (data) {
       var accConfig = null;
       if (data.fundingType()) {
         if (data.fundingType() === "CARD_CREDIT" || data.fundingType() === "CARD_DEBIT") {
@@ -309,16 +309,16 @@ define([
         if (accConfig) {
           accConfig.offerId = self.productDetails().offers ? self.productDetails().offers.offerId : "";
           accConfig.productGroupSerialNumber = 1;
-          accConfig.offerCurrency = rootParams.baseModel.getLocaleValue("localCurrency");
+          accConfig.offerCurrency = self.localCurrency;
           payLoad = ko.toJSON(accConfig);
-          AccountFundingModel.saveModel(payLoad).done(function(data) {
+          AccountFundingModel.saveModel(payLoad).done(function (data) {
             self.applicantObject().accountFunding.savingsAccountConfiguration.simulationId = data.simulationId;
             var sendData = {
               productGroupSerialNumber: self.applicantObject().accountFunding.savingsAccountConfiguration.productGroupSerialNumber,
               simulationId: self.applicantObject().accountFunding.savingsAccountConfiguration.simulationId
             };
             var validatePayLoad = ko.toJSON(sendData);
-            AccountFundingModel.validateAccountConfig(validatePayLoad).done(function(data) {
+            AccountFundingModel.validateAccountConfig(validatePayLoad).done(function (data) {
               self.applicantObject().accountFunding.savingsAccountConfiguration.simulationId = data.simulationId;
               self.completeAccountFundingSection();
             });
@@ -334,16 +334,16 @@ define([
         if (accConfig) {
           accConfig.offerId = self.productDetails().offers ? self.productDetails().offers.offerId : "";
           accConfig.productGroupSerialNumber = 1;
-          accConfig.offerCurrency = rootParams.baseModel.getLocaleValue("localCurrency");
+          accConfig.offerCurrency = self.localCurrency;
           payLoad = ko.toJSON(accConfig);
-          AccountFundingModel.saveModel(payLoad).done(function(data) {
+          AccountFundingModel.saveModel(payLoad).done(function (data) {
             self.applicantObject().accountFunding.savingsAccountConfiguration.simulationId = data.simulationId;
             var sendData = {
               productGroupSerialNumber: self.applicantObject().accountFunding.savingsAccountConfiguration.productGroupSerialNumber,
               simulationId: self.applicantObject().accountFunding.savingsAccountConfiguration.simulationId
             };
             var validatePayLoad = ko.toJSON(sendData);
-            AccountFundingModel.validateAccountConfig(validatePayLoad).done(function(data) {
+            AccountFundingModel.validateAccountConfig(validatePayLoad).done(function (data) {
               self.applicantObject().accountFunding.savingsAccountConfiguration.simulationId = data.simulationId;
               self.completeAccountFundingSection();
             });
@@ -351,7 +351,7 @@ define([
         }
       }
     };
-    self.getAccountFundingList = function(data, event) {
+    self.getAccountFundingList = function (data, event) {
       if (event.detail.value && event.detail.value !== null) {
         self.cardOptionsRefreshed(false);
         self.currentCardType(self.currentCardType());
@@ -368,7 +368,7 @@ define([
         self.cardOptionsRefreshed(true);
         if (event.detail.value === "COLL" && !self.linkedAccountListLoaded() && count === 0) {
           count = count + 1;
-          AccountFundingModel.getLinkedAccountList().done(function(data) {
+          AccountFundingModel.getLinkedAccountList().done(function (data) {
             if (data.accounts) {
               self.linkedAccountList(data.accounts);
             }
@@ -381,7 +381,7 @@ define([
         }
         if (event.detail.value === "DDAO" && !self.casaOwnAccountListLoaded() && count === 0) {
           count = count + 1;
-          AccountFundingModel.getCasaOwnAccountList().done(function(data) {
+          AccountFundingModel.getCasaOwnAccountList().done(function (data) {
             if (data.accounts) {
               self.casaOwnAccountList(data.accounts);
             }
@@ -391,7 +391,7 @@ define([
         }
         if ((event.detail.value === "CARD_CREDIT" || event.detail.value === "CARD_DEBIT") && !self.cardFormatsListListLoaded() && count === 0) {
           count = count + 1;
-          AccountFundingModel.getCardFormatsList().done(function(data) {
+          AccountFundingModel.getCardFormatsList().done(function (data) {
             if (data.enumRepresentations) {
               if (data.enumRepresentations[0].type.toUpperCase() === "CREDIT") {
                 self.debitCardFormatsList(data.enumRepresentations[1]);

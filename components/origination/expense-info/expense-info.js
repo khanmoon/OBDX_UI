@@ -19,7 +19,7 @@ define([
         KoModel.type = ko.observable(KoModel.type);
         KoModel.frequency = ko.observable(KoModel.frequency);
         KoModel.amount.amount = ko.observable(KoModel.amount.amount);
-        KoModel.amount.currency = rootParams.baseModel.getLocaleValue("localCurrency");
+        KoModel.amount.currency = self.localCurrency;
         KoModel.temp_isActive = ko.observable(KoModel.temp_isActive);
         KoModel.temp_selectedValues = ko.observable(KoModel.temp_selectedValues);
         return KoModel;

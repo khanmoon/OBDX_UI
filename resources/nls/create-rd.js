@@ -72,7 +72,6 @@ define(["ojL10n!resources/nls/generic"], function(Generic) {
                     },
                     accountName: "Account Name",
                     bankCode: "Bank Code",
-                    or: "or",
                     lookUpBankCode: "Look Up Bank Code"
                 },
                 validate: {

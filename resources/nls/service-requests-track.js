@@ -1,5 +1,6 @@
 define([], function() {
   "use strict";
+
   var serviceRequestsTrack = function() {
     return {
       root: {
@@ -8,7 +9,7 @@ define([], function() {
         requestDetailsHeader: "Request Status",
         note: "Note",
         infoText: "This page lists all the Service Requests raised by you.",
-        infoParagraph: "You can simply search a particular request and view the details of it by clicking on the same. Incase you are not satisfied with the resolution provided for your request, please contact Branch or Customer Care.",
+        infoParagraph: "You can simply search a particular request and view the details of it by clicking on the same. In case you are not satisfied with the resolution provided for your request, please contact Branch or Customer Care.",
         refineText: "Refine your Results",
         productPlaceHolder: "Product Name",
         categoryPlaceHolder: "Category Name",
@@ -16,7 +17,6 @@ define([], function() {
         statusPlaceHolder: "Status",
         referenceNo: "Reference No",
         refNumber: "Reference Number",
-        requestType: "Request For",
         requestDate: "Date Requested",
         requestName: "Request Name",
         searchResult: "Search Results",
@@ -49,12 +49,12 @@ define([], function() {
         buildForm: "Build your Form",
         buildFormData: "You need to Approve or Reject the request first and then you can update the status of the same. There is an option to provide comments while updating the request status so that the reason or any other important information can be captured and referred on a later date.",
         preview: "Preview",
-        closure: "Closure Comments on ",
-        remarksAdmin: "Remarks Updated on ",
-        closedBy: "Closed By ",
-        updatedBy: "Updated By ",
+        closure: "<b>Closure Comments on</b> {closureOn}",
+        remarksAdmin: "<b>Remarks Updated on</b> {remarksOn}",
+        closedBy: "Closed By <b>{closedBy}</b>",
+        updatedBy: "Updated By <b>{updatedBy}</b>",
         commentsVisibilty: "Comments visible to business user",
-        previewData: "Once you finish the first two sections you can preview the service request form which will show how the Service Request page will look like on the business user’s page.",
+        previewData: "Once you finish the first two sections you can preview the service request form which will show how the Service Request page will look like on the business user's page.",
         completed: "Completed",
         rejected: "Rejected",
         ok: "Ok"
@@ -68,5 +68,6 @@ define([], function() {
       el: true
     };
   };
+
   return new serviceRequestsTrack();
 });

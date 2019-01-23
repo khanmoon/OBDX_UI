@@ -23,6 +23,8 @@ define([
         self.reviewTransactionName.header = self.resource.common.review;
         self.reviewTransactionName.reviewHeader = self.resource.common.reviewHeader;
         self.isAddressLoaded = ko.observable(false);
+        rootParams.baseModel.registerComponent("review-cheque", "demand-deposits");
+
         if (self.addressDetails) {
             self.isAddressLoaded(true);
         } else {
@@ -62,6 +64,8 @@ define([
         (function (extensionObject) {
             extensionObject.isSet = true;
             extensionObject.data = self.params.data.chequeBookDetails;
+            extensionObject.addressDetails = self.addressDetails;
+            extensionObject.common = self.common;
             extensionObject.template = "confirm-screen/cheque-book-request";
             extensionObject.resourceBundle = ResourceBundle;
             extensionObject.successMessage = "";

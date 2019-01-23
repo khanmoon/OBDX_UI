@@ -79,7 +79,7 @@ define([
             var mappingsData = data;
             var taskType = null;
             if (self.selectedSegmentId() === "administrator")
-                taskType = "ADMINISTRATION";
+                taskType = ["ADMINISTRATION", "COMMON"];
             viewAuthenticationMaintenanceModel.fetchTransactionsForMaintenance(taskType).done(function (data) {
                 if (self.selectedSegmentId() !== "administrator")
                     for (i = data.taskList.length - 1; i >= 0; i--) {

@@ -120,6 +120,7 @@ define([
         self.cancelPayment = function() {
             self.stageOne(true);
             self.stageTwo(false);
+            self.userLogout(self.EPIVerifyModel.staticFailureUrl());
         };
         self.fetchAttribute = function(url) {
             var uri_dec = url.replace(/&#x2f;/g, "/").replace(/&#x3f;/g, "?").replace(/&#x3d;/g, "=").replace(/&#x3a;/g, ":");
@@ -165,7 +166,7 @@ define([
             }
         };
         self.cancel = function() {
-            history.back();
+          history.back();
         };
         /**
          * This function is used to call the logout service from the ExternalPaymentModel which cause the user to log out.

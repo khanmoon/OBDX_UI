@@ -5,8 +5,9 @@
  */
 define([
   "knockout",
-  "jquery"
-], function(ko, $) {
+  "jquery",
+  "platform"
+], function (ko, $, Platform) {
   /**
    * This file lists all the methods needed for invoking web help.
    * @class
@@ -15,7 +16,7 @@ define([
    * @memberof module:baseModel
    */
   "use strict";
-  var HelpModel = function(parentContext) {
+  var HelpModel = function (parentContext) {
     /**
      * Assign <code>this</code> to <code>self</code>.
      * @member {Object}
@@ -47,22 +48,22 @@ define([
      * @inner
      * @returns {void}
      */
-    self.showWebHelp = function() {
+    self.showWebHelp = function () {
       if ("onhelp" in window)
-        window.onhelp = function() {
+        window.onhelp = function () {
           self.openWebHelpWindow();
           return false;
         };
       else {
         var cancelKeyPress;
-        document.onkeydown = function(evt) {
+        document.onkeydown = function (evt) {
           cancelKeyPress = (evt.keyCode === 112);
           if (cancelKeyPress) {
             self.openWebHelpWindow();
             return false;
           }
         };
-        document.onkeypress = function() {
+        document.onkeypress = function () {
           if (cancelKeyPress)
             return false;
         };
@@ -70,16 +71,16 @@ define([
     };
 
     /**
-    * This function is used to parse the [webhelpID]{@linkcode Help#webhelpID} and thus determine and open the location of webhelp page using that.
-    * @function parseLocationById
-    * @memberof Help
-    * @inner
-    * @param {String} location  - This string contains the location of page the user is on and requesting the webhelp for.
-    * @param {String} currentModule - This string contains the module for which the component exists.
-    * @param {String} webhelpID  - This string contains the webhelpID of page the user is on and requesting the webhelp for.
-    * @returns {void}
-    */
-    var parseLocationById = function(location, currentModule, webhelpID) {
+     * This function is used to parse the [webhelpID]{@linkcode Help#webhelpID} and thus determine and open the location of webhelp page using that.
+     * @function parseLocationById
+     * @memberof Help
+     * @inner
+     * @param {String} location  - This string contains the location of page the user is on and requesting the webhelp for.
+     * @param {String} currentModule - This string contains the module for which the component exists.
+     * @param {String} webhelpID  - This string contains the webhelpID of page the user is on and requesting the webhelp for.
+     * @returns {void}
+     */
+    var parseLocationById = function (location, currentModule, webhelpID) {
       location += jsonData[currentModule][webhelpID];
       window.open(location, "_blank");
     };
@@ -91,23 +92,32 @@ define([
      * @instance
      * @returns {void}
      */
-    self.openWebHelpWindow = function() {
+    self.openWebHelpWindow = function () {
       var location = "/webhelp/Content/obdx/";
       var win = window.open("");
       window.oldOpen = window.open;
       // reassignment function
-      window.open = function(url) {
+      window.open = function (url) {
         win.location = url;
         window.open = window.oldOpen;
         win.focus();
       };
       var currentModule = self.QueryParams.get("module");
       if (currentModule && !jsonData[currentModule]) {
-        $.getJSON("../json/webhelpMappings/" + currentModule + ".json", function(data) {
+        $.getJSON("../json/webhelpMappings/" + currentModule + ".json", function (data) {
           jsonData[currentModule] = data;
           parseLocationById(location, currentModule, self.webhelpID());
-        }).fail(function() {
-          window.open(location + "obdxintroduction.htm", "_blank");
+        }).fail(function () {
+          Platform.getInstance().then(function (platform) {
+            var serverUrl = platform("getServerURL", true);
+
+            if (serverUrl) {
+              window.open(serverUrl + location + "obdxintroduction.htm", "_blank");
+
+            } else {
+              window.open(location + "obdxintroduction.htm", "_blank");
+            }
+          });
         });
       } else {
         parseLocationById(location, currentModule, self.webhelpID());
@@ -122,7 +132,7 @@ define([
      * @param {String} webhelpID  - This string contains the webhelpID of page the user is on and requesting the webhelp for.
      * @returns {void}
      */
-    self.setwebhelpID = function(webhelpID) {
+    self.setwebhelpID = function (webhelpID) {
       this.webhelpID(webhelpID);
     };
 

@@ -66,7 +66,6 @@ define(["ojL10n!resources/nls/financial-limits-common"], function(Limits_common)
           "accessPoint": "Touch Points / Group",
           "actions": "Actions",
           "limitPackage" : "Package",
-          "limitPackageHeader": "Limits",
           "selectLimitPackage":"Please select Limit Package",
           "refresh" : "Refresh",
           "showInformation" : "Information",

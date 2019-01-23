@@ -1,6 +1,7 @@
 define([
-  "ojL10n!resources/nls/generic"
-], function(Generic) {
+  "ojL10n!resources/nls/generic",
+  "ojL10n!resources/nls/obdx-locale"
+], function(Generic, OBDXLocale) {
   "use strict";
   var RegistrationLocale = function() {
     return {
@@ -39,15 +40,14 @@ define([
             accountDetail: "Great! Give us some details about your account, so we can look you up.",
             accountType: "Account Type",
             debitcardPlaceholder: "8888\xA0 8989\xA0 8989\xA0 9898 989",
-            creditcardPlaceholder: "8888\xA0 8989\xA0 8989\xA0 9898",
-            mandatoryDebitCardNumber: "Debit Card Number is mandatory",
-            mandatoryDebitPin: "Debit Card Pin is mandatory"
+            creditcardPlaceholder: "8888\xA0 8989\xA0 8989\xA0 9898"
           },
           verification: {
             verificationLabel: "Verification Code"
           }
         },
-        generic: Generic
+        generic: Generic,
+        locale: OBDXLocale
       },
       ar: true,
       fr: true,

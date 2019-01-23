@@ -25,8 +25,8 @@ define([], function () {
                     colors: {
                         "--base-color-primary": "Base Color Primary",
                         "--base-color-secondary": "Base Color Secondary",
-                        "--base-color-secondary-text": "Base Color Secondary Text",
-                        "--base-color-secondary-darken": "Base Color Secondary Darken",
+                        "--base-color-secondary-text": "Base Color - Secondary Text",
+                        "--base-color-secondary-darken": "Base Color - Secondary Darken",
                         "--button-primary-background": "Button Primary Background",
                         "--button-primary-foreground": "Button Primary Foreground",
                         "--button-primary-border-color": "Button Primary Border Color",
@@ -58,7 +58,7 @@ define([], function () {
                         "--base-font-size-h4": "Header 4 Font Size",
                         "--base-font-size-h5": "Header 5 Font Size",
                         "--base-font-size-h6": "Header 6 Font Size",
-                        "--form-input-text": "Form Input Font Size",
+                        "--form-input-text": "Form Input - Font Size",
 
                         "--base-font-size-small": "Small Font Size",
                         "--base-font-size-large": "Large Font Size",
@@ -86,9 +86,9 @@ define([], function () {
                         "--base-border-default": "Border Default Color",
                         "--base-text-primary": "Primary Text Color",
                         "--base-text-secondary": "Secondary Text Color",
-                        "--base-text-tertiary": "Tertairy Text Color",
+                        "--base-text-tertiary": "Tertiary Text Color",
                         "--base-background-primary": "Primary Background Color",
-                        "--base-background-tertiary": "Tertairy Background Color",
+                        "--base-background-tertiary": "Tertiary Background Color",
                         "--base-background-secondary": "Secondary Background Color",
                         "--base-background-disable": "Background Disable Color",
                         "--scroll-track": "Scroll Track",
@@ -111,9 +111,9 @@ define([], function () {
                         "--button-secondary-background": "Secondary Background Color",
                         "--button-secondary-foreground": "Secondary Foreground color",
                         "--button-secondary-border-color": "Secondary Border Color",
-                        "--button-tertiary-background": "Tertairy Background Color",
-                        "--button-tertiary-foreground": "Tertairy Foreground Color",
-                        "--button-tertiary-border-color": "Tertairy Border Color"
+                        "--button-tertiary-background": "Tertiary Background Color",
+                        "--button-tertiary-foreground": "Tertiary Foreground Color",
+                        "--button-tertiary-border-color": "Tertiary Border Color"
                     },
                     "button-variables": {
                         "--button-height": "Height",
@@ -138,7 +138,7 @@ define([], function () {
                         "--nav-selected-text": "Selected Text Color",
                         "--nav-selected-border": "Selected Border Color",
                         "--nav-selected-background": "Selected Background Color",
-                        "--nav-default-background": "Deafalut Background Color"
+                        "--nav-default-background": "Default Background Color"
                     },
                     "table": {
                         "--table-header-background": "Header Background Color",
@@ -167,10 +167,10 @@ define([], function () {
                         "--form-input-button-border-width": "Form Button Border Width",
                         "--form-padding-top-bottom": "Padding Top Bottom",
                         "--form-padding-left-right": "Padding Left Right",
-                        "--form-padding-small-top-bottom": "Small Form Padding Top Bottom",
-                        "--form-padding-small-left-right": "Small Form Padding Left Right",
-                        "--form-title-margin-top-bottom": "Form Title Margin Top Bottom",
-                        "--form-title-margin-left-right": "Form Title Margin Left Right"
+                        "--form-padding-small-top-bottom": "Small Form - Padding Top Bottom",
+                        "--form-padding-small-left-right": "Small Form - Padding Left Right",
+                        "--form-title-margin-top-bottom": "Form Title - Margin Top Bottom",
+                        "--form-title-margin-left-right": "Form Title - Margin Left Right"
                     },
                     "form-colors": {
                         "--form-input-background-base": "Input Background Color",
@@ -178,8 +178,8 @@ define([], function () {
                         "--form-input-background-focus": "Input Focus Color",
                         "--form-input-background-disable": "Input Disable Color",
                         "--form-input-color-base": "Input Text Color",
-                        "--form-input-color-hover": "Input Text Hover Color",
-                        "--form-input-color-focus": "Input Text Focus Color",
+                        "--form-input-color-hover": "Input Text - Hover Color",
+                        "--form-input-color-focus": "Input Text - Focus Color",
                         "--form-input-color-disable": "Input Text Disable Color",
                         "--form-input-border-color": "Input Border Color"
                     }

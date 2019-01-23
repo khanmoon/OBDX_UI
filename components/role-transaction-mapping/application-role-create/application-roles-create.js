@@ -142,7 +142,6 @@ define([
             }
             self.selectedStepValue("mapTransaction");
             self.selectedStepLabel(self.nls.common.mapTransaction);
-            rootParams.dashboard.loadComponent("map-transaction", {}, self);
             var searchParameters = {
                 "accessType": self.selectedAccessType()
             };
@@ -153,8 +152,9 @@ define([
                         text: data.accessPointListDTO[i].description,
                         value: data.accessPointListDTO[i].id
                     });
-                    self.isAccessPointFetched(true);
                 }
+                 self.isAccessPointFetched(true);
+                 rootParams.dashboard.loadComponent("map-transaction", {}, self);
             });
         };
     };

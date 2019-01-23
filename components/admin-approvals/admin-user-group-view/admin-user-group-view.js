@@ -2,16 +2,19 @@ define([
     "ojs/ojcore",
     "knockout",
     "jquery",
-
     "./model",
     "ojL10n!resources/nls/admin-user-group",
     "ojs/ojinputtext",
     "ojs/ojknockout",
     "ojs/ojknockout-validation",
+    "ojs/ojvalidationgroup",
     "ojs/ojlistview",
     "ojs/ojarraytabledatasource",
     "ojs/ojtable",
-    "ojs/ojselectcombobox"
+    "ojs/ojradioset",
+    "ojs/ojselectcombobox",
+    "ojs/ojpagingcontrol",
+    "ojs/ojpagingtabledatasource", "ojs/ojarraytabledatasource"
 ], function (oj, ko, $, PaneViewModel, resourceBundle) {
     "use strict";
     return function (rootParams) {
@@ -23,8 +26,12 @@ define([
         rootParams.baseModel.registerElement("modal-window");
         self.koUserGroupUserModel = ko.observableArray();
         self.transactionName = ko.observable();
-        self.datasource = new oj.ArrayTableDataSource([]);
+        self.userList = ko.observableArray();
+        self.datasource = new oj.PagingTableDataSource(new oj.ArrayTableDataSource(self.koUserGroupUserModel, {idAttribute: "userID"}));
+        self.selectedUser = ko.observable();
+        self.userExists = ko.observable(false);
         self.userID = ko.observable("");
+        self.user = ko.observable();
         self.actionHeaderheading = ko.observable();
         self.mode = ko.observable(self.params.mode);
         if (self.mode() === "VIEW") {
@@ -36,34 +43,36 @@ define([
         self.groupDescription = ko.observable(self.params.description);
         self.prevMode = ko.observable();
         self.userDTOList = ko.observableArray();
-        self.userList = ko.observableArray();
         self.userListLoaded = ko.observable(false);
         self.buttonToDropDown = ko.observable(false);
-        self.selectedUser = ko.observable();
         self.validationTracker = ko.observable();
         self.httpStatus = ko.observable();
         self.transactionStatus = ko.observable();
         self.referenceNumber = ko.observable();
+        self.userName = ko.observable();
         self.userListNull = ko.observable(false);
+        self.userLoaded = ko.observable(false);
         self.statusMessage = ko.observable();
         self.version = null;
         rootParams.baseModel.registerElement("confirm-screen");
         if (self.params.users && self.params.users.length > 0) {
             ko.utils.arrayForEach(self.params.users, function (users) {
-                PaneViewModel.validateUser(users.userId).then(function (data) {
-                    var usermodel = PaneViewModel.getUserModel();
-                    usermodel.userID = data.userDTO.username;
-                    usermodel.userName = rootParams.baseModel.format(self.nls.generic.common.name, {
-                        firstName: data.userDTO.firstName,
-                        lastName: data.userDTO.lastName
-                    });
-                    self.koUserGroupUserModel.push(usermodel);
-                    self.datasource.reset(self.koUserGroupUserModel(), { idAttribute: "userID" });
-                }).fail(function () {
-                    rootParams.baseModel.showMessages(null, [self.nls.common.invalidError], "ERROR");
-                });
+              var usermodel = PaneViewModel.getUserModel();
+              usermodel.userID = users.userId;
+              usermodel.userName = null;
+              usermodel.isLoading = ko.observable(false);
+              self.koUserGroupUserModel.push(usermodel);
             });
         }
+        self.viewUserDetails = function(users) {
+            PaneViewModel.validateUser(users.userID).then(function(data) {
+              users.isLoading(true);
+              users.userName = data.userDTO.username;
+
+            }).fail(function() {
+                rootParams.baseModel.showMessages(null, [self.nls.common.invalidError], "ERROR");
+            });
+        };
         self.cancel = function () {
             history.back();
         };
@@ -73,6 +82,7 @@ define([
         };
         self.rootModelInstance = ko.observable(getNewKoModel());
         self.confirm = function () {
+          self.rootModelInstance().UserGroup.users.removeAll();
             if (self.params.id === undefined) {
                 self.prevMode("CREATE");
             }
@@ -139,7 +149,7 @@ define([
             }
         };
         self.save = function () {
-            if (!rootParams.baseModel.showComponentValidationErrors(self.validationTracker())) {
+            if (!rootParams.baseModel.showComponentValidationErrors(document.getElementById("adminUserGroupView"))) {
                 return;
             }
             if (self.koUserGroupUserModel().length === 0) {
@@ -154,9 +164,6 @@ define([
             ko.utils.arrayForEach(self.koUserGroupUserModel(), function (usersAdded) {
                 if (usersAdded.userID === userID) {
                     self.koUserGroupUserModel.remove(usersAdded);
-                    self.datasource.reset(self.koUserGroupUserModel(), { idAttribute: "userID" });
-                    self.selectedUser();
-                    self.userID("");
                 }
             });
         };
@@ -166,50 +173,40 @@ define([
                 self.ruleSearch(true);
             });
         };
-        self.editUserGroup = function () {
+        self.editUserGroup = function() {
             if (self.params.id) {
-                PaneViewModel.fetchUserGroup(self.params.id).done(function (data) {
-                    self.version = data.userGroup.version;
-                });
-                self.loadUserList();
+                self.mode("EDIT");
+                self.actionHeaderheading(self.nls.generic.common[self.mode().toLowerCase()]);
             } else {
                 self.mode("CREATE");
                 self.actionHeaderheading(self.nls.generic.common[self.mode().toLowerCase()]);
             }
+
         };
-        self.loadUserList = function () {
-            PaneViewModel.fetchUserList().done(function (data) {
-                self.userDTOList = data.userDTOList;
-                if (self.params.id) {
-                    self.mode("EDIT");
-                    self.actionHeaderheading(self.nls.generic.common[self.mode().toLowerCase()]);
-                }
+        self.loadUserList = function() {
+            if (!rootParams.baseModel.showComponentValidationErrors(document.getElementById("adminUserGroupView"))) {
+                return;
+            }
+            PaneViewModel.fetchUserList(self.userName()).done(function(data) {
+                ko.utils.arrayPushAll(self.userList,data.userDTOList);
+                self.userListLoaded(true);
             });
         };
-        if (self.mode() === "CREATE") {
-            self.loadUserList();
-        }
-        self.addNew = function () {
+        self.openModal = function() {
             self.userListLoaded(false);
-            self.usersFilter = ko.computed(function () {
-                self.userList.removeAll();
-                var temp;
-                return ko.utils.arrayFilter(self.userDTOList, function (dataItem) {
-                    temp = true;
-                    ko.utils.arrayForEach(self.koUserGroupUserModel(), function (usersAdded) {
-                        if (dataItem.username === usersAdded.userID) {
-                            temp = false;
-                        }
-                    });
-                    if (temp) {
-                        self.userList.push(dataItem);
-                    }
-                });
-            }, self);
-            self.dispose = function () {
-                self.usersFilter.dispose();
-            };
-            self.userListLoaded(true);
+            $("#userSearchDialog").trigger("openModal");
+
+        };
+
+        self.closeDialog = function(){
+          $("#userSearchDialog").trigger("closeModal");
+        };
+
+        self.refreshLookUp = function() {
+            self.userList.removeAll();
+        };
+        self.addNew = function () {
+
             self.buttonToDropDown(true);
         };
         self.showUserId = ko.computed(function () {
@@ -220,20 +217,26 @@ define([
         self.dispose = function () {
             self.showUserId.dispose();
         };
-        self.addRow = function () {
+        self.addRow = function() {
             var usermodel = PaneViewModel.getUserModel();
-            usermodel.userID = self.selectedUser().split("~")[2];
-            self.userID(self.selectedUser().split("~")[2]);
-            usermodel.userName = rootParams.baseModel.format(self.nls.generic.common.name, {
-                firstName: self.selectedUser().split("~")[0],
-                lastName: self.selectedUser().split("~")[1]
+            usermodel.userID = self.userName();
+            usermodel.isLoading = ko.observable(false);
+            ko.utils.arrayForEach(self.koUserGroupUserModel(), function(users) {
+                if (usermodel.userID === users.userID) {
+                    self.userExists(true);
+                }
+
             });
-            self.koUserGroupUserModel.push(usermodel);
-            self.datasource.reset(self.koUserGroupUserModel(), { idAttribute: "userID" });
-            self.selectedUser(null);
-            self.userID("");
-            self.userListLoaded(false);
-            self.buttonToDropDown(false);
+            if (self.userExists() === false) {
+                self.userID(self.userName());
+                self.koUserGroupUserModel.push(usermodel);
+                self.userListLoaded(false);
+                self.buttonToDropDown(false);
+            } else {
+                self.userListLoaded(false);
+                self.buttonToDropDown(false);
+                rootParams.baseModel.showMessages(null, [self.nls.common.userExists], "ERROR");
+            }
         };
         self.done = function () {
             rootParams.dashboard.openDashBoard();

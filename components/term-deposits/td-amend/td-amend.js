@@ -29,7 +29,7 @@ define([
     self.validationTracker = ko.observable();
     self.groupValid = ko.observable();
     ko.utils.extend(self, rootParams.rootModel);
-    self.rollOverType = ko.observable(self.params.payoutInstructions && self.params.payoutInstructions[0] ? [self.params.payoutInstructions[0].type] : null);
+    self.rollOverType = ko.observable(self.params.rolloverType);
     self.accountNumberSelected = ko.observable(self.params && self.params.id ? self.params.id.value : null);
     self.locale = locale;
     rootParams.dashboard.headerName(self.locale.amendTD.editMaturityDetails);
@@ -48,7 +48,10 @@ define([
       self.rollOverType(self.rootModelInstance.amendData.rollOverType());
     }
     self.dataModel().buttonSection(!!self.rollOverType());
-    if (self.params.payoutInstructions && self.params.payoutInstructions[0]) {
+    if(!(self.previousState && !self.previousState.rolloverType) && self.params.rolloverType){
+      self.rootModelInstance.amendData.rollOverType(self.params.rolloverType);
+    }
+    if (!(self.previousState && !self.previousState.payoutInstructions) && self.params.payoutInstructions && self.params.payoutInstructions[0]) {
       if (self.params.payoutInstructions[0].accountId) {
         self.rootModelInstance.amendData.payoutInstructions()[0].accountId.displayValue(self.params.payoutInstructions[0].accountId.displayValue);
         self.rootModelInstance.amendData.payoutInstructions()[0].accountId.value(self.params.payoutInstructions[0].accountId.value);

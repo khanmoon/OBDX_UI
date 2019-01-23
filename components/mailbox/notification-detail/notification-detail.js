@@ -14,7 +14,7 @@ define([
         self.nls = resourceBundle;
         self.messageBody = ko.observable(params.data.messageDetails().mailerUserMapDTO.messageBody);
         self.subject = ko.observable(params.data.messageDetails().mailerUserMapDTO.subject);
-        self.date = ko.observable(params.baseModel.formatDate(params.data.messageDetails().mailerUserMapDTO.creationDate, "dateTimeStampFormat"));
+        self.date = ko.observable(params.baseModel.formatDate(params.data.messageDetails().mailerUserMapDTO.receivedDate, "dateTimeStampFormat"));
         self.toShow = ko.observable(false);
         self.deletePayload = ko.observableArray();
         self.mappedNotifications = ko.observableArray();

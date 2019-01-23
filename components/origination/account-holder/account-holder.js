@@ -152,7 +152,7 @@ define([
       }
       self.applicantObject().accountHolder.savingsHolderConfiguration.partyId.value = self.applicantObject().applicantId().value;
       self.applicantObject().accountHolder.savingsHolderConfiguration.submissionId = self.productDetails().submissionId.value;
-      self.applicantObject().accountHolder.savingsHolderConfiguration.offerCurrency = rootParams.baseModel.getLocaleValue("localCurrency");
+      self.applicantObject().accountHolder.savingsHolderConfiguration.offerCurrency = self.localCurrency;
       if (self.applicantObject().accountHolder.savingsHolderConfiguration.accountHolderPreferenceDTO[0].chequeBookLeaves) {
         self.applicantObject().accountHolder.savingsHolderConfiguration.accountHolderPreferenceDTO[0].chequeBookLeaves(self.applicantObject().accountHolder.savingsHolderConfiguration.accountHolderPreferenceDTO[0].chequeBookLeaves());
       }

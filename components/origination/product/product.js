@@ -68,7 +68,7 @@ define([
     self.dollar = String.fromCharCode(self.resource.generic.common.dollarAscii);
     self.productDetails = ko.observable({
       applicantList: ko.observableArray([]),
-      baseCurrency: rootParams.baseModel.getLocaleValue("localCurrency"),
+      baseCurrency: self.localCurrency,
       applicantDetailsFetched: ko.observable(false),
       sectionBeingEdited: ko.observable(),
       collabData: ko.observable({}),
@@ -351,7 +351,7 @@ define([
     ko.utils.extend(self, new ProductExtension(rootParams.dashboard.userData, self.productDetails()));
     var loanRequirementPayload = {
       requestedAmount: {
-        currency: rootParams.baseModel.getLocaleValue("localCurrency"),
+        currency: self.localCurrency,
         amount: ""
       },
       requestedTenure: {

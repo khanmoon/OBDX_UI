@@ -1,0 +1,48 @@
+<!-- ko if: dataFetched1() -->
+<div class="form-main-container profile">
+	<page-section params="baseModel : $baseModel, rootModel : $data">
+		<div class="profile-header oj-flex oj-flex-items-pad">
+			<div class=" oj-flex-item oj-sm-12 oj-md-6">
+				<img class="profile-image" data-bind="loadImage : 'corp/common/user management.svg'"></img>
+				<span class="profile-name" data-bind="text:$component.partyData().fullName"></span>
+			</div>
+			<div class=" oj-flex-item oj-sm-12 oj-md-6 oj-lg-justify-content-flex-end" data-bind="css: !$baseModel.small() ? 'right' : ''">
+				<a href="#" class="confirm-screen__eReceipt-top confirm-screen__form-button-link" data-bind="attr:{'alt':$component.nls.download ,'title':$component.nls.downloadFile,'aria-label':$component.nls.downloadFile }, click: $component.downloadPartyDetails ">
+					<span class="confirm-screen__eReceipt-bottom-icon icons icon-download"></span>
+					<span class="confirm-screen__eReceipt-bottom-text" data-bind="text:$component.nls.downloadFile">
+					</span>
+				</a>
+			</div>
+		</div>
+		<div class="oj-flex oj-flex-items-pad">
+			<div class=" oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 ">
+				<div class="row-group">
+					<row params="baseModel : $baseModel, rootModel : $parent, label : nls.address , value :address()"></row>
+				</div>
+			</div>
+			<div class=" oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 ">
+				<div class="row-group">
+					<row params="baseModel : $baseModel, rootModel : $parent, label : nls.email , value :partyData().email"></row>
+					<row params="baseModel : $baseModel, rootModel : $parent, label : nls.phone , value :phoneNumber()"></row>
+				</div>
+			</div>
+
+			<div class=" oj-flex-item oj-sm-12 oj-md-4 oj-lg-4 ">
+				<div class="row-group">
+					<row params="baseModel : $baseModel, rootModel : $parent, label : nls.dob , value :$baseModel.formatDate(partyData().birthDate)"></row>
+				</div>
+			</div>
+		</div>
+	</page-section>
+
+
+
+	<div class="oj-flex oj-flex-items-pad button-container">
+		<oj-button id="" class="action-button-primary" on-click="[[$dashboard.hideDetails]]">
+			<span data-bind="text:nls.ok"></span>
+		</oj-button>
+
+	</div>
+
+</div>
+<!-- /ko -->

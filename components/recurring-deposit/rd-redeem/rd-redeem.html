@@ -57,26 +57,22 @@
           </div>
           <oj-validation-group id="codeTracker" valid="{{codeValid}}">
           <div class="oj-flex oj-flex-items-pad oj-lg-12 oj-md-12">
-            <oj-label for="maturityAccountCode" class="oj-flex-item oj-lg-12 oj-md-12">
+            <oj-label for="maturityAccountCode" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12">
               <span data-bind="text:$component.resource.payoutDetails.bankCode"></span>
             </oj-label>
-            <oj-input-text id="maturityAccountCode" class="oj-flex-item oj-lg-6 oj-md-5" value="{{redeemRDModel.payoutInstructions()[0].clearingCode}}" required validators="[[$baseModel.getValidator('BANK_CODE')]]">
+            <oj-input-text id="maturityAccountCode" class="oj-flex-item oj-lg-6 oj-md-5 oj-sm-7" value="{{redeemRDModel.payoutInstructions()[0].clearingCode}}" required validators="[[$baseModel.getValidator('BANK_CODE')]]">
             </oj-input-text>
+             <div class="oj-flex-item oj-lg-3 oj-md-3 oj-sm-5">
+              <oj-button id="bankCodeOpener" class="help-button" on-click="[[bankDetails]]">
+                <span data-bind="text:$component.resource.generic.common.verify"></span>
+              </oj-button>
+             </div>
+             <div class="oj-flex-item oj-md-12 oj-lg-12 oj-sm-12">
+               <a href="#" class="form-button-link" data-bind="text:$component.resource.payoutDetails.lookUpBankCode,click:bankLookupHandler"></a>
+             </div>
           </div>
         </oj-validation-group>
           <div class="oj-flex oj-flex-items-pad oj-lg-8 oj-md-8 oj-sm-12">
-            <div class="oj-flex oj-flex-item oj-lg-3 oj-md-3 oj-sm-5">
-              <oj-button id="bankCodeOpener" class="action-button-secondary" on-click="[[bankDetails]]">
-                <span slot="startIcon" class="icons icon-confirm"></span>
-                <span data-bind="text:$component.resource.generic.common.verify"></span>
-              </oj-button>
-            </div>
-            <div class="recurringDepositRedeem__bankLookUp">
-              <span data-bind="text:$component.resource.payoutDetails.or"></span>
-            </div>
-            <div class="oj-flex-item oj-lg-6 oj-md-6 oj-sm-6 recurringDepositRedeem__bankLookUp">
-              <a href="#" class="form-button-link" data-bind="text:$component.resource.payoutDetails.lookUpBankCode,click:bankLookupHandler"></a>
-            </div>
           <!-- ko if:$component.branchDetailsLoaded() -->
           <div data-bind="text:$component.redeemRDModel.payoutInstructions()[0].bankName" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>
           <div data-bind="text:$component.redeemRDModel.payoutInstructions()[0].address.line1" class="oj-flex-item oj-lg-12 oj-md-12 oj-sm-12"></div>

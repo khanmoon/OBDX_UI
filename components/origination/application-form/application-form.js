@@ -103,7 +103,7 @@ define([
       var url;
       if (self.productDetails().productClassName === "LOANS") {
         payload.requestedAmount = {
-          currency: rootParams.baseModel.getLocaleValue("localCurrency"),
+          currency: self.localCurrency,
           amount: 0
         };
         payload.requestedTenure = {

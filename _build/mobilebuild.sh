@@ -169,6 +169,27 @@ android_dev(){
 }
 ####################################### android dev build ends here #######################################################
 
+####################################### android dev ui build starts from here ################################################
+android_dev_ui(){
+	updating_exporting_ui
+	node component-sass.js
+	node --max_old_space_size=5120 $(type -p grunt) mobile-dev --platform=android
+	EXIT_CODE=$?
+	if [ $EXIT_CODE -eq 0 ]; then
+		cd ..
+		mv "destInt" "dist"
+		echo "done!";
+		rm $LOCK
+		exit 0
+	else
+		echo "failure!";
+		rm $LOCK
+		exit 1
+	fi
+}
+####################################### android dev ui build ends here #######################################################
+
+
 
 ####################################### android dev build starts from here ################################################
 test_dev(){
@@ -289,25 +310,17 @@ if [ -f $LOCK ]; then            # 'test' -> race begin
   exit 6
 fi
 touch $LOCK                      # 'set'  -> race end
-	if [ $1 == ios ];
-	then
-		ios_build
-	else
-		if [ $1 == android ];
-		then
-			android_build
-		else
-			if [ $1 == android-dev ];
-			then
-				android_dev
-			else
-				if [ $1 == test ];
-				then
-					test_dev
-				else
-					echo "type the right argument"
-				fi
-			fi
-		fi
-	fi
+if [ $1 == ios ]; then
+	ios_build
+elif [ $1 == android ]; then
+	android_build
+elif [ $1 == android-dev ]; then
+	android_dev		
+elif [ $1 == android-dev-ui ]; then
+	android_dev_ui
+elif [ $1 == test ]; then
+	test_dev
+else
+	echo "type the right argument"
+fi
 rm $LOCK

@@ -29,7 +29,16 @@
             <!-- ko foreach: $component.params.confirmScreenExtensions.confirmScreenDetails -->
             <div class="oj-flex oj-flex-items-pad">
                 <!-- ko foreach: $data -->
-                <!-- ko if: $data.value -->
+                <!-- ko if: $data.isInternalAccNo && $data.value -->
+                <internal-account-input class="oj-flex-item oj-sm-6" params="{
+                   baseModel:$baseModel,
+                   account : ko.observable($data.value),
+                   label:$data.label,
+                   readOnly: true
+                  }">
+                  </internal-account-input>
+                <!-- /ko -->
+                <!-- ko if: !$data.isInternalAccNo && $data.value -->
                <row class="oj-sm-6" params="baseModel : $baseModel, rootModel : $component, label : $data.label, value : $data.value"></row>
                 <!-- /ko -->
                 <!-- /ko -->

@@ -112,6 +112,15 @@ define([
                 self.txnType("financialTxn");
             }
         };
+        self.ctrl2 = function() {
+          if (self.filterDateRange()) {
+            self.filterDateRange(false);
+          } else {
+            self.filterDateRange(true);
+          }
+        };
+
+
         self.txnType.subscribe(function (newValue) {
             self.dataUpdated(false);
             ko.tasks.runEarly();

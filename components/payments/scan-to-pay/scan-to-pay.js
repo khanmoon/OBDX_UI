@@ -27,6 +27,7 @@ define([
     rootParams.baseModel.registerElement("amount-input");
     rootParams.baseModel.registerComponent("review-scan-to-pay", "payments");
     rootParams.baseModel.registerComponent("transfer-view-limits", "payments");
+    rootParams.baseModel.registerComponent("my-limits", "limits-enquiry");
     rootParams.baseModel.registerComponent("payment-landing", "payments");
     rootParams.dashboard.headerName(self.resource.header);
     self.viewLimitsFlag = ko.observable(false);

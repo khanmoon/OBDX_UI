@@ -28,12 +28,17 @@ define([
         self.mailersPayload = ko.observable();
         self.mailersPayload(getNewKoModel().mailersModel);
         self.activationDate = rootParams.rootModel.activationDate;
+        self.code = rootParams.rootModel.code || ko.observable();
+        self.description = rootParams.rootModel.description || ko.observable();
+        self.sendDate = rootParams.rootModel.sendDate || ko.observable();
+        self.sendTime = rootParams.rootModel.sendTime || ko.observable();
+        self.activationDate = rootParams.rootModel.activationDate || ko.observable();
+        self.priority = rootParams.rootModel.priority || ko.observable();
         self.triggerType = rootParams.rootModel.triggerType || ko.observable();
         self.emailSubject = rootParams.rootModel.emailSubject || ko.observable();
         self.emailContent = rootParams.rootModel.emailContent || ko.observable();
         self.selectedRecipients = rootParams.rootModel.selectedRecipients || ko.observableArray([]);
         self.laterSelected = rootParams.rootModel.laterSelected || ko.observable();
-        self.priority = rootParams.rootModel.priority;
         self.manualEnteredUsers = rootParams.rootModel.manualEnteredUsers || ko.observable();
         self.manualEnteredParties = rootParams.rootModel.manualEnteredParties || ko.observable();
         self.showUserInput = rootParams.rootModel.showUserInput || ko.observable(false);
