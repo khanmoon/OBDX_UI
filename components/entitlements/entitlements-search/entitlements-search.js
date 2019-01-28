@@ -40,11 +40,14 @@ define([
       }
     });
     self.resetForm = function() {
-      self.showResults(false);
-      self.selectedModule([]);
-      self.selectedCategory([]);
-      self.entitlementNames("");
-      self.validationTracker(null);
+      // self.showResults(false);
+      // self.selectedModule([]);
+      // self.selectedCategory([]);
+      // self.entitlementNames("");
+      // self.validationTracker(null);
+    EntitlementSearchModel.helloWorldTest().done(function(data) {
+      console.log(data)
+    });
     };
     self.moduleChangeHandler = function(event) {
       self.isCategoryFetched(false);

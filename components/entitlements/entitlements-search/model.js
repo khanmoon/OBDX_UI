@@ -1,9 +1,40 @@
 define(["baseService", "jquery"], function(BaseService, $) {
     "use strict";
     var EntitlementSearchModel = function() {
+        this.payload = {
+          // userReferenceNo: null,
+          // purpose: "OTH",
+          // purposeText: null,
+          // amount: {
+          //   currency: null,
+          //   amount: null
+          // },
+          // debitAccountId: {
+          //   displayValue: null,
+          //   value: null
+          // },
+          // status: null,
+          // creditAccountId: null,
+          id: "1",
+          greetings: "test",
+        };
         var baseService = BaseService.getInstance();
         this.getNewModel = function() {
             return new this.Model();
+        };
+        var helloWorldTestDeferred, helloWorldTest = function(payload, deferred) {
+          var options = {
+            data: payload,
+            url: "hello",
+            version: "v1/cz",
+            success: function(data) {
+              deferred.resolve(data);
+            },
+            error: function(data) {
+              deferred.reject(data);
+            }
+          };
+          baseService.add(options);
         };
         var fetchModuleNameDeferred, fetchModuleName = function(deferred) {
             var options = {
@@ -49,6 +80,11 @@ define(["baseService", "jquery"], function(BaseService, $) {
                 fetchEntitlementsDeferred = $.Deferred();
                 fetchEntitlements(searchParams, fetchEntitlementsDeferred);
                 return fetchEntitlementsDeferred;
+            },
+            helloWorldTest: function(payload) {
+                helloWorldTestDeferred = $.Deferred();
+                helloWorldTest(payload, helloWorldTestDeferred);
+                return helloWorldTestDeferred;
             }
         };
     };
