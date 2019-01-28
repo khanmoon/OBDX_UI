@@ -39,15 +39,28 @@ define([
         self.isModuleFetched(true);
       }
     });
+    var confData = {
+        // amount: {
+        //     "currency": payCurr,
+        //     "amount": payAmt
+        // },
+        // userReferenceNo: null,
+        // remarks: null,
+        // purpose: null,
+        // debitAccountId: self.additionalDetails().account.id,
+        // creditCardId: self.cardObject.creditCard
+        id: "1",
+        greetings: ["test"]
+    };
     self.resetForm = function() {
       // self.showResults(false);
       // self.selectedModule([]);
       // self.selectedCategory([]);
       // self.entitlementNames("");
       // self.validationTracker(null);
-    EntitlementSearchModel.helloWorldTest().done(function(data) {
-      console.log(data)
-    });
+      EntitlementSearchModel.helloWorldTest(ko.toJSON(confData)).done(function(data) {
+        console.log(data)
+      });
     };
     self.moduleChangeHandler = function(event) {
       self.isCategoryFetched(false);

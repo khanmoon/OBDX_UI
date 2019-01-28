@@ -1,23 +1,6 @@
 define(["baseService", "jquery"], function(BaseService, $) {
     "use strict";
     var EntitlementSearchModel = function() {
-        this.payload = {
-          // userReferenceNo: null,
-          // purpose: "OTH",
-          // purposeText: null,
-          // amount: {
-          //   currency: null,
-          //   amount: null
-          // },
-          // debitAccountId: {
-          //   displayValue: null,
-          //   value: null
-          // },
-          // status: null,
-          // creditAccountId: null,
-          id: "1",
-          greetings: "test",
-        };
         var baseService = BaseService.getInstance();
         this.getNewModel = function() {
             return new this.Model();
